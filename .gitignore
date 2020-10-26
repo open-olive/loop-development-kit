@@ -1,0 +1,52 @@
+# npm & yarn
+**/node_modules/
+ldk/node.npm
+ldk/node.yarn-integrity
+ldk/node/npm-debug.log*
+ldk/node/yarn-debug.log*
+ldk/node/yarn-error.log*
+ldk/node/yarn.lock*
+ldk/node/build/bundle.js
+ldk/node/build/index.html
+ldk/node/build*
+ldk/node/build/*
+
+# Testing
+coverage/
+ldk/node/coverage/
+ldk/node/.eslintcache
+
+# IDE support files
+**/eclipse
+**/venv
+**/ivy*
+**/.vscode
+**/.apt_generated
+**/.classpath
+**/.factorypath
+**/.launch
+**/.project
+**/.settings
+**/.idea
+**/*.launch
+**/*.tmproj
+**/.vs/
+*.iml
+*.ipr
+*.iws
+
+# Logs
+*.log
+
+# Mac OS X specific
+Thumbs.db
+Thumbs.db:*
+.DS_Store
+
+# Miscellaneous
+*~
+*#
+._*
+.#*
+*.orig
+*.swp
