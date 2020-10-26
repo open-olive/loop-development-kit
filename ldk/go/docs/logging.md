@@ -6,7 +6,7 @@ Example usage:
 
 ```go
 import (
-    ldk "github.com/open-olive/loop-development-kit-go"
+    ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
 var logger = ldk.NewLogger("my-plugin-name")

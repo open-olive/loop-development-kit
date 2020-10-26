@@ -11,11 +11,11 @@ In order for Sidekick to use a plugin, it must be compiled. Sidekick does not co
 ## Installation
 
 ```shell
-go get -u github.com/open-olive/loop-development-kit-go
+go get -u github.com/open-olive/loop-development-kit/ldk/go
 ```
 
 ## Usage
-Full documentation available on [GoDoc](https://godoc.org/github.com/open-olive/loop-development-kit-go).
+Full documentation available on [GoDoc](https://godoc.org/github.com/open-olive/loop-development-kit/ldk/go).
 
 ### Controllers
 This LDK can be used to write controllers for Sidekick. More detail about controllers is available [here](docs/controller.md).

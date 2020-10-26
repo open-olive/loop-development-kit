@@ -3,7 +3,7 @@ package ldk
 import (
 	"context"
 
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 // WindowService is an interface that defines what methods plugins can expect from the host

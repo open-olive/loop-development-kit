@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 // FilesystemClient is used by the controller plugin to facilitate plugin initiated communication with the host

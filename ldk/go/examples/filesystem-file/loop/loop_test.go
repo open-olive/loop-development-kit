@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	ldk "github.com/open-olive/loop-development-kit-go"
-	ldktest "github.com/open-olive/loop-development-kit-go/ldk-test"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
 	"github.com/open-olive/sidekick-controller-examplego/loop"
 )
 

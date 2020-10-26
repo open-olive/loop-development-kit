@@ -5,7 +5,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
