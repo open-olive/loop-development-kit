@@ -1,0 +1,29 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "google/protobuf/empty.proto";
+
+service Clipboard {
+    // get the contents of the clipboard
+    rpc ClipboardRead (google.protobuf.Empty) returns (ClipboardReadResponse);
+
+    // get the contents of the clipboard every time they change
+    rpc ClipboardReadStream (google.protobuf.Empty) returns (stream ClipboardReadStreamResponse);
+
+    // write to the clipboard
+    rpc ClipboardWrite (ClipboardWriteRequest) returns (google.protobuf.Empty);
+}
+
+message ClipboardReadResponse {
+    string text = 1;
+}
+
+message ClipboardReadStreamResponse {
+    string text = 2;
+    string error = 15;
+}
+
+message ClipboardWriteRequest {
+    string text = 1;
+}
