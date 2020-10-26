@@ -1,0 +1,26 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "google/protobuf/empty.proto";
+
+service Cursor {
+    // get the current position of the cursor
+    rpc CursorPosition (google.protobuf.Empty) returns (CursorPositionResponse);
+
+    // get the position of the cursor every time it changes
+    rpc CursorPositionStream (google.protobuf.Empty) returns (stream CursorPositionStreamResponse);
+}
+
+message CursorPositionResponse {
+    int32 x = 1;
+    int32 y = 2;
+    uint32 screen = 3;
+}
+
+message CursorPositionStreamResponse {
+    int32 x = 1;
+    int32 y = 2;
+    uint32 screen = 3;
+    string error = 15;
+}

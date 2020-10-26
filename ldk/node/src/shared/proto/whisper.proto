@@ -1,0 +1,206 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service Whisper {
+    // Send a markdown whisper
+    rpc WhisperMarkdown(WhisperMarkdownRequest) returns (google.protobuf.Empty);
+
+    // Send a confirm whisper
+    rpc WhisperConfirm(WhisperConfirmRequest) returns (WhisperConfirmResponse);
+
+    // Send a form whisper
+    rpc WhisperForm(WhisperFormRequest) returns (stream WhisperFormStreamResponse);
+}
+
+message WhisperStyle {
+    string backgroundColor = 1;
+    string primaryColor = 2;
+    string highlightColor = 3;
+}
+
+message WhisperMeta {
+    string label = 1;
+    string icon = 2;
+    WhisperStyle style = 3;
+}
+
+message WhisperMarkdownRequest {
+    WhisperMeta meta = 1;
+    string markdown = 2;
+}
+
+message WhisperConfirmRequest {
+    WhisperMeta meta = 1;
+    string markdown = 2;
+    string rejectLabel = 3;
+    string resolveLabel = 4;
+}
+
+message WhisperConfirmResponse {
+    bool response = 1;
+}
+
+message WhisperFormRequest {
+    WhisperMeta meta = 1;
+    string markdown = 2;
+    string submitLabel = 3;
+    string cancelLabel = 4;
+
+    map <string, WhisperFormInput> inputs = 5;
+}
+
+message WhisperFormInput {
+    message Checkbox {
+        string label = 1;
+        string tooltip = 2;
+        bool value = 3;
+    }
+
+    message Email {
+        string label = 1;
+        string tooltip = 2;
+        string value = 3;
+    }
+
+    message Markdown {
+        string label = 1;
+        string tooltip = 2;
+        string value = 3;
+    }
+
+    message Number {
+        string label = 1;
+        string tooltip = 2;
+        float value = 3;
+        float min = 4;
+        float max = 5;
+    }
+
+    message Password {
+        string label = 1;
+        string tooltip = 2;
+    }
+
+    message Radio {
+        string label = 1;
+        string tooltip = 2;
+        repeated string options = 3;
+    }
+
+    message Select {
+        string label = 1;
+        string tooltip = 2;
+        repeated string options = 3;
+    }
+
+    message Tel {
+        string label = 1;
+        string tooltip = 2;
+        string value = 3;
+        string pattern = 4;
+    }
+
+    message Text {
+        string label = 1;
+        string tooltip = 2;
+        string value = 3;
+    }
+
+    message Time {
+        string label = 1;
+        string tooltip = 2;
+        google.protobuf.Timestamp value = 3;
+    }
+
+    oneof InputOneof {
+        Checkbox checkbox = 1;
+        Email email = 2;
+        Markdown markdown = 3;
+        Number number = 4;
+        Password password = 5;
+        Radio radio = 6;
+        Select select = 7;
+        Tel tel = 8;
+        Text text = 9;
+        Time time = 10;
+    }
+}
+
+message WhisperFormOutput {
+    message Checkbox {
+        bool value = 1;
+    }
+
+    message Email {
+        string value = 1;
+    }
+
+    message Markdown {
+        string value = 1;
+    }
+
+    message Number {
+        float value = 1;
+    }
+
+    message Password {
+        string value = 1;
+    }
+
+    message Radio {
+        string value = 1;
+    }
+
+    message Select {
+        string value = 1;
+    }
+
+    message Tel {
+        string value = 1;
+    }
+
+    message Text {
+        string value = 1;
+    }
+
+    message Time {
+        google.protobuf.Timestamp value = 1;
+    }
+
+    oneof OutputOneof {
+        Checkbox checkbox = 1;
+        Email email = 2;
+        Markdown markdown = 3;
+        Number number = 4;
+        Password password = 5;
+        Radio radio = 6;
+        Select select = 7;
+        Tel tel = 8;
+        Text text = 9;
+        Time time = 10;
+    }
+}
+
+message WhisperFormResult {
+    bool submitted = 1; // true = form was submitted, false = form was canceled
+    map <string, WhisperFormOutput> outputs = 2;
+}
+
+message WhisperFormUpdate {
+    string key = 1;
+    WhisperFormOutput output = 2;
+}
+
+message WhisperFormStreamResponse {
+    oneof WhisperFormResponseOneof {
+        WhisperFormResult result = 1;
+        WhisperFormUpdate update = 2;
+    }
+
+    string error = 15;
+}
+

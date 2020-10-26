@@ -1,0 +1,72 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "google/protobuf/timestamp.proto";
+
+service Filesystem {
+    // list the contents of a directory
+    rpc FilesystemDir (FilesystemDirRequest) returns (FilesystemDirResponse);
+
+    // stream any updates to the contents of a directory
+    rpc FilesystemDirStream (FilesystemDirStreamRequest) returns (stream FilesystemDirStreamResponse);
+
+    // get information about a file
+    rpc FilesystemFile (FilesystemFileRequest) returns (FilesystemFileResponse);
+
+    // stream any updates to a file
+    rpc FilesystemFileStream (FilesystemFileStreamRequest) returns (stream FilesystemFileStreamResponse);    
+}
+
+message FileInfo {
+    string name = 1;
+    int64 size = 2;
+    uint32 mode = 3;
+    google.protobuf.Timestamp updated = 4;
+    bool isDir = 5;
+}
+
+enum FileAction {
+    FILE_ACTION_UNKNOWN = 0; 
+    FILE_ACTION_CREATE = 1;
+    FILE_ACTION_WRITE = 2;
+    FILE_ACTION_REMOVE = 3;
+    FILE_ACTION_RENAME = 4;
+    FILE_ACTION_CHMOD = 5;
+}
+
+message FilesystemDirRequest {
+    string directory = 1;
+}
+
+message FilesystemDirResponse {
+    repeated FileInfo files = 1;
+}
+
+message FilesystemDirStreamRequest {
+    string directory = 1;
+}
+
+message FilesystemDirStreamResponse {
+    FileInfo file = 1;
+    FileAction action = 2;
+    string error = 15;
+}
+
+message FilesystemFileRequest {
+    string path = 1;
+}
+
+message FilesystemFileResponse {
+    FileInfo file = 1;
+}
+
+message FilesystemFileStreamRequest {
+    string path = 1;
+}
+
+message FilesystemFileStreamResponse {
+    FileInfo file = 1;
+    FileAction action = 2;
+    string error = 15;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "google/protobuf/empty.proto";
+
+service Loop {
+    // start the loop
+    rpc LoopStart(LoopStartRequest) returns (google.protobuf.Empty);
+
+    // stop the loop
+    rpc LoopStop(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+message LoopStartRequest {
+    uint32 hostWhisper   = 1;
+    uint32 hostStorage   = 2;
+    uint32 hostClipboard = 3;
+    uint32 hostKeyboard  = 4;
+}
