@@ -2,6 +2,7 @@ import grpc, { ServiceError } from '@grpc/grpc-js';
 import { ConnInfo } from '../grpc/broker_pb';
 import { CommonHostServer } from '../commonHostServer';
 import { CommonHostClient } from './commonHostClient';
+import { Session } from '../grpc/session_pb';
 
 /**
  * @internal
@@ -16,6 +17,13 @@ export interface GRPCClientConstructor<T> {
 }
 
 /**
+ * @internal
+ */
+export interface SetSessionable {
+  setSession(session: Session): void;
+}
+
+/**
  * The BaseClient class provides connectivity support to GRPC services as a client.
  *
  * Subclasses handle the abstraction of making GRPC requests and parsing responses from LDK consumers.
@@ -25,6 +33,8 @@ export interface GRPCClientConstructor<T> {
 export default abstract class BaseClient<THost extends CommonHostServer>
   implements CommonHostClient {
   private _client: THost | undefined;
+
+  protected _session: Session | undefined;
 
   /**
    * Implementation should return the constructor function/class for the GRPC Client itself, imported from the SERVICE_grpc_pb file.
@@ -37,8 +47,9 @@ export default abstract class BaseClient<THost extends CommonHostServer>
    *
    * @async
    * @param connInfo - An object containing host process connection information.
+   * @param session - An object containing the loop Session information.
    */
-  connect(connInfo: ConnInfo.AsObject): Promise<void> {
+  connect(connInfo: ConnInfo.AsObject, session: Session): Promise<void> {
     return new Promise((resolve, reject) => {
       let address;
       if (connInfo.network === 'unix') {
@@ -47,6 +58,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
         address = connInfo.address;
       }
       const ClientConstructor = this.generateClient();
+      this.session = session;
       this.client = new ClientConstructor(
         address,
         grpc.credentials.createInsecure(),
@@ -73,7 +85,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
    * @param builder - The function that builds the message.
    * @param renderer - The function that renders the message.
    */
-  buildQuery<TMessage, TResponse, TOutput>(
+  buildQuery<TMessage extends SetSessionable, TResponse, TOutput>(
     clientRequest: (
       message: TMessage,
       callback: (err: ServiceError | null, response: TResponse) => void,
@@ -83,6 +95,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   ): Promise<TOutput> {
     return new Promise((resolve, reject) => {
       const message = builder();
+      message.setSession(this.createSessionMessage());
       const callback = (err: ServiceError | null, response: TResponse) => {
         if (err) {
           return reject(err);
@@ -91,6 +104,13 @@ export default abstract class BaseClient<THost extends CommonHostServer>
       };
       clientRequest(message, callback);
     });
+  }
+
+  protected createSessionMessage(): Session {
+    const session = new Session();
+    session.setLoopid(this.session.getLoopid());
+    session.setToken(this.session.getToken());
+    return session;
   }
 
   protected get client(): THost {
@@ -102,5 +122,16 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
   protected set client(client: THost) {
     this._client = client;
+  }
+
+  protected get session(): Session {
+    if (this._session === undefined) {
+      throw new Error('Accessing session data before connection');
+    }
+    return this._session;
+  }
+
+  protected set session(session: Session) {
+    this._session = session;
   }
 }

@@ -1,4 +1,5 @@
 import { ConnInfo } from './grpc/broker_pb';
+import { Session } from './grpc/session_pb';
 import { HostServices } from './hostServices';
 import WhisperClient from './hostClients/whisperClient';
 import StorageClient from './hostClients/storageClient';
@@ -35,18 +36,21 @@ export default class HostClientFacade implements HostServices {
 
   public browser: BrowserClient = new BrowserClient();
 
-  public connect(connInfo: ConnInfo.AsObject): Promise<void[]> {
+  public connect(
+    connInfo: ConnInfo.AsObject,
+    session: Session,
+  ): Promise<void[]> {
     return Promise.all([
-      this.whisper.connect(connInfo),
-      this.storage.connect(connInfo),
-      this.keyboard.connect(connInfo),
-      this.clipboard.connect(connInfo),
-      this.cursor.connect(connInfo),
-      this.hover.connect(connInfo),
-      this.fileSystem.connect(connInfo),
-      this.process.connect(connInfo),
-      this.window.connect(connInfo),
-      this.browser.connect(connInfo),
+      this.whisper.connect(connInfo, session),
+      this.storage.connect(connInfo, session),
+      this.keyboard.connect(connInfo, session),
+      this.clipboard.connect(connInfo, session),
+      this.cursor.connect(connInfo, session),
+      this.hover.connect(connInfo, session),
+      this.fileSystem.connect(connInfo, session),
+      this.process.connect(connInfo, session),
+      this.window.connect(connInfo, session),
+      this.browser.connect(connInfo, session),
     ]);
   }
 }

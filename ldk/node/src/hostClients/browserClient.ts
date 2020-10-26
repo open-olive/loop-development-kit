@@ -1,4 +1,3 @@
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { BrowserClient as BrowserGRPCClient } from '../grpc/browser_grpc_pb';
 import Messages from '../grpc/browser_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
@@ -30,21 +29,25 @@ export class BrowserClient
   extends BaseClient<BrowserGRPCClient>
   implements BrowserService {
   queryActiveURL(): Promise<string> {
-    return this.buildQuery<Empty, Messages.BrowserActiveURLResponse, string>(
+    return this.buildQuery<
+      Messages.BrowserActiveURLRequest,
+      Messages.BrowserActiveURLResponse,
+      string
+    >(
       (message, callback) => this.client.browserActiveURL(message, callback),
-      () => new Empty(),
+      () => new Messages.BrowserActiveURLRequest(),
       (response) => response.getUrl(),
     );
   }
 
   querySelectedText(): Promise<BrowserSelectedTextResponse> {
     return this.buildQuery<
-      Empty,
+      Messages.BrowserSelectedTextRequest,
       Messages.BrowserSelectedTextResponse,
       BrowserSelectedTextResponse
     >(
       (message, callback) => this.client.browserSelectedText(message, callback),
-      () => new Empty(),
+      () => new Messages.BrowserSelectedTextRequest(),
       transformSelectedTextResponse,
     );
   }
@@ -54,7 +57,11 @@ export class BrowserClient
       Messages.BrowserActiveURLStreamResponse,
       string
     >(
-      this.client.browserActiveURLStream(new Empty()),
+      this.client.browserActiveURLStream(
+        new Messages.BrowserActiveURLRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       (message) => message.getUrl(),
       listener,
     );
@@ -67,7 +74,11 @@ export class BrowserClient
       Messages.BrowserSelectedTextStreamResponse,
       BrowserSelectedTextResponse
     >(
-      this.client.browserSelectedTextStream(new Empty()),
+      this.client.browserSelectedTextStream(
+        new Messages.BrowserSelectedTextStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       transformSelectedTextResponse,
       listener,
     );

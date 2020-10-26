@@ -33,15 +33,20 @@ export default class LoopServer implements ILoopServer {
     callback: grpc.sendUnaryData<Empty>,
   ): Promise<void> {
     const connInfo = await this.broker.getConnInfo();
-    // TODO: Replace with creating all hosts.
+    const sessionInfo = call.request?.getSession();
+    const response = new Empty();
+    if (sessionInfo == null) {
+      callback(new Error('Invalid Session Information'), response);
+      return;
+    }
+
     const hostClient = new HostClientFacade();
 
-    await hostClient.connect(connInfo).catch((err) => {
+    await hostClient.connect(connInfo, sessionInfo).catch((err) => {
       throw err;
     });
     await this.loop.start(hostClient);
 
-    const response = new Empty();
     callback(null, response);
   }
 
