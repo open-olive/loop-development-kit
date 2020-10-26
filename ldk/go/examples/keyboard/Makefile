@@ -1,4 +1,4 @@
-REPO := github.com/open-olive/sidekick-controller-examplego
+REPO := github.com/open-olive/loop-development-kit-go/example/keyboard
 PKG := examplego
 
 GIT_COMMIT := $(shell git rev-list -1 HEAD)

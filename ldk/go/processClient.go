@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit-go/proto"
 )
 
 type ProcessClient struct {

@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"testing"
 
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit-go"
 )
 
 func TestKeyModifiers(t *testing.T) {

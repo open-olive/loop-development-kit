@@ -5,24 +5,13 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
-	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
-	"github.com/open-olive/sidekick-controller-examplego/loop"
+	ldk "github.com/open-olive/loop-development-kit-go"
+	loop "github.com/open-olive/loop-development-kit-go/example/keyboard-character/loop"
+	ldktest "github.com/open-olive/loop-development-kit-go/ldk-test"
 )
 
 func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
-		StorageService: &ldktest.StorageService{
-			StorageHasKeyf: func(string) (bool, error) {
-				return true, nil
-			},
-			StorageReadf: func(s string) (string, error) {
-				return "10", nil
-			},
-			StorageWritef: func(s1 string, s2 string) error {
-				return nil
-			},
-		},
 		KeyboardService: &ldktest.KeyboardService{
 			ListenCharacterf: func(ctx context.Context, cb ldk.ListenCharacterHandler) error {
 				cb('A', nil)
@@ -32,7 +21,7 @@ func TestController(t *testing.T) {
 		},
 		WhisperService: &ldktest.WhisperService{
 			WhisperMarkdownF: func(w ldk.WhisperMarkdown) error {
-				exp := "# New Text Event\n```\nA\n```\n\nCounter: 10"
+				exp := "A character from the keyboard: A"
 				if got := w.Markdown; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))
 				}

@@ -5,24 +5,13 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
-	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
-	"github.com/open-olive/sidekick-controller-examplego/loop"
+	ldk "github.com/open-olive/loop-development-kit-go"
+	loop "github.com/open-olive/loop-development-kit-go/example/clipboard/loop"
+	ldktest "github.com/open-olive/loop-development-kit-go/ldk-test"
 )
 
 func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
-		StorageService: &ldktest.StorageService{
-			StorageHasKeyf: func(string) (bool, error) {
-				return true, nil
-			},
-			StorageReadf: func(s string) (string, error) {
-				return "10", nil
-			},
-			StorageWritef: func(s1 string, s2 string) error {
-				return nil
-			},
-		},
 		ClipboardService: &ldktest.ClipboardService{
 			Listenf: func(ctx context.Context, cb ldk.ReadListenHandler) error {
 				cb("This is a test event", nil)
@@ -31,8 +20,8 @@ func TestController(t *testing.T) {
 			},
 		},
 		WhisperService: &ldktest.WhisperService{
-			WhisperMarkdownF: func(w ldk.WhisperMarkdown) error {
-				exp := "# New Text Event\n```\nThis is a test event\n```\n\nCounter: 10"
+			Markdownf: func(ctx context.Context, w *ldk.WhisperContentMarkdown) error {
+				exp := "Text from the clipboard: This is a test event"
 				if got := w.Markdown; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))
 				}

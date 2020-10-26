@@ -7,8 +7,8 @@ type SidekickClient struct {
 	whisper    WhisperService
 	keyboard   KeyboardService
 	process    ProcessService
+	cursor     CursorService
 	filesystem FilesystemService
-	window     WindowService
 }
 
 // Clipboard is used by controller plugins to send whispers to sidekick
@@ -31,16 +31,17 @@ func (m *SidekickClient) Keyboard() KeyboardService {
 	return m.keyboard
 }
 
-// Filesystem is used by controller plugins to send process events to sidekick
+// Process is used by controller plugins to send process events to sidekick
 func (m *SidekickClient) Process() ProcessService {
 	return m.process
+}
+
+// Cursor is used by te controller plugin to send cursor events to sidekick
+func (m *SidekickClient) Cursor() CursorService {
+	return m.cursor
 }
 
 // Filesystem is used by controller plugins to send keyboard events to sidekick
 func (m *SidekickClient) Filesystem() FilesystemService {
 	return m.filesystem
-}
-
-func (m *SidekickClient) Window() WindowService {
-	return m.window
 }

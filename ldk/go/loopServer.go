@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/go-plugin"
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit-go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -20,8 +20,8 @@ type LoopServer struct {
 	whisperConn    *grpc.ClientConn
 	keyboardConn   *grpc.ClientConn
 	processConn    *grpc.ClientConn
+	cursorConn     *grpc.ClientConn
 	filesystemConn *grpc.ClientConn
-	windowConn     *grpc.ClientConn
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
@@ -52,12 +52,12 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 		return &emptypb.Empty{}, err
 	}
 
-	m.filesystemConn, err = m.broker.Dial(req.HostFilesystem)
+	m.cursorConn, err = m.broker.Dial(req.HostCursor)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	m.windowConn, err = m.broker.Dial(req.HostWindow)
+	m.filesystemConn, err = m.broker.Dial(req.HostFilesystem)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
@@ -78,11 +78,11 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 		process: &ProcessClient{
 			proto.NewProcessClient(m.processConn),
 		},
+		cursor: &CursorClient{
+			proto.NewCursorClient(m.cursorConn),
+		},
 		filesystem: &FilesystemClient{
 			proto.NewFilesystemClient(m.filesystemConn),
-		},
-		window: &WindowClient{
-			proto.NewWindowClient(m.windowConn),
 		},
 	}
 
@@ -93,43 +93,36 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 
 // LoopStop is called by the host when the plugin is stopped
 func (m *LoopServer) LoopStop(ctx context.Context, req *emptypb.Empty) (*emptypb.Empty, error) {
-	var err error
 
-	err = m.clipboardConn.Close()
-	if err != nil {
+	// close service connections
+	if err := m.clipboardConn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	err = m.storageConn.Close()
-	if err != nil {
+	if err := m.storageConn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	err = m.whisperConn.Close()
-	if err != nil {
+	if err := m.whisperConn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	err = m.keyboardConn.Close()
-	if err != nil {
+	if err := m.keyboardConn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	err = m.processConn.Close()
-	if err != nil {
+	if err := m.processConn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	err = m.filesystemConn.Close()
-	if err != nil {
+	if err := m.cursorConn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	err = m.windowConn.Close()
-	if err != nil {
+	if err := m.filesystemConn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	err = m.Impl.LoopStop()
+	err := m.Impl.LoopStop()
 	return &emptypb.Empty{}, err
 }

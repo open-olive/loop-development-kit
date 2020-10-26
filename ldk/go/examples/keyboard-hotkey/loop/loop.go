@@ -7,7 +7,7 @@ import (
 	"html/template"
 	"strconv"
 
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit-go"
 	"github.com/open-olive/sidekick-controller-examplego/bind"
 )
 

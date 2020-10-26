@@ -5,16 +5,16 @@ import (
 	"errors"
 	"io"
 
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit-go/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-// ClipboardClient is used by the controller plugin to facilitate plugin initiated communication with the host
+// ClipboardClient is used by loops to facilitate communication with the clipboard service
 type ClipboardClient struct {
 	client proto.ClipboardClient
 }
 
-// ClipboardRead is used by plugins to get a list of keys for all entries
+// Read is used by the loop to get the current clipboard text
 func (c *ClipboardClient) Read() (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
@@ -27,7 +27,7 @@ func (c *ClipboardClient) Read() (string, error) {
 	return resp.Text, nil
 }
 
-// ClipboardReadStream is used by plugins to get a list of keys for all entries
+// Listen is used by the loop to establish a stream for handling clipboard changes
 func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler) error {
 	stream, err := c.client.ClipboardReadStream(ctx, &emptypb.Empty{})
 	if err != nil {
@@ -55,7 +55,7 @@ func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler)
 	return nil
 }
 
-// ClipboardWrite is used by plugins to get a list of keys for all entries
+// Write is used by the loop to write text to the clipboard
 func (c *ClipboardClient) Write(text string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()

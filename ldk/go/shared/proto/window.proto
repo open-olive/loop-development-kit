@@ -6,16 +6,16 @@ import "google/protobuf/empty.proto";
 
 service Window {
     // get information about currently focused window
-    rpc Active (google.protobuf.Empty) returns (ActiveWindowResponse);
+    rpc WindowActiveWindow (google.protobuf.Empty) returns (WindowActiveWindowResponse);
 
     // stream information about currently focused window as it changes
-    rpc ActiveStream (google.protobuf.Empty) returns (stream ActiveWindowStreamResponse);
+    rpc WindowActiveWindowStream (google.protobuf.Empty) returns (stream WindowActiveWindowStreamResponse);
 
     // get information about all windows
-    rpc State (google.protobuf.Empty) returns (WindowStateResponse);
+    rpc WindowState (google.protobuf.Empty) returns (WindowStateResponse);
 
     // get information about windows as they change
-    rpc StateStream (google.protobuf.Empty) returns (stream WindowStateStreamResponse);
+    rpc WindowStateStream (google.protobuf.Empty) returns (stream WindowStateStreamResponse);
 }
 
 message WindowInfo {
@@ -38,11 +38,11 @@ enum WindowAction {
 // Note: New windows that open and take focus will be considered two separate actions.
 // One action for opening (WINDOW_ACTION_OPENED) and one action for focusing (WINDOW_ACTION_FOCUSED).
 
-message ActiveWindowResponse {
+message WindowActiveWindowResponse {
     WindowInfo window = 1;
 }
 
-message ActiveWindowStreamResponse {
+message WindowActiveWindowStreamResponse {
     WindowInfo window = 1;
     string error = 15;
 }

@@ -5,11 +5,11 @@ import (
 	"fmt"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit-go/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-// ClipboardServer is used by the controller plugin host to receive plugin initiated communication
+// ClipboardServer is used by sidekick to process clipboard communication with a loop
 type ClipboardServer struct {
 	Impl ClipboardService
 }

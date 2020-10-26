@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-plugin"
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit-go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -93,6 +93,19 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	processBrokerID := m.broker.NextId()
 	go m.broker.AcceptAndServe(processBrokerID, processServerFunc)
 
+	cursorHostServer := &CursorServer{
+		Impl: host.Cursor(),
+	}
+
+	cursorServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
+		m.s = grpc.NewServer(opts...)
+		proto.RegisterCursorServer(m.s, cursorHostServer)
+		return m.s
+	}
+
+	cursorBrokerID := m.broker.NextId()
+	go m.broker.AcceptAndServe(cursorBrokerID, cursorServerFunc)
+
 	filesystemHostServer := &FilesystemServer{
 		Impl: host.Filesystem(),
 	}
@@ -106,27 +119,14 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	filesystemBrokerID := m.broker.NextId()
 	go m.broker.AcceptAndServe(filesystemBrokerID, filesystemServerFunc)
 
-	windowHostServer := &WindowServer{
-		Impl: host.Window(),
-	}
-
-	windowServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
-		proto.RegisterWindowServer(m.s, windowHostServer)
-		return m.s
-	}
-
-	windowBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(windowBrokerID, windowServerFunc)
-
 	_, err := m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		HostStorage:    storageBrokerID,
 		HostWhisper:    whisperBrokerID,
 		HostClipboard:  clipboardBrokerID,
 		HostKeyboard:   keyboardBrokerID,
 		HostProcess:    processBrokerID,
+		HostCursor:     cursorBrokerID,
 		HostFilesystem: filesystemBrokerID,
-		HostWindow:     windowBrokerID,
 	})
 
 	return err

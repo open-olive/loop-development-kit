@@ -7,6 +7,6 @@ type Sidekick interface {
 	Whisper() WhisperService
 	Keyboard() KeyboardService
 	Process() ProcessService
+	Cursor() CursorService
 	Filesystem() FilesystemService
-	Window() WindowService
 }
