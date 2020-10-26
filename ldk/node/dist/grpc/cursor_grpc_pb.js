@@ -2,15 +2,15 @@
 'use strict';
 var grpc = require('@grpc/grpc-js');
 var cursor_pb = require('./cursor_pb.js');
-var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
-function serialize_google_protobuf_Empty(arg) {
-    if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
-        throw new Error('Expected argument of type google.protobuf.Empty');
+var session_pb = require('./session_pb.js');
+function serialize_proto_CursorPositionRequest(arg) {
+    if (!(arg instanceof cursor_pb.CursorPositionRequest)) {
+        throw new Error('Expected argument of type proto.CursorPositionRequest');
     }
     return Buffer.from(arg.serializeBinary());
 }
-function deserialize_google_protobuf_Empty(buffer_arg) {
-    return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_CursorPositionRequest(buffer_arg) {
+    return cursor_pb.CursorPositionRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 function serialize_proto_CursorPositionResponse(arg) {
     if (!(arg instanceof cursor_pb.CursorPositionResponse)) {
@@ -20,6 +20,15 @@ function serialize_proto_CursorPositionResponse(arg) {
 }
 function deserialize_proto_CursorPositionResponse(buffer_arg) {
     return cursor_pb.CursorPositionResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+function serialize_proto_CursorPositionStreamRequest(arg) {
+    if (!(arg instanceof cursor_pb.CursorPositionStreamRequest)) {
+        throw new Error('Expected argument of type proto.CursorPositionStreamRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_CursorPositionStreamRequest(buffer_arg) {
+    return cursor_pb.CursorPositionStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 function serialize_proto_CursorPositionStreamResponse(arg) {
     if (!(arg instanceof cursor_pb.CursorPositionStreamResponse)) {
@@ -36,10 +45,10 @@ var CursorService = exports.CursorService = {
         path: '/proto.Cursor/CursorPosition',
         requestStream: false,
         responseStream: false,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: cursor_pb.CursorPositionRequest,
         responseType: cursor_pb.CursorPositionResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_CursorPositionRequest,
+        requestDeserialize: deserialize_proto_CursorPositionRequest,
         responseSerialize: serialize_proto_CursorPositionResponse,
         responseDeserialize: deserialize_proto_CursorPositionResponse,
     },
@@ -48,10 +57,10 @@ var CursorService = exports.CursorService = {
         path: '/proto.Cursor/CursorPositionStream',
         requestStream: false,
         responseStream: true,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: cursor_pb.CursorPositionStreamRequest,
         responseType: cursor_pb.CursorPositionStreamResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_CursorPositionStreamRequest,
+        requestDeserialize: deserialize_proto_CursorPositionStreamRequest,
         responseSerialize: serialize_proto_CursorPositionStreamResponse,
         responseDeserialize: deserialize_proto_CursorPositionStreamResponse,
     },

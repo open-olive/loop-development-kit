@@ -9,6 +9,7 @@ import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
 import * as whisper_pb from "./whisper_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as session_pb from "./session_pb";
 
 interface IWhisperService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     whisperMarkdown: IWhisperService_IWhisperMarkdown;

@@ -7,6 +7,7 @@
 import * as jspb from "google-protobuf";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as session_pb from "./session_pb";
 
 export class WhisperStyle extends jspb.Message { 
     getBackgroundcolor(): string;
@@ -71,6 +72,12 @@ export namespace WhisperMeta {
 
 export class WhisperMarkdownRequest extends jspb.Message { 
 
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WhisperMarkdownRequest;
+
+
     hasMeta(): boolean;
     clearMeta(): void;
     getMeta(): WhisperMeta | undefined;
@@ -92,12 +99,19 @@ export class WhisperMarkdownRequest extends jspb.Message {
 
 export namespace WhisperMarkdownRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         meta?: WhisperMeta.AsObject,
         markdown: string,
     }
 }
 
 export class WhisperConfirmRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WhisperConfirmRequest;
+
 
     hasMeta(): boolean;
     clearMeta(): void;
@@ -126,6 +140,7 @@ export class WhisperConfirmRequest extends jspb.Message {
 
 export namespace WhisperConfirmRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         meta?: WhisperMeta.AsObject,
         markdown: string,
         rejectlabel: string,
@@ -155,6 +170,12 @@ export namespace WhisperConfirmResponse {
 }
 
 export class WhisperFormRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WhisperFormRequest;
+
 
     hasMeta(): boolean;
     clearMeta(): void;
@@ -187,6 +208,7 @@ export class WhisperFormRequest extends jspb.Message {
 
 export namespace WhisperFormRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         meta?: WhisperMeta.AsObject,
         markdown: string,
         submitlabel: string,

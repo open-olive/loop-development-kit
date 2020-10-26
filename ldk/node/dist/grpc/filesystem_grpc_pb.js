@@ -3,6 +3,7 @@
 var grpc = require('@grpc/grpc-js');
 var filesystem_pb = require('./filesystem_pb.js');
 var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
+var session_pb = require('./session_pb.js');
 function serialize_proto_FilesystemDirRequest(arg) {
     if (!(arg instanceof filesystem_pb.FilesystemDirRequest)) {
         throw new Error('Expected argument of type proto.FilesystemDirRequest');

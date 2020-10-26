@@ -3,6 +3,7 @@
 var grpc = require('@grpc/grpc-js');
 var storage_pb = require('./storage_pb.js');
 var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+var session_pb = require('./session_pb.js');
 function serialize_google_protobuf_Empty(arg) {
     if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
         throw new Error('Expected argument of type google.protobuf.Empty');
@@ -39,6 +40,15 @@ function serialize_proto_StorageHasKeyResponse(arg) {
 function deserialize_proto_StorageHasKeyResponse(buffer_arg) {
     return storage_pb.StorageHasKeyResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
+function serialize_proto_StorageKeysRequest(arg) {
+    if (!(arg instanceof storage_pb.StorageKeysRequest)) {
+        throw new Error('Expected argument of type proto.StorageKeysRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_StorageKeysRequest(buffer_arg) {
+    return storage_pb.StorageKeysRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
 function serialize_proto_StorageKeysResponse(arg) {
     if (!(arg instanceof storage_pb.StorageKeysResponse)) {
         throw new Error('Expected argument of type proto.StorageKeysResponse');
@@ -47,6 +57,15 @@ function serialize_proto_StorageKeysResponse(arg) {
 }
 function deserialize_proto_StorageKeysResponse(buffer_arg) {
     return storage_pb.StorageKeysResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+function serialize_proto_StorageReadAllRequest(arg) {
+    if (!(arg instanceof storage_pb.StorageReadAllRequest)) {
+        throw new Error('Expected argument of type proto.StorageReadAllRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_StorageReadAllRequest(buffer_arg) {
+    return storage_pb.StorageReadAllRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 function serialize_proto_StorageReadAllResponse(arg) {
     if (!(arg instanceof storage_pb.StorageReadAllResponse)) {
@@ -102,10 +121,10 @@ var StorageService = exports.StorageService = {
         path: '/proto.Storage/StorageKeys',
         requestStream: false,
         responseStream: false,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: storage_pb.StorageKeysRequest,
         responseType: storage_pb.StorageKeysResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_StorageKeysRequest,
+        requestDeserialize: deserialize_proto_StorageKeysRequest,
         responseSerialize: serialize_proto_StorageKeysResponse,
         responseDeserialize: deserialize_proto_StorageKeysResponse,
     },
@@ -126,10 +145,10 @@ var StorageService = exports.StorageService = {
         path: '/proto.Storage/StorageReadAll',
         requestStream: false,
         responseStream: false,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: storage_pb.StorageReadAllRequest,
         responseType: storage_pb.StorageReadAllResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_StorageReadAllRequest,
+        requestDeserialize: deserialize_proto_StorageReadAllRequest,
         responseSerialize: serialize_proto_StorageReadAllResponse,
         responseDeserialize: deserialize_proto_StorageReadAllResponse,
     },
@@ -150,10 +169,10 @@ var StorageService = exports.StorageService = {
         path: '/proto.Storage/StorageDeleteAll',
         requestStream: false,
         responseStream: false,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: storage_pb.StorageDeleteRequest,
         responseType: google_protobuf_empty_pb.Empty,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_StorageDeleteRequest,
+        requestDeserialize: deserialize_proto_StorageDeleteRequest,
         responseSerialize: serialize_google_protobuf_Empty,
         responseDeserialize: deserialize_google_protobuf_Empty,
     },

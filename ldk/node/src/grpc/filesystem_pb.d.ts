@@ -6,6 +6,7 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as session_pb from "./session_pb";
 
 export class FileInfo extends jspb.Message { 
     getName(): string;
@@ -48,6 +49,12 @@ export namespace FileInfo {
 }
 
 export class FilesystemDirRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): FilesystemDirRequest;
+
     getDirectory(): string;
     setDirectory(value: string): FilesystemDirRequest;
 
@@ -64,6 +71,7 @@ export class FilesystemDirRequest extends jspb.Message {
 
 export namespace FilesystemDirRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         directory: string,
     }
 }
@@ -92,6 +100,12 @@ export namespace FilesystemDirResponse {
 }
 
 export class FilesystemDirStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): FilesystemDirStreamRequest;
+
     getDirectory(): string;
     setDirectory(value: string): FilesystemDirStreamRequest;
 
@@ -108,6 +122,7 @@ export class FilesystemDirStreamRequest extends jspb.Message {
 
 export namespace FilesystemDirStreamRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         directory: string,
     }
 }
@@ -145,6 +160,12 @@ export namespace FilesystemDirStreamResponse {
 }
 
 export class FilesystemFileRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): FilesystemFileRequest;
+
     getPath(): string;
     setPath(value: string): FilesystemFileRequest;
 
@@ -161,6 +182,7 @@ export class FilesystemFileRequest extends jspb.Message {
 
 export namespace FilesystemFileRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         path: string,
     }
 }
@@ -190,6 +212,12 @@ export namespace FilesystemFileResponse {
 }
 
 export class FilesystemFileStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): FilesystemFileStreamRequest;
+
     getPath(): string;
     setPath(value: string): FilesystemFileStreamRequest;
 
@@ -206,6 +234,7 @@ export class FilesystemFileStreamRequest extends jspb.Message {
 
 export namespace FilesystemFileStreamRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         path: string,
     }
 }

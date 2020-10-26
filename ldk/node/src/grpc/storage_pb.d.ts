@@ -6,8 +6,15 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
 
 export class StorageHasKeyRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): StorageHasKeyRequest;
+
     getKey(): string;
     setKey(value: string): StorageHasKeyRequest;
 
@@ -24,6 +31,7 @@ export class StorageHasKeyRequest extends jspb.Message {
 
 export namespace StorageHasKeyRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         key: string,
     }
 }
@@ -46,6 +54,30 @@ export class StorageHasKeyResponse extends jspb.Message {
 export namespace StorageHasKeyResponse {
     export type AsObject = {
         haskey: boolean,
+    }
+}
+
+export class StorageKeysRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): StorageKeysRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StorageKeysRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: StorageKeysRequest): StorageKeysRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StorageKeysRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StorageKeysRequest;
+    static deserializeBinaryFromReader(message: StorageKeysRequest, reader: jspb.BinaryReader): StorageKeysRequest;
+}
+
+export namespace StorageKeysRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 
@@ -73,6 +105,12 @@ export namespace StorageKeysResponse {
 }
 
 export class StorageReadRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): StorageReadRequest;
+
     getKey(): string;
     setKey(value: string): StorageReadRequest;
 
@@ -89,6 +127,7 @@ export class StorageReadRequest extends jspb.Message {
 
 export namespace StorageReadRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         key: string,
     }
 }
@@ -111,6 +150,30 @@ export class StorageReadResponse extends jspb.Message {
 export namespace StorageReadResponse {
     export type AsObject = {
         value: string,
+    }
+}
+
+export class StorageReadAllRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): StorageReadAllRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StorageReadAllRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: StorageReadAllRequest): StorageReadAllRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StorageReadAllRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StorageReadAllRequest;
+    static deserializeBinaryFromReader(message: StorageReadAllRequest, reader: jspb.BinaryReader): StorageReadAllRequest;
+}
+
+export namespace StorageReadAllRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 
@@ -138,6 +201,12 @@ export namespace StorageReadAllResponse {
 }
 
 export class StorageDeleteRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): StorageDeleteRequest;
+
     getKey(): string;
     setKey(value: string): StorageDeleteRequest;
 
@@ -154,11 +223,42 @@ export class StorageDeleteRequest extends jspb.Message {
 
 export namespace StorageDeleteRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         key: string,
     }
 }
 
+export class StorageDeleteAllRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): StorageDeleteAllRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): StorageDeleteAllRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: StorageDeleteAllRequest): StorageDeleteAllRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: StorageDeleteAllRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): StorageDeleteAllRequest;
+    static deserializeBinaryFromReader(message: StorageDeleteAllRequest, reader: jspb.BinaryReader): StorageDeleteAllRequest;
+}
+
+export namespace StorageDeleteAllRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+    }
+}
+
 export class StorageWriteRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): StorageWriteRequest;
+
     getKey(): string;
     setKey(value: string): StorageWriteRequest;
 
@@ -178,6 +278,7 @@ export class StorageWriteRequest extends jspb.Message {
 
 export namespace StorageWriteRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         key: string,
         value: string,
     }

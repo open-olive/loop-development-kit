@@ -8,6 +8,7 @@ import * as grpc from "@grpc/grpc-js";
 import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
 import * as loop_pb from "./loop_pb";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
 
 interface ILoopService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     loopStart: ILoopService_ILoopStart;

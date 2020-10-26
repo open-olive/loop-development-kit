@@ -3,6 +3,7 @@
 var grpc = require('@grpc/grpc-js');
 var clipboard_pb = require('./clipboard_pb.js');
 var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+var session_pb = require('./session_pb.js');
 function serialize_google_protobuf_Empty(arg) {
     if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
         throw new Error('Expected argument of type google.protobuf.Empty');
@@ -12,6 +13,15 @@ function serialize_google_protobuf_Empty(arg) {
 function deserialize_google_protobuf_Empty(buffer_arg) {
     return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
 }
+function serialize_proto_ClipboardReadRequest(arg) {
+    if (!(arg instanceof clipboard_pb.ClipboardReadRequest)) {
+        throw new Error('Expected argument of type proto.ClipboardReadRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_ClipboardReadRequest(buffer_arg) {
+    return clipboard_pb.ClipboardReadRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
 function serialize_proto_ClipboardReadResponse(arg) {
     if (!(arg instanceof clipboard_pb.ClipboardReadResponse)) {
         throw new Error('Expected argument of type proto.ClipboardReadResponse');
@@ -20,6 +30,15 @@ function serialize_proto_ClipboardReadResponse(arg) {
 }
 function deserialize_proto_ClipboardReadResponse(buffer_arg) {
     return clipboard_pb.ClipboardReadResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+function serialize_proto_ClipboardReadStreamRequest(arg) {
+    if (!(arg instanceof clipboard_pb.ClipboardReadStreamRequest)) {
+        throw new Error('Expected argument of type proto.ClipboardReadStreamRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_ClipboardReadStreamRequest(buffer_arg) {
+    return clipboard_pb.ClipboardReadStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 function serialize_proto_ClipboardReadStreamResponse(arg) {
     if (!(arg instanceof clipboard_pb.ClipboardReadStreamResponse)) {
@@ -45,10 +64,10 @@ var ClipboardService = exports.ClipboardService = {
         path: '/proto.Clipboard/ClipboardRead',
         requestStream: false,
         responseStream: false,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: clipboard_pb.ClipboardReadRequest,
         responseType: clipboard_pb.ClipboardReadResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_ClipboardReadRequest,
+        requestDeserialize: deserialize_proto_ClipboardReadRequest,
         responseSerialize: serialize_proto_ClipboardReadResponse,
         responseDeserialize: deserialize_proto_ClipboardReadResponse,
     },
@@ -57,10 +76,10 @@ var ClipboardService = exports.ClipboardService = {
         path: '/proto.Clipboard/ClipboardReadStream',
         requestStream: false,
         responseStream: true,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: clipboard_pb.ClipboardReadStreamRequest,
         responseType: clipboard_pb.ClipboardReadStreamResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_ClipboardReadStreamRequest,
+        requestDeserialize: deserialize_proto_ClipboardReadStreamRequest,
         responseSerialize: serialize_proto_ClipboardReadStreamResponse,
         responseDeserialize: deserialize_proto_ClipboardReadStreamResponse,
     },

@@ -15,6 +15,8 @@ var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb
 goog.object.extend(proto, google_protobuf_empty_pb);
 var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 goog.object.extend(proto, google_protobuf_timestamp_pb);
+var session_pb = require('./session_pb.js');
+goog.object.extend(proto, session_pb);
 goog.exportSymbol('proto.proto.WhisperConfirmRequest', null, global);
 goog.exportSymbol('proto.proto.WhisperConfirmResponse', null, global);
 goog.exportSymbol('proto.proto.WhisperFormInput', null, global);
@@ -1048,8 +1050,9 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.WhisperMarkdownRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
             meta: (f = msg.getMeta()) && proto.proto.WhisperMeta.toObject(includeInstance, f),
-            markdown: jspb.Message.getFieldWithDefault(msg, 2, "")
+            markdown: jspb.Message.getFieldWithDefault(msg, 3, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -1082,11 +1085,16 @@ proto.proto.WhisperMarkdownRequest.deserializeBinaryFromReader = function (msg, 
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = new proto.proto.WhisperMeta;
                 reader.readMessage(value, proto.proto.WhisperMeta.deserializeBinaryFromReader);
                 msg.setMeta(value);
                 break;
-            case 2:
+            case 3:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setMarkdown(value);
                 break;
@@ -1115,28 +1123,60 @@ proto.proto.WhisperMarkdownRequest.prototype.serializeBinary = function () {
  */
 proto.proto.WhisperMarkdownRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
+    }
     f = message.getMeta();
     if (f != null) {
-        writer.writeMessage(1, f, proto.proto.WhisperMeta.serializeBinaryToWriter);
+        writer.writeMessage(2, f, proto.proto.WhisperMeta.serializeBinaryToWriter);
     }
     f = message.getMarkdown();
     if (f.length > 0) {
-        writer.writeString(2, f);
+        writer.writeString(3, f);
     }
 };
 /**
- * optional WhisperMeta meta = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.WhisperMarkdownRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.WhisperMarkdownRequest} returns this
+*/
+proto.proto.WhisperMarkdownRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.WhisperMarkdownRequest} returns this
+ */
+proto.proto.WhisperMarkdownRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.WhisperMarkdownRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional WhisperMeta meta = 2;
  * @return {?proto.proto.WhisperMeta}
  */
 proto.proto.WhisperMarkdownRequest.prototype.getMeta = function () {
-    return /** @type{?proto.proto.WhisperMeta} */ (jspb.Message.getWrapperField(this, proto.proto.WhisperMeta, 1));
+    return /** @type{?proto.proto.WhisperMeta} */ (jspb.Message.getWrapperField(this, proto.proto.WhisperMeta, 2));
 };
 /**
  * @param {?proto.proto.WhisperMeta|undefined} value
  * @return {!proto.proto.WhisperMarkdownRequest} returns this
 */
 proto.proto.WhisperMarkdownRequest.prototype.setMeta = function (value) {
-    return jspb.Message.setWrapperField(this, 1, value);
+    return jspb.Message.setWrapperField(this, 2, value);
 };
 /**
  * Clears the message field making it undefined.
@@ -1150,21 +1190,21 @@ proto.proto.WhisperMarkdownRequest.prototype.clearMeta = function () {
  * @return {boolean}
  */
 proto.proto.WhisperMarkdownRequest.prototype.hasMeta = function () {
-    return jspb.Message.getField(this, 1) != null;
+    return jspb.Message.getField(this, 2) != null;
 };
 /**
- * optional string markdown = 2;
+ * optional string markdown = 3;
  * @return {string}
  */
 proto.proto.WhisperMarkdownRequest.prototype.getMarkdown = function () {
-    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.WhisperMarkdownRequest} returns this
  */
 proto.proto.WhisperMarkdownRequest.prototype.setMarkdown = function (value) {
-    return jspb.Message.setProto3StringField(this, 2, value);
+    return jspb.Message.setProto3StringField(this, 3, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -1193,10 +1233,11 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.WhisperConfirmRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
             meta: (f = msg.getMeta()) && proto.proto.WhisperMeta.toObject(includeInstance, f),
-            markdown: jspb.Message.getFieldWithDefault(msg, 2, ""),
-            rejectlabel: jspb.Message.getFieldWithDefault(msg, 3, ""),
-            resolvelabel: jspb.Message.getFieldWithDefault(msg, 4, "")
+            markdown: jspb.Message.getFieldWithDefault(msg, 3, ""),
+            rejectlabel: jspb.Message.getFieldWithDefault(msg, 4, ""),
+            resolvelabel: jspb.Message.getFieldWithDefault(msg, 5, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -1229,19 +1270,24 @@ proto.proto.WhisperConfirmRequest.deserializeBinaryFromReader = function (msg, r
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = new proto.proto.WhisperMeta;
                 reader.readMessage(value, proto.proto.WhisperMeta.deserializeBinaryFromReader);
                 msg.setMeta(value);
                 break;
-            case 2:
+            case 3:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setMarkdown(value);
                 break;
-            case 3:
+            case 4:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setRejectlabel(value);
                 break;
-            case 4:
+            case 5:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setResolvelabel(value);
                 break;
@@ -1270,36 +1316,68 @@ proto.proto.WhisperConfirmRequest.prototype.serializeBinary = function () {
  */
 proto.proto.WhisperConfirmRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
+    }
     f = message.getMeta();
     if (f != null) {
-        writer.writeMessage(1, f, proto.proto.WhisperMeta.serializeBinaryToWriter);
+        writer.writeMessage(2, f, proto.proto.WhisperMeta.serializeBinaryToWriter);
     }
     f = message.getMarkdown();
     if (f.length > 0) {
-        writer.writeString(2, f);
+        writer.writeString(3, f);
     }
     f = message.getRejectlabel();
     if (f.length > 0) {
-        writer.writeString(3, f);
+        writer.writeString(4, f);
     }
     f = message.getResolvelabel();
     if (f.length > 0) {
-        writer.writeString(4, f);
+        writer.writeString(5, f);
     }
 };
 /**
- * optional WhisperMeta meta = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.WhisperConfirmRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.WhisperConfirmRequest} returns this
+*/
+proto.proto.WhisperConfirmRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.WhisperConfirmRequest} returns this
+ */
+proto.proto.WhisperConfirmRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.WhisperConfirmRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional WhisperMeta meta = 2;
  * @return {?proto.proto.WhisperMeta}
  */
 proto.proto.WhisperConfirmRequest.prototype.getMeta = function () {
-    return /** @type{?proto.proto.WhisperMeta} */ (jspb.Message.getWrapperField(this, proto.proto.WhisperMeta, 1));
+    return /** @type{?proto.proto.WhisperMeta} */ (jspb.Message.getWrapperField(this, proto.proto.WhisperMeta, 2));
 };
 /**
  * @param {?proto.proto.WhisperMeta|undefined} value
  * @return {!proto.proto.WhisperConfirmRequest} returns this
 */
 proto.proto.WhisperConfirmRequest.prototype.setMeta = function (value) {
-    return jspb.Message.setWrapperField(this, 1, value);
+    return jspb.Message.setWrapperField(this, 2, value);
 };
 /**
  * Clears the message field making it undefined.
@@ -1313,49 +1391,49 @@ proto.proto.WhisperConfirmRequest.prototype.clearMeta = function () {
  * @return {boolean}
  */
 proto.proto.WhisperConfirmRequest.prototype.hasMeta = function () {
-    return jspb.Message.getField(this, 1) != null;
+    return jspb.Message.getField(this, 2) != null;
 };
 /**
- * optional string markdown = 2;
+ * optional string markdown = 3;
  * @return {string}
  */
 proto.proto.WhisperConfirmRequest.prototype.getMarkdown = function () {
-    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-/**
- * @param {string} value
- * @return {!proto.proto.WhisperConfirmRequest} returns this
- */
-proto.proto.WhisperConfirmRequest.prototype.setMarkdown = function (value) {
-    return jspb.Message.setProto3StringField(this, 2, value);
-};
-/**
- * optional string rejectLabel = 3;
- * @return {string}
- */
-proto.proto.WhisperConfirmRequest.prototype.getRejectlabel = function () {
     return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.WhisperConfirmRequest} returns this
  */
-proto.proto.WhisperConfirmRequest.prototype.setRejectlabel = function (value) {
+proto.proto.WhisperConfirmRequest.prototype.setMarkdown = function (value) {
     return jspb.Message.setProto3StringField(this, 3, value);
 };
 /**
- * optional string resolveLabel = 4;
+ * optional string rejectLabel = 4;
  * @return {string}
  */
-proto.proto.WhisperConfirmRequest.prototype.getResolvelabel = function () {
+proto.proto.WhisperConfirmRequest.prototype.getRejectlabel = function () {
     return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.WhisperConfirmRequest} returns this
  */
-proto.proto.WhisperConfirmRequest.prototype.setResolvelabel = function (value) {
+proto.proto.WhisperConfirmRequest.prototype.setRejectlabel = function (value) {
     return jspb.Message.setProto3StringField(this, 4, value);
+};
+/**
+ * optional string resolveLabel = 5;
+ * @return {string}
+ */
+proto.proto.WhisperConfirmRequest.prototype.getResolvelabel = function () {
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+/**
+ * @param {string} value
+ * @return {!proto.proto.WhisperConfirmRequest} returns this
+ */
+proto.proto.WhisperConfirmRequest.prototype.setResolvelabel = function (value) {
+    return jspb.Message.setProto3StringField(this, 5, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -1491,10 +1569,11 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.WhisperFormRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
             meta: (f = msg.getMeta()) && proto.proto.WhisperMeta.toObject(includeInstance, f),
-            markdown: jspb.Message.getFieldWithDefault(msg, 2, ""),
-            submitlabel: jspb.Message.getFieldWithDefault(msg, 3, ""),
-            cancellabel: jspb.Message.getFieldWithDefault(msg, 4, ""),
+            markdown: jspb.Message.getFieldWithDefault(msg, 3, ""),
+            submitlabel: jspb.Message.getFieldWithDefault(msg, 4, ""),
+            cancellabel: jspb.Message.getFieldWithDefault(msg, 5, ""),
             inputsMap: (f = msg.getInputsMap()) ? f.toObject(includeInstance, proto.proto.WhisperFormInput.toObject) : []
         };
         if (includeInstance) {
@@ -1528,23 +1607,28 @@ proto.proto.WhisperFormRequest.deserializeBinaryFromReader = function (msg, read
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = new proto.proto.WhisperMeta;
                 reader.readMessage(value, proto.proto.WhisperMeta.deserializeBinaryFromReader);
                 msg.setMeta(value);
                 break;
-            case 2:
+            case 3:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setMarkdown(value);
                 break;
-            case 3:
+            case 4:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setSubmitlabel(value);
                 break;
-            case 4:
+            case 5:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setCancellabel(value);
                 break;
-            case 5:
+            case 6:
                 var value = msg.getInputsMap();
                 reader.readMessage(value, function (message, reader) {
                     jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.proto.WhisperFormInput.deserializeBinaryFromReader, "", new proto.proto.WhisperFormInput());
@@ -1575,40 +1659,72 @@ proto.proto.WhisperFormRequest.prototype.serializeBinary = function () {
  */
 proto.proto.WhisperFormRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
+    }
     f = message.getMeta();
     if (f != null) {
-        writer.writeMessage(1, f, proto.proto.WhisperMeta.serializeBinaryToWriter);
+        writer.writeMessage(2, f, proto.proto.WhisperMeta.serializeBinaryToWriter);
     }
     f = message.getMarkdown();
     if (f.length > 0) {
-        writer.writeString(2, f);
+        writer.writeString(3, f);
     }
     f = message.getSubmitlabel();
     if (f.length > 0) {
-        writer.writeString(3, f);
+        writer.writeString(4, f);
     }
     f = message.getCancellabel();
     if (f.length > 0) {
-        writer.writeString(4, f);
+        writer.writeString(5, f);
     }
     f = message.getInputsMap(true);
     if (f && f.getLength() > 0) {
-        f.serializeBinary(5, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.proto.WhisperFormInput.serializeBinaryToWriter);
+        f.serializeBinary(6, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.proto.WhisperFormInput.serializeBinaryToWriter);
     }
 };
 /**
- * optional WhisperMeta meta = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.WhisperFormRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.WhisperFormRequest} returns this
+*/
+proto.proto.WhisperFormRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.WhisperFormRequest} returns this
+ */
+proto.proto.WhisperFormRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.WhisperFormRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional WhisperMeta meta = 2;
  * @return {?proto.proto.WhisperMeta}
  */
 proto.proto.WhisperFormRequest.prototype.getMeta = function () {
-    return /** @type{?proto.proto.WhisperMeta} */ (jspb.Message.getWrapperField(this, proto.proto.WhisperMeta, 1));
+    return /** @type{?proto.proto.WhisperMeta} */ (jspb.Message.getWrapperField(this, proto.proto.WhisperMeta, 2));
 };
 /**
  * @param {?proto.proto.WhisperMeta|undefined} value
  * @return {!proto.proto.WhisperFormRequest} returns this
 */
 proto.proto.WhisperFormRequest.prototype.setMeta = function (value) {
-    return jspb.Message.setWrapperField(this, 1, value);
+    return jspb.Message.setWrapperField(this, 2, value);
 };
 /**
  * Clears the message field making it undefined.
@@ -1622,58 +1738,58 @@ proto.proto.WhisperFormRequest.prototype.clearMeta = function () {
  * @return {boolean}
  */
 proto.proto.WhisperFormRequest.prototype.hasMeta = function () {
-    return jspb.Message.getField(this, 1) != null;
+    return jspb.Message.getField(this, 2) != null;
 };
 /**
- * optional string markdown = 2;
+ * optional string markdown = 3;
  * @return {string}
  */
 proto.proto.WhisperFormRequest.prototype.getMarkdown = function () {
-    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-/**
- * @param {string} value
- * @return {!proto.proto.WhisperFormRequest} returns this
- */
-proto.proto.WhisperFormRequest.prototype.setMarkdown = function (value) {
-    return jspb.Message.setProto3StringField(this, 2, value);
-};
-/**
- * optional string submitLabel = 3;
- * @return {string}
- */
-proto.proto.WhisperFormRequest.prototype.getSubmitlabel = function () {
     return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.WhisperFormRequest} returns this
  */
-proto.proto.WhisperFormRequest.prototype.setSubmitlabel = function (value) {
+proto.proto.WhisperFormRequest.prototype.setMarkdown = function (value) {
     return jspb.Message.setProto3StringField(this, 3, value);
 };
 /**
- * optional string cancelLabel = 4;
+ * optional string submitLabel = 4;
  * @return {string}
  */
-proto.proto.WhisperFormRequest.prototype.getCancellabel = function () {
+proto.proto.WhisperFormRequest.prototype.getSubmitlabel = function () {
     return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.WhisperFormRequest} returns this
  */
-proto.proto.WhisperFormRequest.prototype.setCancellabel = function (value) {
+proto.proto.WhisperFormRequest.prototype.setSubmitlabel = function (value) {
     return jspb.Message.setProto3StringField(this, 4, value);
 };
 /**
- * map<string, WhisperFormInput> inputs = 5;
+ * optional string cancelLabel = 5;
+ * @return {string}
+ */
+proto.proto.WhisperFormRequest.prototype.getCancellabel = function () {
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+/**
+ * @param {string} value
+ * @return {!proto.proto.WhisperFormRequest} returns this
+ */
+proto.proto.WhisperFormRequest.prototype.setCancellabel = function (value) {
+    return jspb.Message.setProto3StringField(this, 5, value);
+};
+/**
+ * map<string, WhisperFormInput> inputs = 6;
  * @param {boolean=} opt_noLazyCreate Do not create the map if
  * empty, instead returning `undefined`
  * @return {!jspb.Map<string,!proto.proto.WhisperFormInput>}
  */
 proto.proto.WhisperFormRequest.prototype.getInputsMap = function (opt_noLazyCreate) {
-    return /** @type {!jspb.Map<string,!proto.proto.WhisperFormInput>} */ (jspb.Message.getMapField(this, 5, opt_noLazyCreate, proto.proto.WhisperFormInput));
+    return /** @type {!jspb.Map<string,!proto.proto.WhisperFormInput>} */ (jspb.Message.getMapField(this, 6, opt_noLazyCreate, proto.proto.WhisperFormInput));
 };
 /**
  * Clears values from the map. The map will be non-null.

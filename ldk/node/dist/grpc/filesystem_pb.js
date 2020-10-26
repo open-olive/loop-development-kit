@@ -13,6 +13,8 @@ var goog = jspb;
 var global = Function('return this')();
 var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 goog.object.extend(proto, google_protobuf_timestamp_pb);
+var session_pb = require('./session_pb.js');
+goog.object.extend(proto, session_pb);
 goog.exportSymbol('proto.proto.FileAction', null, global);
 goog.exportSymbol('proto.proto.FileInfo', null, global);
 goog.exportSymbol('proto.proto.FilesystemDirRequest', null, global);
@@ -453,7 +455,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.FilesystemDirRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
-            directory: jspb.Message.getFieldWithDefault(msg, 1, "")
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
+            directory: jspb.Message.getFieldWithDefault(msg, 2, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -486,6 +489,11 @@ proto.proto.FilesystemDirRequest.deserializeBinaryFromReader = function (msg, re
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setDirectory(value);
                 break;
@@ -514,24 +522,56 @@ proto.proto.FilesystemDirRequest.prototype.serializeBinary = function () {
  */
 proto.proto.FilesystemDirRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
+    }
     f = message.getDirectory();
     if (f.length > 0) {
-        writer.writeString(1, f);
+        writer.writeString(2, f);
     }
 };
 /**
- * optional string directory = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.FilesystemDirRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.FilesystemDirRequest} returns this
+*/
+proto.proto.FilesystemDirRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.FilesystemDirRequest} returns this
+ */
+proto.proto.FilesystemDirRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.FilesystemDirRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional string directory = 2;
  * @return {string}
  */
 proto.proto.FilesystemDirRequest.prototype.getDirectory = function () {
-    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.FilesystemDirRequest} returns this
  */
 proto.proto.FilesystemDirRequest.prototype.setDirectory = function (value) {
-    return jspb.Message.setProto3StringField(this, 1, value);
+    return jspb.Message.setProto3StringField(this, 2, value);
 };
 /**
  * List of repeated fields within this message type.
@@ -689,7 +729,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.FilesystemDirStreamRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
-            directory: jspb.Message.getFieldWithDefault(msg, 1, "")
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
+            directory: jspb.Message.getFieldWithDefault(msg, 2, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -722,6 +763,11 @@ proto.proto.FilesystemDirStreamRequest.deserializeBinaryFromReader = function (m
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setDirectory(value);
                 break;
@@ -750,24 +796,56 @@ proto.proto.FilesystemDirStreamRequest.prototype.serializeBinary = function () {
  */
 proto.proto.FilesystemDirStreamRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
+    }
     f = message.getDirectory();
     if (f.length > 0) {
-        writer.writeString(1, f);
+        writer.writeString(2, f);
     }
 };
 /**
- * optional string directory = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.FilesystemDirStreamRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.FilesystemDirStreamRequest} returns this
+*/
+proto.proto.FilesystemDirStreamRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.FilesystemDirStreamRequest} returns this
+ */
+proto.proto.FilesystemDirStreamRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.FilesystemDirStreamRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional string directory = 2;
  * @return {string}
  */
 proto.proto.FilesystemDirStreamRequest.prototype.getDirectory = function () {
-    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.FilesystemDirStreamRequest} returns this
  */
 proto.proto.FilesystemDirStreamRequest.prototype.setDirectory = function (value) {
-    return jspb.Message.setProto3StringField(this, 1, value);
+    return jspb.Message.setProto3StringField(this, 2, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -964,7 +1042,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.FilesystemFileRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
-            path: jspb.Message.getFieldWithDefault(msg, 1, "")
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
+            path: jspb.Message.getFieldWithDefault(msg, 2, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -997,6 +1076,11 @@ proto.proto.FilesystemFileRequest.deserializeBinaryFromReader = function (msg, r
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setPath(value);
                 break;
@@ -1025,24 +1109,56 @@ proto.proto.FilesystemFileRequest.prototype.serializeBinary = function () {
  */
 proto.proto.FilesystemFileRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
+    }
     f = message.getPath();
     if (f.length > 0) {
-        writer.writeString(1, f);
+        writer.writeString(2, f);
     }
 };
 /**
- * optional string path = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.FilesystemFileRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.FilesystemFileRequest} returns this
+*/
+proto.proto.FilesystemFileRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.FilesystemFileRequest} returns this
+ */
+proto.proto.FilesystemFileRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.FilesystemFileRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional string path = 2;
  * @return {string}
  */
 proto.proto.FilesystemFileRequest.prototype.getPath = function () {
-    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.FilesystemFileRequest} returns this
  */
 proto.proto.FilesystemFileRequest.prototype.setPath = function (value) {
-    return jspb.Message.setProto3StringField(this, 1, value);
+    return jspb.Message.setProto3StringField(this, 2, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -1193,7 +1309,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.FilesystemFileStreamRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
-            path: jspb.Message.getFieldWithDefault(msg, 1, "")
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
+            path: jspb.Message.getFieldWithDefault(msg, 2, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -1226,6 +1343,11 @@ proto.proto.FilesystemFileStreamRequest.deserializeBinaryFromReader = function (
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = /** @type {string} */ (reader.readString());
                 msg.setPath(value);
                 break;
@@ -1254,24 +1376,56 @@ proto.proto.FilesystemFileStreamRequest.prototype.serializeBinary = function () 
  */
 proto.proto.FilesystemFileStreamRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
+    }
     f = message.getPath();
     if (f.length > 0) {
-        writer.writeString(1, f);
+        writer.writeString(2, f);
     }
 };
 /**
- * optional string path = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.FilesystemFileStreamRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.FilesystemFileStreamRequest} returns this
+*/
+proto.proto.FilesystemFileStreamRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.FilesystemFileStreamRequest} returns this
+ */
+proto.proto.FilesystemFileStreamRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.FilesystemFileStreamRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional string path = 2;
  * @return {string}
  */
 proto.proto.FilesystemFileStreamRequest.prototype.getPath = function () {
-    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 /**
  * @param {string} value
  * @return {!proto.proto.FilesystemFileStreamRequest} returns this
  */
 proto.proto.FilesystemFileStreamRequest.prototype.setPath = function (value) {
-    return jspb.Message.setProto3StringField(this, 1, value);
+    return jspb.Message.setProto3StringField(this, 2, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**

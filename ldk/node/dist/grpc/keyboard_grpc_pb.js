@@ -2,15 +2,15 @@
 'use strict';
 var grpc = require('@grpc/grpc-js');
 var keyboard_pb = require('./keyboard_pb.js');
-var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
-function serialize_google_protobuf_Empty(arg) {
-    if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
-        throw new Error('Expected argument of type google.protobuf.Empty');
+var session_pb = require('./session_pb.js');
+function serialize_proto_KeyboardCharacterStreamRequest(arg) {
+    if (!(arg instanceof keyboard_pb.KeyboardCharacterStreamRequest)) {
+        throw new Error('Expected argument of type proto.KeyboardCharacterStreamRequest');
     }
     return Buffer.from(arg.serializeBinary());
 }
-function deserialize_google_protobuf_Empty(buffer_arg) {
-    return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_KeyboardCharacterStreamRequest(buffer_arg) {
+    return keyboard_pb.KeyboardCharacterStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 function serialize_proto_KeyboardCharacterStreamResponse(arg) {
     if (!(arg instanceof keyboard_pb.KeyboardCharacterStreamResponse)) {
@@ -39,6 +39,15 @@ function serialize_proto_KeyboardHotkeyStreamResponse(arg) {
 function deserialize_proto_KeyboardHotkeyStreamResponse(buffer_arg) {
     return keyboard_pb.KeyboardHotkeyStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
+function serialize_proto_KeyboardScancodeStreamRequest(arg) {
+    if (!(arg instanceof keyboard_pb.KeyboardScancodeStreamRequest)) {
+        throw new Error('Expected argument of type proto.KeyboardScancodeStreamRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_KeyboardScancodeStreamRequest(buffer_arg) {
+    return keyboard_pb.KeyboardScancodeStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
 function serialize_proto_KeyboardScancodeStreamResponse(arg) {
     if (!(arg instanceof keyboard_pb.KeyboardScancodeStreamResponse)) {
         throw new Error('Expected argument of type proto.KeyboardScancodeStreamResponse');
@@ -47,6 +56,15 @@ function serialize_proto_KeyboardScancodeStreamResponse(arg) {
 }
 function deserialize_proto_KeyboardScancodeStreamResponse(buffer_arg) {
     return keyboard_pb.KeyboardScancodeStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+function serialize_proto_KeyboardTextStreamRequest(arg) {
+    if (!(arg instanceof keyboard_pb.KeyboardTextStreamRequest)) {
+        throw new Error('Expected argument of type proto.KeyboardTextStreamRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_KeyboardTextStreamRequest(buffer_arg) {
+    return keyboard_pb.KeyboardTextStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 function serialize_proto_KeyboardTextStreamResponse(arg) {
     if (!(arg instanceof keyboard_pb.KeyboardTextStreamResponse)) {
@@ -75,10 +93,10 @@ var KeyboardService = exports.KeyboardService = {
         path: '/proto.Keyboard/KeyboardScancodeStream',
         requestStream: false,
         responseStream: true,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: keyboard_pb.KeyboardScancodeStreamRequest,
         responseType: keyboard_pb.KeyboardScancodeStreamResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_KeyboardScancodeStreamRequest,
+        requestDeserialize: deserialize_proto_KeyboardScancodeStreamRequest,
         responseSerialize: serialize_proto_KeyboardScancodeStreamResponse,
         responseDeserialize: deserialize_proto_KeyboardScancodeStreamResponse,
     },
@@ -87,10 +105,10 @@ var KeyboardService = exports.KeyboardService = {
         path: '/proto.Keyboard/KeyboardTextStream',
         requestStream: false,
         responseStream: true,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: keyboard_pb.KeyboardTextStreamRequest,
         responseType: keyboard_pb.KeyboardTextStreamResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_KeyboardTextStreamRequest,
+        requestDeserialize: deserialize_proto_KeyboardTextStreamRequest,
         responseSerialize: serialize_proto_KeyboardTextStreamResponse,
         responseDeserialize: deserialize_proto_KeyboardTextStreamResponse,
     },
@@ -99,10 +117,10 @@ var KeyboardService = exports.KeyboardService = {
         path: '/proto.Keyboard/KeyboardCharacterStream',
         requestStream: false,
         responseStream: true,
-        requestType: google_protobuf_empty_pb.Empty,
+        requestType: keyboard_pb.KeyboardCharacterStreamRequest,
         responseType: keyboard_pb.KeyboardCharacterStreamResponse,
-        requestSerialize: serialize_google_protobuf_Empty,
-        requestDeserialize: deserialize_google_protobuf_Empty,
+        requestSerialize: serialize_proto_KeyboardCharacterStreamRequest,
+        requestDeserialize: deserialize_proto_KeyboardCharacterStreamRequest,
         responseSerialize: serialize_proto_KeyboardCharacterStreamResponse,
         responseDeserialize: deserialize_proto_KeyboardCharacterStreamResponse,
     },

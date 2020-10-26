@@ -5,7 +5,7 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
-import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
 
 export class KeyboardHotkey extends jspb.Message { 
     getKey(): string;
@@ -34,6 +34,12 @@ export namespace KeyboardHotkey {
 
 export class KeyboardHotkeyStreamRequest extends jspb.Message { 
 
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): KeyboardHotkeyStreamRequest;
+
+
     hasHotkey(): boolean;
     clearHotkey(): void;
     getHotkey(): KeyboardHotkey | undefined;
@@ -52,6 +58,7 @@ export class KeyboardHotkeyStreamRequest extends jspb.Message {
 
 export namespace KeyboardHotkeyStreamRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         hotkey?: KeyboardHotkey.AsObject,
     }
 }
@@ -78,6 +85,30 @@ export namespace KeyboardHotkeyStreamResponse {
     export type AsObject = {
         scanned: boolean,
         error: string,
+    }
+}
+
+export class KeyboardScancodeStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): KeyboardScancodeStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): KeyboardScancodeStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: KeyboardScancodeStreamRequest): KeyboardScancodeStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: KeyboardScancodeStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): KeyboardScancodeStreamRequest;
+    static deserializeBinaryFromReader(message: KeyboardScancodeStreamRequest, reader: jspb.BinaryReader): KeyboardScancodeStreamRequest;
+}
+
+export namespace KeyboardScancodeStreamRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 
@@ -110,6 +141,30 @@ export namespace KeyboardScancodeStreamResponse {
     }
 }
 
+export class KeyboardTextStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): KeyboardTextStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): KeyboardTextStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: KeyboardTextStreamRequest): KeyboardTextStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: KeyboardTextStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): KeyboardTextStreamRequest;
+    static deserializeBinaryFromReader(message: KeyboardTextStreamRequest, reader: jspb.BinaryReader): KeyboardTextStreamRequest;
+}
+
+export namespace KeyboardTextStreamRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+    }
+}
+
 export class KeyboardTextStreamResponse extends jspb.Message { 
     getText(): string;
     setText(value: string): KeyboardTextStreamResponse;
@@ -132,6 +187,30 @@ export namespace KeyboardTextStreamResponse {
     export type AsObject = {
         text: string,
         error: string,
+    }
+}
+
+export class KeyboardCharacterStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): KeyboardCharacterStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): KeyboardCharacterStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: KeyboardCharacterStreamRequest): KeyboardCharacterStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: KeyboardCharacterStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): KeyboardCharacterStreamRequest;
+    static deserializeBinaryFromReader(message: KeyboardCharacterStreamRequest, reader: jspb.BinaryReader): KeyboardCharacterStreamRequest;
+}
+
+export namespace KeyboardCharacterStreamRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 

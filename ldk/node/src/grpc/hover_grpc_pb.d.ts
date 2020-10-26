@@ -7,6 +7,7 @@
 import * as grpc from "@grpc/grpc-js";
 import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
 import * as hover_pb from "./hover_pb";
+import * as session_pb from "./session_pb";
 
 interface IHoverService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     hoverRead: IHoverService_IHoverRead;

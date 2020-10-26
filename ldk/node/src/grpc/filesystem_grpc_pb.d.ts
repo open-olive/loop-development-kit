@@ -8,6 +8,7 @@ import * as grpc from "@grpc/grpc-js";
 import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
 import * as filesystem_pb from "./filesystem_pb";
 import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as session_pb from "./session_pb";
 
 interface IFilesystemService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     filesystemDir: IFilesystemService_IFilesystemDir;

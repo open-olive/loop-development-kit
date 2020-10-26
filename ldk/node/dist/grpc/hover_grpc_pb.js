@@ -2,6 +2,7 @@
 'use strict';
 var grpc = require('@grpc/grpc-js');
 var hover_pb = require('./hover_pb.js');
+var session_pb = require('./session_pb.js');
 function serialize_proto_HoverReadRequest(arg) {
     if (!(arg instanceof hover_pb.HoverReadRequest)) {
         throw new Error('Expected argument of type proto.HoverReadRequest');

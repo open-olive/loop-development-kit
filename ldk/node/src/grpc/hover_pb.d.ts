@@ -5,8 +5,15 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
+import * as session_pb from "./session_pb";
 
 export class HoverReadRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): HoverReadRequest;
+
     getXfromcenter(): number;
     setXfromcenter(value: number): HoverReadRequest;
 
@@ -26,12 +33,19 @@ export class HoverReadRequest extends jspb.Message {
 
 export namespace HoverReadRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         xfromcenter: number,
         yfromcenter: number,
     }
 }
 
 export class HoverReadStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): HoverReadStreamRequest;
+
     getXfromcenter(): number;
     setXfromcenter(value: number): HoverReadStreamRequest;
 
@@ -51,6 +65,7 @@ export class HoverReadStreamRequest extends jspb.Message {
 
 export namespace HoverReadStreamRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         xfromcenter: number,
         yfromcenter: number,
     }

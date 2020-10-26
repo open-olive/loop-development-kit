@@ -6,6 +6,31 @@
 
 import * as jspb from "google-protobuf";
 import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
+
+export class ClipboardReadRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): ClipboardReadRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ClipboardReadRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: ClipboardReadRequest): ClipboardReadRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ClipboardReadRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ClipboardReadRequest;
+    static deserializeBinaryFromReader(message: ClipboardReadRequest, reader: jspb.BinaryReader): ClipboardReadRequest;
+}
+
+export namespace ClipboardReadRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+    }
+}
 
 export class ClipboardReadResponse extends jspb.Message { 
     getText(): string;
@@ -25,6 +50,30 @@ export class ClipboardReadResponse extends jspb.Message {
 export namespace ClipboardReadResponse {
     export type AsObject = {
         text: string,
+    }
+}
+
+export class ClipboardReadStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): ClipboardReadStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ClipboardReadStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: ClipboardReadStreamRequest): ClipboardReadStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ClipboardReadStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ClipboardReadStreamRequest;
+    static deserializeBinaryFromReader(message: ClipboardReadStreamRequest, reader: jspb.BinaryReader): ClipboardReadStreamRequest;
+}
+
+export namespace ClipboardReadStreamRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 
@@ -54,6 +103,12 @@ export namespace ClipboardReadStreamResponse {
 }
 
 export class ClipboardWriteRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): ClipboardWriteRequest;
+
     getText(): string;
     setText(value: string): ClipboardWriteRequest;
 
@@ -70,6 +125,7 @@ export class ClipboardWriteRequest extends jspb.Message {
 
 export namespace ClipboardWriteRequest {
     export type AsObject = {
+        session?: session_pb.Session.AsObject,
         text: string,
     }
 }

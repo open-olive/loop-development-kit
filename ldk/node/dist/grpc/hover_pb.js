@@ -11,6 +11,8 @@
 var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
+var session_pb = require('./session_pb.js');
+goog.object.extend(proto, session_pb);
 goog.exportSymbol('proto.proto.HoverReadRequest', null, global);
 goog.exportSymbol('proto.proto.HoverReadResponse', null, global);
 goog.exportSymbol('proto.proto.HoverReadStreamRequest', null, global);
@@ -126,8 +128,9 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.HoverReadRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
-            xfromcenter: jspb.Message.getFieldWithDefault(msg, 1, 0),
-            yfromcenter: jspb.Message.getFieldWithDefault(msg, 2, 0)
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
+            xfromcenter: jspb.Message.getFieldWithDefault(msg, 2, 0),
+            yfromcenter: jspb.Message.getFieldWithDefault(msg, 3, 0)
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -160,10 +163,15 @@ proto.proto.HoverReadRequest.deserializeBinaryFromReader = function (msg, reader
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = /** @type {number} */ (reader.readUint32());
                 msg.setXfromcenter(value);
                 break;
-            case 2:
+            case 3:
                 var value = /** @type {number} */ (reader.readUint32());
                 msg.setYfromcenter(value);
                 break;
@@ -192,42 +200,74 @@ proto.proto.HoverReadRequest.prototype.serializeBinary = function () {
  */
 proto.proto.HoverReadRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
-    f = message.getXfromcenter();
-    if (f !== 0) {
-        writer.writeUint32(1, f);
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
     }
-    f = message.getYfromcenter();
+    f = message.getXfromcenter();
     if (f !== 0) {
         writer.writeUint32(2, f);
     }
+    f = message.getYfromcenter();
+    if (f !== 0) {
+        writer.writeUint32(3, f);
+    }
 };
 /**
- * optional uint32 xFromCenter = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.HoverReadRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.HoverReadRequest} returns this
+*/
+proto.proto.HoverReadRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.HoverReadRequest} returns this
+ */
+proto.proto.HoverReadRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.HoverReadRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional uint32 xFromCenter = 2;
  * @return {number}
  */
 proto.proto.HoverReadRequest.prototype.getXfromcenter = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.HoverReadRequest} returns this
- */
-proto.proto.HoverReadRequest.prototype.setXfromcenter = function (value) {
-    return jspb.Message.setProto3IntField(this, 1, value);
-};
-/**
- * optional uint32 yFromCenter = 2;
- * @return {number}
- */
-proto.proto.HoverReadRequest.prototype.getYfromcenter = function () {
     return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 /**
  * @param {number} value
  * @return {!proto.proto.HoverReadRequest} returns this
  */
-proto.proto.HoverReadRequest.prototype.setYfromcenter = function (value) {
+proto.proto.HoverReadRequest.prototype.setXfromcenter = function (value) {
     return jspb.Message.setProto3IntField(this, 2, value);
+};
+/**
+ * optional uint32 yFromCenter = 3;
+ * @return {number}
+ */
+proto.proto.HoverReadRequest.prototype.getYfromcenter = function () {
+    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+/**
+ * @param {number} value
+ * @return {!proto.proto.HoverReadRequest} returns this
+ */
+proto.proto.HoverReadRequest.prototype.setYfromcenter = function (value) {
+    return jspb.Message.setProto3IntField(this, 3, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -256,8 +296,9 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.HoverReadStreamRequest.toObject = function (includeInstance, msg) {
         var f, obj = {
-            xfromcenter: jspb.Message.getFieldWithDefault(msg, 1, 0),
-            yfromcenter: jspb.Message.getFieldWithDefault(msg, 2, 0)
+            session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
+            xfromcenter: jspb.Message.getFieldWithDefault(msg, 2, 0),
+            yfromcenter: jspb.Message.getFieldWithDefault(msg, 3, 0)
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -290,10 +331,15 @@ proto.proto.HoverReadStreamRequest.deserializeBinaryFromReader = function (msg, 
         var field = reader.getFieldNumber();
         switch (field) {
             case 1:
+                var value = new session_pb.Session;
+                reader.readMessage(value, session_pb.Session.deserializeBinaryFromReader);
+                msg.setSession(value);
+                break;
+            case 2:
                 var value = /** @type {number} */ (reader.readUint32());
                 msg.setXfromcenter(value);
                 break;
-            case 2:
+            case 3:
                 var value = /** @type {number} */ (reader.readUint32());
                 msg.setYfromcenter(value);
                 break;
@@ -322,42 +368,74 @@ proto.proto.HoverReadStreamRequest.prototype.serializeBinary = function () {
  */
 proto.proto.HoverReadStreamRequest.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
-    f = message.getXfromcenter();
-    if (f !== 0) {
-        writer.writeUint32(1, f);
+    f = message.getSession();
+    if (f != null) {
+        writer.writeMessage(1, f, session_pb.Session.serializeBinaryToWriter);
     }
-    f = message.getYfromcenter();
+    f = message.getXfromcenter();
     if (f !== 0) {
         writer.writeUint32(2, f);
     }
+    f = message.getYfromcenter();
+    if (f !== 0) {
+        writer.writeUint32(3, f);
+    }
 };
 /**
- * optional uint32 xFromCenter = 1;
+ * optional Session session = 1;
+ * @return {?proto.proto.Session}
+ */
+proto.proto.HoverReadStreamRequest.prototype.getSession = function () {
+    return /** @type{?proto.proto.Session} */ (jspb.Message.getWrapperField(this, session_pb.Session, 1));
+};
+/**
+ * @param {?proto.proto.Session|undefined} value
+ * @return {!proto.proto.HoverReadStreamRequest} returns this
+*/
+proto.proto.HoverReadStreamRequest.prototype.setSession = function (value) {
+    return jspb.Message.setWrapperField(this, 1, value);
+};
+/**
+ * Clears the message field making it undefined.
+ * @return {!proto.proto.HoverReadStreamRequest} returns this
+ */
+proto.proto.HoverReadStreamRequest.prototype.clearSession = function () {
+    return this.setSession(undefined);
+};
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.proto.HoverReadStreamRequest.prototype.hasSession = function () {
+    return jspb.Message.getField(this, 1) != null;
+};
+/**
+ * optional uint32 xFromCenter = 2;
  * @return {number}
  */
 proto.proto.HoverReadStreamRequest.prototype.getXfromcenter = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.HoverReadStreamRequest} returns this
- */
-proto.proto.HoverReadStreamRequest.prototype.setXfromcenter = function (value) {
-    return jspb.Message.setProto3IntField(this, 1, value);
-};
-/**
- * optional uint32 yFromCenter = 2;
- * @return {number}
- */
-proto.proto.HoverReadStreamRequest.prototype.getYfromcenter = function () {
     return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 /**
  * @param {number} value
  * @return {!proto.proto.HoverReadStreamRequest} returns this
  */
-proto.proto.HoverReadStreamRequest.prototype.setYfromcenter = function (value) {
+proto.proto.HoverReadStreamRequest.prototype.setXfromcenter = function (value) {
     return jspb.Message.setProto3IntField(this, 2, value);
+};
+/**
+ * optional uint32 yFromCenter = 3;
+ * @return {number}
+ */
+proto.proto.HoverReadStreamRequest.prototype.getYfromcenter = function () {
+    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+/**
+ * @param {number} value
+ * @return {!proto.proto.HoverReadStreamRequest} returns this
+ */
+proto.proto.HoverReadStreamRequest.prototype.setYfromcenter = function (value) {
+    return jspb.Message.setProto3IntField(this, 3, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**

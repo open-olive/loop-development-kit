@@ -5,7 +5,7 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
-import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
 
 export class ProcessInfo extends jspb.Message { 
     getPid(): number;
@@ -33,6 +33,30 @@ export namespace ProcessInfo {
         pid: number,
         command: string,
         arguments: string,
+    }
+}
+
+export class ProcessStateStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): ProcessStateStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ProcessStateStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: ProcessStateStreamRequest): ProcessStateStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ProcessStateStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ProcessStateStreamRequest;
+    static deserializeBinaryFromReader(message: ProcessStateStreamRequest, reader: jspb.BinaryReader): ProcessStateStreamRequest;
+}
+
+export namespace ProcessStateStreamRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 
@@ -65,6 +89,30 @@ export namespace ProcessStateStreamResponse {
         process?: ProcessInfo.AsObject,
         action: ProcessAction,
         error: string,
+    }
+}
+
+export class ProcessStateRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): ProcessStateRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): ProcessStateRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: ProcessStateRequest): ProcessStateRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: ProcessStateRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): ProcessStateRequest;
+    static deserializeBinaryFromReader(message: ProcessStateRequest, reader: jspb.BinaryReader): ProcessStateRequest;
+}
+
+export namespace ProcessStateRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 

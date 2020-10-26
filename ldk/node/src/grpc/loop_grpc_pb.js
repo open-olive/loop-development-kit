@@ -4,6 +4,7 @@
 var grpc = require('@grpc/grpc-js');
 var loop_pb = require('./loop_pb.js');
 var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+var session_pb = require('./session_pb.js');
 
 function serialize_google_protobuf_Empty(arg) {
   if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
