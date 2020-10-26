@@ -1,4 +1,4 @@
-name: golangci-lint
+name: Go Lint
 
 defaults:
   run:
@@ -6,10 +6,6 @@ defaults:
 
 on:
   push:
-    tags:
-      - v*
-    branches:
-      - master
   pull_request:
 jobs:
   golangci:

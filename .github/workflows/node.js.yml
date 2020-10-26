@@ -11,9 +11,11 @@ defaults:
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - v*
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
 
 jobs:
   build:
