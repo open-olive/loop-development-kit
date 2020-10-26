@@ -3,6 +3,7 @@ package proto;
 option go_package = ".;proto";
 
 import "google/protobuf/empty.proto";
+import "session.proto";
 
 service Loop {
     // start the loop
@@ -12,7 +13,7 @@ service Loop {
     rpc LoopStop(google.protobuf.Empty) returns (google.protobuf.Empty);
 }
 
-message LoopStartRequest {
+message serviceHosts {
     uint32 hostWhisper    = 1;
     uint32 hostStorage    = 2;
     uint32 hostClipboard  = 3;
@@ -22,5 +23,10 @@ message LoopStartRequest {
     uint32 hostFilesystem = 7;
     uint32 hostHover      = 8;
     uint32 hostWindow     = 9;
-    uint32 hostCursor     = 10;
+    uint32 hostCursor     = 10;  
+}
+
+message LoopStartRequest {
+    Session session = 1;
+    serviceHosts serviceHosts = 2;
 }

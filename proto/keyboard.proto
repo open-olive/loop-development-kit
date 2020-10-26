@@ -2,20 +2,20 @@ syntax = "proto3";
 package proto;
 option go_package = ".;proto";
 
-import "google/protobuf/empty.proto";
+import "session.proto";
 
 service Keyboard {
     // register a hotkey and receive streamed messages when it is pressed
     rpc KeyboardHotkeyStream (KeyboardHotkeyStreamRequest) returns (stream KeyboardHotkeyStreamResponse);
 
     // stream each scancode as it is pressed
-    rpc KeyboardScancodeStream (google.protobuf.Empty) returns (stream KeyboardScancodeStreamResponse);
+    rpc KeyboardScancodeStream (KeyboardScancodeStreamRequest) returns (stream KeyboardScancodeStreamResponse);
 
     // stream chunks of text when the user finishes typing them
-    rpc KeyboardTextStream (google.protobuf.Empty) returns (stream KeyboardTextStreamResponse);
+    rpc KeyboardTextStream (KeyboardTextStreamRequest) returns (stream KeyboardTextStreamResponse);
 
     // stream text as it is typed
-    rpc KeyboardCharacterStream (google.protobuf.Empty) returns (stream KeyboardCharacterStreamResponse);
+    rpc KeyboardCharacterStream (KeyboardCharacterStreamRequest) returns (stream KeyboardCharacterStreamResponse);
 }
 
 message KeyboardHotkey {
@@ -37,12 +37,17 @@ message KeyboardHotkey {
 }
 
 message KeyboardHotkeyStreamRequest {
-    KeyboardHotkey hotkey = 1;
+    Session session = 1;
+    KeyboardHotkey hotkey = 2;
 }
 
 message KeyboardHotkeyStreamResponse {
     bool scanned = 1;
     string error = 15;
+}
+
+message KeyboardScancodeStreamRequest {
+    Session session = 1;
 }
 
 message KeyboardScancodeStreamResponse {
@@ -51,9 +56,17 @@ message KeyboardScancodeStreamResponse {
     string error = 15;
 }
 
+message KeyboardTextStreamRequest {
+    Session session = 1;
+}
+
 message KeyboardTextStreamResponse {
     string text = 1;
     string error = 15;
+}
+
+message KeyboardCharacterStreamRequest {
+    Session session = 1;
 }
 
 message KeyboardCharacterStreamResponse {

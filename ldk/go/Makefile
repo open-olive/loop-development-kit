@@ -2,7 +2,7 @@ GOPATH := $(shell go env GOPATH)
 
 proto/ldk.pb.go:
 	GO111MODULE=off go get -u github.com/golang/protobuf/protoc-gen-go
-	protoc -I shared/proto/ shared/proto/*.proto --go_out=plugins=grpc:proto/
+	protoc -I ../../proto/ ../../proto/*.proto --go_out=plugins=grpc:proto/
 
 quality: proto/ldk.pb.go $(shell find . -name "*.go")
 	@ echo "Running Go Vet"
@@ -20,7 +20,7 @@ quality: proto/ldk.pb.go $(shell find . -name "*.go")
 
 proto:
 	GO111MODULE=off go get -u github.com/golang/protobuf/protoc-gen-go
-	protoc -I shared/proto/ shared/proto/*.proto -I $(GOPATH)/src --go_out=plugins=grpc:proto/
+	protoc -I ../../proto/ ../../proto/*.proto -I $(GOPATH)/src --go_out=plugins=grpc:proto/
 
 test:
 	go test -v ./...

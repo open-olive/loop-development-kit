@@ -4,6 +4,7 @@ option go_package = ".;proto";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "session.proto";
 
 service Whisper {
     // Send a markdown whisper
@@ -29,15 +30,17 @@ message WhisperMeta {
 }
 
 message WhisperMarkdownRequest {
-    WhisperMeta meta = 1;
-    string markdown = 2;
+    Session session = 1;
+    WhisperMeta meta = 2;
+    string markdown = 3;
 }
 
 message WhisperConfirmRequest {
-    WhisperMeta meta = 1;
-    string markdown = 2;
-    string rejectLabel = 3;
-    string resolveLabel = 4;
+    Session session = 1;
+    WhisperMeta meta = 2;
+    string markdown = 3;
+    string rejectLabel = 4;
+    string resolveLabel = 5;
 }
 
 message WhisperConfirmResponse {
@@ -45,12 +48,13 @@ message WhisperConfirmResponse {
 }
 
 message WhisperFormRequest {
-    WhisperMeta meta = 1;
-    string markdown = 2;
-    string submitLabel = 3;
-    string cancelLabel = 4;
+    Session session = 1;
+    WhisperMeta meta = 2;
+    string markdown = 3;
+    string submitLabel = 4;
+    string cancelLabel = 5;
 
-    map <string, WhisperFormInput> inputs = 5;
+    map <string, WhisperFormInput> inputs = 6;
 }
 
 message WhisperFormInput {

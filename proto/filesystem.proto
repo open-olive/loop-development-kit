@@ -3,6 +3,7 @@ package proto;
 option go_package = ".;proto";
 
 import "google/protobuf/timestamp.proto";
+import "session.proto";
 
 service Filesystem {
     // list the contents of a directory
@@ -36,7 +37,8 @@ enum FileAction {
 }
 
 message FilesystemDirRequest {
-    string directory = 1;
+    Session session = 1;
+    string directory = 2;
 }
 
 message FilesystemDirResponse {
@@ -44,7 +46,8 @@ message FilesystemDirResponse {
 }
 
 message FilesystemDirStreamRequest {
-    string directory = 1;
+    Session session = 1;
+    string directory = 2;
 }
 
 message FilesystemDirStreamResponse {
@@ -54,7 +57,8 @@ message FilesystemDirStreamResponse {
 }
 
 message FilesystemFileRequest {
-    string path = 1;
+    Session session = 1;
+    string path = 2;
 }
 
 message FilesystemFileResponse {
@@ -62,7 +66,8 @@ message FilesystemFileResponse {
 }
 
 message FilesystemFileStreamRequest {
-    string path = 1;
+    Session session = 1;
+    string path = 2;
 }
 
 message FilesystemFileStreamResponse {

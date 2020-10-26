@@ -2,6 +2,8 @@ syntax = "proto3";
 package proto;
 option go_package = ".;proto";
 
+import "session.proto";
+
 service Hover {
     // read the text under the cursor
     rpc HoverRead (HoverReadRequest) returns (HoverReadResponse);
@@ -11,13 +13,15 @@ service Hover {
 }
 
 message HoverReadRequest {
-    uint32 xFromCenter = 1;
-    uint32 yFromCenter = 2;
+    Session session = 1;
+    uint32 xFromCenter = 2;
+    uint32 yFromCenter = 3;
 }
 
 message HoverReadStreamRequest {
-    uint32 xFromCenter = 1;
-    uint32 yFromCenter = 2;
+    Session session = 1;
+    uint32 xFromCenter = 2;
+    uint32 yFromCenter = 3;
 }
 
 message HoverReadResponse {

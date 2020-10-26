@@ -3,36 +3,42 @@ package proto;
 option go_package = ".;proto";
 
 import "google/protobuf/empty.proto";
+import "session.proto";
 
 service Storage {
     // Check in storage to determine if a key has a value
     rpc StorageHasKey(StorageHasKeyRequest) returns (StorageHasKeyResponse);
     
     // Get a list of storage keys
-    rpc StorageKeys(google.protobuf.Empty) returns (StorageKeysResponse);
+    rpc StorageKeys(StorageKeysRequest) returns (StorageKeysResponse);
     
     // Read the value of a specific storage key
     rpc StorageRead(StorageReadRequest) returns (StorageReadResponse);
     
     // Get all storage keys and values
-    rpc StorageReadAll(google.protobuf.Empty) returns (StorageReadAllResponse);
+    rpc StorageReadAll(StorageReadAllRequest) returns (StorageReadAllResponse);
     
     // Delete the value of a specific key
     rpc StorageDelete(StorageDeleteRequest) returns (google.protobuf.Empty);
 
     // Delete the values of all keys
-    rpc StorageDeleteAll(google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc StorageDeleteAll(StorageDeleteRequest) returns (google.protobuf.Empty);
 
     // Write the value of a key to storage
     rpc StorageWrite(StorageWriteRequest) returns (google.protobuf.Empty);
 }
 
 message StorageHasKeyRequest {
-    string key = 1;
+    Session session = 1;
+    string key = 2;
 }
 
 message StorageHasKeyResponse {
     bool hasKey = 1;
+}
+
+message StorageKeysRequest {
+    Session session = 1;
 }
 
 message StorageKeysResponse {
@@ -40,11 +46,16 @@ message StorageKeysResponse {
 }
 
 message StorageReadRequest {
-    string key = 1;
+    Session session = 1;
+    string key = 2;
 }
 
 message StorageReadResponse {
     string value = 1;
+}
+
+message StorageReadAllRequest {
+    Session session = 1;
 }
 
 message StorageReadAllResponse {
@@ -52,10 +63,16 @@ message StorageReadAllResponse {
 }
 
 message StorageDeleteRequest {
-    string key = 1;
+    Session session = 1;
+    string key = 2;
+}
+
+message StorageDeleteAllRequest {
+    Session session = 1;
 }
 
 message StorageWriteRequest {
-    string key = 1;
-    string value = 2;
+    Session session = 1;
+    string key = 2;
+    string value = 3;
 }
