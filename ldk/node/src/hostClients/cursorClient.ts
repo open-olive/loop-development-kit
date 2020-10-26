@@ -1,4 +1,3 @@
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { CursorClient as CursorGRPCClient } from '../grpc/cursor_grpc_pb';
 import messages from '../grpc/cursor_pb';
@@ -33,12 +32,12 @@ export class CursorClient
 
   queryCursorPosition(): Promise<CursorResponse> {
     return this.buildQuery<
-      Empty,
+      messages.CursorPositionRequest,
       messages.CursorPositionResponse,
       CursorResponse
     >(
       (message, callback) => this.client.cursorPosition(message, callback),
-      () => new Empty(),
+      () => new messages.CursorPositionRequest(),
       cursorTransformer,
     );
   }
@@ -50,7 +49,11 @@ export class CursorClient
       messages.CursorPositionStreamResponse,
       CursorResponse
     >(
-      this.client.cursorPositionStream(new Empty()),
+      this.client.cursorPositionStream(
+        new messages.CursorPositionStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       cursorTransformer,
       listener,
     );

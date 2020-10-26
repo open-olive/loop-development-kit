@@ -3,17 +3,17 @@
 'use strict';
 var grpc = require('@grpc/grpc-js');
 var window_pb = require('./window_pb.js');
-var google_protobuf_empty_pb = require('google-protobuf/google/protobuf/empty_pb.js');
+var session_pb = require('./session_pb.js');
 
-function serialize_google_protobuf_Empty(arg) {
-  if (!(arg instanceof google_protobuf_empty_pb.Empty)) {
-    throw new Error('Expected argument of type google.protobuf.Empty');
+function serialize_proto_WindowActiveWindowRequest(arg) {
+  if (!(arg instanceof window_pb.WindowActiveWindowRequest)) {
+    throw new Error('Expected argument of type proto.WindowActiveWindowRequest');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_google_protobuf_Empty(buffer_arg) {
-  return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_WindowActiveWindowRequest(buffer_arg) {
+  return window_pb.WindowActiveWindowRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_WindowActiveWindowResponse(arg) {
@@ -27,6 +27,17 @@ function deserialize_proto_WindowActiveWindowResponse(buffer_arg) {
   return window_pb.WindowActiveWindowResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_WindowActiveWindowStreamRequest(arg) {
+  if (!(arg instanceof window_pb.WindowActiveWindowStreamRequest)) {
+    throw new Error('Expected argument of type proto.WindowActiveWindowStreamRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_WindowActiveWindowStreamRequest(buffer_arg) {
+  return window_pb.WindowActiveWindowStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_WindowActiveWindowStreamResponse(arg) {
   if (!(arg instanceof window_pb.WindowActiveWindowStreamResponse)) {
     throw new Error('Expected argument of type proto.WindowActiveWindowStreamResponse');
@@ -38,6 +49,17 @@ function deserialize_proto_WindowActiveWindowStreamResponse(buffer_arg) {
   return window_pb.WindowActiveWindowStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_proto_WindowStateRequest(arg) {
+  if (!(arg instanceof window_pb.WindowStateRequest)) {
+    throw new Error('Expected argument of type proto.WindowStateRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_WindowStateRequest(buffer_arg) {
+  return window_pb.WindowStateRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_proto_WindowStateResponse(arg) {
   if (!(arg instanceof window_pb.WindowStateResponse)) {
     throw new Error('Expected argument of type proto.WindowStateResponse');
@@ -47,6 +69,17 @@ function serialize_proto_WindowStateResponse(arg) {
 
 function deserialize_proto_WindowStateResponse(buffer_arg) {
   return window_pb.WindowStateResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_proto_WindowStateStreamRequest(arg) {
+  if (!(arg instanceof window_pb.WindowStateStreamRequest)) {
+    throw new Error('Expected argument of type proto.WindowStateStreamRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_proto_WindowStateStreamRequest(buffer_arg) {
+  return window_pb.WindowStateStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_proto_WindowStateStreamResponse(arg) {
@@ -67,10 +100,10 @@ windowActiveWindow: {
     path: '/proto.Window/WindowActiveWindow',
     requestStream: false,
     responseStream: false,
-    requestType: google_protobuf_empty_pb.Empty,
+    requestType: window_pb.WindowActiveWindowRequest,
     responseType: window_pb.WindowActiveWindowResponse,
-    requestSerialize: serialize_google_protobuf_Empty,
-    requestDeserialize: deserialize_google_protobuf_Empty,
+    requestSerialize: serialize_proto_WindowActiveWindowRequest,
+    requestDeserialize: deserialize_proto_WindowActiveWindowRequest,
     responseSerialize: serialize_proto_WindowActiveWindowResponse,
     responseDeserialize: deserialize_proto_WindowActiveWindowResponse,
   },
@@ -79,10 +112,10 @@ windowActiveWindowStream: {
     path: '/proto.Window/WindowActiveWindowStream',
     requestStream: false,
     responseStream: true,
-    requestType: google_protobuf_empty_pb.Empty,
+    requestType: window_pb.WindowActiveWindowStreamRequest,
     responseType: window_pb.WindowActiveWindowStreamResponse,
-    requestSerialize: serialize_google_protobuf_Empty,
-    requestDeserialize: deserialize_google_protobuf_Empty,
+    requestSerialize: serialize_proto_WindowActiveWindowStreamRequest,
+    requestDeserialize: deserialize_proto_WindowActiveWindowStreamRequest,
     responseSerialize: serialize_proto_WindowActiveWindowStreamResponse,
     responseDeserialize: deserialize_proto_WindowActiveWindowStreamResponse,
   },
@@ -91,10 +124,10 @@ windowState: {
     path: '/proto.Window/WindowState',
     requestStream: false,
     responseStream: false,
-    requestType: google_protobuf_empty_pb.Empty,
+    requestType: window_pb.WindowStateRequest,
     responseType: window_pb.WindowStateResponse,
-    requestSerialize: serialize_google_protobuf_Empty,
-    requestDeserialize: deserialize_google_protobuf_Empty,
+    requestSerialize: serialize_proto_WindowStateRequest,
+    requestDeserialize: deserialize_proto_WindowStateRequest,
     responseSerialize: serialize_proto_WindowStateResponse,
     responseDeserialize: deserialize_proto_WindowStateResponse,
   },
@@ -103,10 +136,10 @@ windowStateStream: {
     path: '/proto.Window/WindowStateStream',
     requestStream: false,
     responseStream: true,
-    requestType: google_protobuf_empty_pb.Empty,
+    requestType: window_pb.WindowStateStreamRequest,
     responseType: window_pb.WindowStateStreamResponse,
-    requestSerialize: serialize_google_protobuf_Empty,
-    requestDeserialize: deserialize_google_protobuf_Empty,
+    requestSerialize: serialize_proto_WindowStateStreamRequest,
+    requestDeserialize: deserialize_proto_WindowStateStreamRequest,
     responseSerialize: serialize_proto_WindowStateStreamResponse,
     responseDeserialize: deserialize_proto_WindowStateStreamResponse,
   },

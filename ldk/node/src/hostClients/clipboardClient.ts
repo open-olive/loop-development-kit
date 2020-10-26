@@ -29,16 +29,24 @@ export class ClipboardClient
   }
 
   queryClipboard(): Promise<string> {
-    return this.buildQuery<Empty, messages.ClipboardReadResponse, string>(
+    return this.buildQuery<
+      messages.ClipboardReadRequest,
+      messages.ClipboardReadResponse,
+      string
+    >(
       (message, callback) => this.client.clipboardRead(message, callback),
-      () => new Empty(),
+      () => new messages.ClipboardReadRequest(),
       clipboardTransformer,
     );
   }
 
   streamClipboard(listener: StreamListener<string>): StoppableStream<string> {
     return new TransformingStream<messages.ClipboardReadStreamResponse, string>(
-      this.client.clipboardReadStream(new Empty()),
+      this.client.clipboardReadStream(
+        new messages.ClipboardReadStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       clipboardTransformer,
       listener,
     );

@@ -65,12 +65,12 @@ interface IStorageService_IStorageDelete extends grpc.MethodDefinition<storage_p
     responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
-interface IStorageService_IStorageDeleteAll extends grpc.MethodDefinition<storage_pb.StorageDeleteRequest, google_protobuf_empty_pb.Empty> {
+interface IStorageService_IStorageDeleteAll extends grpc.MethodDefinition<storage_pb.StorageDeleteAllRequest, google_protobuf_empty_pb.Empty> {
     path: string; // "/proto.Storage/StorageDeleteAll"
     requestStream: false;
     responseStream: false;
-    requestSerialize: grpc.serialize<storage_pb.StorageDeleteRequest>;
-    requestDeserialize: grpc.deserialize<storage_pb.StorageDeleteRequest>;
+    requestSerialize: grpc.serialize<storage_pb.StorageDeleteAllRequest>;
+    requestDeserialize: grpc.deserialize<storage_pb.StorageDeleteAllRequest>;
     responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
@@ -92,7 +92,7 @@ export interface IStorageServer {
     storageRead: grpc.handleUnaryCall<storage_pb.StorageReadRequest, storage_pb.StorageReadResponse>;
     storageReadAll: grpc.handleUnaryCall<storage_pb.StorageReadAllRequest, storage_pb.StorageReadAllResponse>;
     storageDelete: grpc.handleUnaryCall<storage_pb.StorageDeleteRequest, google_protobuf_empty_pb.Empty>;
-    storageDeleteAll: grpc.handleUnaryCall<storage_pb.StorageDeleteRequest, google_protobuf_empty_pb.Empty>;
+    storageDeleteAll: grpc.handleUnaryCall<storage_pb.StorageDeleteAllRequest, google_protobuf_empty_pb.Empty>;
     storageWrite: grpc.handleUnaryCall<storage_pb.StorageWriteRequest, google_protobuf_empty_pb.Empty>;
 }
 
@@ -112,9 +112,9 @@ export interface IStorageClient {
     storageDelete(request: storage_pb.StorageDeleteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
-    storageDeleteAll(request: storage_pb.StorageDeleteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
-    storageDeleteAll(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
-    storageDeleteAll(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageDeleteAll(request: storage_pb.StorageDeleteAllRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageDeleteAll(request: storage_pb.StorageDeleteAllRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageDeleteAll(request: storage_pb.StorageDeleteAllRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     storageWrite(request: storage_pb.StorageWriteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
@@ -137,9 +137,9 @@ export class StorageClient extends grpc.Client implements IStorageClient {
     public storageDelete(request: storage_pb.StorageDeleteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
-    public storageDeleteAll(request: storage_pb.StorageDeleteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
-    public storageDeleteAll(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
-    public storageDeleteAll(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageDeleteAll(request: storage_pb.StorageDeleteAllRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageDeleteAll(request: storage_pb.StorageDeleteAllRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageDeleteAll(request: storage_pb.StorageDeleteAllRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public storageWrite(request: storage_pb.StorageWriteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
     public storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;

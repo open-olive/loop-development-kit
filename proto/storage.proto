@@ -22,7 +22,7 @@ service Storage {
     rpc StorageDelete(StorageDeleteRequest) returns (google.protobuf.Empty);
 
     // Delete the values of all keys
-    rpc StorageDeleteAll(StorageDeleteRequest) returns (google.protobuf.Empty);
+    rpc StorageDeleteAll(StorageDeleteAllRequest) returns (google.protobuf.Empty);
 
     // Write the value of a key to storage
     rpc StorageWrite(StorageWriteRequest) returns (google.protobuf.Empty);

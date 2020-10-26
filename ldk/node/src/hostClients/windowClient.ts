@@ -43,12 +43,12 @@ export class WindowClient
 
   queryActiveWindow(): Promise<WindowInfoResponse> {
     return this.buildQuery<
-      Empty,
+      Messages.WindowActiveWindowRequest,
       Messages.WindowActiveWindowResponse,
       WindowInfoResponse
     >(
       (message, callback) => this.client.windowActiveWindow(message, callback),
-      () => new Empty(),
+      () => new Messages.WindowActiveWindowRequest(),
       (response) => {
         return response.toObject().window;
       },
@@ -57,12 +57,12 @@ export class WindowClient
 
   queryWindows(): Promise<WindowInfoResponse[]> {
     return this.buildQuery<
-      Empty,
+      Messages.WindowStateRequest,
       Messages.WindowStateResponse,
       WindowInfoResponse[]
     >(
       (message, callback) => this.client.windowState(message, callback),
-      () => new Empty(),
+      () => new Messages.WindowStateRequest(),
       (response) => response.toObject().windowList,
     );
   }
@@ -74,7 +74,11 @@ export class WindowClient
       Messages.WindowActiveWindowStreamResponse,
       WindowInfoResponse
     >(
-      this.client.windowActiveWindowStream(new Empty()),
+      this.client.windowActiveWindowStream(
+        new Messages.WindowActiveWindowStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       (response) => response.toObject().window,
       listener,
     );
@@ -87,7 +91,11 @@ export class WindowClient
       Messages.WindowStateStreamResponse,
       WindowInfoStreamResponse
     >(
-      this.client.windowStateStream(new Empty()),
+      this.client.windowStateStream(
+        new Messages.WindowStateStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       (response) => {
         const window = response.getWindow();
         if (window == null) {

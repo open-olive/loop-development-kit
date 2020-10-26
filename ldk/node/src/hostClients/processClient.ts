@@ -50,14 +50,14 @@ export class ProcessClient
 
   queryProcesses(): Promise<ProcessListResponse> {
     return this.buildQuery<
-      Empty,
+      Messages.ProcessStateRequest,
       Messages.ProcessStateResponse,
       ProcessListResponse
     >(
       (message, callback) => {
         this.client.processState(message, callback);
       },
-      () => new Empty(),
+      () => new Messages.ProcessStateRequest(),
       (response) => ({
         processes: response
           .getProcessesList()
@@ -70,15 +70,22 @@ export class ProcessClient
     return new TransformingStream<
       Messages.ProcessStateStreamResponse,
       ProcessStreamResponse
-    >(this.client.processStateStream(new Empty()), (message) => {
-      const processRaw = message.getProcess();
-      if (processRaw == null) {
-        return undefined;
-      }
-      return {
-        process: parseProcessInfo(processRaw),
-        action: parseProcessAction(message.getAction()),
-      };
-    });
+    >(
+      this.client.processStateStream(
+        new Messages.ProcessStateStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
+      (message) => {
+        const processRaw = message.getProcess();
+        if (processRaw == null) {
+          return undefined;
+        }
+        return {
+          process: parseProcessInfo(processRaw),
+          action: parseProcessAction(message.getAction()),
+        };
+      },
+    );
   }
 }

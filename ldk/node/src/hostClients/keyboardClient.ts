@@ -108,7 +108,11 @@ export default class KeyboardClient
 
   streamText(): StoppableStream<string> {
     return new TransformingStream(
-      this.client.keyboardTextStream(new Empty()),
+      this.client.keyboardTextStream(
+        new messages.KeyboardTextStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       (response) => response.getText(),
     );
   }
@@ -117,7 +121,11 @@ export default class KeyboardClient
     listener: StreamListener<TextStream>,
   ): StoppableStream<TextStream> {
     return new TransformingStream(
-      this.client.keyboardCharacterStream(new Empty()),
+      this.client.keyboardCharacterStream(
+        new messages.KeyboardCharacterStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       transformTextStream,
       listener,
     );
@@ -127,7 +135,11 @@ export default class KeyboardClient
     listener: StreamListener<ScanCodeEvent>,
   ): StoppableStream<ScanCodeEvent> {
     return new TransformingStream(
-      this.client.keyboardScancodeStream(new Empty()),
+      this.client.keyboardScancodeStream(
+        new messages.KeyboardScancodeStreamRequest().setSession(
+          this.createSessionMessage(),
+        ),
+      ),
       transformScanCodeStream,
       listener,
     );

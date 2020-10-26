@@ -33,9 +33,9 @@ export default class StorageClient
    * Delete all keys from storage.
    */
   storageDeleteAll(): Promise<void> {
-    return this.buildQuery<Empty, Empty, void>(
+    return this.buildQuery<messages.StorageDeleteAllRequest, Empty, void>(
       (message, callback) => this.client.storageDeleteAll(message, callback),
-      () => new Empty(),
+      () => new messages.StorageDeleteAllRequest(),
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       () => {},
     );
@@ -71,9 +71,9 @@ export default class StorageClient
    * @returns {string[]} - An array of the keys.
    */
   storageKeys(): Promise<string[]> {
-    return this.buildQuery<Empty, messages.StorageKeysResponse, string[]>(
+    return this.buildQuery<messages.StorageKeysRequest, messages.StorageKeysResponse, string[]>(
       (message, callback) => this.client.storageKeys(message, callback),
-      () => new Empty(),
+      () => new messages.StorageKeysRequest(),
       (response) => response.getKeysList(),
     );
   }
@@ -110,12 +110,12 @@ export default class StorageClient
    */
   storageReadAll(): Promise<{ [index: string]: string }> {
     return this.buildQuery<
-      Empty,
+      messages.StorageReadAllRequest,
       messages.StorageReadAllResponse,
       { [index: string]: string }
     >(
       (message, callback) => this.client.storageReadAll(message, callback),
-      () => new Empty(),
+      () => new messages.StorageReadAllRequest(),
       (response) => {
         const entries = response
           .getEntriesMap()

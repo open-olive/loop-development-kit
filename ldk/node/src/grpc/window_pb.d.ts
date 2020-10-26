@@ -5,7 +5,7 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
-import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
 
 export class WindowInfo extends jspb.Message { 
     getTitle(): string;
@@ -156,6 +156,102 @@ export namespace WindowStateStreamResponse {
         window?: WindowInfo.AsObject,
         action: WindowAction,
         error: string,
+    }
+}
+
+export class WindowActiveWindowRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WindowActiveWindowRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WindowActiveWindowRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: WindowActiveWindowRequest): WindowActiveWindowRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WindowActiveWindowRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WindowActiveWindowRequest;
+    static deserializeBinaryFromReader(message: WindowActiveWindowRequest, reader: jspb.BinaryReader): WindowActiveWindowRequest;
+}
+
+export namespace WindowActiveWindowRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+    }
+}
+
+export class WindowActiveWindowStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WindowActiveWindowStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WindowActiveWindowStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: WindowActiveWindowStreamRequest): WindowActiveWindowStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WindowActiveWindowStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WindowActiveWindowStreamRequest;
+    static deserializeBinaryFromReader(message: WindowActiveWindowStreamRequest, reader: jspb.BinaryReader): WindowActiveWindowStreamRequest;
+}
+
+export namespace WindowActiveWindowStreamRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+    }
+}
+
+export class WindowStateRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WindowStateRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WindowStateRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: WindowStateRequest): WindowStateRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WindowStateRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WindowStateRequest;
+    static deserializeBinaryFromReader(message: WindowStateRequest, reader: jspb.BinaryReader): WindowStateRequest;
+}
+
+export namespace WindowStateRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+    }
+}
+
+export class WindowStateStreamRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WindowStateStreamRequest;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WindowStateStreamRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: WindowStateStreamRequest): WindowStateStreamRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WindowStateStreamRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WindowStateStreamRequest;
+    static deserializeBinaryFromReader(message: WindowStateStreamRequest, reader: jspb.BinaryReader): WindowStateStreamRequest;
+}
+
+export namespace WindowStateStreamRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
     }
 }
 
