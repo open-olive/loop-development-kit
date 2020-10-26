@@ -1,5 +1,8 @@
 on: [push, pull_request]
 name: Test Race
+defaults:
+  run:
+    working-directory: ldk/go
 jobs:
   test:
     strategy:
