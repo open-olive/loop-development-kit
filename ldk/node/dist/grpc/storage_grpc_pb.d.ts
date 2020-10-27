@@ -81,12 +81,12 @@ export namespace StorageService {
         export { requestStream_5 as requestStream };
         const responseStream_5: boolean;
         export { responseStream_5 as responseStream };
-        const requestType_5: typeof import("./storage_pb.js").StorageDeleteRequest;
+        const requestType_5: typeof import("./storage_pb.js").StorageDeleteAllRequest;
         export { requestType_5 as requestType };
         const responseType_5: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
         export { responseType_5 as responseType };
-        export { serialize_proto_StorageDeleteRequest as requestSerialize };
-        export { deserialize_proto_StorageDeleteRequest as requestDeserialize };
+        export { serialize_proto_StorageDeleteAllRequest as requestSerialize };
+        export { deserialize_proto_StorageDeleteAllRequest as requestDeserialize };
         export { serialize_google_protobuf_Empty as responseSerialize };
         export { deserialize_google_protobuf_Empty as responseDeserialize };
     }
@@ -128,6 +128,8 @@ declare function serialize_proto_StorageDeleteRequest(arg: any): Buffer;
 declare function deserialize_proto_StorageDeleteRequest(buffer_arg: any): import("./storage_pb.js").StorageDeleteRequest;
 declare function serialize_google_protobuf_Empty(arg: any): Buffer;
 declare function deserialize_google_protobuf_Empty(buffer_arg: any): import("google-protobuf/google/protobuf/empty_pb").Empty;
+declare function serialize_proto_StorageDeleteAllRequest(arg: any): Buffer;
+declare function deserialize_proto_StorageDeleteAllRequest(buffer_arg: any): import("./storage_pb.js").StorageDeleteAllRequest;
 declare function serialize_proto_StorageWriteRequest(arg: any): Buffer;
 declare function deserialize_proto_StorageWriteRequest(buffer_arg: any): import("./storage_pb.js").StorageWriteRequest;
 export {};

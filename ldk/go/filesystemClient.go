@@ -6,12 +6,13 @@ import (
 	"io"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 // FilesystemClient is used by the controller plugin to facilitate plugin initiated communication with the host
 type FilesystemClient struct {
-	client proto.FilesystemClient
+	client  proto.FilesystemClient
+	session proto.Session
 }
 
 // list the contents of a directory
@@ -19,7 +20,7 @@ func (f *FilesystemClient) Dir(dir string) ([]FileInfo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := f.client.FilesystemDir(ctx, &proto.FilesystemDirRequest{Directory: dir})
+	resp, err := f.client.FilesystemDir(ctx, &proto.FilesystemDirRequest{Directory: dir, Session: &f.session})
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +49,7 @@ func (f *FilesystemClient) Dir(dir string) ([]FileInfo, error) {
 
 // stream any updates to the contents of a directory
 func (f *FilesystemClient) ListenDir(ctx context.Context, dir string, handler ListenDirHandler) error {
-	client, err := f.client.FilesystemDirStream(ctx, &proto.FilesystemDirStreamRequest{Directory: dir})
+	client, err := f.client.FilesystemDirStream(ctx, &proto.FilesystemDirStreamRequest{Directory: dir, Session: &f.session})
 	if err != nil {
 		return err
 	}
@@ -96,7 +97,7 @@ func (f *FilesystemClient) File(path string) (FileInfo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := f.client.FilesystemFile(ctx, &proto.FilesystemFileRequest{Path: path})
+	resp, err := f.client.FilesystemFile(ctx, &proto.FilesystemFileRequest{Path: path, Session: &f.session})
 	if err != nil {
 		return FileInfo{}, err
 	}
@@ -120,7 +121,7 @@ func (f *FilesystemClient) File(path string) (FileInfo, error) {
 
 // stream any updates to a file
 func (f *FilesystemClient) ListenFile(ctx context.Context, path string, handler ListenFileHandler) error {
-	client, err := f.client.FilesystemFileStream(ctx, &proto.FilesystemFileStreamRequest{Path: path})
+	client, err := f.client.FilesystemFileStream(ctx, &proto.FilesystemFileStreamRequest{Path: path, Session: &f.session})
 	if err != nil {
 		return err
 	}

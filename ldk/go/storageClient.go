@@ -3,13 +3,13 @@ package ldk
 import (
 	"context"
 
-	"github.com/open-olive/loop-development-kit-go/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 // StorageClient is used by the controller plugin to facilitate plugin initiated communication with the host
 type StorageClient struct {
-	client proto.StorageClient
+	client  proto.StorageClient
+	session proto.Session
 }
 
 // StorageDelete is used by plugins to delete a storage entry
@@ -18,7 +18,8 @@ func (m *StorageClient) StorageDelete(key string) error {
 	defer cancel()
 
 	_, err := m.client.StorageDelete(ctx, &proto.StorageDeleteRequest{
-		Key: key,
+		Key:     key,
+		Session: &m.session,
 	})
 	return err
 }
@@ -28,7 +29,9 @@ func (m *StorageClient) StorageDeleteAll() error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	_, err := m.client.StorageDeleteAll(ctx, &emptypb.Empty{})
+	_, err := m.client.StorageDeleteAll(ctx, &proto.StorageDeleteAllRequest{
+		Session: &m.session,
+	})
 	return err
 }
 
@@ -38,7 +41,8 @@ func (m *StorageClient) StorageHasKey(key string) (bool, error) {
 	defer cancel()
 
 	resp, err := m.client.StorageHasKey(ctx, &proto.StorageHasKeyRequest{
-		Key: key,
+		Key:     key,
+		Session: &m.session,
 	})
 	if err != nil {
 		return false, err
@@ -52,7 +56,7 @@ func (m *StorageClient) StorageKeys() ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := m.client.StorageKeys(ctx, &emptypb.Empty{})
+	resp, err := m.client.StorageKeys(ctx, &proto.StorageKeysRequest{Session: &m.session})
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +70,8 @@ func (m *StorageClient) StorageRead(key string) (string, error) {
 	defer cancel()
 
 	resp, err := m.client.StorageRead(ctx, &proto.StorageReadRequest{
-		Key: key,
+		Key:     key,
+		Session: &m.session,
 	})
 	if err != nil {
 		return "", err
@@ -80,7 +85,9 @@ func (m *StorageClient) StorageReadAll() (map[string]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := m.client.StorageReadAll(ctx, &emptypb.Empty{})
+	resp, err := m.client.StorageReadAll(ctx, &proto.StorageReadAllRequest{
+		Session: &m.session,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -99,8 +106,9 @@ func (m *StorageClient) StorageWrite(key, value string) error {
 	defer cancel()
 
 	_, err := m.client.StorageWrite(ctx, &proto.StorageWriteRequest{
-		Key:   key,
-		Value: value,
+		Key:     key,
+		Value:   value,
+		Session: &m.session,
 	})
 	return err
 }

@@ -5,19 +5,19 @@ import (
 	"errors"
 	"io"
 
-	"github.com/open-olive/loop-development-kit-go/proto"
-	"google.golang.org/protobuf/types/known/emptypb"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 type CursorClient struct {
-	client proto.CursorClient
+	client  proto.CursorClient
+	session proto.Session
 }
 
-func (c CursorClient) Position() (CursorPosition, error) {
+func (c *CursorClient) Position() (CursorPosition, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := c.client.CursorPosition(ctx, &emptypb.Empty{})
+	resp, err := c.client.CursorPosition(ctx, &proto.CursorPositionRequest{Session: &c.session})
 
 	if err != nil {
 		return CursorPosition{}, err
@@ -29,8 +29,8 @@ func (c CursorClient) Position() (CursorPosition, error) {
 	}, nil
 }
 
-func (c CursorClient) ListenPosition(ctx context.Context, handler ListenPositionHandler) error {
-	cursorReadStreamClient, err := c.client.CursorPositionStream(ctx, &emptypb.Empty{})
+func (c *CursorClient) ListenPosition(ctx context.Context, handler ListenPositionHandler) error {
+	cursorReadStreamClient, err := c.client.CursorPositionStream(ctx, &proto.CursorPositionStreamRequest{Session: &c.session})
 	if err != nil {
 		return err
 	}

@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const empty_pb_1 = require("google-protobuf/google/protobuf/empty_pb");
 const keyboard_grpc_pb_1 = require("../grpc/keyboard_grpc_pb");
 const keyboard_pb_1 = __importDefault(require("../grpc/keyboard_pb"));
 const baseClient_1 = __importDefault(require("./baseClient"));
@@ -72,13 +71,13 @@ class KeyboardClient extends baseClient_1.default {
         return new transformingStream_1.TransformingStream(this.client.keyboardHotkeyStream(message), transformHotKeyEvent, listener);
     }
     streamText() {
-        return new transformingStream_1.TransformingStream(this.client.keyboardTextStream(new empty_pb_1.Empty()), (response) => response.getText());
+        return new transformingStream_1.TransformingStream(this.client.keyboardTextStream(new keyboard_pb_1.default.KeyboardTextStreamRequest().setSession(this.createSessionMessage())), (response) => response.getText());
     }
     streamChar(listener) {
-        return new transformingStream_1.TransformingStream(this.client.keyboardCharacterStream(new empty_pb_1.Empty()), transformTextStream, listener);
+        return new transformingStream_1.TransformingStream(this.client.keyboardCharacterStream(new keyboard_pb_1.default.KeyboardCharacterStreamRequest().setSession(this.createSessionMessage())), transformTextStream, listener);
     }
     streamScanCode(listener) {
-        return new transformingStream_1.TransformingStream(this.client.keyboardScancodeStream(new empty_pb_1.Empty()), transformScanCodeStream, listener);
+        return new transformingStream_1.TransformingStream(this.client.keyboardScancodeStream(new keyboard_pb_1.default.KeyboardScancodeStreamRequest().setSession(this.createSessionMessage())), transformScanCodeStream, listener);
     }
     generateClient() {
         return keyboard_grpc_pb_1.KeyboardClient;

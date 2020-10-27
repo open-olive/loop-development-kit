@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	ldk "github.com/open-olive/loop-development-kit-go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 	"github.com/open-olive/sidekick-controller-examplego/bind"
 )
 

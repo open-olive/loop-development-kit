@@ -13,6 +13,15 @@ function serialize_google_protobuf_Empty(arg) {
 function deserialize_google_protobuf_Empty(buffer_arg) {
     return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
 }
+function serialize_proto_StorageDeleteAllRequest(arg) {
+    if (!(arg instanceof storage_pb.StorageDeleteAllRequest)) {
+        throw new Error('Expected argument of type proto.StorageDeleteAllRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_StorageDeleteAllRequest(buffer_arg) {
+    return storage_pb.StorageDeleteAllRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
 function serialize_proto_StorageDeleteRequest(arg) {
     if (!(arg instanceof storage_pb.StorageDeleteRequest)) {
         throw new Error('Expected argument of type proto.StorageDeleteRequest');
@@ -169,10 +178,10 @@ var StorageService = exports.StorageService = {
         path: '/proto.Storage/StorageDeleteAll',
         requestStream: false,
         responseStream: false,
-        requestType: storage_pb.StorageDeleteRequest,
+        requestType: storage_pb.StorageDeleteAllRequest,
         responseType: google_protobuf_empty_pb.Empty,
-        requestSerialize: serialize_proto_StorageDeleteRequest,
-        requestDeserialize: deserialize_proto_StorageDeleteRequest,
+        requestSerialize: serialize_proto_StorageDeleteAllRequest,
+        requestDeserialize: deserialize_proto_StorageDeleteAllRequest,
         responseSerialize: serialize_google_protobuf_Empty,
         responseDeserialize: deserialize_google_protobuf_Empty,
     },

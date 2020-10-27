@@ -1,11 +1,29 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WindowClient = void 0;
-const empty_pb_1 = require("google-protobuf/google/protobuf/empty_pb");
-const window_pb_1 = require("../grpc/window_pb");
+const window_pb_1 = __importStar(require("../grpc/window_pb"));
 const window_grpc_pb_1 = require("../grpc/window_grpc_pb");
 const baseClient_1 = __importDefault(require("./baseClient"));
 const windowService_1 = require("./windowService");
@@ -37,18 +55,18 @@ class WindowClient extends baseClient_1.default {
         return window_grpc_pb_1.WindowClient;
     }
     queryActiveWindow() {
-        return this.buildQuery((message, callback) => this.client.windowActiveWindow(message, callback), () => new empty_pb_1.Empty(), (response) => {
+        return this.buildQuery((message, callback) => this.client.windowActiveWindow(message, callback), () => new window_pb_1.default.WindowActiveWindowRequest(), (response) => {
             return response.toObject().window;
         });
     }
     queryWindows() {
-        return this.buildQuery((message, callback) => this.client.windowState(message, callback), () => new empty_pb_1.Empty(), (response) => response.toObject().windowList);
+        return this.buildQuery((message, callback) => this.client.windowState(message, callback), () => new window_pb_1.default.WindowStateRequest(), (response) => response.toObject().windowList);
     }
     streamActiveWindow(listener) {
-        return new transformingStream_1.TransformingStream(this.client.windowActiveWindowStream(new empty_pb_1.Empty()), (response) => response.toObject().window, listener);
+        return new transformingStream_1.TransformingStream(this.client.windowActiveWindowStream(new window_pb_1.default.WindowActiveWindowStreamRequest().setSession(this.createSessionMessage())), (response) => response.toObject().window, listener);
     }
     streamWindows(listener) {
-        return new transformingStream_1.TransformingStream(this.client.windowStateStream(new empty_pb_1.Empty()), (response) => {
+        return new transformingStream_1.TransformingStream(this.client.windowStateStream(new window_pb_1.default.WindowStateStreamRequest().setSession(this.createSessionMessage())), (response) => {
             const window = response.getWindow();
             if (window == null) {
                 return undefined;

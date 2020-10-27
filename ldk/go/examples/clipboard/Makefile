@@ -1,4 +1,4 @@
-REPO := github.com/open-olive/loop-development-kit-go/example/clipboard
+REPO := github.com/open-olive/loop-development-kit/ldk/go/example/clipboard
 PKG := examplego
 
 GIT_COMMIT := $(shell git rev-list -1 HEAD)

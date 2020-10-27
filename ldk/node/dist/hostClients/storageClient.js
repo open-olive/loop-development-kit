@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const empty_pb_1 = require("google-protobuf/google/protobuf/empty_pb");
 const baseClient_1 = __importDefault(require("./baseClient"));
 const storage_grpc_pb_1 = require("../grpc/storage_grpc_pb");
 const storage_pb_1 = __importDefault(require("../grpc/storage_pb"));
@@ -30,7 +29,7 @@ class StorageClient extends baseClient_1.default {
      * Delete all keys from storage.
      */
     storageDeleteAll() {
-        return this.buildQuery((message, callback) => this.client.storageDeleteAll(message, callback), () => new empty_pb_1.Empty(), 
+        return this.buildQuery((message, callback) => this.client.storageDeleteAll(message, callback), () => new storage_pb_1.default.StorageDeleteAllRequest(), 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
@@ -55,7 +54,7 @@ class StorageClient extends baseClient_1.default {
      * @returns {string[]} - An array of the keys.
      */
     storageKeys() {
-        return this.buildQuery((message, callback) => this.client.storageKeys(message, callback), () => new empty_pb_1.Empty(), (response) => response.getKeysList());
+        return this.buildQuery((message, callback) => this.client.storageKeys(message, callback), () => new storage_pb_1.default.StorageKeysRequest(), (response) => response.getKeysList());
     }
     /**
      * Get the value of a key in storage.
@@ -80,7 +79,7 @@ class StorageClient extends baseClient_1.default {
      * is a key in storage and the value of the key is the value in storage.
      */
     storageReadAll() {
-        return this.buildQuery((message, callback) => this.client.storageReadAll(message, callback), () => new empty_pb_1.Empty(), (response) => {
+        return this.buildQuery((message, callback) => this.client.storageReadAll(message, callback), () => new storage_pb_1.default.StorageReadAllRequest(), (response) => {
             const entries = response
                 .getEntriesMap()
                 .toObject()

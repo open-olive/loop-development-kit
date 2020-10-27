@@ -1,4 +1,3 @@
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import Messages, { WindowAction } from '../grpc/window_pb';
 import { WindowClient as WindowGRPCClient } from '../grpc/window_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';

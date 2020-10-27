@@ -5,20 +5,20 @@ import (
 	"errors"
 	"io"
 
-	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 // KeyboardClient is used by the controller plugin to facilitate plugin initiated communication with the host
 type KeyboardClient struct {
-	client proto.KeyboardClient
+	client  proto.KeyboardClient
+	session proto.Session
 }
 
-// ListehHotkey will listen for a specific set of hotkeys and call the handler for each press up or down
+// ListenHotkey will listen for a specific set of hotkeys and call the handler for each press up or down
 func (k *KeyboardClient) ListenHotkey(ctx context.Context, hotkey Hotkey, handler ListenHotkeyHandler) error {
 	key := &proto.KeyboardHotkey{Key: string(hotkey.Key), Modifiers: int32(hotkey.Modifiers)}
 
-	stream, err := k.client.KeyboardHotkeyStream(ctx, &proto.KeyboardHotkeyStreamRequest{Hotkey: key})
+	stream, err := k.client.KeyboardHotkeyStream(ctx, &proto.KeyboardHotkeyStreamRequest{Hotkey: key, Session: &k.session})
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,9 @@ func (k *KeyboardClient) ListenHotkey(ctx context.Context, hotkey Hotkey, handle
 
 // ListenScancode will call the handler for any key pressed up or down
 func (k *KeyboardClient) ListenScancode(ctx context.Context, handler ListenScancodeHandler) error {
-	stream, err := k.client.KeyboardScancodeStream(ctx, &empty.Empty{})
+	stream, err := k.client.KeyboardScancodeStream(ctx, &proto.KeyboardScancodeStreamRequest{
+		Session: &k.session,
+	})
 	if err != nil {
 		return err
 	}
@@ -74,7 +76,9 @@ func (k *KeyboardClient) ListenScancode(ctx context.Context, handler ListenScanc
 
 // ListenText will call the handler when a chunk of text has been captured from the keyboard
 func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandler) error {
-	stream, err := k.client.KeyboardTextStream(ctx, &empty.Empty{})
+	stream, err := k.client.KeyboardTextStream(ctx, &proto.KeyboardTextStreamRequest{
+		Session: &k.session,
+	})
 	if err != nil {
 		return err
 	}
@@ -102,7 +106,9 @@ func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandl
 
 // ListenCharacter will call the handler for each character typed on the keyboard
 func (k *KeyboardClient) ListenCharacter(ctx context.Context, handler ListenCharacterHandler) error {
-	stream, err := k.client.KeyboardCharacterStream(ctx, &empty.Empty{})
+	stream, err := k.client.KeyboardCharacterStream(ctx, &proto.KeyboardCharacterStreamRequest{
+		Session: &k.session,
+	})
 	if err != nil {
 		return err
 	}

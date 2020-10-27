@@ -2,11 +2,18 @@ import grpc, { ServiceError } from '@grpc/grpc-js';
 import { ConnInfo } from '../grpc/broker_pb';
 import { CommonHostServer } from '../commonHostServer';
 import { CommonHostClient } from './commonHostClient';
+import { Session } from '../grpc/session_pb';
 /**
  * @internal
  */
 export interface GRPCClientConstructor<T> {
     new (address: string, credentials: grpc.ChannelCredentials, options?: object): T;
+}
+/**
+ * @internal
+ */
+export interface SetSessionable {
+    setSession(session: Session): void;
 }
 /**
  * The BaseClient class provides connectivity support to GRPC services as a client.
@@ -17,6 +24,7 @@ export interface GRPCClientConstructor<T> {
  */
 export default abstract class BaseClient<THost extends CommonHostServer> implements CommonHostClient {
     private _client;
+    protected _session: Session | undefined;
     /**
      * Implementation should return the constructor function/class for the GRPC Client itself, imported from the SERVICE_grpc_pb file.
      * @protected
@@ -27,8 +35,9 @@ export default abstract class BaseClient<THost extends CommonHostServer> impleme
      *
      * @async
      * @param connInfo - An object containing host process connection information.
+     * @param session - An object containing the loop Session information.
      */
-    connect(connInfo: ConnInfo.AsObject): Promise<void>;
+    connect(connInfo: ConnInfo.AsObject, session: Session): Promise<void>;
     /**
      * This convenience function returns a promise that resolves once the request has been completed and the response
      * converted to the desired output.
@@ -37,7 +46,10 @@ export default abstract class BaseClient<THost extends CommonHostServer> impleme
      * @param builder - The function that builds the message.
      * @param renderer - The function that renders the message.
      */
-    buildQuery<TMessage, TResponse, TOutput>(clientRequest: (message: TMessage, callback: (err: ServiceError | null, response: TResponse) => void) => void, builder: () => TMessage, renderer: (response: TResponse) => TOutput | undefined): Promise<TOutput>;
+    buildQuery<TMessage extends SetSessionable, TResponse, TOutput>(clientRequest: (message: TMessage, callback: (err: ServiceError | null, response: TResponse) => void) => void, builder: () => TMessage, renderer: (response: TResponse) => TOutput | undefined): Promise<TOutput>;
+    protected createSessionMessage(): Session;
     protected get client(): THost;
     protected set client(client: THost);
+    protected get session(): Session;
+    protected set session(session: Session);
 }

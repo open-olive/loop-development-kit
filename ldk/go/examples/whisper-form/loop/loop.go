@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
-	ldk "github.com/open-olive/loop-development-kit-go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
 const (

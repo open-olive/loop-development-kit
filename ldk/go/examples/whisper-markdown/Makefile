@@ -1,4 +1,4 @@
-REPO := github.com/open-olive/loop-development-kit-go/example/whisper-markdown
+REPO := github.com/open-olive/loop-development-kit/ldk/go/example/whisper-markdown
 PKG := examplego
 
 GIT_COMMIT := $(shell git rev-list -1 HEAD)

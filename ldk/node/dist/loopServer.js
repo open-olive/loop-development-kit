@@ -33,15 +33,20 @@ class LoopServer {
      * @param callback - The callback to respond to once the loop started.
      */
     loopStart(call, callback) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const connInfo = yield this.broker.getConnInfo();
-            // TODO: Replace with creating all hosts.
+            const sessionInfo = (_a = call.request) === null || _a === void 0 ? void 0 : _a.getSession();
+            const response = new empty_pb_1.Empty();
+            if (sessionInfo == null) {
+                callback(new Error('Invalid Session Information'), response);
+                return;
+            }
             const hostClient = new hostClientFacade_1.default();
-            yield hostClient.connect(connInfo).catch((err) => {
+            yield hostClient.connect(connInfo, sessionInfo).catch((err) => {
                 throw err;
             });
             yield this.loop.start(hostClient);
-            const response = new empty_pb_1.Empty();
             callback(null, response);
         });
     }

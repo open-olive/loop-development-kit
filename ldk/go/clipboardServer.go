@@ -4,8 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -15,7 +14,7 @@ type ClipboardServer struct {
 }
 
 // ClipboardRead is used by plugins to get the value of an entry
-func (m *ClipboardServer) ClipboardRead(ctx context.Context, req *emptypb.Empty) (*proto.ClipboardReadResponse, error) {
+func (m *ClipboardServer) ClipboardRead(ctx context.Context, req *proto.ClipboardReadRequest) (*proto.ClipboardReadResponse, error) {
 	value, err := m.Impl.Read()
 	if err != nil {
 		return nil, err
@@ -27,7 +26,7 @@ func (m *ClipboardServer) ClipboardRead(ctx context.Context, req *emptypb.Empty)
 }
 
 // ClipboardReadStream is used by plugins to get the value of an entry
-func (m *ClipboardServer) ClipboardReadStream(emp *empty.Empty, stream proto.Clipboard_ClipboardReadStreamServer) error {
+func (m *ClipboardServer) ClipboardReadStream(emp *proto.ClipboardReadStreamRequest, stream proto.Clipboard_ClipboardReadStreamServer) error {
 	handler := func(text string, err error) {
 		var errText string
 		if err != nil {

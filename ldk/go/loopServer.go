@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/go-plugin"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -27,62 +27,76 @@ type LoopServer struct {
 // LoopStart is called by the host when the plugin is started to provide access to the host process
 func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest) (*emptypb.Empty, error) {
 	var err error
-	m.storageConn, err = m.broker.Dial(req.HostStorage)
+
+	hosts := req.ServiceHosts
+	session := proto.Session{
+		LoopID: req.Session.LoopID,
+		Token:  req.Session.Token,
+	}
+
+	m.storageConn, err = m.broker.Dial(hosts.HostStorage)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	m.whisperConn, err = m.broker.Dial(req.HostWhisper)
+	m.whisperConn, err = m.broker.Dial(hosts.HostWhisper)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	m.clipboardConn, err = m.broker.Dial(req.HostClipboard)
+	m.clipboardConn, err = m.broker.Dial(hosts.HostClipboard)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	m.keyboardConn, err = m.broker.Dial(req.HostKeyboard)
+	m.keyboardConn, err = m.broker.Dial(hosts.HostKeyboard)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	m.processConn, err = m.broker.Dial(req.HostProcess)
+	m.processConn, err = m.broker.Dial(hosts.HostProcess)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	m.cursorConn, err = m.broker.Dial(req.HostCursor)
+	m.cursorConn, err = m.broker.Dial(hosts.HostCursor)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
-	m.filesystemConn, err = m.broker.Dial(req.HostFilesystem)
+	m.filesystemConn, err = m.broker.Dial(hosts.HostFilesystem)
 	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
 	sidekickClient := &SidekickClient{
 		storage: &StorageClient{
-			proto.NewStorageClient(m.storageConn),
+			client:  proto.NewStorageClient(m.storageConn),
+			session: session,
 		},
 		whisper: &WhisperClient{
-			proto.NewWhisperClient(m.whisperConn),
+			client:  proto.NewWhisperClient(m.whisperConn),
+			session: session,
 		},
 		clipboard: &ClipboardClient{
-			proto.NewClipboardClient(m.clipboardConn),
+			client:  proto.NewClipboardClient(m.clipboardConn),
+			session: session,
 		},
 		keyboard: &KeyboardClient{
-			proto.NewKeyboardClient(m.keyboardConn),
+			client:  proto.NewKeyboardClient(m.keyboardConn),
+			session: session,
 		},
 		process: &ProcessClient{
-			proto.NewProcessClient(m.processConn),
+			client:  proto.NewProcessClient(m.processConn),
+			session: session,
 		},
 		cursor: &CursorClient{
-			proto.NewCursorClient(m.cursorConn),
+			client:  proto.NewCursorClient(m.cursorConn),
+			session: session,
 		},
 		filesystem: &FilesystemClient{
-			proto.NewFilesystemClient(m.filesystemConn),
+			client:  proto.NewFilesystemClient(m.filesystemConn),
+			session: session,
 		},
 	}
 

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-plugin"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -120,13 +120,20 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	go m.broker.AcceptAndServe(filesystemBrokerID, filesystemServerFunc)
 
 	_, err := m.client.LoopStart(ctx, &proto.LoopStartRequest{
-		HostStorage:    storageBrokerID,
-		HostWhisper:    whisperBrokerID,
-		HostClipboard:  clipboardBrokerID,
-		HostKeyboard:   keyboardBrokerID,
-		HostProcess:    processBrokerID,
-		HostCursor:     cursorBrokerID,
-		HostFilesystem: filesystemBrokerID,
+		ServiceHosts: &proto.ServiceHosts{
+			HostStorage:    storageBrokerID,
+			HostWhisper:    whisperBrokerID,
+			HostClipboard:  clipboardBrokerID,
+			HostKeyboard:   keyboardBrokerID,
+			HostProcess:    processBrokerID,
+			HostCursor:     cursorBrokerID,
+			HostFilesystem: filesystemBrokerID,
+		},
+		// TODO: Define Session here
+		Session: &proto.Session{
+			LoopID: "LOOP_ID",
+			Token:  "TOKEN",
+		},
 	})
 
 	return err

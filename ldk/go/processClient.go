@@ -5,12 +5,12 @@ import (
 	"errors"
 	"io"
 
-	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 type ProcessClient struct {
-	client proto.ProcessClient
+	client  proto.ProcessClient
+	session proto.Session
 }
 
 func convertToProcessInfo(pi *proto.ProcessInfo) ProcessInfo {
@@ -29,7 +29,7 @@ func convertToProcessEvent(pi *proto.ProcessStateStreamResponse) ProcessEvent {
 }
 
 func (p *ProcessClient) State() ([]ProcessInfo, error) {
-	msg := &empty.Empty{}
+	msg := &proto.ProcessStateRequest{Session: &p.session}
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 	resp, err := p.client.ProcessState(ctx, msg)
@@ -45,7 +45,7 @@ func (p *ProcessClient) State() ([]ProcessInfo, error) {
 }
 
 func (p *ProcessClient) ListenState(ctx context.Context, handler ListenProcessStateHandler) error {
-	msg := &empty.Empty{}
+	msg := &proto.ProcessStateStreamRequest{Session: &p.session}
 	client, err := p.client.ProcessStateStream(ctx, msg)
 	if err != nil {
 		return err

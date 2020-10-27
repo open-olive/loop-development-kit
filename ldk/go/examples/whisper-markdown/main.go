@@ -1,7 +1,7 @@
 package main
 
 import (
-	loop "github.com/open-olive/loop-development-kit-go/example/whisper-markdown/loop"
+	loop "github.com/open-olive/loop-development-kit/ldk/go/example/whisper-markdown/loop"
 )
 
 func main() {

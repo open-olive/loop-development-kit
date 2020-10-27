@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	ldk "github.com/open-olive/loop-development-kit-go"
-	loop "github.com/open-olive/loop-development-kit-go/example/whisper-markdown/loop"
-	ldktest "github.com/open-olive/loop-development-kit-go/ldk-test"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	loop "github.com/open-olive/loop-development-kit/ldk/go/example/whisper-markdown/loop"
+	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
 )
 
 func TestController(t *testing.T) {

@@ -9,9 +9,9 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	ldk "github.com/open-olive/loop-development-kit-go"
-	loop "github.com/open-olive/loop-development-kit-go/example/whisper-form/loop"
-	ldktest "github.com/open-olive/loop-development-kit-go/ldk-test"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	loop "github.com/open-olive/loop-development-kit/ldk/go/example/whisper-form/loop"
+	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
 )
 
 func TestWhisperFormResolved(t *testing.T) {

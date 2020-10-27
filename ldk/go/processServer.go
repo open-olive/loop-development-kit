@@ -4,8 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 type ProcessServer struct {
@@ -20,7 +19,7 @@ func convertProcessInfo(pi ProcessInfo) *proto.ProcessInfo {
 	}
 }
 
-func (p *ProcessServer) ProcessStateStream(req *empty.Empty, stream proto.Process_ProcessStateStreamServer) error {
+func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest, stream proto.Process_ProcessStateStreamServer) error {
 	handler := func(event ProcessEvent, err error) {
 		var errText string
 		if err != nil {
@@ -44,7 +43,7 @@ func (p *ProcessServer) ProcessStateStream(req *empty.Empty, stream proto.Proces
 	return nil
 }
 
-func (p *ProcessServer) ProcessState(ctx context.Context, e *empty.Empty) (*proto.ProcessStateResponse, error) {
+func (p *ProcessServer) ProcessState(ctx context.Context, e *proto.ProcessStateRequest) (*proto.ProcessStateResponse, error) {
 	processes, err := p.Impl.State()
 	if err != nil {
 		return nil, err

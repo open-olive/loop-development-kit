@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 type CursorServer struct {
 	Impl CursorService
 }
 
-func (c *CursorServer) CursorPosition(ctx context.Context, empty *empty.Empty) (*proto.CursorPositionResponse, error) {
+func (c *CursorServer) CursorPosition(ctx context.Context, empty *proto.CursorPositionRequest) (*proto.CursorPositionResponse, error) {
 	value, err := c.Impl.Position()
 	if err != nil {
 		return nil, err
@@ -24,7 +23,7 @@ func (c *CursorServer) CursorPosition(ctx context.Context, empty *empty.Empty) (
 	}, nil
 }
 
-func (c *CursorServer) CursorPositionStream(_ *empty.Empty, stream proto.Cursor_CursorPositionStreamServer) error {
+func (c *CursorServer) CursorPositionStream(_ *proto.CursorPositionStreamRequest, stream proto.Cursor_CursorPositionStreamServer) error {
 	handler := func(msg CursorPosition, err error) {
 		var errText string
 		if err != nil {

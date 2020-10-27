@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClipboardClient = void 0;
-const empty_pb_1 = require("google-protobuf/google/protobuf/empty_pb");
 const baseClient_1 = __importDefault(require("./baseClient"));
 const clipboard_grpc_pb_1 = require("../grpc/clipboard_grpc_pb");
 const clipboard_pb_1 = __importDefault(require("../grpc/clipboard_pb"));
@@ -25,10 +24,10 @@ class ClipboardClient extends baseClient_1.default {
         return clipboard_grpc_pb_1.ClipboardClient;
     }
     queryClipboard() {
-        return this.buildQuery((message, callback) => this.client.clipboardRead(message, callback), () => new empty_pb_1.Empty(), clipboardTransformer);
+        return this.buildQuery((message, callback) => this.client.clipboardRead(message, callback), () => new clipboard_pb_1.default.ClipboardReadRequest(), clipboardTransformer);
     }
     streamClipboard(listener) {
-        return new transformingStream_1.TransformingStream(this.client.clipboardReadStream(new empty_pb_1.Empty()), clipboardTransformer, listener);
+        return new transformingStream_1.TransformingStream(this.client.clipboardReadStream(new clipboard_pb_1.default.ClipboardReadStreamRequest().setSession(this.createSessionMessage())), clipboardTransformer, listener);
     }
     writeClipboard(text) {
         return this.buildQuery((message, callback) => {

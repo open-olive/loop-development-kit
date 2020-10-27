@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const grpc_js_1 = __importDefault(require("@grpc/grpc-js"));
+const session_pb_1 = require("../grpc/session_pb");
 /**
  * The BaseClient class provides connectivity support to GRPC services as a client.
  *
@@ -17,8 +18,9 @@ class BaseClient {
      *
      * @async
      * @param connInfo - An object containing host process connection information.
+     * @param session - An object containing the loop Session information.
      */
-    connect(connInfo) {
+    connect(connInfo, session) {
         return new Promise((resolve, reject) => {
             let address;
             if (connInfo.network === 'unix') {
@@ -28,6 +30,7 @@ class BaseClient {
                 address = connInfo.address;
             }
             const ClientConstructor = this.generateClient();
+            this.session = session;
             this.client = new ClientConstructor(address, grpc_js_1.default.credentials.createInsecure());
             // set a 5 second deadline
             const deadline = new Date();
@@ -51,6 +54,7 @@ class BaseClient {
     buildQuery(clientRequest, builder, renderer) {
         return new Promise((resolve, reject) => {
             const message = builder();
+            message.setSession(this.createSessionMessage());
             const callback = (err, response) => {
                 if (err) {
                     return reject(err);
@@ -60,6 +64,12 @@ class BaseClient {
             clientRequest(message, callback);
         });
     }
+    createSessionMessage() {
+        const session = new session_pb_1.Session();
+        session.setLoopid(this.session.getLoopid());
+        session.setToken(this.session.getToken());
+        return session;
+    }
     get client() {
         if (this._client === undefined) {
             throw new Error('Accessing client before connected');
@@ -68,6 +78,15 @@ class BaseClient {
     }
     set client(client) {
         this._client = client;
+    }
+    get session() {
+        if (this._session === undefined) {
+            throw new Error('Accessing session data before connection');
+        }
+        return this._session;
+    }
+    set session(session) {
+        this._session = session;
     }
 }
 exports.default = BaseClient;

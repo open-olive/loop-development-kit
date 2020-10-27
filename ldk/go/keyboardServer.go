@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"unicode/utf8"
 
-	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 // KeyboardServer is used by the controller plugin host to receive plugin initiated communication
@@ -53,7 +52,7 @@ func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamReq
 }
 
 // KeyboardScancodeStream streams each scancode as it is pressed
-func (k *KeyboardServer) KeyboardScancodeStream(_ *empty.Empty, stream proto.Keyboard_KeyboardScancodeStreamServer) error {
+func (k *KeyboardServer) KeyboardScancodeStream(_ *proto.KeyboardScancodeStreamRequest, stream proto.Keyboard_KeyboardScancodeStreamServer) error {
 	handler := func(event ScancodeEvent, err error) {
 		var errText string
 		if err != nil {
@@ -74,7 +73,7 @@ func (k *KeyboardServer) KeyboardScancodeStream(_ *empty.Empty, stream proto.Key
 }
 
 // KeyboardTextStream streams chunks of text when the user finishes typing them
-func (k *KeyboardServer) KeyboardTextStream(_ *empty.Empty, stream proto.Keyboard_KeyboardTextStreamServer) error {
+func (k *KeyboardServer) KeyboardTextStream(_ *proto.KeyboardTextStreamRequest, stream proto.Keyboard_KeyboardTextStreamServer) error {
 	handler := func(s string, err error) {
 		var errText string
 		if err != nil {
@@ -102,7 +101,7 @@ func (k *KeyboardServer) KeyboardTextStream(_ *empty.Empty, stream proto.Keyboar
 }
 
 // KeyboardCharacterStream streams characters as the are typed
-func (k *KeyboardServer) KeyboardCharacterStream(_ *empty.Empty, stream proto.Keyboard_KeyboardCharacterStreamServer) error {
+func (k *KeyboardServer) KeyboardCharacterStream(_ *proto.KeyboardCharacterStreamRequest, stream proto.Keyboard_KeyboardCharacterStreamServer) error {
 	handler := func(r rune, err error) {
 		var errText string
 		if err != nil {

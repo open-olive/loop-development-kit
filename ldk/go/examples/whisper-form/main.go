@@ -1,7 +1,7 @@
 package main
 
 import (
-	loop "github.com/open-olive/loop-development-kit-go/example/whisper-form/loop"
+	loop "github.com/open-olive/loop-development-kit/ldk/go/example/whisper-form/loop"
 )
 
 func main() {

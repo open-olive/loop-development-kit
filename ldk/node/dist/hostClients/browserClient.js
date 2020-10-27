@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BrowserClient = void 0;
-const empty_pb_1 = require("google-protobuf/google/protobuf/empty_pb");
 const browser_grpc_pb_1 = require("../grpc/browser_grpc_pb");
+const browser_pb_1 = __importDefault(require("../grpc/browser_pb"));
 const baseClient_1 = __importDefault(require("./baseClient"));
 const transformingStream_1 = require("./transformingStream");
 /**
@@ -25,16 +25,16 @@ const transformSelectedTextResponse = (message) => {
  */
 class BrowserClient extends baseClient_1.default {
     queryActiveURL() {
-        return this.buildQuery((message, callback) => this.client.browserActiveURL(message, callback), () => new empty_pb_1.Empty(), (response) => response.getUrl());
+        return this.buildQuery((message, callback) => this.client.browserActiveURL(message, callback), () => new browser_pb_1.default.BrowserActiveURLRequest(), (response) => response.getUrl());
     }
     querySelectedText() {
-        return this.buildQuery((message, callback) => this.client.browserSelectedText(message, callback), () => new empty_pb_1.Empty(), transformSelectedTextResponse);
+        return this.buildQuery((message, callback) => this.client.browserSelectedText(message, callback), () => new browser_pb_1.default.BrowserSelectedTextRequest(), transformSelectedTextResponse);
     }
     streamActiveURL(listener) {
-        return new transformingStream_1.TransformingStream(this.client.browserActiveURLStream(new empty_pb_1.Empty()), (message) => message.getUrl(), listener);
+        return new transformingStream_1.TransformingStream(this.client.browserActiveURLStream(new browser_pb_1.default.BrowserActiveURLRequest().setSession(this.createSessionMessage())), (message) => message.getUrl(), listener);
     }
     streamSelectedText(listener) {
-        return new transformingStream_1.TransformingStream(this.client.browserSelectedTextStream(new empty_pb_1.Empty()), transformSelectedTextResponse, listener);
+        return new transformingStream_1.TransformingStream(this.client.browserSelectedTextStream(new browser_pb_1.default.BrowserSelectedTextStreamRequest().setSession(this.createSessionMessage())), transformSelectedTextResponse, listener);
     }
     generateClient() {
         return browser_grpc_pb_1.BrowserClient;

@@ -7,12 +7,13 @@ import (
 	"io"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 // WhisperClient is used by the controller plugin to facilitate plugin initiated communication with the host
 type WhisperClient struct {
-	client proto.WhisperClient
+	client  proto.WhisperClient
+	session proto.Session
 }
 
 // WhisperMarkdown is used by loops to create markdown whispers
@@ -28,6 +29,7 @@ func (m *WhisperClient) Markdown(ctx context.Context, content *WhisperContentMar
 			},
 		},
 		Markdown: content.Markdown,
+		Session:  &m.session,
 	})
 	return err
 }
@@ -47,6 +49,7 @@ func (m *WhisperClient) Confirm(ctx context.Context, content *WhisperContentConf
 		Markdown:     content.Markdown,
 		RejectLabel:  content.RejectLabel,
 		ResolveLabel: content.ResolveLabel,
+		Session:      &m.session,
 	})
 
 	return response.Response, err
@@ -78,6 +81,7 @@ func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (
 		SubmitLabel: content.SubmitLabel,
 		CancelLabel: content.CancelLabel,
 		Inputs:      inputs,
+		Session:     &m.session,
 	})
 	if err != nil {
 		return false, nil, err

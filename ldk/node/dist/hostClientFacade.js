@@ -29,18 +29,18 @@ class HostClientFacade {
         this.window = new windowClient_1.WindowClient();
         this.browser = new browserClient_1.BrowserClient();
     }
-    connect(connInfo) {
+    connect(connInfo, session) {
         return Promise.all([
-            this.whisper.connect(connInfo),
-            this.storage.connect(connInfo),
-            this.keyboard.connect(connInfo),
-            this.clipboard.connect(connInfo),
-            this.cursor.connect(connInfo),
-            this.hover.connect(connInfo),
-            this.fileSystem.connect(connInfo),
-            this.process.connect(connInfo),
-            this.window.connect(connInfo),
-            this.browser.connect(connInfo),
+            this.whisper.connect(connInfo, session),
+            this.storage.connect(connInfo, session),
+            this.keyboard.connect(connInfo, session),
+            this.clipboard.connect(connInfo, session),
+            this.cursor.connect(connInfo, session),
+            this.hover.connect(connInfo, session),
+            this.fileSystem.connect(connInfo, session),
+            this.process.connect(connInfo, session),
+            this.window.connect(connInfo, session),
+            this.browser.connect(connInfo, session),
         ]);
     }
 }

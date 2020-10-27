@@ -3,7 +3,7 @@ package ldk
 import (
 	"context"
 
-	"github.com/open-olive/loop-development-kit-go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -23,7 +23,7 @@ func (m *StorageServer) StorageDelete(ctx context.Context, req *proto.StorageDel
 }
 
 // StorageDeleteAll is used by plugins to delete all storage entries
-func (m *StorageServer) StorageDeleteAll(ctx context.Context, req *emptypb.Empty) (*emptypb.Empty, error) {
+func (m *StorageServer) StorageDeleteAll(ctx context.Context, req *proto.StorageDeleteAllRequest) (*emptypb.Empty, error) {
 	err := m.Impl.StorageDeleteAll()
 	if err != nil {
 		return nil, err
@@ -45,7 +45,7 @@ func (m *StorageServer) StorageHasKey(ctx context.Context, req *proto.StorageHas
 }
 
 // StorageKeys is used by plugins to get a list of keys for all entries
-func (m *StorageServer) StorageKeys(ctx context.Context, req *emptypb.Empty) (*proto.StorageKeysResponse, error) {
+func (m *StorageServer) StorageKeys(ctx context.Context, req *proto.StorageKeysRequest) (*proto.StorageKeysResponse, error) {
 	keys, err := m.Impl.StorageKeys()
 	if err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (m *StorageServer) StorageRead(ctx context.Context, req *proto.StorageReadR
 }
 
 // StorageReadAll is used by plugins to get a map of all entries
-func (m *StorageServer) StorageReadAll(ctx context.Context, req *emptypb.Empty) (*proto.StorageReadAllResponse, error) {
+func (m *StorageServer) StorageReadAll(ctx context.Context, req *proto.StorageReadAllRequest) (*proto.StorageReadAllResponse, error) {
 	entries, err := m.Impl.StorageReadAll()
 	if err != nil {
 		return nil, err
