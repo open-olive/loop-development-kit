@@ -2,7 +2,7 @@ module github.com/open-olive/sidekick-controller-examplego
 
 go 1.14
 
-replace github.com/open-olive/loop-development-kit/ldk/go => ../../../loop-development-kit-go
+replace github.com/open-olive/loop-development-kit/ldk/go => ../..
 
 require (
 	github.com/dustin/go-humanize v1.0.0
