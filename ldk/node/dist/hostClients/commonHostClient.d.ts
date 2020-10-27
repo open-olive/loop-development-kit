@@ -4,5 +4,5 @@ import { Session } from '../grpc/session_pb';
  * @internal
  */
 export interface CommonHostClient {
-    connect(conn: ConnInfo.AsObject, session: Session): Promise<void>;
+    connect(conn: ConnInfo.AsObject, session: Session.AsObject): Promise<void>;
 }

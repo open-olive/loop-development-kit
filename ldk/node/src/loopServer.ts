@@ -42,7 +42,7 @@ export default class LoopServer implements ILoopServer {
 
     const hostClient = new HostClientFacade();
 
-    await hostClient.connect(connInfo, sessionInfo).catch((err) => {
+    await hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
       throw err;
     });
     await this.loop.start(hostClient);

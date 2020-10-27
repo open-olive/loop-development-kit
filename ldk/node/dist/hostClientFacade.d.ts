@@ -25,5 +25,5 @@ export default class HostClientFacade implements HostServices {
     process: ProcessClient;
     window: WindowClient;
     browser: BrowserClient;
-    connect(connInfo: ConnInfo.AsObject, session: Session): Promise<void[]>;
+    connect(connInfo: ConnInfo.AsObject, session: Session.AsObject): Promise<void[]>;
 }

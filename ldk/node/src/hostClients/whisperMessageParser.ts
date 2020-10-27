@@ -1,5 +1,5 @@
 import * as jspb from 'google-protobuf';
-import messages from '../grpc/whisper_pb';
+import * as messages from '../grpc/whisper_pb';
 import {
   WhisperFormOutputTypes,
   WhisperFormSubmitEvent,

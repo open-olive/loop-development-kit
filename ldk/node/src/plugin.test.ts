@@ -25,8 +25,8 @@ describe('Plugin', () => {
       expect(GrpcServer).toHaveBeenCalledTimes(1);
       expect(GRPC.Server).toHaveBeenCalledTimes(1);
       const mockServer = mockedServices.mock.instances[0];
-      // Called with BrokerService,HealthService
-      expect(mockServer.addService).toHaveBeenCalledTimes(2);
+      // Called with BrokerService
+      expect(mockServer.addService).toHaveBeenCalledTimes(1);
     });
   });
   describe('#serve', () => {

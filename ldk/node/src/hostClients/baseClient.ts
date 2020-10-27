@@ -1,4 +1,4 @@
-import grpc, { ServiceError } from '@grpc/grpc-js';
+import * as grpc from '@grpc/grpc-js';
 import { ConnInfo } from '../grpc/broker_pb';
 import { CommonHostServer } from '../commonHostServer';
 import { CommonHostClient } from './commonHostClient';
@@ -34,7 +34,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   implements CommonHostClient {
   private _client: THost | undefined;
 
-  protected _session: Session | undefined;
+  protected _session: Session.AsObject | undefined;
 
   /**
    * Implementation should return the constructor function/class for the GRPC Client itself, imported from the SERVICE_grpc_pb file.
@@ -49,7 +49,10 @@ export default abstract class BaseClient<THost extends CommonHostServer>
    * @param connInfo - An object containing host process connection information.
    * @param session - An object containing the loop Session information.
    */
-  connect(connInfo: ConnInfo.AsObject, session: Session): Promise<void> {
+  connect(
+    connInfo: ConnInfo.AsObject,
+    session: Session.AsObject,
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       let address;
       if (connInfo.network === 'unix') {
@@ -88,7 +91,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   buildQuery<TMessage extends SetSessionable, TResponse, TOutput>(
     clientRequest: (
       message: TMessage,
-      callback: (err: ServiceError | null, response: TResponse) => void,
+      callback: (err: grpc.ServiceError | null, response: TResponse) => void,
     ) => void,
     builder: () => TMessage,
     renderer: (response: TResponse) => TOutput | undefined,
@@ -96,7 +99,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
     return new Promise((resolve, reject) => {
       const message = builder();
       message.setSession(this.createSessionMessage());
-      const callback = (err: ServiceError | null, response: TResponse) => {
+      const callback = (err: grpc.ServiceError | null, response: TResponse) => {
         if (err) {
           return reject(err);
         }
@@ -108,8 +111,8 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
   protected createSessionMessage(): Session {
     const session = new Session();
-    session.setLoopid(this.session.getLoopid());
-    session.setToken(this.session.getToken());
+    session.setLoopid(this.session.loopid);
+    session.setToken(this.session.token);
     return session;
   }
 
@@ -124,14 +127,14 @@ export default abstract class BaseClient<THost extends CommonHostServer>
     this._client = client;
   }
 
-  protected get session(): Session {
+  protected get session(): Session.AsObject {
     if (this._session === undefined) {
       throw new Error('Accessing session data before connection');
     }
     return this._session;
   }
 
-  protected set session(session: Session) {
+  protected set session(session: Session.AsObject) {
     this._session = session;
   }
 }
