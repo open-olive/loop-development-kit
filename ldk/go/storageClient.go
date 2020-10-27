@@ -9,40 +9,40 @@ import (
 // StorageClient is used by the controller plugin to facilitate plugin initiated communication with the host
 type StorageClient struct {
 	client  proto.StorageClient
-	session proto.Session
+	session LoopSession
 }
 
 // StorageDelete is used by plugins to delete a storage entry
-func (m *StorageClient) StorageDelete(key string) error {
+func (s *StorageClient) StorageDelete(key string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	_, err := m.client.StorageDelete(ctx, &proto.StorageDeleteRequest{
+	_, err := s.client.StorageDelete(ctx, &proto.StorageDeleteRequest{
 		Key:     key,
-		Session: &m.session,
+		Session: s.session.toProto(),
 	})
 	return err
 }
 
 // StorageDeleteAll is used by plugins to delete all storage entries
-func (m *StorageClient) StorageDeleteAll() error {
+func (s *StorageClient) StorageDeleteAll() error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	_, err := m.client.StorageDeleteAll(ctx, &proto.StorageDeleteAllRequest{
-		Session: &m.session,
+	_, err := s.client.StorageDeleteAll(ctx, &proto.StorageDeleteAllRequest{
+		Session: s.session.toProto(),
 	})
 	return err
 }
 
 // StorageHasKey is used by plugins to check if a key exists in storage
-func (m *StorageClient) StorageHasKey(key string) (bool, error) {
+func (s *StorageClient) StorageHasKey(key string) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := m.client.StorageHasKey(ctx, &proto.StorageHasKeyRequest{
+	resp, err := s.client.StorageHasKey(ctx, &proto.StorageHasKeyRequest{
 		Key:     key,
-		Session: &m.session,
+		Session: s.session.toProto(),
 	})
 	if err != nil {
 		return false, err
@@ -52,11 +52,11 @@ func (m *StorageClient) StorageHasKey(key string) (bool, error) {
 }
 
 // StorageKeys is used by plugins to get a list of keys for all entries
-func (m *StorageClient) StorageKeys() ([]string, error) {
+func (s *StorageClient) StorageKeys() ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := m.client.StorageKeys(ctx, &proto.StorageKeysRequest{Session: &m.session})
+	resp, err := s.client.StorageKeys(ctx, &proto.StorageKeysRequest{Session: s.session.toProto()})
 	if err != nil {
 		return nil, err
 	}
@@ -65,13 +65,13 @@ func (m *StorageClient) StorageKeys() ([]string, error) {
 }
 
 // StorageRead is used by plugins to get the value of an entry
-func (m *StorageClient) StorageRead(key string) (string, error) {
+func (s *StorageClient) StorageRead(key string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := m.client.StorageRead(ctx, &proto.StorageReadRequest{
+	resp, err := s.client.StorageRead(ctx, &proto.StorageReadRequest{
 		Key:     key,
-		Session: &m.session,
+		Session: s.session.toProto(),
 	})
 	if err != nil {
 		return "", err
@@ -81,12 +81,12 @@ func (m *StorageClient) StorageRead(key string) (string, error) {
 }
 
 // StorageReadAll is used by plugins to get a map of all entries
-func (m *StorageClient) StorageReadAll() (map[string]string, error) {
+func (s *StorageClient) StorageReadAll() (map[string]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := m.client.StorageReadAll(ctx, &proto.StorageReadAllRequest{
-		Session: &m.session,
+	resp, err := s.client.StorageReadAll(ctx, &proto.StorageReadAllRequest{
+		Session: s.session.toProto(),
 	})
 	if err != nil {
 		return nil, err
@@ -101,14 +101,14 @@ func (m *StorageClient) StorageReadAll() (map[string]string, error) {
 }
 
 // StorageWrite is used by plugins to set an entry
-func (m *StorageClient) StorageWrite(key, value string) error {
+func (s *StorageClient) StorageWrite(key, value string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	_, err := m.client.StorageWrite(ctx, &proto.StorageWriteRequest{
+	_, err := s.client.StorageWrite(ctx, &proto.StorageWriteRequest{
 		Key:     key,
 		Value:   value,
-		Session: &m.session,
+		Session: s.session.toProto(),
 	})
 	return err
 }

@@ -24,14 +24,26 @@ type LoopServer struct {
 	filesystemConn *grpc.ClientConn
 }
 
+type LoopSession struct {
+	loopID string
+	token  string
+}
+
+func (s LoopSession) toProto() *proto.Session {
+	return &proto.Session{
+		LoopID: s.loopID,
+		Token:  s.token,
+	}
+}
+
 // LoopStart is called by the host when the plugin is started to provide access to the host process
 func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest) (*emptypb.Empty, error) {
 	var err error
 
 	hosts := req.ServiceHosts
-	session := proto.Session{
-		LoopID: req.Session.LoopID,
-		Token:  req.Session.Token,
+	session := LoopSession{
+		loopID: req.Session.LoopID,
+		token:  req.Session.Token,
 	}
 
 	m.storageConn, err = m.broker.Dial(hosts.HostStorage)
