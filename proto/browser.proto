@@ -1,0 +1,58 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "session.proto";
+
+service Browser {
+    // get the active URL
+    rpc BrowserActiveURL (BrowserActiveURLRequest) returns (BrowserActiveURLResponse);
+
+    // stream active URL every time it changes
+    rpc BrowserActiveURLStream (BrowserActiveURLStreamRequest) returns (stream BrowserActiveURLStreamResponse);
+
+    // get currently selected text
+    rpc BrowserSelectedText (BrowserSelectedTextRequest) returns (BrowserSelectedTextResponse);
+
+    // stream selected text every time it changes
+    rpc BrowserSelectedTextStream (BrowserSelectedTextStreamRequest) returns (stream BrowserSelectedTextStreamResponse);
+}
+
+message BrowserActiveURLRequest {
+    Session session = 1;
+}
+
+message BrowserActiveURLResponse {
+    string url = 1;
+}
+
+message BrowserActiveURLStreamRequest {
+    Session session = 1;
+}
+
+message BrowserActiveURLStreamResponse {
+    string url = 1;
+    string error = 15;
+}
+
+message BrowserSelectedTextRequest {
+    Session session = 1;
+}
+
+message BrowserSelectedTextResponse {
+    string text = 1;
+    string url = 2;
+    string tabTitle = 3;
+}
+
+message BrowserSelectedTextStreamRequest {
+    Session session = 1;
+}
+
+message BrowserSelectedTextStreamResponse {
+    string text = 1;
+    string url = 2;
+    string tabTitle = 3;
+    string error = 15;
+}
+

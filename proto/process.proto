@@ -1,0 +1,43 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "session.proto";
+
+service Process {
+    // stream updates to processes as they happen
+    rpc ProcessStateStream (ProcessStateStreamRequest) returns (stream ProcessStateStreamResponse);
+
+    // get a list of all processes
+    rpc ProcessState (ProcessStateRequest) returns (ProcessStateResponse);
+}
+
+message ProcessInfo {
+    int32 pid = 1;
+    string command = 2;
+    string arguments = 3;
+}
+
+enum ProcessAction {
+    PROCESS_ACTION_UNKNOWN = 0; 
+    PROCESS_ACTION_STARTED = 1;
+    PROCESS_ACTION_STOPPED = 2;
+}
+
+message ProcessStateStreamRequest {
+    Session session = 1;
+}
+
+message ProcessStateStreamResponse {
+    ProcessInfo process = 1;
+    ProcessAction action = 2;
+    string error = 15;
+}
+
+message ProcessStateRequest {
+    Session session = 1;
+}
+
+message ProcessStateResponse {
+    repeated ProcessInfo processes = 1;
+}

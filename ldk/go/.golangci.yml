@@ -1,0 +1,34 @@
+# This file contains all available configuration options
+# with their default values.
+
+linters:
+  # please, do not use `enable-all`: it's deprecated and will be removed soon.
+  # inverted configuration with `enable-all` and `disable` is not scalable during updates of golangci-lint
+  disable-all: true
+  enable:
+    - asciicheck
+    - bodyclose
+    - deadcode
+    - errcheck
+    - exhaustive
+    - goimports
+    - golint
+    - gomnd
+    - gosec
+    - gosimple
+    - gofmt
+    - govet
+    - ineffassign
+    - interfacer
+    - nakedret
+    - noctx
+    - nolintlint
+    - rowserrcheck
+    - scopelint
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varcheck

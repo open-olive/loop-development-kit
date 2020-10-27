@@ -1,0 +1,78 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "google/protobuf/empty.proto";
+import "session.proto";
+
+service Storage {
+    // Check in storage to determine if a key has a value
+    rpc StorageHasKey(StorageHasKeyRequest) returns (StorageHasKeyResponse);
+    
+    // Get a list of storage keys
+    rpc StorageKeys(StorageKeysRequest) returns (StorageKeysResponse);
+    
+    // Read the value of a specific storage key
+    rpc StorageRead(StorageReadRequest) returns (StorageReadResponse);
+    
+    // Get all storage keys and values
+    rpc StorageReadAll(StorageReadAllRequest) returns (StorageReadAllResponse);
+    
+    // Delete the value of a specific key
+    rpc StorageDelete(StorageDeleteRequest) returns (google.protobuf.Empty);
+
+    // Delete the values of all keys
+    rpc StorageDeleteAll(StorageDeleteAllRequest) returns (google.protobuf.Empty);
+
+    // Write the value of a key to storage
+    rpc StorageWrite(StorageWriteRequest) returns (google.protobuf.Empty);
+}
+
+message StorageHasKeyRequest {
+    Session session = 1;
+    string key = 2;
+}
+
+message StorageHasKeyResponse {
+    bool hasKey = 1;
+}
+
+message StorageKeysRequest {
+    Session session = 1;
+}
+
+message StorageKeysResponse {
+    repeated string keys = 1;
+}
+
+message StorageReadRequest {
+    Session session = 1;
+    string key = 2;
+}
+
+message StorageReadResponse {
+    string value = 1;
+}
+
+message StorageReadAllRequest {
+    Session session = 1;
+}
+
+message StorageReadAllResponse {
+    map<string, string> entries = 1;
+}
+
+message StorageDeleteRequest {
+    Session session = 1;
+    string key = 2;
+}
+
+message StorageDeleteAllRequest {
+    Session session = 1;
+}
+
+message StorageWriteRequest {
+    Session session = 1;
+    string key = 2;
+    string value = 3;
+}
