@@ -82,10 +82,12 @@ func TestWhisperFormResolved(t *testing.T) {
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
 						Tooltip: "Your full name.",
+						Order:   1,
 					},
 					"email": &ldk.WhisperContentFormInputText{
 						Label:   "Email Address",
 						Tooltip: "Your email address.",
+						Order:   2,
 					},
 				},
 			}
@@ -257,10 +259,12 @@ func TestWhisperFormRejected(t *testing.T) {
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
 						Tooltip: "Your full name.",
+						Order:   1,
 					},
 					"email": &ldk.WhisperContentFormInputText{
 						Label:   "Email Address",
 						Tooltip: "Your email address.",
+						Order:   2,
 					},
 				},
 			}
@@ -437,10 +441,12 @@ func TestWhisperFormUpdateValid(t *testing.T) {
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
 						Tooltip: "Your full name.",
+						Order:   1,
 					},
 					"email": &ldk.WhisperContentFormInputText{
 						Label:   "Email Address",
 						Tooltip: "Your email address.",
+						Order:   2,
 					},
 				},
 			}
@@ -603,10 +609,12 @@ func TestWhisperFormUpdateInvalid(t *testing.T) {
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
 						Tooltip: "Your full name.",
+						Order:   1,
 					},
 					"email": &ldk.WhisperContentFormInputText{
 						Label:   "Email Address",
 						Tooltip: "Your email address.",
+						Order:   2,
 					},
 				},
 			}

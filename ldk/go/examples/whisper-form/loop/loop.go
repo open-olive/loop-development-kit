@@ -69,10 +69,12 @@ func (c *Loop) run() {
 			"name": &ldk.WhisperContentFormInputText{
 				Label:   "Full Name",
 				Tooltip: "Your full name.",
+				Order:   1,
 			},
 			"email": &ldk.WhisperContentFormInputText{
 				Label:   "Email Address",
 				Tooltip: "Your email address.",
+				Order:   2,
 				OnChange: func(email string) {
 					match, err := regexp.MatchString("^\\S+@\\S+$", email)
 					if err != nil || !match {

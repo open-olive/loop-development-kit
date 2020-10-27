@@ -62,18 +62,21 @@ message WhisperFormInput {
         string label = 1;
         string tooltip = 2;
         bool value = 3;
+        uint32 order = 4;
     }
 
     message Email {
         string label = 1;
         string tooltip = 2;
         string value = 3;
+        uint32 order = 4;
     }
 
     message Markdown {
         string label = 1;
         string tooltip = 2;
         string value = 3;
+        uint32 order = 4;
     }
 
     message Number {
@@ -82,23 +85,27 @@ message WhisperFormInput {
         float value = 3;
         float min = 4;
         float max = 5;
+        uint32 order = 6;
     }
 
     message Password {
         string label = 1;
         string tooltip = 2;
+        uint32 order = 3;
     }
 
     message Radio {
         string label = 1;
         string tooltip = 2;
         repeated string options = 3;
+        uint32 order = 4;
     }
 
     message Select {
         string label = 1;
         string tooltip = 2;
         repeated string options = 3;
+        uint32 order = 4;
     }
 
     message Tel {
@@ -106,18 +113,21 @@ message WhisperFormInput {
         string tooltip = 2;
         string value = 3;
         string pattern = 4;
+        uint32 order = 5;
     }
 
     message Text {
         string label = 1;
         string tooltip = 2;
         string value = 3;
+        uint32 order = 4;
     }
 
     message Time {
         string label = 1;
         string tooltip = 2;
         google.protobuf.Timestamp value = 3;
+        uint32 order = 4;
     }
 
     oneof InputOneof {
