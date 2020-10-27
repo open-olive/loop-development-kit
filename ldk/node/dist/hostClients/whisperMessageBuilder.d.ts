@@ -1,5 +1,5 @@
 import { Whisper, WhisperConfirmConfig, WhisperFormConfig, WhisperFormInput, WhisperFormInputs } from './whisperService';
-import messages from '../grpc/whisper_pb';
+import * as messages from '../grpc/whisper_pb';
 export declare const generateWhisperInput: (input: WhisperFormInputs) => messages.WhisperFormInput;
 export declare const generateWhisperMeta: (whisper: Whisper) => messages.WhisperMeta;
 export declare const generateWhisperForm: (config: WhisperFormConfig) => messages.WhisperFormRequest;

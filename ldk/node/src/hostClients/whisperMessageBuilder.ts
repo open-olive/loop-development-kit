@@ -6,13 +6,17 @@ import {
   WhisperFormInput,
   WhisperFormInputs,
 } from './whisperService';
-import messages from '../grpc/whisper_pb';
+import * as messages from '../grpc/whisper_pb';
 
 type FormMessage<T> = {
   setLabel(value: string): T;
   setTooltip(value: string): T;
 };
 
+/**
+ * @param msg
+ * @param input
+ */
 function setFormMessages<T>(
   msg: FormMessage<T>,
   input: WhisperFormInput<any>,

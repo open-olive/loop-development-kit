@@ -43,7 +43,7 @@ class LoopServer {
                 return;
             }
             const hostClient = new hostClientFacade_1.default();
-            yield hostClient.connect(connInfo, sessionInfo).catch((err) => {
+            yield hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
                 throw err;
             });
             yield this.loop.start(hostClient);

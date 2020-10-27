@@ -1,34 +1,50 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.transformResponse = void 0;
-const whisper_pb_1 = __importDefault(require("../grpc/whisper_pb"));
+const messages = __importStar(require("../grpc/whisper_pb"));
 const transformOutput = (message) => {
     const messageObj = message.toObject();
     switch (message.getOutputOneofCase()) {
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.CHECKBOX:
+        case messages.WhisperFormOutput.OutputOneofCase.CHECKBOX:
             return messageObj.checkbox.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.EMAIL:
+        case messages.WhisperFormOutput.OutputOneofCase.EMAIL:
             return messageObj.email.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.MARKDOWN:
+        case messages.WhisperFormOutput.OutputOneofCase.MARKDOWN:
             return messageObj.markdown.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.NUMBER:
+        case messages.WhisperFormOutput.OutputOneofCase.NUMBER:
             return messageObj.number.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.PASSWORD:
+        case messages.WhisperFormOutput.OutputOneofCase.PASSWORD:
             return messageObj.password.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.RADIO:
+        case messages.WhisperFormOutput.OutputOneofCase.RADIO:
             return messageObj.radio.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.SELECT:
+        case messages.WhisperFormOutput.OutputOneofCase.SELECT:
             return messageObj.select.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.TEL:
+        case messages.WhisperFormOutput.OutputOneofCase.TEL:
             return messageObj.tel.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.TEXT:
+        case messages.WhisperFormOutput.OutputOneofCase.TEXT:
             return messageObj.text.value;
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.TIME:
+        case messages.WhisperFormOutput.OutputOneofCase.TIME:
             return message.getTime().getValue().toDate();
-        case whisper_pb_1.default.WhisperFormOutput.OutputOneofCase.OUTPUTONEOF_NOT_SET:
+        case messages.WhisperFormOutput.OutputOneofCase.OUTPUTONEOF_NOT_SET:
         default:
             return '';
     }

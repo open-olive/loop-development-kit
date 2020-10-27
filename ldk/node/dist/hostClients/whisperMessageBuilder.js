@@ -1,17 +1,37 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildWhisperConfirmMessage = exports.buildWhisperMarkdownRequest = exports.generateWhisperForm = exports.generateWhisperMeta = exports.generateWhisperInput = void 0;
 const timestamp_pb_1 = require("google-protobuf/google/protobuf/timestamp_pb");
-const whisper_pb_1 = __importDefault(require("../grpc/whisper_pb"));
+const messages = __importStar(require("../grpc/whisper_pb"));
+/**
+ * @param msg
+ * @param input
+ */
 function setFormMessages(msg, input) {
     msg.setLabel(input.label);
     msg.setTooltip(input.tooltip);
 }
 exports.generateWhisperInput = (input) => {
-    const WFI = whisper_pb_1.default.WhisperFormInput;
+    const WFI = messages.WhisperFormInput;
     const msg = new WFI();
     let inputMsg;
     switch (input.type) {
@@ -86,7 +106,7 @@ exports.generateWhisperInput = (input) => {
     return msg;
 };
 exports.generateWhisperMeta = (whisper) => {
-    const style = new whisper_pb_1.default.WhisperStyle();
+    const style = new messages.WhisperStyle();
     if (whisper.style) {
         style.setBackgroundcolor(whisper.style.backgroundColor || '#fff');
         style.setPrimarycolor(whisper.style.primaryColor || '#666');
@@ -97,14 +117,14 @@ exports.generateWhisperMeta = (whisper) => {
         style.setPrimarycolor('#666');
         style.setHighlightcolor('#651fff');
     }
-    const whisperMsg = new whisper_pb_1.default.WhisperMeta();
+    const whisperMsg = new messages.WhisperMeta();
     whisperMsg.setLabel(whisper.label);
     whisperMsg.setStyle(style);
     whisperMsg.setIcon(whisper.icon);
     return whisperMsg;
 };
 exports.generateWhisperForm = (config) => {
-    const msg = new whisper_pb_1.default.WhisperFormRequest();
+    const msg = new messages.WhisperFormRequest();
     msg.setMeta(exports.generateWhisperMeta(config));
     msg.setMarkdown(config.markdown);
     msg.setCancellabel(config.cancelButton);
@@ -119,12 +139,12 @@ exports.generateWhisperForm = (config) => {
 };
 exports.buildWhisperMarkdownRequest = (whisper) => {
     const meta = exports.generateWhisperMeta(whisper);
-    const result = new whisper_pb_1.default.WhisperMarkdownRequest().setMeta(meta);
+    const result = new messages.WhisperMarkdownRequest().setMeta(meta);
     result.setMarkdown(whisper.markdown);
     return result;
 };
 exports.buildWhisperConfirmMessage = (whisper) => {
-    const msg = new whisper_pb_1.default.WhisperConfirmRequest();
+    const msg = new messages.WhisperConfirmRequest();
     msg.setRejectlabel(whisper.rejectButton);
     msg.setResolvelabel(whisper.resolveButton);
     msg.setMarkdown(whisper.markdown);

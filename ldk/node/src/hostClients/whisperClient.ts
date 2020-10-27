@@ -1,5 +1,5 @@
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import messages from '../grpc/whisper_pb';
+import * as messages from '../grpc/whisper_pb';
 import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
 import {
   Whisper,

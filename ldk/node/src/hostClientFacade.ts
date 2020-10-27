@@ -38,7 +38,7 @@ export default class HostClientFacade implements HostServices {
 
   public connect(
     connInfo: ConnInfo.AsObject,
-    session: Session,
+    session: Session.AsObject,
   ): Promise<void[]> {
     return Promise.all([
       this.whisper.connect(connInfo, session),
