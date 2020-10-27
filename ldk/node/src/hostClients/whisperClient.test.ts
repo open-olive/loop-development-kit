@@ -1,15 +1,16 @@
 import { mocked } from 'ts-jest/utils';
-import Services from '../grpc/whisper_grpc_pb';
-import Messages from '../grpc/whisper_pb';
+import * as Services from '../grpc/whisper_grpc_pb';
+import * as Messages from '../grpc/whisper_pb';
 import WhisperClient from './whisperClient';
 import { ConnInfo } from '../grpc/broker_pb';
+import {Session} from "../grpc/session_pb";
 
 jest.mock('../grpc/whisper_pb');
 jest.mock('../grpc/whisper_grpc_pb');
 
 const WHISPER_ID = '1234-abcd';
 const hostClient = mocked(Services.WhisperClient);
-const newMessage = mocked(Messages.WhisperNewRequest);
+const newMessage = mocked(Messages.WhisperMarkdownRequest);
 
 type CallbackHandlerFunc<TRequest = any, TResponse = any> = (
   request: TRequest,
@@ -19,6 +20,7 @@ type CallbackHandlerFunc<TRequest = any, TResponse = any> = (
 describe('WhisperHostClient', () => {
   let subject: WhisperClient;
   let connInfo: ConnInfo.AsObject;
+  let session: Session.AsObject;
   let waitForReadyMock: jest.Mock;
   let emitWhisperMock: jest.Mock;
   let updateWhisperMock: jest.Mock;
@@ -36,6 +38,10 @@ describe('WhisperHostClient', () => {
       serviceId: 1,
       network: 'n',
     };
+    session = {
+      loopid: "LOOP_ID",
+      token: "TOKEN"
+    }
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
     hostClient.mockImplementation(() => {
       return {
@@ -47,7 +53,7 @@ describe('WhisperHostClient', () => {
   });
   describe('#connect', () => {
     it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo)).resolves.toBe(undefined);
+      await expect(subject.connect(connInfo, session)).resolves.toBe(undefined);
     });
   });
   describe('#emitWhisper', () => {
@@ -68,7 +74,7 @@ describe('WhisperHostClient', () => {
           .mockImplementation(
             createCallbackHandler({ getId: () => WHISPER_ID }),
           );
-        await subject.connect(connInfo);
+        await subject.connect(connInfo, session);
         await subject.markdownWhisper({
           markdown: 'abc',
           icon: 'ok',
@@ -88,10 +94,10 @@ describe('WhisperHostClient', () => {
         expect(style.setHighlightcolor).toHaveBeenCalledWith('#651fff');
       });
       it('should create the whisper properly', () => {
-        const whisper = mocked(Messages.WhisperMsg).mock.instances[0];
+        const whisper = mocked(Messages.WhisperMarkdownRequest).mock.instances[0];
         expect(whisper.setMarkdown).toHaveBeenCalledWith('abc');
-        expect(whisper.setLabel).toHaveBeenCalledWith('Hey');
-        expect(whisper.setIcon).toHaveBeenCalledWith('ok');
+        // expect(whisper.setLabel).toHaveBeenCalledWith('Hey');
+        // expect(whisper.setIcon).toHaveBeenCalledWith('ok');
       });
       it('should return the ID from the whisper', async () => {
         await expect(
@@ -103,61 +109,6 @@ describe('WhisperHostClient', () => {
       it('should throw an error', async () => {
         await expect(
           subject.markdownWhisper({ markdown: 'a', label: 'a', icon: 'a' }),
-        ).rejects.toThrow('Accessing client before connected');
-      });
-    });
-  });
-  describe('#updatetWhisper', () => {
-    describe('when initialized', () => {
-      beforeEach(async () => {
-        updateWhisperMock = jest
-          .fn()
-          .mockImplementation(createCallbackHandler());
-        await subject.connect(connInfo);
-        await subject.updateWhisper(WHISPER_ID, {
-          markdown: 'abc',
-          icon: 'ok',
-          label: 'Hey',
-        });
-      });
-      it('should call the client with a whisper message', async () => {
-        const whisperRequest = mocked(Messages.WhisperUpdateRequest).mock
-          .instances[0];
-        expect(updateWhisperMock).toHaveBeenCalledWith(
-          whisperRequest,
-          expect.anything(),
-        );
-      });
-      it('should set the style to default', () => {
-        const style = mocked(Messages.WhisperStyle).mock.instances[0];
-        expect(style.setBackgroundcolor).toHaveBeenCalledWith('#fff');
-        expect(style.setPrimarycolor).toHaveBeenCalledWith('#666');
-        expect(style.setHighlightcolor).toHaveBeenCalledWith('#651fff');
-      });
-      it('should create the whisper properly', () => {
-        const whisper = mocked(Messages.WhisperMsg).mock.instances[0];
-        expect(whisper.setMarkdown).toHaveBeenCalledWith('abc');
-        expect(whisper.setLabel).toHaveBeenCalledWith('Hey');
-        expect(whisper.setIcon).toHaveBeenCalledWith('ok');
-      });
-      it('should resolve successfully', async () => {
-        await expect(
-          subject.updateWhisper(WHISPER_ID, {
-            markdown: 'a',
-            label: 'a',
-            icon: 'a',
-          }),
-        ).resolves;
-      });
-    });
-    describe('before connected', () => {
-      it('should throw an error', async () => {
-        await expect(
-          subject.updateWhisper(WHISPER_ID, {
-            markdown: 'a',
-            label: 'a',
-            icon: 'a',
-          }),
         ).rejects.toThrow('Accessing client before connected');
       });
     });
