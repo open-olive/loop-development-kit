@@ -65,6 +65,12 @@ export interface WhisperFormInput<T extends string> {
   label: string;
   tooltip: string;
   type: T;
+  /**
+   *  Value the UI uses to order the form inputs.
+   *  Value must be greater than 0
+   *  If this value is ommited it will deafult to 0
+   */
+  order?: number;
 }
 
 export interface WhisperFormInputWithValue<T, TType extends string>

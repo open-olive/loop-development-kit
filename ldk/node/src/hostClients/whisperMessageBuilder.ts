@@ -11,6 +11,7 @@ import * as messages from '../grpc/whisper_pb';
 type FormMessage<T> = {
   setLabel(value: string): T;
   setTooltip(value: string): T;
+  setOrder(value: number): T;
 };
 
 /**
@@ -23,6 +24,9 @@ function setFormMessages<T>(
 ): void {
   msg.setLabel(input.label);
   msg.setTooltip(input.tooltip);
+  if (input.order && input.order > 0) {
+    msg.setOrder(input.order);
+  }
 }
 
 export const generateWhisperInput = (

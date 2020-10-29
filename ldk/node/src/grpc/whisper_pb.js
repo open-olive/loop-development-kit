@@ -2391,7 +2391,8 @@ proto.proto.WhisperFormInput.Checkbox.toObject = function(includeInstance, msg) 
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    value: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
+    value: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -2440,6 +2441,10 @@ proto.proto.WhisperFormInput.Checkbox.deserializeBinaryFromReader = function(msg
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setValue(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2487,6 +2492,13 @@ proto.proto.WhisperFormInput.Checkbox.serializeBinaryToWriter = function(message
   if (f) {
     writer.writeBool(
       3,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
       f
     );
   }
@@ -2547,6 +2559,24 @@ proto.proto.WhisperFormInput.Checkbox.prototype.setValue = function(value) {
 };
 
 
+/**
+ * optional uint32 order = 4;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Checkbox.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Checkbox} returns this
+ */
+proto.proto.WhisperFormInput.Checkbox.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
 
 
 
@@ -2581,7 +2611,8 @@ proto.proto.WhisperFormInput.Email.toObject = function(includeInstance, msg) {
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    value: jspb.Message.getFieldWithDefault(msg, 3, "")
+    value: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -2630,6 +2661,10 @@ proto.proto.WhisperFormInput.Email.deserializeBinaryFromReader = function(msg, r
       var value = /** @type {string} */ (reader.readString());
       msg.setValue(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2677,6 +2712,13 @@ proto.proto.WhisperFormInput.Email.serializeBinaryToWriter = function(message, w
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
       f
     );
   }
@@ -2737,6 +2779,24 @@ proto.proto.WhisperFormInput.Email.prototype.setValue = function(value) {
 };
 
 
+/**
+ * optional uint32 order = 4;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Email.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Email} returns this
+ */
+proto.proto.WhisperFormInput.Email.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
 
 
 
@@ -2771,7 +2831,8 @@ proto.proto.WhisperFormInput.Markdown.toObject = function(includeInstance, msg) 
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    value: jspb.Message.getFieldWithDefault(msg, 3, "")
+    value: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -2820,6 +2881,10 @@ proto.proto.WhisperFormInput.Markdown.deserializeBinaryFromReader = function(msg
       var value = /** @type {string} */ (reader.readString());
       msg.setValue(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2867,6 +2932,13 @@ proto.proto.WhisperFormInput.Markdown.serializeBinaryToWriter = function(message
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
       f
     );
   }
@@ -2927,6 +2999,24 @@ proto.proto.WhisperFormInput.Markdown.prototype.setValue = function(value) {
 };
 
 
+/**
+ * optional uint32 order = 4;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Markdown.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Markdown} returns this
+ */
+proto.proto.WhisperFormInput.Markdown.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
 
 
 
@@ -2963,7 +3053,8 @@ proto.proto.WhisperFormInput.Number.toObject = function(includeInstance, msg) {
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
     value: jspb.Message.getFloatingPointFieldWithDefault(msg, 3, 0.0),
     min: jspb.Message.getFloatingPointFieldWithDefault(msg, 4, 0.0),
-    max: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0)
+    max: jspb.Message.getFloatingPointFieldWithDefault(msg, 5, 0.0),
+    order: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -3019,6 +3110,10 @@ proto.proto.WhisperFormInput.Number.deserializeBinaryFromReader = function(msg, 
     case 5:
       var value = /** @type {number} */ (reader.readFloat());
       msg.setMax(value);
+      break;
+    case 6:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
       break;
     default:
       reader.skipField();
@@ -3081,6 +3176,13 @@ proto.proto.WhisperFormInput.Number.serializeBinaryToWriter = function(message, 
   if (f !== 0.0) {
     writer.writeFloat(
       5,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      6,
       f
     );
   }
@@ -3177,6 +3279,24 @@ proto.proto.WhisperFormInput.Number.prototype.setMax = function(value) {
 };
 
 
+/**
+ * optional uint32 order = 6;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Number.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Number} returns this
+ */
+proto.proto.WhisperFormInput.Number.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 6, value);
+};
+
+
 
 
 
@@ -3210,7 +3330,8 @@ proto.proto.WhisperFormInput.Password.prototype.toObject = function(opt_includeI
 proto.proto.WhisperFormInput.Password.toObject = function(includeInstance, msg) {
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    tooltip: jspb.Message.getFieldWithDefault(msg, 2, "")
+    tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    order: jspb.Message.getFieldWithDefault(msg, 3, 0)
   };
 
   if (includeInstance) {
@@ -3255,6 +3376,10 @@ proto.proto.WhisperFormInput.Password.deserializeBinaryFromReader = function(msg
       var value = /** @type {string} */ (reader.readString());
       msg.setTooltip(value);
       break;
+    case 3:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -3298,6 +3423,13 @@ proto.proto.WhisperFormInput.Password.serializeBinaryToWriter = function(message
       f
     );
   }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      3,
+      f
+    );
+  }
 };
 
 
@@ -3334,6 +3466,24 @@ proto.proto.WhisperFormInput.Password.prototype.getTooltip = function() {
  */
 proto.proto.WhisperFormInput.Password.prototype.setTooltip = function(value) {
   return jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * optional uint32 order = 3;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Password.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Password} returns this
+ */
+proto.proto.WhisperFormInput.Password.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
@@ -3378,7 +3528,8 @@ proto.proto.WhisperFormInput.Radio.toObject = function(includeInstance, msg) {
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    optionsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
+    optionsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -3427,6 +3578,10 @@ proto.proto.WhisperFormInput.Radio.deserializeBinaryFromReader = function(msg, r
       var value = /** @type {string} */ (reader.readString());
       msg.addOptions(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -3474,6 +3629,13 @@ proto.proto.WhisperFormInput.Radio.serializeBinaryToWriter = function(message, w
   if (f.length > 0) {
     writer.writeRepeatedString(
       3,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
       f
     );
   }
@@ -3553,6 +3715,24 @@ proto.proto.WhisperFormInput.Radio.prototype.clearOptionsList = function() {
 };
 
 
+/**
+ * optional uint32 order = 4;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Radio.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Radio} returns this
+ */
+proto.proto.WhisperFormInput.Radio.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
 
 /**
  * List of repeated fields within this message type.
@@ -3594,7 +3774,8 @@ proto.proto.WhisperFormInput.Select.toObject = function(includeInstance, msg) {
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    optionsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f
+    optionsList: (f = jspb.Message.getRepeatedField(msg, 3)) == null ? undefined : f,
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -3643,6 +3824,10 @@ proto.proto.WhisperFormInput.Select.deserializeBinaryFromReader = function(msg, 
       var value = /** @type {string} */ (reader.readString());
       msg.addOptions(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -3690,6 +3875,13 @@ proto.proto.WhisperFormInput.Select.serializeBinaryToWriter = function(message, 
   if (f.length > 0) {
     writer.writeRepeatedString(
       3,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
       f
     );
   }
@@ -3769,6 +3961,24 @@ proto.proto.WhisperFormInput.Select.prototype.clearOptionsList = function() {
 };
 
 
+/**
+ * optional uint32 order = 4;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Select.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Select} returns this
+ */
+proto.proto.WhisperFormInput.Select.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
 
 
 
@@ -3804,7 +4014,8 @@ proto.proto.WhisperFormInput.Tel.toObject = function(includeInstance, msg) {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
     value: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    pattern: jspb.Message.getFieldWithDefault(msg, 4, "")
+    pattern: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    order: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -3856,6 +4067,10 @@ proto.proto.WhisperFormInput.Tel.deserializeBinaryFromReader = function(msg, rea
     case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setPattern(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
       break;
     default:
       reader.skipField();
@@ -3911,6 +4126,13 @@ proto.proto.WhisperFormInput.Tel.serializeBinaryToWriter = function(message, wri
   if (f.length > 0) {
     writer.writeString(
       4,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      5,
       f
     );
   }
@@ -3989,6 +4211,24 @@ proto.proto.WhisperFormInput.Tel.prototype.setPattern = function(value) {
 };
 
 
+/**
+ * optional uint32 order = 5;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Tel.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Tel} returns this
+ */
+proto.proto.WhisperFormInput.Tel.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
 
 
 
@@ -4023,7 +4263,8 @@ proto.proto.WhisperFormInput.Text.toObject = function(includeInstance, msg) {
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    value: jspb.Message.getFieldWithDefault(msg, 3, "")
+    value: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -4072,6 +4313,10 @@ proto.proto.WhisperFormInput.Text.deserializeBinaryFromReader = function(msg, re
       var value = /** @type {string} */ (reader.readString());
       msg.setValue(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -4119,6 +4364,13 @@ proto.proto.WhisperFormInput.Text.serializeBinaryToWriter = function(message, wr
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
       f
     );
   }
@@ -4179,6 +4431,24 @@ proto.proto.WhisperFormInput.Text.prototype.setValue = function(value) {
 };
 
 
+/**
+ * optional uint32 order = 4;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Text.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Text} returns this
+ */
+proto.proto.WhisperFormInput.Text.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
 
 
 
@@ -4213,7 +4483,8 @@ proto.proto.WhisperFormInput.Time.toObject = function(includeInstance, msg) {
   var f, obj = {
     label: jspb.Message.getFieldWithDefault(msg, 1, ""),
     tooltip: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    value: (f = msg.getValue()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f)
+    value: (f = msg.getValue()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    order: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -4262,6 +4533,10 @@ proto.proto.WhisperFormInput.Time.deserializeBinaryFromReader = function(msg, re
       var value = new google_protobuf_timestamp_pb.Timestamp;
       reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
       msg.setValue(value);
+      break;
+    case 4:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setOrder(value);
       break;
     default:
       reader.skipField();
@@ -4312,6 +4587,13 @@ proto.proto.WhisperFormInput.Time.serializeBinaryToWriter = function(message, wr
       3,
       f,
       google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getOrder();
+  if (f !== 0) {
+    writer.writeUint32(
+      4,
+      f
     );
   }
 };
@@ -4387,6 +4669,24 @@ proto.proto.WhisperFormInput.Time.prototype.clearValue = function() {
  */
 proto.proto.WhisperFormInput.Time.prototype.hasValue = function() {
   return jspb.Message.getField(this, 3) != null;
+};
+
+
+/**
+ * optional uint32 order = 4;
+ * @return {number}
+ */
+proto.proto.WhisperFormInput.Time.prototype.getOrder = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.WhisperFormInput.Time} returns this
+ */
+proto.proto.WhisperFormInput.Time.prototype.setOrder = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 
