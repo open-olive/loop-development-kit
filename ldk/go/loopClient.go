@@ -66,6 +66,20 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	clipboardBrokerID := m.broker.NextId()
 	go m.broker.AcceptAndServe(clipboardBrokerID, clipboardServerFunc)
 
+	// setup ui server
+	uiHostServer := &UIServer{
+		Impl: host.UI(),
+	}
+
+	uiServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
+		m.s = grpc.NewServer(opts...)
+		proto.RegisterUIServer(m.s, uiHostServer)
+		return m.s
+	}
+
+	uiBrokerID := m.broker.NextId()
+	go m.broker.AcceptAndServe(uiBrokerID, uiServerFunc)
+
 	//setup keyboard server
 	keyboardHostServer := &KeyboardServer{
 		Impl: host.Keyboard(),
