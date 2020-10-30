@@ -24,6 +24,7 @@ message serviceHosts {
     uint32 hostHover      = 8;
     uint32 hostWindow     = 9;
     uint32 hostCursor     = 10;  
+    uint32 hostUI         = 11;
 }
 
 message LoopStartRequest {

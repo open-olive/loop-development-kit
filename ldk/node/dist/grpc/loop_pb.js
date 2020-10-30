@@ -95,7 +95,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
             hostfilesystem: jspb.Message.getFieldWithDefault(msg, 7, 0),
             hosthover: jspb.Message.getFieldWithDefault(msg, 8, 0),
             hostwindow: jspb.Message.getFieldWithDefault(msg, 9, 0),
-            hostcursor: jspb.Message.getFieldWithDefault(msg, 10, 0)
+            hostcursor: jspb.Message.getFieldWithDefault(msg, 10, 0),
+            hostui: jspb.Message.getFieldWithDefault(msg, 11, 0)
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -167,6 +168,10 @@ proto.proto.serviceHosts.deserializeBinaryFromReader = function (msg, reader) {
                 var value = /** @type {number} */ (reader.readUint32());
                 msg.setHostcursor(value);
                 break;
+            case 11:
+                var value = /** @type {number} */ (reader.readUint32());
+                msg.setHostui(value);
+                break;
             default:
                 reader.skipField();
                 break;
@@ -231,6 +236,10 @@ proto.proto.serviceHosts.serializeBinaryToWriter = function (message, writer) {
     f = message.getHostcursor();
     if (f !== 0) {
         writer.writeUint32(10, f);
+    }
+    f = message.getHostui();
+    if (f !== 0) {
+        writer.writeUint32(11, f);
     }
 };
 /**
@@ -372,6 +381,20 @@ proto.proto.serviceHosts.prototype.getHostcursor = function () {
  */
 proto.proto.serviceHosts.prototype.setHostcursor = function (value) {
     return jspb.Message.setProto3IntField(this, 10, value);
+};
+/**
+ * optional uint32 hostUI = 11;
+ * @return {number}
+ */
+proto.proto.serviceHosts.prototype.getHostui = function () {
+    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
+};
+/**
+ * @param {number} value
+ * @return {!proto.proto.serviceHosts} returns this
+ */
+proto.proto.serviceHosts.prototype.setHostui = function (value) {
+    return jspb.Message.setProto3IntField(this, 11, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
