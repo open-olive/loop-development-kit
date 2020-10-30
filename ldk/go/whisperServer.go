@@ -68,6 +68,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Checkbox.Label,
 				Tooltip: inputContainer.Checkbox.Tooltip,
 				Value:   inputContainer.Checkbox.Value,
+				Order:   inputContainer.Checkbox.Order,
 				OnChange: func(value bool) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -94,6 +95,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Email.Label,
 				Tooltip: inputContainer.Email.Tooltip,
 				Value:   inputContainer.Email.Value,
+				Order:   inputContainer.Email.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -120,6 +122,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Markdown.Label,
 				Tooltip: inputContainer.Markdown.Tooltip,
 				Value:   inputContainer.Markdown.Value,
+				Order:   inputContainer.Markdown.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -146,6 +149,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Number.Label,
 				Tooltip: inputContainer.Number.Tooltip,
 				Value:   inputContainer.Number.Value,
+				Order:   inputContainer.Number.Order,
 				OnChange: func(value float32) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -171,6 +175,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 			inputs[key] = &WhisperContentFormInputPassword{
 				Label:   inputContainer.Password.Label,
 				Tooltip: inputContainer.Password.Tooltip,
+				Order:   inputContainer.Password.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -197,6 +202,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Radio.Label,
 				Tooltip: inputContainer.Radio.Tooltip,
 				Options: inputContainer.Radio.Options,
+				Order:   inputContainer.Radio.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -223,6 +229,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Select.Label,
 				Tooltip: inputContainer.Select.Tooltip,
 				Options: inputContainer.Select.Options,
+				Order:   inputContainer.Select.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -248,6 +255,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 			inputs[key] = &WhisperContentFormInputTel{
 				Label:   inputContainer.Tel.Label,
 				Tooltip: inputContainer.Tel.Tooltip,
+				Order:   inputContainer.Tel.Order,
 				Value:   inputContainer.Tel.Value,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
@@ -275,6 +283,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Text.Label,
 				Tooltip: inputContainer.Text.Tooltip,
 				Value:   inputContainer.Text.Value,
+				Order:   inputContainer.Text.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
 						WhisperFormResponseOneof: &proto.WhisperFormStreamResponse_Update{
@@ -305,6 +314,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 			inputs[key] = &WhisperContentFormInputTime{
 				Label:   inputContainer.Time.Label,
 				Tooltip: inputContainer.Time.Tooltip,
+				Order:   inputContainer.Time.Order,
 				Value:   value,
 				OnChange: func(value time.Time) {
 					valueProto, err := ptypes.TimestampProto(value)

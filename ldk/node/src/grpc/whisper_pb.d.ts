@@ -317,6 +317,9 @@ export namespace WhisperFormInput {
         getValue(): boolean;
         setValue(value: boolean): Checkbox;
 
+        getOrder(): number;
+        setOrder(value: number): Checkbox;
+
 
         serializeBinary(): Uint8Array;
         toObject(includeInstance?: boolean): Checkbox.AsObject;
@@ -333,6 +336,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             value: boolean,
+            order: number,
         }
     }
 
@@ -345,6 +349,9 @@ export namespace WhisperFormInput {
 
         getValue(): string;
         setValue(value: string): Email;
+
+        getOrder(): number;
+        setOrder(value: number): Email;
 
 
         serializeBinary(): Uint8Array;
@@ -362,6 +369,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             value: string,
+            order: number,
         }
     }
 
@@ -374,6 +382,9 @@ export namespace WhisperFormInput {
 
         getValue(): string;
         setValue(value: string): Markdown;
+
+        getOrder(): number;
+        setOrder(value: number): Markdown;
 
 
         serializeBinary(): Uint8Array;
@@ -391,6 +402,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             value: string,
+            order: number,
         }
     }
 
@@ -410,6 +422,9 @@ export namespace WhisperFormInput {
         getMax(): number;
         setMax(value: number): Number;
 
+        getOrder(): number;
+        setOrder(value: number): Number;
+
 
         serializeBinary(): Uint8Array;
         toObject(includeInstance?: boolean): Number.AsObject;
@@ -428,6 +443,7 @@ export namespace WhisperFormInput {
             value: number,
             min: number,
             max: number,
+            order: number,
         }
     }
 
@@ -437,6 +453,9 @@ export namespace WhisperFormInput {
 
         getTooltip(): string;
         setTooltip(value: string): Password;
+
+        getOrder(): number;
+        setOrder(value: number): Password;
 
 
         serializeBinary(): Uint8Array;
@@ -453,6 +472,7 @@ export namespace WhisperFormInput {
         export type AsObject = {
             label: string,
             tooltip: string,
+            order: number,
         }
     }
 
@@ -467,6 +487,9 @@ export namespace WhisperFormInput {
         getOptionsList(): Array<string>;
         setOptionsList(value: Array<string>): Radio;
         addOptions(value: string, index?: number): string;
+
+        getOrder(): number;
+        setOrder(value: number): Radio;
 
 
         serializeBinary(): Uint8Array;
@@ -484,6 +507,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             optionsList: Array<string>,
+            order: number,
         }
     }
 
@@ -498,6 +522,9 @@ export namespace WhisperFormInput {
         getOptionsList(): Array<string>;
         setOptionsList(value: Array<string>): Select;
         addOptions(value: string, index?: number): string;
+
+        getOrder(): number;
+        setOrder(value: number): Select;
 
 
         serializeBinary(): Uint8Array;
@@ -515,6 +542,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             optionsList: Array<string>,
+            order: number,
         }
     }
 
@@ -530,6 +558,9 @@ export namespace WhisperFormInput {
 
         getPattern(): string;
         setPattern(value: string): Tel;
+
+        getOrder(): number;
+        setOrder(value: number): Tel;
 
 
         serializeBinary(): Uint8Array;
@@ -548,6 +579,7 @@ export namespace WhisperFormInput {
             tooltip: string,
             value: string,
             pattern: string,
+            order: number,
         }
     }
 
@@ -560,6 +592,9 @@ export namespace WhisperFormInput {
 
         getValue(): string;
         setValue(value: string): Text;
+
+        getOrder(): number;
+        setOrder(value: number): Text;
 
 
         serializeBinary(): Uint8Array;
@@ -577,6 +612,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             value: string,
+            order: number,
         }
     }
 
@@ -592,6 +628,9 @@ export namespace WhisperFormInput {
         clearValue(): void;
         getValue(): google_protobuf_timestamp_pb.Timestamp | undefined;
         setValue(value?: google_protobuf_timestamp_pb.Timestamp): Time;
+
+        getOrder(): number;
+        setOrder(value: number): Time;
 
 
         serializeBinary(): Uint8Array;
@@ -609,6 +648,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             value?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+            order: number,
         }
     }
 

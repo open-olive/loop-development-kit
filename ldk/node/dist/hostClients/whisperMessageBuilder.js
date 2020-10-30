@@ -29,6 +29,9 @@ const messages = __importStar(require("../grpc/whisper_pb"));
 function setFormMessages(msg, input) {
     msg.setLabel(input.label);
     msg.setTooltip(input.tooltip);
+    if (input.order && input.order > 0) {
+        msg.setOrder(input.order);
+    }
 }
 exports.generateWhisperInput = (input) => {
     const WFI = messages.WhisperFormInput;

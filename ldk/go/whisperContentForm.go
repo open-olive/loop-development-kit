@@ -61,6 +61,7 @@ type WhisperContentFormInputCheckbox struct {
 	Tooltip  string     `json:"tooltip"`
 	Value    bool       `json:"value"`
 	OnChange func(bool) `json:"-"`
+	Order    uint32     `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -107,6 +108,7 @@ type WhisperContentFormInputEmail struct {
 	Tooltip  string       `json:"tooltip"`
 	Value    string       `json:"value"`
 	OnChange func(string) `json:"-"`
+	Order    uint32       `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -122,6 +124,7 @@ func (fc *WhisperContentFormInputEmail) ToProto() (*proto.WhisperFormInput, erro
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
 				Value:   fc.Value,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -153,6 +156,7 @@ type WhisperContentFormInputMarkdown struct {
 	Tooltip  string       `json:"tooltip"`
 	Value    string       `json:"value"`
 	OnChange func(string) `json:"-"`
+	Order    uint32       `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -168,6 +172,7 @@ func (fc *WhisperContentFormInputMarkdown) ToProto() (*proto.WhisperFormInput, e
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
 				Value:   fc.Value,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -201,6 +206,7 @@ type WhisperContentFormInputNumber struct {
 	Max      float32       `json:"max"`
 	Value    float32       `json:"value"`
 	OnChange func(float32) `json:"-"`
+	Order    uint32        `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -218,6 +224,7 @@ func (fc *WhisperContentFormInputNumber) ToProto() (*proto.WhisperFormInput, err
 				Value:   fc.Value,
 				Min:     fc.Min,
 				Max:     fc.Max,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -248,6 +255,7 @@ type WhisperContentFormInputPassword struct {
 	Label    string       `json:"label"`
 	Tooltip  string       `json:"tooltip"`
 	OnChange func(string) `json:"-"`
+	Order    uint32       `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -262,6 +270,7 @@ func (fc *WhisperContentFormInputPassword) ToProto() (*proto.WhisperFormInput, e
 			Password: &proto.WhisperFormInput_Password{
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -293,6 +302,7 @@ type WhisperContentFormInputRadio struct {
 	Tooltip  string       `json:"tooltip"`
 	Options  []string     `json:"options"`
 	OnChange func(string) `json:"-"`
+	Order    uint32       `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -308,6 +318,7 @@ func (fc *WhisperContentFormInputRadio) ToProto() (*proto.WhisperFormInput, erro
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
 				Options: fc.Options,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -339,6 +350,7 @@ type WhisperContentFormInputSelect struct {
 	Tooltip  string       `json:"tooltip"`
 	Options  []string     `json:"options"`
 	OnChange func(string) `json:"-"`
+	Order    uint32       `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -354,6 +366,7 @@ func (fc *WhisperContentFormInputSelect) ToProto() (*proto.WhisperFormInput, err
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
 				Options: fc.Options,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -386,6 +399,7 @@ type WhisperContentFormInputTel struct {
 	Pattern  string       `json:"pattern"`
 	Value    string       `json:"value"`
 	OnChange func(string) `json:"-"`
+	Order    uint32       `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -401,6 +415,7 @@ func (fc *WhisperContentFormInputTel) ToProto() (*proto.WhisperFormInput, error)
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
 				Value:   fc.Value,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -432,6 +447,7 @@ type WhisperContentFormInputText struct {
 	Tooltip  string       `json:"tooltip"`
 	Value    string       `json:"value"`
 	OnChange func(string) `json:"-"`
+	Order    uint32       `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -447,6 +463,7 @@ func (fc *WhisperContentFormInputText) ToProto() (*proto.WhisperFormInput, error
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
 				Value:   fc.Value,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
@@ -478,6 +495,7 @@ type WhisperContentFormInputTime struct {
 	Tooltip  string          `json:"tooltip"`
 	Value    time.Time       `json:"value"`
 	OnChange func(time.Time) `json:"-"`
+	Order    uint32          `json:"order"`
 }
 
 // Type returns the type of field for this form element
@@ -498,6 +516,7 @@ func (fc *WhisperContentFormInputTime) ToProto() (*proto.WhisperFormInput, error
 				Label:   fc.Label,
 				Tooltip: fc.Tooltip,
 				Value:   value,
+				Order:   fc.Order,
 			},
 		},
 	}, nil
