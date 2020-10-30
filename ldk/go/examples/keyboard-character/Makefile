@@ -35,7 +35,7 @@ build: clean build/darwin-amd64/plugin build/windows-amd64/plugin
 
 # TODO: Remove before merging to master branch
 deploy-local: build
-	cp build/darwin-amd64/plugin ~/Library/Application\ Support/Sidekick/loops/1/plugin
+	cp build/darwin-amd64/plugin ~/Library/Application\ Support/Olive\ Helps/loops/1/plugin
 
 test:
 	go test -v ./...

@@ -14,7 +14,7 @@ jobs:
         go-version: [1.15.x]
         os:
           - macos-latest
-          # - windows-latest
+          - windows-latest
     name: lint
     runs-on: ${{ matrix.os }}
     steps:
@@ -25,4 +25,5 @@ jobs:
           # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
           version: v1.32
           args: --timeout=10m
+          # Only the LDK is checked; does not appear to check examples.
           working-directory: ldk/go
