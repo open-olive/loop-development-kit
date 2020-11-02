@@ -11,6 +11,7 @@ import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
+import { UIClient } from './hostClients/uiClient';
 
 /**
  * @internal
@@ -36,6 +37,8 @@ export default class HostClientFacade implements HostServices {
 
   public browser: BrowserClient = new BrowserClient();
 
+  public ui: UIClient = new UIClient();
+
   public connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
@@ -51,6 +54,7 @@ export default class HostClientFacade implements HostServices {
       this.process.connect(connInfo, session),
       this.window.connect(connInfo, session),
       this.browser.connect(connInfo, session),
+      this.ui.connect(connInfo, session),
     ]);
   }
 }

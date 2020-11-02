@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>WhisperFormSubmitEvent | Loop Development Kit for Node.js</title>
+	<title>UIService | Loop Development Kit for Node.js</title>
 	<meta name="description" content="Documentation for Loop Development Kit for Node.js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="whisperformsubmitevent.html">WhisperFormSubmitEvent</a>
+					<a href="uiservice.html">UIService</a>
 				</li>
 			</ul>
-			<h1>Interface WhisperFormSubmitEvent</h1>
+			<h1>Interface UIService</h1>
 		</div>
 	</div>
 </header>
@@ -69,8 +69,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">WhisperFormSubmitEvent</span>
+						<span class="target">UIService</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/uiclient.html" class="tsd-signature-type">UIClient</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -78,55 +84,62 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whisperformsubmitevent.html#outputs" class="tsd-kind-icon">outputs</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whisperformsubmitevent.html#submitted" class="tsd-kind-icon">submitted</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whisperformsubmitevent.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="uiservice.html#streamglobalsearch" class="tsd-kind-icon">stream<wbr>Global<wbr>Search</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="uiservice.html#streamsearchbar" class="tsd-kind-icon">stream<wbr>Searchbar</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="outputs" class="tsd-anchor"></a>
-					<h3>outputs</h3>
-					<div class="tsd-signature tsd-kind-icon">outputs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/whisperService.ts#L152">hostClients/whisperService.ts:152</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-index-signature">
-								<h5><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../globals.html#whisperformoutputtypes" class="tsd-signature-type">WhisperFormOutputTypes</a></h5>
-							</li>
-						</ul>
-					</div>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="streamglobalsearch" class="tsd-anchor"></a>
+					<h3>stream<wbr>Global<wbr>Search</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">stream<wbr>Global<wbr>Search<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/uiService.ts#L5">hostClients/uiService.ts:5</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>listener: <a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="submitted" class="tsd-anchor"></a>
-					<h3>submitted</h3>
-					<div class="tsd-signature tsd-kind-icon">submitted<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/whisperService.ts#L151">hostClients/whisperService.ts:151</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"submit"</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/whisperService.ts#L153">hostClients/whisperService.ts:153</a></li>
-						</ul>
-					</aside>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="streamsearchbar" class="tsd-anchor"></a>
+					<h3>stream<wbr>Searchbar</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">stream<wbr>Searchbar<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/uiService.ts#L4">hostClients/uiService.ts:4</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>listener: <a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -158,16 +171,13 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="whisperformsubmitevent.html" class="tsd-kind-icon">Whisper<wbr>Form<wbr>Submit<wbr>Event</a>
+						<a href="uiservice.html" class="tsd-kind-icon">UIService</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whisperformsubmitevent.html#outputs" class="tsd-kind-icon">outputs</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="uiservice.html#streamglobalsearch" class="tsd-kind-icon">stream<wbr>Global<wbr>Search</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whisperformsubmitevent.html#submitted" class="tsd-kind-icon">submitted</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whisperformsubmitevent.html#type" class="tsd-kind-icon">type</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="uiservice.html#streamsearchbar" class="tsd-kind-icon">stream<wbr>Searchbar</a>
 							</li>
 						</ul>
 					</li>
