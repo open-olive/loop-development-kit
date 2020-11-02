@@ -2,6 +2,7 @@ package ldk
 
 import (
 	"context"
+	"github.com/hashicorp/go-multierror"
 	"time"
 
 	"github.com/hashicorp/go-plugin"
@@ -14,9 +15,11 @@ const grpcTimeout = 5 * time.Second
 
 // LoopClient is used by the controller plugin host to facilitate host initiated communication with controller plugins
 type LoopClient struct {
-	broker *plugin.GRPCBroker
-	client proto.LoopClient
-	s      *grpc.Server
+	Authority Authority
+	broker    *plugin.GRPCBroker
+	client    proto.LoopClient
+	s         *grpc.Server
+	session   *Session
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
@@ -24,9 +27,16 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
+	// create session
+	session, err := m.Authority.NewSession()
+	if err != nil {
+		return err
+	}
+
 	// setup whisper server
 	whisperHostServer := &WhisperServer{
-		Impl: host.Whisper(),
+		Authority: m.Authority,
+		Impl:      host.Whisper(),
 	}
 
 	whisperServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -40,7 +50,8 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	// setup storage server
 	storageHostServer := &StorageServer{
-		Impl: host.Storage(),
+		Authority: m.Authority,
+		Impl:      host.Storage(),
 	}
 
 	storageServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -54,7 +65,8 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	// setup clipboard server
 	clipboardHostServer := &ClipboardServer{
-		Impl: host.Clipboard(),
+		Authority: m.Authority,
+		Impl:      host.Clipboard(),
 	}
 
 	clipboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -68,7 +80,8 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	//setup keyboard server
 	keyboardHostServer := &KeyboardServer{
-		Impl: host.Keyboard(),
+		Authority: m.Authority,
+		Impl:      host.Keyboard(),
 	}
 
 	keyboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -81,7 +94,8 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	go m.broker.AcceptAndServe(keyboardBrokerID, keyboardServerFunc)
 
 	processHostServer := &ProcessServer{
-		Impl: host.Process(),
+		Authority: m.Authority,
+		Impl:      host.Process(),
 	}
 
 	processServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -94,7 +108,8 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	go m.broker.AcceptAndServe(processBrokerID, processServerFunc)
 
 	cursorHostServer := &CursorServer{
-		Impl: host.Cursor(),
+		Authority: m.Authority,
+		Impl:      host.Cursor(),
 	}
 
 	cursorServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -107,7 +122,8 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	go m.broker.AcceptAndServe(cursorBrokerID, cursorServerFunc)
 
 	filesystemHostServer := &FilesystemServer{
-		Impl: host.Filesystem(),
+		Authority: m.Authority,
+		Impl:      host.Filesystem(),
 	}
 
 	filesystemServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -119,7 +135,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	filesystemBrokerID := m.broker.NextId()
 	go m.broker.AcceptAndServe(filesystemBrokerID, filesystemServerFunc)
 
-	_, err := m.client.LoopStart(ctx, &proto.LoopStartRequest{
+	_, err = m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		ServiceHosts: &proto.ServiceHosts{
 			HostStorage:    storageBrokerID,
 			HostWhisper:    whisperBrokerID,
@@ -129,11 +145,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 			HostCursor:     cursorBrokerID,
 			HostFilesystem: filesystemBrokerID,
 		},
-		// TODO: Define Session here
-		Session: &proto.Session{
-			LoopID: "LOOP_ID",
-			Token:  "TOKEN",
-		},
+		Session: session.ToProto(),
 	})
 
 	return err
@@ -144,8 +156,19 @@ func (m *LoopClient) LoopStop() error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	m.s.Stop()
+	var multiErr error
 
 	_, err := m.client.LoopStop(ctx, &emptypb.Empty{})
-	return err
+	if err != nil {
+		multiErr = multierror.Append(multiErr, err)
+	}
+
+	m.s.Stop()
+
+	err = m.Authority.CancelSession(m.session)
+	if err != nil {
+		multiErr = multierror.Append(multiErr, err)
+	}
+
+	return multiErr
 }
