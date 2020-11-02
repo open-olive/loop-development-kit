@@ -142,6 +142,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 			HostProcess:    processBrokerID,
 			HostCursor:     cursorBrokerID,
 			HostFilesystem: filesystemBrokerID,
+			HostUI:         uiBrokerID,
 		},
 		// TODO: Define Session here
 		Session: &proto.Session{
