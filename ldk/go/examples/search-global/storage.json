@@ -1,0 +1,6 @@
+{
+    "counter": {
+        "name": "Counter",
+        "description": "A useless counter to demonstrate plugin storage."
+    }
+}

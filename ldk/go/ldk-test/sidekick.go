@@ -14,6 +14,7 @@ type Sidekick struct {
 	CursorService     ldk.CursorService
 	FilesystemService ldk.FilesystemService
 	ProcessService    ldk.ProcessService
+	UIService         ldk.UIService
 }
 
 func (s *Sidekick) Clipboard() ldk.ClipboardService   { return s.ClipboardService }
@@ -23,6 +24,7 @@ func (s *Sidekick) Keyboard() ldk.KeyboardService     { return s.KeyboardService
 func (s *Sidekick) Cursor() ldk.CursorService         { return s.CursorService }
 func (s *Sidekick) Filesystem() ldk.FilesystemService { return s.FilesystemService }
 func (s *Sidekick) Process() ldk.ProcessService       { return s.ProcessService }
+func (s *Sidekick) UI() ldk.UIService                 { return s.UIService }
 
 type ClipboardService struct {
 	Readf   func() (string, error)
@@ -114,4 +116,16 @@ func (f *FilesystemService) ListenDir(ctx context.Context, dir string, handler l
 func (f *FilesystemService) File(name string) (ldk.FileInfo, error) { return f.Filef(name) }
 func (f *FilesystemService) ListenFile(ctx context.Context, file string, handler ldk.ListenFileHandler) error {
 	return f.ListenFilef(ctx, file, handler)
+}
+
+type UIService struct {
+	ListenSearchbarf    func(context.Context, ldk.ListenSearchHandler) error
+	ListenGlobalSearchf func(context.Context, ldk.ListenSearchHandler) error
+}
+
+func (u *UIService) ListenSearchbar(ctx context.Context, cb ldk.ListenSearchHandler) error {
+	return u.ListenSearchbarf(ctx, cb)
+}
+func (u *UIService) ListenGlobalSearch(ctx context.Context, cb ldk.ListenSearchHandler) error {
+	return u.ListenGlobalSearchf(ctx, cb)
 }
