@@ -14,7 +14,7 @@ const (
 
 // Serve creates the new loop and tells the LDK to serve it
 func Serve() error {
-	l := ldk.NewLogger("loop-example")
+	l := ldk.NewLogger("example-search-global")
 	loop, err := NewLoop(l)
 	if err != nil {
 		return err
