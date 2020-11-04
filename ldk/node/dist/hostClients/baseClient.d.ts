@@ -3,6 +3,7 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { CommonHostServer } from '../commonHostServer';
 import { CommonHostClient } from './commonHostClient';
 import { Session } from '../grpc/session_pb';
+import { StoppableMessage } from './stoppableStream';
 /**
  * @internal
  */
@@ -27,6 +28,7 @@ export default abstract class BaseClient<THost extends CommonHostServer> impleme
     protected _session: Session.AsObject | undefined;
     /**
      * Implementation should return the constructor function/class for the GRPC Client itself, imported from the SERVICE_grpc_pb file.
+     *
      * @protected
      */
     protected abstract generateClient(): GRPCClientConstructor<THost>;
@@ -47,6 +49,7 @@ export default abstract class BaseClient<THost extends CommonHostServer> impleme
      * @param renderer - The function that renders the message.
      */
     buildQuery<TMessage extends SetSessionable, TResponse, TOutput>(clientRequest: (message: TMessage, callback: (err: grpc.ServiceError | null, response: TResponse) => void) => void, builder: () => TMessage, renderer: (response: TResponse) => TOutput | undefined): Promise<TOutput>;
+    buildStoppableMessage<TMessage extends SetSessionable, TResponse, TOutput>(clientRequest: (message: TMessage, callback: (err: grpc.ServiceError | null, response: TResponse) => void) => grpc.ClientUnaryCall, builder: () => TMessage, renderer: (response: TResponse) => TOutput): StoppableMessage<TOutput>;
     protected createSessionMessage(): Session;
     protected get client(): THost;
     protected set client(client: THost);

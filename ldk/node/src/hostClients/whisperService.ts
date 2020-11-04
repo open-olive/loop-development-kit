@@ -9,7 +9,11 @@
  * }
  * ```
  */
-import { StoppableStream, StreamListener } from './stoppableStream';
+import {
+  StoppableMessage,
+  StoppableStream,
+  StreamListener,
+} from './stoppableStream';
 
 export interface WhisperStyle {
   /**
@@ -158,11 +162,13 @@ export interface WhisperFormSubmitEvent {
  */
 export interface WhisperService {
   /**
-   * @returns - Promise resolving with the unique ID of the generated whisper.
+   * @returns - A StoppableMessage object containing a promise resolving when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
-  markdownWhisper(whisper: Whisper): Promise<void>;
-
-  confirmWhisper(whisper: WhisperConfirmConfig): Promise<boolean>;
+  markdownWhisper(whisper: Whisper): StoppableMessage<void>;
+  /**
+   * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
+   */
+  confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
 
   formWhisper(
     whisper: WhisperFormConfig,

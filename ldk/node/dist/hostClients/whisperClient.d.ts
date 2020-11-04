@@ -1,7 +1,7 @@
 import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
 import { Whisper, WhisperConfirmConfig, WhisperFormConfig, WhisperFormSubmitEvent, WhisperFormUpdateEvent, WhisperService } from './whisperService';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableMessage, StoppableStream, StreamListener } from './stoppableStream';
 /**
  * Class responsible for abstracting Whisper requests to Olive Helps.
  *
@@ -15,8 +15,8 @@ declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whi
      * @param whisper - An object defining the contents of the Whisper.
      * @returns Promise resolving when the server responds to the command.
      */
-    markdownWhisper(whisper: Whisper): Promise<void>;
-    confirmWhisper(whisper: WhisperConfirmConfig): Promise<boolean>;
+    markdownWhisper(whisper: Whisper): StoppableMessage<void>;
+    confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
     formWhisper(whisper: WhisperFormConfig, listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;
     protected generateClient(): GRPCClientConstructor<WhisperGRPCClient>;
 }

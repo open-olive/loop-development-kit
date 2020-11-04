@@ -21,6 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const grpc = __importStar(require("@grpc/grpc-js"));
 const session_pb_1 = require("../grpc/session_pb");
+const transformingMessage_1 = require("./transformingMessage");
 /**
  * The BaseClient class provides connectivity support to GRPC services as a client.
  *
@@ -79,6 +80,14 @@ class BaseClient {
             };
             clientRequest(message, callback);
         });
+    }
+    buildStoppableMessage(clientRequest, builder, renderer) {
+        const message = builder();
+        message.setSession(this.createSessionMessage());
+        const result = new transformingMessage_1.TransformingMessage(renderer);
+        const call = clientRequest(message, result.callback);
+        result.assignCall(call);
+        return result;
     }
     createSessionMessage() {
         const session = new session_pb_1.Session();

@@ -13,3 +13,13 @@ export interface StoppableStream<T> {
     stop(): void;
     setListener(callback: StreamListener<T>): void;
 }
+/**
+ * The StoppableMessage interface provides access to a promise that resolves when the message completes, and
+ * to the ability to stop the message.
+ *
+ * @typeParam T - The type of the message sent.
+ */
+export interface StoppableMessage<T> {
+    stop(): void;
+    promise(): Promise<T>;
+}

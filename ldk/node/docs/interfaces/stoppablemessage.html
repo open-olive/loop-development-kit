@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>WindowInfoStreamResponse | Loop Development Kit for Node.js</title>
+	<title>StoppableMessage | Loop Development Kit for Node.js</title>
 	<meta name="description" content="Documentation for Loop Development Kit for Node.js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,22 +55,49 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="windowinfostreamresponse.html">WindowInfoStreamResponse</a>
+					<a href="stoppablemessage.html">StoppableMessage</a>
 				</li>
 			</ul>
-			<h1>Interface WindowInfoStreamResponse</h1>
+			<h1>Interface StoppableMessage&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The StoppableMessage interface provides access to a promise that resolves when the message completes, and
+						to the ability to stop the message.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>The type of the message sent.</p>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">WindowInfoStreamResponse</span>
+						<span class="target">StoppableMessage</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/transformingmessage.html" class="tsd-signature-type">TransformingMessage</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -78,36 +105,50 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="windowinfostreamresponse.html#action" class="tsd-kind-icon">action</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="windowinfostreamresponse.html#window" class="tsd-kind-icon">window</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="stoppablemessage.html#promise" class="tsd-kind-icon">promise</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="stoppablemessage.html#stop" class="tsd-kind-icon">stop</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="action" class="tsd-anchor"></a>
-					<h3>action</h3>
-					<div class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">:</span> <a href="../enums/windowstreamaction.html" class="tsd-signature-type">WindowStreamAction</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b8c13f0/ldk/node/src/hostClients/windowService.ts#L24">hostClients/windowService.ts:24</a></li>
-						</ul>
-					</aside>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="promise" class="tsd-anchor"></a>
+					<h3>promise</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">promise<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b8c13f0/ldk/node/src/hostClients/stoppableStream.ts#L28">hostClients/stoppableStream.ts:28</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="window" class="tsd-anchor"></a>
-					<h3>window</h3>
-					<div class="tsd-signature tsd-kind-icon">window<span class="tsd-signature-symbol">:</span> <a href="windowinforesponse.html" class="tsd-signature-type">WindowInfoResponse</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b8c13f0/ldk/node/src/hostClients/windowService.ts#L23">hostClients/windowService.ts:23</a></li>
-						</ul>
-					</aside>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="stop" class="tsd-anchor"></a>
+					<h3>stop</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">stop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b8c13f0/ldk/node/src/hostClients/stoppableStream.ts#L26">hostClients/stoppableStream.ts:26</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -138,14 +179,14 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="windowinfostreamresponse.html" class="tsd-kind-icon">Window<wbr>Info<wbr>Stream<wbr>Response</a>
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
+						<a href="stoppablemessage.html" class="tsd-kind-icon">Stoppable<wbr>Message</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="windowinfostreamresponse.html#action" class="tsd-kind-icon">action</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="stoppablemessage.html#promise" class="tsd-kind-icon">promise</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="windowinfostreamresponse.html#window" class="tsd-kind-icon">window</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="stoppablemessage.html#stop" class="tsd-kind-icon">stop</a>
 							</li>
 						</ul>
 					</li>
