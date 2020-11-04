@@ -3,7 +3,7 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { CommonHostServer } from '../commonHostServer';
 import { CommonHostClient } from './commonHostClient';
 import { Session } from '../grpc/session_pb';
-import { StoppableMessage } from './stoppableStream';
+import { StoppableMessage } from './stoppables';
 import { TransformingMessage } from './transformingMessage';
 
 /**

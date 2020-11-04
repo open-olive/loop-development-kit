@@ -1,5 +1,5 @@
 import * as GRPC from '@grpc/grpc-js';
-import { StoppableMessage } from './stoppableStream';
+import { StoppableMessage } from './stoppables';
 
 export class TransformingMessage<TOutput, TResponse>
   implements StoppableMessage<TOutput> {

@@ -13,7 +13,7 @@ import {
   StoppableMessage,
   StoppableStream,
   StreamListener,
-} from './stoppableStream';
+} from './stoppables';
 
 export interface WhisperStyle {
   /**

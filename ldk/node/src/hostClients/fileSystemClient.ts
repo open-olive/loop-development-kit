@@ -12,7 +12,7 @@ import {
   FileSystemStreamDirectoryResponse,
   FileSystemStreamFileResponse,
 } from './fileSystemService';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**

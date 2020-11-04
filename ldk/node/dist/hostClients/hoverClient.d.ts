@@ -1,7 +1,7 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { HoverClient as HoverGRPCClient } from '../grpc/hover_grpc_pb';
 import { HoverService, HoverReadRequest, HoverResponse } from './hoverService';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 /**
  * @internal
  */

@@ -14,7 +14,7 @@ import {
   StoppableMessage,
   StoppableStream,
   StreamListener,
-} from './stoppableStream';
+} from './stoppables';
 import { TransformingStream } from './transformingStream';
 import { transformResponse } from './whisperMessageParser';
 import {

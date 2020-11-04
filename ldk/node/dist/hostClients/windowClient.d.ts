@@ -1,7 +1,7 @@
 import { WindowClient as WindowGRPCClient } from '../grpc/window_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { WindowService, WindowInfoResponse, WindowInfoStreamResponse } from './windowService';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 /**
  * @internal
  */

@@ -9,7 +9,7 @@
  * }
  * ```
  */
-import { StoppableMessage, StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableMessage, StoppableStream, StreamListener } from './stoppables';
 export interface WhisperStyle {
     /**
      * The background color of the Whisper card as a RGB hex color code.

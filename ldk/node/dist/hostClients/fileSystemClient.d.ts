@@ -1,7 +1,7 @@
 import { FilesystemClient as FilesystemGRPCClient } from '../grpc/filesystem_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { FileSystemService, FileSystemQueryDirectoryParams, FileSystemQueryDirectoryResponse, FileSystemQueryFileParams, FileSystemQueryFileResponse, FileSystemStreamDirectoryResponse, FileSystemStreamFileResponse } from './fileSystemService';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 /**
  * @internal
  */
