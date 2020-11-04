@@ -2,6 +2,7 @@ package loop
 
 import (
 	"context"
+	"time"
 
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
@@ -52,22 +53,24 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	c.sidekick = sidekick
 
 	return sidekick.Clipboard().Listen(c.ctx, func(text string, err error) {
+		ctx, _ := context.WithTimeout(c.ctx, 5*time.Second)
 		c.logger.Info("controller loop callback called")
 		if err != nil {
 			c.logger.Error("received error from callback", err)
 			return
 		}
 
-		err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-			Icon:     "bathtub",
-			Label:    "Example Controller Go",
-			Markdown: "Text from the clipboard: " + text,
-			Style:    c.style,
-		})
-		if err != nil {
-			c.logger.Error("failed to emit whisper", "error", err)
-			return
-		}
+		go func() {
+			err = c.sidekick.Whisper().Markdown(ctx, &ldk.WhisperContentMarkdown{
+				Icon:     "bathtub",
+				Label:    "Example Controller Go",
+				Markdown: "Text from the clipboard: " + text,
+				Style:    c.style,
+			})
+			if err != nil {
+				c.logger.Error("failed to emit whisper", "error", err)
+			}
+		}()
 	})
 }
 

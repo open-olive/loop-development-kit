@@ -122,19 +122,18 @@ func (c *Loop) emitExampleWhisper(f ldk.FileInfo) error {
 		return err
 	}
 
-	err := c.sidekick.Whisper().WhisperMarkdown(ldk.WhisperMarkdown{
-		WhisperMeta: ldk.WhisperMeta{
-			Icon:  "bathtub",
-			Label: "Example Controller Go",
-			Style: c.style,
-		},
-		Markdown: markdownBytes.String(),
-	})
-	if err != nil {
-		c.logger.Error("failed to emit whisper", "error", err)
-		return err
-	}
-	c.logger.Info("Sent message", "markdown", markdownBytes.String())
+	go func() {
+		err := c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
+			Icon:     "bathtub",
+			Label:    "Example Controller Go",
+			Style:    c.style,
+			Markdown: markdownBytes.String(),
+		})
+		if err != nil {
+			c.logger.Error("failed to emit whisper", "error", err)
+		}
+		c.logger.Info("Sent message", "markdown", markdownBytes.String())
+	}()
 
 	return nil
 }
