@@ -1,7 +1,7 @@
 package main
 
 import (
-	loop "github.com/open-olive/loop-development-kit/ldk/go/example/keyboard/loop"
+	loop "github.com/open-olive/loop-development-kit/ldk/go/examples/keyboard/loop"
 )
 
 func main() {

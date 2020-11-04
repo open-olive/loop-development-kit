@@ -1,4 +1,4 @@
-REPO := github.com/open-olive/loop-development-kit/ldk/go/example/whisper-confirm
+REPO := github.com/open-olive/loop-development-kit/ldk/go/examples/whisper-confirm
 PKG := examplego
 
 GIT_COMMIT := $(shell git rev-list -1 HEAD)
