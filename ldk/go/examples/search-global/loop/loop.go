@@ -47,13 +47,13 @@ func NewLoop(logger *ldk.Logger) (*Loop, error) {
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
 func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
-	c.logger.Info("Starting example controller loop")
+	c.logger.Info("starting loop")
 	c.ctx, c.cancel = context.WithCancel(context.Background())
 
 	c.sidekick = sidekick
 
 	return sidekick.UI().ListenGlobalSearch(c.ctx, func(text string, err error) {
-		c.logger.Info("controller loop callback called")
+		c.logger.Info("loop callback called")
 		if err != nil {
 			c.logger.Error("received error from callback", err)
 			return
@@ -76,7 +76,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 // LoopStop is called by the host when the plugin is stopped
 func (c *Loop) LoopStop() error {
-	c.logger.Info("controller LoopStop called")
+	c.logger.Info("LoopStop called")
 	c.cancel()
 
 	return nil
