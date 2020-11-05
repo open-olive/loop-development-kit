@@ -13,6 +13,7 @@ const fileSystemClient_1 = require("./hostClients/fileSystemClient");
 const processClient_1 = require("./hostClients/processClient");
 const windowClient_1 = require("./hostClients/windowClient");
 const browserClient_1 = require("./hostClients/browserClient");
+const networkClient_1 = require("./hostClients/networkClient");
 /**
  * @internal
  */
@@ -28,6 +29,7 @@ class HostClientFacade {
         this.process = new processClient_1.ProcessClient();
         this.window = new windowClient_1.WindowClient();
         this.browser = new browserClient_1.BrowserClient();
+        this.network = new networkClient_1.NetworkClient();
     }
     connect(connInfo, session) {
         return Promise.all([
@@ -41,6 +43,7 @@ class HostClientFacade {
             this.process.connect(connInfo, session),
             this.window.connect(connInfo, session),
             this.browser.connect(connInfo, session),
+            this.network.connect(connInfo, session),
         ]);
     }
 }

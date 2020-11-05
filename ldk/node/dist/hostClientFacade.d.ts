@@ -11,6 +11,7 @@ import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
+import { NetworkClient } from './hostClients/networkClient';
 /**
  * @internal
  */
@@ -25,5 +26,6 @@ export default class HostClientFacade implements HostServices {
     process: ProcessClient;
     window: WindowClient;
     browser: BrowserClient;
+    network: NetworkClient;
     connect(connInfo: ConnInfo.AsObject, session: Session.AsObject): Promise<void[]>;
 }

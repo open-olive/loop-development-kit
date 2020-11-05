@@ -101,7 +101,8 @@ proto.proto.serviceHosts.toObject = function(includeInstance, msg) {
     hostfilesystem: jspb.Message.getFieldWithDefault(msg, 7, 0),
     hosthover: jspb.Message.getFieldWithDefault(msg, 8, 0),
     hostwindow: jspb.Message.getFieldWithDefault(msg, 9, 0),
-    hostcursor: jspb.Message.getFieldWithDefault(msg, 10, 0)
+    hostcursor: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    hostnetwork: jspb.Message.getFieldWithDefault(msg, 11, 0)
   };
 
   if (includeInstance) {
@@ -177,6 +178,10 @@ proto.proto.serviceHosts.deserializeBinaryFromReader = function(msg, reader) {
     case 10:
       var value = /** @type {number} */ (reader.readUint32());
       msg.setHostcursor(value);
+      break;
+    case 11:
+      var value = /** @type {number} */ (reader.readUint32());
+      msg.setHostnetwork(value);
       break;
     default:
       reader.skipField();
@@ -274,6 +279,13 @@ proto.proto.serviceHosts.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeUint32(
       10,
+      f
+    );
+  }
+  f = message.getHostnetwork();
+  if (f !== 0) {
+    writer.writeUint32(
+      11,
       f
     );
   }
@@ -457,6 +469,24 @@ proto.proto.serviceHosts.prototype.getHostcursor = function() {
  */
 proto.proto.serviceHosts.prototype.setHostcursor = function(value) {
   return jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional uint32 hostNetwork = 11;
+ * @return {number}
+ */
+proto.proto.serviceHosts.prototype.getHostnetwork = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.proto.serviceHosts} returns this
+ */
+proto.proto.serviceHosts.prototype.setHostnetwork = function(value) {
+  return jspb.Message.setProto3IntField(this, 11, value);
 };
 
 

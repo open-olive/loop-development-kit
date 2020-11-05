@@ -39,6 +39,9 @@ export class serviceHosts extends jspb.Message {
     getHostcursor(): number;
     setHostcursor(value: number): serviceHosts;
 
+    getHostnetwork(): number;
+    setHostnetwork(value: number): serviceHosts;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): serviceHosts.AsObject;
@@ -62,6 +65,7 @@ export namespace serviceHosts {
         hosthover: number,
         hostwindow: number,
         hostcursor: number,
+        hostnetwork: number,
     }
 }
 
