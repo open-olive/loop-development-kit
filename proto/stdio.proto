@@ -1,5 +1,5 @@
 syntax = "proto3";
-package proto;
+package plugin;
 option go_package = ".;proto";
 
 import "google/protobuf/empty.proto";
