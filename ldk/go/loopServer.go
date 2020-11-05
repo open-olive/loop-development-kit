@@ -22,6 +22,7 @@ type LoopServer struct {
 	processConn    *grpc.ClientConn
 	cursorConn     *grpc.ClientConn
 	filesystemConn *grpc.ClientConn
+	networkConn    *grpc.ClientConn
 }
 
 type LoopSession struct {
@@ -81,6 +82,11 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 		return &emptypb.Empty{}, err
 	}
 
+	m.networkConn, err = m.broker.Dial(hosts.HostNetwork)
+	if err != nil {
+		return &emptypb.Empty{}, err
+	}
+
 	sidekickClient := &SidekickClient{
 		storage: &StorageClient{
 			client:  proto.NewStorageClient(m.storageConn),
@@ -108,6 +114,10 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 		},
 		filesystem: &FilesystemClient{
 			client:  proto.NewFilesystemClient(m.filesystemConn),
+			session: session,
+		},
+		network: &NetworkClient{
+			client:  proto.NewNetworkClient(m.networkConn),
 			session: session,
 		},
 	}
