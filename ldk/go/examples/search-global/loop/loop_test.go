@@ -10,12 +10,11 @@ import (
 	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
 )
 
-func TestController(t *testing.T) {
+func TestSearchResponse(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
 		UIService: &ldktest.UIService{
 			ListenGlobalSearchf: func(ctx context.Context, cb ldk.ListenSearchHandler) error {
 				cb("This is a test event", nil)
-
 				return nil
 			},
 		},
@@ -29,15 +28,15 @@ func TestController(t *testing.T) {
 			},
 		},
 	}
-	l := ldk.NewLogger("loop-example")
-	c, err := loop.NewLoop(l)
+	logger := ldk.NewLogger("loop-example")
+	l, err := loop.NewLoop(logger)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := c.LoopStart(sidekick); err != nil {
+	if err := l.LoopStart(sidekick); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.LoopStop(); err != nil {
+	if err := l.LoopStop(); err != nil {
 		t.Fatal(err)
 	}
 }
