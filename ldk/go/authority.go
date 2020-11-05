@@ -1,7 +1,7 @@
 package ldk
 
 type Authority interface {
-	CancelSession(*Session) error
-	NewSession() (*Session, error)
+	CancelSession(string) error
+	NewSession(string) (*Session, error)
 	ValidateSession(*Session) error
 }

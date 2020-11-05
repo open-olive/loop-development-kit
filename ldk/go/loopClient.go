@@ -16,6 +16,7 @@ const grpcTimeout = 5 * time.Second
 // LoopClient is used by the controller plugin host to facilitate host initiated communication with controller plugins
 type LoopClient struct {
 	Authority Authority
+	LoopID    string
 	broker    *plugin.GRPCBroker
 	client    proto.LoopClient
 	s         *grpc.Server
@@ -28,7 +29,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	defer cancel()
 
 	// create session
-	session, err := m.Authority.NewSession()
+	session, err := m.Authority.NewSession(m.LoopID)
 	if err != nil {
 		return err
 	}
@@ -165,7 +166,7 @@ func (m *LoopClient) LoopStop() error {
 
 	m.s.Stop()
 
-	err = m.Authority.CancelSession(m.session)
+	err = m.Authority.CancelSession(m.LoopID)
 	if err != nil {
 		multiErr = multierror.Append(multiErr, err)
 	}

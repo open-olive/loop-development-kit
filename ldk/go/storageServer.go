@@ -2,7 +2,6 @@ package ldk
 
 import (
 	"context"
-
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
