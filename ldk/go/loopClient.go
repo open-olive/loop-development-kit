@@ -119,6 +119,20 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	filesystemBrokerID := m.broker.NextId()
 	go m.broker.AcceptAndServe(filesystemBrokerID, filesystemServerFunc)
 
+	// setup netowrk server
+	networkHostServer := &NetworkServer{
+		Impl: host.Network(),
+	}
+
+	networkServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
+		m.s = grpc.NewServer(opts...)
+		proto.RegisterNetworkServer(m.s, networkHostServer)
+		return m.s
+	}
+
+	networkBrokerID := m.broker.NextId()
+	go m.broker.AcceptAndServe(networkBrokerID, networkServerFunc)
+
 	_, err := m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		ServiceHosts: &proto.ServiceHosts{
 			HostStorage:    storageBrokerID,
@@ -128,6 +142,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 			HostProcess:    processBrokerID,
 			HostCursor:     cursorBrokerID,
 			HostFilesystem: filesystemBrokerID,
+			HostNetwork:    networkBrokerID,
 		},
 		// TODO: Define Session here
 		Session: &proto.Session{
