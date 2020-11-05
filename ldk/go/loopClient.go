@@ -2,8 +2,9 @@ package ldk
 
 import (
 	"context"
-	"github.com/hashicorp/go-multierror"
 	"time"
+
+	"github.com/hashicorp/go-multierror"
 
 	"github.com/hashicorp/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -20,7 +21,6 @@ type LoopClient struct {
 	broker    *plugin.GRPCBroker
 	client    proto.LoopClient
 	s         *grpc.Server
-	session   *Session
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
