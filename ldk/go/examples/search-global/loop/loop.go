@@ -46,28 +46,28 @@ func NewLoop(logger *ldk.Logger) (*Loop, error) {
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
-func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
-	c.logger.Info("starting loop")
-	c.ctx, c.cancel = context.WithCancel(context.Background())
+func (l *Loop) LoopStart(sidekick ldk.Sidekick) error {
+	l.logger.Info("starting loop")
+	l.ctx, l.cancel = context.WithCancel(context.Background())
 
-	c.sidekick = sidekick
+	l.sidekick = sidekick
 
-	return sidekick.UI().ListenGlobalSearch(c.ctx, func(text string, err error) {
-		c.logger.Info("loop callback called")
+	return sidekick.UI().ListenGlobalSearch(l.ctx, func(text string, err error) {
+		l.logger.Info("loop callback called")
 		if err != nil {
-			c.logger.Error("received error from callback", err)
+			l.logger.Error("received error from callback", err)
 			return
 		}
 
 		go func() {
-			err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
+			err = l.sidekick.Whisper().Markdown(l.ctx, &ldk.WhisperContentMarkdown{
 				Icon:     "bathtub",
 				Label:    "Example Go Loop",
 				Markdown: "Text from the global search bar: " + text,
-				Style:    c.style,
+				Style:    l.style,
 			})
 			if err != nil {
-				c.logger.Error("failed to emit whisper", "error", err)
+				l.logger.Error("failed to emit whisper", "error", err)
 				return
 			}
 		}()
@@ -75,9 +75,9 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 }
 
 // LoopStop is called by the host when the plugin is stopped
-func (c *Loop) LoopStop() error {
-	c.logger.Info("LoopStop called")
-	c.cancel()
+func (l *Loop) LoopStop() error {
+	l.logger.Info("LoopStop called")
+	l.cancel()
 
 	return nil
 }
