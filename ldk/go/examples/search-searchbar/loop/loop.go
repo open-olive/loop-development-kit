@@ -14,12 +14,12 @@ const (
 
 // Serve creates the new loop and tells the LDK to serve it
 func Serve() error {
-	l := ldk.NewLogger("example-search-searchbar")
-	loop, err := NewLoop(l)
+	logger := ldk.NewLogger("example-search-searchbar")
+	loop, err := NewLoop(logger)
 	if err != nil {
 		return err
 	}
-	ldk.ServeLoopPlugin(l, loop)
+	ldk.ServeLoopPlugin(logger, loop)
 	return nil
 }
 
@@ -46,28 +46,28 @@ func NewLoop(logger *ldk.Logger) (*Loop, error) {
 }
 
 // LoopStart is called by the host when the loop is started to provide access to the host process
-func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
-	c.logger.Info("starting example loop")
-	c.ctx, c.cancel = context.WithCancel(context.Background())
+func (l *Loop) LoopStart(sidekick ldk.Sidekick) error {
+	l.logger.Info("starting example loop")
+	l.ctx, l.cancel = context.WithCancel(context.Background())
 
-	c.sidekick = sidekick
+	l.sidekick = sidekick
 
-	return sidekick.UI().ListenSearchbar(c.ctx, func(text string, err error) {
-		c.logger.Info("loop callback called")
+	return sidekick.UI().ListenSearchbar(l.ctx, func(text string, err error) {
+		l.logger.Info("loop callback called")
 		if err != nil {
-			c.logger.Error("received error from callback", err)
+			l.logger.Error("received error from callback", err)
 			return
 		}
 
 		go func() {
-			err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
+			err = l.sidekick.Whisper().Markdown(l.ctx, &ldk.WhisperContentMarkdown{
 				Icon:     "bathtub",
 				Label:    "Example Go Loop",
 				Markdown: "Text from the searchbar: " + text,
-				Style:    c.style,
+				Style:    l.style,
 			})
 			if err != nil {
-				c.logger.Error("failed to emit whisper", "error", err)
+				l.logger.Error("failed to emit whisper", "error", err)
 				return
 			}
 		}()
@@ -75,9 +75,9 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 }
 
 // LoopStop is called by the host when the loop is stopped
-func (c *Loop) LoopStop() error {
-	c.logger.Info("LoopStop called")
-	c.cancel()
+func (l *Loop) LoopStop() error {
+	l.logger.Info("LoopStop called")
+	l.cancel()
 
 	return nil
 }
