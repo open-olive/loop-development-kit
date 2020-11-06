@@ -49,7 +49,6 @@ func NewLoop(logger *ldk.Logger) (*Loop, error) {
 func (l *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	l.logger.Info("starting loop")
 	l.ctx, l.cancel = context.WithCancel(context.Background())
-
 	l.sidekick = sidekick
 
 	return sidekick.UI().ListenGlobalSearch(l.ctx, func(text string, err error) {

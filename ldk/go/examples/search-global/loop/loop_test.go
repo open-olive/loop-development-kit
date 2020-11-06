@@ -11,6 +11,8 @@ import (
 )
 
 func TestSearchResponse(t *testing.T) {
+	markdownDoneChan := make(chan bool)
+
 	sidekick := &ldktest.Sidekick{
 		UIService: &ldktest.UIService{
 			ListenGlobalSearchf: func(ctx context.Context, cb ldk.ListenSearchHandler) error {
@@ -24,10 +26,12 @@ func TestSearchResponse(t *testing.T) {
 				if got := w.Markdown; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))
 				}
+				markdownDoneChan <- true
 				return nil
 			},
 		},
 	}
+
 	logger := ldk.NewLogger("loop-example")
 	l, err := loop.NewLoop(logger)
 	if err != nil {
@@ -36,6 +40,9 @@ func TestSearchResponse(t *testing.T) {
 	if err := l.LoopStart(sidekick); err != nil {
 		t.Fatal(err)
 	}
+
+	<-markdownDoneChan
+
 	if err := l.LoopStop(); err != nil {
 		t.Fatal(err)
 	}
