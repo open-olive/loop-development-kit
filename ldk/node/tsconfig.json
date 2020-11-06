@@ -17,6 +17,7 @@
     "scripts",
     "jest.config.js",
     "coverage",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "examples"
   ]
 }

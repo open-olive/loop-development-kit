@@ -17,7 +17,7 @@ const browserClient_1 = require("./hostClients/browserClient");
  * @internal
  */
 class HostClientFacade {
-    constructor() {
+    constructor(logger) {
         this.whisper = new whisperClient_1.default();
         this.storage = new storageClient_1.default();
         this.keyboard = new keyboardClient_1.default();
@@ -28,19 +28,20 @@ class HostClientFacade {
         this.process = new processClient_1.ProcessClient();
         this.window = new windowClient_1.WindowClient();
         this.browser = new browserClient_1.BrowserClient();
+        this.logger = logger;
     }
     connect(connInfo, session) {
         return Promise.all([
-            this.whisper.connect(connInfo, session),
-            this.storage.connect(connInfo, session),
-            this.keyboard.connect(connInfo, session),
-            this.clipboard.connect(connInfo, session),
-            this.cursor.connect(connInfo, session),
-            this.hover.connect(connInfo, session),
-            this.fileSystem.connect(connInfo, session),
-            this.process.connect(connInfo, session),
-            this.window.connect(connInfo, session),
-            this.browser.connect(connInfo, session),
+            // this.browser.connect(connInfo, session, this.logger),
+            // this.hover.connect(connInfo, session, this.logger),
+            // this.window.connect(connInfo, session, this.logger),
+            this.whisper.connect(connInfo, session, this.logger),
+            this.storage.connect(connInfo, session, this.logger),
+            this.clipboard.connect(connInfo, session, this.logger),
+            this.keyboard.connect(connInfo, session, this.logger),
+            this.process.connect(connInfo, session, this.logger),
+            this.cursor.connect(connInfo, session, this.logger),
+            this.fileSystem.connect(connInfo, session, this.logger),
         ]);
     }
 }

@@ -11,11 +11,14 @@ import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
+import { Logger } from './logging';
 
 /**
  * @internal
  */
 export default class HostClientFacade implements HostServices {
+  private logger: Logger;
+
   public whisper: WhisperClient = new WhisperClient();
 
   public storage: StorageClient = new StorageClient();
@@ -36,21 +39,25 @@ export default class HostClientFacade implements HostServices {
 
   public browser: BrowserClient = new BrowserClient();
 
+  constructor(logger: Logger) {
+    this.logger = logger;
+  }
+
   public connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
   ): Promise<void[]> {
     return Promise.all([
-      this.whisper.connect(connInfo, session),
-      this.storage.connect(connInfo, session),
-      this.keyboard.connect(connInfo, session),
-      this.clipboard.connect(connInfo, session),
-      this.cursor.connect(connInfo, session),
-      this.hover.connect(connInfo, session),
-      this.fileSystem.connect(connInfo, session),
-      this.process.connect(connInfo, session),
-      this.window.connect(connInfo, session),
-      this.browser.connect(connInfo, session),
+      // this.browser.connect(connInfo, session, this.logger),
+      // this.hover.connect(connInfo, session, this.logger),
+      // this.window.connect(connInfo, session, this.logger),
+      this.whisper.connect(connInfo, session, this.logger),
+      this.storage.connect(connInfo, session, this.logger),
+      this.clipboard.connect(connInfo, session, this.logger),
+      this.keyboard.connect(connInfo, session, this.logger),
+      this.process.connect(connInfo, session, this.logger),
+      this.cursor.connect(connInfo, session, this.logger),
+      this.fileSystem.connect(connInfo, session, this.logger),
     ]);
   }
 }

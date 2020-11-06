@@ -37,7 +37,7 @@ class BaseClient {
      * @param connInfo - An object containing host process connection information.
      * @param session - An object containing the loop Session information.
      */
-    connect(connInfo, session) {
+    connect(connInfo, session, logger) {
         return new Promise((resolve, reject) => {
             let address;
             if (connInfo.network === 'unix') {
@@ -47,6 +47,11 @@ class BaseClient {
                 address = connInfo.address;
             }
             const ClientConstructor = this.generateClient();
+            // logger.trace(
+            //   'Starting Connection',
+            //   'address',
+            //   address,
+            // );
             this.session = session;
             this.client = new ClientConstructor(address, grpc.credentials.createInsecure());
             // set a 5 second deadline
@@ -54,8 +59,10 @@ class BaseClient {
             deadline.setSeconds(deadline.getSeconds() + 5);
             this.client.waitForReady(deadline, (err) => {
                 if (err) {
+                    logger.error('Connection Failed');
                     return reject(err);
                 }
+                logger.trace('Connection Succeeded', 'address', address);
                 return resolve();
             });
         });

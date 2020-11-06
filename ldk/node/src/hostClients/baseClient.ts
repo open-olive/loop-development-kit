@@ -5,6 +5,7 @@ import { CommonHostClient } from './commonHostClient';
 import { Session } from '../grpc/session_pb';
 import { StoppableMessage } from './stoppables';
 import { TransformingMessage } from './transformingMessage';
+import { Logger } from '../logging';
 
 /**
  * @internal
@@ -55,15 +56,21 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
+    logger: Logger,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      let address;
+      let address: string;
       if (connInfo.network === 'unix') {
         address = `unix://${connInfo.address}`;
       } else {
         address = connInfo.address;
       }
       const ClientConstructor = this.generateClient();
+      // logger.trace(
+      //   'Starting Connection',
+      //   'address',
+      //   address,
+      // );
       this.session = session;
       this.client = new ClientConstructor(
         address,
@@ -76,8 +83,10 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
       this.client.waitForReady(deadline, (err) => {
         if (err) {
+          logger.error('Connection Failed');
           return reject(err);
         }
+        logger.trace('Connection Succeeded', 'address', address);
         return resolve();
       });
     });

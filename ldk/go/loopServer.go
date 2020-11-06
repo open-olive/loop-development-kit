@@ -2,6 +2,7 @@ package ldk
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -45,7 +46,7 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 		loopID: req.Session.LoopID,
 		token:  req.Session.Token,
 	}
-
+	fmt.Println("LoopStart Starting")
 	m.storageConn, err = m.broker.Dial(hosts.HostStorage)
 	if err != nil {
 		return &emptypb.Empty{}, err
@@ -111,7 +112,7 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 			session: session,
 		},
 	}
-
+	fmt.Println("LoopStart Complete")
 	return &emptypb.Empty{}, m.Impl.LoopStart(
 		sidekickClient,
 	)

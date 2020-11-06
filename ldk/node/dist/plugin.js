@@ -26,6 +26,7 @@ const grpc = __importStar(require("@grpc/grpc-js"));
 const brokerGrpcServer_1 = __importDefault(require("./brokerGrpcServer"));
 const logging_1 = require("./logging");
 const loopServer_1 = __importDefault(require("./loopServer"));
+const logger = new logging_1.Logger('loop-core');
 /**
  * The Plugin class is responsible for establishing the connection to Olive Helps.
  */
@@ -40,10 +41,8 @@ class Plugin {
      */
     constructor(impl) {
         this.server = new grpc.Server();
-        this.broker = new brokerGrpcServer_1.default(this.server);
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        /* eslint-enable @typescript-eslint/no-explicit-any */
-        this.loopServer = new loopServer_1.default(this.server, this.broker, impl);
+        this.broker = new brokerGrpcServer_1.default(this.server, logger);
+        this.loopServer = new loopServer_1.default(this.server, this.broker, impl, logger);
     }
     /**
      * Starts the GRPC server and write connection information to stdout.

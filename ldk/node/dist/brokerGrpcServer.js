@@ -17,43 +17,42 @@ class BrokerGrpcServer {
      * @example
      * BrokerGrpcServer(server);
      */
-    constructor(server) {
-        let connInfoCallback;
-        this.connInfoPromise = new Promise((resolve) => {
-            connInfoCallback = (connInfo) => {
-                resolve(connInfo);
-            };
-        });
-        server.addService(broker_grpc_pb_1.default.GRPCBrokerService, {
-            startStream: this.startStream(connInfoCallback),
-        });
-    }
-    /**
-     * This callback is called when connection info is received from the host process.
-     *
-     * @callback BrokerGrpcServer~connInfoCallback
-     * @param connInfo - An object containing host process connection information.
-     */
-    /**
-     * Start a connection info stream from the host process.
-     *
-     * @param connInfoCallback
-     * - The callback that handles receiving connection info.
-     */
-    startStream(connInfoCallback) {
-        return (call) => {
+    constructor(server, logger) {
+        /**
+         * This callback is called when connection info is received from the host process.
+         *
+         * @callback BrokerGrpcServer~connInfoCallback
+         * @param connInfo - An object containing host process connection information.
+         */
+        /**
+         * Start a connection info stream from the host process.
+         *
+         * @param connInfoCallback
+         * - The callback that handles receiving connection info.
+         */
+        this.startStream = (call) => {
+            this.logger.trace('BrokerGRPCServer startStream begins');
             call.on('data', (msg) => {
                 const connInfo = {
                     address: msg.getAddress(),
                     serviceId: msg.getServiceId(),
                     network: msg.getNetwork(),
                 };
-                connInfoCallback(connInfo);
+                this.connInfoCallback(connInfo);
             });
             call.on('end', () => {
                 call.end();
             });
         };
+        this.logger = logger;
+        this.connInfoPromise = new Promise((resolve) => {
+            this.connInfoCallback = (connInfo) => {
+                resolve(connInfo);
+            };
+        });
+        server.addService(broker_grpc_pb_1.default.GRPCBrokerService, {
+            startStream: this.startStream,
+        });
     }
     /**
      * Returns a promise which resolves to the connection information for the host process.

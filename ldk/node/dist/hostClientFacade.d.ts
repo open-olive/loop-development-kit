@@ -11,10 +11,12 @@ import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
+import { Logger } from './logging';
 /**
  * @internal
  */
 export default class HostClientFacade implements HostServices {
+    private logger;
     whisper: WhisperClient;
     storage: StorageClient;
     keyboard: KeyboardClient;
@@ -25,5 +27,6 @@ export default class HostClientFacade implements HostServices {
     process: ProcessClient;
     window: WindowClient;
     browser: BrowserClient;
+    constructor(logger: Logger);
     connect(connInfo: ConnInfo.AsObject, session: Session.AsObject): Promise<void[]>;
 }

@@ -1,8 +1,10 @@
 import * as grpc from '@grpc/grpc-js';
 import BrokerGrpcServer from './brokerGrpcServer';
 import { Loop } from './loop';
-import { prepareLogging } from './logging';
+import { Logger, prepareLogging } from './logging';
 import LoopServer from './loopServer';
+
+const logger = new Logger('loop-core');
 
 /**
  * The Plugin class is responsible for establishing the connection to Olive Helps.
@@ -24,10 +26,8 @@ class Plugin {
    */
   constructor(impl: Loop) {
     this.server = new grpc.Server();
-    this.broker = new BrokerGrpcServer(this.server);
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    /* eslint-enable @typescript-eslint/no-explicit-any */
-    this.loopServer = new LoopServer(this.server, this.broker, impl);
+    this.broker = new BrokerGrpcServer(this.server, logger);
+    this.loopServer = new LoopServer(this.server, this.broker, impl, logger);
   }
 
   /**
