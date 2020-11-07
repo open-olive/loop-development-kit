@@ -12,28 +12,22 @@ class ClipboardLoop implements Loop {
     this._host = host;
     logger.info('Requesting Stream');
     try {
-      this.host.clipboard.queryClipboard().then((response) => {
+      this.host.clipboard.streamClipboard((error, response) => {
         logger.info(
-          'Received Keyboard Event',
+          'Received Clipboard Event',
           'response',
           JSON.stringify(response),
         );
         if (response) {
           this.host.whisper.markdownWhisper({
-            markdown: `Keyboard Text: ${response}`,
+            markdown: `Clipboard Node Text: ${response}`,
             icon: 'bathtub',
-            label: 'Keyboard Event',
+            label: 'Clipboard Node Event',
           });
         }
-      }).catch(err => {
-        logger.error(
-          'Received Error',
-          'response',
-          JSON.stringify(err),
-        );
       });
     } catch (e) {
-      logger.error('Received Error', 'error', e);
+      logger.error('Error Streaming', 'error', e.toString());
     }
   }
 
