@@ -66,11 +66,6 @@ export default abstract class BaseClient<THost extends CommonHostServer>
         address = connInfo.address;
       }
       const ClientConstructor = this.generateClient();
-      // logger.trace(
-      //   'Starting Connection',
-      //   'address',
-      //   address,
-      // );
       this.session = session;
       this.client = new ClientConstructor(
         address,
@@ -83,10 +78,9 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
       this.client.waitForReady(deadline, (err) => {
         if (err) {
-          logger.error('Connection Failed');
+          logger.error('Connection Failed', 'address', address);
           return reject(err);
         }
-        logger.trace('Connection Succeeded', 'address', address);
         return resolve();
       });
     });
