@@ -57,75 +57,9 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		Impl: host.Filesystem(),
 	}
 
-	//whisperServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-	//	m.s = grpc.NewServer(opts...)
-	//	proto.RegisterWhisperServer(m.s, whisperHostServer)
-	//	fmt.Println(m.s.GetServiceInfo())
-	//	return m.s
-	//}
-	//
-	//whisperBrokerID := m.broker.NextId()
-	//go m.broker.AcceptAndServe(whisperBrokerID, whisperServerFunc)
-	//
-	//
-	//storageServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-	//	m.s = grpc.NewServer(opts...)
-	//	proto.RegisterStorageServer(m.s, storageHostServer)
-	//	return m.s
-	//}
-	//
-	//storageBrokerID := m.broker.NextId()
-	//go m.broker.AcceptAndServe(storageBrokerID, storageServerFunc)
-	//
-	//
-	//clipboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-	//	m.s = grpc.NewServer(opts...)
-	//	proto.RegisterClipboardServer(m.s, clipboardHostServer)
-	//	return m.s
-	//}
-	//
-	//clipboardBrokerID := m.broker.NextId()
-	//go m.broker.AcceptAndServe(clipboardBrokerID, clipboardServerFunc)
-	//
-	//
-	//keyboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-	//	m.s = grpc.NewServer(opts...)
-	//	proto.RegisterKeyboardServer(m.s, keyboardHostServer)
-	//	return m.s
-	//}
-	//
-	//keyboardBrokerID := m.broker.NextId()
-	//go m.broker.AcceptAndServe(keyboardBrokerID, keyboardServerFunc)
-	//
-	//
-	//processServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-	//	m.s = grpc.NewServer(opts...)
-	//	proto.RegisterProcessServer(m.s, processHostServer)
-	//	return m.s
-	//}
-	//
-	//processBrokerID := m.broker.NextId()
-	//go m.broker.AcceptAndServe(processBrokerID, processServerFunc)
-	//
-	//
-	//cursorServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-	//	m.s = grpc.NewServer(opts...)
-	//	proto.RegisterCursorServer(m.s, cursorHostServer)
-	//	return m.s
-	//}
-	//
-	//cursorBrokerID := m.broker.NextId()
-	//go m.broker.AcceptAndServe(cursorBrokerID, cursorServerFunc)
-	//
-	//filesystemServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-	//	m.s = grpc.NewServer(opts...)
-	//	proto.RegisterFilesystemServer(m.s, filesystemHostServer)
-	//	return m.s
-	//}
-	//
-	//filesystemBrokerID := m.broker.NextId()
-
 	brokerId := m.broker.NextId()
+
+	readyChan := make(chan bool)
 
 	serverFunc := func(opts []grpc.ServerOption) *grpc.Server {
 		m.s = grpc.NewServer(opts...)
@@ -136,21 +70,17 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		proto.RegisterClipboardServer(m.s, clipboardHostServer)
 		proto.RegisterStorageServer(m.s, storageHostServer)
 		proto.RegisterWhisperServer(m.s, whisperHostServer)
-		fmt.Println(m.s.GetServiceInfo())
+		readyChan <- true
 		return m.s
 	}
 
 	go m.broker.AcceptAndServe(brokerId, serverFunc)
+
+	<-readyChan
+
 	serviceHosts := &proto.ServiceHosts{
-		HostClipboard:  brokerId,
-		HostCursor:     brokerId,
-		HostFilesystem: brokerId,
-		HostKeyboard:   brokerId,
-		HostProcess:    brokerId,
-		HostStorage:    brokerId,
-		HostWhisper:    brokerId,
+		HostBrokerId: brokerId,
 	}
-	fmt.Println(serviceHosts)
 	_, err := m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		ServiceHosts: serviceHosts,
 		// TODO: Define Session here
@@ -159,12 +89,10 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 			Token:  "TOKEN",
 		},
 	})
-	fmt.Println("START COMPLETE")
 	if err != nil {
-		fmt.Println("RECEIVED ERROR")
+		fmt.Println("loopClient.go ERROR FOLLOWS")
 		fmt.Println(err)
 	}
-
 	return err
 }
 

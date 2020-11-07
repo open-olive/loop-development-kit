@@ -2,8 +2,6 @@ package ldk
 
 import (
 	"context"
-	"fmt"
-
 	"github.com/hashicorp/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
@@ -15,14 +13,7 @@ type LoopServer struct {
 	Impl Loop
 
 	broker *plugin.GRPCBroker
-
-	clipboardConn  *grpc.ClientConn
-	storageConn    *grpc.ClientConn
-	whisperConn    *grpc.ClientConn
-	keyboardConn   *grpc.ClientConn
-	processConn    *grpc.ClientConn
-	cursorConn     *grpc.ClientConn
-	filesystemConn *grpc.ClientConn
+	conn   *grpc.ClientConn
 }
 
 type LoopSession struct {
@@ -46,73 +37,45 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 		loopID: req.Session.LoopID,
 		token:  req.Session.Token,
 	}
-	fmt.Println("LoopStart Starting")
-	m.storageConn, err = m.broker.Dial(hosts.HostStorage)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
+	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 
-	m.whisperConn, err = m.broker.Dial(hosts.HostWhisper)
 	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.clipboardConn, err = m.broker.Dial(hosts.HostClipboard)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.keyboardConn, err = m.broker.Dial(hosts.HostKeyboard)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.processConn, err = m.broker.Dial(hosts.HostProcess)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.cursorConn, err = m.broker.Dial(hosts.HostCursor)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.filesystemConn, err = m.broker.Dial(hosts.HostFilesystem)
-	if err != nil {
+		println("[ERROR] loopServer.go - conn Error")
+		println("[ERROR]" + err.Error())
 		return &emptypb.Empty{}, err
 	}
 
 	sidekickClient := &SidekickClient{
 		storage: &StorageClient{
-			client:  proto.NewStorageClient(m.storageConn),
+			client:  proto.NewStorageClient(m.conn),
 			session: session,
 		},
 		whisper: &WhisperClient{
-			client:  proto.NewWhisperClient(m.whisperConn),
+			client:  proto.NewWhisperClient(m.conn),
 			session: session,
 		},
 		clipboard: &ClipboardClient{
-			client:  proto.NewClipboardClient(m.clipboardConn),
+			client:  proto.NewClipboardClient(m.conn),
 			session: session,
 		},
 		keyboard: &KeyboardClient{
-			client:  proto.NewKeyboardClient(m.keyboardConn),
+			client:  proto.NewKeyboardClient(m.conn),
 			session: session,
 		},
 		process: &ProcessClient{
-			client:  proto.NewProcessClient(m.processConn),
+			client:  proto.NewProcessClient(m.conn),
 			session: session,
 		},
 		cursor: &CursorClient{
-			client:  proto.NewCursorClient(m.cursorConn),
+			client:  proto.NewCursorClient(m.conn),
 			session: session,
 		},
 		filesystem: &FilesystemClient{
-			client:  proto.NewFilesystemClient(m.filesystemConn),
+			client:  proto.NewFilesystemClient(m.conn),
 			session: session,
 		},
 	}
-	fmt.Println("LoopStart Complete")
+	println("[INFO] loopServer.go - LoopStart complete")
 	return &emptypb.Empty{}, m.Impl.LoopStart(
 		sidekickClient,
 	)
@@ -121,32 +84,8 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 // LoopStop is called by the host when the plugin is stopped
 func (m *LoopServer) LoopStop(ctx context.Context, req *emptypb.Empty) (*emptypb.Empty, error) {
 
-	// close service connections
-	if err := m.clipboardConn.Close(); err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	if err := m.storageConn.Close(); err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	if err := m.whisperConn.Close(); err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	if err := m.keyboardConn.Close(); err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	if err := m.processConn.Close(); err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	if err := m.cursorConn.Close(); err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	if err := m.filesystemConn.Close(); err != nil {
+	// close service connection
+	if err := m.conn.Close(); err != nil {
 		return &emptypb.Empty{}, err
 	}
 
