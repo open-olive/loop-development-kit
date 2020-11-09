@@ -15,17 +15,13 @@ go get -u github.com/open-olive/loop-development-kit/ldk/go
 ```
 
 ## Usage
-Full documentation available on [GoDoc](https://godoc.org/github.com/open-olive/loop-development-kit/ldk/go).
 
-### Controllers
-This LDK can be used to write controllers for Sidekick. More detail about controllers is available [here](docs/controller.md).
+Full documentation available on [pkg.go.dev](https://pkg.go.dev/github.com/open-olive/loop-development-kit/ldk/go).
 
-* [Basic Controller Example](https://github.com/open-olive/sidekick-controller-examplego) - Recommend using as a starting point for new Controllers.
+### Loops
+This LDK can be used to write loops for Sidekick. More detail about loops is available [here](docs/loops.md).
 
-### Sensors
-This LDK can be used to write sensors for Sidekick. More detail about sensors is available [here](docs/sensor.md).
-
-* [Basic Sensor Example](https://github.com/open-olive/sidekick-sensor-examplego) - Recommend using as a starting point for new Sensors.
+Example loops are available in the examples folder.
 
 ## Development
 
