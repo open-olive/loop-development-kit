@@ -7,7 +7,7 @@ import {
   WindowInfoStreamResponse,
   WindowStreamAction,
 } from './windowService';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**

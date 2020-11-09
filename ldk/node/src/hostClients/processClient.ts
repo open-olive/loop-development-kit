@@ -9,7 +9,7 @@ import {
   ProcessStreamAction,
   ProcessStreamResponse,
 } from './processService';
-import { StoppableStream } from './stoppableStream';
+import { StoppableStream } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**

@@ -3,7 +3,7 @@ import { KeyboardClient as KeyboardGRPCClient } from '../grpc/keyboard_grpc_pb';
 import messages from '../grpc/keyboard_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StreamTransformer, TransformingStream } from './transformingStream';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 import {
   HotKeyEvent,
   HotKeyRequest,

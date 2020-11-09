@@ -125,16 +125,19 @@ func (c *Loop) emitExampleWhisper(text string) error {
 		return err
 	}
 
-	err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-		Icon:     "bathtub",
-		Label:    "Example Controller Go",
-		Style:    c.style,
-		Markdown: markdownBytes.String(),
-	})
-	if err != nil {
-		c.logger.Error("failed to emit whisper", "error", err)
-		return err
-	}
+	go func() {
+		err := c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
+			Icon:     "bathtub",
+			Label:    "Example Controller Go",
+			Style:    c.style,
+			Markdown: markdownBytes.String(),
+		})
+		if err != nil {
+			c.logger.Error("failed to emit whisper", "error", err)
+		}
+		c.logger.Info("Sent message", "markdown", markdownBytes.String())
+	}()
+
 	c.logger.Info("Sent message", "markdown", markdownBytes.String())
 	if i, err := strconv.Atoi(counter); err != nil {
 		c.logger.Error("failed to read counter value as integer", "error", err, "counter", counter)

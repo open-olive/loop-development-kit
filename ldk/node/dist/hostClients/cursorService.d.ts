@@ -1,4 +1,4 @@
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 /**
  * Response object containing the cursor position, where 0,0 is the top-left of the screen.
  */
