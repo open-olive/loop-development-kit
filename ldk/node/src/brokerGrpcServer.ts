@@ -10,8 +10,8 @@ import { Logger } from './logging';
  */
 export default class BrokerGrpcServer {
   private connInfoPromise: Promise<ConnInfo.AsObject>;
+
   private connInfoCallback!: (connInf: ConnInfo.AsObject) => void;
-  private logger: Logger;
 
   /**
    * Create a BrokerGrpcServer.
@@ -20,8 +20,7 @@ export default class BrokerGrpcServer {
    * @example
    * BrokerGrpcServer(server);
    */
-  constructor(server: grpc.Server, logger: Logger) {
-    this.logger = logger;
+  constructor(server: grpc.Server) {
     this.connInfoPromise = new Promise((resolve) => {
       this.connInfoCallback = (connInfo: ConnInfo.AsObject) => {
         resolve(connInfo);
@@ -46,7 +45,6 @@ export default class BrokerGrpcServer {
    * - The callback that handles receiving connection info.
    */
   startStream: grpc.handleBidiStreamingCall<ConnInfo, ConnInfo> = (call) => {
-    this.logger.trace('BrokerGRPCServer startStream begins');
     call.on('data', (msg: ConnInfo) => {
       const connInfo: ConnInfo.AsObject = {
         address: msg.getAddress(),

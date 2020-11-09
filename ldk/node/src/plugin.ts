@@ -26,7 +26,7 @@ class Plugin {
    */
   constructor(impl: Loop) {
     this.server = new grpc.Server();
-    this.broker = new BrokerGrpcServer(this.server, logger);
+    this.broker = new BrokerGrpcServer(this.server);
     this.loopServer = new LoopServer(this.server, this.broker, impl, logger);
   }
 

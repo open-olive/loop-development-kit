@@ -29,7 +29,6 @@ export default class HostClientFacade implements HostServices {
 
   public cursor: CursorClient = new CursorClient();
 
-
   public fileSystem: FileSystemClient = new FileSystemClient();
 
   public process: ProcessClient = new ProcessClient();

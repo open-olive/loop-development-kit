@@ -38,12 +38,11 @@ export default class LoopServer implements ILoopServer {
     call: grpc.ServerUnaryCall<messages.LoopStartRequest, Empty>,
     callback: grpc.sendUnaryData<Empty>,
   ): Promise<void> {
-    this.logger.info("Received Loop Start");
     const connInfo = await this.broker.getConnInfo();
     const sessionInfo = call.request?.getSession();
     const response = new Empty();
     if (sessionInfo == null) {
-      this.logger.error("Invalid Session Information");
+      this.logger.error("loopServer - Invalid Session Information");
       callback(new Error('Invalid Session Information'), response);
       return;
     }
@@ -51,11 +50,10 @@ export default class LoopServer implements ILoopServer {
     const hostClient = new HostClientFacade(this.logger);
 
     await hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
-      this.logger.error("Failed to Connect to Facades", "error", JSON.stringify(err));
+      this.logger.error("loopServer - Failed to Connect to Facades", "error", JSON.stringify(err));
       throw err;
     });
     await this.loop.start(hostClient);
-    this.logger.info("Loop Start Complete, Responding");
     callback(null, response);
   }
 
