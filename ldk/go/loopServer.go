@@ -3,6 +3,7 @@ package ldk
 import (
 	"context"
 
+	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
@@ -17,27 +18,12 @@ type LoopServer struct {
 	conn   *grpc.ClientConn
 }
 
-type LoopSession struct {
-	loopID string
-	token  string
-}
-
-func (s LoopSession) toProto() *proto.Session {
-	return &proto.Session{
-		LoopID: s.loopID,
-		Token:  s.token,
-	}
-}
-
 // LoopStart is called by the host when the plugin is started to provide access to the host process
-func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest) (*emptypb.Empty, error) {
+func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (*emptypb.Empty, error) {
 	var err error
 
 	hosts := req.ServiceHosts
-	session := LoopSession{
-		loopID: req.Session.LoopID,
-		token:  req.Session.Token,
-	}
+	session := NewSessionFromProto(req.Session)
 	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 
 	if err != nil {
@@ -83,13 +69,18 @@ func (m *LoopServer) LoopStart(ctx context.Context, req *proto.LoopStartRequest)
 }
 
 // LoopStop is called by the host when the plugin is stopped
-func (m *LoopServer) LoopStop(ctx context.Context, req *emptypb.Empty) (*emptypb.Empty, error) {
+func (m *LoopServer) LoopStop(_ context.Context, _ *emptypb.Empty) (*emptypb.Empty, error) {
+	var multiErr error
+
+	// stop loop
+	if err := m.Impl.LoopStop(); err != nil {
+		multiErr = multierror.Append(multiErr, err)
+	}
 
 	// close service connection
 	if err := m.conn.Close(); err != nil {
-		return &emptypb.Empty{}, err
+		multiErr = multierror.Append(multiErr, err)
 	}
 
-	err := m.Impl.LoopStop()
-	return &emptypb.Empty{}, err
+	return &emptypb.Empty{}, multiErr
 }

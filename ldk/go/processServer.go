@@ -8,7 +8,8 @@ import (
 )
 
 type ProcessServer struct {
-	Impl ProcessService
+	Authority Authority
+	Impl      ProcessService
 }
 
 func convertProcessInfo(pi ProcessInfo) *proto.ProcessInfo {
@@ -20,6 +21,11 @@ func convertProcessInfo(pi ProcessInfo) *proto.ProcessInfo {
 }
 
 func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest, stream proto.Process_ProcessStateStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := p.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(event ProcessEvent, err error) {
 		var errText string
 		if err != nil {
@@ -43,7 +49,12 @@ func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest,
 	return nil
 }
 
-func (p *ProcessServer) ProcessState(ctx context.Context, e *proto.ProcessStateRequest) (*proto.ProcessStateResponse, error) {
+func (p *ProcessServer) ProcessState(_ context.Context, req *proto.ProcessStateRequest) (*proto.ProcessStateResponse, error) {
+	session := NewSessionFromProto(req.Session)
+	if err := p.Authority.ValidateSession(session); err != nil {
+		return nil, err
+	}
+
 	processes, err := p.Impl.State()
 	if err != nil {
 		return nil, err

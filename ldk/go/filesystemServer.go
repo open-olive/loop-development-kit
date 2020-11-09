@@ -10,11 +10,17 @@ import (
 
 // FilesystemServer is used by the controller plugin host to receive plugin initiated communication
 type FilesystemServer struct {
-	Impl FilesystemService
+	Authority Authority
+	Impl      FilesystemService
 }
 
 // list the contents of a directory
-func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
+func (f *FilesystemServer) FilesystemDir(_ context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
+	session := NewSessionFromProto(req.Session)
+	if err := f.Authority.ValidateSession(session); err != nil {
+		return nil, err
+	}
+
 	files, err := f.Impl.Dir(req.GetDirectory())
 	if err != nil {
 		return nil, err
@@ -43,6 +49,11 @@ func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.Filesys
 
 // stream any updates to the contents of a directory
 func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamRequest, stream proto.Filesystem_FilesystemDirStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := f.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(fe FileEvent, err error) {
 		var errText string
 		if err != nil {
@@ -83,7 +94,12 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 }
 
 // get information about a file
-func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.FilesystemFileRequest) (*proto.FilesystemFileResponse, error) {
+func (f *FilesystemServer) FilesystemFile(_ context.Context, req *proto.FilesystemFileRequest) (*proto.FilesystemFileResponse, error) {
+	session := NewSessionFromProto(req.Session)
+	if err := f.Authority.ValidateSession(session); err != nil {
+		return nil, err
+	}
+
 	file, err := f.Impl.File(req.GetPath())
 	if err != nil {
 		return nil, err
@@ -109,6 +125,11 @@ func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.Filesy
 
 // stream any updates to a file
 func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamRequest, stream proto.Filesystem_FilesystemFileStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := f.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(fe FileEvent, err error) {
 		var errText string
 		if err != nil {

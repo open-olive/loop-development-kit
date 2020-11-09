@@ -8,10 +8,16 @@ import (
 )
 
 type CursorServer struct {
-	Impl CursorService
+	Authority Authority
+	Impl      CursorService
 }
 
-func (c *CursorServer) CursorPosition(ctx context.Context, empty *proto.CursorPositionRequest) (*proto.CursorPositionResponse, error) {
+func (c *CursorServer) CursorPosition(_ context.Context, req *proto.CursorPositionRequest) (*proto.CursorPositionResponse, error) {
+	session := NewSessionFromProto(req.Session)
+	if err := c.Authority.ValidateSession(session); err != nil {
+		return nil, err
+	}
+
 	value, err := c.Impl.Position()
 	if err != nil {
 		return nil, err
@@ -23,7 +29,12 @@ func (c *CursorServer) CursorPosition(ctx context.Context, empty *proto.CursorPo
 	}, nil
 }
 
-func (c *CursorServer) CursorPositionStream(_ *proto.CursorPositionStreamRequest, stream proto.Cursor_CursorPositionStreamServer) error {
+func (c *CursorServer) CursorPositionStream(req *proto.CursorPositionStreamRequest, stream proto.Cursor_CursorPositionStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := c.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(msg CursorPosition, err error) {
 		var errText string
 		if err != nil {

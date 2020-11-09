@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
@@ -15,9 +16,11 @@ const grpcTimeout = 40 * time.Second
 
 // LoopClient is used by the controller plugin host to facilitate host initiated communication with controller plugins
 type LoopClient struct {
-	broker *plugin.GRPCBroker
-	client proto.LoopClient
-	s      *grpc.Server
+	Authority Authority
+	LoopID    string
+	broker    *plugin.GRPCBroker
+	client    proto.LoopClient
+	s         *grpc.Server
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
@@ -25,36 +28,49 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
+	// create session
+	session, err := m.Authority.NewSession(m.LoopID)
+	if err != nil {
+		return err
+	}
+
 	// setup whisper server
 	whisperHostServer := &WhisperServer{
-		Impl: host.Whisper(),
+		Authority: m.Authority,
+		Impl:      host.Whisper(),
 	}
 
 	// setup storage server
 	storageHostServer := &StorageServer{
-		Impl: host.Storage(),
+	    Authority: m.Authority,
+		Impl:      host.Storage(),
 	}
 
 	// setup clipboard server
 	clipboardHostServer := &ClipboardServer{
-		Impl: host.Clipboard(),
+		Authority: m.Authority,
+		Impl:      host.Clipboard(),
 	}
 
 	//setup keyboard server
 	keyboardHostServer := &KeyboardServer{
-		Impl: host.Keyboard(),
+		Authority: m.Authority,
+		Impl:      host.Keyboard(),
 	}
 
 	processHostServer := &ProcessServer{
-		Impl: host.Process(),
+		Authority: m.Authority,
+		Impl:      host.Process(),
 	}
 
 	cursorHostServer := &CursorServer{
-		Impl: host.Cursor(),
+		Authority: m.Authority,
+		Impl:      host.Cursor(),
 	}
 
 	filesystemHostServer := &FilesystemServer{
-		Impl: host.Filesystem(),
+		Authority: m.Authority,
+		Impl:      host.Filesystem(),
 	}
 
 	brokerID := m.broker.NextId()
@@ -81,13 +97,9 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	serviceHosts := &proto.ServiceHosts{
 		HostBrokerId: brokerID,
 	}
-	_, err := m.client.LoopStart(ctx, &proto.LoopStartRequest{
+	_, err = m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		ServiceHosts: serviceHosts,
-		// TODO: Define Session here
-		Session: &proto.Session{
-			LoopID: "LOOP_ID",
-			Token:  "TOKEN",
-		},
+		Session: session.ToProto(),
 	})
 	if err != nil {
 		fmt.Println("loopClient.go ERROR FOLLOWS")
@@ -101,8 +113,19 @@ func (m *LoopClient) LoopStop() error {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	m.s.Stop()
+	var multiErr error
 
 	_, err := m.client.LoopStop(ctx, &emptypb.Empty{})
-	return err
+	if err != nil {
+		multiErr = multierror.Append(multiErr, err)
+	}
+
+	m.s.Stop()
+
+	err = m.Authority.CancelSession(m.LoopID)
+	if err != nil {
+		multiErr = multierror.Append(multiErr, err)
+	}
+
+	return multiErr
 }
