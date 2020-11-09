@@ -40,7 +40,7 @@ func (m *ClipboardServer) ClipboardReadStream(emp *proto.ClipboardReadStreamRequ
 			fmt.Println("error: ldk.ClipboardServer.ClipbardReadStream -> stream.Send:", e)
 		}
 	}
-	//fmt.Println("Starting Clipboard Read Stream")
+
 	go func() {
 		err := m.Impl.Listen(stream.Context(), handler)
 		// TODO: move this to a real logger once we move this into sidekick
