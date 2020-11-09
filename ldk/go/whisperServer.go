@@ -18,7 +18,7 @@ type WhisperServer struct {
 // WhisperMarkdown is used by loops to create markdown whispers
 func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperMarkdownRequest) (*emptypb.Empty, error) {
 	err := m.Impl.Markdown(
-		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		&WhisperContentMarkdown{
 			Icon:     req.Meta.Icon,
 			Label:    req.Meta.Label,
@@ -39,7 +39,7 @@ func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperM
 // WhisperConfirm is used by loops to create confirm whispers
 func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperConfirmRequest) (*proto.WhisperConfirmResponse, error) {
 	response, err := m.Impl.Confirm(
-		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		&WhisperContentConfirm{
 			Icon:     req.Meta.Icon,
 			Label:    req.Meta.Label,
@@ -353,7 +353,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 	}
 
 	submitted, outputs, err := m.Impl.Form(
-		context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+		context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 		&WhisperContentForm{
 			Icon:     req.Meta.Icon,
 			Label:    req.Meta.Label,

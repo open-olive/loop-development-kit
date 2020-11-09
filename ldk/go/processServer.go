@@ -35,7 +35,7 @@ func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest,
 	}
 	go func() {
 		err := p.Impl.ListenState(
-			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 			handler,
 		)
 		if err != nil {
@@ -48,7 +48,7 @@ func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest,
 
 func (p *ProcessServer) ProcessState(ctx context.Context, req *proto.ProcessStateRequest) (*proto.ProcessStateResponse, error) {
 	processes, err := p.Impl.State(
-		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 	)
 	if err != nil {
 		return nil, err

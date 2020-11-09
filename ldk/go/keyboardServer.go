@@ -43,7 +43,7 @@ func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamReq
 	}
 	go func() {
 		err := k.Impl.ListenHotkey(
-			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 			hotkey,
 			handler,
 		)
@@ -75,7 +75,7 @@ func (k *KeyboardServer) KeyboardScancodeStream(req *proto.KeyboardScancodeStrea
 	}
 
 	return k.Impl.ListenScancode(
-		context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+		context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 		handler,
 	)
 }
@@ -99,7 +99,7 @@ func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest
 
 	go func() {
 		err := k.Impl.ListenText(
-			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 			handler,
 		)
 		// TODO: Fix this when we refactor to sidekick
@@ -130,7 +130,7 @@ func (k *KeyboardServer) KeyboardCharacterStream(req *proto.KeyboardCharacterStr
 	}
 	go func() {
 		err := k.Impl.ListenCharacter(
-			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 			handler,
 		)
 		// TODO: Fix this when we refactor to sidekick

@@ -16,7 +16,7 @@ type FilesystemServer struct {
 // list the contents of a directory
 func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
 	files, err := f.Impl.Dir(
-		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		req.GetDirectory(),
 	)
 	if err != nil {
@@ -73,7 +73,7 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 
 	go func() {
 		err := f.Impl.ListenDir(
-			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 			req.GetDirectory(),
 			handler,
 		)
@@ -92,7 +92,7 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 // get information about a file
 func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.FilesystemFileRequest) (*proto.FilesystemFileResponse, error) {
 	file, err := f.Impl.File(
-		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		req.GetPath(),
 	)
 	if err != nil {
@@ -146,7 +146,7 @@ func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamR
 
 	go func() {
 		err := f.Impl.ListenFile(
-			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 			req.GetPath(),
 			handler,
 		)
