@@ -1,6 +1,7 @@
 package ldk
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"unicode/utf8"
@@ -11,17 +12,11 @@ import (
 // KeyboardServer is used by the controller plugin host to receive plugin initiated communication
 // This runs on Sidekick
 type KeyboardServer struct {
-	Authority Authority
-	Impl      KeyboardService
+	Impl KeyboardService
 }
 
 // KeyboardHotkeyStream registers a hotkey and receive streamed messages when it is pressed
 func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamRequest, stream proto.Keyboard_KeyboardHotkeyStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := k.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(scanned bool, err error) {
 		var errText string
 		if err != nil {
@@ -47,7 +42,11 @@ func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamReq
 		KeyModifier(req.GetHotkey().GetModifiers()),
 	}
 	go func() {
-		err := k.Impl.ListenHotkey(stream.Context(), hotkey, handler)
+		err := k.Impl.ListenHotkey(
+			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			hotkey,
+			handler,
+		)
 		// TODO: move this to a real logger once we move this into sidekick
 		if err != nil {
 			fmt.Println("error => ", err.Error())
@@ -59,11 +58,6 @@ func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamReq
 
 // KeyboardScancodeStream streams each scancode as it is pressed
 func (k *KeyboardServer) KeyboardScancodeStream(req *proto.KeyboardScancodeStreamRequest, stream proto.Keyboard_KeyboardScancodeStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := k.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(event ScancodeEvent, err error) {
 		var errText string
 		if err != nil {
@@ -80,16 +74,14 @@ func (k *KeyboardServer) KeyboardScancodeStream(req *proto.KeyboardScancodeStrea
 		}
 	}
 
-	return k.Impl.ListenScancode(stream.Context(), handler)
+	return k.Impl.ListenScancode(
+		context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+		handler,
+	)
 }
 
 // KeyboardTextStream streams chunks of text when the user finishes typing them
 func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest, stream proto.Keyboard_KeyboardTextStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := k.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(s string, err error) {
 		var errText string
 		if err != nil {
@@ -106,7 +98,10 @@ func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest
 	}
 
 	go func() {
-		err := k.Impl.ListenText(stream.Context(), handler)
+		err := k.Impl.ListenText(
+			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			handler,
+		)
 		// TODO: Fix this when we refactor to sidekick
 		if err != nil {
 			fmt.Println("ldk.KeyboardServer.KeyboardTextStream -> ListenText: error => ", err.Error())
@@ -118,11 +113,6 @@ func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest
 
 // KeyboardCharacterStream streams characters as the are typed
 func (k *KeyboardServer) KeyboardCharacterStream(req *proto.KeyboardCharacterStreamRequest, stream proto.Keyboard_KeyboardCharacterStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := k.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(r rune, err error) {
 		var errText string
 		if err != nil {
@@ -139,7 +129,10 @@ func (k *KeyboardServer) KeyboardCharacterStream(req *proto.KeyboardCharacterStr
 
 	}
 	go func() {
-		err := k.Impl.ListenCharacter(stream.Context(), handler)
+		err := k.Impl.ListenCharacter(
+			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			handler,
+		)
 		// TODO: Fix this when we refactor to sidekick
 		if err != nil {
 			fmt.Println("ldk.KeyboardServer.KeyboardCharacterStream -> ListenText: error => ", err.Error())

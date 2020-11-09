@@ -10,18 +10,15 @@ import (
 
 // FilesystemServer is used by the controller plugin host to receive plugin initiated communication
 type FilesystemServer struct {
-	Authority Authority
-	Impl      FilesystemService
+	Impl FilesystemService
 }
 
 // list the contents of a directory
-func (f *FilesystemServer) FilesystemDir(_ context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := f.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	files, err := f.Impl.Dir(req.GetDirectory())
+func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
+	files, err := f.Impl.Dir(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		req.GetDirectory(),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -49,11 +46,6 @@ func (f *FilesystemServer) FilesystemDir(_ context.Context, req *proto.Filesyste
 
 // stream any updates to the contents of a directory
 func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamRequest, stream proto.Filesystem_FilesystemDirStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := f.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(fe FileEvent, err error) {
 		var errText string
 		if err != nil {
@@ -80,7 +72,11 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 	}
 
 	go func() {
-		err := f.Impl.ListenDir(stream.Context(), req.GetDirectory(), handler)
+		err := f.Impl.ListenDir(
+			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			req.GetDirectory(),
+			handler,
+		)
 		// TODO: move this to a real logger once we move this into sidekick
 		if err != nil {
 			fmt.Println("error: ldk.FilesystemServer.FilesystemDirStream -> Listen:", err)
@@ -94,13 +90,11 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 }
 
 // get information about a file
-func (f *FilesystemServer) FilesystemFile(_ context.Context, req *proto.FilesystemFileRequest) (*proto.FilesystemFileResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := f.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	file, err := f.Impl.File(req.GetPath())
+func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.FilesystemFileRequest) (*proto.FilesystemFileResponse, error) {
+	file, err := f.Impl.File(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		req.GetPath(),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -125,11 +119,6 @@ func (f *FilesystemServer) FilesystemFile(_ context.Context, req *proto.Filesyst
 
 // stream any updates to a file
 func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamRequest, stream proto.Filesystem_FilesystemFileStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := f.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(fe FileEvent, err error) {
 		var errText string
 		if err != nil {
@@ -156,7 +145,11 @@ func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamR
 	}
 
 	go func() {
-		err := f.Impl.ListenFile(stream.Context(), req.GetPath(), handler)
+		err := f.Impl.ListenFile(
+			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			req.GetPath(),
+			handler,
+		)
 		// TODO: move this to a real logger once we move this into sidekick
 		if err != nil {
 			fmt.Println("error: ldk.FilesystemServer.FilesystemFileStream -> Listen:", err)

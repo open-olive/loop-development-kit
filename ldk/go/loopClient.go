@@ -36,8 +36,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	// setup whisper server
 	whisperHostServer := &WhisperServer{
-		Authority: m.Authority,
-		Impl:      host.Whisper(),
+		Impl: host.Whisper(),
 	}
 
 	whisperServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -51,8 +50,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	// setup storage server
 	storageHostServer := &StorageServer{
-		Authority: m.Authority,
-		Impl:      host.Storage(),
+		Impl: host.Storage(),
 	}
 
 	storageServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -66,8 +64,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	// setup clipboard server
 	clipboardHostServer := &ClipboardServer{
-		Authority: m.Authority,
-		Impl:      host.Clipboard(),
+		Impl: host.Clipboard(),
 	}
 
 	clipboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -81,8 +78,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	//setup keyboard server
 	keyboardHostServer := &KeyboardServer{
-		Authority: m.Authority,
-		Impl:      host.Keyboard(),
+		Impl: host.Keyboard(),
 	}
 
 	keyboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -95,8 +91,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	go m.broker.AcceptAndServe(keyboardBrokerID, keyboardServerFunc)
 
 	processHostServer := &ProcessServer{
-		Authority: m.Authority,
-		Impl:      host.Process(),
+		Impl: host.Process(),
 	}
 
 	processServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -109,8 +104,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	go m.broker.AcceptAndServe(processBrokerID, processServerFunc)
 
 	cursorHostServer := &CursorServer{
-		Authority: m.Authority,
-		Impl:      host.Cursor(),
+		Impl: host.Cursor(),
 	}
 
 	cursorServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
@@ -123,8 +117,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	go m.broker.AcceptAndServe(cursorBrokerID, cursorServerFunc)
 
 	filesystemHostServer := &FilesystemServer{
-		Authority: m.Authority,
-		Impl:      host.Filesystem(),
+		Impl: host.Filesystem(),
 	}
 
 	filesystemServerFunc := func(opts []grpc.ServerOption) *grpc.Server {

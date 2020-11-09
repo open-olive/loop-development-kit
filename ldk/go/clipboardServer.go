@@ -10,18 +10,14 @@ import (
 
 // ClipboardServer is used by sidekick to process clipboard communication with a loop
 type ClipboardServer struct {
-	Authority Authority
-	Impl      ClipboardService
+	Impl ClipboardService
 }
 
 // ClipboardRead is used by plugins to get the value of an entry
-func (m *ClipboardServer) ClipboardRead(_ context.Context, req *proto.ClipboardReadRequest) (*proto.ClipboardReadResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	value, err := m.Impl.Read()
+func (m *ClipboardServer) ClipboardRead(ctx context.Context, req *proto.ClipboardReadRequest) (*proto.ClipboardReadResponse, error) {
+	value, err := m.Impl.Read(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -33,11 +29,6 @@ func (m *ClipboardServer) ClipboardRead(_ context.Context, req *proto.ClipboardR
 
 // ClipboardReadStream is used by plugins to get the value of an entry
 func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequest, stream proto.Clipboard_ClipboardReadStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(text string, err error) {
 		var errText string
 		if err != nil {
@@ -53,7 +44,10 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 	}
 
 	go func() {
-		err := m.Impl.Listen(stream.Context(), handler)
+		err := m.Impl.Listen(
+			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			handler,
+		)
 		// TODO: move this to a real logger once we move this into sidekick
 		if err != nil {
 			fmt.Println("error: ldk.ClipboardServer.ClipbardReadStream -> Listen:", err)
@@ -67,13 +61,11 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 }
 
 // ClipboardWrite is used by plugins to set an entry
-func (m *ClipboardServer) ClipboardWrite(_ context.Context, req *proto.ClipboardWriteRequest) (*emptypb.Empty, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	err := m.Impl.Write(req.Text)
+func (m *ClipboardServer) ClipboardWrite(ctx context.Context, req *proto.ClipboardWriteRequest) (*emptypb.Empty, error) {
+	err := m.Impl.Write(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		req.Text,
+	)
 	if err != nil {
 		return nil, err
 	}

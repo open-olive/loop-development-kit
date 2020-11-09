@@ -8,17 +8,13 @@ import (
 )
 
 type CursorServer struct {
-	Authority Authority
-	Impl      CursorService
+	Impl CursorService
 }
 
-func (c *CursorServer) CursorPosition(_ context.Context, req *proto.CursorPositionRequest) (*proto.CursorPositionResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := c.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	value, err := c.Impl.Position()
+func (c *CursorServer) CursorPosition(ctx context.Context, req *proto.CursorPositionRequest) (*proto.CursorPositionResponse, error) {
+	value, err := c.Impl.Position(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -30,11 +26,6 @@ func (c *CursorServer) CursorPosition(_ context.Context, req *proto.CursorPositi
 }
 
 func (c *CursorServer) CursorPositionStream(req *proto.CursorPositionStreamRequest, stream proto.Cursor_CursorPositionStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := c.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(msg CursorPosition, err error) {
 		var errText string
 		if err != nil {
@@ -51,7 +42,10 @@ func (c *CursorServer) CursorPositionStream(req *proto.CursorPositionStreamReque
 	}
 
 	go func() {
-		err := c.Impl.ListenPosition(stream.Context(), handler)
+		err := c.Impl.ListenPosition(
+			context.WithValue(stream.Context(), "session", NewSessionFromProto(req.Session)),
+			handler,
+		)
 		if err != nil {
 			fmt.Println("error: ldk.CursorServer.CursorPositionStream -> Listen:", err)
 		}

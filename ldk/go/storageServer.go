@@ -9,18 +9,15 @@ import (
 
 // StorageServer is used by the controller plugin host to receive plugin initiated communication
 type StorageServer struct {
-	Authority Authority
-	Impl      StorageService
+	Impl StorageService
 }
 
 // StorageDelete is used by plugins to delete a storage entry
-func (m *StorageServer) StorageDelete(_ context.Context, req *proto.StorageDeleteRequest) (*emptypb.Empty, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	err := m.Impl.StorageDelete(req.Key)
+func (m *StorageServer) StorageDelete(ctx context.Context, req *proto.StorageDeleteRequest) (*emptypb.Empty, error) {
+	err := m.Impl.StorageDelete(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		req.Key,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -29,13 +26,10 @@ func (m *StorageServer) StorageDelete(_ context.Context, req *proto.StorageDelet
 }
 
 // StorageDeleteAll is used by plugins to delete all storage entries
-func (m *StorageServer) StorageDeleteAll(_ context.Context, req *proto.StorageDeleteAllRequest) (*emptypb.Empty, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	err := m.Impl.StorageDeleteAll()
+func (m *StorageServer) StorageDeleteAll(ctx context.Context, req *proto.StorageDeleteAllRequest) (*emptypb.Empty, error) {
+	err := m.Impl.StorageDeleteAll(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -44,13 +38,11 @@ func (m *StorageServer) StorageDeleteAll(_ context.Context, req *proto.StorageDe
 }
 
 // StorageHasKey is used by plugins to check if a key exists in storage
-func (m *StorageServer) StorageHasKey(_ context.Context, req *proto.StorageHasKeyRequest) (*proto.StorageHasKeyResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	hasKey, err := m.Impl.StorageHasKey(req.Key)
+func (m *StorageServer) StorageHasKey(ctx context.Context, req *proto.StorageHasKeyRequest) (*proto.StorageHasKeyResponse, error) {
+	hasKey, err := m.Impl.StorageHasKey(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		req.Key,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -61,13 +53,10 @@ func (m *StorageServer) StorageHasKey(_ context.Context, req *proto.StorageHasKe
 }
 
 // StorageKeys is used by plugins to get a list of keys for all entries
-func (m *StorageServer) StorageKeys(_ context.Context, req *proto.StorageKeysRequest) (*proto.StorageKeysResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	keys, err := m.Impl.StorageKeys()
+func (m *StorageServer) StorageKeys(ctx context.Context, req *proto.StorageKeysRequest) (*proto.StorageKeysResponse, error) {
+	keys, err := m.Impl.StorageKeys(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -78,13 +67,11 @@ func (m *StorageServer) StorageKeys(_ context.Context, req *proto.StorageKeysReq
 }
 
 // StorageRead is used by plugins to get the value of an entry
-func (m *StorageServer) StorageRead(_ context.Context, req *proto.StorageReadRequest) (*proto.StorageReadResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	value, err := m.Impl.StorageRead(req.Key)
+func (m *StorageServer) StorageRead(ctx context.Context, req *proto.StorageReadRequest) (*proto.StorageReadResponse, error) {
+	value, err := m.Impl.StorageRead(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+		req.Key,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -95,13 +82,10 @@ func (m *StorageServer) StorageRead(_ context.Context, req *proto.StorageReadReq
 }
 
 // StorageReadAll is used by plugins to get a map of all entries
-func (m *StorageServer) StorageReadAll(_ context.Context, req *proto.StorageReadAllRequest) (*proto.StorageReadAllResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	entries, err := m.Impl.StorageReadAll()
+func (m *StorageServer) StorageReadAll(ctx context.Context, req *proto.StorageReadAllRequest) (*proto.StorageReadAllResponse, error) {
+	entries, err := m.Impl.StorageReadAll(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -112,13 +96,9 @@ func (m *StorageServer) StorageReadAll(_ context.Context, req *proto.StorageRead
 }
 
 // StorageWrite is used by plugins to set an entry
-func (m *StorageServer) StorageWrite(_ context.Context, req *proto.StorageWriteRequest) (*emptypb.Empty, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
+func (m *StorageServer) StorageWrite(ctx context.Context, req *proto.StorageWriteRequest) (*emptypb.Empty, error) {
 	err := m.Impl.StorageWrite(
+		context.WithValue(ctx, "session", NewSessionFromProto(req.Session)),
 		req.Key,
 		req.Value,
 	)
