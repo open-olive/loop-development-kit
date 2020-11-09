@@ -10,7 +10,7 @@ import (
 
 type ProcessClient struct {
 	client  proto.ProcessClient
-	session LoopSession
+	session *Session
 }
 
 func convertToProcessInfo(pi *proto.ProcessInfo) ProcessInfo {
@@ -29,7 +29,7 @@ func convertToProcessEvent(pi *proto.ProcessStateStreamResponse) ProcessEvent {
 }
 
 func (p *ProcessClient) State() ([]ProcessInfo, error) {
-	msg := &proto.ProcessStateRequest{Session: p.session.toProto()}
+	msg := &proto.ProcessStateRequest{Session: p.session.ToProto()}
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 	resp, err := p.client.ProcessState(ctx, msg)
@@ -45,7 +45,7 @@ func (p *ProcessClient) State() ([]ProcessInfo, error) {
 }
 
 func (p *ProcessClient) ListenState(ctx context.Context, handler ListenProcessStateHandler) error {
-	msg := &proto.ProcessStateStreamRequest{Session: p.session.toProto()}
+	msg := &proto.ProcessStateStreamRequest{Session: p.session.ToProto()}
 	client, err := p.client.ProcessStateStream(ctx, msg)
 	if err != nil {
 		return err

@@ -11,7 +11,7 @@ import (
 // ClipboardClient is used by loops to facilitate communication with the clipboard service
 type ClipboardClient struct {
 	client  proto.ClipboardClient
-	session LoopSession
+	session *Session
 }
 
 // Read is used by the loop to get the current clipboard text
@@ -20,7 +20,7 @@ func (c *ClipboardClient) Read() (string, error) {
 	defer cancel()
 
 	resp, err := c.client.ClipboardRead(ctx, &proto.ClipboardReadRequest{
-		Session: c.session.toProto(),
+		Session: c.session.ToProto(),
 	})
 	if err != nil {
 		return "", err
@@ -31,7 +31,9 @@ func (c *ClipboardClient) Read() (string, error) {
 
 // Listen is used by the loop to establish a stream for handling clipboard changes
 func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler) error {
-	stream, err := c.client.ClipboardReadStream(ctx, &proto.ClipboardReadStreamRequest{Session: c.session.toProto()})
+	stream, err := c.client.ClipboardReadStream(ctx, &proto.ClipboardReadStreamRequest{
+		Session: c.session.ToProto(),
+	})
 	if err != nil {
 		return err
 	}
@@ -63,7 +65,8 @@ func (c *ClipboardClient) Write(text string) error {
 	defer cancel()
 
 	_, err := c.client.ClipboardWrite(ctx, &proto.ClipboardWriteRequest{
-		Text: text,
+		Session: c.session.ToProto(),
+		Text:    text,
 	})
 	if err != nil {
 		return err

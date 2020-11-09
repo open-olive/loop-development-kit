@@ -9,7 +9,7 @@ import (
 // StorageClient is used by the controller plugin to facilitate plugin initiated communication with the host
 type StorageClient struct {
 	client  proto.StorageClient
-	session LoopSession
+	session *Session
 }
 
 // StorageDelete is used by plugins to delete a storage entry
@@ -19,7 +19,7 @@ func (s *StorageClient) StorageDelete(key string) error {
 
 	_, err := s.client.StorageDelete(ctx, &proto.StorageDeleteRequest{
 		Key:     key,
-		Session: s.session.toProto(),
+		Session: s.session.ToProto(),
 	})
 	return err
 }
@@ -30,7 +30,7 @@ func (s *StorageClient) StorageDeleteAll() error {
 	defer cancel()
 
 	_, err := s.client.StorageDeleteAll(ctx, &proto.StorageDeleteAllRequest{
-		Session: s.session.toProto(),
+		Session: s.session.ToProto(),
 	})
 	return err
 }
@@ -42,7 +42,7 @@ func (s *StorageClient) StorageHasKey(key string) (bool, error) {
 
 	resp, err := s.client.StorageHasKey(ctx, &proto.StorageHasKeyRequest{
 		Key:     key,
-		Session: s.session.toProto(),
+		Session: s.session.ToProto(),
 	})
 	if err != nil {
 		return false, err
@@ -56,7 +56,9 @@ func (s *StorageClient) StorageKeys() ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
 	defer cancel()
 
-	resp, err := s.client.StorageKeys(ctx, &proto.StorageKeysRequest{Session: s.session.toProto()})
+	resp, err := s.client.StorageKeys(ctx, &proto.StorageKeysRequest{
+		Session: s.session.ToProto(),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +73,7 @@ func (s *StorageClient) StorageRead(key string) (string, error) {
 
 	resp, err := s.client.StorageRead(ctx, &proto.StorageReadRequest{
 		Key:     key,
-		Session: s.session.toProto(),
+		Session: s.session.ToProto(),
 	})
 	if err != nil {
 		return "", err
@@ -86,7 +88,7 @@ func (s *StorageClient) StorageReadAll() (map[string]string, error) {
 	defer cancel()
 
 	resp, err := s.client.StorageReadAll(ctx, &proto.StorageReadAllRequest{
-		Session: s.session.toProto(),
+		Session: s.session.ToProto(),
 	})
 	if err != nil {
 		return nil, err
@@ -108,7 +110,7 @@ func (s *StorageClient) StorageWrite(key, value string) error {
 	_, err := s.client.StorageWrite(ctx, &proto.StorageWriteRequest{
 		Key:     key,
 		Value:   value,
-		Session: s.session.toProto(),
+		Session: s.session.ToProto(),
 	})
 	return err
 }
