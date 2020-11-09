@@ -22,7 +22,7 @@ program
   .option('-e --entry <entry>', 'entry file location', 'index.js')
   .option('-d --dryRun', 'output commands to be executed')
   .action((options) => {
-    const buildCommand = `./node_modules/.bin/pkg ${options.entry} -t node14-darwin-x64 --output ${options.target}/plugin && cp ${options.plugin} ${options.target}/plugin.json`;
+    const buildCommand = `./node_modules/.bin/pkg ${options.entry} -t node12-darwin-x64 --output ${options.target}/plugin && cp ${options.plugin} ${options.target}/plugin.json`;
     if (options.dryRun) {
       console.log(buildCommand);
       return;

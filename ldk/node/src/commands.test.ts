@@ -15,13 +15,15 @@ describe('commands', () => {
     it('should child_process.exec the correct command', () => {
       program.parse(['command', 'build', 'build']);
       expect(childProcess.exec).toHaveBeenCalledWith(
-        './node_modules/.bin/pkg index.js -t node12-darwin-x64 --output build/plugin && cp plugin.json build/plugin.json && cp storage.json build/storage.json',
+        './node_modules/.bin/pkg index.js -t node12-darwin-x64 --output build/plugin && cp plugin.json build/plugin.json',
+        expect.anything(),
       );
     });
     it('should child_process.exec the correct command when target is provided', () => {
       program.parse(['command', 'build', 'build', '-t', 'buildTarget']);
       expect(childProcess.exec).toHaveBeenCalledWith(
-        './node_modules/.bin/pkg index.js -t node12-darwin-x64 --output buildTarget/plugin && cp plugin.json buildTarget/plugin.json && cp storage.json buildTarget/storage.json',
+        './node_modules/.bin/pkg index.js -t node12-darwin-x64 --output buildTarget/plugin && cp plugin.json buildTarget/plugin.json',
+        expect.anything(),
       );
     });
   });
@@ -29,7 +31,8 @@ describe('commands', () => {
     it('should child_process.exec the correct command', () => {
       program.parse(['command', 'deploy', 'deploy']);
       expect(childProcess.exec).toHaveBeenCalledWith(
-        'npm run build && mkdir -p "$HOME/Library/Application Support/SideKick/plugins/controllers/$npm_package_name" && cp build/* "$HOME/Library/Application Support/SideKick/plugins/controllers/$npm_package_name/"',
+        'mkdir -p "$HOME/Library/Application Support/Olive Helps/loops/2" && cp build/* "$HOME/Library/Application Support/Olive Helps/loops/2"',
+        expect.anything(),
       );
     });
   });

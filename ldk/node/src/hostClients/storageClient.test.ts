@@ -1,15 +1,17 @@
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { mocked } from 'ts-jest/utils';
 import * as Services from '../grpc/storage_grpc_pb';
 import * as Messages from '../grpc/storage_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import StorageClient from './storageClient';
-import {Session} from "../grpc/session_pb";
+import { Session } from '../grpc/session_pb';
+import { Logger } from '../logging';
 
 jest.mock('../grpc/storage_pb');
 jest.mock('../grpc/storage_grpc_pb');
 
 const hostClient = mocked(Services.StorageClient);
+
+const logger = new Logger('test-logger');
 
 type CallbackHandlerFunc<TRequest = any, TResponse = any> = (
   request: TRequest,
@@ -43,9 +45,9 @@ describe('StorageHostClient', () => {
       network: 'n',
     };
     session = {
-      loopid: "LOOP_ID",
-      token: "TOKEN"
-    }
+      loopid: 'LOOP_ID',
+      token: 'TOKEN',
+    };
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
     hostClient.mockImplementation(() => {
       return {
@@ -62,14 +64,14 @@ describe('StorageHostClient', () => {
   });
   describe('#connect', () => {
     it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo, session)).resolves.toBe(undefined);
+      await expect(subject.connect(connInfo, session, logger)).resolves.toBe(undefined);
     });
   });
   describe('#storageDelete', () => {
     const storageKey = 'key';
     beforeEach(async () => {
       storageDeleteMock = jest.fn().mockImplementation(createCallbackHandler());
-      await subject.connect(connInfo, session);
+      await subject.connect(connInfo, session, logger);
       await expect(subject.storageDelete(storageKey)).resolves.toBe(undefined);
     });
     it('should call client.storageDelete and resolve successfully', async () => {
@@ -89,7 +91,7 @@ describe('StorageHostClient', () => {
       storageDeleteAllMock = jest
         .fn()
         .mockImplementation(createCallbackHandler());
-      await subject.connect(connInfo, session);
+      await subject.connect(connInfo, session, logger);
       await expect(subject.storageDeleteAll()).resolves.toBe(undefined);
     });
     it('should call client.storageDelete and resolve successfully', async () => {
@@ -108,7 +110,7 @@ describe('StorageHostClient', () => {
       storageHasKeyMock = jest
         .fn()
         .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session);
+      await subject.connect(connInfo, session, logger);
     });
     it('should call client.storageDelete and resolve successfully', async () => {
       await expect(subject.storageHasKey(storageKey)).resolves.toBe(true);
@@ -129,7 +131,7 @@ describe('StorageHostClient', () => {
       storageKeysMock = jest
         .fn()
         .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session);
+      await subject.connect(connInfo, session, logger);
     });
     it('should call client.storageKeys and resolve successfully', async () => {
       await expect(subject.storageKeys()).resolves.toStrictEqual(['a', 'b']);
@@ -149,7 +151,7 @@ describe('StorageHostClient', () => {
       storageReadMock = jest
         .fn()
         .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session);
+      await subject.connect(connInfo, session, logger);
     });
     it('should call client.storageRead and resolve successfully', async () => {
       await expect(subject.storageRead(key)).resolves.toEqual(keyValue);
@@ -177,7 +179,7 @@ describe('StorageHostClient', () => {
       storageReadAllMock = jest
         .fn()
         .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session);
+      await subject.connect(connInfo, session, logger);
     });
     it('should call client.storageReadAll and resolve successfully', async () => {
       await expect(subject.storageReadAll()).resolves.toEqual({
@@ -195,7 +197,7 @@ describe('StorageHostClient', () => {
     const key = 'key';
     beforeEach(async () => {
       storageWriteMock = jest.fn().mockImplementation(createCallbackHandler());
-      await subject.connect(connInfo, session);
+      await subject.connect(connInfo, session, logger);
     });
     it('should call client.storageWrite and resolve successfully', async () => {
       await expect(subject.storageWrite(key, keyValue)).resolves.toEqual(
