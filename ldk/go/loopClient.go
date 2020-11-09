@@ -57,7 +57,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		Impl: host.Filesystem(),
 	}
 
-	brokerId := m.broker.NextId()
+	brokerID := m.broker.NextId()
 
 	readyChan := make(chan bool)
 
@@ -74,12 +74,12 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		return m.s
 	}
 
-	go m.broker.AcceptAndServe(brokerId, serverFunc)
+	go m.broker.AcceptAndServe(brokerID, serverFunc)
 
 	<-readyChan
 
 	serviceHosts := &proto.ServiceHosts{
-		HostBrokerId: brokerId,
+		HostBrokerId: brokerID,
 	}
 	_, err := m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		ServiceHosts: serviceHosts,
