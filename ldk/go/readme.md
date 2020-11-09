@@ -42,9 +42,9 @@ Sidekick lets you add a local command as Local Plugins:
 
 1. Open Sidekick.
 2. Open the Loop Library:
-    1. Click the Hamburger icon.
+    1. Click the hamburger icon.
     2. Click Loop Library.
-3. Click the Install Local Plugin button:
+3. Click the Install Local Plugin button (in the upper right).
 4. Select whether it's a Controller or Sensor.
 5. Select the working directory for the command.
 6. Enter the command to be executed, including any arguments.
@@ -56,7 +56,7 @@ The command will be installed as a plugin. If you need to change the command or 
 go run main.go
 ```
 
-Be sure that when you selected the `Directory` in `Step 5` that it is the root of your project that has the `main.go` file located in it.
+Be sure that when you selected the working directory in `Step 5` that it is the root of your project that has the `main.go` file located in it.
 
 ### Troubleshooting and Debugging
 
@@ -75,13 +75,13 @@ It can be useful to tail the log as you develop to see any errors, warnings, or 
 ##### Linux
 
 ```sh
-tail -f /var/log/Sidekick/Sidekick-2020.08.12-1dcc37a.log
+tail -F /var/log/Sidekick/*.log
 ```
 
 ##### Mac
 
 ```sh
-tail -f ~/Library/Logs/Sidekick/Sidekick-2020.08.12-1dcc37a.log
+tail -F ~/Library/Logs/Sidekick/*.log
 ```
 
 ##### Windows
@@ -92,7 +92,7 @@ From `Powershell` (not a cmd shell):
 Get-Content $env:AppData\Sidekick\Logs\Sidekick-2020.08.12-1dcc37a.log –Wait
 ```
 
-Note: File names may differ from the example above.
+Note: File names may differ from the examples above.
 
 ### Configuration
 
