@@ -42,7 +42,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	// setup storage server
 	storageHostServer := &StorageServer{
-	    Authority: m.Authority,
+		Authority: m.Authority,
 		Impl:      host.Storage(),
 	}
 
@@ -99,7 +99,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	}
 	_, err = m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		ServiceHosts: serviceHosts,
-		Session: session.ToProto(),
+		Session:      session.ToProto(),
 	})
 	if err != nil {
 		fmt.Println("loopClient.go ERROR FOLLOWS")
