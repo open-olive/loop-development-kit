@@ -17,7 +17,7 @@ class BrokerGrpcServer {
      * @example
      * BrokerGrpcServer(server);
      */
-    constructor(server, logger) {
+    constructor(server) {
         /**
          * This callback is called when connection info is received from the host process.
          *
@@ -31,7 +31,6 @@ class BrokerGrpcServer {
          * - The callback that handles receiving connection info.
          */
         this.startStream = (call) => {
-            this.logger.trace('BrokerGRPCServer startStream begins');
             call.on('data', (msg) => {
                 const connInfo = {
                     address: msg.getAddress(),
@@ -44,7 +43,6 @@ class BrokerGrpcServer {
                 call.end();
             });
         };
-        this.logger = logger;
         this.connInfoPromise = new Promise((resolve) => {
             this.connInfoCallback = (connInfo) => {
                 resolve(connInfo);

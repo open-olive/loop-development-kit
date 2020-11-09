@@ -38,22 +38,20 @@ class LoopServer {
     loopStart(call, callback) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            this.logger.info("Received Loop Start");
             const connInfo = yield this.broker.getConnInfo();
             const sessionInfo = (_a = call.request) === null || _a === void 0 ? void 0 : _a.getSession();
             const response = new empty_pb_1.Empty();
             if (sessionInfo == null) {
-                this.logger.error("Invalid Session Information");
+                this.logger.error("loopServer - Invalid Session Information");
                 callback(new Error('Invalid Session Information'), response);
                 return;
             }
             const hostClient = new hostClientFacade_1.default(this.logger);
             yield hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
-                this.logger.error("Failed to Connect to Facades", "error", JSON.stringify(err));
+                this.logger.error("loopServer - Failed to Connect to Facades", "error", JSON.stringify(err));
                 throw err;
             });
             yield this.loop.start(hostClient);
-            this.logger.info("Loop Start Complete, Responding");
             callback(null, response);
         });
     }

@@ -47,11 +47,6 @@ class BaseClient {
                 address = connInfo.address;
             }
             const ClientConstructor = this.generateClient();
-            // logger.trace(
-            //   'Starting Connection',
-            //   'address',
-            //   address,
-            // );
             this.session = session;
             this.client = new ClientConstructor(address, grpc.credentials.createInsecure());
             // set a 5 second deadline
@@ -59,10 +54,9 @@ class BaseClient {
             deadline.setSeconds(deadline.getSeconds() + 5);
             this.client.waitForReady(deadline, (err) => {
                 if (err) {
-                    logger.error('Connection Failed');
+                    logger.error('Connection Failed', 'address', address);
                     return reject(err);
                 }
-                logger.trace('Connection Succeeded', 'address', address);
                 return resolve();
             });
         });

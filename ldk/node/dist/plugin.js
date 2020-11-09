@@ -41,7 +41,7 @@ class Plugin {
      */
     constructor(impl) {
         this.server = new grpc.Server();
-        this.broker = new brokerGrpcServer_1.default(this.server, logger);
+        this.broker = new brokerGrpcServer_1.default(this.server);
         this.loopServer = new loopServer_1.default(this.server, this.broker, impl, logger);
     }
     /**

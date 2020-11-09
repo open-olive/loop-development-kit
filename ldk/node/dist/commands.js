@@ -11,19 +11,18 @@ program
     .description('builds the project using PKG')
     .option('-t --target <target>', 'build target', 'build')
     .option('-p --plugin <plugin>', 'plugin configuration file location', 'plugin.json')
-    .option('-s --storage <storage>', 'storage configuration file location', 'storage.json')
     .option('-e --entry <entry>', 'entry file location', 'index.js')
-    .option('-d --dryRun', 'output commands to be executed')
+    .option('-d --dryRun', 'output commands to be executed, do not execute')
     .action((options) => {
-    const buildCommand = `./node_modules/.bin/pkg ${options.entry} -t node14-darwin-x64 --output ${options.target}/plugin && cp ${options.plugin} ${options.target}/plugin.json`;
+    const buildCommand = `./node_modules/.bin/pkg ${options.entry} -t node12-darwin-x64 --output ${options.target}/plugin && cp ${options.plugin} ${options.target}/plugin.json`;
     if (options.dryRun) {
         console.log(buildCommand);
         return;
     }
-    child_process_1.exec(buildCommand, ((error, stdout, stderr) => {
+    child_process_1.exec(buildCommand, (error, stdout, stderr) => {
         console.log(stderr);
         console.log(stdout);
-    }));
+    });
 });
 program
     .command('deploy')
@@ -40,9 +39,9 @@ program
         console.log(deployCommand);
         return;
     }
-    child_process_1.exec(deployCommand, ((error, stdout, stderr) => {
+    child_process_1.exec(deployCommand, (error, stdout, stderr) => {
         console.log(stderr);
         console.log(stdout);
-    }));
+    });
 });
 exports.default = program;
