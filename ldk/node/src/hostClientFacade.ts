@@ -29,15 +29,17 @@ export default class HostClientFacade implements HostServices {
 
   public cursor: CursorClient = new CursorClient();
 
-  public hover: HoverClient = new HoverClient();
 
   public fileSystem: FileSystemClient = new FileSystemClient();
 
   public process: ProcessClient = new ProcessClient();
 
-  public window: WindowClient = new WindowClient();
+  // These services are not yet implemented.
+  // public hover: HoverClient = new HoverClient();
 
-  public browser: BrowserClient = new BrowserClient();
+  // public window: WindowClient = new WindowClient();
+
+  // public browser: BrowserClient = new BrowserClient();
 
   constructor(logger: Logger) {
     this.logger = logger;
@@ -48,6 +50,7 @@ export default class HostClientFacade implements HostServices {
     session: Session.AsObject,
   ): Promise<void[]> {
     return Promise.all([
+      // These services are not yet implemented.
       // this.browser.connect(connInfo, session, this.logger),
       // this.hover.connect(connInfo, session, this.logger),
       // this.window.connect(connInfo, session, this.logger),
