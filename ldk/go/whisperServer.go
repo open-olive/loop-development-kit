@@ -12,11 +12,17 @@ import (
 
 // WhisperServer is used by the controller plugin host to receive plugin initiated communication
 type WhisperServer struct {
-	Impl WhisperService
+	Authority Authority
+	Impl      WhisperService
 }
 
 // WhisperMarkdown is used by loops to create markdown whispers
 func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperMarkdownRequest) (*emptypb.Empty, error) {
+	session := NewSessionFromProto(req.Session)
+	if err := m.Authority.ValidateSession(session); err != nil {
+		return nil, err
+	}
+
 	err := m.Impl.Markdown(ctx, &WhisperContentMarkdown{
 		Icon:     req.Meta.Icon,
 		Label:    req.Meta.Label,
@@ -36,6 +42,11 @@ func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperM
 
 // WhisperConfirm is used by loops to create confirm whispers
 func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperConfirmRequest) (*proto.WhisperConfirmResponse, error) {
+	session := NewSessionFromProto(req.Session)
+	if err := m.Authority.ValidateSession(session); err != nil {
+		return nil, err
+	}
+
 	response, err := m.Impl.Confirm(ctx, &WhisperContentConfirm{
 		Icon:     req.Meta.Icon,
 		Label:    req.Meta.Label,
@@ -59,6 +70,11 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 
 // WhisperForm is used by loops to create form whispers
 func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.Whisper_WhisperFormServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := m.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	inputs := make(map[string]WhisperContentFormInput, len(req.Inputs))
 	for key, inputProto := range req.Inputs {
 		key := key

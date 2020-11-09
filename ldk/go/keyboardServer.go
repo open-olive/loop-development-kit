@@ -11,11 +11,17 @@ import (
 // KeyboardServer is used by the controller plugin host to receive plugin initiated communication
 // This runs on Sidekick
 type KeyboardServer struct {
-	Impl KeyboardService
+	Authority Authority
+	Impl      KeyboardService
 }
 
 // KeyboardHotkeyStream registers a hotkey and receive streamed messages when it is pressed
 func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamRequest, stream proto.Keyboard_KeyboardHotkeyStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := k.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(scanned bool, err error) {
 		var errText string
 		if err != nil {
@@ -52,7 +58,12 @@ func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamReq
 }
 
 // KeyboardScancodeStream streams each scancode as it is pressed
-func (k *KeyboardServer) KeyboardScancodeStream(_ *proto.KeyboardScancodeStreamRequest, stream proto.Keyboard_KeyboardScancodeStreamServer) error {
+func (k *KeyboardServer) KeyboardScancodeStream(req *proto.KeyboardScancodeStreamRequest, stream proto.Keyboard_KeyboardScancodeStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := k.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(event ScancodeEvent, err error) {
 		var errText string
 		if err != nil {
@@ -73,7 +84,12 @@ func (k *KeyboardServer) KeyboardScancodeStream(_ *proto.KeyboardScancodeStreamR
 }
 
 // KeyboardTextStream streams chunks of text when the user finishes typing them
-func (k *KeyboardServer) KeyboardTextStream(_ *proto.KeyboardTextStreamRequest, stream proto.Keyboard_KeyboardTextStreamServer) error {
+func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest, stream proto.Keyboard_KeyboardTextStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := k.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(s string, err error) {
 		var errText string
 		if err != nil {
@@ -101,7 +117,12 @@ func (k *KeyboardServer) KeyboardTextStream(_ *proto.KeyboardTextStreamRequest, 
 }
 
 // KeyboardCharacterStream streams characters as the are typed
-func (k *KeyboardServer) KeyboardCharacterStream(_ *proto.KeyboardCharacterStreamRequest, stream proto.Keyboard_KeyboardCharacterStreamServer) error {
+func (k *KeyboardServer) KeyboardCharacterStream(req *proto.KeyboardCharacterStreamRequest, stream proto.Keyboard_KeyboardCharacterStreamServer) error {
+	session := NewSessionFromProto(req.Session)
+	if err := k.Authority.ValidateSession(session); err != nil {
+		return err
+	}
+
 	handler := func(r rune, err error) {
 		var errText string
 		if err != nil {
