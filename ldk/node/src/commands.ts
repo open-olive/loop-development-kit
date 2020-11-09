@@ -15,7 +15,7 @@ program
     'plugin.json',
   )
   .option('-e --entry <entry>', 'entry file location', 'index.js')
-  .option('-d --dryRun', 'output commands to be executed')
+  .option('-d --dryRun', 'output commands to be executed, do not execute')
   .action((options) => {
     const buildCommand = `./node_modules/.bin/pkg ${options.entry} -t node12-darwin-x64 --output ${options.target}/plugin && cp ${options.plugin} ${options.target}/plugin.json`;
     if (options.dryRun) {
