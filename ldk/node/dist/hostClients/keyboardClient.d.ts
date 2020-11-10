@@ -1,6 +1,6 @@
 import { KeyboardClient as KeyboardGRPCClient } from '../grpc/keyboard_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 import { HotKeyEvent, HotKeyRequest, KeyboardService, ScanCodeEvent, TextStream } from './keyboardService';
 /**
  * @internal

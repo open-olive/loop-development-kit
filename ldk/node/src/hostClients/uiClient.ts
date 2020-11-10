@@ -1,7 +1,7 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { UIClient as UIGRPCClient } from '../grpc/ui_grpc_pb';
 import { UIService } from './uiService';
-import { StreamListener, StoppableStream } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 import Messages from '../grpc/ui_pb';
 import { TransformingStream } from './transformingStream';
 

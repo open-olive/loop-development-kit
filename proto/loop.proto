@@ -14,17 +14,7 @@ service Loop {
 }
 
 message serviceHosts {
-    uint32 hostWhisper    = 1;
-    uint32 hostStorage    = 2;
-    uint32 hostClipboard  = 3;
-    uint32 hostKeyboard   = 4;
-    uint32 hostProcess    = 5;
-    uint32 hostBrowser    = 6;
-    uint32 hostFilesystem = 7;
-    uint32 hostHover      = 8;
-    uint32 hostWindow     = 9;
-    uint32 hostCursor     = 10;  
-    uint32 hostUI         = 11;
+    uint32 hostBrokerId    = 1;
 }
 
 message LoopStartRequest {

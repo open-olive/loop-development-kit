@@ -1,4 +1,4 @@
-// package: proto
+// package: plugin
 // file: broker.proto
 
 /* tslint:disable */

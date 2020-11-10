@@ -86,17 +86,7 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
      */
     proto.proto.serviceHosts.toObject = function (includeInstance, msg) {
         var f, obj = {
-            hostwhisper: jspb.Message.getFieldWithDefault(msg, 1, 0),
-            hoststorage: jspb.Message.getFieldWithDefault(msg, 2, 0),
-            hostclipboard: jspb.Message.getFieldWithDefault(msg, 3, 0),
-            hostkeyboard: jspb.Message.getFieldWithDefault(msg, 4, 0),
-            hostprocess: jspb.Message.getFieldWithDefault(msg, 5, 0),
-            hostbrowser: jspb.Message.getFieldWithDefault(msg, 6, 0),
-            hostfilesystem: jspb.Message.getFieldWithDefault(msg, 7, 0),
-            hosthover: jspb.Message.getFieldWithDefault(msg, 8, 0),
-            hostwindow: jspb.Message.getFieldWithDefault(msg, 9, 0),
-            hostcursor: jspb.Message.getFieldWithDefault(msg, 10, 0),
-            hostui: jspb.Message.getFieldWithDefault(msg, 11, 0)
+            hostbrokerid: jspb.Message.getFieldWithDefault(msg, 1, 0)
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -130,47 +120,7 @@ proto.proto.serviceHosts.deserializeBinaryFromReader = function (msg, reader) {
         switch (field) {
             case 1:
                 var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostwhisper(value);
-                break;
-            case 2:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHoststorage(value);
-                break;
-            case 3:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostclipboard(value);
-                break;
-            case 4:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostkeyboard(value);
-                break;
-            case 5:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostprocess(value);
-                break;
-            case 6:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostbrowser(value);
-                break;
-            case 7:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostfilesystem(value);
-                break;
-            case 8:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHosthover(value);
-                break;
-            case 9:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostwindow(value);
-                break;
-            case 10:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostcursor(value);
-                break;
-            case 11:
-                var value = /** @type {number} */ (reader.readUint32());
-                msg.setHostui(value);
+                msg.setHostbrokerid(value);
                 break;
             default:
                 reader.skipField();
@@ -197,204 +147,24 @@ proto.proto.serviceHosts.prototype.serializeBinary = function () {
  */
 proto.proto.serviceHosts.serializeBinaryToWriter = function (message, writer) {
     var f = undefined;
-    f = message.getHostwhisper();
+    f = message.getHostbrokerid();
     if (f !== 0) {
         writer.writeUint32(1, f);
     }
-    f = message.getHoststorage();
-    if (f !== 0) {
-        writer.writeUint32(2, f);
-    }
-    f = message.getHostclipboard();
-    if (f !== 0) {
-        writer.writeUint32(3, f);
-    }
-    f = message.getHostkeyboard();
-    if (f !== 0) {
-        writer.writeUint32(4, f);
-    }
-    f = message.getHostprocess();
-    if (f !== 0) {
-        writer.writeUint32(5, f);
-    }
-    f = message.getHostbrowser();
-    if (f !== 0) {
-        writer.writeUint32(6, f);
-    }
-    f = message.getHostfilesystem();
-    if (f !== 0) {
-        writer.writeUint32(7, f);
-    }
-    f = message.getHosthover();
-    if (f !== 0) {
-        writer.writeUint32(8, f);
-    }
-    f = message.getHostwindow();
-    if (f !== 0) {
-        writer.writeUint32(9, f);
-    }
-    f = message.getHostcursor();
-    if (f !== 0) {
-        writer.writeUint32(10, f);
-    }
-    f = message.getHostui();
-    if (f !== 0) {
-        writer.writeUint32(11, f);
-    }
 };
 /**
- * optional uint32 hostWhisper = 1;
+ * optional uint32 hostBrokerId = 1;
  * @return {number}
  */
-proto.proto.serviceHosts.prototype.getHostwhisper = function () {
+proto.proto.serviceHosts.prototype.getHostbrokerid = function () {
     return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
 };
 /**
  * @param {number} value
  * @return {!proto.proto.serviceHosts} returns this
  */
-proto.proto.serviceHosts.prototype.setHostwhisper = function (value) {
+proto.proto.serviceHosts.prototype.setHostbrokerid = function (value) {
     return jspb.Message.setProto3IntField(this, 1, value);
-};
-/**
- * optional uint32 hostStorage = 2;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHoststorage = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHoststorage = function (value) {
-    return jspb.Message.setProto3IntField(this, 2, value);
-};
-/**
- * optional uint32 hostClipboard = 3;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostclipboard = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostclipboard = function (value) {
-    return jspb.Message.setProto3IntField(this, 3, value);
-};
-/**
- * optional uint32 hostKeyboard = 4;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostkeyboard = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostkeyboard = function (value) {
-    return jspb.Message.setProto3IntField(this, 4, value);
-};
-/**
- * optional uint32 hostProcess = 5;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostprocess = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostprocess = function (value) {
-    return jspb.Message.setProto3IntField(this, 5, value);
-};
-/**
- * optional uint32 hostBrowser = 6;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostbrowser = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostbrowser = function (value) {
-    return jspb.Message.setProto3IntField(this, 6, value);
-};
-/**
- * optional uint32 hostFilesystem = 7;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostfilesystem = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostfilesystem = function (value) {
-    return jspb.Message.setProto3IntField(this, 7, value);
-};
-/**
- * optional uint32 hostHover = 8;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHosthover = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHosthover = function (value) {
-    return jspb.Message.setProto3IntField(this, 8, value);
-};
-/**
- * optional uint32 hostWindow = 9;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostwindow = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostwindow = function (value) {
-    return jspb.Message.setProto3IntField(this, 9, value);
-};
-/**
- * optional uint32 hostCursor = 10;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostcursor = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostcursor = function (value) {
-    return jspb.Message.setProto3IntField(this, 10, value);
-};
-/**
- * optional uint32 hostUI = 11;
- * @return {number}
- */
-proto.proto.serviceHosts.prototype.getHostui = function () {
-    return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 11, 0));
-};
-/**
- * @param {number} value
- * @return {!proto.proto.serviceHosts} returns this
- */
-proto.proto.serviceHosts.prototype.setHostui = function (value) {
-    return jspb.Message.setProto3IntField(this, 11, value);
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**

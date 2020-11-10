@@ -10,7 +10,11 @@ import {
   WhisperService,
 } from './whisperService';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import {
+  StoppableMessage,
+  StoppableStream,
+  StreamListener,
+} from './stoppables';
 import { TransformingStream } from './transformingStream';
 import { transformResponse } from './whisperMessageParser';
 import {
@@ -34,8 +38,12 @@ class WhisperClient
    * @param whisper - An object defining the contents of the Whisper.
    * @returns Promise resolving when the server responds to the command.
    */
-  markdownWhisper(whisper: Whisper): Promise<void> {
-    return this.buildQuery<messages.WhisperMarkdownRequest, Empty, void>(
+  markdownWhisper(whisper: Whisper): StoppableMessage<void> {
+    return this.buildStoppableMessage<
+      messages.WhisperMarkdownRequest,
+      Empty,
+      void
+    >(
       (message, callback) => this.client.whisperMarkdown(message, callback),
       () => buildWhisperMarkdownRequest(whisper),
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -43,15 +51,13 @@ class WhisperClient
     );
   }
 
-  confirmWhisper(whisper: WhisperConfirmConfig): Promise<boolean> {
-    return this.buildQuery<
+  confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean> {
+    return this.buildStoppableMessage<
       messages.WhisperConfirmRequest,
       messages.WhisperConfirmResponse,
       boolean
     >(
-      (message, callback) => {
-        this.client.whisperConfirm(message, callback);
-      },
+      (message, callback) => this.client.whisperConfirm(message, callback),
       () => buildWhisperConfirmMessage(whisper),
       (response) => response.getResponse(),
     );

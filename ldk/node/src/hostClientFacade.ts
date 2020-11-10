@@ -12,11 +12,14 @@ import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
 import { UIClient } from './hostClients/uiClient';
+import { Logger } from './logging';
 
 /**
  * @internal
  */
 export default class HostClientFacade implements HostServices {
+  private logger: Logger;
+
   public whisper: WhisperClient = new WhisperClient();
 
   public storage: StorageClient = new StorageClient();
@@ -27,34 +30,40 @@ export default class HostClientFacade implements HostServices {
 
   public cursor: CursorClient = new CursorClient();
 
-  public hover: HoverClient = new HoverClient();
-
   public fileSystem: FileSystemClient = new FileSystemClient();
 
   public process: ProcessClient = new ProcessClient();
 
-  public window: WindowClient = new WindowClient();
-
-  public browser: BrowserClient = new BrowserClient();
-
   public ui: UIClient = new UIClient();
+
+  // These services are not yet implemented.
+  // public hover: HoverClient = new HoverClient();
+
+  // public window: WindowClient = new WindowClient();
+
+  // public browser: BrowserClient = new BrowserClient();
+
+  constructor(logger: Logger) {
+    this.logger = logger;
+  }
 
   public connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
   ): Promise<void[]> {
     return Promise.all([
-      this.whisper.connect(connInfo, session),
-      this.storage.connect(connInfo, session),
-      this.keyboard.connect(connInfo, session),
-      this.clipboard.connect(connInfo, session),
-      this.cursor.connect(connInfo, session),
-      this.hover.connect(connInfo, session),
-      this.fileSystem.connect(connInfo, session),
-      this.process.connect(connInfo, session),
-      this.window.connect(connInfo, session),
-      this.browser.connect(connInfo, session),
-      this.ui.connect(connInfo, session),
+      // These services are not yet implemented.
+      // this.browser.connect(connInfo, session, this.logger),
+      // this.hover.connect(connInfo, session, this.logger),
+      // this.window.connect(connInfo, session, this.logger),
+      this.whisper.connect(connInfo, session, this.logger),
+      this.storage.connect(connInfo, session, this.logger),
+      this.clipboard.connect(connInfo, session, this.logger),
+      this.keyboard.connect(connInfo, session, this.logger),
+      this.process.connect(connInfo, session, this.logger),
+      this.cursor.connect(connInfo, session, this.logger),
+      this.fileSystem.connect(connInfo, session, this.logger),
+      this.ui.connect(connInfo, session, this.logger),
     ]);
   }
 }

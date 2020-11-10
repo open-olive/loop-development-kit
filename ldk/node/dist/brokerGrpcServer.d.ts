@@ -7,6 +7,7 @@ import { ConnInfo } from './grpc/broker_pb';
  */
 export default class BrokerGrpcServer {
     private connInfoPromise;
+    private connInfoCallback;
     /**
      * Create a BrokerGrpcServer.
      *
@@ -26,8 +27,9 @@ export default class BrokerGrpcServer {
      *
      * @param connInfoCallback
      * - The callback that handles receiving connection info.
+     * @param call
      */
-    startStream(connInfoCallback: (connInfo: ConnInfo.AsObject) => void): grpc.handleBidiStreamingCall<ConnInfo, ConnInfo>;
+    startStream: grpc.handleBidiStreamingCall<ConnInfo, ConnInfo>;
     /**
      * Returns a promise which resolves to the connection information for the host process.
      *

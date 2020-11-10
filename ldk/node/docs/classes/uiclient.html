@@ -106,6 +106,7 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="uiclient.html#buildquery" class="tsd-kind-icon">build<wbr>Query</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited"><a href="uiclient.html#buildstoppablemessage" class="tsd-kind-icon">build<wbr>Stoppable<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="uiclient.html#connect" class="tsd-kind-icon">connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="uiclient.html#createsessionmessage" class="tsd-kind-icon">create<wbr>Session<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="uiclient.html#generateclient" class="tsd-kind-icon">generate<wbr>Client</a></li>
@@ -125,7 +126,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from BaseClient._session</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L37">hostClients/baseClient.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L40">src/hostClients/baseClient.ts:40</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -144,7 +145,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.client</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L119">hostClients/baseClient.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L142">src/hostClients/baseClient.ts:142</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">UIGRPCClient</span></h4>
@@ -153,7 +154,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.client</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L126">hostClients/baseClient.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L149">src/hostClients/baseClient.ts:149</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -178,7 +179,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.session</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L130">hostClients/baseClient.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L153">src/hostClients/baseClient.ts:153</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Session.AsObject</span></h4>
@@ -187,7 +188,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.session</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L137">hostClients/baseClient.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L160">src/hostClients/baseClient.ts:160</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -214,7 +215,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.buildQuery</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L91">hostClients/baseClient.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L98">src/hostClients/baseClient.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -332,18 +333,132 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+					<a name="buildstoppablemessage" class="tsd-anchor"></a>
+					<h3>build<wbr>Stoppable<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Stoppable<wbr>Message&lt;TMessage, TResponse, TOutput&gt;<span class="tsd-signature-symbol">(</span>clientRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TMessage</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">grpc.ServiceError</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">grpc.ClientUnaryCall</span>, builder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TMessage</span>, renderer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TOutput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/stoppablemessage.html" class="tsd-signature-type">StoppableMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from BaseClient.buildStoppableMessage</p>
+								<ul>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L119">src/hostClients/baseClient.ts:119</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TMessage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">SetSessionable</span></h4>
+								</li>
+								<li>
+									<h4>TResponse</h4>
+								</li>
+								<li>
+									<h4>TOutput</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>clientRequest: <span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TMessage</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">grpc.ServiceError</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">grpc.ClientUnaryCall</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TMessage</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">grpc.ServiceError</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">grpc.ClientUnaryCall</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>message: <span class="tsd-signature-type">TMessage</span></h5>
+														</li>
+														<li>
+															<h5>callback: <span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">grpc.ServiceError</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>err<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">grpc.ServiceError</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>err: <span class="tsd-signature-type">grpc.ServiceError</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+																				</li>
+																				<li>
+																					<h5>response: <span class="tsd-signature-type">TResponse</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">grpc.ClientUnaryCall</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>builder: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TMessage</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TMessage</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TMessage</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>renderer: <span class="tsd-signature-symbol">(</span>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TOutput</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TOutput</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>response: <span class="tsd-signature-type">TResponse</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TOutput</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/stoppablemessage.html" class="tsd-signature-type">StoppableMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TOutput</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="connect" class="tsd-anchor"></a>
 					<h3>connect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">connect<span class="tsd-signature-symbol">(</span>connInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ConnInfo.AsObject</span>, session<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Session.AsObject</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">connect<span class="tsd-signature-symbol">(</span>connInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ConnInfo.AsObject</span>, session<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Session.AsObject</span>, logger<span class="tsd-signature-symbol">: </span><a href="logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.connect</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L52">hostClients/baseClient.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L57">src/hostClients/baseClient.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -369,6 +484,9 @@
 										<p>An object containing the loop Session information.</p>
 									</div>
 								</li>
+								<li>
+									<h5>logger: <a href="logger.html" class="tsd-signature-type">Logger</a></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
@@ -385,7 +503,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.createSessionMessage</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/baseClient.ts#L112">hostClients/baseClient.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/baseClient.ts#L135">src/hostClients/baseClient.ts:135</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Session</span></h4>
@@ -403,7 +521,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides BaseClient.generateClient</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/uiClient.ts#L9">hostClients/uiClient.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/uiClient.ts#L9">src/hostClients/uiClient.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">GRPCClientConstructor</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">UIGRPCClient</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -421,7 +539,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/uiservice.html">UIService</a>.<a href="../interfaces/uiservice.html#streamglobalsearch">streamGlobalSearch</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/uiClient.ts#L27">hostClients/uiClient.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/uiClient.ts#L27">src/hostClients/uiClient.ts:27</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -445,7 +563,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/uiservice.html">UIService</a>.<a href="../interfaces/uiservice.html#streamsearchbar">streamSearchbar</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/1e953c8/ldk/node/src/hostClients/uiClient.ts#L13">hostClients/uiClient.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/a039c14/ldk/node/src/hostClients/uiClient.ts#L13">src/hostClients/uiClient.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -501,6 +619,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
 								<a href="uiclient.html#buildquery" class="tsd-kind-icon">build<wbr>Query</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited">
+								<a href="uiclient.html#buildstoppablemessage" class="tsd-kind-icon">build<wbr>Stoppable<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="uiclient.html#connect" class="tsd-kind-icon">connect</a>

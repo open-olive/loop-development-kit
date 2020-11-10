@@ -27,44 +27,59 @@ func (s *Sidekick) Process() ldk.ProcessService       { return s.ProcessService 
 func (s *Sidekick) UI() ldk.UIService                 { return s.UIService }
 
 type ClipboardService struct {
-	Readf   func() (string, error)
+	Readf   func(context.Context) (string, error)
 	Listenf func(context.Context, ldk.ReadListenHandler) error
-	Writef  func(string) error
+	Writef  func(context.Context, string) error
 }
 
-func (c *ClipboardService) Read() (string, error) { return c.Readf() }
+func (c *ClipboardService) Read(ctx context.Context) (string, error) { return c.Readf(ctx) }
 func (c *ClipboardService) Listen(ctx context.Context, cb ldk.ReadListenHandler) error {
 	return c.Listenf(ctx, cb)
 }
-func (c *ClipboardService) Write(s string) error { return c.Writef(s) }
+
+func (c *ClipboardService) Write(ctx context.Context, s string) error { return c.Writef(ctx, s) }
 
 type CursorService struct {
-	PositionF       func() (ldk.CursorPosition, error)
+	PositionF       func(context.Context) (ldk.CursorPosition, error)
 	ListenPositionF func(ctx context.Context, cb ldk.ListenPositionHandler) error
 }
 
-func (c *CursorService) Position() (ldk.CursorPosition, error) { return c.PositionF() }
+func (c *CursorService) Position(ctx context.Context) (ldk.CursorPosition, error) {
+	return c.PositionF(ctx)
+}
 func (c *CursorService) ListenPosition(ctx context.Context, handler ldk.ListenPositionHandler) error {
 	return c.ListenPositionF(ctx, handler)
 }
 
 type StorageService struct {
-	StorageDeletef    func(string) error
-	StorageDeleteAllf func() error
-	StorageHasKeyf    func(string) (bool, error)
-	StorageKeysf      func() ([]string, error)
-	StorageReadf      func(string) (string, error)
-	StorageReadAllf   func() (map[string]string, error)
-	StorageWritef     func(string, string) error
+	StorageDeletef    func(context.Context, string) error
+	StorageDeleteAllf func(context.Context) error
+	StorageHasKeyf    func(context.Context, string) (bool, error)
+	StorageKeysf      func(context.Context) ([]string, error)
+	StorageReadf      func(context.Context, string) (string, error)
+	StorageReadAllf   func(context.Context) (map[string]string, error)
+	StorageWritef     func(context.Context, string, string) error
 }
 
-func (s *StorageService) StorageDelete(str string) error             { return s.StorageDeletef(str) }
-func (s *StorageService) StorageDeleteAll() error                    { return s.StorageDeleteAllf() }
-func (s *StorageService) StorageHasKey(str string) (bool, error)     { return s.StorageHasKeyf(str) }
-func (s *StorageService) StorageKeys() ([]string, error)             { return s.StorageKeysf() }
-func (s *StorageService) StorageRead(str string) (string, error)     { return s.StorageReadf(str) }
-func (s *StorageService) StorageReadAll() (map[string]string, error) { return s.StorageReadAllf() }
-func (s *StorageService) StorageWrite(s1 string, s2 string) error    { return s.StorageWritef(s1, s2) }
+func (s *StorageService) StorageDelete(ctx context.Context, str string) error {
+	return s.StorageDeletef(ctx, str)
+}
+func (s *StorageService) StorageDeleteAll(ctx context.Context) error { return s.StorageDeleteAllf(ctx) }
+func (s *StorageService) StorageHasKey(ctx context.Context, str string) (bool, error) {
+	return s.StorageHasKeyf(ctx, str)
+}
+func (s *StorageService) StorageKeys(ctx context.Context) ([]string, error) {
+	return s.StorageKeysf(ctx)
+}
+func (s *StorageService) StorageRead(ctx context.Context, str string) (string, error) {
+	return s.StorageReadf(ctx, str)
+}
+func (s *StorageService) StorageReadAll(ctx context.Context) (map[string]string, error) {
+	return s.StorageReadAllf(ctx)
+}
+func (s *StorageService) StorageWrite(ctx context.Context, s1 string, s2 string) error {
+	return s.StorageWritef(ctx, s1, s2)
+}
 
 type WhisperService struct {
 	Confirmf  func(context.Context, *ldk.WhisperContentConfirm) (bool, error)
@@ -103,17 +118,21 @@ func (k *KeyboardService) ListenCharacter(ctx context.Context, handler ldk.Liste
 }
 
 type FilesystemService struct {
-	Dirf        func(string) ([]ldk.FileInfo, error)
+	Dirf        func(context.Context, string) ([]ldk.FileInfo, error)
 	ListenDirf  func(context.Context, string, ldk.ListenDirHandler) error
-	Filef       func(string) (ldk.FileInfo, error)
+	Filef       func(context.Context, string) (ldk.FileInfo, error)
 	ListenFilef func(context.Context, string, ldk.ListenFileHandler) error
 }
 
-func (f *FilesystemService) Dir(dir string) ([]ldk.FileInfo, error) { return f.Dirf(dir) }
+func (f *FilesystemService) Dir(ctx context.Context, dir string) ([]ldk.FileInfo, error) {
+	return f.Dirf(ctx, dir)
+}
 func (f *FilesystemService) ListenDir(ctx context.Context, dir string, handler ldk.ListenDirHandler) error {
 	return f.ListenDirf(ctx, dir, handler)
 }
-func (f *FilesystemService) File(name string) (ldk.FileInfo, error) { return f.Filef(name) }
+func (f *FilesystemService) File(ctx context.Context, name string) (ldk.FileInfo, error) {
+	return f.Filef(ctx, name)
+}
 func (f *FilesystemService) ListenFile(ctx context.Context, file string, handler ldk.ListenFileHandler) error {
 	return f.ListenFilef(ctx, file, handler)
 }

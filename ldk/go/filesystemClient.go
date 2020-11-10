@@ -16,10 +16,7 @@ type FilesystemClient struct {
 }
 
 // list the contents of a directory
-func (f *FilesystemClient) Dir(dir string) ([]FileInfo, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (f *FilesystemClient) Dir(ctx context.Context, dir string) ([]FileInfo, error) {
 	resp, err := f.client.FilesystemDir(ctx, &proto.FilesystemDirRequest{
 		Directory: dir,
 		Session:   f.session.ToProto(),
@@ -99,10 +96,7 @@ func (f *FilesystemClient) ListenDir(ctx context.Context, dir string, handler Li
 }
 
 // get information about a file
-func (f *FilesystemClient) File(path string) (FileInfo, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (f *FilesystemClient) File(ctx context.Context, path string) (FileInfo, error) {
 	resp, err := f.client.FilesystemFile(ctx, &proto.FilesystemFileRequest{
 		Path:    path,
 		Session: f.session.ToProto(),

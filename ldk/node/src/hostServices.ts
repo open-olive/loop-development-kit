@@ -19,10 +19,11 @@ export interface HostServices {
   keyboard: KeyboardService;
   clipboard: ClipboardService;
   cursor: CursorService;
-  hover: HoverService;
   fileSystem: FileSystemService;
   process: ProcessService;
-  window: WindowService;
-  browser: BrowserService;
   ui: UIService;
+  // These services are not yet implemented.
+  // hover: HoverService;
+  // window: WindowService;
+  // browser: BrowserService;
 }

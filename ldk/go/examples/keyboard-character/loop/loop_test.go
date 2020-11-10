@@ -20,7 +20,7 @@ func TestController(t *testing.T) {
 			},
 		},
 		WhisperService: &ldktest.WhisperService{
-			WhisperMarkdownF: func(w ldk.WhisperMarkdown) error {
+			Markdownf: func(ctx context.Context, w *ldk.WhisperContentMarkdown) error {
 				exp := "A character from the keyboard: A"
 				if got := w.Markdown; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))
