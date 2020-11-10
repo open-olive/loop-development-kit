@@ -66,6 +66,10 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		Impl: host.Filesystem(),
 	}
 
+	uiHostServer := &UIServer{
+		Impl: host.UI(),
+	}
+
 	networkHostServer := &NetworkServer{
 		Impl: host.Network(),
 	}
@@ -83,6 +87,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		proto.RegisterClipboardServer(m.s, clipboardHostServer)
 		proto.RegisterStorageServer(m.s, storageHostServer)
 		proto.RegisterWhisperServer(m.s, whisperHostServer)
+		proto.RegisterUIServer(m.s, uiHostServer)
 		proto.RegisterNetworkServer(m.s, networkHostServer)
 		readyChan <- true
 		return m.s

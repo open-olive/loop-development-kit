@@ -61,6 +61,10 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 			client:  proto.NewFilesystemClient(m.conn),
 			session: session,
 		},
+		ui: &UIClient{
+			client:  proto.NewUIClient(m.conn),
+			session: session,
+		},
 		network: &NetworkClient{
 			client:  proto.NewNetworkClient(m.conn),
 			session: session,

@@ -1,4 +1,4 @@
-module github.com/open-olive/loop-development-kit/ldk/go/example/clipboard
+module github.com/open-olive/loop-development-kit/ldk/go/examples/clipboard
 
 go 1.14
 
