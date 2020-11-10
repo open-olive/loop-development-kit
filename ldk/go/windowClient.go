@@ -9,7 +9,8 @@ import (
 )
 
 type WindowClient struct {
-	client proto.WindowClient
+	client  proto.WindowClient
+	session *Session
 }
 
 func (w *WindowClient) ActiveWindow() (WindowInfo, error) {

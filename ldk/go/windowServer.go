@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 type WindowServer struct {
-	Impl WindowService
+	Authority Authority
+	Impl      WindowService
 }
 
-func (w *WindowServer) Active(ctx context.Context, empty *empty.Empty) (*proto.WindowActiveWindowResponse, error) {
+func (w *WindowServer) WindowActiveWindow(ctx context.Context, req *proto.WindowActiveWindowRequest) (*proto.WindowActiveWindowResponse, error) {
 	resp, err := w.Impl.ActiveWindow()
 
 	if err != nil {
@@ -24,7 +24,7 @@ func (w *WindowServer) Active(ctx context.Context, empty *empty.Empty) (*proto.W
 	}, nil
 }
 
-func (w *WindowServer) ActiveStream(empty *empty.Empty, stream proto.Window_WindowActiveWindowStreamServer) error {
+func (w *WindowServer) WindowActiveWindowStream(req *proto.WindowActiveWindowStreamRequest, stream proto.Window_WindowActiveWindowStreamServer) error {
 	handler := func(wi WindowInfo, err error) {
 		var errText string
 		if err != nil {
@@ -49,7 +49,7 @@ func (w *WindowServer) ActiveStream(empty *empty.Empty, stream proto.Window_Wind
 	return nil
 }
 
-func (w *WindowServer) State(ctx context.Context, empty *empty.Empty) (*proto.WindowStateResponse, error) {
+func (w *WindowServer) WindowState(ctx context.Context, req *proto.WindowStateRequest) (*proto.WindowStateResponse, error) {
 	resp, err := w.Impl.State()
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (w *WindowServer) State(ctx context.Context, empty *empty.Empty) (*proto.Wi
 	}, nil
 }
 
-func (w *WindowServer) StateStream(empty *empty.Empty, server proto.Window_WindowStateStreamServer) error {
+func (w *WindowServer) WindowStateStream(req *proto.WindowStateStreamRequest, server proto.Window_WindowStateStreamServer) error {
 	handler := func(we WindowEvent, err error) {
 		var errText string
 		if err != nil {

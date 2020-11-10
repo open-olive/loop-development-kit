@@ -136,6 +136,20 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 	filesystemBrokerID := m.broker.NextId()
 	go m.broker.AcceptAndServe(filesystemBrokerID, filesystemServerFunc)
 
+	windowHostServer := &WindowServer{
+		Authority: m.Authority,
+		Impl:      host.Window(),
+	}
+
+	windowServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
+		m.s = grpc.NewServer(opts...)
+		proto.RegisterWindowServer(m.s, windowHostServer)
+		return m.s
+	}
+
+	windowBrokerID := m.broker.NextId()
+	go m.broker.AcceptAndServe(windowBrokerID, windowServerFunc)
+
 	_, err = m.client.LoopStart(ctx, &proto.LoopStartRequest{
 		ServiceHosts: &proto.ServiceHosts{
 			HostStorage:    storageBrokerID,
@@ -145,6 +159,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 			HostProcess:    processBrokerID,
 			HostCursor:     cursorBrokerID,
 			HostFilesystem: filesystemBrokerID,
+			HostWindow:     windowBrokerID,
 		},
 		Session: session.ToProto(),
 	})

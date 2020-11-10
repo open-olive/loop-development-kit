@@ -24,6 +24,7 @@ type LoopServer struct {
 	processConn    *grpc.ClientConn
 	cursorConn     *grpc.ClientConn
 	filesystemConn *grpc.ClientConn
+	windowConn     *grpc.ClientConn
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
@@ -68,6 +69,11 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 		return &emptypb.Empty{}, err
 	}
 
+	m.windowConn, err = m.broker.Dial(hosts.HostWindow)
+	if err != nil {
+		return &emptypb.Empty{}, err
+	}
+
 	sidekickClient := &SidekickClient{
 		storage: &StorageClient{
 			client:  proto.NewStorageClient(m.storageConn),
@@ -95,6 +101,10 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 		},
 		filesystem: &FilesystemClient{
 			client:  proto.NewFilesystemClient(m.filesystemConn),
+			session: session,
+		},
+		window: &WindowClient{
+			client:  proto.NewWindowClient(m.windowConn),
 			session: session,
 		},
 	}
@@ -139,6 +149,10 @@ func (m *LoopServer) LoopStop(_ context.Context, _ *emptypb.Empty) (*emptypb.Emp
 	}
 
 	if err := m.filesystemConn.Close(); err != nil {
+		multiErr = multierror.Append(multiErr, err)
+	}
+
+	if err := m.windowConn.Close(); err != nil {
 		multiErr = multierror.Append(multiErr, err)
 	}
 
