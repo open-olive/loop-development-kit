@@ -12,6 +12,7 @@ import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
 import { NetworkClient } from './hostClients/networkClient';
+import { UIClient } from './hostClients/uiClient';
 import { Logger } from './logging';
 
 /**

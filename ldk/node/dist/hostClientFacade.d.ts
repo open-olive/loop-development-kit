@@ -9,6 +9,7 @@ import { CursorClient } from './hostClients/cursorClient';
 import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
 import { NetworkClient } from './hostClients/networkClient';
+import { UIClient } from './hostClients/uiClient';
 import { Logger } from './logging';
 /**
  * @internal
