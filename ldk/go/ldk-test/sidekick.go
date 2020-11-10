@@ -140,3 +140,7 @@ func (f *FilesystemService) ListenFile(ctx context.Context, file string, handler
 type NetworkService struct {
 	HTTPRequestf func(ctx context.Context, req *ldk.HTTPRequest) (*ldk.HTTPResponse, error)
 }
+
+func (f *NetworkService) HTTPRequest(ctx context.Context, req *ldk.HTTPRequest) (*ldk.HTTPResponse, error) {
+	return f.HTTPRequestf(ctx, req)
+}
