@@ -13,11 +13,10 @@ type WindowClient struct {
 	session *Session
 }
 
-func (w *WindowClient) ActiveWindow() (WindowInfo, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
-	resp, err := w.client.WindowActiveWindow(ctx, &proto.WindowActiveWindowRequest{})
+func (w *WindowClient) ActiveWindow(ctx context.Context) (WindowInfo, error) {
+	resp, err := w.client.WindowActiveWindow(ctx, &proto.WindowActiveWindowRequest{
+		Session: w.session.ToProto(),
+	})
 	if err != nil {
 		return WindowInfo{}, err
 	}
@@ -34,7 +33,9 @@ func (w *WindowClient) ActiveWindow() (WindowInfo, error) {
 }
 
 func (w *WindowClient) ListenActiveWindow(ctx context.Context, handler ListenActiveWindowHandler) error {
-	stream, err := w.client.WindowActiveWindowStream(ctx, &proto.WindowActiveWindowStreamRequest{})
+	stream, err := w.client.WindowActiveWindowStream(ctx, &proto.WindowActiveWindowStreamRequest{
+		Session: w.session.ToProto(),
+	})
 	if err != nil {
 		return err
 	}
@@ -69,11 +70,10 @@ func (w *WindowClient) ListenActiveWindow(ctx context.Context, handler ListenAct
 
 }
 
-func (w *WindowClient) State() ([]WindowInfo, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
-	resp, err := w.client.WindowState(ctx, &proto.WindowStateRequest{})
+func (w *WindowClient) State(ctx context.Context) ([]WindowInfo, error) {
+	resp, err := w.client.WindowState(ctx, &proto.WindowStateRequest{
+		Session: w.session.ToProto(),
+	})
 
 	if err != nil {
 		return nil, err
@@ -95,7 +95,9 @@ func (w *WindowClient) State() ([]WindowInfo, error) {
 }
 
 func (w *WindowClient) ListenState(ctx context.Context, handler ListenWindowStateHandler) error {
-	stream, err := w.client.WindowStateStream(ctx, &proto.WindowStateStreamRequest{})
+	stream, err := w.client.WindowStateStream(ctx, &proto.WindowStateStreamRequest{
+		Session: w.session.ToProto(),
+	})
 	if err != nil {
 		return err
 	}

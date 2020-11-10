@@ -13,7 +13,9 @@ type WindowServer struct {
 }
 
 func (w *WindowServer) WindowActiveWindow(ctx context.Context, req *proto.WindowActiveWindowRequest) (*proto.WindowActiveWindowResponse, error) {
-	resp, err := w.Impl.ActiveWindow()
+	resp, err := w.Impl.ActiveWindow(
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	)
 
 	if err != nil {
 		return nil, err
@@ -40,7 +42,10 @@ func (w *WindowServer) WindowActiveWindowStream(req *proto.WindowActiveWindowStr
 	}
 
 	go func() {
-		err := w.Impl.ListenActiveWindow(stream.Context(), handler)
+		err := w.Impl.ListenActiveWindow(
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			handler,
+		)
 		if err != nil {
 			fmt.Println("error => ", err.Error())
 		}
@@ -50,14 +55,18 @@ func (w *WindowServer) WindowActiveWindowStream(req *proto.WindowActiveWindowStr
 }
 
 func (w *WindowServer) WindowState(ctx context.Context, req *proto.WindowStateRequest) (*proto.WindowStateResponse, error) {
-	resp, err := w.Impl.State()
+	resp, err := w.Impl.State(
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	)
 	if err != nil {
 		return nil, err
 	}
+
 	windowInfos := make([]*proto.WindowInfo, len(resp))
 	for _, wi := range resp {
 		windowInfos = append(windowInfos, convertWindowInfoToProto(wi))
 	}
+
 	return &proto.WindowStateResponse{
 		Window: windowInfos,
 	}, nil
@@ -80,7 +89,10 @@ func (w *WindowServer) WindowStateStream(req *proto.WindowStateStreamRequest, se
 	}
 
 	go func() {
-		err := w.Impl.ListenState(server.Context(), handler)
+		err := w.Impl.ListenState(
+			context.WithValue(server.Context(), Session{}, NewSessionFromProto(req.Session)),
+			handler,
+		)
 		if err != nil {
 			fmt.Println("error => ", err.Error())
 		}

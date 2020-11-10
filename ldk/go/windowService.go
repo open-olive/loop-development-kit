@@ -4,9 +4,9 @@ import "context"
 
 // WindowService is an interface that defines what methods plugins can expect from the host
 type WindowService interface {
-	ActiveWindow() (WindowInfo, error)
+	ActiveWindow(context.Context) (WindowInfo, error)
 	ListenActiveWindow(context.Context, ListenActiveWindowHandler) error
-	State() ([]WindowInfo, error)
+	State(context.Context) ([]WindowInfo, error)
 	ListenState(context.Context, ListenWindowStateHandler) error
 }
 
