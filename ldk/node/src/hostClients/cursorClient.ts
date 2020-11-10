@@ -3,7 +3,7 @@ import { CursorClient as CursorGRPCClient } from '../grpc/cursor_grpc_pb';
 import messages from '../grpc/cursor_pb';
 import { CursorService, CursorResponse } from './cursorService';
 import { StreamTransformer, TransformingStream } from './transformingStream';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 
 /**
  * @internal

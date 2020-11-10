@@ -4,9 +4,9 @@ import "context"
 
 // BrowserService is an interface that defines what methods are made available to the loops for interacting with a browser
 type BrowserService interface {
-	ActiveURL() (string, error)
+	ActiveURL(context.Context) (string, error)
 	ListenActiveURL(context.Context, ListenActiveURLHandler) error
-	SelectedText() (SelectedText, error)
+	SelectedText(context.Context) (SelectedText, error)
 	ListenSelectedText(context.Context, ListenSelectedTextHandler) error
 }
 

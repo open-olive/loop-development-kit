@@ -12,17 +12,6 @@ import (
 
 func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
-		StorageService: &ldktest.StorageService{
-			StorageHasKeyf: func(string) (bool, error) {
-				return true, nil
-			},
-			StorageReadf: func(s string) (string, error) {
-				return "10", nil
-			},
-			StorageWritef: func(s1 string, s2 string) error {
-				return nil
-			},
-		},
 		KeyboardService: &ldktest.KeyboardService{
 			ListenHotkeyf: func(ctx context.Context, hk ldk.Hotkey, cb ldk.ListenHotkeyHandler) error {
 				cb(true, nil)
@@ -31,8 +20,8 @@ func TestController(t *testing.T) {
 			},
 		},
 		WhisperService: &ldktest.WhisperService{
-			WhisperMarkdownF: func(w ldk.WhisperMarkdown) error {
-				exp := "# New Text Event\n```\nkey: &#34;a&#34;, modifiers: 8\n```\n\nCounter: 10"
+			Markdownf: func(ctx context.Context, w *ldk.WhisperContentMarkdown) error {
+				exp := "hotkey: {97 8}, scanned: true"
 				if got := w.Markdown; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))
 				}

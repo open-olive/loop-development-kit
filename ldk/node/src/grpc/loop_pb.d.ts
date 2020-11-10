@@ -9,38 +9,8 @@ import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty
 import * as session_pb from "./session_pb";
 
 export class serviceHosts extends jspb.Message { 
-    getHostwhisper(): number;
-    setHostwhisper(value: number): serviceHosts;
-
-    getHoststorage(): number;
-    setHoststorage(value: number): serviceHosts;
-
-    getHostclipboard(): number;
-    setHostclipboard(value: number): serviceHosts;
-
-    getHostkeyboard(): number;
-    setHostkeyboard(value: number): serviceHosts;
-
-    getHostprocess(): number;
-    setHostprocess(value: number): serviceHosts;
-
-    getHostbrowser(): number;
-    setHostbrowser(value: number): serviceHosts;
-
-    getHostfilesystem(): number;
-    setHostfilesystem(value: number): serviceHosts;
-
-    getHosthover(): number;
-    setHosthover(value: number): serviceHosts;
-
-    getHostwindow(): number;
-    setHostwindow(value: number): serviceHosts;
-
-    getHostcursor(): number;
-    setHostcursor(value: number): serviceHosts;
-
-    getHostnetwork(): number;
-    setHostnetwork(value: number): serviceHosts;
+    getHostbrokerid(): number;
+    setHostbrokerid(value: number): serviceHosts;
 
 
     serializeBinary(): Uint8Array;
@@ -55,17 +25,7 @@ export class serviceHosts extends jspb.Message {
 
 export namespace serviceHosts {
     export type AsObject = {
-        hostwhisper: number,
-        hoststorage: number,
-        hostclipboard: number,
-        hostkeyboard: number,
-        hostprocess: number,
-        hostbrowser: number,
-        hostfilesystem: number,
-        hosthover: number,
-        hostwindow: number,
-        hostcursor: number,
-        hostnetwork: number,
+        hostbrokerid: number,
     }
 }
 

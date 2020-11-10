@@ -12,27 +12,23 @@ import (
 
 // WhisperServer is used by the controller plugin host to receive plugin initiated communication
 type WhisperServer struct {
-	Authority Authority
-	Impl      WhisperService
+	Impl WhisperService
 }
 
 // WhisperMarkdown is used by loops to create markdown whispers
 func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperMarkdownRequest) (*emptypb.Empty, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	err := m.Impl.Markdown(ctx, &WhisperContentMarkdown{
-		Icon:     req.Meta.Icon,
-		Label:    req.Meta.Label,
-		Markdown: req.Markdown,
-		Style: Style{
-			BackgroundColor: req.Meta.Style.BackgroundColor,
-			HighlightColor:  req.Meta.Style.HighlightColor,
-			PrimaryColor:    req.Meta.Style.PrimaryColor,
-		},
-	})
+	err := m.Impl.Markdown(
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		&WhisperContentMarkdown{
+			Icon:     req.Meta.Icon,
+			Label:    req.Meta.Label,
+			Markdown: req.Markdown,
+			Style: Style{
+				BackgroundColor: req.Meta.Style.BackgroundColor,
+				HighlightColor:  req.Meta.Style.HighlightColor,
+				PrimaryColor:    req.Meta.Style.PrimaryColor,
+			},
+		})
 	if err != nil {
 		return nil, err
 	}
@@ -42,23 +38,20 @@ func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperM
 
 // WhisperConfirm is used by loops to create confirm whispers
 func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperConfirmRequest) (*proto.WhisperConfirmResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	response, err := m.Impl.Confirm(ctx, &WhisperContentConfirm{
-		Icon:     req.Meta.Icon,
-		Label:    req.Meta.Label,
-		Markdown: req.Markdown,
-		Style: Style{
-			BackgroundColor: req.Meta.Style.BackgroundColor,
-			HighlightColor:  req.Meta.Style.HighlightColor,
-			PrimaryColor:    req.Meta.Style.PrimaryColor,
-		},
-		ResolveLabel: req.ResolveLabel,
-		RejectLabel:  req.RejectLabel,
-	})
+	response, err := m.Impl.Confirm(
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		&WhisperContentConfirm{
+			Icon:     req.Meta.Icon,
+			Label:    req.Meta.Label,
+			Markdown: req.Markdown,
+			Style: Style{
+				BackgroundColor: req.Meta.Style.BackgroundColor,
+				HighlightColor:  req.Meta.Style.HighlightColor,
+				PrimaryColor:    req.Meta.Style.PrimaryColor,
+			},
+			ResolveLabel: req.ResolveLabel,
+			RejectLabel:  req.RejectLabel,
+		})
 	if err != nil {
 		return nil, err
 	}
@@ -70,11 +63,6 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 
 // WhisperForm is used by loops to create form whispers
 func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.Whisper_WhisperFormServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := m.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	inputs := make(map[string]WhisperContentFormInput, len(req.Inputs))
 	for key, inputProto := range req.Inputs {
 		key := key
@@ -364,18 +352,20 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 		}
 	}
 
-	submitted, outputs, err := m.Impl.Form(stream.Context(), &WhisperContentForm{
-		Icon:     req.Meta.Icon,
-		Label:    req.Meta.Label,
-		Markdown: req.Markdown,
-		Style: Style{
-			BackgroundColor: req.Meta.Style.BackgroundColor,
-			HighlightColor:  req.Meta.Style.HighlightColor,
-			PrimaryColor:    req.Meta.Style.PrimaryColor,
-		}, Inputs: inputs,
-		CancelLabel: req.CancelLabel,
-		SubmitLabel: req.SubmitLabel,
-	})
+	submitted, outputs, err := m.Impl.Form(
+		context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+		&WhisperContentForm{
+			Icon:     req.Meta.Icon,
+			Label:    req.Meta.Label,
+			Markdown: req.Markdown,
+			Style: Style{
+				BackgroundColor: req.Meta.Style.BackgroundColor,
+				HighlightColor:  req.Meta.Style.HighlightColor,
+				PrimaryColor:    req.Meta.Style.PrimaryColor,
+			}, Inputs: inputs,
+			CancelLabel: req.CancelLabel,
+			SubmitLabel: req.SubmitLabel,
+		})
 	// TODO: Fix this when we refactor to sidekick
 	if err != nil {
 		fmt.Println("ldk.WhisperServer.WhisperForm -> m.Impl.Form: error => ", err.Error())

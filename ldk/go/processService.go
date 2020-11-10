@@ -4,7 +4,7 @@ import "context"
 
 // ProcessService is an interface that defines what methods plugins can expect from the host
 type ProcessService interface {
-	State() ([]ProcessInfo, error)
+	State(context.Context) ([]ProcessInfo, error)
 	ListenState(context.Context, ListenProcessStateHandler) error
 }
 

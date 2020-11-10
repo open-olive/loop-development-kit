@@ -22,14 +22,12 @@ class WhisperClient extends baseClient_1.default {
      * @returns Promise resolving when the server responds to the command.
      */
     markdownWhisper(whisper) {
-        return this.buildQuery((message, callback) => this.client.whisperMarkdown(message, callback), () => whisperMessageBuilder_1.buildWhisperMarkdownRequest(whisper), 
+        return this.buildStoppableMessage((message, callback) => this.client.whisperMarkdown(message, callback), () => whisperMessageBuilder_1.buildWhisperMarkdownRequest(whisper), 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
     confirmWhisper(whisper) {
-        return this.buildQuery((message, callback) => {
-            this.client.whisperConfirm(message, callback);
-        }, () => whisperMessageBuilder_1.buildWhisperConfirmMessage(whisper), (response) => response.getResponse());
+        return this.buildStoppableMessage((message, callback) => this.client.whisperConfirm(message, callback), () => whisperMessageBuilder_1.buildWhisperConfirmMessage(whisper), (response) => response.getResponse());
     }
     formWhisper(whisper, listener) {
         const msg = whisperMessageBuilder_1.generateWhisperForm(whisper);

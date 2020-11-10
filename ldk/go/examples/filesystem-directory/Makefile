@@ -12,12 +12,6 @@ install:
 	go mod download
 	go mod tidy
 
-assets:
-	@ echo "Compiling assets"
-	@ go get github.com/go-bindata/go-bindata/...
-	@ $(GOPATH)/bin/go-bindata -o bind/assets.go -pkg bind assets/...
-	@ go mod tidy
-
 build/darwin-amd64/plugin:
 	go build \
 	     -ldflags "-X ${REPO}/controller/controller.GitBranch=${GIT_BRANCH} -X ${REPO}/sensor/sensor.GitCommit=${GIT_COMMIT} -X ${REPO}/sensor/sensor.Version=${VERSION}" \
@@ -51,4 +45,4 @@ golangci:
 	go mod tidy
 	golangci-lint run
 
-.PHONY: install assets build clean lint test test-race bench golangci
+.PHONY: install build clean lint test test-race bench golangci

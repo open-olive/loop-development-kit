@@ -12,17 +12,6 @@ import (
 
 func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
-		StorageService: &ldktest.StorageService{
-			StorageHasKeyf: func(string) (bool, error) {
-				return true, nil
-			},
-			StorageReadf: func(s string) (string, error) {
-				return "10", nil
-			},
-			StorageWritef: func(s1 string, s2 string) error {
-				return nil
-			},
-		},
 		KeyboardService: &ldktest.KeyboardService{
 			ListenTextf: func(ctx context.Context, cb ldk.ListenTextHandler) error {
 				cb("Some keyboard text", nil)

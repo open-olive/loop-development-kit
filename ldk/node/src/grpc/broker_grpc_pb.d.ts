@@ -1,4 +1,4 @@
-// package: proto
+// package: plugin
 // file: broker.proto
 
 /* tslint:disable */
@@ -13,7 +13,7 @@ interface IGRPCBrokerService extends grpc.ServiceDefinition<grpc.UntypedServiceI
 }
 
 interface IGRPCBrokerService_IStartStream extends grpc.MethodDefinition<broker_pb.ConnInfo, broker_pb.ConnInfo> {
-    path: string; // "/proto.GRPCBroker/StartStream"
+    path: string; // "/plugin.GRPCBroker/StartStream"
     requestStream: true;
     responseStream: true;
     requestSerialize: grpc.serialize<broker_pb.ConnInfo>;

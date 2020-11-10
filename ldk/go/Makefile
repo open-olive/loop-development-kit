@@ -21,8 +21,24 @@ quality: proto/ldk.pb.go $(shell find . -name "*.go")
 proto:
 	GO111MODULE=off go get -u github.com/golang/protobuf/protoc-gen-go
 	protoc -I ../../proto/ ../../proto/*.proto -I $(GOPATH)/src --go_out=plugins=grpc:proto/
+	rm proto/broker.pb.go
+	rm proto/stdio.pb.go
 
-test:
+
+test-examples:
+	cd examples/clipboard && make test
+	cd examples/filesystem-directory && make test
+	cd examples/filesystem-file && make test
+	cd examples/filesystem-listen-directory && make test
+	cd examples/filesystem-listen-file && make test
+	cd examples/keyboard && make test
+	cd examples/keyboard-character && make test
+	cd examples/keyboard-hotkey && make test
+	cd examples/whisper-confirm && make test
+	cd examples/whisper-form && make test
+	cd examples/whisper-markdown && make test
+
+test: test-examples
 	go test -v ./...
 
 test-race:
@@ -36,4 +52,4 @@ golangci:
 	go mod tidy
 	golangci-lint run
 
-.PHONY: proto test test-race bench golangci
+.PHONY: proto test test-examples test-race bench golangci
