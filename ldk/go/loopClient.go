@@ -70,6 +70,10 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		Impl: host.UI(),
 	}
 
+	networkHostServer := &NetworkServer{
+		Impl: host.Network(),
+	}
+
 	brokerID := m.broker.NextId()
 
 	readyChan := make(chan bool)
@@ -84,6 +88,7 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		proto.RegisterStorageServer(m.s, storageHostServer)
 		proto.RegisterWhisperServer(m.s, whisperHostServer)
 		proto.RegisterUIServer(m.s, uiHostServer)
+		proto.RegisterNetworkServer(m.s, networkHostServer)
 		readyChan <- true
 		return m.s
 	}

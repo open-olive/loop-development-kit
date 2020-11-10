@@ -10,4 +10,5 @@ type Sidekick interface {
 	Cursor() CursorService
 	Filesystem() FilesystemService
 	UI() UIService
+	Network() NetworkService
 }

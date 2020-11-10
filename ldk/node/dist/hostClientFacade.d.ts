@@ -8,7 +8,7 @@ import { ClipboardClient } from './hostClients/clipboardClient';
 import { CursorClient } from './hostClients/cursorClient';
 import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
-import { UIClient } from './hostClients/uiClient';
+import { NetworkClient } from './hostClients/networkClient';
 import { Logger } from './logging';
 /**
  * @internal
@@ -24,5 +24,6 @@ export default class HostClientFacade implements HostServices {
     process: ProcessClient;
     ui: UIClient;
     constructor(logger: Logger);
+    network: NetworkClient;
     connect(connInfo: ConnInfo.AsObject, session: Session.AsObject): Promise<void[]>;
 }

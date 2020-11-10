@@ -70,5 +70,5 @@ func (m *ClipboardServer) ClipboardWrite(ctx context.Context, req *proto.Clipboa
 		return nil, err
 	}
 
-	return &emptypb.Empty{}, err
+	return &emptypb.Empty{}, nil
 }

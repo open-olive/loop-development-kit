@@ -11,7 +11,7 @@ import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
-import { UIClient } from './hostClients/uiClient';
+import { NetworkClient } from './hostClients/networkClient';
 import { Logger } from './logging';
 
 /**
@@ -47,6 +47,8 @@ export default class HostClientFacade implements HostServices {
     this.logger = logger;
   }
 
+  public network: NetworkClient = new NetworkClient();
+
   public connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
@@ -63,7 +65,7 @@ export default class HostClientFacade implements HostServices {
       this.process.connect(connInfo, session, this.logger),
       this.cursor.connect(connInfo, session, this.logger),
       this.fileSystem.connect(connInfo, session, this.logger),
-      this.ui.connect(connInfo, session, this.logger),
+      this.network.connect(connInfo, session, this.logger),
     ]);
   }
 }
