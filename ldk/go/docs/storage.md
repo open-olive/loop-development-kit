@@ -1,12 +1,12 @@
 # Storage
-The Sidekick struct provided to the loop in `LoopStart` provides the loop with methods (via the `Storage()` method) it can use for storing information.
+The `Sidekick` struct provided to the loop in `LoopStart` provides the loop with methods (via the `Storage()` method) it can use for storing information.
 
 ## Applications
 * Storing credentials provided by the user.
 * Keeping track of data across restarts.
 
 ## Documentation
-In order for a loop to use storage, the loop must first provide Sidekick with documentation. This is accomplished by including a new file `storage.json` with your loop. The following is example documentation for a single entry.
+In order for a loop to use storage, the loop must first provide Olive Helps with documentation. This is accomplished by including a new file `storage.json` with your loop. The following is example documentation for a single entry.
 ```
 {
  "period": {
