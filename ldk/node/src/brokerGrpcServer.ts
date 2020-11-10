@@ -1,6 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
 import services from './grpc/broker_grpc_pb';
 import { ConnInfo } from './grpc/broker_pb';
+import { Logger } from './logging';
 
 /**
  * Class used to interact with the broker GRPC service.
@@ -10,6 +11,8 @@ import { ConnInfo } from './grpc/broker_pb';
 export default class BrokerGrpcServer {
   private connInfoPromise: Promise<ConnInfo.AsObject>;
 
+  private connInfoCallback!: (connInf: ConnInfo.AsObject) => void;
+
   /**
    * Create a BrokerGrpcServer.
    *
@@ -18,15 +21,14 @@ export default class BrokerGrpcServer {
    * BrokerGrpcServer(server);
    */
   constructor(server: grpc.Server) {
-    let connInfoCallback!: (connInf: ConnInfo.AsObject) => void;
     this.connInfoPromise = new Promise((resolve) => {
-      connInfoCallback = (connInfo: ConnInfo.AsObject) => {
+      this.connInfoCallback = (connInfo: ConnInfo.AsObject) => {
         resolve(connInfo);
       };
     });
 
     server.addService(services.GRPCBrokerService, {
-      startStream: this.startStream(connInfoCallback),
+      startStream: this.startStream,
     });
   }
 
@@ -42,23 +44,19 @@ export default class BrokerGrpcServer {
    * @param connInfoCallback
    * - The callback that handles receiving connection info.
    */
-  startStream(
-    connInfoCallback: (connInfo: ConnInfo.AsObject) => void,
-  ): grpc.handleBidiStreamingCall<ConnInfo, ConnInfo> {
-    return (call) => {
-      call.on('data', (msg: ConnInfo) => {
-        const connInfo: ConnInfo.AsObject = {
-          address: msg.getAddress(),
-          serviceId: msg.getServiceId(),
-          network: msg.getNetwork(),
-        };
-        connInfoCallback(connInfo);
-      });
-      call.on('end', () => {
-        call.end();
-      });
-    };
-  }
+  startStream: grpc.handleBidiStreamingCall<ConnInfo, ConnInfo> = (call) => {
+    call.on('data', (msg: ConnInfo) => {
+      const connInfo: ConnInfo.AsObject = {
+        address: msg.getAddress(),
+        serviceId: msg.getServiceId(),
+        network: msg.getNetwork(),
+      };
+      this.connInfoCallback(connInfo);
+    });
+    call.on('end', () => {
+      call.end();
+    });
+  };
 
   /**
    * Returns a promise which resolves to the connection information for the host process.

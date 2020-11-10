@@ -21,6 +21,9 @@ quality: proto/ldk.pb.go $(shell find . -name "*.go")
 proto:
 	GO111MODULE=off go get -u github.com/golang/protobuf/protoc-gen-go
 	protoc -I ../../proto/ ../../proto/*.proto -I $(GOPATH)/src --go_out=plugins=grpc:proto/
+	rm proto/broker.pb.go
+	rm proto/stdio.pb.go
+
 
 test-examples:
 	cd examples/clipboard && make test

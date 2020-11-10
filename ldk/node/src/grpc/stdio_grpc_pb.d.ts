@@ -1,4 +1,4 @@
-// package: proto
+// package: plugin
 // file: stdio.proto
 
 /* tslint:disable */
@@ -14,7 +14,7 @@ interface IGRPCStdioService extends grpc.ServiceDefinition<grpc.UntypedServiceIm
 }
 
 interface IGRPCStdioService_IStreamStdio extends grpc.MethodDefinition<google_protobuf_empty_pb.Empty, stdio_pb.StdioData> {
-    path: string; // "/proto.GRPCStdio/StreamStdio"
+    path: string; // "/plugin.GRPCStdio/StreamStdio"
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;

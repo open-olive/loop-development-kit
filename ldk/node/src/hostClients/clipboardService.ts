@@ -1,4 +1,4 @@
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 
 /**
  * The ClipboardService provides access to the OS's clipboard.

@@ -5,6 +5,7 @@ import WhisperClient from './whisperClient';
 import { ConnInfo } from '../grpc/broker_pb';
 import { Session } from '../grpc/session_pb';
 import * as Builders from './whisperMessageBuilder';
+import { Logger } from '../logging';
 
 jest.mock('../grpc/whisper_pb');
 jest.mock('../grpc/whisper_grpc_pb');
@@ -14,6 +15,7 @@ const WHISPER_ID = '1234-abcd';
 const hostClient = mocked(Services.WhisperClient);
 const newMessage = mocked(Messages.WhisperMarkdownRequest);
 const messageBuilders = mocked(Builders);
+const testLogger = new Logger('test-logger');
 
 type CallbackHandlerFunc<TRequest = any, TResponse = any> = (
   request: TRequest,
@@ -63,7 +65,9 @@ describe('WhisperHostClient', () => {
   });
   describe('#connect', () => {
     it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo, session)).resolves.toBe(undefined);
+      await expect(
+        subject.connect(connInfo, session, testLogger),
+      ).resolves.toBe(undefined);
     });
   });
   describe('#emitWhisper', () => {
@@ -80,7 +84,7 @@ describe('WhisperHostClient', () => {
           .mockImplementation(
             createCallbackHandler({ getId: () => WHISPER_ID }),
           );
-        await subject.connect(connInfo, session);
+        await subject.connect(connInfo, session, testLogger);
         await subject.markdownWhisper({
           markdown: 'abc',
           icon: 'ok',
@@ -95,15 +99,17 @@ describe('WhisperHostClient', () => {
       });
       it('should return the ID from the whisper', async () => {
         await expect(
-          subject.markdownWhisper({ markdown: 'a', label: 'a', icon: 'a' }),
+          subject
+            .markdownWhisper({ markdown: 'a', label: 'a', icon: 'a' })
+            .promise(),
         ).resolves.toBe(undefined);
       });
     });
     describe('before connected', () => {
       it('should throw an error', async () => {
-        await expect(
-          subject.markdownWhisper({ markdown: 'a', label: 'a', icon: 'a' }),
-        ).rejects.toThrow('Accessing session data before connection');
+        expect(() => {
+          subject.markdownWhisper({ markdown: 'a', label: 'a', icon: 'a' });
+        }).toThrow('Accessing session data before connection');
       });
     });
   });
