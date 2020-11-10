@@ -1,6 +1,7 @@
 package loop_test
 
 import (
+	"context"
 	"os"
 	"testing"
 	"time"
@@ -14,7 +15,7 @@ import (
 func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
 		FilesystemService: &ldktest.FilesystemService{
-			Filef: func(dir string) (ldk.FileInfo, error) {
+			Filef: func(ctx context.Context, dir string) (ldk.FileInfo, error) {
 				return ldk.FileInfo{
 					Name:    "foo.md",
 					Size:    1024,
@@ -25,7 +26,7 @@ func TestController(t *testing.T) {
 			},
 		},
 		WhisperService: &ldktest.WhisperService{
-			WhisperMarkdownF: func(w ldk.WhisperMarkdown) error {
+			Markdownf: func(ctx context.Context, w *ldk.WhisperContentMarkdown) error {
 				exp := "# New File Event\n```\nfoo.md\n1.0 kB\n-rwxrwxrwx\nOct  1 02:34:00\nfalse\n```\n\n"
 				if got := w.Markdown; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))

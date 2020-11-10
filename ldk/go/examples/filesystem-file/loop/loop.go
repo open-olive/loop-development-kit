@@ -20,7 +20,7 @@ const (
 )
 
 func Serve() error {
-	l := ldk.NewLogger("loop-example")
+	l := ldk.NewLogger("example-filesystem-file")
 	loop, err := NewLoop(l)
 	if err != nil {
 		return err
@@ -73,7 +73,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 	c.sidekick = sidekick
 
-	fi, err := sidekick.Filesystem().File("./go.mod")
+	fi, err := sidekick.Filesystem().File(c.ctx, "./go.mod")
 	if err != nil {
 		c.logger.Error("error reading file info", "error", err)
 		return err
@@ -126,14 +126,15 @@ func (c *Loop) emitExampleWhisper(f ldk.FileInfo) error {
 		err := c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
 			Icon:     "bathtub",
 			Label:    "Example Controller Go",
-			Style:    c.style,
 			Markdown: markdownBytes.String(),
+			Style:    c.style,
 		})
 		if err != nil {
 			c.logger.Error("failed to emit whisper", "error", err)
 		}
-		c.logger.Info("Sent message", "markdown", markdownBytes.String())
 	}()
+
+	c.logger.Info("Sent message", "markdown", markdownBytes.String())
 
 	return nil
 }

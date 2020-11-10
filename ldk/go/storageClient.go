@@ -13,10 +13,7 @@ type StorageClient struct {
 }
 
 // StorageDelete is used by plugins to delete a storage entry
-func (s *StorageClient) StorageDelete(key string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (s *StorageClient) StorageDelete(ctx context.Context, key string) error {
 	_, err := s.client.StorageDelete(ctx, &proto.StorageDeleteRequest{
 		Key:     key,
 		Session: s.session.ToProto(),
@@ -25,10 +22,7 @@ func (s *StorageClient) StorageDelete(key string) error {
 }
 
 // StorageDeleteAll is used by plugins to delete all storage entries
-func (s *StorageClient) StorageDeleteAll() error {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (s *StorageClient) StorageDeleteAll(ctx context.Context) error {
 	_, err := s.client.StorageDeleteAll(ctx, &proto.StorageDeleteAllRequest{
 		Session: s.session.ToProto(),
 	})
@@ -36,10 +30,7 @@ func (s *StorageClient) StorageDeleteAll() error {
 }
 
 // StorageHasKey is used by plugins to check if a key exists in storage
-func (s *StorageClient) StorageHasKey(key string) (bool, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (s *StorageClient) StorageHasKey(ctx context.Context, key string) (bool, error) {
 	resp, err := s.client.StorageHasKey(ctx, &proto.StorageHasKeyRequest{
 		Key:     key,
 		Session: s.session.ToProto(),
@@ -52,10 +43,7 @@ func (s *StorageClient) StorageHasKey(key string) (bool, error) {
 }
 
 // StorageKeys is used by plugins to get a list of keys for all entries
-func (s *StorageClient) StorageKeys() ([]string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (s *StorageClient) StorageKeys(ctx context.Context) ([]string, error) {
 	resp, err := s.client.StorageKeys(ctx, &proto.StorageKeysRequest{
 		Session: s.session.ToProto(),
 	})
@@ -67,10 +55,7 @@ func (s *StorageClient) StorageKeys() ([]string, error) {
 }
 
 // StorageRead is used by plugins to get the value of an entry
-func (s *StorageClient) StorageRead(key string) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (s *StorageClient) StorageRead(ctx context.Context, key string) (string, error) {
 	resp, err := s.client.StorageRead(ctx, &proto.StorageReadRequest{
 		Key:     key,
 		Session: s.session.ToProto(),
@@ -83,10 +68,7 @@ func (s *StorageClient) StorageRead(key string) (string, error) {
 }
 
 // StorageReadAll is used by plugins to get a map of all entries
-func (s *StorageClient) StorageReadAll() (map[string]string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (s *StorageClient) StorageReadAll(ctx context.Context) (map[string]string, error) {
 	resp, err := s.client.StorageReadAll(ctx, &proto.StorageReadAllRequest{
 		Session: s.session.ToProto(),
 	})
@@ -103,10 +85,7 @@ func (s *StorageClient) StorageReadAll() (map[string]string, error) {
 }
 
 // StorageWrite is used by plugins to set an entry
-func (s *StorageClient) StorageWrite(key, value string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (s *StorageClient) StorageWrite(ctx context.Context, key, value string) error {
 	_, err := s.client.StorageWrite(ctx, &proto.StorageWriteRequest{
 		Key:     key,
 		Value:   value,

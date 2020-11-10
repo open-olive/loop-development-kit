@@ -16,4 +16,5 @@ import * as Process from './hostClients/processService';
 import * as Storage from './hostClients/storageClient';
 import * as Whisper from './hostClients/whisperService';
 import * as Window from './hostClients/windowService';
-export { access, categories, operatingSystem, Loop, Plugin, Logger, serveLoop, HostServices, Browser, Clipboard, Cursor, FileSystem, Hover, Keyboard, Process, Storage, Whisper, Window, };
+import * as Network from './hostClients/networkService';
+export { access, categories, operatingSystem, Loop, Plugin, Logger, serveLoop, HostServices, Browser, Clipboard, Cursor, FileSystem, Hover, Keyboard, Process, Storage, Whisper, Window, Network, };

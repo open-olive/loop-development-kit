@@ -10,6 +10,8 @@ const clipboardClient_1 = require("./hostClients/clipboardClient");
 const cursorClient_1 = require("./hostClients/cursorClient");
 const fileSystemClient_1 = require("./hostClients/fileSystemClient");
 const processClient_1 = require("./hostClients/processClient");
+const networkClient_1 = require("./hostClients/networkClient");
+const uiClient_1 = require("./hostClients/uiClient");
 /**
  * @internal
  */
@@ -26,6 +28,8 @@ class HostClientFacade {
         this.cursor = new cursorClient_1.CursorClient();
         this.fileSystem = new fileSystemClient_1.FileSystemClient();
         this.process = new processClient_1.ProcessClient();
+        this.ui = new uiClient_1.UIClient();
+        this.network = new networkClient_1.NetworkClient();
         this.logger = logger;
     }
     connect(connInfo, session) {
@@ -41,6 +45,7 @@ class HostClientFacade {
             this.process.connect(connInfo, session, this.logger),
             this.cursor.connect(connInfo, session, this.logger),
             this.fileSystem.connect(connInfo, session, this.logger),
+            this.network.connect(connInfo, session, this.logger),
         ]);
     }
 }

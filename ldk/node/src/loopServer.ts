@@ -18,10 +18,15 @@ export default class LoopServer implements ILoopServer {
 
   private logger: Logger;
 
-  constructor(server: grpc.Server, broker: BrokerGrpcServer, impl: Loop, logger: Logger) {
+  constructor(
+    server: grpc.Server,
+    broker: BrokerGrpcServer,
+    impl: Loop,
+    logger: Logger,
+  ) {
     this.broker = broker;
     this.loop = impl;
-    this.logger = logger
+    this.logger = logger;
     // Disabling any b/c the untyped server requires an indexed type.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     server.addService(services.LoopService, this as any);
@@ -42,7 +47,7 @@ export default class LoopServer implements ILoopServer {
     const sessionInfo = call.request?.getSession();
     const response = new Empty();
     if (sessionInfo == null) {
-      this.logger.error("loopServer - Invalid Session Information");
+      this.logger.error('loopServer - Invalid Session Information');
       callback(new Error('Invalid Session Information'), response);
       return;
     }
@@ -50,7 +55,11 @@ export default class LoopServer implements ILoopServer {
     const hostClient = new HostClientFacade(this.logger);
 
     await hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
-      this.logger.error("loopServer - Failed to Connect to Facades", "error", JSON.stringify(err));
+      this.logger.error(
+        'loopServer - Failed to Connect to Facades',
+        'error',
+        JSON.stringify(err),
+      );
       throw err;
     });
     await this.loop.start(hostClient);

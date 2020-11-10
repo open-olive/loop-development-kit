@@ -13,10 +13,7 @@ type CursorClient struct {
 	session *Session
 }
 
-func (c *CursorClient) Position() (CursorPosition, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (c *CursorClient) Position(ctx context.Context) (CursorPosition, error) {
 	resp, err := c.client.CursorPosition(ctx, &proto.CursorPositionRequest{
 		Session: c.session.ToProto(),
 	})
