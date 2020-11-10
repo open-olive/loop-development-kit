@@ -75,13 +75,13 @@ It can be useful to tail the log as you develop to see any errors, warnings, or 
 ##### Linux
 
 ```sh
-tail -F /var/log/Sidekick/*.log
+tail -F /var/log/Olive\ Helps/*.log
 ```
 
 ##### Mac
 
 ```sh
-tail -F ~/Library/Logs/Sidekick/*.log
+tail -F ~/Library/Logs/Olive\ Helps/*.log
 ```
 
 ##### Windows
@@ -89,7 +89,7 @@ tail -F ~/Library/Logs/Sidekick/*.log
 From `Powershell` (not a cmd shell):
 
 ```powershell
-Get-Content $env:AppData\Sidekick\Logs\Sidekick-2020.08.12-1dcc37a.log –Wait
+Get-Content $env:AppData\Olive Helps\Logs\Olive Helps-2020.08.12-1dcc37a.log -Tail 10 –Wait
 ```
 
 Note: File names may differ from the examples above.
