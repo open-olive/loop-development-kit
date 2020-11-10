@@ -29,6 +29,7 @@ class BrokerGrpcServer {
          *
          * @param connInfoCallback
          * - The callback that handles receiving connection info.
+         * @param call
          */
         this.startStream = (call) => {
             call.on('data', (msg) => {

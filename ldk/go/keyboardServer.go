@@ -34,7 +34,7 @@ func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamReq
 
 	key := req.GetHotkey().GetKey()
 	if utf8.RuneCount([]byte(key)) != 1 {
-		return errors.New("Only one character is allowed when specifing a key.  Key length was greater than 1")
+		return errors.New("only one character is allowed when specifing a key.  Key length was greater than 1")
 	}
 	r, _ := utf8.DecodeRune([]byte(key))
 	hotkey := Hotkey{

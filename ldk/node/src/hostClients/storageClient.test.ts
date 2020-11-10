@@ -64,7 +64,9 @@ describe('StorageHostClient', () => {
   });
   describe('#connect', () => {
     it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo, session, logger)).resolves.toBe(undefined);
+      await expect(subject.connect(connInfo, session, logger)).resolves.toBe(
+        undefined,
+      );
     });
   });
   describe('#storageDelete', () => {

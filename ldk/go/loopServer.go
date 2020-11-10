@@ -24,8 +24,8 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 
 	hosts := req.ServiceHosts
 	session := NewSessionFromProto(req.Session)
-	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 
+	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 	if err != nil {
 		println("[ERROR] loopServer.go - conn Error")
 		println("[ERROR]" + err.Error())
@@ -59,6 +59,10 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 		},
 		filesystem: &FilesystemClient{
 			client:  proto.NewFilesystemClient(m.conn),
+			session: session,
+		},
+		network: &NetworkClient{
+			client:  proto.NewNetworkClient(m.conn),
 			session: session,
 		},
 	}

@@ -27,6 +27,7 @@ export default class BrokerGrpcServer {
      *
      * @param connInfoCallback
      * - The callback that handles receiving connection info.
+     * @param call
      */
     startStream: grpc.handleBidiStreamingCall<ConnInfo, ConnInfo>;
     /**

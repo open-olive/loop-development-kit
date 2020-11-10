@@ -35,6 +35,7 @@ class BaseClient {
      *
      * @async
      * @param connInfo - An object containing host process connection information.
+     * @param logger
      * @param session - An object containing the loop Session information.
      */
     connect(connInfo, session, logger) {

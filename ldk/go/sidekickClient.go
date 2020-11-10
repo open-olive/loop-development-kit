@@ -9,6 +9,7 @@ type SidekickClient struct {
 	process    ProcessService
 	cursor     CursorService
 	filesystem FilesystemService
+	network    NetworkService
 }
 
 // Clipboard is used by controller plugins to send whispers to sidekick
@@ -44,4 +45,9 @@ func (m *SidekickClient) Cursor() CursorService {
 // Filesystem is used by controller plugins to send keyboard events to sidekick
 func (m *SidekickClient) Filesystem() FilesystemService {
 	return m.filesystem
+}
+
+// Network is used by loops to send/receive HTTP requests
+func (m *SidekickClient) Network() NetworkService {
+	return m.network
 }
