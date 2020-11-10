@@ -24,16 +24,11 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 
 	hosts := req.ServiceHosts
 	session := NewSessionFromProto(req.Session)
-	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 
+	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 	if err != nil {
 		println("[ERROR] loopServer.go - conn Error")
 		println("[ERROR]" + err.Error())
-		return &emptypb.Empty{}, err
-	}
-
-	m.networkConn, err = m.broker.Dial(hosts.HostNetwork)
-	if err != nil {
 		return &emptypb.Empty{}, err
 	}
 
@@ -67,7 +62,7 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 			session: session,
 		},
 		network: &NetworkClient{
-			client:  proto.NewNetworkClient(m.networkConn),
+			client:  proto.NewNetworkClient(m.conn),
 			session: session,
 		},
 	}

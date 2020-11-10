@@ -9,7 +9,7 @@ import (
 // NetworkClient is the client used by the NetworkService
 type NetworkClient struct {
 	client  proto.NetworkClient
-	session LoopSession
+	session *Session
 }
 
 // HTTPResponse is the structure recieved from HttpRequest
@@ -27,10 +27,10 @@ type HTTPRequest struct {
 
 func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTTPResponse, error) {
 	resp, err := n.client.HTTPRequest(ctx, &proto.HTTPRequestMsg{
-		// Session: n.session.ToProto, // TODO: implement when ready
-		Url:    req.URL,
-		Method: req.Method,
-		Body:   req.Body,
+		Session: n.session.ToProto(),
+		Url:     req.URL,
+		Method:  req.Method,
+		Body:    req.Body,
 	})
 
 	if err != nil {
