@@ -9,7 +9,10 @@ namespace OliveHelpsLDK
     {
         public override async Task StreamStdio(Empty request, IServerStreamWriter<StdioData> responseStream, ServerCallContext context)
         {
-            
+            while (true)
+            {
+                await Task.Delay(1000);
+            }
         }
     }
 }
