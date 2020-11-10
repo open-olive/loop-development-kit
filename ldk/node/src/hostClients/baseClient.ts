@@ -3,6 +3,9 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { CommonHostServer } from '../commonHostServer';
 import { CommonHostClient } from './commonHostClient';
 import { Session } from '../grpc/session_pb';
+import { StoppableMessage } from './stoppables';
+import { TransformingMessage } from './transformingMessage';
+import { Logger } from '../logging';
 
 /**
  * @internal
@@ -38,6 +41,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
   /**
    * Implementation should return the constructor function/class for the GRPC Client itself, imported from the SERVICE_grpc_pb file.
+   *
    * @protected
    */
   protected abstract generateClient(): GRPCClientConstructor<THost>;
@@ -47,14 +51,16 @@ export default abstract class BaseClient<THost extends CommonHostServer>
    *
    * @async
    * @param connInfo - An object containing host process connection information.
+   * @param logger
    * @param session - An object containing the loop Session information.
    */
   connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
+    logger: Logger,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      let address;
+      let address: string;
       if (connInfo.network === 'unix') {
         address = `unix://${connInfo.address}`;
       } else {
@@ -73,6 +79,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
       this.client.waitForReady(deadline, (err) => {
         if (err) {
+          logger.error('Connection Failed', 'address', address);
           return reject(err);
         }
         return resolve();
@@ -107,6 +114,22 @@ export default abstract class BaseClient<THost extends CommonHostServer>
       };
       clientRequest(message, callback);
     });
+  }
+
+  buildStoppableMessage<TMessage extends SetSessionable, TResponse, TOutput>(
+    clientRequest: (
+      message: TMessage,
+      callback: (err: grpc.ServiceError | null, response: TResponse) => void,
+    ) => grpc.ClientUnaryCall,
+    builder: () => TMessage,
+    renderer: (response: TResponse) => TOutput,
+  ): StoppableMessage<TOutput> {
+    const message = builder();
+    message.setSession(this.createSessionMessage());
+    const result = new TransformingMessage(renderer);
+    const call = clientRequest(message, result.callback);
+    result.assignCall(call);
+    return result;
   }
 
   protected createSessionMessage(): Session {

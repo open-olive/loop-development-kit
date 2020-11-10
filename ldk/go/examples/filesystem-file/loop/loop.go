@@ -73,7 +73,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 	c.sidekick = sidekick
 
-	fi, err := sidekick.Filesystem().File("./go.mod")
+	fi, err := sidekick.Filesystem().File(c.ctx, "./go.mod")
 	if err != nil {
 		c.logger.Error("error reading file info", "error", err)
 		return err
@@ -122,18 +122,18 @@ func (c *Loop) emitExampleWhisper(f ldk.FileInfo) error {
 		return err
 	}
 
-	err := c.sidekick.Whisper().WhisperMarkdown(ldk.WhisperMarkdown{
-		WhisperMeta: ldk.WhisperMeta{
-			Icon:  "bathtub",
-			Label: "Example Controller Go",
-			Style: c.style,
-		},
-		Markdown: markdownBytes.String(),
-	})
-	if err != nil {
-		c.logger.Error("failed to emit whisper", "error", err)
-		return err
-	}
+	go func() {
+		err := c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
+			Icon:     "bathtub",
+			Label:    "Example Controller Go",
+			Markdown: markdownBytes.String(),
+			Style:    c.style,
+		})
+		if err != nil {
+			c.logger.Error("failed to emit whisper", "error", err)
+		}
+	}()
+
 	c.logger.Info("Sent message", "markdown", markdownBytes.String())
 
 	return nil

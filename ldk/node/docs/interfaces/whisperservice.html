@@ -101,22 +101,27 @@
 					<a name="confirmwhisper" class="tsd-anchor"></a>
 					<h3>confirm<wbr>Whisper</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">confirm<wbr>Whisper<span class="tsd-signature-symbol">(</span>whisper<span class="tsd-signature-symbol">: </span><a href="whisperconfirmconfig.html" class="tsd-signature-type">WhisperConfirmConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">confirm<wbr>Whisper<span class="tsd-signature-symbol">(</span>whisper<span class="tsd-signature-symbol">: </span><a href="whisperconfirmconfig.html" class="tsd-signature-type">WhisperConfirmConfig</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="stoppablemessage.html" class="tsd-signature-type">StoppableMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/d3fb72f/ldk/node/src/hostClients/whisperService.ts#L165">hostClients/whisperService.ts:165</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/fd6a2b2/ldk/node/src/hostClients/whisperService.ts#L171">src/hostClients/whisperService.ts:171</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>whisper: <a href="whisperconfirmconfig.html" class="tsd-signature-type">WhisperConfirmConfig</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="stoppablemessage.html" class="tsd-signature-type">StoppableMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<ul>
+								<li>A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
@@ -130,7 +135,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/d3fb72f/ldk/node/src/hostClients/whisperService.ts#L167">hostClients/whisperService.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/fd6a2b2/ldk/node/src/hostClients/whisperService.ts#L173">src/hostClients/whisperService.ts:173</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -150,13 +155,13 @@
 					<a name="markdownwhisper" class="tsd-anchor"></a>
 					<h3>markdown<wbr>Whisper</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">markdown<wbr>Whisper<span class="tsd-signature-symbol">(</span>whisper<span class="tsd-signature-symbol">: </span><a href="whisper.html" class="tsd-signature-type">Whisper</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">markdown<wbr>Whisper<span class="tsd-signature-symbol">(</span>whisper<span class="tsd-signature-symbol">: </span><a href="whisper.html" class="tsd-signature-type">Whisper</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="stoppablemessage.html" class="tsd-signature-type">StoppableMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/d3fb72f/ldk/node/src/hostClients/whisperService.ts#L163">hostClients/whisperService.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/fd6a2b2/ldk/node/src/hostClients/whisperService.ts#L167">src/hostClients/whisperService.ts:167</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -167,9 +172,9 @@
 									<h5>whisper: <a href="whisper.html" class="tsd-signature-type">Whisper</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="stoppablemessage.html" class="tsd-signature-type">StoppableMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<ul>
-								<li>Promise resolving with the unique ID of the generated whisper.</li>
+								<li>A StoppableMessage object containing a promise resolving when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.</li>
 							</ul>
 						</li>
 					</ul>
@@ -235,6 +240,12 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 		</div>
 	</div>

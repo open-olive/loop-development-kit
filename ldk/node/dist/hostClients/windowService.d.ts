@@ -1,4 +1,4 @@
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 export interface WindowInfoResponse {
     title: string;
     path: string;

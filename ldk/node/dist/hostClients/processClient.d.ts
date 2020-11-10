@@ -1,7 +1,7 @@
 import { ProcessClient as ProcessGRPCClient } from '../grpc/process_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { ProcessService, ProcessListResponse, ProcessStreamResponse } from './processService';
-import { StoppableStream } from './stoppableStream';
+import { StoppableStream } from './stoppables';
 /**
  * @internal
  */

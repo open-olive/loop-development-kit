@@ -2,7 +2,7 @@ import { BrowserClient as BrowserGRPCClient } from '../grpc/browser_grpc_pb';
 import Messages from '../grpc/browser_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { BrowserSelectedTextResponse, BrowserService } from './browserService';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 
 /**
