@@ -73,7 +73,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 	c.sidekick = sidekick
 
-	fi, err := sidekick.Filesystem().Dir("./")
+	fi, err := sidekick.Filesystem().Dir(c.ctx, "./")
 	if err != nil {
 		c.logger.Error("error reading directory", "error", err)
 		return err
@@ -132,14 +132,15 @@ func (c *Loop) emitExampleWhisper(f ldk.FileInfo) error {
 		err := c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
 			Icon:     "bathtub",
 			Label:    "Example Controller Go",
-			Style:    c.style,
 			Markdown: markdownBytes.String(),
+			Style:    c.style,
 		})
 		if err != nil {
 			c.logger.Error("failed to emit whisper", "error", err)
 		}
-		c.logger.Info("Sent message", "markdown", markdownBytes.String())
 	}()
+
+	c.logger.Info("Sent message", "markdown", markdownBytes.String())
 
 	return nil
 }

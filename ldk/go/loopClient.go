@@ -36,41 +36,34 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	// setup whisper server
 	whisperHostServer := &WhisperServer{
-		Authority: m.Authority,
-		Impl:      host.Whisper(),
+		Impl: host.Whisper(),
 	}
 
 	// setup storage server
 	storageHostServer := &StorageServer{
-		Authority: m.Authority,
-		Impl:      host.Storage(),
+		Impl: host.Storage(),
 	}
 
 	// setup clipboard server
 	clipboardHostServer := &ClipboardServer{
-		Authority: m.Authority,
-		Impl:      host.Clipboard(),
+		Impl: host.Clipboard(),
 	}
 
 	//setup keyboard server
 	keyboardHostServer := &KeyboardServer{
-		Authority: m.Authority,
-		Impl:      host.Keyboard(),
+		Impl: host.Keyboard(),
 	}
 
 	processHostServer := &ProcessServer{
-		Authority: m.Authority,
-		Impl:      host.Process(),
+		Impl: host.Process(),
 	}
 
 	cursorHostServer := &CursorServer{
-		Authority: m.Authority,
-		Impl:      host.Cursor(),
+		Impl: host.Cursor(),
 	}
 
 	filesystemHostServer := &FilesystemServer{
-		Authority: m.Authority,
-		Impl:      host.Filesystem(),
+		Impl: host.Filesystem(),
 	}
 
 	brokerID := m.broker.NextId()

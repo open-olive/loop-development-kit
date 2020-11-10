@@ -8,8 +8,7 @@ import (
 )
 
 type ProcessServer struct {
-	Authority Authority
-	Impl      ProcessService
+	Impl ProcessService
 }
 
 func convertProcessInfo(pi ProcessInfo) *proto.ProcessInfo {
@@ -21,11 +20,6 @@ func convertProcessInfo(pi ProcessInfo) *proto.ProcessInfo {
 }
 
 func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest, stream proto.Process_ProcessStateStreamServer) error {
-	session := NewSessionFromProto(req.Session)
-	if err := p.Authority.ValidateSession(session); err != nil {
-		return err
-	}
-
 	handler := func(event ProcessEvent, err error) {
 		var errText string
 		if err != nil {
@@ -40,7 +34,10 @@ func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest,
 		}
 	}
 	go func() {
-		err := p.Impl.ListenState(stream.Context(), handler)
+		err := p.Impl.ListenState(
+			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			handler,
+		)
 		if err != nil {
 			fmt.Println("error => ", err.Error())
 		}
@@ -49,13 +46,10 @@ func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest,
 	return nil
 }
 
-func (p *ProcessServer) ProcessState(_ context.Context, req *proto.ProcessStateRequest) (*proto.ProcessStateResponse, error) {
-	session := NewSessionFromProto(req.Session)
-	if err := p.Authority.ValidateSession(session); err != nil {
-		return nil, err
-	}
-
-	processes, err := p.Impl.State()
+func (p *ProcessServer) ProcessState(ctx context.Context, req *proto.ProcessStateRequest) (*proto.ProcessStateResponse, error) {
+	processes, err := p.Impl.State(
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	)
 	if err != nil {
 		return nil, err
 	}

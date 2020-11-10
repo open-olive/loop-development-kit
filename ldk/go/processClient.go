@@ -28,10 +28,8 @@ func convertToProcessEvent(pi *proto.ProcessStateStreamResponse) ProcessEvent {
 	}
 }
 
-func (p *ProcessClient) State() ([]ProcessInfo, error) {
+func (p *ProcessClient) State(ctx context.Context) ([]ProcessInfo, error) {
 	msg := &proto.ProcessStateRequest{Session: p.session.ToProto()}
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
 	resp, err := p.client.ProcessState(ctx, msg)
 	if err != nil {
 		return nil, err

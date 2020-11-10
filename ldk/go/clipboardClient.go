@@ -15,10 +15,7 @@ type ClipboardClient struct {
 }
 
 // Read is used by the loop to get the current clipboard text
-func (c *ClipboardClient) Read() (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (c *ClipboardClient) Read(ctx context.Context) (string, error) {
 	resp, err := c.client.ClipboardRead(ctx, &proto.ClipboardReadRequest{
 		Session: c.session.ToProto(),
 	})
@@ -60,10 +57,7 @@ func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler)
 }
 
 // Write is used by the loop to write text to the clipboard
-func (c *ClipboardClient) Write(text string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), grpcTimeout)
-	defer cancel()
-
+func (c *ClipboardClient) Write(ctx context.Context, text string) error {
 	_, err := c.client.ClipboardWrite(ctx, &proto.ClipboardWriteRequest{
 		Session: c.session.ToProto(),
 		Text:    text,
