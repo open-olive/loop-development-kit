@@ -11,6 +11,9 @@ ldk/node/build/index.html
 ldk/node/build*
 ldk/node/build/*
 
+# Go LDK build files for examples
+ldk/go/examples/**/build
+
 # Testing
 coverage/
 ldk/node/coverage/
