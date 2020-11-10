@@ -9,9 +9,9 @@ import (
 
 // FilesystemService is an interface that defines what methods plugins can expect from the host
 type FilesystemService interface {
-	Dir(string) ([]FileInfo, error)
+	Dir(context.Context, string) ([]FileInfo, error)
 	ListenDir(context.Context, string, ListenDirHandler) error
-	File(string) (FileInfo, error)
+	File(context.Context, string) (FileInfo, error)
 	ListenFile(context.Context, string, ListenFileHandler) error
 }
 

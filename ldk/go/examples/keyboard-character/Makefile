@@ -1,4 +1,4 @@
-REPO := github.com/open-olive/loop-development-kit/ldk/go/example/keyboard-character
+REPO := github.com/open-olive/loop-development-kit/ldk/go/examples/keyboard-character
 PKG := examplego
 
 GIT_COMMIT := $(shell git rev-list -1 HEAD)

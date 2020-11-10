@@ -12,13 +12,13 @@ function serialize_google_protobuf_Empty(arg) {
 function deserialize_google_protobuf_Empty(buffer_arg) {
     return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
 }
-function serialize_proto_StdioData(arg) {
+function serialize_plugin_StdioData(arg) {
     if (!(arg instanceof stdio_pb.StdioData)) {
-        throw new Error('Expected argument of type proto.StdioData');
+        throw new Error('Expected argument of type plugin.StdioData');
     }
     return Buffer.from(arg.serializeBinary());
 }
-function deserialize_proto_StdioData(buffer_arg) {
+function deserialize_plugin_StdioData(buffer_arg) {
     return stdio_pb.StdioData.deserializeBinary(new Uint8Array(buffer_arg));
 }
 // GRPCStdio is a service that is automatically run by the plugin process
@@ -31,15 +31,15 @@ var GRPCStdioService = exports.GRPCStdioService = {
     //
     // Callers should connect early to prevent blocking on the plugin process.
     streamStdio: {
-        path: '/proto.GRPCStdio/StreamStdio',
+        path: '/plugin.GRPCStdio/StreamStdio',
         requestStream: false,
         responseStream: true,
         requestType: google_protobuf_empty_pb.Empty,
         responseType: stdio_pb.StdioData,
         requestSerialize: serialize_google_protobuf_Empty,
         requestDeserialize: deserialize_google_protobuf_Empty,
-        responseSerialize: serialize_proto_StdioData,
-        responseDeserialize: deserialize_proto_StdioData,
+        responseSerialize: serialize_plugin_StdioData,
+        responseDeserialize: deserialize_plugin_StdioData,
     },
 };
 exports.GRPCStdioClient = grpc.makeGenericClientConstructor(GRPCStdioService);

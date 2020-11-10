@@ -1,4 +1,4 @@
-module github.com/open-olive/loop-development-kit/ldk/go/example/whisper-confirm
+module github.com/open-olive/loop-development-kit/ldk/go/examples/whisper-confirm
 
 go 1.14
 

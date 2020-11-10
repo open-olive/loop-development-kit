@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Window = exports.Whisper = exports.Storage = exports.Process = exports.Keyboard = exports.Hover = exports.FileSystem = exports.Cursor = exports.Clipboard = exports.Browser = exports.serveLoop = exports.Logger = exports.Plugin = exports.operatingSystem = exports.categories = exports.access = void 0;
+exports.Network = exports.Window = exports.Whisper = exports.Storage = exports.Process = exports.Keyboard = exports.Hover = exports.FileSystem = exports.Cursor = exports.Clipboard = exports.Browser = exports.serveLoop = exports.Logger = exports.Plugin = exports.operatingSystem = exports.categories = exports.access = void 0;
 const access_1 = __importDefault(require("./access"));
 exports.access = access_1.default;
 const categories_1 = __importDefault(require("./categories"));
@@ -55,3 +55,5 @@ const Whisper = __importStar(require("./hostClients/whisperService"));
 exports.Whisper = Whisper;
 const Window = __importStar(require("./hostClients/windowService"));
 exports.Window = Window;
+const Network = __importStar(require("./hostClients/networkService"));
+exports.Network = Network;

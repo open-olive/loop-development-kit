@@ -1,4 +1,4 @@
-module github.com/open-olive/loop-development-kit/ldk/go/example/whisper-form
+module github.com/open-olive/loop-development-kit/ldk/go/examples/whisper-form
 
 go 1.14
 

@@ -1,4 +1,4 @@
-module github.com/open-olive/loop-development-kit/ldk/go/example/keyboard-character
+module github.com/open-olive/loop-development-kit/ldk/go/examples/keyboard-character
 
 go 1.14
 

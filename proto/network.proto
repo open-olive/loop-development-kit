@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "session.proto";
+
+service Network {
+    rpc HTTPRequest (HTTPRequestMsg) returns (HTTPResponseMsg);
+}
+
+message HTTPRequestMsg {
+    Session session = 1;
+    string url = 2;
+    string method = 3;
+    bytes body = 4;
+}
+
+message HTTPResponseMsg {
+    uint32 responseCode = 1;
+    bytes data = 2;
+}

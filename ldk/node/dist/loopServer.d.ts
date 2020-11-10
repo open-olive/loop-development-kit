@@ -4,13 +4,15 @@ import { ILoopServer } from './grpc/loop_grpc_pb';
 import BrokerGrpcServer from './brokerGrpcServer';
 import messages from './grpc/loop_pb';
 import { Loop } from './loop';
+import { Logger } from './logging';
 /**
  * @internal
  */
 export default class LoopServer implements ILoopServer {
     protected broker: BrokerGrpcServer;
     private loop;
-    constructor(server: grpc.Server, broker: BrokerGrpcServer, impl: Loop);
+    private logger;
+    constructor(server: grpc.Server, broker: BrokerGrpcServer, impl: Loop, logger: Logger);
     /**
      * Called by the host to start the Loop.
      *

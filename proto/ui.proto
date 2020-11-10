@@ -1,0 +1,30 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "session.proto";
+
+service UI {
+    // Event is streamed whenever user hits enter.
+    rpc GlobalSearchStream (GlobalSearchStreamRequest) returns (stream GlobalSearchStreamResponse);
+    // Event is streamed whenever user hits enter.
+    rpc SearchbarStream (SearchbarStreamRequest) returns (stream SearchbarStreamResponse);
+}
+
+message GlobalSearchStreamResponse {
+    string text = 1;
+    string error = 15;
+}
+
+message SearchbarStreamResponse {
+    string text = 1;
+    string error = 15;
+}
+
+message GlobalSearchStreamRequest {
+    Session session = 1;
+}
+
+message SearchbarStreamRequest {
+    Session session = 1;
+}

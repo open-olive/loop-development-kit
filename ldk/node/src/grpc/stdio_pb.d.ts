@@ -1,4 +1,4 @@
-// package: proto
+// package: plugin
 // file: stdio.proto
 
 /* tslint:disable */

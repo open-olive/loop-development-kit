@@ -1,4 +1,4 @@
-REPO := github.com/open-olive/loop-development-kit/ldk/go/example/clipboard
+REPO := github.com/open-olive/loop-development-kit/ldk/go/examples/clipboard
 PKG := examplego
 
 GIT_COMMIT := $(shell git rev-list -1 HEAD)
@@ -35,7 +35,9 @@ build: clean build/darwin-amd64/plugin build/windows-amd64/plugin
 
 # TODO: remove before merging to master
 deploy-local: build
+	mkdir -p ~/Library/Application\ Support/Olive\ Helps/loops/1
 	cp build/darwin-amd64/plugin ~/Library/Application\ Support/Olive\ Helps/loops/1/plugin
+	cp plugin.json ~/Library/Application\ Support/Olive\ Helps/loops/1/
 
 test:
 	go test -v ./...

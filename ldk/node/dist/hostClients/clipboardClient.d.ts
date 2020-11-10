@@ -1,7 +1,7 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { ClipboardClient as ClipboardGRPCClient } from '../grpc/clipboard_grpc_pb';
 import { ClipboardService } from './clipboardService';
-import { StoppableStream, StreamListener } from './stoppableStream';
+import { StoppableStream, StreamListener } from './stoppables';
 /**
  * @internal
  */

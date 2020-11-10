@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/hashicorp/go-multierror"
-
 	"github.com/hashicorp/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
@@ -16,15 +15,7 @@ type LoopServer struct {
 	Impl Loop
 
 	broker *plugin.GRPCBroker
-
-	clipboardConn  *grpc.ClientConn
-	storageConn    *grpc.ClientConn
-	whisperConn    *grpc.ClientConn
-	keyboardConn   *grpc.ClientConn
-	processConn    *grpc.ClientConn
-	cursorConn     *grpc.ClientConn
-	filesystemConn *grpc.ClientConn
-	windowConn     *grpc.ClientConn
+	conn   *grpc.ClientConn
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
@@ -34,81 +25,56 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 	hosts := req.ServiceHosts
 	session := NewSessionFromProto(req.Session)
 
-	m.storageConn, err = m.broker.Dial(hosts.HostStorage)
+	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.whisperConn, err = m.broker.Dial(hosts.HostWhisper)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.clipboardConn, err = m.broker.Dial(hosts.HostClipboard)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.keyboardConn, err = m.broker.Dial(hosts.HostKeyboard)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.processConn, err = m.broker.Dial(hosts.HostProcess)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.cursorConn, err = m.broker.Dial(hosts.HostCursor)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.filesystemConn, err = m.broker.Dial(hosts.HostFilesystem)
-	if err != nil {
-		return &emptypb.Empty{}, err
-	}
-
-	m.windowConn, err = m.broker.Dial(hosts.HostWindow)
-	if err != nil {
+		println("[ERROR] loopServer.go - conn Error")
+		println("[ERROR]" + err.Error())
 		return &emptypb.Empty{}, err
 	}
 
 	sidekickClient := &SidekickClient{
 		storage: &StorageClient{
-			client:  proto.NewStorageClient(m.storageConn),
+			client:  proto.NewStorageClient(m.conn),
 			session: session,
 		},
 		whisper: &WhisperClient{
-			client:  proto.NewWhisperClient(m.whisperConn),
+			client:  proto.NewWhisperClient(m.conn),
 			session: session,
 		},
 		clipboard: &ClipboardClient{
-			client:  proto.NewClipboardClient(m.clipboardConn),
+			client:  proto.NewClipboardClient(m.conn),
 			session: session,
 		},
 		keyboard: &KeyboardClient{
-			client:  proto.NewKeyboardClient(m.keyboardConn),
+			client:  proto.NewKeyboardClient(m.conn),
 			session: session,
 		},
 		process: &ProcessClient{
-			client:  proto.NewProcessClient(m.processConn),
+			client:  proto.NewProcessClient(m.conn),
 			session: session,
 		},
 		cursor: &CursorClient{
-			client:  proto.NewCursorClient(m.cursorConn),
+			client:  proto.NewCursorClient(m.conn),
 			session: session,
 		},
 		filesystem: &FilesystemClient{
-			client:  proto.NewFilesystemClient(m.filesystemConn),
+			client:  proto.NewFilesystemClient(m.conn),
+			session: session,
+		},
+		ui: &UIClient{
+			client:  proto.NewUIClient(m.conn),
+			session: session,
+		},
+		network: &NetworkClient{
+			client:  proto.NewNetworkClient(m.conn),
 			session: session,
 		},
 		window: &WindowClient{
-			client:  proto.NewWindowClient(m.windowConn),
+			client:  proto.NewWindowClient(m.conn),
 			session: session,
 		},
 	}
-
+	println("[INFO] loopServer.go - LoopStart complete")
 	return &emptypb.Empty{}, m.Impl.LoopStart(
 		sidekickClient,
 	)
@@ -123,36 +89,8 @@ func (m *LoopServer) LoopStop(_ context.Context, _ *emptypb.Empty) (*emptypb.Emp
 		multiErr = multierror.Append(multiErr, err)
 	}
 
-	// close service connections
-	if err := m.clipboardConn.Close(); err != nil {
-		multiErr = multierror.Append(multiErr, err)
-	}
-
-	if err := m.storageConn.Close(); err != nil {
-		multiErr = multierror.Append(multiErr, err)
-	}
-
-	if err := m.whisperConn.Close(); err != nil {
-		multiErr = multierror.Append(multiErr, err)
-	}
-
-	if err := m.keyboardConn.Close(); err != nil {
-		multiErr = multierror.Append(multiErr, err)
-	}
-
-	if err := m.processConn.Close(); err != nil {
-		multiErr = multierror.Append(multiErr, err)
-	}
-
-	if err := m.cursorConn.Close(); err != nil {
-		multiErr = multierror.Append(multiErr, err)
-	}
-
-	if err := m.filesystemConn.Close(); err != nil {
-		multiErr = multierror.Append(multiErr, err)
-	}
-
-	if err := m.windowConn.Close(); err != nil {
+	// close service connection
+	if err := m.conn.Close(); err != nil {
 		multiErr = multierror.Append(multiErr, err)
 	}
 

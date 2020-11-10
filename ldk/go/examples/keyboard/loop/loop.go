@@ -13,7 +13,7 @@ const (
 )
 
 func Serve() error {
-	l := ldk.NewLogger("loop-example")
+	l := ldk.NewLogger("example-keyboard")
 	loop, err := NewLoop(l)
 	if err != nil {
 		return err
@@ -59,16 +59,17 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 			return
 		}
 
-		err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-			Icon:     "bathtub",
-			Label:    "Example Controller Go",
-			Markdown: "Text from the keyboard: " + text,
-			Style:    c.style,
-		})
-		if err != nil {
-			c.logger.Error("failed to emit whisper", "error", err)
-			return
-		}
+		go func() {
+			err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
+				Icon:     "bathtub",
+				Label:    "Example Controller Go",
+				Markdown: "Text from the keyboard: " + text,
+				Style:    c.style,
+			})
+			if err != nil {
+				c.logger.Error("failed to emit whisper", "error", err)
+			}
+		}()
 	})
 }
 

@@ -2,17 +2,17 @@ package ldk
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/hashicorp/go-multierror"
-
 	"github.com/hashicorp/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-const grpcTimeout = 5 * time.Second
+const grpcTimeout = 40 * time.Second
 
 // LoopClient is used by the controller plugin host to facilitate host initiated communication with controller plugins
 type LoopClient struct {
@@ -34,136 +34,53 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		return err
 	}
 
-	// setup whisper server
-	whisperHostServer := &WhisperServer{
-		Authority: m.Authority,
-		Impl:      host.Whisper(),
-	}
+	// setup service servers
+	clipboardHostServer := &ClipboardServer{Impl: host.Clipboard()}
+	cursorHostServer := &CursorServer{Impl: host.Cursor()}
+	filesystemHostServer := &FilesystemServer{Impl: host.Filesystem()}
+	keyboardHostServer := &KeyboardServer{Impl: host.Keyboard()}
+	networkHostServer := &NetworkServer{Impl: host.Network()}
+	processHostServer := &ProcessServer{Impl: host.Process()}
+	storageHostServer := &StorageServer{Impl: host.Storage()}
+	uiHostServer := &UIServer{Impl: host.UI()}
+	whisperHostServer := &WhisperServer{Impl: host.Whisper()}
+	windowHostServer := &WindowServer{Impl: host.Window()}
 
-	whisperServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
-		proto.RegisterWhisperServer(m.s, whisperHostServer)
-		return m.s
-	}
+	brokerID := m.broker.NextId()
 
-	whisperBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(whisperBrokerID, whisperServerFunc)
+	readyChan := make(chan bool)
 
-	// setup storage server
-	storageHostServer := &StorageServer{
-		Authority: m.Authority,
-		Impl:      host.Storage(),
-	}
-
-	storageServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
-		proto.RegisterStorageServer(m.s, storageHostServer)
-		return m.s
-	}
-
-	storageBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(storageBrokerID, storageServerFunc)
-
-	// setup clipboard server
-	clipboardHostServer := &ClipboardServer{
-		Authority: m.Authority,
-		Impl:      host.Clipboard(),
-	}
-
-	clipboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
+	serverFunc := func(opts []grpc.ServerOption) *grpc.Server {
 		m.s = grpc.NewServer(opts...)
 		proto.RegisterClipboardServer(m.s, clipboardHostServer)
-		return m.s
-	}
-
-	clipboardBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(clipboardBrokerID, clipboardServerFunc)
-
-	//setup keyboard server
-	keyboardHostServer := &KeyboardServer{
-		Authority: m.Authority,
-		Impl:      host.Keyboard(),
-	}
-
-	keyboardServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
-		proto.RegisterKeyboardServer(m.s, keyboardHostServer)
-		return m.s
-	}
-
-	keyboardBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(keyboardBrokerID, keyboardServerFunc)
-
-	processHostServer := &ProcessServer{
-		Authority: m.Authority,
-		Impl:      host.Process(),
-	}
-
-	processServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
-		proto.RegisterProcessServer(m.s, processHostServer)
-		return m.s
-	}
-
-	processBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(processBrokerID, processServerFunc)
-
-	cursorHostServer := &CursorServer{
-		Authority: m.Authority,
-		Impl:      host.Cursor(),
-	}
-
-	cursorServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
 		proto.RegisterCursorServer(m.s, cursorHostServer)
-		return m.s
-	}
-
-	cursorBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(cursorBrokerID, cursorServerFunc)
-
-	filesystemHostServer := &FilesystemServer{
-		Authority: m.Authority,
-		Impl:      host.Filesystem(),
-	}
-
-	filesystemServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
 		proto.RegisterFilesystemServer(m.s, filesystemHostServer)
-		return m.s
-	}
-
-	filesystemBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(filesystemBrokerID, filesystemServerFunc)
-
-	windowHostServer := &WindowServer{
-		Authority: m.Authority,
-		Impl:      host.Window(),
-	}
-
-	windowServerFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		m.s = grpc.NewServer(opts...)
+		proto.RegisterKeyboardServer(m.s, keyboardHostServer)
+		proto.RegisterNetworkServer(m.s, networkHostServer)
+		proto.RegisterProcessServer(m.s, processHostServer)
+		proto.RegisterStorageServer(m.s, storageHostServer)
+		proto.RegisterUIServer(m.s, uiHostServer)
+		proto.RegisterWhisperServer(m.s, whisperHostServer)
 		proto.RegisterWindowServer(m.s, windowHostServer)
+		readyChan <- true
 		return m.s
 	}
 
-	windowBrokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(windowBrokerID, windowServerFunc)
+	go m.broker.AcceptAndServe(brokerID, serverFunc)
 
+	<-readyChan
+
+	serviceHosts := &proto.ServiceHosts{
+		HostBrokerId: brokerID,
+	}
 	_, err = m.client.LoopStart(ctx, &proto.LoopStartRequest{
-		ServiceHosts: &proto.ServiceHosts{
-			HostStorage:    storageBrokerID,
-			HostWhisper:    whisperBrokerID,
-			HostClipboard:  clipboardBrokerID,
-			HostKeyboard:   keyboardBrokerID,
-			HostProcess:    processBrokerID,
-			HostCursor:     cursorBrokerID,
-			HostFilesystem: filesystemBrokerID,
-			HostWindow:     windowBrokerID,
-		},
-		Session: session.ToProto(),
+		ServiceHosts: serviceHosts,
+		Session:      session.ToProto(),
 	})
-
+	if err != nil {
+		fmt.Println("loopClient.go ERROR FOLLOWS")
+		fmt.Println(err)
+	}
 	return err
 }
 
