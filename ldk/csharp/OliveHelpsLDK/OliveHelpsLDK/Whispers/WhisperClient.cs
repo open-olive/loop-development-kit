@@ -4,10 +4,6 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Proto;
 
-namespace OliveHelpsLDK
-{
-}
-
 namespace OliveHelpsLDK.Whispers
 {
     public class WhisperClient : BaseClient, IWhisperService
@@ -29,7 +25,7 @@ namespace OliveHelpsLDK.Whispers
         {
             var request = new WhisperMarkdownRequest
             {
-                Markdown = "Whispered!",
+                Markdown = message.Markdown,
                 Session = CreateSession(),
                 Meta = GenerateMeta(message.Config)
             };
@@ -61,9 +57,11 @@ namespace OliveHelpsLDK.Whispers
 
         private static WhisperMeta GenerateMeta(WhisperConfig config)
         {
-            var styleBackgroundColor = config.Style.BackgroundColor != "" ? config.Style.BackgroundColor : BackgroundColor;
-            var stylePrimaryColor = config.Style.PrimaryColor != "" ? config.Style.PrimaryColor : PrimaryColor;
-            var styleHighlightColor = config.Style.HighlightColor != "" ? config.Style.HighlightColor : HighlightColor;
+            var styleBackgroundColor =
+                CoerceColor(config.Style.BackgroundColor, BackgroundColor);
+            var stylePrimaryColor = CoerceColor(config.Style.PrimaryColor,
+                PrimaryColor);
+            var styleHighlightColor = CoerceColor(config.Style.HighlightColor, HighlightColor);
             return new WhisperMeta
             {
                 Icon = config.Icon,
@@ -75,6 +73,11 @@ namespace OliveHelpsLDK.Whispers
                     HighlightColor = styleHighlightColor,
                 }
             };
+        }
+
+        private static string CoerceColor(string input, string defaultColor)
+        {
+            return string.IsNullOrEmpty(input) ? defaultColor : input;
         }
     }
 }

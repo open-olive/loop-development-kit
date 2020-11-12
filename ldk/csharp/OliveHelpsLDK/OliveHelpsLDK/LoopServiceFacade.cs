@@ -1,13 +1,16 @@
 using System;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
 {
     public class LoopServiceFacade : ILoopServices
     {
-        public IWhisperService WhisperClient;
+        public IWhisperService Whisper;
+
+        public IClipboardService Clipboard;
 
         public async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
@@ -18,7 +21,8 @@ namespace OliveHelpsLDK
             var channel = new Grpc.Core.Channel(address, ChannelCredentials.Insecure);
             await channel.ConnectAsync();
             Console.Error.WriteLine("[DEBUG] GRPC Channel Connected");
-            WhisperClient = new WhisperClient(channel, session);
+            Whisper = new WhisperClient(channel, session);
+            Clipboard = new ClipboardClient(channel, session);
         }
     }
 }

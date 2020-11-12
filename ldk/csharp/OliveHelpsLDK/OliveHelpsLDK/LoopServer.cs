@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using OliveHelpsLDK.Whispers;
+using Plugin;
 using Proto;
 using Process = System.Diagnostics.Process;
-using System.Text.Json;
-using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
 {
@@ -17,7 +19,7 @@ namespace OliveHelpsLDK
         public string Token;
     }
 
-    public class LoopServer : Proto.Loop.LoopBase
+    public class LoopServer : Loop.LoopBase
     {
         private readonly BrokerServer _brokerServer = new BrokerServer();
 
@@ -30,9 +32,9 @@ namespace OliveHelpsLDK
             {
                 Services =
                 {
-                    Proto.Loop.BindService(loopServer),
-                    Plugin.GRPCBroker.BindService(loopServer._brokerServer),
-                    Plugin.GRPCStdio.BindService(new StdioServer())
+                    Loop.BindService(loopServer),
+                    GRPCBroker.BindService(loopServer._brokerServer),
+                    GRPCStdio.BindService(new StdioServer())
                 },
                 Ports = {new ServerPort("localhost", 0, ServerCredentials.Insecure)}
             };
@@ -52,16 +54,37 @@ namespace OliveHelpsLDK
                 LoopId = request.Session.LoopID,
                 Token = request.Session.Token
             };
-            _brokerServer.ConnectionInfo.ContinueWith(async (Task<OliveHelpsLDK.ConnectionInfo> task) =>
+            _brokerServer.ConnectionInfo.ContinueWith(async task =>
             {
                 Console.Error.WriteLine("[INFO] Start Facade Connection");
                 await _facade.Connect(task.Result, session);
-                _facade.WhisperClient.MarkdownAsync(new WhisperMarkdown
+                var stream = _facade.Clipboard.Stream();
+                Console.Error.WriteLine("[INFO] Start Streaming");
+                while (await stream.MoveNext())
                 {
-                    Markdown = "Hello!",
-                    Config = new WhisperConfig(),
-                });
-                Console.Error.WriteLine("[INFO] Whisper Sent Without Await");
+                    var current = stream.Current();
+                    Console.Error.WriteLine($"[INFO] Received Clipboard Update {current}");
+                    try
+                    {
+                        var ccs = new CancellationTokenSource();
+                        ccs.CancelAfter(5000);
+                        _facade.Whisper.MarkdownAsync(new WhisperMarkdown
+                        {
+                            Markdown = $"Clipboard Content {current}",
+                            Config = new WhisperConfig
+                            {
+                                Icon = "bathtub",
+                                Label = "C# Whisper"
+                            }
+                        }, ccs.Token);
+                        Console.Error.WriteLine($"[INFO] Sent Clipboard Update {current}");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Error.WriteLine("[ERROR] " + e);
+                    }
+                }
+
                 return task;
             });
             return new Empty();
