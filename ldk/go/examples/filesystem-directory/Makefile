@@ -1,4 +1,4 @@
-REPO := github.com/open-olive/sidekick-controller-examplego
+REPO := github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-directory
 PKG := examplego
 
 GIT_COMMIT := $(shell git rev-list -1 HEAD)
@@ -14,12 +14,12 @@ install:
 
 build/darwin-amd64/plugin:
 	go build \
-	     -ldflags "-X ${REPO}/controller/controller.GitBranch=${GIT_BRANCH} -X ${REPO}/sensor/sensor.GitCommit=${GIT_COMMIT} -X ${REPO}/sensor/sensor.Version=${VERSION}" \
+	     -ldflags "-X ${REPO}/loop.GitBranch=${GIT_BRANCH} -X ${REPO}/loop.GitCommit=${GIT_COMMIT} -X ${REPO}/loop.Version=${VERSION}" \
 	     -o build/darwin-amd64/plugin ./
 
 build/windows-amd64/plugin:
 	GOOS=windows go build  \
-	     -ldflags "-X ${REPO}/controller/controller.GitBranch=${GIT_BRANCH} -X ${REPO}/sensor/sensor.GitCommit=${GIT_COMMIT} -X ${REPO}/sensor/sensor.Version=${VERSION}" \
+	     -ldflags "-X ${REPO}/loop.GitBranch=${GIT_BRANCH} -X ${REPO}/loop.GitCommit=${GIT_COMMIT} -X ${REPO}/loop.Version=${VERSION}" \
 	     -o build/windows-amd64/plugin.exe ./
 
 clean:
