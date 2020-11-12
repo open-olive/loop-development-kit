@@ -7,14 +7,14 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-// StorageServer is used by the controller plugin host to receive plugin initiated communication
+// StorageServer is used by the host to receive storage requests
 type StorageServer struct {
 	Impl StorageService
 }
 
-// StorageDelete is used by plugins to delete a storage entry
+// Delete is used by loops to delete a storage entry
 func (m *StorageServer) StorageDelete(ctx context.Context, req *proto.StorageDeleteRequest) (*emptypb.Empty, error) {
-	err := m.Impl.StorageDelete(
+	err := m.Impl.Delete(
 		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		req.Key,
 	)
@@ -25,21 +25,9 @@ func (m *StorageServer) StorageDelete(ctx context.Context, req *proto.StorageDel
 	return &emptypb.Empty{}, nil
 }
 
-// StorageDeleteAll is used by plugins to delete all storage entries
-func (m *StorageServer) StorageDeleteAll(ctx context.Context, req *proto.StorageDeleteAllRequest) (*emptypb.Empty, error) {
-	err := m.Impl.StorageDeleteAll(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return &emptypb.Empty{}, nil
-}
-
-// StorageHasKey is used by plugins to check if a key exists in storage
-func (m *StorageServer) StorageHasKey(ctx context.Context, req *proto.StorageHasKeyRequest) (*proto.StorageHasKeyResponse, error) {
-	hasKey, err := m.Impl.StorageHasKey(
+// Exists is used by loops to check if a key exists in storage
+func (m *StorageServer) StorageExists(ctx context.Context, req *proto.StorageExistsRequest) (*proto.StorageExistsResponse, error) {
+	exists, err := m.Impl.Exists(
 		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		req.Key,
 	)
@@ -47,28 +35,14 @@ func (m *StorageServer) StorageHasKey(ctx context.Context, req *proto.StorageHas
 		return nil, err
 	}
 
-	return &proto.StorageHasKeyResponse{
-		HasKey: hasKey,
+	return &proto.StorageExistsResponse{
+		Exists: exists,
 	}, nil
 }
 
-// StorageKeys is used by plugins to get a list of keys for all entries
-func (m *StorageServer) StorageKeys(ctx context.Context, req *proto.StorageKeysRequest) (*proto.StorageKeysResponse, error) {
-	keys, err := m.Impl.StorageKeys(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return &proto.StorageKeysResponse{
-		Keys: keys,
-	}, nil
-}
-
-// StorageRead is used by plugins to get the value of an entry
+// Read is used by loops to get the value of an entry
 func (m *StorageServer) StorageRead(ctx context.Context, req *proto.StorageReadRequest) (*proto.StorageReadResponse, error) {
-	value, err := m.Impl.StorageRead(
+	value, err := m.Impl.Read(
 		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		req.Key,
 	)
@@ -81,23 +55,9 @@ func (m *StorageServer) StorageRead(ctx context.Context, req *proto.StorageReadR
 	}, nil
 }
 
-// StorageReadAll is used by plugins to get a map of all entries
-func (m *StorageServer) StorageReadAll(ctx context.Context, req *proto.StorageReadAllRequest) (*proto.StorageReadAllResponse, error) {
-	entries, err := m.Impl.StorageReadAll(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return &proto.StorageReadAllResponse{
-		Entries: entries,
-	}, nil
-}
-
-// StorageWrite is used by plugins to set an entry
+// Write is used by loops to set an entry
 func (m *StorageServer) StorageWrite(ctx context.Context, req *proto.StorageWriteRequest) (*emptypb.Empty, error) {
-	err := m.Impl.StorageWrite(
+	err := m.Impl.Write(
 		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		req.Key,
 		req.Value,
