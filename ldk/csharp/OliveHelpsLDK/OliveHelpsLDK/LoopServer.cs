@@ -6,6 +6,7 @@ using Grpc.Core;
 using Proto;
 using Process = System.Diagnostics.Process;
 using System.Text.Json;
+using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
 {
@@ -51,12 +52,17 @@ namespace OliveHelpsLDK
                 LoopId = request.Session.LoopID,
                 Token = request.Session.Token
             };
-            _brokerServer.ConnectionInfo.ContinueWith(async (task) =>
+            _brokerServer.ConnectionInfo.ContinueWith(async (Task<OliveHelpsLDK.ConnectionInfo> task) =>
             {
                 Console.Error.WriteLine("[INFO] Start Facade Connection");
                 await _facade.Connect(task.Result, session);
-                _facade.WhisperClient.MarkdownAsync();
+                _facade.WhisperClient.MarkdownAsync(new WhisperMarkdown
+                {
+                    Markdown = "Hello!",
+                    Config = new WhisperConfig(),
+                });
                 Console.Error.WriteLine("[INFO] Whisper Sent Without Await");
+                return task;
             });
             return new Empty();
         }

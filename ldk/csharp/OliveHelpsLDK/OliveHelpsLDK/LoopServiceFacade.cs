@@ -1,12 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
 {
     public class LoopServiceFacade : ILoopServices
     {
-        public WhisperClient WhisperClient;
+        public IWhisperService WhisperClient;
 
         public async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
