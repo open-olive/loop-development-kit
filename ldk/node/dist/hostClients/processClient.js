@@ -29,14 +29,14 @@ const baseClient_1 = __importDefault(require("./baseClient"));
 const processService_1 = require("./processService");
 const transformingStream_1 = require("./transformingStream");
 /**
- * @param info
+ * @param info - The process info to parse.
  * @internal
  */
 function parseProcessInfo(info) {
     return info.toObject();
 }
 /**
- * @param action
+ * @param action - The action to process.
  * @internal
  */
 function parseProcessAction(action) {
