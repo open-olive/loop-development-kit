@@ -6,8 +6,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	"github.com/open-olive/loop-development-kit/ldk/go/examples/keyboard-hotkey/loop"
 	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
-	"github.com/open-olive/sidekick-controller-examplego/loop"
 )
 
 func TestController(t *testing.T) {

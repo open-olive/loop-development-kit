@@ -34,6 +34,8 @@ test-examples:
 	cd examples/keyboard && make test
 	cd examples/keyboard-character && make test
 	cd examples/keyboard-hotkey && make test
+	cd examples/search-global && make test
+	cd examples/search-searchbar && make test
 	cd examples/whisper-confirm && make test
 	cd examples/whisper-form && make test
 	cd examples/whisper-markdown && make test
