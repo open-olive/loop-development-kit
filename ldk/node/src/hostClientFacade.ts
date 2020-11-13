@@ -6,11 +6,13 @@ import StorageClient from './hostClients/storageClient';
 import KeyboardClient from './hostClients/keyboardClient';
 import { ClipboardClient } from './hostClients/clipboardClient';
 import { CursorClient } from './hostClients/cursorClient';
-import { HoverClient } from './hostClients/hoverClient';
+// import { HoverClient } from './hostClients/hoverClient';
 import { FileSystemClient } from './hostClients/fileSystemClient';
 import { ProcessClient } from './hostClients/processClient';
-import { WindowClient } from './hostClients/windowClient';
-import { BrowserClient } from './hostClients/browserClient';
+// import { WindowClient } from './hostClients/windowClient';
+// import { BrowserClient } from './hostClients/browserClient';
+import { NetworkClient } from './hostClients/networkClient';
+import { UIClient } from './hostClients/uiClient';
 import { Logger } from './logging';
 
 /**
@@ -33,6 +35,8 @@ export default class HostClientFacade implements HostServices {
 
   public process: ProcessClient = new ProcessClient();
 
+  public ui: UIClient = new UIClient();
+
   // These services are not yet implemented.
   // public hover: HoverClient = new HoverClient();
 
@@ -43,6 +47,8 @@ export default class HostClientFacade implements HostServices {
   constructor(logger: Logger) {
     this.logger = logger;
   }
+
+  public network: NetworkClient = new NetworkClient();
 
   public connect(
     connInfo: ConnInfo.AsObject,
@@ -60,6 +66,7 @@ export default class HostClientFacade implements HostServices {
       this.process.connect(connInfo, session, this.logger),
       this.cursor.connect(connInfo, session, this.logger),
       this.fileSystem.connect(connInfo, session, this.logger),
+      this.network.connect(connInfo, session, this.logger),
     ]);
   }
 }

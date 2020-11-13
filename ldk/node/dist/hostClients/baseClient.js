@@ -36,6 +36,7 @@ class BaseClient {
      * @async
      * @param connInfo - An object containing host process connection information.
      * @param session - An object containing the loop Session information.
+     * @param logger - An object containing logging methods.
      */
     connect(connInfo, session, logger) {
         return new Promise((resolve, reject) => {

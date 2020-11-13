@@ -52,6 +52,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
    * @async
    * @param connInfo - An object containing host process connection information.
    * @param session - An object containing the loop Session information.
+   * @param logger - An object containing logging methods.
    */
   connect(
     connInfo: ConnInfo.AsObject,

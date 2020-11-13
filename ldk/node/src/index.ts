@@ -16,6 +16,7 @@ import * as Process from './hostClients/processService';
 import * as Storage from './hostClients/storageClient';
 import * as Whisper from './hostClients/whisperService';
 import * as Window from './hostClients/windowService';
+import * as Network from './hostClients/networkService';
 
 export {
   access,
@@ -36,4 +37,5 @@ export {
   Storage,
   Whisper,
   Window,
+  Network,
 };

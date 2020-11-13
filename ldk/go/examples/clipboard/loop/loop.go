@@ -14,7 +14,7 @@ const (
 )
 
 func Serve() error {
-	l := ldk.NewLogger("loop-example")
+	l := ldk.NewLogger("example-clipboard")
 	loop, err := NewLoop(l)
 	if err != nil {
 		return err

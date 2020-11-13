@@ -7,7 +7,7 @@ import { StoppableStream, StreamListener } from './stoppables';
 
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const cursorTransformer: StreamTransformer<
   messages.CursorPositionStreamResponse | messages.CursorPositionResponse,

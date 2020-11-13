@@ -5,7 +5,7 @@ import { Loop } from './loop';
 import { ConnInfo } from './grpc/broker_pb';
 import WhisperClient from './hostClients/whisperClient';
 import LoopServer from './loopServer';
-import {Logger} from "./logging";
+import { Logger } from './logging';
 
 jest.mock('@grpc/grpc-js');
 jest.mock('./brokerGrpcServer');
@@ -15,7 +15,7 @@ const mockedServices = mocked(Services.Server);
 const mockedBroker = mocked(BrokerGrpcServer);
 const mockedClient = mocked(WhisperClient);
 
-const logger = new Logger("test-logger");
+const logger = new Logger('test-logger');
 
 describe('LoopServer', () => {
   let server: LoopServer;

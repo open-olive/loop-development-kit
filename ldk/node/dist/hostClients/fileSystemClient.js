@@ -29,7 +29,7 @@ const baseClient_1 = __importDefault(require("./baseClient"));
 const fileSystemService_1 = require("./fileSystemService");
 const transformingStream_1 = require("./transformingStream");
 /**
- * @param action
+ * @param action - The file action.
  * @internal
  */
 function parseFileAction(action) {
@@ -50,7 +50,7 @@ function parseFileAction(action) {
     }
 }
 /**
- * @param fileInfo
+ * @param fileInfo - The file info.
  * @internal
  */
 function parseFileInfo(fileInfo) {

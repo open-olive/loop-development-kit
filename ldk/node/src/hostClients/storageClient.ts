@@ -71,7 +71,11 @@ export default class StorageClient
    * @returns {string[]} - An array of the keys.
    */
   storageKeys(): Promise<string[]> {
-    return this.buildQuery<messages.StorageKeysRequest, messages.StorageKeysResponse, string[]>(
+    return this.buildQuery<
+      messages.StorageKeysRequest,
+      messages.StorageKeysResponse,
+      string[]
+    >(
       (message, callback) => this.client.storageKeys(message, callback),
       () => new messages.StorageKeysRequest(),
       (response) => response.getKeysList(),

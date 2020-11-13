@@ -9,8 +9,8 @@ const hover_grpc_pb_1 = require("../grpc/hover_grpc_pb");
 const hover_pb_1 = __importDefault(require("../grpc/hover_pb"));
 const transformingStream_1 = require("./transformingStream");
 /**
- * @param request
- * @param message
+ * @param request - The request with x & y coordinates to update from.
+ * @param message - The message.
  * @internal
  */
 function updateRequest(request, message) {

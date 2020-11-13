@@ -10,7 +10,7 @@ const cursor_pb_1 = __importDefault(require("../grpc/cursor_pb"));
 const transformingStream_1 = require("./transformingStream");
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const cursorTransformer = (message) => {
     return {

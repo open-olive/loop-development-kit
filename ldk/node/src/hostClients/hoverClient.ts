@@ -6,8 +6,8 @@ import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**
- * @param request
- * @param message
+ * @param request - The request with x & y coordinates to update from.
+ * @param message - The message.
  * @internal
  */
 function updateRequest<

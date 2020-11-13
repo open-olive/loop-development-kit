@@ -27,6 +27,7 @@ class LoopServer {
         // Disabling any b/c the untyped server requires an indexed type.
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         server.addService(loop_grpc_pb_1.default.LoopService, this);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         server.addService(stdioGrpcServer_1.StdioService, new stdioGrpcServer_1.StdioGrpcServer());
     }
     /**
@@ -42,13 +43,13 @@ class LoopServer {
             const sessionInfo = (_a = call.request) === null || _a === void 0 ? void 0 : _a.getSession();
             const response = new empty_pb_1.Empty();
             if (sessionInfo == null) {
-                this.logger.error("loopServer - Invalid Session Information");
+                this.logger.error('loopServer - Invalid Session Information');
                 callback(new Error('Invalid Session Information'), response);
                 return;
             }
             const hostClient = new hostClientFacade_1.default(this.logger);
             yield hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
-                this.logger.error("loopServer - Failed to Connect to Facades", "error", JSON.stringify(err));
+                this.logger.error('loopServer - Failed to Connect to Facades', 'error', JSON.stringify(err));
                 throw err;
             });
             yield this.loop.start(hostClient);

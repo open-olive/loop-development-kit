@@ -1,4 +1,3 @@
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { ProcessClient as ProcessGRPCClient } from '../grpc/process_grpc_pb';
 import Messages, { ProcessAction } from '../grpc/process_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
@@ -13,7 +12,7 @@ import { StoppableStream } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**
- * @param info
+ * @param info - The process info to parse.
  * @internal
  */
 function parseProcessInfo(info: Messages.ProcessInfo): ProcessInfoResponse {
@@ -21,7 +20,7 @@ function parseProcessInfo(info: Messages.ProcessInfo): ProcessInfoResponse {
 }
 
 /**
- * @param action
+ * @param action - The action to process.
  * @internal
  */
 function parseProcessAction(

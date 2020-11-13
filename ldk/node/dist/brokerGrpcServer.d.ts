@@ -17,16 +17,10 @@ export default class BrokerGrpcServer {
      */
     constructor(server: grpc.Server);
     /**
-     * This callback is called when connection info is received from the host process.
-     *
-     * @callback BrokerGrpcServer~connInfoCallback
-     * @param connInfo - An object containing host process connection information.
-     */
-    /**
      * Start a connection info stream from the host process.
      *
-     * @param connInfoCallback
-     * - The callback that handles receiving connection info.
+     *
+     * @param call - The callback that handles receiving connection info.
      */
     startStream: grpc.handleBidiStreamingCall<ConnInfo, ConnInfo>;
     /**
