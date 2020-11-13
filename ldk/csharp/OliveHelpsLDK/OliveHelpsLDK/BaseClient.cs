@@ -1,8 +1,8 @@
 namespace OliveHelpsLDK
 {
-    public abstract class BaseClient
+    internal abstract class BaseClient
     {
-        protected Session _session;
+        internal Session _session;
 
         protected Proto.Session CreateSession()
         {

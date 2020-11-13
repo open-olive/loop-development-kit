@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -6,11 +5,11 @@ using Proto;
 
 namespace OliveHelpsLDK.Clipboard
 {
-    public class ClipboardClient : BaseClient, IClipboardService
+    internal class ClipboardClient : BaseClient, IClipboardService
     {
         private Proto.Clipboard.ClipboardClient _client;
 
-        public ClipboardClient(ChannelBase channel, Session session)
+        internal ClipboardClient(ChannelBase channel, Session session)
         {
             _client = new Proto.Clipboard.ClipboardClient(channel);
             _session = session;
@@ -22,7 +21,6 @@ namespace OliveHelpsLDK.Clipboard
             {
                 Session = CreateSession(),
             };
-            Console.Error.WriteLine("[DEBUG] Clipboard Read Request Sent");
             return _client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
                 .ResponseAsync.ContinueWith(task => task.Result.Text, cancellationToken);
         }
@@ -34,7 +32,6 @@ namespace OliveHelpsLDK.Clipboard
                 Session = CreateSession(),
                 Text = contents
             };
-            Console.Error.WriteLine("[DEBUG] Clipboard Write Request Sent");
             return _client.ClipboardWriteAsync(request, new CallOptions(cancellationToken: cancellationToken))
                 .ResponseAsync;
         }

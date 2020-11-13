@@ -6,13 +6,13 @@ using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
 {
-    public class LoopServiceFacade : ILoopServices
+    internal class LoopServiceFacade : ILoopServices
     {
-        public IWhisperService Whisper;
+        private IWhisperService _whisper;
 
-        public IClipboardService Clipboard;
+        private IClipboardService _clipboard;
 
-        public async Task Connect(ConnectionInfo connectionInfo, Session session)
+        internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
             var address = connectionInfo.Network == "unix"
                 ? $"unix://{connectionInfo.Address}"
@@ -21,8 +21,18 @@ namespace OliveHelpsLDK
             var channel = new Grpc.Core.Channel(address, ChannelCredentials.Insecure);
             await channel.ConnectAsync();
             Console.Error.WriteLine("[DEBUG] GRPC Channel Connected");
-            Whisper = new WhisperClient(channel, session);
-            Clipboard = new ClipboardClient(channel, session);
+            _whisper = new WhisperClient(channel, session);
+            _clipboard = new ClipboardClient(channel, session);
+        }
+
+        public IWhisperService Whisper()
+        {
+            return _whisper;
+        }
+
+        public IClipboardService Clipboard()
+        {
+            return _clipboard;
         }
     }
 }

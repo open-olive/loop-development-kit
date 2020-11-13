@@ -27,7 +27,7 @@ namespace OliveHelpsLDK
             return _transformer(_call.ResponseStream.Current);
         }
 
-        public Task<bool> MoveNext(CancellationToken cancellationToken = default)
+        public Task<bool> MoveNext()
         {
             return _call.ResponseStream.MoveNext();
         }

@@ -1,33 +1,35 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using OliveHelpsLDK.Whispers;
+using OliveHelpsLDK.Logging;
 using Plugin;
 using Proto;
 using Process = System.Diagnostics.Process;
 
 namespace OliveHelpsLDK
 {
-    public struct Session
-    {
-        public string LoopId;
-
-        public string Token;
-    }
-
     public class LoopServer : Loop.LoopBase
     {
         private readonly BrokerServer _brokerServer = new BrokerServer();
 
         private readonly LoopServiceFacade _facade = new LoopServiceFacade();
 
-        public static void Start()
+        private readonly ILoop _loop;
+
+        private readonly ILogger _logger;
+
+        internal LoopServer(ILoop loop, ILogger logger)
         {
-            var loopServer = new LoopServer();
+            _loop = loop;
+            _logger = logger;
+        }
+
+        public static void Start(ILoop loop, ILogger logger)
+        {
+            var loopServer = new LoopServer(loop, logger);
             var server = new Server
             {
                 Services =
@@ -47,52 +49,25 @@ namespace OliveHelpsLDK
         public override async Task<Empty> LoopStart(LoopStartRequest request, ServerCallContext context)
         {
             var requestJson = JsonSerializer.Serialize(request);
-            await Console.Error.WriteLineAsync("[DEBUG] Received Loop Start Request");
-            Console.Error.WriteLine("[DEBUG] " + request);
+            _logger.Debug("Received Loop Start Request");
             var session = new Session
             {
                 LoopId = request.Session.LoopID,
                 Token = request.Session.Token
             };
-            _brokerServer.ConnectionInfo.ContinueWith(async task =>
-            {
-                Console.Error.WriteLine("[INFO] Start Facade Connection");
-                await _facade.Connect(task.Result, session);
-                var stream = _facade.Clipboard.Stream();
-                Console.Error.WriteLine("[INFO] Start Streaming");
-                while (await stream.MoveNext())
-                {
-                    var current = stream.Current();
-                    Console.Error.WriteLine($"[INFO] Received Clipboard Update {current}");
-                    try
-                    {
-                        var ccs = new CancellationTokenSource();
-                        ccs.CancelAfter(5000);
-                        _facade.Whisper.MarkdownAsync(new WhisperMarkdown
-                        {
-                            Markdown = $"Clipboard Content {current}",
-                            Config = new WhisperConfig
-                            {
-                                Icon = "bathtub",
-                                Label = "C# Whisper"
-                            }
-                        }, ccs.Token);
-                        Console.Error.WriteLine($"[INFO] Sent Clipboard Update {current}");
-                    }
-                    catch (Exception e)
-                    {
-                        Console.Error.WriteLine("[ERROR] " + e);
-                    }
-                }
-
-                return task;
-            });
+            var connectionInfo = await _brokerServer.ConnectionInfo;
+            await _facade.Connect(connectionInfo, session);
+            #pragma warning disable 4014
+            // Intentional disable - Loop is intended to run indefinitely but should not delay LoopStart response.
+            _loop.Start(_facade);
+            #pragma warning restore 4014
             return new Empty();
         }
 
         public override async Task<Empty> LoopStop(Empty request, ServerCallContext context)
         {
-            await Console.Error.WriteLineAsync("[DEBUG] Received Loop Stop Request");
+            _logger.Debug("Received Loop Stop Request");
+            await _loop.Stop();
             return new Empty();
         }
     }

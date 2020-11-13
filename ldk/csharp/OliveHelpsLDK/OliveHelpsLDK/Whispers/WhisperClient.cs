@@ -6,7 +6,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
-    public class WhisperClient : BaseClient, IWhisperService
+    internal class WhisperClient : BaseClient, IWhisperService
     {
         public const string BackgroundColor = "#FFF";
         public const string PrimaryColor = "#666";
@@ -29,7 +29,6 @@ namespace OliveHelpsLDK.Whispers
                 Session = CreateSession(),
                 Meta = GenerateMeta(message.Config)
             };
-            Console.Error.WriteLine("[DEBUG] Whisper Sent");
             var whisperMarkdownAsync =
                 client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return whisperMarkdownAsync.ResponseAsync;
@@ -45,7 +44,6 @@ namespace OliveHelpsLDK.Whispers
                 RejectLabel = message.RejectLabel,
                 ResolveLabel = message.ResolveLabel,
             };
-            Console.Error.WriteLine("[DEBUG] Whisper Confirm Sent");
             var call = client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return call.ResponseAsync.ContinueWith(resp => resp.Result.Response, cancellationToken);
         }

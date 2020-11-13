@@ -8,6 +8,6 @@ namespace OliveHelpsLDK
     {
         TOutput Current();
 
-        Task<bool> MoveNext(CancellationToken cancellationToken = default);
+        Task<bool> MoveNext();
     }
 }
