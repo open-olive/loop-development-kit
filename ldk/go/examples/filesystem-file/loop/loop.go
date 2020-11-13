@@ -10,7 +10,7 @@ import (
 
 	"github.com/dustin/go-humanize"
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
-	"github.com/open-olive/sidekick-controller-examplego/bind"
+	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-file/bind"
 )
 
 const (
@@ -20,7 +20,7 @@ const (
 )
 
 func Serve() error {
-	l := ldk.NewLogger("loop-example")
+	l := ldk.NewLogger("example-filesystem-file")
 	loop, err := NewLoop(l)
 	if err != nil {
 		return err

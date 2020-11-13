@@ -12,6 +12,7 @@ import { ProcessClient } from './hostClients/processClient';
 import { WindowClient } from './hostClients/windowClient';
 import { BrowserClient } from './hostClients/browserClient';
 import { NetworkClient } from './hostClients/networkClient';
+import { UIClient } from './hostClients/uiClient';
 import { Logger } from './logging';
 
 /**
@@ -33,6 +34,8 @@ export default class HostClientFacade implements HostServices {
   public fileSystem: FileSystemClient = new FileSystemClient();
 
   public process: ProcessClient = new ProcessClient();
+
+  public ui: UIClient = new UIClient();
 
   // These services are not yet implemented.
   // public hover: HoverClient = new HoverClient();
