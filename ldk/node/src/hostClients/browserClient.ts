@@ -8,7 +8,7 @@ import { StreamTransformer, TransformingStream } from './transformingStream';
 /**
  * @internal
  *
- * @param message
+ * @param message - The message to transform.
  */
 const transformSelectedTextResponse: StreamTransformer<
   | Messages.BrowserSelectedTextResponse

@@ -11,7 +11,7 @@ import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**
- * @param action
+ * @param action - The action.
  * @internal
  */
 function parseWindowAction(action: Messages.WindowAction): WindowStreamAction {
