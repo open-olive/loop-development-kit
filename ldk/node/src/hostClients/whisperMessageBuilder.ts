@@ -15,11 +15,12 @@ type FormMessage<T> = {
 };
 
 /**
- * @param msg
- * @param input
+ * @param msg - The message.
+ * @param input - The whisper form input.
  */
 function setFormMessages<T>(
   msg: FormMessage<T>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   input: WhisperFormInput<any>,
 ): void {
   msg.setLabel(input.label);

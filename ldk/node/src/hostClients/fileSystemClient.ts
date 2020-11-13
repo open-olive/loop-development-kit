@@ -16,7 +16,7 @@ import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**
- * @param action
+ * @param action - The file action.
  * @internal
  */
 function parseFileAction(action: FileAction): FileSystemStreamAction {
@@ -38,7 +38,7 @@ function parseFileAction(action: FileAction): FileSystemStreamAction {
 }
 
 /**
- * @param fileInfo
+ * @param fileInfo - The file info.
  * @internal
  */
 function parseFileInfo(fileInfo: messages.FileInfo): FileInfo {

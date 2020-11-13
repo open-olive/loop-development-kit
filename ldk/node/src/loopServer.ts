@@ -30,6 +30,7 @@ export default class LoopServer implements ILoopServer {
     // Disabling any b/c the untyped server requires an indexed type.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     server.addService(services.LoopService, this as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     server.addService(StdioService, new StdioGrpcServer() as any);
   }
 

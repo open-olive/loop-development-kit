@@ -9,7 +9,7 @@ const baseClient_1 = __importDefault(require("./baseClient"));
 const transformingStream_1 = require("./transformingStream");
 /**
  * @internal
- * @param modifiers
+ * @param modifiers - The modifiers to generate flags for.
  */
 const generateModifierFlag = (modifiers) => {
     return (((modifiers === null || modifiers === void 0 ? void 0 : modifiers.altL) ? 1 : 0) +
@@ -23,7 +23,7 @@ const generateModifierFlag = (modifiers) => {
 };
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const transformTextStream = (message) => {
     return {
@@ -32,7 +32,7 @@ const transformTextStream = (message) => {
 };
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const transformScanCodeStream = (message) => {
     return {
@@ -42,8 +42,7 @@ const transformScanCodeStream = (message) => {
 };
 /**
  * @internal
- * @param keyRequest
- * @param keys - The hotkeys being watched.
+ * @param keyRequest - The key request to generate a stream for.
  */
 function generateHotkeyStreamRequest(keyRequest) {
     const request = new keyboard_pb_1.default.KeyboardHotkey();
@@ -55,7 +54,7 @@ function generateHotkeyStreamRequest(keyRequest) {
 }
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const transformHotKeyEvent = (message) => {
     return {

@@ -7,6 +7,7 @@ export class TransformingMessage<TOutput, TResponse>
 
   private promiseResolve!: (result: TOutput) => void;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private promiseReject!: (error: any) => void;
 
   private transformer: (input: TResponse) => TOutput;
