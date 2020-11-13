@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OliveHelpsLDK", "OliveHelpsLDK\OliveHelpsLDK.csproj", "{C7389BD1-3F14-4E35-9E38-EC362AD1C4F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{FC985BCA-B275-4ED8-A01E-876E454E0F76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7389BD1-3F14-4E35-9E38-EC362AD1C4F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7389BD1-3F14-4E35-9E38-EC362AD1C4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7389BD1-3F14-4E35-9E38-EC362AD1C4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7389BD1-3F14-4E35-9E38-EC362AD1C4F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC985BCA-B275-4ED8-A01E-876E454E0F76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC985BCA-B275-4ED8-A01E-876E454E0F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC985BCA-B275-4ED8-A01E-876E454E0F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC985BCA-B275-4ED8-A01E-876E454E0F76}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
