@@ -1,4 +1,3 @@
-import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { KeyboardClient as KeyboardGRPCClient } from '../grpc/keyboard_grpc_pb';
 import messages from '../grpc/keyboard_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
@@ -15,7 +14,7 @@ import {
 
 /**
  * @internal
- * @param modifiers
+ * @param modifiers - The modifiers to generate flags for.
  */
 const generateModifierFlag = (
   modifiers: Partial<KeyboardModifiers>,
@@ -34,7 +33,7 @@ const generateModifierFlag = (
 
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const transformTextStream: StreamTransformer<
   messages.KeyboardTextStreamResponse,
@@ -47,7 +46,7 @@ const transformTextStream: StreamTransformer<
 
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const transformScanCodeStream: StreamTransformer<
   messages.KeyboardScancodeStreamResponse,
@@ -61,8 +60,7 @@ const transformScanCodeStream: StreamTransformer<
 
 /**
  * @internal
- * @param keyRequest
- * @param keys - The hotkeys being watched.
+ * @param keyRequest - The key request to generate a stream for.
  */
 function generateHotkeyStreamRequest(
   keyRequest: HotKeyRequest,
@@ -77,7 +75,7 @@ function generateHotkeyStreamRequest(
 
 /**
  * @internal
- * @param message
+ * @param message - The message to transform.
  */
 const transformHotKeyEvent: StreamTransformer<
   messages.KeyboardHotkeyStreamResponse,

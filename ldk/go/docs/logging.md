@@ -1,6 +1,6 @@
 # Logging
 
-To make it easier to integrate with Sidekick's logger, a `Logger` struct (and `NewLogger` func) is provided to you in this library.
+To make it easier to integrate with Olive Helps's logger, a `Logger` struct (and `NewLogger` func) is provided to you in this library.
 
 Example usage:
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as jspb from 'google-protobuf';
 import * as messages from '../grpc/whisper_pb';
 import {

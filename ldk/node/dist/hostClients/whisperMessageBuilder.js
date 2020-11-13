@@ -23,10 +23,12 @@ exports.buildWhisperConfirmMessage = exports.buildWhisperMarkdownRequest = expor
 const timestamp_pb_1 = require("google-protobuf/google/protobuf/timestamp_pb");
 const messages = __importStar(require("../grpc/whisper_pb"));
 /**
- * @param msg
- * @param input
+ * @param msg - The message.
+ * @param input - The whisper form input.
  */
-function setFormMessages(msg, input) {
+function setFormMessages(msg, 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+input) {
     msg.setLabel(input.label);
     msg.setTooltip(input.tooltip);
     if (input.order && input.order > 0) {

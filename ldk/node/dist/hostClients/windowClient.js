@@ -29,7 +29,7 @@ const baseClient_1 = __importDefault(require("./baseClient"));
 const windowService_1 = require("./windowService");
 const transformingStream_1 = require("./transformingStream");
 /**
- * @param action
+ * @param action - The action.
  * @internal
  */
 function parseWindowAction(action) {

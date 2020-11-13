@@ -1,12 +1,12 @@
 # Storage
-The host structure provided to the plugin through `Start` provides the plugin with methods it can use for storing information.
+The `Sidekick` struct provided to the loop in `LoopStart` provides the loop with methods (via the `Storage()` method) it can use for storing information.
 
 ## Applications
 * Storing credentials provided by the user.
 * Keeping track of data across restarts.
 
 ## Documentation
-In order for a plugin to use storage, the plugin must first provide Sidekick with documentation. This is accomplished by including a new file `storage.json` with your plugin. The following is example documentation for a single entry.
+In order for a loop to use storage, the loop must first provide Olive Helps with documentation. This is accomplished by including a new file `storage.json` with your loop. The following is example documentation for a single entry.
 ```
 {
  "period": {
@@ -16,7 +16,7 @@ In order for a plugin to use storage, the plugin must first provide Sidekick wit
 }
 ```
 
-*NOTE* If the plugin attempts to access a key that is not documented, the request will fail and an error will be returned. 
+*NOTE*: If the loop attempts to access a key that is not documented, the request will fail and an error will be returned. 
 
 ## Methods
 A method for removing the value of a key.

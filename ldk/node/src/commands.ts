@@ -44,7 +44,6 @@ program
   )
   .option('-d --dryRun', 'output commands to be executed')
   .action((options) => {
-    const subFolder = options.sensor ? 'sensors' : 'controllers';
     const deployCommand = `mkdir -p "$HOME/Library/Application Support/Olive Helps/loops/2" && cp build/* "$HOME/Library/Application Support/Olive Helps/loops/2"`;
     if (options.dryRun) {
       console.log(deployCommand);
