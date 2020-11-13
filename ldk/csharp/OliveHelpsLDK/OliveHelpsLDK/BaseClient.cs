@@ -1,3 +1,6 @@
+using System.Threading;
+using Grpc.Core;
+
 namespace OliveHelpsLDK
 {
     internal abstract class BaseClient
@@ -11,6 +14,11 @@ namespace OliveHelpsLDK
                 LoopID = _session.LoopId,
                 Token = _session.Token,
             };
+        }
+
+        protected Grpc.Core.CallOptions CreateOptions(CancellationToken token)
+        {
+            return new CallOptions(cancellationToken: token);
         }
     }
 }

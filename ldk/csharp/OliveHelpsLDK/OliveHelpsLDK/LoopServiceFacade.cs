@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using OliveHelpsLDK.Clipboard;
+using OliveHelpsLDK.Filesystem;
 using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
@@ -11,6 +12,8 @@ namespace OliveHelpsLDK
         private IWhisperService _whisper;
 
         private IClipboardService _clipboard;
+
+        private IFilesystemService _filesystem;
 
         internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
@@ -23,6 +26,7 @@ namespace OliveHelpsLDK
             Console.Error.WriteLine("[DEBUG] GRPC Channel Connected");
             _whisper = new WhisperClient(channel, session);
             _clipboard = new ClipboardClient(channel, session);
+            _filesystem = new FilesystemClient(channel, session);
         }
 
         public IWhisperService Whisper()
@@ -33,6 +37,11 @@ namespace OliveHelpsLDK
         public IClipboardService Clipboard()
         {
             return _clipboard;
+        }
+
+        public IFilesystemService Filesystem()
+        {
+            return _filesystem;
         }
     }
 }
