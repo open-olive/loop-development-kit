@@ -6,18 +6,15 @@ using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
-    internal class WhisperClient : BaseClient, IWhisperService
+    internal class WhisperClient : BaseClient<Proto.Whisper.WhisperClient>, IWhisperService
     {
         public const string BackgroundColor = "#FFF";
         public const string PrimaryColor = "#666";
         public const string HighlightColor = "#651FFF";
 
-        private Proto.Whisper.WhisperClient client;
-
-
         public WhisperClient(ChannelBase channel, Session session)
         {
-            client = new Whisper.WhisperClient(channel);
+            _client = new Whisper.WhisperClient(channel);
             _session = session;
         }
 
@@ -30,7 +27,7 @@ namespace OliveHelpsLDK.Whispers
                 Meta = GenerateMeta(message.Config)
             };
             var whisperMarkdownAsync =
-                client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
+                _client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return whisperMarkdownAsync.ResponseAsync;
         }
 
@@ -44,7 +41,7 @@ namespace OliveHelpsLDK.Whispers
                 RejectLabel = message.RejectLabel,
                 ResolveLabel = message.ResolveLabel,
             };
-            var call = client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
+            var call = _client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return call.ResponseAsync.ContinueWith(resp => resp.Result.Response, cancellationToken);
         }
 

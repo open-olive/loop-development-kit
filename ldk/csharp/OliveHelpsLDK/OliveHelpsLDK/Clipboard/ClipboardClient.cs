@@ -5,9 +5,8 @@ using Proto;
 
 namespace OliveHelpsLDK.Clipboard
 {
-    internal class ClipboardClient : BaseClient, IClipboardService
+    internal class ClipboardClient : BaseClient<Proto.Clipboard.ClipboardClient>, IClipboardService
     {
-        private Proto.Clipboard.ClipboardClient _client;
 
         internal ClipboardClient(ChannelBase channel, Session session)
         {

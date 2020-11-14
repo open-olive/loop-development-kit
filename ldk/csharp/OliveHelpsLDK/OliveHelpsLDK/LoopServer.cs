@@ -48,7 +48,6 @@ namespace OliveHelpsLDK
 
         public override async Task<Empty> LoopStart(LoopStartRequest request, ServerCallContext context)
         {
-            var requestJson = JsonSerializer.Serialize(request);
             _logger.Debug("Received Loop Start Request");
             var session = new Session
             {

@@ -1,4 +1,6 @@
 using OliveHelpsLDK.Clipboard;
+using OliveHelpsLDK.Cursor;
+using OliveHelpsLDK.Filesystem;
 using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
@@ -8,5 +10,9 @@ namespace OliveHelpsLDK
         IWhisperService Whisper();
 
         IClipboardService Clipboard();
+
+        IFilesystemService Filesystem();
+
+        ICursorService Cursor();
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using OliveHelpsLDK.Clipboard;
+using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
 using OliveHelpsLDK.Whispers;
 
@@ -15,6 +16,8 @@ namespace OliveHelpsLDK
 
         private IFilesystemService _filesystem;
 
+        private ICursorService _cursor;
+
         internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
             var address = connectionInfo.Network == "unix"
@@ -27,6 +30,7 @@ namespace OliveHelpsLDK
             _whisper = new WhisperClient(channel, session);
             _clipboard = new ClipboardClient(channel, session);
             _filesystem = new FilesystemClient(channel, session);
+            _cursor = new CursorClient(channel, session);
         }
 
         public IWhisperService Whisper()
@@ -42,6 +46,11 @@ namespace OliveHelpsLDK
         public IFilesystemService Filesystem()
         {
             return _filesystem;
+        }
+
+        public ICursorService Cursor()
+        {
+            return _cursor;
         }
     }
 }

@@ -8,10 +8,8 @@ using Proto;
 
 namespace OliveHelpsLDK.Filesystem
 {
-    internal class FilesystemClient : BaseClient, IFilesystemService
+    internal class FilesystemClient : BaseClient<Proto.Filesystem.FilesystemClient>, IFilesystemService
     {
-        private Proto.Filesystem.FilesystemClient _client;
-
         internal FilesystemClient(ChannelBase channel, Session session)
         {
             _client = new Proto.Filesystem.FilesystemClient(channel);

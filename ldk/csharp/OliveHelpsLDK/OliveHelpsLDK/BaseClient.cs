@@ -3,8 +3,10 @@ using Grpc.Core;
 
 namespace OliveHelpsLDK
 {
-    internal abstract class BaseClient
-    {
+    internal abstract class BaseClient<TClient>
+        {
+        protected TClient _client;
+        
         internal Session _session;
 
         protected Proto.Session CreateSession()
