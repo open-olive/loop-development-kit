@@ -1,6 +1,7 @@
 using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
+using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
@@ -14,5 +15,8 @@ namespace OliveHelpsLDK
         IFilesystemService Filesystem();
 
         ICursorService Cursor();
+
+        IKeyboardService Keyboard();
+        
     }
 }
