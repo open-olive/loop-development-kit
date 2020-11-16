@@ -9,6 +9,7 @@ using OliveHelpsLDK.Hover;
 using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
+using OliveHelpsLDK.Storage;
 using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Window;
 
@@ -35,6 +36,7 @@ namespace OliveHelpsLDK
         private IHoverService _hover;
 
         private IWindowService _window;
+        private IStorageService _storage;
 
         internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
@@ -55,6 +57,7 @@ namespace OliveHelpsLDK
             _browser = new BrowserClient(channel, session);
             _hover = new HoverClient(channel, session);
             _window = new WindowClient(channel, session);
+            _storage = new StorageClient(channel, session);
         }
 
         public IWhisperService Whisper()
@@ -90,6 +93,11 @@ namespace OliveHelpsLDK
         public IProcessService Process()
         {
             return _process;
+        }
+
+        public IStorageService Storage()
+        {
+            return _storage;
         }
 
         public IBrowserService Browser()
