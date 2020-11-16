@@ -5,6 +5,7 @@ using OliveHelpsLDK.Browser;
 using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
+using OliveHelpsLDK.Hover;
 using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
@@ -30,6 +31,8 @@ namespace OliveHelpsLDK
 
         private IBrowserService _browser;
 
+        private IHoverService _hover;
+
         internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
             var address = connectionInfo.Network == "unix"
@@ -47,6 +50,7 @@ namespace OliveHelpsLDK
             _network = new NetworkClient(channel, session);
             _process = new ProcessClient(channel, session);
             _browser = new BrowserClient(channel, session);
+            _hover = new HoverClient(channel, session);
         }
 
         public IWhisperService Whisper()
@@ -87,6 +91,11 @@ namespace OliveHelpsLDK
         public IBrowserService Browser()
         {
             return _browser;
+        }
+
+        public IHoverService Hover()
+        {
+            return _hover;
         }
     }
 }

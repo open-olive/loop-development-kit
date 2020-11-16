@@ -2,6 +2,7 @@ using OliveHelpsLDK.Browser;
 using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
+using OliveHelpsLDK.Hover;
 using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
@@ -25,8 +26,11 @@ namespace OliveHelpsLDK
 
         IProcessService Process();
 
-        // TODO: Uncomment once implemented.
+        // TODO: Uncomment once available in Olive Helps.
         // IBrowserService Browser();
+
+        // TODO: Uncomment once available in Olive Helps.
+        // IHoverService Hover();
 
     }
 }
