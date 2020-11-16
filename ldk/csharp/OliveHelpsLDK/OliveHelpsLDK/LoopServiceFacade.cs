@@ -6,6 +6,7 @@ using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
 using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Network;
+using OliveHelpsLDK.Process;
 using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
@@ -24,6 +25,8 @@ namespace OliveHelpsLDK
 
         private INetworkService _network;
 
+        private IProcessService _process;
+
         internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
             var address = connectionInfo.Network == "unix"
@@ -37,6 +40,9 @@ namespace OliveHelpsLDK
             _clipboard = new ClipboardClient(channel, session);
             _filesystem = new FilesystemClient(channel, session);
             _cursor = new CursorClient(channel, session);
+            _keyboard = new KeyboardClient(channel, session);
+            _network = new NetworkClient(channel, session);
+            _process = new ProcessClient(channel, session);
         }
 
         public IWhisperService Whisper()
@@ -67,6 +73,11 @@ namespace OliveHelpsLDK
         public INetworkService Network()
         {
             return _network;
+        }
+
+        public IProcessService Process()
+        {
+            return _process;
         }
     }
 }

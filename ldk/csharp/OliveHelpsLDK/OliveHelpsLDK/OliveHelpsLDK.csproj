@@ -15,4 +15,7 @@
     <ItemGroup>
         <Protobuf Include="..\..\..\..\proto\*.proto" Link="protos\*.proto" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Storage" />
+    </ItemGroup>
 </Project>
