@@ -7,6 +7,7 @@ using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
 using OliveHelpsLDK.Whispers;
+using OliveHelpsLDK.Window;
 
 namespace OliveHelpsLDK
 {
@@ -31,6 +32,9 @@ namespace OliveHelpsLDK
 
         // TODO: Uncomment once available in Olive Helps.
         // IHoverService Hover();
+
+        // TODO: Uncomment once available in Olive Helps.
+        // IWindowService Window();
 
     }
 }
