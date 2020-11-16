@@ -5,6 +5,7 @@ using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
 using OliveHelpsLDK.Keyboard;
+using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
@@ -20,6 +21,8 @@ namespace OliveHelpsLDK
         private ICursorService _cursor;
 
         private IKeyboardService _keyboard;
+
+        private INetworkService _network;
 
         internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
@@ -59,6 +62,11 @@ namespace OliveHelpsLDK
         public IKeyboardService Keyboard()
         {
             return _keyboard;
+        }
+
+        public INetworkService Network()
+        {
+            return _network;
         }
     }
 }
