@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -8,12 +7,12 @@ namespace OliveHelpsLDK.Whispers
 {
     internal class WhisperClient : BaseClient<Proto.Whisper.WhisperClient>, IWhisperService
     {
-        public const string BackgroundColor = "#FFF";
-        public const string PrimaryColor = "#666";
-        public const string HighlightColor = "#651FFF";
+        private IWhisperFormBuilder _builder;
 
-        public WhisperClient(ChannelBase channel, Session session)
+
+        public WhisperClient(ChannelBase channel, Session session, IWhisperFormBuilder formBuilder = null)
         {
+            _builder = formBuilder ?? new WhisperFormBuilder();
             _client = new Whisper.WhisperClient(channel);
             _session = session;
         }
@@ -24,7 +23,7 @@ namespace OliveHelpsLDK.Whispers
             {
                 Markdown = message.Markdown,
                 Session = CreateSession(),
-                Meta = GenerateMeta(message.Config)
+                Meta = _builder.BuildMeta(message.Config)
             };
             var whisperMarkdownAsync =
                 _client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
@@ -37,7 +36,7 @@ namespace OliveHelpsLDK.Whispers
             {
                 Markdown = message.Markdown,
                 Session = CreateSession(),
-                Meta = GenerateMeta(message.Config),
+                Meta = _builder.BuildMeta(message.Config),
                 RejectLabel = message.RejectLabel,
                 ResolveLabel = message.ResolveLabel,
             };
@@ -45,34 +44,10 @@ namespace OliveHelpsLDK.Whispers
             return call.ResponseAsync.ContinueWith(resp => resp.Result.Response, cancellationToken);
         }
 
-        public async Task FormAsync(WhisperForm message, CancellationToken cancellationToken = default)
+        public Task FormAsync(WhisperForm message, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
-        }
-
-        private static WhisperMeta GenerateMeta(WhisperConfig config)
-        {
-            var styleBackgroundColor =
-                CoerceColor(config.Style.BackgroundColor, BackgroundColor);
-            var stylePrimaryColor = CoerceColor(config.Style.PrimaryColor,
-                PrimaryColor);
-            var styleHighlightColor = CoerceColor(config.Style.HighlightColor, HighlightColor);
-            return new WhisperMeta
-            {
-                Icon = config.Icon,
-                Label = config.Label,
-                Style = new Proto.WhisperStyle
-                {
-                    BackgroundColor = styleBackgroundColor,
-                    PrimaryColor = stylePrimaryColor,
-                    HighlightColor = styleHighlightColor,
-                }
-            };
-        }
-
-        private static string CoerceColor(string input, string defaultColor)
-        {
-            return string.IsNullOrEmpty(input) ? defaultColor : input;
+            var request = _builder.BuildRequest(message, CreateSession());
+            return _client.WhisperForm(request, CreateOptions(cancellationToken)).ResponseHeadersAsync;
         }
     }
 }
