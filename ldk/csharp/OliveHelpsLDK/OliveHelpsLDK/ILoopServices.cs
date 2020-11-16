@@ -1,3 +1,4 @@
+using OliveHelpsLDK.Browser;
 using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
@@ -23,6 +24,9 @@ namespace OliveHelpsLDK
         INetworkService Network();
 
         IProcessService Process();
+
+        // TODO: Uncomment once implemented.
+        // IBrowserService Browser();
 
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Browser;
 using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
@@ -27,6 +28,8 @@ namespace OliveHelpsLDK
 
         private IProcessService _process;
 
+        private IBrowserService _browser;
+
         internal async Task Connect(ConnectionInfo connectionInfo, Session session)
         {
             var address = connectionInfo.Network == "unix"
@@ -43,6 +46,7 @@ namespace OliveHelpsLDK
             _keyboard = new KeyboardClient(channel, session);
             _network = new NetworkClient(channel, session);
             _process = new ProcessClient(channel, session);
+            _browser = new BrowserClient(channel, session);
         }
 
         public IWhisperService Whisper()
@@ -78,6 +82,11 @@ namespace OliveHelpsLDK
         public IProcessService Process()
         {
             return _process;
+        }
+
+        public IBrowserService Browser()
+        {
+            return _browser;
         }
     }
 }
