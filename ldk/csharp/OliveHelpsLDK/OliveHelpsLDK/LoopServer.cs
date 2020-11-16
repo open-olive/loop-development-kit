@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
 using Plugin;
 using Proto;
-using Process = System.Diagnostics.Process;
 
 namespace OliveHelpsLDK
 {
@@ -43,7 +41,7 @@ namespace OliveHelpsLDK
             server.Start();
             var currentPort = server.Ports.First();
             Console.Out.WriteLine($"1|1|tcp|127.0.0.1:{currentPort.BoundPort}|grpc");
-            Process.GetCurrentProcess().WaitForExit();
+            System.Diagnostics.Process.GetCurrentProcess().WaitForExit();
         }
 
         public override async Task<Empty> LoopStart(LoopStartRequest request, ServerCallContext context)
