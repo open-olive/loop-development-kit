@@ -23,11 +23,6 @@ func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperM
 			Icon:     req.Meta.Icon,
 			Label:    req.Meta.Label,
 			Markdown: req.Markdown,
-			Style: Style{
-				BackgroundColor: req.Meta.Style.BackgroundColor,
-				HighlightColor:  req.Meta.Style.HighlightColor,
-				PrimaryColor:    req.Meta.Style.PrimaryColor,
-			},
 		})
 	if err != nil {
 		return nil, err
@@ -41,14 +36,9 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 	response, err := m.Impl.Confirm(
 		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
 		&WhisperContentConfirm{
-			Icon:     req.Meta.Icon,
-			Label:    req.Meta.Label,
-			Markdown: req.Markdown,
-			Style: Style{
-				BackgroundColor: req.Meta.Style.BackgroundColor,
-				HighlightColor:  req.Meta.Style.HighlightColor,
-				PrimaryColor:    req.Meta.Style.PrimaryColor,
-			},
+			Icon:         req.Meta.Icon,
+			Label:        req.Meta.Label,
+			Markdown:     req.Markdown,
 			ResolveLabel: req.ResolveLabel,
 			RejectLabel:  req.RejectLabel,
 		})
@@ -355,14 +345,10 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 	submitted, outputs, err := m.Impl.Form(
 		context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
 		&WhisperContentForm{
-			Icon:     req.Meta.Icon,
-			Label:    req.Meta.Label,
-			Markdown: req.Markdown,
-			Style: Style{
-				BackgroundColor: req.Meta.Style.BackgroundColor,
-				HighlightColor:  req.Meta.Style.HighlightColor,
-				PrimaryColor:    req.Meta.Style.PrimaryColor,
-			}, Inputs: inputs,
+			Icon:        req.Meta.Icon,
+			Label:       req.Meta.Label,
+			Markdown:    req.Markdown,
+			Inputs:      inputs,
 			CancelLabel: req.CancelLabel,
 			SubmitLabel: req.SubmitLabel,
 		})

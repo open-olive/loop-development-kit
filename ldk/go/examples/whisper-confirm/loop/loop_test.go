@@ -69,11 +69,6 @@ func TestWhisperConfirmResolved(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Do you like bananas?",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 				RejectLabel:  "Nope",
 				ResolveLabel: "Yep",
 			}
@@ -117,11 +112,6 @@ func TestWhisperConfirmResolved(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "That's great!",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 			}
 			if got := req; !cmp.Equal(got, exp) {
 				return fmt.Errorf("unexpected markdown:\n%s", cmp.Diff(got, exp))
@@ -134,7 +124,7 @@ func TestWhisperConfirmResolved(t *testing.T) {
 	}
 
 	// stage 4: send markdown response
-	if err := (func() error {
+	if err := func() error {
 		timeout := time.NewTimer(time.Second)
 		defer timeout.Stop()
 		select {
@@ -143,7 +133,7 @@ func TestWhisperConfirmResolved(t *testing.T) {
 		case markdownResponseChan <- nil:
 			return nil
 		}
-	}()); err != nil {
+	}(); err != nil {
 		t.Errorf("stage 4 failed\n%v", err)
 		return
 	}
@@ -226,11 +216,6 @@ func TestWhisperConfirmRejected(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Do you like bananas?",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 				RejectLabel:  "Nope",
 				ResolveLabel: "Yep",
 			}
@@ -274,11 +259,6 @@ func TestWhisperConfirmRejected(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "That's too bad.",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 			}
 			if got := req; !cmp.Equal(got, exp) {
 				return fmt.Errorf("unexpected markdown:\n%s", cmp.Diff(got, exp))
@@ -291,7 +271,7 @@ func TestWhisperConfirmRejected(t *testing.T) {
 	}
 
 	// stage 4: send markdown response
-	if err := (func() error {
+	if err := func() error {
 		timeout := time.NewTimer(time.Second)
 		defer timeout.Stop()
 		select {
@@ -300,7 +280,7 @@ func TestWhisperConfirmRejected(t *testing.T) {
 		case markdownResponseChan <- nil:
 			return nil
 		}
-	}()); err != nil {
+	}(); err != nil {
 		t.Errorf("stage 4 failed\n%v", err)
 		return
 	}

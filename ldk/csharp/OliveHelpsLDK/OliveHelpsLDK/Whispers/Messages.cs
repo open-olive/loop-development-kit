@@ -1,17 +1,9 @@
 namespace OliveHelpsLDK.Whispers
-{
-    public struct WhisperStyle
-    {
-        public string BackgroundColor;
-        public string PrimaryColor;
-        public string HighlightColor;
-    }
-    
+{    
     public struct WhisperConfig
     {
         public string Icon;
         public string Label;
-        public WhisperStyle Style;
     }
 
     public struct WhisperMarkdown

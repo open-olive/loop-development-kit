@@ -1,34 +1,8 @@
-/**
- * Style configuration for the whisper.
- *
- * ```
- * {
- *   backgroundColor: '#fff',
- *   highlightColor: '#651fff',
- *   primaryColor: '#666',
- * }
- * ```
- */
 import {
   StoppableMessage,
   StoppableStream,
   StreamListener,
 } from './stoppables';
-
-export interface WhisperStyle {
-  /**
-   * The background color of the Whisper card as a RGB hex color code.
-   */
-  backgroundColor: string;
-  /**
-   * The color of important text in the Whisper card as a RGB hex color code.
-   */
-  highlightColor: string;
-  /**
-   * The color of normal text in the Whisper card as a RGB hex color code.
-   */
-  primaryColor: string;
-}
 
 /**
  *
@@ -38,11 +12,6 @@ export interface WhisperStyle {
  *   markdown: '# Markdown\nThis is markdown',
  *   label: 'Whisper!',
  *   icon: 'bathtub',
- *   style: {
- *     backgroundColor: '#fff',
- *     highlightColor: '#651fff',
- *     primaryColor: '#666',
- *   },
  * }
  * ```
  */
@@ -59,10 +28,6 @@ export interface Whisper {
    * The title displayed at the top of the Whisper card.
    */
   label: string;
-  /**
-   * An object for specifying the styling of the Whisper card.
-   */
-  style?: WhisperStyle;
 }
 
 export interface WhisperFormInput<T extends string> {

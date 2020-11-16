@@ -13,12 +13,6 @@ import (
 	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-listen-file/bind"
 )
 
-const (
-	backgroundColor = "#fff"
-	highlightColor  = "#651fff"
-	primaryColor    = "#666"
-)
-
 func Serve() error {
 	l := ldk.NewLogger("example-search-searchbar")
 	loop, err := NewLoop(l)
@@ -36,7 +30,6 @@ type Loop struct {
 
 	sidekick        ldk.Sidekick
 	logger          *ldk.Logger
-	style           ldk.Style
 	whisperTemplate *template.Template
 }
 
@@ -57,11 +50,6 @@ func NewLoop(logger *ldk.Logger) (*Loop, error) {
 
 	return &Loop{
 		logger: logger,
-		style: ldk.Style{
-			BackgroundColor: backgroundColor,
-			HighlightColor:  highlightColor,
-			PrimaryColor:    primaryColor,
-		},
 		whisperTemplate: whisperTemplate,
 	}, nil
 }
@@ -134,7 +122,6 @@ func (c *Loop) emitExampleWhisper(fe ldk.FileEvent) error {
 		err := c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
 			Icon:     "bathtub",
 			Label:    "Example Controller Go",
-			Style:    c.style,
 			Markdown: markdownBytes.String(),
 		})
 		if err != nil {

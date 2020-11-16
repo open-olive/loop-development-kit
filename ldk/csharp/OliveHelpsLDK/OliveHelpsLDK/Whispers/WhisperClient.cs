@@ -55,21 +55,10 @@ namespace OliveHelpsLDK.Whispers
 
         private static WhisperMeta GenerateMeta(WhisperConfig config)
         {
-            var styleBackgroundColor =
-                CoerceColor(config.Style.BackgroundColor, BackgroundColor);
-            var stylePrimaryColor = CoerceColor(config.Style.PrimaryColor,
-                PrimaryColor);
-            var styleHighlightColor = CoerceColor(config.Style.HighlightColor, HighlightColor);
             return new WhisperMeta
             {
                 Icon = config.Icon,
                 Label = config.Label,
-                Style = new Proto.WhisperStyle
-                {
-                    BackgroundColor = styleBackgroundColor,
-                    PrimaryColor = stylePrimaryColor,
-                    HighlightColor = styleHighlightColor,
-                }
             };
         }
 

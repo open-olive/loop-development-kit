@@ -17,16 +17,9 @@ service Whisper {
     rpc WhisperForm(WhisperFormRequest) returns (stream WhisperFormStreamResponse);
 }
 
-message WhisperStyle {
-    string backgroundColor = 1;
-    string primaryColor = 2;
-    string highlightColor = 3;
-}
-
 message WhisperMeta {
     string label = 1;
     string icon = 2;
-    WhisperStyle style = 3;
 }
 
 message WhisperMarkdownRequest {

@@ -18,11 +18,6 @@ func TestController(t *testing.T) {
 					Icon:     "bathtub",
 					Label:    "Example Controller Go",
 					Markdown: "## MARKDOWN!",
-					Style: ldk.Style{
-						BackgroundColor: "#fff",
-						HighlightColor:  "#651fff",
-						PrimaryColor:    "#666",
-					},
 				}
 				if got := w; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))
