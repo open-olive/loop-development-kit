@@ -2,21 +2,22 @@ package ldk
 
 import (
 	"fmt"
+
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 type WhisperContentListElementPairHighlight int
 
 const (
-	WhisperContentListElementPairNone WhisperContentListElementPairHighlight = iota
-	WhisperContentListElementPairYellow
+	WhisperContentListElementPairHighlightNone WhisperContentListElementPairHighlight = iota
+	WhisperContentListElementPairHighlightYellow
 )
 
 func (h WhisperContentListElementPairHighlight) ToProto() (proto.WhisperListElement_Pair_Highlight, error) {
 	switch h {
-	case WhisperContentListElementPairNone:
+	case WhisperContentListElementPairHighlightNone:
 		return proto.WhisperListElement_Pair_NONE, nil
-	case WhisperContentListElementPairYellow:
+	case WhisperContentListElementPairHighlightYellow:
 		return proto.WhisperListElement_Pair_YELLOW, nil
 	default:
 		return proto.WhisperListElement_Pair_NONE, fmt.Errorf("unexpected highlight option %d", h)
@@ -26,10 +27,10 @@ func (h WhisperContentListElementPairHighlight) ToProto() (proto.WhisperListElem
 func WhisperContentListElementPairHighlightFromProto(h proto.WhisperListElement_Pair_Highlight) (WhisperContentListElementPairHighlight, error) {
 	switch h {
 	case proto.WhisperListElement_Pair_NONE:
-		return WhisperContentListElementPairNone, nil
+		return WhisperContentListElementPairHighlightNone, nil
 	case proto.WhisperListElement_Pair_YELLOW:
-		return WhisperContentListElementPairYellow, nil
+		return WhisperContentListElementPairHighlightYellow, nil
 	default:
-		return WhisperContentListElementPairNone, fmt.Errorf("unexpected highlight option %d", h)
+		return WhisperContentListElementPairHighlightNone, fmt.Errorf("unexpected highlight option %d", h)
 	}
 }

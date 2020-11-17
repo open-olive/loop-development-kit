@@ -2,6 +2,7 @@ package ldk
 
 import (
 	"fmt"
+
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 

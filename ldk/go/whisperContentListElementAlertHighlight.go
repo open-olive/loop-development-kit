@@ -2,24 +2,25 @@ package ldk
 
 import (
 	"fmt"
+
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
 type WhisperContentListElementAlertHighlight int
 
 const (
-	WhisperContentListElementAlertNone WhisperContentListElementAlertHighlight = iota
-	WhisperContentListElementAlertGreen
-	WhisperContentListElementAlertRed
+	WhisperContentListElementAlertHighlightNone WhisperContentListElementAlertHighlight = iota
+	WhisperContentListElementAlertHighlightGreen
+	WhisperContentListElementAlertHighlightRed
 )
 
 func (h WhisperContentListElementAlertHighlight) ToProto() (proto.WhisperListElement_Alert_Highlight, error) {
 	switch h {
-	case WhisperContentListElementAlertNone:
+	case WhisperContentListElementAlertHighlightNone:
 		return proto.WhisperListElement_Alert_NONE, nil
-	case WhisperContentListElementAlertGreen:
+	case WhisperContentListElementAlertHighlightGreen:
 		return proto.WhisperListElement_Alert_GREEN, nil
-	case WhisperContentListElementAlertRed:
+	case WhisperContentListElementAlertHighlightRed:
 		return proto.WhisperListElement_Alert_RED, nil
 	default:
 		return proto.WhisperListElement_Alert_NONE, fmt.Errorf("unexpected highlight option %d", h)
@@ -29,12 +30,12 @@ func (h WhisperContentListElementAlertHighlight) ToProto() (proto.WhisperListEle
 func WhisperContentListElementAlertHighlightFromProto(h proto.WhisperListElement_Alert_Highlight) (WhisperContentListElementAlertHighlight, error) {
 	switch h {
 	case proto.WhisperListElement_Alert_NONE:
-		return WhisperContentListElementAlertNone, nil
+		return WhisperContentListElementAlertHighlightNone, nil
 	case proto.WhisperListElement_Alert_GREEN:
-		return WhisperContentListElementAlertGreen, nil
+		return WhisperContentListElementAlertHighlightGreen, nil
 	case proto.WhisperListElement_Alert_RED:
-		return WhisperContentListElementAlertRed, nil
+		return WhisperContentListElementAlertHighlightRed, nil
 	default:
-		return WhisperContentListElementAlertNone, fmt.Errorf("unexpected highlight option %d", h)
+		return WhisperContentListElementAlertHighlightNone, fmt.Errorf("unexpected highlight option %d", h)
 	}
 }
