@@ -15,6 +15,9 @@ service Whisper {
 
     // Send a form whisper
     rpc WhisperForm(WhisperFormRequest) returns (stream WhisperFormStreamResponse);
+
+    // Send a list whisper
+    rpc WhisperList(WhisperListRequest) returns (google.protobuf.Empty);
 }
 
 message WhisperMeta {
@@ -211,3 +214,41 @@ message WhisperFormStreamResponse {
     string error = 15;
 }
 
+message WhisperListRequest {
+    Session session = 1;
+    WhisperMeta meta = 2;
+    map <string, WhisperListElement> elements = 3;
+}
+
+message WhisperListElement {
+    message Pair {
+        enum Highlight {
+            NONE = 0;
+            YELLOW = 1;
+        }
+        
+        string key = 1;
+        string value = 2;
+        Highlight highlight = 3;
+        bool copyable = 4;
+    }
+
+    message Alert {
+        enum Highlight {
+            NONE = 0;
+            RED = 1;
+            GREEN = 2;
+        }
+        
+        string body = 1;
+        Highlight highlight = 2;
+    }
+
+    uint32 order = 1;
+    bool extra = 2; // 0 = shows when whisper is in "less" mode AND "more" mode. 1 = shows only when whisper is in "more" mode.
+
+    oneof ElementOneof {
+        Pair pair = 3;
+        Alert alert = 4;
+    }
+}

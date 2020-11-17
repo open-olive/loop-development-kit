@@ -377,3 +377,21 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 
 	return err
 }
+
+// WhisperList is used by loops to create list whispers
+func (m *WhisperServer) WhisperList(ctx context.Context, req *proto.WhisperListRequest) (*emptypb.Empty, error) {
+	content, err := WhisperContentListFromProto(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode whisper content list from proto: %w", err)
+	}
+
+	err = m.Impl.List(
+		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		content,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("ldk.WhisperServer.WhisperList -> m.Impl.List: error => %w", err)
+	}
+
+	return &emptypb.Empty{}, nil
+}
