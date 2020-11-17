@@ -29,12 +29,12 @@ namespace OliveHelpsLDK.Whispers
         }
 
         private void BuildInputs(IDictionary<string, WhisperFormInput> inputs,
-            ImmutableDictionary<string, IBase<object>> formRequestInputs)
+            IDictionary<string, IBase> formRequestInputs)
         {
             formRequestInputs.ToList().ForEach(input => inputs.Add(input.Key, BuildInput(input.Value)));
         }
 
-        private WhisperFormInput BuildInput<T>(IBase<T> input)
+        private WhisperFormInput BuildInput(IBase input)
         {
             var formInput = new WhisperFormInput();
             switch (input)

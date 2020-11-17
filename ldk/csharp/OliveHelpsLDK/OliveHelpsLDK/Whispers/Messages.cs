@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using Google.Protobuf.WellKnownTypes;
 using Proto;
@@ -39,79 +40,83 @@ namespace OliveHelpsLDK.Whispers
         public WhisperConfig Config;
         public string SubmitLabel;
         public string CancelLabel;
-        public ImmutableDictionary<string, Forms.Inputs.IBase<object>> Inputs;
+        public IDictionary<string, Forms.Inputs.IBase> Inputs;
     }
 }
 
 namespace OliveHelpsLDK.Whispers.Forms.Inputs
 {
-    public interface IBase<T>
+
+    public interface IProtoable<T>
+    {
+        T ToProto();
+    }
+    
+    public interface IBase
     {
         string Label { get; }
         string Tooltip { get; }
         int Order { get; }
-
-        T ToProto();
     }
 
-    public interface ICheckbox : IBase<Proto.WhisperFormInput.Types.Checkbox>
+    public interface ICheckbox : IBase, IProtoable<Proto.WhisperFormInput.Types.Checkbox>
     {
         bool Value { get; }
     }
 
-    public interface IEmail : IBase<Proto.WhisperFormInput.Types.Email>
+    public interface IEmail : IBase, IProtoable<Proto.WhisperFormInput.Types.Email>
     {
         string Value { get; }
     }
 
-    public interface IMarkdown : IBase<Proto.WhisperFormInput.Types.Markdown>
+    public interface IMarkdown : IBase, IProtoable<Proto.WhisperFormInput.Types.Markdown>
     {
         string Value { get; }
     }
 
-    public interface INumber : IBase<Proto.WhisperFormInput.Types.Number>
+    public interface INumber : IBase, IProtoable<Proto.WhisperFormInput.Types.Number>
     {
         float Value { get; }
         float Min { get; }
         float Max { get; }
     }
 
-    public interface IPassword : IBase<Proto.WhisperFormInput.Types.Password>
+    public interface IPassword : IBase, IProtoable<Proto.WhisperFormInput.Types.Password>
     {
     }
 
-    public interface IRadio : IBase<Proto.WhisperFormInput.Types.Radio>
-    {
-        string[] Options { get; }
-    }
-
-    public interface ISelect : IBase<Proto.WhisperFormInput.Types.Select>
+    public interface IRadio : IBase, IProtoable<Proto.WhisperFormInput.Types.Radio>
     {
         string[] Options { get; }
     }
 
-    public interface ITelephone : IBase<WhisperFormInput.Types.Tel>
+    public interface ISelect : IBase, IProtoable<Proto.WhisperFormInput.Types.Select>
+    {
+        string[] Options { get; }
+    }
+
+    public interface ITelephone : IBase, IProtoable<WhisperFormInput.Types.Tel>
     {
         string Value { get; }
         string Pattern { get; }
     }
 
-    public interface IText : IBase<Proto.WhisperFormInput.Types.Text>
+    public interface IText : IBase, IProtoable<Proto.WhisperFormInput.Types.Text>
     {
         string Value { get; }
     }
 
-    public interface ITime : IBase<Proto.WhisperFormInput.Types.Time>
+    public interface ITime : IBase, IProtoable<Proto.WhisperFormInput.Types.Time>
     {
         DateTimeOffset Value { get; }
     }
 
     public struct Checkbox : ICheckbox
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
-        public bool Value { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
+        public bool Value { get; set; }
 
         public WhisperFormInput.Types.Checkbox ToProto()
         {
@@ -123,6 +128,7 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
                 Value = Value
             };
         }
+
     }
 
     public struct Email : IEmail
