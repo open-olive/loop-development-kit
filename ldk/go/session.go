@@ -8,6 +8,10 @@ type Session struct {
 }
 
 func NewSessionFromProto(session *proto.Session) *Session {
+	if session == nil {
+		return nil
+	}
+
 	return &Session{
 		LoopID: session.LoopID,
 		Token:  session.Token,
