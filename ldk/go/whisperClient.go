@@ -164,6 +164,8 @@ func (m *WhisperClient) List(ctx context.Context, content *WhisperContentList) e
 		return fmt.Errorf("failed to encode content to proto: %w", err)
 	}
 
+	req.Session = m.session.ToProto()
+
 	_, err = m.client.WhisperList(ctx, req)
 	if err != nil {
 		return err
