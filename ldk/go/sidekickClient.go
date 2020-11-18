@@ -9,6 +9,7 @@ type SidekickClient struct {
 	process    ProcessService
 	cursor     CursorService
 	filesystem FilesystemService
+	window     WindowService
 	ui         UIService
 	network    NetworkService
 }
@@ -56,4 +57,9 @@ func (m *SidekickClient) UI() UIService {
 // Network is used by loops to send/receive HTTP requests
 func (m *SidekickClient) Network() NetworkService {
 	return m.network
+}
+
+// Window is used by controller plugins to send keyboard events to sidekick
+func (m *SidekickClient) Window() WindowService {
+	return m.window
 }

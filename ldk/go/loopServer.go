@@ -69,6 +69,10 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 			client:  proto.NewNetworkClient(m.conn),
 			session: session,
 		},
+		window: &WindowClient{
+			client:  proto.NewWindowClient(m.conn),
+			session: session,
+		},
 	}
 	println("[INFO] loopServer.go - LoopStart complete")
 	return &emptypb.Empty{}, m.Impl.LoopStart(
