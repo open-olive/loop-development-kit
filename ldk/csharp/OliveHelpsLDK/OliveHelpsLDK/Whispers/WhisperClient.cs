@@ -8,12 +8,7 @@ namespace OliveHelpsLDK.Whispers
 {
     internal class WhisperClient : BaseClient, IWhisperService
     {
-        public const string BackgroundColor = "#FFF";
-        public const string PrimaryColor = "#666";
-        public const string HighlightColor = "#651FFF";
-
         private Proto.Whisper.WhisperClient client;
-
 
         public WhisperClient(ChannelBase channel, Session session)
         {
@@ -60,11 +55,6 @@ namespace OliveHelpsLDK.Whispers
                 Icon = config.Icon,
                 Label = config.Label,
             };
-        }
-
-        private static string CoerceColor(string input, string defaultColor)
-        {
-            return string.IsNullOrEmpty(input) ? defaultColor : input;
         }
     }
 }
