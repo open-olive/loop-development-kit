@@ -25,7 +25,7 @@ describe('StorageHostClient', () => {
   let waitForReadyMock: jest.Mock;
   let storageDeleteMock: jest.Mock;
   let storageDeleteAllMock: jest.Mock;
-  let storageHasKeyMock: jest.Mock;
+  let storageExistsMock: jest.Mock;
   let storageKeysMock: jest.Mock;
   let storageReadMock: jest.Mock;
   let storageReadAllMock: jest.Mock;
@@ -54,7 +54,7 @@ describe('StorageHostClient', () => {
         waitForReady: waitForReadyMock,
         storageDelete: storageDeleteMock,
         storageDeleteAll: storageDeleteAllMock,
-        storageHasKey: storageHasKeyMock,
+        storageExists: storageExistsMock,
         storageKeys: storageKeysMock,
         storageRead: storageReadMock,
         storageReadAll: storageReadAllMock,
@@ -88,59 +88,26 @@ describe('StorageHostClient', () => {
       ).toHaveBeenCalledWith(storageKey);
     });
   });
-  describe('#storageDeleteAll', () => {
-    beforeEach(async () => {
-      storageDeleteAllMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler());
-      await subject.connect(connInfo, session, logger);
-      await expect(subject.storageDeleteAll()).resolves.toBe(undefined);
-    });
-    it('should call client.storageDelete and resolve successfully', async () => {
-      expect(storageDeleteAllMock).toHaveBeenCalledWith(
-        expect.any(Messages.StorageDeleteAllRequest),
-        expect.any(Function),
-      );
-    });
-  });
-  describe('#storageHasKey', () => {
+  describe('#storageExists', () => {
     const storageKey = 'key';
-    let mockResponse: Messages.StorageHasKeyResponse;
+    let mockResponse: Messages.StorageExistsResponse;
     beforeEach(async () => {
-      mockResponse = new Messages.StorageHasKeyResponse();
-      mocked(mockResponse.getHaskey).mockReturnValue(true);
-      storageHasKeyMock = jest
+      mockResponse = new Messages.StorageExistsResponse();
+      mocked(mockResponse.getExists).mockReturnValue(true);
+      storageExistsMock = jest
         .fn()
         .mockImplementation(createCallbackHandler(mockResponse));
       await subject.connect(connInfo, session, logger);
     });
     it('should call client.storageDelete and resolve successfully', async () => {
-      await expect(subject.storageHasKey(storageKey)).resolves.toBe(true);
-      expect(storageHasKeyMock).toHaveBeenCalledWith(
-        expect.any(Messages.StorageHasKeyRequest),
+      await expect(subject.storageExists(storageKey)).resolves.toBe(true);
+      expect(storageExistsMock).toHaveBeenCalledWith(
+        expect.any(Messages.StorageExistsRequest),
         expect.any(Function),
       );
       expect(
-        mocked(Messages.StorageHasKeyRequest).mock.instances[0].setKey,
+        mocked(Messages.StorageExistsRequest).mock.instances[0].setKey,
       ).toHaveBeenCalledWith(storageKey);
-    });
-  });
-  describe('#storageKeys', () => {
-    let mockResponse: Messages.StorageKeysResponse;
-    beforeEach(async () => {
-      mockResponse = new Messages.StorageKeysResponse();
-      mocked(mockResponse.getKeysList).mockReturnValue(['a', 'b']);
-      storageKeysMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session, logger);
-    });
-    it('should call client.storageKeys and resolve successfully', async () => {
-      await expect(subject.storageKeys()).resolves.toStrictEqual(['a', 'b']);
-      expect(storageKeysMock).toHaveBeenCalledWith(
-        expect.any(Messages.StorageKeysRequest),
-        expect.any(Function),
-      );
     });
   });
   describe('#storageRead', () => {
@@ -164,34 +131,6 @@ describe('StorageHostClient', () => {
       expect(
         mocked(Messages.StorageReadRequest).mock.instances[0].setKey,
       ).toHaveBeenCalledWith(key);
-    });
-  });
-  describe('#storageReadAll', () => {
-    let mockResponse: Messages.StorageReadAllResponse;
-    const responseValues: [string, string][] = [
-      ['key1', 'value1'],
-      ['key2', 'value2'],
-    ];
-    const response = {
-      toObject: () => responseValues,
-    };
-    beforeEach(async () => {
-      mockResponse = new Messages.StorageReadAllResponse();
-      mocked(mockResponse.getEntriesMap).mockReturnValue(response as any);
-      storageReadAllMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session, logger);
-    });
-    it('should call client.storageReadAll and resolve successfully', async () => {
-      await expect(subject.storageReadAll()).resolves.toEqual({
-        key1: 'value1',
-        key2: 'value2',
-      });
-      expect(storageReadAllMock).toHaveBeenCalledWith(
-        expect.any(Messages.StorageReadAllRequest),
-        expect.any(Function),
-      );
     });
   });
   describe('#storageWrite', () => {

@@ -26,35 +26,18 @@ class StorageClient extends baseClient_1.default {
         () => { });
     }
     /**
-     * Delete all keys from storage.
-     */
-    storageDeleteAll() {
-        return this.buildQuery((message, callback) => this.client.storageDeleteAll(message, callback), () => new storage_pb_1.default.StorageDeleteAllRequest(), 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        () => { });
-    }
-    /**
      * Check if a key has a value defined in storage.
      *
      * @async
      * @param key - The name of the key in storage.
      * @returns Returns true if the key has a defined value.
      */
-    storageHasKey(key) {
-        return this.buildQuery((message, callback) => this.client.storageHasKey(message, callback), () => {
-            const msg = new storage_pb_1.default.StorageHasKeyRequest();
+    storageExists(key) {
+        return this.buildQuery((message, callback) => this.client.storageExists(message, callback), () => {
+            const msg = new storage_pb_1.default.StorageExistsRequest();
             msg.setKey(key);
             return msg;
-        }, (response) => response.getHaskey());
-    }
-    /**
-     * Return a list of all keys.
-     *
-     * @async
-     * @returns {string[]} - An array of the keys.
-     */
-    storageKeys() {
-        return this.buildQuery((message, callback) => this.client.storageKeys(message, callback), () => new storage_pb_1.default.StorageKeysRequest(), (response) => response.getKeysList());
+        }, (response) => response.getExists());
     }
     /**
      * Get the value of a key in storage.
@@ -70,25 +53,6 @@ class StorageClient extends baseClient_1.default {
         }, 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         (response) => response.getValue());
-    }
-    /**
-     * Get an object of key value pairs in storage.
-     *
-     * @async
-     * @returns Returns the storage object. Each key in the object
-     * is a key in storage and the value of the key is the value in storage.
-     */
-    storageReadAll() {
-        return this.buildQuery((message, callback) => this.client.storageReadAll(message, callback), () => new storage_pb_1.default.StorageReadAllRequest(), (response) => {
-            const entries = response
-                .getEntriesMap()
-                .toObject()
-                .reduce((acc, [key, value]) => {
-                acc[key] = value;
-                return acc;
-            }, {});
-            return entries;
-        });
     }
     /**
      * Get the value of a key in storage.

@@ -11,7 +11,6 @@ namespace OliveHelpsLDK.Whispers
         private readonly IWhisperFormParser _parser;
         private IWhisperFormBuilder _builder;
 
-
         public WhisperClient(ChannelBase channel, Session session, IWhisperFormBuilder formBuilder = null,
             IWhisperFormParser parser = null)
         {

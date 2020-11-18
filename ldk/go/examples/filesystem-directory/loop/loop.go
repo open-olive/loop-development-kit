@@ -13,12 +13,6 @@ import (
 	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-directory/bind"
 )
 
-const (
-	backgroundColor = "#fff"
-	highlightColor  = "#651fff"
-	primaryColor    = "#666"
-)
-
 func Serve() error {
 	l := ldk.NewLogger("example-filesystem-directory")
 	loop, err := NewLoop(l)
@@ -36,7 +30,6 @@ type Loop struct {
 
 	sidekick        ldk.Sidekick
 	logger          *ldk.Logger
-	style           ldk.Style
 	whisperTemplate *template.Template
 }
 
@@ -56,12 +49,7 @@ func NewLoop(logger *ldk.Logger) (*Loop, error) {
 	}
 
 	return &Loop{
-		logger: logger,
-		style: ldk.Style{
-			BackgroundColor: backgroundColor,
-			HighlightColor:  highlightColor,
-			PrimaryColor:    primaryColor,
-		},
+		logger:          logger,
 		whisperTemplate: whisperTemplate,
 	}, nil
 }
@@ -133,7 +121,6 @@ func (c *Loop) emitExampleWhisper(f ldk.FileInfo) error {
 			Icon:     "bathtub",
 			Label:    "Example Controller Go",
 			Markdown: markdownBytes.String(),
-			Style:    c.style,
 		})
 		if err != nil {
 			c.logger.Error("failed to emit whisper", "error", err)

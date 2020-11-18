@@ -111,20 +111,8 @@ exports.generateWhisperInput = (input) => {
     return msg;
 };
 exports.generateWhisperMeta = (whisper) => {
-    const style = new messages.WhisperStyle();
-    if (whisper.style) {
-        style.setBackgroundcolor(whisper.style.backgroundColor || '#fff');
-        style.setPrimarycolor(whisper.style.primaryColor || '#666');
-        style.setHighlightcolor(whisper.style.highlightColor || '#651fff');
-    }
-    else {
-        style.setBackgroundcolor('#fff');
-        style.setPrimarycolor('#666');
-        style.setHighlightcolor('#651fff');
-    }
     const whisperMsg = new messages.WhisperMeta();
     whisperMsg.setLabel(whisper.label);
-    whisperMsg.setStyle(style);
     whisperMsg.setIcon(whisper.icon);
     return whisperMsg;
 };
