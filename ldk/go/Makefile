@@ -38,6 +38,7 @@ test-examples:
 	cd examples/search-searchbar && make test
 	cd examples/whisper-confirm && make test
 	cd examples/whisper-form && make test
+	cd examples/whisper-list && make test
 	cd examples/whisper-markdown && make test
 
 test: test-examples
