@@ -66,9 +66,9 @@ func TestWhisperConfirmResolved(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-confirmRequestChan:
 			exp := &ldk.WhisperContentConfirm{
-				Icon:     "bathtub",
-				Label:    "Example Controller Go",
-				Markdown: "Do you like bananas?",
+				Icon:         "bathtub",
+				Label:        "Example Controller Go",
+				Markdown:     "Do you like bananas?",
 				RejectLabel:  "Nope",
 				ResolveLabel: "Yep",
 			}
@@ -213,9 +213,9 @@ func TestWhisperConfirmRejected(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-confirmRequestChan:
 			exp := &ldk.WhisperContentConfirm{
-				Icon:     "bathtub",
-				Label:    "Example Controller Go",
-				Markdown: "Do you like bananas?",
+				Icon:         "bathtub",
+				Label:        "Example Controller Go",
+				Markdown:     "Do you like bananas?",
 				RejectLabel:  "Nope",
 				ResolveLabel: "Yep",
 			}
