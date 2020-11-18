@@ -20,10 +20,12 @@ type LoopServer struct {
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
 func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (*emptypb.Empty, error) {
-	var err error
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
 
 	hosts := req.ServiceHosts
-	session := NewSessionFromProto(req.Session)
 
 	m.conn, err = m.broker.Dial(hosts.HostBrokerId)
 	if err != nil {

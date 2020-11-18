@@ -12,6 +12,11 @@ type UIServer struct {
 }
 
 func (u *UIServer) GlobalSearchStream(req *proto.GlobalSearchStreamRequest, server proto.UI_GlobalSearchStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(search string, err error) {
 		var errText string
 		if err != nil {
@@ -24,19 +29,27 @@ func (u *UIServer) GlobalSearchStream(req *proto.GlobalSearchStreamRequest, serv
 			fmt.Println("error => ", err.Error())
 		}
 	}
+
 	go func() {
 		err := u.Impl.ListenGlobalSearch(
-			context.WithValue(server.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(server.Context(), Session{}, session),
 			handler)
 		if err != nil {
 			fmt.Println("error => ", err.Error())
 		}
 	}()
+
 	<-server.Context().Done()
+
 	return nil
 }
 
 func (u *UIServer) SearchbarStream(req *proto.SearchbarStreamRequest, server proto.UI_SearchbarStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(search string, err error) {
 		var errText string
 		if err != nil {
@@ -49,15 +62,18 @@ func (u *UIServer) SearchbarStream(req *proto.SearchbarStreamRequest, server pro
 			fmt.Println("error => ", err.Error())
 		}
 	}
+
 	go func() {
 		err := u.Impl.ListenSearchbar(
-			context.WithValue(server.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(server.Context(), Session{}, session),
 			handler,
 		)
 		if err != nil {
 			fmt.Println("error => ", err.Error())
 		}
 	}()
+
 	<-server.Context().Done()
+
 	return nil
 }

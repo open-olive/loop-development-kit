@@ -14,8 +14,13 @@ type StorageServer struct {
 
 // StorageDelete is used by plugins to delete a storage entry
 func (m *StorageServer) StorageDelete(ctx context.Context, req *proto.StorageDeleteRequest) (*emptypb.Empty, error) {
-	err := m.Impl.StorageDelete(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
+	err = m.Impl.StorageDelete(
+		context.WithValue(ctx, Session{}, session),
 		req.Key,
 	)
 	if err != nil {
@@ -27,8 +32,13 @@ func (m *StorageServer) StorageDelete(ctx context.Context, req *proto.StorageDel
 
 // StorageDeleteAll is used by plugins to delete all storage entries
 func (m *StorageServer) StorageDeleteAll(ctx context.Context, req *proto.StorageDeleteAllRequest) (*emptypb.Empty, error) {
-	err := m.Impl.StorageDeleteAll(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
+	err = m.Impl.StorageDeleteAll(
+		context.WithValue(ctx, Session{}, session),
 	)
 	if err != nil {
 		return nil, err
@@ -39,8 +49,13 @@ func (m *StorageServer) StorageDeleteAll(ctx context.Context, req *proto.Storage
 
 // StorageHasKey is used by plugins to check if a key exists in storage
 func (m *StorageServer) StorageHasKey(ctx context.Context, req *proto.StorageHasKeyRequest) (*proto.StorageHasKeyResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	hasKey, err := m.Impl.StorageHasKey(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 		req.Key,
 	)
 	if err != nil {
@@ -54,8 +69,13 @@ func (m *StorageServer) StorageHasKey(ctx context.Context, req *proto.StorageHas
 
 // StorageKeys is used by plugins to get a list of keys for all entries
 func (m *StorageServer) StorageKeys(ctx context.Context, req *proto.StorageKeysRequest) (*proto.StorageKeysResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	keys, err := m.Impl.StorageKeys(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 	)
 	if err != nil {
 		return nil, err
@@ -68,8 +88,13 @@ func (m *StorageServer) StorageKeys(ctx context.Context, req *proto.StorageKeysR
 
 // StorageRead is used by plugins to get the value of an entry
 func (m *StorageServer) StorageRead(ctx context.Context, req *proto.StorageReadRequest) (*proto.StorageReadResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	value, err := m.Impl.StorageRead(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 		req.Key,
 	)
 	if err != nil {
@@ -83,8 +108,13 @@ func (m *StorageServer) StorageRead(ctx context.Context, req *proto.StorageReadR
 
 // StorageReadAll is used by plugins to get a map of all entries
 func (m *StorageServer) StorageReadAll(ctx context.Context, req *proto.StorageReadAllRequest) (*proto.StorageReadAllResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	entries, err := m.Impl.StorageReadAll(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 	)
 	if err != nil {
 		return nil, err
@@ -97,8 +127,13 @@ func (m *StorageServer) StorageReadAll(ctx context.Context, req *proto.StorageRe
 
 // StorageWrite is used by plugins to set an entry
 func (m *StorageServer) StorageWrite(ctx context.Context, req *proto.StorageWriteRequest) (*emptypb.Empty, error) {
-	err := m.Impl.StorageWrite(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
+	err = m.Impl.StorageWrite(
+		context.WithValue(ctx, Session{}, session),
 		req.Key,
 		req.Value,
 	)

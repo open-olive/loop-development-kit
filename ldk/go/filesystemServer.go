@@ -15,8 +15,13 @@ type FilesystemServer struct {
 
 // list the contents of a directory
 func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	files, err := f.Impl.Dir(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 		req.GetDirectory(),
 	)
 	if err != nil {
@@ -46,6 +51,11 @@ func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.Filesys
 
 // stream any updates to the contents of a directory
 func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamRequest, stream proto.Filesystem_FilesystemDirStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(fe FileEvent, err error) {
 		var errText string
 		if err != nil {
@@ -73,7 +83,7 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 
 	go func() {
 		err := f.Impl.ListenDir(
-			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, session),
 			req.GetDirectory(),
 			handler,
 		)
@@ -91,8 +101,13 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 
 // get information about a file
 func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.FilesystemFileRequest) (*proto.FilesystemFileResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	file, err := f.Impl.File(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 		req.GetPath(),
 	)
 	if err != nil {
@@ -119,6 +134,11 @@ func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.Filesy
 
 // stream any updates to a file
 func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamRequest, stream proto.Filesystem_FilesystemFileStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(fe FileEvent, err error) {
 		var errText string
 		if err != nil {
@@ -146,7 +166,7 @@ func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamR
 
 	go func() {
 		err := f.Impl.ListenFile(
-			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, session),
 			req.GetPath(),
 			handler,
 		)

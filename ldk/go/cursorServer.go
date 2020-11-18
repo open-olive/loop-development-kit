@@ -12,8 +12,13 @@ type CursorServer struct {
 }
 
 func (c *CursorServer) CursorPosition(ctx context.Context, req *proto.CursorPositionRequest) (*proto.CursorPositionResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	value, err := c.Impl.Position(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 	)
 	if err != nil {
 		return nil, err
@@ -26,6 +31,11 @@ func (c *CursorServer) CursorPosition(ctx context.Context, req *proto.CursorPosi
 }
 
 func (c *CursorServer) CursorPositionStream(req *proto.CursorPositionStreamRequest, stream proto.Cursor_CursorPositionStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(msg CursorPosition, err error) {
 		var errText string
 		if err != nil {
@@ -43,7 +53,7 @@ func (c *CursorServer) CursorPositionStream(req *proto.CursorPositionStreamReque
 
 	go func() {
 		err := c.Impl.ListenPosition(
-			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, session),
 			handler,
 		)
 		if err != nil {

@@ -17,8 +17,13 @@ type WhisperServer struct {
 
 // WhisperMarkdown is used by loops to create markdown whispers
 func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperMarkdownRequest) (*emptypb.Empty, error) {
-	err := m.Impl.Markdown(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
+	err = m.Impl.Markdown(
+		context.WithValue(ctx, Session{}, session),
 		&WhisperContentMarkdown{
 			Icon:     req.Meta.Icon,
 			Label:    req.Meta.Label,
@@ -33,8 +38,13 @@ func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperM
 
 // WhisperConfirm is used by loops to create confirm whispers
 func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperConfirmRequest) (*proto.WhisperConfirmResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	response, err := m.Impl.Confirm(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 		&WhisperContentConfirm{
 			Icon:         req.Meta.Icon,
 			Label:        req.Meta.Label,
@@ -53,6 +63,11 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 
 // WhisperForm is used by loops to create form whispers
 func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.Whisper_WhisperFormServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	inputs := make(map[string]WhisperContentFormInput, len(req.Inputs))
 	for key, inputProto := range req.Inputs {
 		key := key
@@ -343,7 +358,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 	}
 
 	submitted, outputs, err := m.Impl.Form(
-		context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(stream.Context(), Session{}, session),
 		&WhisperContentForm{
 			Icon:        req.Meta.Icon,
 			Label:       req.Meta.Label,
@@ -380,13 +395,18 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 
 // WhisperList is used by loops to create list whispers
 func (m *WhisperServer) WhisperList(ctx context.Context, req *proto.WhisperListRequest) (*emptypb.Empty, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	content, err := WhisperContentListFromProto(req)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode whisper content list from proto: %w", err)
 	}
 
 	err = m.Impl.List(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 		content,
 	)
 	if err != nil {
