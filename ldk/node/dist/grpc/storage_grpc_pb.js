@@ -13,15 +13,6 @@ function serialize_google_protobuf_Empty(arg) {
 function deserialize_google_protobuf_Empty(buffer_arg) {
     return google_protobuf_empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
 }
-function serialize_proto_StorageDeleteAllRequest(arg) {
-    if (!(arg instanceof storage_pb.StorageDeleteAllRequest)) {
-        throw new Error('Expected argument of type proto.StorageDeleteAllRequest');
-    }
-    return Buffer.from(arg.serializeBinary());
-}
-function deserialize_proto_StorageDeleteAllRequest(buffer_arg) {
-    return storage_pb.StorageDeleteAllRequest.deserializeBinary(new Uint8Array(buffer_arg));
-}
 function serialize_proto_StorageDeleteRequest(arg) {
     if (!(arg instanceof storage_pb.StorageDeleteRequest)) {
         throw new Error('Expected argument of type proto.StorageDeleteRequest');
@@ -31,59 +22,23 @@ function serialize_proto_StorageDeleteRequest(arg) {
 function deserialize_proto_StorageDeleteRequest(buffer_arg) {
     return storage_pb.StorageDeleteRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
-function serialize_proto_StorageHasKeyRequest(arg) {
-    if (!(arg instanceof storage_pb.StorageHasKeyRequest)) {
-        throw new Error('Expected argument of type proto.StorageHasKeyRequest');
+function serialize_proto_StorageExistsRequest(arg) {
+    if (!(arg instanceof storage_pb.StorageExistsRequest)) {
+        throw new Error('Expected argument of type proto.StorageExistsRequest');
     }
     return Buffer.from(arg.serializeBinary());
 }
-function deserialize_proto_StorageHasKeyRequest(buffer_arg) {
-    return storage_pb.StorageHasKeyRequest.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_StorageExistsRequest(buffer_arg) {
+    return storage_pb.StorageExistsRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
-function serialize_proto_StorageHasKeyResponse(arg) {
-    if (!(arg instanceof storage_pb.StorageHasKeyResponse)) {
-        throw new Error('Expected argument of type proto.StorageHasKeyResponse');
+function serialize_proto_StorageExistsResponse(arg) {
+    if (!(arg instanceof storage_pb.StorageExistsResponse)) {
+        throw new Error('Expected argument of type proto.StorageExistsResponse');
     }
     return Buffer.from(arg.serializeBinary());
 }
-function deserialize_proto_StorageHasKeyResponse(buffer_arg) {
-    return storage_pb.StorageHasKeyResponse.deserializeBinary(new Uint8Array(buffer_arg));
-}
-function serialize_proto_StorageKeysRequest(arg) {
-    if (!(arg instanceof storage_pb.StorageKeysRequest)) {
-        throw new Error('Expected argument of type proto.StorageKeysRequest');
-    }
-    return Buffer.from(arg.serializeBinary());
-}
-function deserialize_proto_StorageKeysRequest(buffer_arg) {
-    return storage_pb.StorageKeysRequest.deserializeBinary(new Uint8Array(buffer_arg));
-}
-function serialize_proto_StorageKeysResponse(arg) {
-    if (!(arg instanceof storage_pb.StorageKeysResponse)) {
-        throw new Error('Expected argument of type proto.StorageKeysResponse');
-    }
-    return Buffer.from(arg.serializeBinary());
-}
-function deserialize_proto_StorageKeysResponse(buffer_arg) {
-    return storage_pb.StorageKeysResponse.deserializeBinary(new Uint8Array(buffer_arg));
-}
-function serialize_proto_StorageReadAllRequest(arg) {
-    if (!(arg instanceof storage_pb.StorageReadAllRequest)) {
-        throw new Error('Expected argument of type proto.StorageReadAllRequest');
-    }
-    return Buffer.from(arg.serializeBinary());
-}
-function deserialize_proto_StorageReadAllRequest(buffer_arg) {
-    return storage_pb.StorageReadAllRequest.deserializeBinary(new Uint8Array(buffer_arg));
-}
-function serialize_proto_StorageReadAllResponse(arg) {
-    if (!(arg instanceof storage_pb.StorageReadAllResponse)) {
-        throw new Error('Expected argument of type proto.StorageReadAllResponse');
-    }
-    return Buffer.from(arg.serializeBinary());
-}
-function deserialize_proto_StorageReadAllResponse(buffer_arg) {
-    return storage_pb.StorageReadAllResponse.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_proto_StorageExistsResponse(buffer_arg) {
+    return storage_pb.StorageExistsResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 function serialize_proto_StorageReadRequest(arg) {
     if (!(arg instanceof storage_pb.StorageReadRequest)) {
@@ -113,54 +68,6 @@ function deserialize_proto_StorageWriteRequest(buffer_arg) {
     return storage_pb.StorageWriteRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 var StorageService = exports.StorageService = {
-    // Check in storage to determine if a key has a value
-    storageHasKey: {
-        path: '/proto.Storage/StorageHasKey',
-        requestStream: false,
-        responseStream: false,
-        requestType: storage_pb.StorageHasKeyRequest,
-        responseType: storage_pb.StorageHasKeyResponse,
-        requestSerialize: serialize_proto_StorageHasKeyRequest,
-        requestDeserialize: deserialize_proto_StorageHasKeyRequest,
-        responseSerialize: serialize_proto_StorageHasKeyResponse,
-        responseDeserialize: deserialize_proto_StorageHasKeyResponse,
-    },
-    // Get a list of storage keys
-    storageKeys: {
-        path: '/proto.Storage/StorageKeys',
-        requestStream: false,
-        responseStream: false,
-        requestType: storage_pb.StorageKeysRequest,
-        responseType: storage_pb.StorageKeysResponse,
-        requestSerialize: serialize_proto_StorageKeysRequest,
-        requestDeserialize: deserialize_proto_StorageKeysRequest,
-        responseSerialize: serialize_proto_StorageKeysResponse,
-        responseDeserialize: deserialize_proto_StorageKeysResponse,
-    },
-    // Read the value of a specific storage key
-    storageRead: {
-        path: '/proto.Storage/StorageRead',
-        requestStream: false,
-        responseStream: false,
-        requestType: storage_pb.StorageReadRequest,
-        responseType: storage_pb.StorageReadResponse,
-        requestSerialize: serialize_proto_StorageReadRequest,
-        requestDeserialize: deserialize_proto_StorageReadRequest,
-        responseSerialize: serialize_proto_StorageReadResponse,
-        responseDeserialize: deserialize_proto_StorageReadResponse,
-    },
-    // Get all storage keys and values
-    storageReadAll: {
-        path: '/proto.Storage/StorageReadAll',
-        requestStream: false,
-        responseStream: false,
-        requestType: storage_pb.StorageReadAllRequest,
-        responseType: storage_pb.StorageReadAllResponse,
-        requestSerialize: serialize_proto_StorageReadAllRequest,
-        requestDeserialize: deserialize_proto_StorageReadAllRequest,
-        responseSerialize: serialize_proto_StorageReadAllResponse,
-        responseDeserialize: deserialize_proto_StorageReadAllResponse,
-    },
     // Delete the value of a specific key
     storageDelete: {
         path: '/proto.Storage/StorageDelete',
@@ -173,17 +80,29 @@ var StorageService = exports.StorageService = {
         responseSerialize: serialize_google_protobuf_Empty,
         responseDeserialize: deserialize_google_protobuf_Empty,
     },
-    // Delete the values of all keys
-    storageDeleteAll: {
-        path: '/proto.Storage/StorageDeleteAll',
+    // Check in storage to determine if a key has a value
+    storageExists: {
+        path: '/proto.Storage/StorageExists',
         requestStream: false,
         responseStream: false,
-        requestType: storage_pb.StorageDeleteAllRequest,
-        responseType: google_protobuf_empty_pb.Empty,
-        requestSerialize: serialize_proto_StorageDeleteAllRequest,
-        requestDeserialize: deserialize_proto_StorageDeleteAllRequest,
-        responseSerialize: serialize_google_protobuf_Empty,
-        responseDeserialize: deserialize_google_protobuf_Empty,
+        requestType: storage_pb.StorageExistsRequest,
+        responseType: storage_pb.StorageExistsResponse,
+        requestSerialize: serialize_proto_StorageExistsRequest,
+        requestDeserialize: deserialize_proto_StorageExistsRequest,
+        responseSerialize: serialize_proto_StorageExistsResponse,
+        responseDeserialize: deserialize_proto_StorageExistsResponse,
+    },
+    // Read the value of a specific storage key
+    storageRead: {
+        path: '/proto.Storage/StorageRead',
+        requestStream: false,
+        responseStream: false,
+        requestType: storage_pb.StorageReadRequest,
+        responseType: storage_pb.StorageReadResponse,
+        requestSerialize: serialize_proto_StorageReadRequest,
+        requestDeserialize: deserialize_proto_StorageReadRequest,
+        responseSerialize: serialize_proto_StorageReadResponse,
+        responseDeserialize: deserialize_proto_StorageReadResponse,
     },
     // Write the value of a key to storage
     storageWrite: {

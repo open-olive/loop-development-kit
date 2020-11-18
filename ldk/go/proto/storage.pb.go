@@ -25,7 +25,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type StorageHasKeyRequest struct {
+type StorageExistsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -34,8 +34,8 @@ type StorageHasKeyRequest struct {
 	Key     string   `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
 }
 
-func (x *StorageHasKeyRequest) Reset() {
-	*x = StorageHasKeyRequest{}
+func (x *StorageExistsRequest) Reset() {
+	*x = StorageExistsRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_storage_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -43,13 +43,13 @@ func (x *StorageHasKeyRequest) Reset() {
 	}
 }
 
-func (x *StorageHasKeyRequest) String() string {
+func (x *StorageExistsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StorageHasKeyRequest) ProtoMessage() {}
+func (*StorageExistsRequest) ProtoMessage() {}
 
-func (x *StorageHasKeyRequest) ProtoReflect() protoreflect.Message {
+func (x *StorageExistsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_storage_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -61,35 +61,35 @@ func (x *StorageHasKeyRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use StorageHasKeyRequest.ProtoReflect.Descriptor instead.
-func (*StorageHasKeyRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use StorageExistsRequest.ProtoReflect.Descriptor instead.
+func (*StorageExistsRequest) Descriptor() ([]byte, []int) {
 	return file_storage_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *StorageHasKeyRequest) GetSession() *Session {
+func (x *StorageExistsRequest) GetSession() *Session {
 	if x != nil {
 		return x.Session
 	}
 	return nil
 }
 
-func (x *StorageHasKeyRequest) GetKey() string {
+func (x *StorageExistsRequest) GetKey() string {
 	if x != nil {
 		return x.Key
 	}
 	return ""
 }
 
-type StorageHasKeyResponse struct {
+type StorageExistsResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	HasKey bool `protobuf:"varint,1,opt,name=hasKey,proto3" json:"hasKey,omitempty"`
+	Exists bool `protobuf:"varint,1,opt,name=exists,proto3" json:"exists,omitempty"`
 }
 
-func (x *StorageHasKeyResponse) Reset() {
-	*x = StorageHasKeyResponse{}
+func (x *StorageExistsResponse) Reset() {
+	*x = StorageExistsResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_storage_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -97,13 +97,13 @@ func (x *StorageHasKeyResponse) Reset() {
 	}
 }
 
-func (x *StorageHasKeyResponse) String() string {
+func (x *StorageExistsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*StorageHasKeyResponse) ProtoMessage() {}
+func (*StorageExistsResponse) ProtoMessage() {}
 
-func (x *StorageHasKeyResponse) ProtoReflect() protoreflect.Message {
+func (x *StorageExistsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_storage_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -115,110 +115,16 @@ func (x *StorageHasKeyResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use StorageHasKeyResponse.ProtoReflect.Descriptor instead.
-func (*StorageHasKeyResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use StorageExistsResponse.ProtoReflect.Descriptor instead.
+func (*StorageExistsResponse) Descriptor() ([]byte, []int) {
 	return file_storage_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *StorageHasKeyResponse) GetHasKey() bool {
+func (x *StorageExistsResponse) GetExists() bool {
 	if x != nil {
-		return x.HasKey
+		return x.Exists
 	}
 	return false
-}
-
-type StorageKeysRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
-}
-
-func (x *StorageKeysRequest) Reset() {
-	*x = StorageKeysRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StorageKeysRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StorageKeysRequest) ProtoMessage() {}
-
-func (x *StorageKeysRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StorageKeysRequest.ProtoReflect.Descriptor instead.
-func (*StorageKeysRequest) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *StorageKeysRequest) GetSession() *Session {
-	if x != nil {
-		return x.Session
-	}
-	return nil
-}
-
-type StorageKeysResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Keys []string `protobuf:"bytes,1,rep,name=keys,proto3" json:"keys,omitempty"`
-}
-
-func (x *StorageKeysResponse) Reset() {
-	*x = StorageKeysResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StorageKeysResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StorageKeysResponse) ProtoMessage() {}
-
-func (x *StorageKeysResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StorageKeysResponse.ProtoReflect.Descriptor instead.
-func (*StorageKeysResponse) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *StorageKeysResponse) GetKeys() []string {
-	if x != nil {
-		return x.Keys
-	}
-	return nil
 }
 
 type StorageReadRequest struct {
@@ -233,7 +139,7 @@ type StorageReadRequest struct {
 func (x *StorageReadRequest) Reset() {
 	*x = StorageReadRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[4]
+		mi := &file_storage_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -246,7 +152,7 @@ func (x *StorageReadRequest) String() string {
 func (*StorageReadRequest) ProtoMessage() {}
 
 func (x *StorageReadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[4]
+	mi := &file_storage_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -259,7 +165,7 @@ func (x *StorageReadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StorageReadRequest.ProtoReflect.Descriptor instead.
 func (*StorageReadRequest) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{4}
+	return file_storage_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *StorageReadRequest) GetSession() *Session {
@@ -287,7 +193,7 @@ type StorageReadResponse struct {
 func (x *StorageReadResponse) Reset() {
 	*x = StorageReadResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[5]
+		mi := &file_storage_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -300,7 +206,7 @@ func (x *StorageReadResponse) String() string {
 func (*StorageReadResponse) ProtoMessage() {}
 
 func (x *StorageReadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[5]
+	mi := &file_storage_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -313,7 +219,7 @@ func (x *StorageReadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StorageReadResponse.ProtoReflect.Descriptor instead.
 func (*StorageReadResponse) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{5}
+	return file_storage_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *StorageReadResponse) GetValue() string {
@@ -321,100 +227,6 @@ func (x *StorageReadResponse) GetValue() string {
 		return x.Value
 	}
 	return ""
-}
-
-type StorageReadAllRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
-}
-
-func (x *StorageReadAllRequest) Reset() {
-	*x = StorageReadAllRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StorageReadAllRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StorageReadAllRequest) ProtoMessage() {}
-
-func (x *StorageReadAllRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StorageReadAllRequest.ProtoReflect.Descriptor instead.
-func (*StorageReadAllRequest) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *StorageReadAllRequest) GetSession() *Session {
-	if x != nil {
-		return x.Session
-	}
-	return nil
-}
-
-type StorageReadAllResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Entries map[string]string `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-}
-
-func (x *StorageReadAllResponse) Reset() {
-	*x = StorageReadAllResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StorageReadAllResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StorageReadAllResponse) ProtoMessage() {}
-
-func (x *StorageReadAllResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StorageReadAllResponse.ProtoReflect.Descriptor instead.
-func (*StorageReadAllResponse) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *StorageReadAllResponse) GetEntries() map[string]string {
-	if x != nil {
-		return x.Entries
-	}
-	return nil
 }
 
 type StorageDeleteRequest struct {
@@ -429,7 +241,7 @@ type StorageDeleteRequest struct {
 func (x *StorageDeleteRequest) Reset() {
 	*x = StorageDeleteRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[8]
+		mi := &file_storage_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -442,7 +254,7 @@ func (x *StorageDeleteRequest) String() string {
 func (*StorageDeleteRequest) ProtoMessage() {}
 
 func (x *StorageDeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[8]
+	mi := &file_storage_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -455,7 +267,7 @@ func (x *StorageDeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StorageDeleteRequest.ProtoReflect.Descriptor instead.
 func (*StorageDeleteRequest) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{8}
+	return file_storage_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *StorageDeleteRequest) GetSession() *Session {
@@ -472,53 +284,6 @@ func (x *StorageDeleteRequest) GetKey() string {
 	return ""
 }
 
-type StorageDeleteAllRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
-}
-
-func (x *StorageDeleteAllRequest) Reset() {
-	*x = StorageDeleteAllRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[9]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *StorageDeleteAllRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StorageDeleteAllRequest) ProtoMessage() {}
-
-func (x *StorageDeleteAllRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[9]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StorageDeleteAllRequest.ProtoReflect.Descriptor instead.
-func (*StorageDeleteAllRequest) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *StorageDeleteAllRequest) GetSession() *Session {
-	if x != nil {
-		return x.Session
-	}
-	return nil
-}
-
 type StorageWriteRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -532,7 +297,7 @@ type StorageWriteRequest struct {
 func (x *StorageWriteRequest) Reset() {
 	*x = StorageWriteRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_storage_proto_msgTypes[10]
+		mi := &file_storage_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -545,7 +310,7 @@ func (x *StorageWriteRequest) String() string {
 func (*StorageWriteRequest) ProtoMessage() {}
 
 func (x *StorageWriteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_storage_proto_msgTypes[10]
+	mi := &file_storage_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -558,7 +323,7 @@ func (x *StorageWriteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StorageWriteRequest.ProtoReflect.Descriptor instead.
 func (*StorageWriteRequest) Descriptor() ([]byte, []int) {
-	return file_storage_proto_rawDescGZIP(), []int{10}
+	return file_storage_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *StorageWriteRequest) GetSession() *Session {
@@ -589,93 +354,54 @@ var file_storage_proto_rawDesc = []byte{
 	0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70,
 	0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x65, 0x6d, 0x70, 0x74, 0x79, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x1a, 0x0d, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x22, 0x52, 0x0a, 0x14, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x48, 0x61, 0x73,
-	0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65,
+	0x74, 0x6f, 0x22, 0x52, 0x0a, 0x14, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x45, 0x78, 0x69,
+	0x73, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65,
 	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73,
 	0x73, 0x69, 0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x22, 0x2f, 0x0a, 0x15, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x48, 0x61, 0x73, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x16, 0x0a, 0x06, 0x68, 0x61, 0x73, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x06, 0x68, 0x61, 0x73, 0x4b, 0x65, 0x79, 0x22, 0x3e, 0x0a, 0x12, 0x53, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a,
+	0x65, 0x45, 0x78, 0x69, 0x73, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x16, 0x0a, 0x06, 0x65, 0x78, 0x69, 0x73, 0x74, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52,
+	0x06, 0x65, 0x78, 0x69, 0x73, 0x74, 0x73, 0x22, 0x50, 0x0a, 0x12, 0x53, 0x74, 0x6f, 0x72, 0x61,
+	0x67, 0x65, 0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a,
 	0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07,
-	0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x22, 0x29, 0x0a, 0x13, 0x53, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12,
-	0x0a, 0x04, 0x6b, 0x65, 0x79, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x04, 0x6b, 0x65,
-	0x79, 0x73, 0x22, 0x50, 0x0a, 0x12, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x61,
-	0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73,
-	0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69,
-	0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x03, 0x6b, 0x65, 0x79, 0x22, 0x2b, 0x0a, 0x13, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52,
-	0x65, 0x61, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76,
-	0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75,
-	0x65, 0x22, 0x41, 0x0a, 0x15, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x61, 0x64,
-	0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65,
-	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73,
-	0x73, 0x69, 0x6f, 0x6e, 0x22, 0x9a, 0x01, 0x0a, 0x16, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x44, 0x0a, 0x07, 0x65, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b,
-	0x32, 0x2a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e,
-	0x45, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x07, 0x65, 0x6e,
-	0x74, 0x72, 0x69, 0x65, 0x73, 0x1a, 0x3a, 0x0a, 0x0c, 0x45, 0x6e, 0x74, 0x72, 0x69, 0x65, 0x73,
-	0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38,
-	0x01, 0x22, 0x52, 0x0a, 0x14, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x44, 0x65, 0x6c, 0x65,
-	0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73,
-	0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73,
-	0x69, 0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x03, 0x6b, 0x65, 0x79, 0x22, 0x43, 0x0a, 0x17, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f,
-	0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x22, 0x67, 0x0a, 0x13, 0x53, 0x74,
+	0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x22, 0x2b, 0x0a, 0x13, 0x53, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x52, 0x0a, 0x14, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28,
+	0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52,
+	0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x22, 0x67, 0x0a, 0x13, 0x53, 0x74,
 	0x6f, 0x72, 0x61, 0x67, 0x65, 0x57, 0x72, 0x69, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
 	0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69,
 	0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x10, 0x0a, 0x03, 0x6b,
 	0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x14, 0x0a,
 	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61,
-	0x6c, 0x75, 0x65, 0x32, 0x86, 0x04, 0x0a, 0x07, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x12,
-	0x4a, 0x0a, 0x0d, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x48, 0x61, 0x73, 0x4b, 0x65, 0x79,
+	0x6c, 0x75, 0x65, 0x32, 0xa5, 0x02, 0x0a, 0x07, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x12,
+	0x44, 0x0a, 0x0d, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
 	0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x48, 0x61, 0x73, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x48, 0x61, 0x73,
-	0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x44, 0x0a, 0x0b, 0x53,
-	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x12, 0x19, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74,
-	0x6f, 0x72, 0x61, 0x67, 0x65, 0x4b, 0x65, 0x79, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4a, 0x0a, 0x0d, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
+	0x45, 0x78, 0x69, 0x73, 0x74, 0x73, 0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x45, 0x78, 0x69, 0x73, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72,
+	0x61, 0x67, 0x65, 0x45, 0x78, 0x69, 0x73, 0x74, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
 	0x65, 0x12, 0x44, 0x0a, 0x0b, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x61, 0x64,
 	0x12, 0x19, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
 	0x52, 0x65, 0x61, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x70, 0x72,
 	0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x61, 0x64, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4d, 0x0a, 0x0e, 0x53, 0x74, 0x6f, 0x72, 0x61,
-	0x67, 0x65, 0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c, 0x12, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
-	0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x61, 0x64, 0x41, 0x6c, 0x6c, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x44, 0x0a, 0x0d, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67,
-	0x65, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
-	0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4a, 0x0a, 0x10,
-	0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x6c, 0x6c,
-	0x12, 0x1e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
-	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
-	0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x42, 0x0a, 0x0c, 0x53, 0x74, 0x6f, 0x72,
-	0x61, 0x67, 0x65, 0x57, 0x72, 0x69, 0x74, 0x65, 0x12, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x57, 0x72, 0x69, 0x74, 0x65, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x42, 0x09, 0x5a, 0x07,
-	0x2e, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x42, 0x0a, 0x0c, 0x53, 0x74, 0x6f, 0x72, 0x61,
+	0x67, 0x65, 0x57, 0x72, 0x69, 0x74, 0x65, 0x12, 0x1a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
+	0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x57, 0x72, 0x69, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x42, 0x09, 0x5a, 0x07, 0x2e,
+	0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -690,51 +416,35 @@ func file_storage_proto_rawDescGZIP() []byte {
 	return file_storage_proto_rawDescData
 }
 
-var file_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_storage_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_storage_proto_goTypes = []interface{}{
-	(*StorageHasKeyRequest)(nil),    // 0: proto.StorageHasKeyRequest
-	(*StorageHasKeyResponse)(nil),   // 1: proto.StorageHasKeyResponse
-	(*StorageKeysRequest)(nil),      // 2: proto.StorageKeysRequest
-	(*StorageKeysResponse)(nil),     // 3: proto.StorageKeysResponse
-	(*StorageReadRequest)(nil),      // 4: proto.StorageReadRequest
-	(*StorageReadResponse)(nil),     // 5: proto.StorageReadResponse
-	(*StorageReadAllRequest)(nil),   // 6: proto.StorageReadAllRequest
-	(*StorageReadAllResponse)(nil),  // 7: proto.StorageReadAllResponse
-	(*StorageDeleteRequest)(nil),    // 8: proto.StorageDeleteRequest
-	(*StorageDeleteAllRequest)(nil), // 9: proto.StorageDeleteAllRequest
-	(*StorageWriteRequest)(nil),     // 10: proto.StorageWriteRequest
-	nil,                             // 11: proto.StorageReadAllResponse.EntriesEntry
-	(*Session)(nil),                 // 12: proto.Session
-	(*empty.Empty)(nil),             // 13: google.protobuf.Empty
+	(*StorageExistsRequest)(nil),  // 0: proto.StorageExistsRequest
+	(*StorageExistsResponse)(nil), // 1: proto.StorageExistsResponse
+	(*StorageReadRequest)(nil),    // 2: proto.StorageReadRequest
+	(*StorageReadResponse)(nil),   // 3: proto.StorageReadResponse
+	(*StorageDeleteRequest)(nil),  // 4: proto.StorageDeleteRequest
+	(*StorageWriteRequest)(nil),   // 5: proto.StorageWriteRequest
+	(*Session)(nil),               // 6: proto.Session
+	(*empty.Empty)(nil),           // 7: google.protobuf.Empty
 }
 var file_storage_proto_depIdxs = []int32{
-	12, // 0: proto.StorageHasKeyRequest.session:type_name -> proto.Session
-	12, // 1: proto.StorageKeysRequest.session:type_name -> proto.Session
-	12, // 2: proto.StorageReadRequest.session:type_name -> proto.Session
-	12, // 3: proto.StorageReadAllRequest.session:type_name -> proto.Session
-	11, // 4: proto.StorageReadAllResponse.entries:type_name -> proto.StorageReadAllResponse.EntriesEntry
-	12, // 5: proto.StorageDeleteRequest.session:type_name -> proto.Session
-	12, // 6: proto.StorageDeleteAllRequest.session:type_name -> proto.Session
-	12, // 7: proto.StorageWriteRequest.session:type_name -> proto.Session
-	0,  // 8: proto.Storage.StorageHasKey:input_type -> proto.StorageHasKeyRequest
-	2,  // 9: proto.Storage.StorageKeys:input_type -> proto.StorageKeysRequest
-	4,  // 10: proto.Storage.StorageRead:input_type -> proto.StorageReadRequest
-	6,  // 11: proto.Storage.StorageReadAll:input_type -> proto.StorageReadAllRequest
-	8,  // 12: proto.Storage.StorageDelete:input_type -> proto.StorageDeleteRequest
-	9,  // 13: proto.Storage.StorageDeleteAll:input_type -> proto.StorageDeleteAllRequest
-	10, // 14: proto.Storage.StorageWrite:input_type -> proto.StorageWriteRequest
-	1,  // 15: proto.Storage.StorageHasKey:output_type -> proto.StorageHasKeyResponse
-	3,  // 16: proto.Storage.StorageKeys:output_type -> proto.StorageKeysResponse
-	5,  // 17: proto.Storage.StorageRead:output_type -> proto.StorageReadResponse
-	7,  // 18: proto.Storage.StorageReadAll:output_type -> proto.StorageReadAllResponse
-	13, // 19: proto.Storage.StorageDelete:output_type -> google.protobuf.Empty
-	13, // 20: proto.Storage.StorageDeleteAll:output_type -> google.protobuf.Empty
-	13, // 21: proto.Storage.StorageWrite:output_type -> google.protobuf.Empty
-	15, // [15:22] is the sub-list for method output_type
-	8,  // [8:15] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	6, // 0: proto.StorageExistsRequest.session:type_name -> proto.Session
+	6, // 1: proto.StorageReadRequest.session:type_name -> proto.Session
+	6, // 2: proto.StorageDeleteRequest.session:type_name -> proto.Session
+	6, // 3: proto.StorageWriteRequest.session:type_name -> proto.Session
+	4, // 4: proto.Storage.StorageDelete:input_type -> proto.StorageDeleteRequest
+	0, // 5: proto.Storage.StorageExists:input_type -> proto.StorageExistsRequest
+	2, // 6: proto.Storage.StorageRead:input_type -> proto.StorageReadRequest
+	5, // 7: proto.Storage.StorageWrite:input_type -> proto.StorageWriteRequest
+	7, // 8: proto.Storage.StorageDelete:output_type -> google.protobuf.Empty
+	1, // 9: proto.Storage.StorageExists:output_type -> proto.StorageExistsResponse
+	3, // 10: proto.Storage.StorageRead:output_type -> proto.StorageReadResponse
+	7, // 11: proto.Storage.StorageWrite:output_type -> google.protobuf.Empty
+	8, // [8:12] is the sub-list for method output_type
+	4, // [4:8] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_storage_proto_init() }
@@ -745,7 +455,7 @@ func file_storage_proto_init() {
 	file_session_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_storage_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StorageHasKeyRequest); i {
+			switch v := v.(*StorageExistsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -757,7 +467,7 @@ func file_storage_proto_init() {
 			}
 		}
 		file_storage_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StorageHasKeyResponse); i {
+			switch v := v.(*StorageExistsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -769,30 +479,6 @@ func file_storage_proto_init() {
 			}
 		}
 		file_storage_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StorageKeysRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_storage_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StorageKeysResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_storage_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StorageReadRequest); i {
 			case 0:
 				return &v.state
@@ -804,7 +490,7 @@ func file_storage_proto_init() {
 				return nil
 			}
 		}
-		file_storage_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_storage_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StorageReadResponse); i {
 			case 0:
 				return &v.state
@@ -816,31 +502,7 @@ func file_storage_proto_init() {
 				return nil
 			}
 		}
-		file_storage_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StorageReadAllRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_storage_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StorageReadAllResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_storage_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_storage_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StorageDeleteRequest); i {
 			case 0:
 				return &v.state
@@ -852,19 +514,7 @@ func file_storage_proto_init() {
 				return nil
 			}
 		}
-		file_storage_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*StorageDeleteAllRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_storage_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_storage_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StorageWriteRequest); i {
 			case 0:
 				return &v.state
@@ -883,7 +533,7 @@ func file_storage_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_storage_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -909,18 +559,12 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type StorageClient interface {
-	// Check in storage to determine if a key has a value
-	StorageHasKey(ctx context.Context, in *StorageHasKeyRequest, opts ...grpc.CallOption) (*StorageHasKeyResponse, error)
-	// Get a list of storage keys
-	StorageKeys(ctx context.Context, in *StorageKeysRequest, opts ...grpc.CallOption) (*StorageKeysResponse, error)
-	// Read the value of a specific storage key
-	StorageRead(ctx context.Context, in *StorageReadRequest, opts ...grpc.CallOption) (*StorageReadResponse, error)
-	// Get all storage keys and values
-	StorageReadAll(ctx context.Context, in *StorageReadAllRequest, opts ...grpc.CallOption) (*StorageReadAllResponse, error)
 	// Delete the value of a specific key
 	StorageDelete(ctx context.Context, in *StorageDeleteRequest, opts ...grpc.CallOption) (*empty.Empty, error)
-	// Delete the values of all keys
-	StorageDeleteAll(ctx context.Context, in *StorageDeleteAllRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// Check in storage to determine if a key has a value
+	StorageExists(ctx context.Context, in *StorageExistsRequest, opts ...grpc.CallOption) (*StorageExistsResponse, error)
+	// Read the value of a specific storage key
+	StorageRead(ctx context.Context, in *StorageReadRequest, opts ...grpc.CallOption) (*StorageReadResponse, error)
 	// Write the value of a key to storage
 	StorageWrite(ctx context.Context, in *StorageWriteRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
@@ -933,42 +577,6 @@ func NewStorageClient(cc grpc.ClientConnInterface) StorageClient {
 	return &storageClient{cc}
 }
 
-func (c *storageClient) StorageHasKey(ctx context.Context, in *StorageHasKeyRequest, opts ...grpc.CallOption) (*StorageHasKeyResponse, error) {
-	out := new(StorageHasKeyResponse)
-	err := c.cc.Invoke(ctx, "/proto.Storage/StorageHasKey", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *storageClient) StorageKeys(ctx context.Context, in *StorageKeysRequest, opts ...grpc.CallOption) (*StorageKeysResponse, error) {
-	out := new(StorageKeysResponse)
-	err := c.cc.Invoke(ctx, "/proto.Storage/StorageKeys", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *storageClient) StorageRead(ctx context.Context, in *StorageReadRequest, opts ...grpc.CallOption) (*StorageReadResponse, error) {
-	out := new(StorageReadResponse)
-	err := c.cc.Invoke(ctx, "/proto.Storage/StorageRead", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *storageClient) StorageReadAll(ctx context.Context, in *StorageReadAllRequest, opts ...grpc.CallOption) (*StorageReadAllResponse, error) {
-	out := new(StorageReadAllResponse)
-	err := c.cc.Invoke(ctx, "/proto.Storage/StorageReadAll", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *storageClient) StorageDelete(ctx context.Context, in *StorageDeleteRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/proto.Storage/StorageDelete", in, out, opts...)
@@ -978,9 +586,18 @@ func (c *storageClient) StorageDelete(ctx context.Context, in *StorageDeleteRequ
 	return out, nil
 }
 
-func (c *storageClient) StorageDeleteAll(ctx context.Context, in *StorageDeleteAllRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/proto.Storage/StorageDeleteAll", in, out, opts...)
+func (c *storageClient) StorageExists(ctx context.Context, in *StorageExistsRequest, opts ...grpc.CallOption) (*StorageExistsResponse, error) {
+	out := new(StorageExistsResponse)
+	err := c.cc.Invoke(ctx, "/proto.Storage/StorageExists", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *storageClient) StorageRead(ctx context.Context, in *StorageReadRequest, opts ...grpc.CallOption) (*StorageReadResponse, error) {
+	out := new(StorageReadResponse)
+	err := c.cc.Invoke(ctx, "/proto.Storage/StorageRead", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -998,18 +615,12 @@ func (c *storageClient) StorageWrite(ctx context.Context, in *StorageWriteReques
 
 // StorageServer is the server API for Storage service.
 type StorageServer interface {
-	// Check in storage to determine if a key has a value
-	StorageHasKey(context.Context, *StorageHasKeyRequest) (*StorageHasKeyResponse, error)
-	// Get a list of storage keys
-	StorageKeys(context.Context, *StorageKeysRequest) (*StorageKeysResponse, error)
-	// Read the value of a specific storage key
-	StorageRead(context.Context, *StorageReadRequest) (*StorageReadResponse, error)
-	// Get all storage keys and values
-	StorageReadAll(context.Context, *StorageReadAllRequest) (*StorageReadAllResponse, error)
 	// Delete the value of a specific key
 	StorageDelete(context.Context, *StorageDeleteRequest) (*empty.Empty, error)
-	// Delete the values of all keys
-	StorageDeleteAll(context.Context, *StorageDeleteAllRequest) (*empty.Empty, error)
+	// Check in storage to determine if a key has a value
+	StorageExists(context.Context, *StorageExistsRequest) (*StorageExistsResponse, error)
+	// Read the value of a specific storage key
+	StorageRead(context.Context, *StorageReadRequest) (*StorageReadResponse, error)
 	// Write the value of a key to storage
 	StorageWrite(context.Context, *StorageWriteRequest) (*empty.Empty, error)
 }
@@ -1018,23 +629,14 @@ type StorageServer interface {
 type UnimplementedStorageServer struct {
 }
 
-func (*UnimplementedStorageServer) StorageHasKey(context.Context, *StorageHasKeyRequest) (*StorageHasKeyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method StorageHasKey not implemented")
-}
-func (*UnimplementedStorageServer) StorageKeys(context.Context, *StorageKeysRequest) (*StorageKeysResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method StorageKeys not implemented")
-}
-func (*UnimplementedStorageServer) StorageRead(context.Context, *StorageReadRequest) (*StorageReadResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method StorageRead not implemented")
-}
-func (*UnimplementedStorageServer) StorageReadAll(context.Context, *StorageReadAllRequest) (*StorageReadAllResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method StorageReadAll not implemented")
-}
 func (*UnimplementedStorageServer) StorageDelete(context.Context, *StorageDeleteRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StorageDelete not implemented")
 }
-func (*UnimplementedStorageServer) StorageDeleteAll(context.Context, *StorageDeleteAllRequest) (*empty.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method StorageDeleteAll not implemented")
+func (*UnimplementedStorageServer) StorageExists(context.Context, *StorageExistsRequest) (*StorageExistsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StorageExists not implemented")
+}
+func (*UnimplementedStorageServer) StorageRead(context.Context, *StorageReadRequest) (*StorageReadResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StorageRead not implemented")
 }
 func (*UnimplementedStorageServer) StorageWrite(context.Context, *StorageWriteRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method StorageWrite not implemented")
@@ -1042,78 +644,6 @@ func (*UnimplementedStorageServer) StorageWrite(context.Context, *StorageWriteRe
 
 func RegisterStorageServer(s *grpc.Server, srv StorageServer) {
 	s.RegisterService(&_Storage_serviceDesc, srv)
-}
-
-func _Storage_StorageHasKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StorageHasKeyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StorageServer).StorageHasKey(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Storage/StorageHasKey",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).StorageHasKey(ctx, req.(*StorageHasKeyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Storage_StorageKeys_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StorageKeysRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StorageServer).StorageKeys(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Storage/StorageKeys",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).StorageKeys(ctx, req.(*StorageKeysRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Storage_StorageRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StorageReadRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StorageServer).StorageRead(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Storage/StorageRead",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).StorageRead(ctx, req.(*StorageReadRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Storage_StorageReadAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StorageReadAllRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StorageServer).StorageReadAll(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Storage/StorageReadAll",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).StorageReadAll(ctx, req.(*StorageReadAllRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Storage_StorageDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -1134,20 +664,38 @@ func _Storage_StorageDelete_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Storage_StorageDeleteAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StorageDeleteAllRequest)
+func _Storage_StorageExists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StorageExistsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StorageServer).StorageDeleteAll(ctx, in)
+		return srv.(StorageServer).StorageExists(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.Storage/StorageDeleteAll",
+		FullMethod: "/proto.Storage/StorageExists",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StorageServer).StorageDeleteAll(ctx, req.(*StorageDeleteAllRequest))
+		return srv.(StorageServer).StorageExists(ctx, req.(*StorageExistsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Storage_StorageRead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StorageReadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StorageServer).StorageRead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Storage/StorageRead",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StorageServer).StorageRead(ctx, req.(*StorageReadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1175,28 +723,16 @@ var _Storage_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*StorageServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "StorageHasKey",
-			Handler:    _Storage_StorageHasKey_Handler,
-		},
-		{
-			MethodName: "StorageKeys",
-			Handler:    _Storage_StorageKeys_Handler,
-		},
-		{
-			MethodName: "StorageRead",
-			Handler:    _Storage_StorageRead_Handler,
-		},
-		{
-			MethodName: "StorageReadAll",
-			Handler:    _Storage_StorageReadAll_Handler,
-		},
-		{
 			MethodName: "StorageDelete",
 			Handler:    _Storage_StorageDelete_Handler,
 		},
 		{
-			MethodName: "StorageDeleteAll",
-			Handler:    _Storage_StorageDeleteAll_Handler,
+			MethodName: "StorageExists",
+			Handler:    _Storage_StorageExists_Handler,
+		},
+		{
+			MethodName: "StorageRead",
+			Handler:    _Storage_StorageRead_Handler,
 		},
 		{
 			MethodName: "StorageWrite",

@@ -49,7 +49,7 @@ func NewLoop(logger *ldk.Logger) (*Loop, error) {
 	}
 
 	return &Loop{
-		logger: logger,
+		logger:          logger,
 		whisperTemplate: whisperTemplate,
 	}, nil
 }
