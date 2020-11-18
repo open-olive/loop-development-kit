@@ -14,13 +14,13 @@ namespace OliveHelpsLDK.Storage
 
         public Task<bool> HasKey(string key, CancellationToken cancellationToken = default)
         {
-            var req = new Proto.StorageHasKeyRequest
+            var req = new Proto.StorageExistsRequest
             {
                 Key = key,
                 Session = CreateSession()
             };
-            return _client.StorageHasKeyAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => task.Result.HasKey, cancellationToken);
+            return _client.StorageExistsAsync(req, CreateOptions(cancellationToken)).ResponseAsync
+                .ContinueWith(task => task.Result.Exists, cancellationToken);
         }
 
         public Task<string> Read(string key, CancellationToken cancellationToken = default)
