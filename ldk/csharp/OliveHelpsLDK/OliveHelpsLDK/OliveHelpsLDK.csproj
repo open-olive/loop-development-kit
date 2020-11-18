@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+        <PackageReference Include="Grpc" Version="2.33.1" />
+        <PackageReference Include="Grpc.Tools" Version="2.33.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Protobuf Include="..\..\..\..\proto\*.proto" Link="protos\*.proto" />
+    </ItemGroup>
+</Project>
