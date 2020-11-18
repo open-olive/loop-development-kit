@@ -8,12 +8,7 @@ namespace OliveHelpsLDK.Whispers
 {
     internal class WhisperClient : BaseClient, IWhisperService
     {
-        public const string BackgroundColor = "#FFF";
-        public const string PrimaryColor = "#666";
-        public const string HighlightColor = "#651FFF";
-
         private Proto.Whisper.WhisperClient client;
-
 
         public WhisperClient(ChannelBase channel, Session session)
         {
@@ -55,27 +50,11 @@ namespace OliveHelpsLDK.Whispers
 
         private static WhisperMeta GenerateMeta(WhisperConfig config)
         {
-            var styleBackgroundColor =
-                CoerceColor(config.Style.BackgroundColor, BackgroundColor);
-            var stylePrimaryColor = CoerceColor(config.Style.PrimaryColor,
-                PrimaryColor);
-            var styleHighlightColor = CoerceColor(config.Style.HighlightColor, HighlightColor);
             return new WhisperMeta
             {
                 Icon = config.Icon,
                 Label = config.Label,
-                Style = new Proto.WhisperStyle
-                {
-                    BackgroundColor = styleBackgroundColor,
-                    PrimaryColor = stylePrimaryColor,
-                    HighlightColor = styleHighlightColor,
-                }
             };
-        }
-
-        private static string CoerceColor(string input, string defaultColor)
-        {
-            return string.IsNullOrEmpty(input) ? defaultColor : input;
         }
     }
 }

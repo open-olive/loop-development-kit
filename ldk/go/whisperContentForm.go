@@ -32,8 +32,6 @@ type WhisperContentForm struct {
 
 	CancelLabel string `json:"cancelLabel"`
 	SubmitLabel string `json:"submitLabel"`
-
-	Style Style `json:"style"`
 }
 
 // Type returns the type of the whisper content

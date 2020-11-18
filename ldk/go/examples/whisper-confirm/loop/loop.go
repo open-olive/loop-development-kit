@@ -6,12 +6,6 @@ import (
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
-const (
-	backgroundColor = "#fff"
-	highlightColor  = "#651fff"
-	primaryColor    = "#666"
-)
-
 func Serve() error {
 	l := ldk.NewLogger("example-whisper-confirm")
 	loop, err := NewLoop(l)
@@ -29,18 +23,12 @@ type Loop struct {
 
 	sidekick ldk.Sidekick
 	logger   *ldk.Logger
-	style    ldk.Style
 }
 
 // NewLoop returns a pointer to a loop
 func NewLoop(logger *ldk.Logger) (*Loop, error) {
 	return &Loop{
 		logger: logger,
-		style: ldk.Style{
-			BackgroundColor: backgroundColor,
-			HighlightColor:  highlightColor,
-			PrimaryColor:    primaryColor,
-		},
 	}, nil
 }
 
@@ -62,7 +50,6 @@ func (c *Loop) run() {
 		Markdown:     "Do you like bananas?",
 		RejectLabel:  "Nope",
 		ResolveLabel: "Yep",
-		Style:        c.style,
 	})
 	if err != nil {
 		c.logger.Error("failed to emit whisper", "error", err)
@@ -73,13 +60,12 @@ func (c *Loop) run() {
 	err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
 		Icon:  "bathtub",
 		Label: "Example Controller Go",
-		Markdown: (func() string {
+		Markdown: func() string {
 			if isConfirmed {
 				return "That's great!"
 			}
 			return "That's too bad."
-		}()),
-		Style: c.style,
+		}(),
 	})
 	if err != nil {
 		c.logger.Error("failed to emit whisper", "error", err)

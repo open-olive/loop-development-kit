@@ -8,8 +8,6 @@ type WhisperContentConfirm struct {
 
 	RejectLabel  string `json:"rejectLabel"`
 	ResolveLabel string `json:"resolveLabel"`
-
-	Style Style `json:"style"`
 }
 
 // Type returns the type of the whisper content

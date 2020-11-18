@@ -6,12 +6,6 @@ import (
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
-const (
-	backgroundColor = "#fff"
-	highlightColor  = "#651fff"
-	primaryColor    = "#666"
-)
-
 // Serve creates the new loop and tells the LDK to serve it
 func Serve() error {
 	logger := ldk.NewLogger("example-search-searchbar")
@@ -30,18 +24,12 @@ type Loop struct {
 
 	sidekick ldk.Sidekick
 	logger   *ldk.Logger
-	style    ldk.Style
 }
 
 // NewLoop returns a pointer to a loop
 func NewLoop(logger *ldk.Logger) (*Loop, error) {
 	return &Loop{
 		logger: logger,
-		style: ldk.Style{
-			BackgroundColor: backgroundColor,
-			HighlightColor:  highlightColor,
-			PrimaryColor:    primaryColor,
-		},
 	}, nil
 }
 
@@ -64,7 +52,6 @@ func (l *Loop) LoopStart(sidekick ldk.Sidekick) error {
 				Icon:     "bathtub",
 				Label:    "Example Go Loop",
 				Markdown: "Text from the searchbar: " + text,
-				Style:    l.style,
 			})
 			if err != nil {
 				l.logger.Error("failed to emit whisper", "error", err)

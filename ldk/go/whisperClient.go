@@ -22,11 +22,6 @@ func (m *WhisperClient) Markdown(ctx context.Context, content *WhisperContentMar
 		Meta: &proto.WhisperMeta{
 			Label: content.Label,
 			Icon:  content.Icon,
-			Style: &proto.WhisperStyle{
-				BackgroundColor: content.Style.BackgroundColor,
-				HighlightColor:  content.Style.HighlightColor,
-				PrimaryColor:    content.Style.PrimaryColor,
-			},
 		},
 		Markdown: content.Markdown,
 		Session:  m.session.ToProto(),
@@ -40,11 +35,6 @@ func (m *WhisperClient) Confirm(ctx context.Context, content *WhisperContentConf
 		Meta: &proto.WhisperMeta{
 			Label: content.Label,
 			Icon:  content.Icon,
-			Style: &proto.WhisperStyle{
-				BackgroundColor: content.Style.BackgroundColor,
-				HighlightColor:  content.Style.HighlightColor,
-				PrimaryColor:    content.Style.PrimaryColor,
-			},
 		},
 		Markdown:     content.Markdown,
 		RejectLabel:  content.RejectLabel,
@@ -78,11 +68,6 @@ func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (
 		Meta: &proto.WhisperMeta{
 			Label: content.Label,
 			Icon:  content.Icon,
-			Style: &proto.WhisperStyle{
-				BackgroundColor: content.Style.BackgroundColor,
-				HighlightColor:  content.Style.HighlightColor,
-				PrimaryColor:    content.Style.PrimaryColor,
-			},
 		},
 		Markdown:    content.Markdown,
 		SubmitLabel: content.SubmitLabel,
