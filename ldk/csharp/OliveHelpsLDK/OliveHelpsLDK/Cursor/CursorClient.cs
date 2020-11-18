@@ -1,19 +1,18 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using Proto;
 
 namespace OliveHelpsLDK.Cursor
 {
     internal class CursorClient : BaseClient<Proto.Cursor.CursorClient>, ICursorService
     {
-
-        internal CursorClient(ChannelBase channelBase, Session session)
+        internal CursorClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Cursor.CursorClient(channelBase), session, logger, "cursor")
         {
-            Client = new Proto.Cursor.CursorClient(channelBase);
-            Session = session;
         }
-        
+
         public Task<CursorPosition> Query(CancellationToken cancellationToken = default)
         {
             var request = new CursorPositionRequest
@@ -44,6 +43,7 @@ namespace OliveHelpsLDK.Cursor
                 Y = response.Y
             };
         }
+
         private static CursorPosition ToPosition(CursorPositionResponse response)
         {
             return new CursorPosition

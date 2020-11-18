@@ -1,15 +1,15 @@
 using System.Threading;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using Proto;
 
 namespace OliveHelpsLDK.Keyboard
 {
     internal class KeyboardClient : BaseClient<Proto.Keyboard.KeyboardClient>, IKeyboardService
     {
-        internal KeyboardClient(ChannelBase channelBase, Session session)
+        internal KeyboardClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Keyboard.KeyboardClient(channelBase), session, logger, "keyboard")
         {
-            Client = new Proto.Keyboard.KeyboardClient(channelBase);
-            Session = session;
         }
 
         public IStreamingCall<bool> StreamHotKey(HotKey hotkey, CancellationToken cancellationToken = default)

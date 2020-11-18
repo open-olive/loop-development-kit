@@ -2,15 +2,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 
 namespace OliveHelpsLDK.Network
 {
     internal class NetworkClient : BaseClient<Proto.Network.NetworkClient>, INetworkService
     {
-        internal NetworkClient(ChannelBase channelBase, Session session)
+        internal NetworkClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Network.NetworkClient(channelBase), session, logger, "network")
         {
-            Client = new Proto.Network.NetworkClient(channelBase);
-            Session = session;
         }
 
 

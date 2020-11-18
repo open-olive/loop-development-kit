@@ -1,17 +1,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using Proto;
 
 namespace OliveHelpsLDK.Clipboard
 {
     internal class ClipboardClient : BaseClient<Proto.Clipboard.ClipboardClient>, IClipboardService
     {
-
-        internal ClipboardClient(ChannelBase channel, Session session)
+        internal ClipboardClient(ChannelBase channel, Session session, ILogger logger) : base(
+            new Proto.Clipboard.ClipboardClient(channel), session, logger, "clipboard")
         {
-            Client = new Proto.Clipboard.ClipboardClient(channel);
-            Session = session;
         }
 
         public Task<string> Read(CancellationToken cancellationToken = default)

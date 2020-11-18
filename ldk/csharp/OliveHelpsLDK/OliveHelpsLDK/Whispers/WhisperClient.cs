@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Whispers.Forms;
 using Proto;
 
@@ -11,13 +12,12 @@ namespace OliveHelpsLDK.Whispers
         internal IWhisperFormParser Parser { get; }
         internal IWhisperFormBuilder Builder { get; }
 
-        public WhisperClient(ChannelBase channel, Session session, IWhisperFormBuilder formBuilder = null,
-            IWhisperFormParser parser = null)
+        public WhisperClient(ChannelBase channel, Session session, ILogger logger,
+            IWhisperFormBuilder formBuilder = null,
+            IWhisperFormParser parser = null) : base(new Whisper.WhisperClient(channel), session, logger, "whisper")
         {
             Parser = parser ?? new WhisperFormParser();
             Builder = formBuilder ?? new WhisperFormBuilder();
-            Client = new Whisper.WhisperClient(channel);
-            Session = session;
         }
 
         public Task MarkdownAsync(WhisperMarkdown message, CancellationToken cancellationToken = default)

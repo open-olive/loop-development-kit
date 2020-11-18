@@ -53,7 +53,7 @@ namespace OliveHelpsLDK
                 Token = request.Session.Token
             };
             var connectionInfo = await _brokerServer.ConnectionInfo;
-            await _facade.Connect(connectionInfo, session);
+            await _facade.Connect(connectionInfo, session, _logger);
             #pragma warning disable 4014
             // Intentional disable - Loop is intended to run indefinitely but should not delay LoopStart response.
             _loop.Start(_facade);

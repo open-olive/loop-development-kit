@@ -1,15 +1,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 
 namespace OliveHelpsLDK.Hover
 {
     internal class HoverClient : BaseClient<Proto.Hover.HoverClient>, IHoverService
     {
-        internal HoverClient(ChannelBase channelBase, Session session)
+        internal HoverClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Hover.HoverClient(channelBase), session, logger, "hover")
         {
-            Client = new Proto.Hover.HoverClient(channelBase);
-            Session = session;
         }
 
         public Task<string> Query(HoverRequest request, CancellationToken cancellationToken = default)

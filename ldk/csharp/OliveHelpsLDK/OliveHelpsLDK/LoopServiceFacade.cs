@@ -7,9 +7,11 @@ using OliveHelpsLDK.Cursor;
 using OliveHelpsLDK.Filesystem;
 using OliveHelpsLDK.Hover;
 using OliveHelpsLDK.Keyboard;
+using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
 using OliveHelpsLDK.Storage;
+using OliveHelpsLDK.UI;
 using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Window;
 
@@ -36,9 +38,12 @@ namespace OliveHelpsLDK
         private IHoverService _hover;
 
         private IWindowService _window;
+
         private IStorageService _storage;
 
-        internal async Task Connect(ConnectionInfo connectionInfo, Session session)
+        private IUIService _ui;
+
+        internal async Task Connect(ConnectionInfo connectionInfo, Session session, ILogger logger)
         {
             var address = connectionInfo.Network == "unix"
                 ? $"unix://{connectionInfo.Address}"
@@ -47,17 +52,18 @@ namespace OliveHelpsLDK
             var channel = new Channel(address, ChannelCredentials.Insecure);
             await channel.ConnectAsync();
             Console.Error.WriteLine("[DEBUG] GRPC Channel Connected");
-            _whisper = new WhisperClient(channel, session);
-            _clipboard = new ClipboardClient(channel, session);
-            _filesystem = new FilesystemClient(channel, session);
-            _cursor = new CursorClient(channel, session);
-            _keyboard = new KeyboardClient(channel, session);
-            _network = new NetworkClient(channel, session);
-            _process = new ProcessClient(channel, session);
-            _browser = new BrowserClient(channel, session);
-            _hover = new HoverClient(channel, session);
-            _window = new WindowClient(channel, session);
-            _storage = new StorageClient(channel, session);
+            _whisper = new WhisperClient(channel, session, logger);
+            _clipboard = new ClipboardClient(channel, session, logger);
+            _filesystem = new FilesystemClient(channel, session, logger);
+            _cursor = new CursorClient(channel, session, logger);
+            _keyboard = new KeyboardClient(channel, session, logger);
+            _network = new NetworkClient(channel, session, logger);
+            _process = new ProcessClient(channel, session, logger);
+            _browser = new BrowserClient(channel, session, logger);
+            _hover = new HoverClient(channel, session, logger);
+            _window = new WindowClient(channel, session, logger);
+            _storage = new StorageClient(channel, session, logger);
+            _ui = new UIClient(channel, session, logger);
         }
 
         public IWhisperService Whisper()
@@ -113,6 +119,11 @@ namespace OliveHelpsLDK
         public IWindowService Window()
         {
             return _window;
+        }
+
+        public IUIService UI()
+        {
+            return _ui;
         }
     }
 }

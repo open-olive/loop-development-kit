@@ -1,15 +1,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 
 namespace OliveHelpsLDK.Browser
 {
     internal class BrowserClient : BaseClient<Proto.Browser.BrowserClient>, IBrowserService
     {
-        internal BrowserClient(ChannelBase channelBase, Session session)
+        internal BrowserClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Browser.BrowserClient(channelBase), session, logger, "browser")
         {
-            Client = new Proto.Browser.BrowserClient(channelBase);
-            Session = session;
         }
 
         public Task<string> QueryActiveURL(CancellationToken cancellationToken = default)

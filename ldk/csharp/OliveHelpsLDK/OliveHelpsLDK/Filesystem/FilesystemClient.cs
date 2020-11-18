@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using Proto;
 
 namespace OliveHelpsLDK.Filesystem
 {
     internal class FilesystemClient : BaseClient<Proto.Filesystem.FilesystemClient>, IFilesystemService
     {
-        internal FilesystemClient(ChannelBase channel, Session session)
+        internal FilesystemClient(ChannelBase channel, Session session, ILogger logger) : base(
+            new Proto.Filesystem.FilesystemClient(channel), session, logger, "filesystem")
         {
-            Client = new Proto.Filesystem.FilesystemClient(channel);
-            Session = session;
         }
 
         public Task<IList<FileInfo>> QueryDirectory(string directoryPath,

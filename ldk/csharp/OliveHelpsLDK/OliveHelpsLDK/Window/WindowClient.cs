@@ -3,16 +3,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using Proto;
 
 namespace OliveHelpsLDK.Window
 {
     internal class WindowClient : BaseClient<Proto.Window.WindowClient>, IWindowService
     {
-        internal WindowClient(ChannelBase channelBase, Session session)
+        internal WindowClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Window.WindowClient(channelBase), session, logger, "window")
         {
-            Client = new Proto.Window.WindowClient(channelBase);
-            Session = session;
         }
 
         public Task<WindowInfo> QueryActive(CancellationToken cancellationToken = default)

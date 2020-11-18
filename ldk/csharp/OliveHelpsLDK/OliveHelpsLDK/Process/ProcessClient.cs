@@ -3,16 +3,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using Proto;
 
 namespace OliveHelpsLDK.Process
 {
     internal class ProcessClient : BaseClient<Proto.Process.ProcessClient>, IProcessService
     {
-        internal ProcessClient(ChannelBase channelBase, Session session)
+        internal ProcessClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Process.ProcessClient(channelBase), session, logger, "process")
         {
-            Client = new Proto.Process.ProcessClient(channelBase);
-            Session = session;
         }
 
         public Task<ProcessInfo[]> Query(CancellationToken cancellationToken = default)
@@ -33,7 +33,7 @@ namespace OliveHelpsLDK.Process
                 Session = CreateSession(),
             };
             var call = Client.ProcessStateStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<ProcessStateStreamResponse,ProcessEvent>(call, FromProto);
+            return new StreamingCall<ProcessStateStreamResponse, ProcessEvent>(call, FromProto);
         }
 
         private static ProcessInfo FromProto(Proto.ProcessInfo info)

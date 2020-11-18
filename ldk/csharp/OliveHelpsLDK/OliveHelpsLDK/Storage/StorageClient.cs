@@ -1,15 +1,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 
 namespace OliveHelpsLDK.Storage
 {
     internal class StorageClient : BaseClient<Proto.Storage.StorageClient>, IStorageService
     {
-        internal StorageClient(ChannelBase channelBase, Session session)
+        internal StorageClient(ChannelBase channelBase, Session session, ILogger logger) : base(
+            new Proto.Storage.StorageClient(channelBase), session, logger, "storage")
         {
-            Client = new Proto.Storage.StorageClient(channelBase);
-            Session = session;
         }
 
         public Task<bool> HasKey(string key, CancellationToken cancellationToken = default)

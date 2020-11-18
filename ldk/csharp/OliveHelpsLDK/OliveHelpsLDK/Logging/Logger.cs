@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
 
@@ -9,42 +10,54 @@ namespace OliveHelpsLDK.Logging
     {
         private readonly string _name;
 
+        private IDictionary<string, object> DefaultFields { get; set; }
+
         private static readonly JsonSerializerOptions Options = new JsonSerializerOptions
         {
             WriteIndented = false
         };
 
-        public Logger(string name)
+        public Logger(string name) : this(name, new Dictionary<string, object>())
         {
-            _name = name;
         }
 
-        public void Trace(string message, Dictionary<string, object> fields = null)
+        public Logger(string name, IDictionary<string, object> defaultFields)
+        {
+            _name = name;
+            DefaultFields = defaultFields;
+        }
+
+        public void Trace(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Trace, message, fields);
         }
 
-        public void Debug(string message, Dictionary<string, object> fields = default)
+        public void Debug(string message, IDictionary<string, object> fields = default)
         {
             Log(LogLevel.Debug, message, fields);
         }
 
-        public void Info(string message, Dictionary<string, object> fields = default)
+        public void Info(string message, IDictionary<string, object> fields = default)
         {
             Log(LogLevel.Info, message, fields);
         }
 
-        public void Warn(string message, Dictionary<string, object> fields = default)
+        public void Warn(string message, IDictionary<string, object> fields = default)
         {
             Log(LogLevel.Warn, message, fields);
         }
 
-        public void Error(string message, Dictionary<string, object> fields = default)
+        public void Error(string message, IDictionary<string, object> fields = default)
         {
             Log(LogLevel.Error, message, fields);
         }
 
-        private void Log(LogLevel level, string msg, Dictionary<string, object> fields)
+        public ILogger WithFields(IDictionary<string, object> fields)
+        {
+            return new Logger(_name, CombineDictionaries(new[] {DefaultFields, fields}));
+        }
+
+        private void Log(LogLevel level, string msg, IDictionary<string, object> fields)
         {
             fields ??= new Dictionary<string, object>();
             var dictionary = AddDefaultValues(level, msg, fields);
@@ -52,8 +65,17 @@ namespace OliveHelpsLDK.Logging
             Write(serializedDict);
         }
 
-        private Dictionary<string, object> AddDefaultValues(LogLevel level, string msg,
-            Dictionary<string, object> fields)
+        private static IDictionary<string, object> CombineDictionaries(
+            IEnumerable<IDictionary<string, object>> dictionaries)
+        {
+            return dictionaries.ToList().SelectMany(dict => dict)
+                .ToLookup(pair => pair.Key, pair => pair.Value)
+                .ToDictionary(group => group.Key, group => group.First());
+            ;
+        }
+
+        private IDictionary<string, object> AddDefaultValues(LogLevel level, string msg,
+            IDictionary<string, object> fields)
         {
             var defaultItems = new Dictionary<string, object>
             {
@@ -63,10 +85,7 @@ namespace OliveHelpsLDK.Logging
                 {"@module", _name},
                 {"@message", msg},
             };
-            return new List<Dictionary<string, object>> {defaultItems, fields}.SelectMany(dict => dict)
-                .ToLookup(pair => pair.Key, pair => pair.Value)
-                .ToDictionary(group => group.Key, group => group.First());
-            ;
+            return CombineDictionaries(new[] {fields, defaultItems});
         }
 
         private static string GenerateTimestamp()
