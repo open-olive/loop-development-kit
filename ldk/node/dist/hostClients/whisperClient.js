@@ -26,6 +26,11 @@ class WhisperClient extends baseClient_1.default {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
+    listWhisper(whisper) {
+        return this.buildStoppableMessage((message, callback) => this.client.whisperList(message, callback), () => whisperMessageBuilder_1.buildWhisperListRequest(whisper), 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        () => { });
+    }
     confirmWhisper(whisper) {
         return this.buildStoppableMessage((message, callback) => this.client.whisperConfirm(message, callback), () => whisperMessageBuilder_1.buildWhisperConfirmMessage(whisper), (response) => response.getResponse());
     }

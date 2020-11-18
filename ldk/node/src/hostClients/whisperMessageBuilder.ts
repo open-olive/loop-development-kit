@@ -5,6 +5,11 @@ import {
   WhisperFormConfig,
   WhisperFormInput,
   WhisperFormInputs,
+  WhisperListAlertHighlight,
+  WhisperListConfig,
+  WhisperListElement,
+  WhisperListElements,
+  WhisperListPairHighlight,
 } from './whisperService';
 import * as messages from '../grpc/whisper_pb';
 
@@ -107,6 +112,92 @@ export const generateWhisperInput = (
   setFormMessages(inputMsg, input);
   return msg;
 };
+
+type ListMessage<T> = {
+  setExtra(value: boolean): T;
+  setOrder(value: number): T;
+};
+
+/**
+ * @param msg - The message.
+ * @param input - The whisper list element.
+ */
+function setListMessages<T>(
+  msg: ListMessage<T>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  input: WhisperListElement<any>,
+): void {
+  msg.setExtra(input.extra);
+  if (input.order && input.order > 0) {
+    msg.setOrder(input.order);
+  }
+}
+
+export const generateWhisperListElementPairHighlight = (
+  highlight: WhisperListPairHighlight,
+): messages.WhisperListElement.Pair.Highlight => {
+  switch (highlight) {
+    case WhisperListPairHighlight.NONE: {
+      return messages.WhisperListElement.Pair.Highlight.NONE
+    }
+    case WhisperListPairHighlight.YELLOW: {
+      return messages.WhisperListElement.Pair.Highlight.YELLOW
+    }
+    default: {
+      throw new Error('Unexpected Input Type');
+    }
+  }
+}
+
+export const generateWhisperListElementAlertHighlight = (
+  highlight: WhisperListAlertHighlight,
+): messages.WhisperListElement.Alert.Highlight => {
+  switch (highlight) {
+    case WhisperListAlertHighlight.NONE: {
+      return messages.WhisperListElement.Alert.Highlight.NONE
+    }
+    case WhisperListAlertHighlight.GREEN: {
+      return messages.WhisperListElement.Alert.Highlight.GREEN
+    }
+    case WhisperListAlertHighlight.RED: {
+      return messages.WhisperListElement.Alert.Highlight.RED
+    }
+    default: {
+      throw new Error('Unexpected Input Type');
+    }
+  }
+}
+
+export const generateWhisperListElement = (
+  element: WhisperListElements,
+): messages.WhisperListElement => {
+  const WLE = messages.WhisperListElement;
+  const msg = new WLE();
+  switch (element.type) {
+    case 'pair': {
+      const inputMsg = new WLE.Pair();
+      inputMsg.setCopyable(element.copyable);
+      inputMsg.setHighlight(generateWhisperListElementPairHighlight(element.highlight));
+      inputMsg.setKey(element.key);
+      inputMsg.setValue(element.value);
+      msg.setPair(inputMsg);
+      break;
+    }
+    case 'alert': {
+      const inputMsg = new WLE.Alert();
+      inputMsg.setBody(element.body);
+      inputMsg.setHighlight(generateWhisperListElementAlertHighlight(element.highlight));
+      msg.setAlert(inputMsg);
+      break;
+    }
+    default: {
+      throw new Error('Unexpected Input Type');
+    }
+  }
+  setListMessages(msg, element);
+  return msg;
+};
+
 export const generateWhisperMeta = (whisper: Whisper): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
@@ -136,6 +227,19 @@ export const buildWhisperMarkdownRequest = (
   const result = new messages.WhisperMarkdownRequest().setMeta(meta);
   result.setMarkdown(whisper.markdown);
   return result;
+};
+export const buildWhisperListRequest = (
+  config: WhisperListConfig,
+): messages.WhisperListRequest => {
+  const meta = generateWhisperMeta(config);
+  const request = new messages.WhisperListRequest().setMeta(meta);
+  const elements = request.getElementsMap();
+  Object.keys(config.elements).forEach((key) => {
+    const value = config.elements[key];
+    const input = generateWhisperListElement(value);
+    elements.set(key, input);
+  });
+  return request;
 };
 export const buildWhisperConfirmMessage = (
   whisper: WhisperConfirmConfig,

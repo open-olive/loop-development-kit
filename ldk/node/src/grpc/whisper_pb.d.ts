@@ -1075,3 +1075,164 @@ export namespace WhisperFormStreamResponse {
     }
 
 }
+
+export class WhisperListRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WhisperListRequest;
+
+
+    hasMeta(): boolean;
+    clearMeta(): void;
+    getMeta(): WhisperMeta | undefined;
+    setMeta(value?: WhisperMeta): WhisperListRequest;
+
+
+    getElementsMap(): jspb.Map<string, WhisperListElement>;
+    clearElementsMap(): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WhisperListRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: WhisperListRequest): WhisperListRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WhisperListRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WhisperListRequest;
+    static deserializeBinaryFromReader(message: WhisperListRequest, reader: jspb.BinaryReader): WhisperListRequest;
+}
+
+export namespace WhisperListRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+        meta?: WhisperMeta.AsObject,
+
+        elementsMap: Array<[string, WhisperListElement.AsObject]>,
+    }
+}
+
+export class WhisperListElement extends jspb.Message { 
+    getOrder(): number;
+    setOrder(value: number): WhisperListElement;
+
+    getExtra(): boolean;
+    setExtra(value: boolean): WhisperListElement;
+
+
+    hasPair(): boolean;
+    clearPair(): void;
+    getPair(): WhisperListElement.Pair | undefined;
+    setPair(value?: WhisperListElement.Pair): WhisperListElement;
+
+
+    hasAlert(): boolean;
+    clearAlert(): void;
+    getAlert(): WhisperListElement.Alert | undefined;
+    setAlert(value?: WhisperListElement.Alert): WhisperListElement;
+
+
+    getElementOneofCase(): WhisperListElement.ElementOneofCase;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WhisperListElement.AsObject;
+    static toObject(includeInstance: boolean, msg: WhisperListElement): WhisperListElement.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WhisperListElement, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WhisperListElement;
+    static deserializeBinaryFromReader(message: WhisperListElement, reader: jspb.BinaryReader): WhisperListElement;
+}
+
+export namespace WhisperListElement {
+    export type AsObject = {
+        order: number,
+        extra: boolean,
+        pair?: WhisperListElement.Pair.AsObject,
+        alert?: WhisperListElement.Alert.AsObject,
+    }
+
+
+    export class Pair extends jspb.Message { 
+        getKey(): string;
+        setKey(value: string): Pair;
+
+        getValue(): string;
+        setValue(value: string): Pair;
+
+        getHighlight(): WhisperListElement.Pair.Highlight;
+        setHighlight(value: WhisperListElement.Pair.Highlight): Pair;
+
+        getCopyable(): boolean;
+        setCopyable(value: boolean): Pair;
+
+
+        serializeBinary(): Uint8Array;
+        toObject(includeInstance?: boolean): Pair.AsObject;
+        static toObject(includeInstance: boolean, msg: Pair): Pair.AsObject;
+        static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+        static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+        static serializeBinaryToWriter(message: Pair, writer: jspb.BinaryWriter): void;
+        static deserializeBinary(bytes: Uint8Array): Pair;
+        static deserializeBinaryFromReader(message: Pair, reader: jspb.BinaryReader): Pair;
+    }
+
+    export namespace Pair {
+        export type AsObject = {
+            key: string,
+            value: string,
+            highlight: WhisperListElement.Pair.Highlight,
+            copyable: boolean,
+        }
+
+        export enum Highlight {
+    NONE = 0,
+    YELLOW = 1,
+        }
+
+    }
+
+    export class Alert extends jspb.Message { 
+        getBody(): string;
+        setBody(value: string): Alert;
+
+        getHighlight(): WhisperListElement.Alert.Highlight;
+        setHighlight(value: WhisperListElement.Alert.Highlight): Alert;
+
+
+        serializeBinary(): Uint8Array;
+        toObject(includeInstance?: boolean): Alert.AsObject;
+        static toObject(includeInstance: boolean, msg: Alert): Alert.AsObject;
+        static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+        static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+        static serializeBinaryToWriter(message: Alert, writer: jspb.BinaryWriter): void;
+        static deserializeBinary(bytes: Uint8Array): Alert;
+        static deserializeBinaryFromReader(message: Alert, reader: jspb.BinaryReader): Alert;
+    }
+
+    export namespace Alert {
+        export type AsObject = {
+            body: string,
+            highlight: WhisperListElement.Alert.Highlight,
+        }
+
+        export enum Highlight {
+    NONE = 0,
+    RED = 1,
+    GREEN = 2,
+        }
+
+    }
+
+
+    export enum ElementOneofCase {
+        ELEMENTONEOF_NOT_SET = 0,
+    
+    PAIR = 3,
+
+    ALERT = 4,
+
+    }
+
+}

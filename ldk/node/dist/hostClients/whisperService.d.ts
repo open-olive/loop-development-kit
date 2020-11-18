@@ -69,6 +69,41 @@ export interface WhisperFormConfig extends Whisper {
         [name: string]: WhisperFormInputs;
     };
 }
+export interface WhisperListElement<T extends string> {
+    type: T;
+    extra: boolean;
+    /**
+     *  Value the UI uses to order the form inputs.
+     *  Value must be greater than 0
+     *  If this value is ommited it will deafult to 0
+     */
+    order?: number;
+}
+export declare enum WhisperListPairHighlight {
+    NONE = 0,
+    YELLOW = 1
+}
+export declare type WhisperListPair = WhisperListElement<'pair'> & {
+    copyable: boolean;
+    highlight: WhisperListPairHighlight;
+    key: string;
+    value: string;
+};
+export declare enum WhisperListAlertHighlight {
+    NONE = 0,
+    GREEN = 1,
+    RED = 2
+}
+export declare type WhisperListAlert = WhisperListElement<'alert'> & {
+    body: string;
+    highlight: WhisperListAlertHighlight;
+};
+export declare type WhisperListElements = WhisperListAlert | WhisperListPair;
+export interface WhisperListConfig extends Whisper {
+    elements: {
+        [name: string]: WhisperListElements;
+    };
+}
 export declare type WhisperFormOutputTypes = string | number | boolean | Date;
 export interface WhisperFormUpdateEvent {
     key: string;

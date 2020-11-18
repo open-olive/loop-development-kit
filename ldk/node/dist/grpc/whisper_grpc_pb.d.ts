@@ -42,6 +42,22 @@ export namespace WhisperService {
         export { serialize_proto_WhisperFormStreamResponse as responseSerialize };
         export { deserialize_proto_WhisperFormStreamResponse as responseDeserialize };
     }
+    namespace whisperList {
+        const path_3: string;
+        export { path_3 as path };
+        const requestStream_3: boolean;
+        export { requestStream_3 as requestStream };
+        const responseStream_3: boolean;
+        export { responseStream_3 as responseStream };
+        const requestType_3: typeof import("./whisper_pb.js").WhisperListRequest;
+        export { requestType_3 as requestType };
+        const responseType_3: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
+        export { responseType_3 as responseType };
+        export { serialize_proto_WhisperListRequest as requestSerialize };
+        export { deserialize_proto_WhisperListRequest as requestDeserialize };
+        export { serialize_google_protobuf_Empty as responseSerialize };
+        export { deserialize_google_protobuf_Empty as responseDeserialize };
+    }
 }
 export var WhisperClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
 declare function serialize_proto_WhisperMarkdownRequest(arg: any): Buffer;
@@ -56,4 +72,6 @@ declare function serialize_proto_WhisperFormRequest(arg: any): Buffer;
 declare function deserialize_proto_WhisperFormRequest(buffer_arg: any): import("./whisper_pb.js").WhisperFormRequest;
 declare function serialize_proto_WhisperFormStreamResponse(arg: any): Buffer;
 declare function deserialize_proto_WhisperFormStreamResponse(buffer_arg: any): import("./whisper_pb.js").WhisperFormStreamResponse;
+declare function serialize_proto_WhisperListRequest(arg: any): Buffer;
+declare function deserialize_proto_WhisperListRequest(buffer_arg: any): import("./whisper_pb.js").WhisperListRequest;
 export {};

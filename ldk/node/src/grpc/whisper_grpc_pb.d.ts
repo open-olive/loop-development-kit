@@ -15,6 +15,7 @@ interface IWhisperService extends grpc.ServiceDefinition<grpc.UntypedServiceImpl
     whisperMarkdown: IWhisperService_IWhisperMarkdown;
     whisperConfirm: IWhisperService_IWhisperConfirm;
     whisperForm: IWhisperService_IWhisperForm;
+    whisperList: IWhisperService_IWhisperList;
 }
 
 interface IWhisperService_IWhisperMarkdown extends grpc.MethodDefinition<whisper_pb.WhisperMarkdownRequest, google_protobuf_empty_pb.Empty> {
@@ -44,6 +45,15 @@ interface IWhisperService_IWhisperForm extends grpc.MethodDefinition<whisper_pb.
     responseSerialize: grpc.serialize<whisper_pb.WhisperFormStreamResponse>;
     responseDeserialize: grpc.deserialize<whisper_pb.WhisperFormStreamResponse>;
 }
+interface IWhisperService_IWhisperList extends grpc.MethodDefinition<whisper_pb.WhisperListRequest, google_protobuf_empty_pb.Empty> {
+    path: string; // "/proto.Whisper/WhisperList"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<whisper_pb.WhisperListRequest>;
+    requestDeserialize: grpc.deserialize<whisper_pb.WhisperListRequest>;
+    responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+}
 
 export const WhisperService: IWhisperService;
 
@@ -51,6 +61,7 @@ export interface IWhisperServer {
     whisperMarkdown: grpc.handleUnaryCall<whisper_pb.WhisperMarkdownRequest, google_protobuf_empty_pb.Empty>;
     whisperConfirm: grpc.handleUnaryCall<whisper_pb.WhisperConfirmRequest, whisper_pb.WhisperConfirmResponse>;
     whisperForm: grpc.handleServerStreamingCall<whisper_pb.WhisperFormRequest, whisper_pb.WhisperFormStreamResponse>;
+    whisperList: grpc.handleUnaryCall<whisper_pb.WhisperListRequest, google_protobuf_empty_pb.Empty>;
 }
 
 export interface IWhisperClient {
@@ -62,6 +73,9 @@ export interface IWhisperClient {
     whisperConfirm(request: whisper_pb.WhisperConfirmRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: whisper_pb.WhisperConfirmResponse) => void): grpc.ClientUnaryCall;
     whisperForm(request: whisper_pb.WhisperFormRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<whisper_pb.WhisperFormStreamResponse>;
     whisperForm(request: whisper_pb.WhisperFormRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<whisper_pb.WhisperFormStreamResponse>;
+    whisperList(request: whisper_pb.WhisperListRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    whisperList(request: whisper_pb.WhisperListRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    whisperList(request: whisper_pb.WhisperListRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
 }
 
 export class WhisperClient extends grpc.Client implements IWhisperClient {
@@ -74,4 +88,7 @@ export class WhisperClient extends grpc.Client implements IWhisperClient {
     public whisperConfirm(request: whisper_pb.WhisperConfirmRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: whisper_pb.WhisperConfirmResponse) => void): grpc.ClientUnaryCall;
     public whisperForm(request: whisper_pb.WhisperFormRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<whisper_pb.WhisperFormStreamResponse>;
     public whisperForm(request: whisper_pb.WhisperFormRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<whisper_pb.WhisperFormStreamResponse>;
+    public whisperList(request: whisper_pb.WhisperListRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public whisperList(request: whisper_pb.WhisperListRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public whisperList(request: whisper_pb.WhisperListRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
 }

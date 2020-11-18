@@ -108,6 +108,48 @@ export interface WhisperFormConfig extends Whisper {
   inputs: { [name: string]: WhisperFormInputs };
 }
 
+export interface WhisperListElement<T extends string> {
+  type: T;
+  extra: boolean;
+  /**
+   *  Value the UI uses to order the form inputs.
+   *  Value must be greater than 0
+   *  If this value is ommited it will deafult to 0
+   */
+  order?: number;
+}
+
+export enum WhisperListPairHighlight {
+  NONE = 0,
+  YELLOW,
+}
+
+export type WhisperListPair = WhisperListElement<'pair'> & {
+  copyable: boolean;
+  highlight: WhisperListPairHighlight;
+  key: string;
+  value: string;
+};
+
+export enum WhisperListAlertHighlight {
+  NONE = 0,
+  GREEN,
+  RED,
+}
+
+export type WhisperListAlert = WhisperListElement<'alert'> & {
+  body: string;
+  highlight: WhisperListAlertHighlight;
+};
+
+export type WhisperListElements =
+  | WhisperListAlert
+  | WhisperListPair;
+
+export interface WhisperListConfig extends Whisper {
+  elements: { [name: string]: WhisperListElements };
+}
+
 export type WhisperFormOutputTypes = string | number | boolean | Date;
 
 export interface WhisperFormUpdateEvent {
@@ -134,6 +176,11 @@ export interface WhisperService {
    * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
   confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
+  /**
+   * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
+   */
+  listWhisper(whisper: WhisperListConfig): StoppableMessage<void>;
+
 
   formWhisper(
     whisper: WhisperFormConfig,
