@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using Google.Protobuf.WellKnownTypes;
 using Proto;
 
@@ -44,14 +43,143 @@ namespace OliveHelpsLDK.Whispers
     }
 }
 
+namespace OliveHelpsLDK.Whispers.Forms
+{
+    
+    public interface IWhisperFormResponse {}
+
+    public struct WhisperUpdate : IWhisperFormResponse
+    {
+        public string Key;
+        public Outputs.IBase Output;
+    }
+
+    public struct WhisperResult : IWhisperFormResponse
+    {
+        public bool Result;
+
+        public bool IsSubmitted => Result;
+        public bool IsRejected => !Result;
+
+        public IDictionary<string, Outputs.IBase> Outputs;
+    }
+}
+
+namespace OliveHelpsLDK.Whispers.Forms.Outputs
+{
+    public interface IBase
+    {
+    }
+
+    public interface IBase<T> : IBase
+    {
+        T Value { get; }
+    }
+    
+    public interface INone : IBase {}
+
+    public interface ICheckbox : IBase<bool>
+    {
+    }
+
+    public interface IEmail : IBase<string>
+    {
+    }
+
+    public interface IMarkdown : IBase<string>
+    {
+    }
+
+    public interface INumber : IBase<float>
+    {
+    }
+
+    public interface IPassword : IBase<string>
+    {
+    }
+
+    public interface IRadio : IBase<string>
+    {
+    }
+
+    public interface ISelect : IBase<string>
+    {
+    }
+
+    public interface ITelephone : IBase<string>
+    {
+    }
+
+    public interface IText : IBase<string>
+    {
+    }
+
+    public interface ITime : IBase<DateTimeOffset>
+    {
+    }
+
+    public struct None : INone
+    {
+        
+    }
+    
+    public struct Checkbox : ICheckbox
+    {
+        public bool Value { get; set; }
+    }
+
+    public struct Email : IEmail
+    {
+        public string Value { get; set; }
+    }
+    
+    public struct Markdown :IMarkdown
+    {
+        public string Value { get; set; }
+    }
+    
+    public struct Number : INumber
+    {
+        public float Value { get; set; }
+    }
+    
+    public struct Password : IPassword
+    {
+        public string Value { get; set; }
+    }
+
+    public struct Radio : IRadio
+    {
+        public string Value { get; set; }
+    }
+    public struct Select : ISelect
+    {
+        public string Value { get; set; }
+    }
+    
+    public struct Telephone : ITelephone
+    {
+        public string Value { get; set; }
+    }
+
+    public struct Text : IText
+    {
+        public string Value { get; set; }
+    }
+
+    public struct Time : ITime
+    {
+        public DateTimeOffset Value { get; set; }
+    } 
+}
+
 namespace OliveHelpsLDK.Whispers.Forms.Inputs
 {
-
     public interface IProtoable<T>
     {
         T ToProto();
     }
-    
+
     public interface IBase
     {
         string Label { get; }
@@ -128,7 +256,6 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
                 Value = Value
             };
         }
-
     }
 
     public struct Email : IEmail
@@ -201,12 +328,13 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         public string Label { get; }
         public string Tooltip { get; }
         public int Order { get; }
+
         public WhisperFormInput.Types.Password ToProto()
         {
             return new WhisperFormInput.Types.Password
             {
                 Label = Label,
-                Order = checked((uint)Order),
+                Order = checked((uint) Order),
                 Tooltip = Tooltip
             };
         }
@@ -217,18 +345,20 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         public string Label { get; }
         public string Tooltip { get; }
         public int Order { get; }
+
         public WhisperFormInput.Types.Radio ToProto()
         {
             var radio = new WhisperFormInput.Types.Radio
             {
                 Label = Label,
-                Order = checked((uint)Order),
+                Order = checked((uint) Order),
                 Tooltip = Tooltip,
             };
             foreach (var option in Options)
             {
                 radio.Options.Add(option);
             }
+
             return radio;
         }
 
@@ -240,18 +370,20 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         public string Label { get; }
         public string Tooltip { get; }
         public int Order { get; }
+
         public WhisperFormInput.Types.Select ToProto()
         {
             var select = new WhisperFormInput.Types.Select
             {
                 Label = Label,
-                Order = checked((uint)Order),
+                Order = checked((uint) Order),
                 Tooltip = Tooltip,
             };
             foreach (var option in Options)
             {
                 select.Options.Add(option);
             }
+
             return select;
         }
 
@@ -273,7 +405,7 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
             return new WhisperFormInput.Types.Tel
             {
                 Label = Label,
-                Order = checked((uint)Order),
+                Order = checked((uint) Order),
                 Tooltip = Tooltip,
                 Value = Value,
                 Pattern = Pattern,
@@ -294,7 +426,7 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
             return new WhisperFormInput.Types.Text
             {
                 Label = Label,
-                Order = checked((uint)Order),
+                Order = checked((uint) Order),
                 Tooltip = Tooltip,
                 Value = Value,
             };

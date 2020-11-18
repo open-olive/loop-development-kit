@@ -1,17 +1,21 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Whispers.Forms;
 using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
     internal class WhisperClient : BaseClient<Proto.Whisper.WhisperClient>, IWhisperService
     {
+        private readonly IWhisperFormParser _parser;
         private IWhisperFormBuilder _builder;
 
 
-        public WhisperClient(ChannelBase channel, Session session, IWhisperFormBuilder formBuilder = null)
+        public WhisperClient(ChannelBase channel, Session session, IWhisperFormBuilder formBuilder = null,
+            IWhisperFormParser parser = null)
         {
+            _parser = parser;
             _builder = formBuilder ?? new WhisperFormBuilder();
             _client = new Whisper.WhisperClient(channel);
             _session = session;
@@ -44,10 +48,13 @@ namespace OliveHelpsLDK.Whispers
             return call.ResponseAsync.ContinueWith(resp => resp.Result.Response, cancellationToken);
         }
 
-        public Task FormAsync(WhisperForm message, CancellationToken cancellationToken = default)
+        public IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message,
+            CancellationToken cancellationToken = default)
         {
             var request = _builder.BuildRequest(message, CreateSession());
-            return _client.WhisperForm(request, CreateOptions(cancellationToken)).ResponseHeadersAsync;
+            var call = _client.WhisperForm(request, CreateOptions(cancellationToken));
+            return new StreamingCall<Proto.WhisperFormStreamResponse, IWhisperFormResponse>(call,
+                response => _parser.ParseResponse(response));
         }
     }
 }
