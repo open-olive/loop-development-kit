@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WhisperListAlertHighlight = exports.WhisperListPairHighlight = void 0;
+// eslint-disable-next-line no-shadow
 var WhisperListPairHighlight;
 (function (WhisperListPairHighlight) {
     WhisperListPairHighlight[WhisperListPairHighlight["NONE"] = 0] = "NONE";
     WhisperListPairHighlight[WhisperListPairHighlight["YELLOW"] = 1] = "YELLOW";
 })(WhisperListPairHighlight = exports.WhisperListPairHighlight || (exports.WhisperListPairHighlight = {}));
+// eslint-disable-next-line no-shadow
 var WhisperListAlertHighlight;
 (function (WhisperListAlertHighlight) {
     WhisperListAlertHighlight[WhisperListAlertHighlight["NONE"] = 0] = "NONE";

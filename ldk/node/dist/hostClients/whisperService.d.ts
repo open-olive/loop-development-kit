@@ -129,5 +129,9 @@ export interface WhisperService {
      * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
      */
     confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
+    /**
+     * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
+     */
+    listWhisper(whisper: WhisperListConfig): StoppableMessage<void>;
     formWhisper(whisper: WhisperFormConfig, listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;
 }

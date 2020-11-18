@@ -155,10 +155,9 @@ exports.generateWhisperListElementAlertHighlight = (highlight) => {
 exports.generateWhisperListElement = (element) => {
     const WLE = messages.WhisperListElement;
     const msg = new WLE();
-    let inputMsg;
     switch (element.type) {
         case 'pair': {
-            inputMsg = new WLE.Pair();
+            const inputMsg = new WLE.Pair();
             inputMsg.setCopyable(element.copyable);
             inputMsg.setHighlight(exports.generateWhisperListElementPairHighlight(element.highlight));
             inputMsg.setKey(element.key);
@@ -167,7 +166,7 @@ exports.generateWhisperListElement = (element) => {
             break;
         }
         case 'alert': {
-            inputMsg = new WLE.Alert();
+            const inputMsg = new WLE.Alert();
             inputMsg.setBody(element.body);
             inputMsg.setHighlight(exports.generateWhisperListElementAlertHighlight(element.highlight));
             msg.setAlert(inputMsg);
@@ -177,7 +176,7 @@ exports.generateWhisperListElement = (element) => {
             throw new Error('Unexpected Input Type');
         }
     }
-    setListMessages(inputMsg, element);
+    setListMessages(msg, element);
     return msg;
 };
 exports.generateWhisperMeta = (whisper) => {

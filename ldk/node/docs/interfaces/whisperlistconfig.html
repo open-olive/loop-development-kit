@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ScanCodeEvent | Loop Development Kit for Node.js</title>
+	<title>WhisperListConfig | Loop Development Kit for Node.js</title>
 	<meta name="description" content="Documentation for Loop Development Kit for Node.js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="scancodeevent.html">ScanCodeEvent</a>
+					<a href="whisperlistconfig.html">WhisperListConfig</a>
 				</li>
 			</ul>
-			<h1>Interface ScanCodeEvent</h1>
+			<h1>Interface WhisperListConfig</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ScanCodeEvent</span>
+						<a href="whisper.html" class="tsd-signature-type">Whisper</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">WhisperListConfig</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -80,8 +85,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="scancodeevent.html#direction" class="tsd-kind-icon">direction</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="scancodeevent.html#scancode" class="tsd-kind-icon">scan<wbr>Code</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whisperlistconfig.html#elements" class="tsd-kind-icon">elements</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="whisperlistconfig.html#icon" class="tsd-kind-icon">icon</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="whisperlistconfig.html#label" class="tsd-kind-icon">label</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="whisperlistconfig.html#markdown" class="tsd-kind-icon">markdown</a></li>
 							</ul>
 						</section>
 					</div>
@@ -90,24 +97,70 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="direction" class="tsd-anchor"></a>
-					<h3>direction</h3>
-					<div class="tsd-signature tsd-kind-icon">direction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"up"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"down"</span></div>
+					<a name="elements" class="tsd-anchor"></a>
+					<h3>elements</h3>
+					<div class="tsd-signature tsd-kind-icon">elements<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/ab2228a/ldk/node/src/hostClients/keyboardService.ts#L30">src/hostClients/keyboardService.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/ab2228a/ldk/node/src/hostClients/whisperService.ts#L150">src/hostClients/whisperService.ts:150</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../globals.html#whisperlistelements" class="tsd-signature-type">WhisperListElements</a></h5>
+							</li>
+						</ul>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="scancode" class="tsd-anchor"></a>
-					<h3>scan<wbr>Code</h3>
-					<div class="tsd-signature tsd-kind-icon">scan<wbr>Code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="icon" class="tsd-anchor"></a>
+					<h3>icon</h3>
+					<div class="tsd-signature tsd-kind-icon">icon<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="whisper.html">Whisper</a>.<a href="whisper.html#icon">icon</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/ab2228a/ldk/node/src/hostClients/keyboardService.ts#L29">src/hostClients/keyboardService.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/ab2228a/ldk/node/src/hostClients/whisperService.ts#L26">src/hostClients/whisperService.ts:26</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The icon displayed at the top of the Whisper card.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="label" class="tsd-anchor"></a>
+					<h3>label</h3>
+					<div class="tsd-signature tsd-kind-icon">label<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="whisper.html">Whisper</a>.<a href="whisper.html#label">label</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/ab2228a/ldk/node/src/hostClients/whisperService.ts#L30">src/hostClients/whisperService.ts:30</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The title displayed at the top of the Whisper card.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="markdown" class="tsd-anchor"></a>
+					<h3>markdown</h3>
+					<div class="tsd-signature tsd-kind-icon">markdown<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="whisper.html">Whisper</a>.<a href="whisper.html#markdown">markdown</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/ab2228a/ldk/node/src/hostClients/whisperService.ts#L22">src/hostClients/whisperService.ts:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The content of the Whisper in markdown.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -139,13 +192,19 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="scancodeevent.html" class="tsd-kind-icon">Scan<wbr>Code<wbr>Event</a>
+						<a href="whisperlistconfig.html" class="tsd-kind-icon">Whisper<wbr>List<wbr>Config</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="scancodeevent.html#direction" class="tsd-kind-icon">direction</a>
+								<a href="whisperlistconfig.html#elements" class="tsd-kind-icon">elements</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="scancodeevent.html#scancode" class="tsd-kind-icon">scan<wbr>Code</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="whisperlistconfig.html#icon" class="tsd-kind-icon">icon</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="whisperlistconfig.html#label" class="tsd-kind-icon">label</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="whisperlistconfig.html#markdown" class="tsd-kind-icon">markdown</a>
 							</li>
 						</ul>
 					</li>

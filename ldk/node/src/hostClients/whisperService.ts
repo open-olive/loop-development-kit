@@ -119,6 +119,7 @@ export interface WhisperListElement<T extends string> {
   order?: number;
 }
 
+// eslint-disable-next-line no-shadow
 export enum WhisperListPairHighlight {
   NONE = 0,
   YELLOW,
@@ -131,6 +132,7 @@ export type WhisperListPair = WhisperListElement<'pair'> & {
   value: string;
 };
 
+// eslint-disable-next-line no-shadow
 export enum WhisperListAlertHighlight {
   NONE = 0,
   GREEN,
@@ -142,9 +144,7 @@ export type WhisperListAlert = WhisperListElement<'alert'> & {
   highlight: WhisperListAlertHighlight;
 };
 
-export type WhisperListElements =
-  | WhisperListAlert
-  | WhisperListPair;
+export type WhisperListElements = WhisperListAlert | WhisperListPair;
 
 export interface WhisperListConfig extends Whisper {
   elements: { [name: string]: WhisperListElements };
@@ -180,7 +180,6 @@ export interface WhisperService {
    * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
   listWhisper(whisper: WhisperListConfig): StoppableMessage<void>;
-
 
   formWhisper(
     whisper: WhisperFormConfig,
