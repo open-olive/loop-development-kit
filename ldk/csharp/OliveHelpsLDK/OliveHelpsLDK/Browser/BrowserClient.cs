@@ -1,8 +1,6 @@
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Microsoft.VisualBasic;
 
 namespace OliveHelpsLDK.Browser
 {

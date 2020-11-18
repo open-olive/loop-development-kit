@@ -7,23 +7,15 @@ namespace OliveHelpsLDK.Whispers
 {
     public interface IWhisperService
     {
-        Task MarkdownAsync(Whispers.WhisperMarkdown message, CancellationToken cancellationToken = default);
-        Task<bool> ConfirmAsync(Whispers.WhisperConfirm message, CancellationToken cancellationToken = default);
-        IStreamingCall<IWhisperFormResponse> FormAsync(Whispers.WhisperForm message, CancellationToken cancellationToken = default);
-    }
-    
-    public struct WhisperStyle
-    {
-        public string BackgroundColor;
-        public string PrimaryColor;
-        public string HighlightColor;
+        Task MarkdownAsync(WhisperMarkdown message, CancellationToken cancellationToken = default);
+        Task<bool> ConfirmAsync(WhisperConfirm message, CancellationToken cancellationToken = default);
+        IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message, CancellationToken cancellationToken = default);
     }
 
     public struct WhisperConfig
     {
         public string Icon;
         public string Label;
-        public WhisperStyle Style;
     }
 
     public struct WhisperMarkdown

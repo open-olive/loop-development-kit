@@ -52,7 +52,7 @@ namespace OliveHelpsLDK.Whispers
         {
             var request = _builder.BuildRequest(message, CreateSession());
             var call = _client.WhisperForm(request, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.WhisperFormStreamResponse, IWhisperFormResponse>(call,
+            return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call,
                 response => _parser.ParseResponse(response));
         }
     }

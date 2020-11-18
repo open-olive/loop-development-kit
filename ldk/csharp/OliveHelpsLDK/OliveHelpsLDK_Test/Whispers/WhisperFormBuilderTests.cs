@@ -30,7 +30,6 @@ namespace OliveHelpsLDK_Test.Whispers
                 {
                     Icon = "Config.Icon",
                     Label = "Config.Label",
-                    Style = new OliveHelpsLDK.Whispers.WhisperStyle()
                 },
                 Inputs = new Dictionary<string, IBase>(){{"first", new Checkbox
                 {
@@ -50,12 +49,6 @@ namespace OliveHelpsLDK_Test.Whispers
                 {
                     Icon = "Config.Icon",
                     Label = "Config.Label",
-                    Style = new Proto.WhisperStyle
-                    {
-                        BackgroundColor = "#FFF",
-                        PrimaryColor = "#666",
-                        HighlightColor = "#651FFF"
-                    }
                 },
                 Inputs = { {"first", new WhisperFormInput
                 {

@@ -15,7 +15,7 @@ namespace OliveHelpsLDK
     }
 
     
-    public class BrokerServer : Plugin.GRPCBroker.GRPCBrokerBase
+    public class BrokerServer : GRPCBroker.GRPCBrokerBase
     {
         private readonly TaskCompletionSource<ConnectionInfo> tcs = new TaskCompletionSource<ConnectionInfo>();
 

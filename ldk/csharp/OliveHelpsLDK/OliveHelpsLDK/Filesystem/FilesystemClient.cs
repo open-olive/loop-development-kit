@@ -50,7 +50,7 @@ namespace OliveHelpsLDK.Filesystem
                 Directory = directoryPath
             };
             var call = _client.FilesystemDirStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.FilesystemDirStreamResponse, FileEvent>(call, ConvertFileEvent);
+            return new StreamingCall<FilesystemDirStreamResponse, FileEvent>(call, ConvertFileEvent);
         }
 
         public IStreamingCall<FileEvent> StreamFile(string filePath, CancellationToken cancellationToken = default)
@@ -61,7 +61,7 @@ namespace OliveHelpsLDK.Filesystem
                 Path = filePath
             };
             var call = _client.FilesystemFileStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.FilesystemFileStreamResponse, FileEvent>(call, ConvertFileEvent);
+            return new StreamingCall<FilesystemFileStreamResponse, FileEvent>(call, ConvertFileEvent);
         }
 
         private static IList<FileInfo> ConvertFileList(IEnumerable<Proto.FileInfo> files)
@@ -81,7 +81,7 @@ namespace OliveHelpsLDK.Filesystem
             };
         }
 
-        private static FileEvent ConvertFileEvent(Proto.FilesystemDirStreamResponse dirStreamResponse)
+        private static FileEvent ConvertFileEvent(FilesystemDirStreamResponse dirStreamResponse)
         {
             return new FileEvent
             {
@@ -90,7 +90,7 @@ namespace OliveHelpsLDK.Filesystem
             };
         }
 
-        private static FileEvent ConvertFileEvent(Proto.FilesystemFileStreamResponse fileStreamResponse)
+        private static FileEvent ConvertFileEvent(FilesystemFileStreamResponse fileStreamResponse)
         {
             return new FileEvent
             {

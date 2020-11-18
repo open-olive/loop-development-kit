@@ -18,7 +18,7 @@ namespace OliveHelpsLDK
             };
         }
 
-        protected Grpc.Core.CallOptions CreateOptions(CancellationToken token)
+        protected CallOptions CreateOptions(CancellationToken token)
         {
             return new CallOptions(cancellationToken: token);
         }

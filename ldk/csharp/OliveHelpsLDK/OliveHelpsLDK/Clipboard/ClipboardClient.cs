@@ -42,7 +42,7 @@ namespace OliveHelpsLDK.Clipboard
                 Session = CreateSession(),
             };
             var call = _client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
-            return new StreamingCall<Proto.ClipboardReadStreamResponse, string>(call, response => response.Text);
+            return new StreamingCall<ClipboardReadStreamResponse, string>(call, response => response.Text);
         }
     }
 }

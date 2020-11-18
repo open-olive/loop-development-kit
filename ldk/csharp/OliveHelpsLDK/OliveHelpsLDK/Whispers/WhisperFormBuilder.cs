@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OliveHelpsLDK.Whispers.Forms.Inputs;
 using Proto;
@@ -9,11 +8,6 @@ namespace OliveHelpsLDK.Whispers
 {
     public class WhisperFormBuilder : IWhisperFormBuilder
     {
-        public const string BackgroundColor = "#FFF";
-        public const string PrimaryColor = "#666";
-        public const string HighlightColor = "#651FFF";
-
-
         public WhisperFormRequest BuildRequest(WhisperForm formRequest, Proto.Session session)
         {
             var request = new WhisperFormRequest
@@ -78,27 +72,11 @@ namespace OliveHelpsLDK.Whispers
 
         public WhisperMeta BuildMeta(WhisperConfig config)
         {
-            var styleBackgroundColor =
-                CoerceColor(config.Style.BackgroundColor, BackgroundColor);
-            var stylePrimaryColor = CoerceColor(config.Style.PrimaryColor,
-                PrimaryColor);
-            var styleHighlightColor = CoerceColor(config.Style.HighlightColor, HighlightColor);
             return new WhisperMeta
             {
                 Icon = config.Icon,
                 Label = config.Label,
-                Style = new Proto.WhisperStyle
-                {
-                    BackgroundColor = styleBackgroundColor,
-                    PrimaryColor = stylePrimaryColor,
-                    HighlightColor = styleHighlightColor,
-                }
             };
-        }
-
-        private static string CoerceColor(string input, string defaultColor)
-        {
-            return string.IsNullOrEmpty(input) ? defaultColor : input;
         }
     }
 }
