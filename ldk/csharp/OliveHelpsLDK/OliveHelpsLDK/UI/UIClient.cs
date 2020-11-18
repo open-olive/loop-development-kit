@@ -7,8 +7,8 @@ namespace OliveHelpsLDK.UI
     {
         internal UIClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.UI.UIClient(channelBase);
-            _session = session;
+            Client = new Proto.UI.UIClient(channelBase);
+            Session = session;
         }
 
         public IStreamingCall<string> StreamGlobalSearch(CancellationToken cancellationToken = default)
@@ -17,7 +17,7 @@ namespace OliveHelpsLDK.UI
             {
                 Session = CreateSession()
             };
-            var call = _client.GlobalSearchStream(request, CreateOptions(cancellationToken));
+            var call = Client.GlobalSearchStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<Proto.GlobalSearchStreamResponse, string>(call, response => response.Text);
         }
 
@@ -27,7 +27,7 @@ namespace OliveHelpsLDK.UI
             {
                 Session = CreateSession()
             };
-            var call = _client.SearchbarStream(request, CreateOptions(cancellationToken));
+            var call = Client.SearchbarStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<Proto.SearchbarStreamResponse, string>(call, response => response.Text);
         }
     }

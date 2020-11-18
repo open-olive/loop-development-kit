@@ -8,8 +8,8 @@ namespace OliveHelpsLDK.Storage
     {
         internal StorageClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Storage.StorageClient(channelBase);
-            _session = session;
+            Client = new Proto.Storage.StorageClient(channelBase);
+            Session = session;
         }
 
         public Task<bool> HasKey(string key, CancellationToken cancellationToken = default)
@@ -19,7 +19,7 @@ namespace OliveHelpsLDK.Storage
                 Key = key,
                 Session = CreateSession()
             };
-            return _client.StorageExistsAsync(req, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.StorageExistsAsync(req, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => task.Result.Exists, cancellationToken);
         }
 
@@ -30,7 +30,7 @@ namespace OliveHelpsLDK.Storage
                 Key = key,
                 Session = CreateSession()
             };
-            return _client.StorageReadAsync(req, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.StorageReadAsync(req, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => task.Result.Value, cancellationToken);
         }
 
@@ -41,7 +41,7 @@ namespace OliveHelpsLDK.Storage
                 Key = key,
                 Session = CreateSession()
             };
-            return _client.StorageDeleteAsync(req, CreateOptions(cancellationToken)).ResponseAsync;
+            return Client.StorageDeleteAsync(req, CreateOptions(cancellationToken)).ResponseAsync;
         }
 
         public Task Write(string key, string value, CancellationToken cancellationToken = default)
@@ -51,7 +51,7 @@ namespace OliveHelpsLDK.Storage
                 Key = key,
                 Session = CreateSession()
             };
-            return _client.StorageWriteAsync(req, CreateOptions(cancellationToken)).ResponseAsync;
+            return Client.StorageWriteAsync(req, CreateOptions(cancellationToken)).ResponseAsync;
         }
     }
 }

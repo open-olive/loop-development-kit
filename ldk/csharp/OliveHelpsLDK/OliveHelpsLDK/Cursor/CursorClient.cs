@@ -10,8 +10,8 @@ namespace OliveHelpsLDK.Cursor
 
         internal CursorClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Cursor.CursorClient(channelBase);
-            _session = session;
+            Client = new Proto.Cursor.CursorClient(channelBase);
+            Session = session;
         }
         
         public Task<CursorPosition> Query(CancellationToken cancellationToken = default)
@@ -20,7 +20,7 @@ namespace OliveHelpsLDK.Cursor
             {
                 Session = CreateSession()
             };
-            return _client.CursorPositionAsync(request, CreateOptions(cancellationToken))
+            return Client.CursorPositionAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
                 .ContinueWith(task => ToPosition(task.Result), cancellationToken);
         }
@@ -31,7 +31,7 @@ namespace OliveHelpsLDK.Cursor
             {
                 Session = CreateSession()
             };
-            var call = _client.CursorPositionStream(request, CreateOptions(cancellationToken));
+            var call = Client.CursorPositionStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<CursorPositionStreamResponse, CursorPosition>(call, ToPosition);
         }
 

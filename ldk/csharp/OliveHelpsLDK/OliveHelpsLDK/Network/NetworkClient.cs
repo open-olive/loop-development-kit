@@ -9,8 +9,8 @@ namespace OliveHelpsLDK.Network
     {
         internal NetworkClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Network.NetworkClient(channelBase);
-            _session = session;
+            Client = new Proto.Network.NetworkClient(channelBase);
+            Session = session;
         }
 
 
@@ -23,7 +23,7 @@ namespace OliveHelpsLDK.Network
                 Method = request.Method,
                 Url = request.URL
             };
-            return _client.HTTPRequestAsync(message, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.HTTPRequestAsync(message, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => FromProto(task.Result), cancellationToken);
         }
 

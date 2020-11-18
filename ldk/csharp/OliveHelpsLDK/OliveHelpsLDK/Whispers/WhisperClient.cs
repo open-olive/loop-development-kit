@@ -8,16 +8,16 @@ namespace OliveHelpsLDK.Whispers
 {
     internal class WhisperClient : BaseClient<Proto.Whisper.WhisperClient>, IWhisperService
     {
-        private readonly IWhisperFormParser _parser;
-        private IWhisperFormBuilder _builder;
+        internal IWhisperFormParser Parser { get; }
+        internal IWhisperFormBuilder Builder { get; }
 
         public WhisperClient(ChannelBase channel, Session session, IWhisperFormBuilder formBuilder = null,
             IWhisperFormParser parser = null)
         {
-            _parser = parser ?? new WhisperFormParser();
-            _builder = formBuilder ?? new WhisperFormBuilder();
-            _client = new Whisper.WhisperClient(channel);
-            _session = session;
+            Parser = parser ?? new WhisperFormParser();
+            Builder = formBuilder ?? new WhisperFormBuilder();
+            Client = new Whisper.WhisperClient(channel);
+            Session = session;
         }
 
         public Task MarkdownAsync(WhisperMarkdown message, CancellationToken cancellationToken = default)
@@ -26,10 +26,10 @@ namespace OliveHelpsLDK.Whispers
             {
                 Markdown = message.Markdown,
                 Session = CreateSession(),
-                Meta = _builder.BuildMeta(message.Config)
+                Meta = Builder.BuildMeta(message.Config)
             };
             var whisperMarkdownAsync =
-                _client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
+                Client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return whisperMarkdownAsync.ResponseAsync;
         }
 
@@ -39,21 +39,21 @@ namespace OliveHelpsLDK.Whispers
             {
                 Markdown = message.Markdown,
                 Session = CreateSession(),
-                Meta = _builder.BuildMeta(message.Config),
+                Meta = Builder.BuildMeta(message.Config),
                 RejectLabel = message.RejectLabel,
                 ResolveLabel = message.ResolveLabel,
             };
-            var call = _client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
+            var call = Client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return call.ResponseAsync.ContinueWith(resp => resp.Result.Response, cancellationToken);
         }
 
         public IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message,
             CancellationToken cancellationToken = default)
         {
-            var request = _builder.BuildRequest(message, CreateSession());
-            var call = _client.WhisperForm(request, CreateOptions(cancellationToken));
+            var request = Builder.BuildRequest(message, CreateSession());
+            var call = Client.WhisperForm(request, CreateOptions(cancellationToken));
             return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call,
-                response => _parser.ParseResponse(response));
+                response => Parser.ParseResponse(response));
         }
     }
 }

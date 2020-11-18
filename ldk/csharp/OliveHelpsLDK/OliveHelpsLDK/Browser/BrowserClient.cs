@@ -8,8 +8,8 @@ namespace OliveHelpsLDK.Browser
     {
         internal BrowserClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Browser.BrowserClient(channelBase);
-            _session = session;
+            Client = new Proto.Browser.BrowserClient(channelBase);
+            Session = session;
         }
 
         public Task<string> QueryActiveURL(CancellationToken cancellationToken = default)
@@ -18,7 +18,7 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
-            return _client.BrowserActiveURLAsync(request, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.BrowserActiveURLAsync(request, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => task.Result.Url, cancellationToken);
         }
 
@@ -28,7 +28,7 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
-            var call = _client.BrowserActiveURLStream(request, CreateOptions(cancellationToken));
+            var call = Client.BrowserActiveURLStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<Proto.BrowserActiveURLStreamResponse, string>(call, resp => resp.Url);
         }
 
@@ -38,7 +38,7 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
-            return _client.BrowserSelectedTextAsync(request, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.BrowserSelectedTextAsync(request, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => FromProto(task.Result), cancellationToken);
         }
 
@@ -48,7 +48,7 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
-            var call = _client.BrowserSelectedTextStream(request, CreateOptions(cancellationToken));
+            var call = Client.BrowserSelectedTextStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<Proto.BrowserSelectedTextStreamResponse, SelectedText>(call, FromProto);
         }
 

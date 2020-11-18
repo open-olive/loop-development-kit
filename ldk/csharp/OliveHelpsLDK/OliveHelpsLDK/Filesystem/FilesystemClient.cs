@@ -12,8 +12,8 @@ namespace OliveHelpsLDK.Filesystem
     {
         internal FilesystemClient(ChannelBase channel, Session session)
         {
-            _client = new Proto.Filesystem.FilesystemClient(channel);
-            _session = session;
+            Client = new Proto.Filesystem.FilesystemClient(channel);
+            Session = session;
         }
 
         public Task<IList<FileInfo>> QueryDirectory(string directoryPath,
@@ -24,7 +24,7 @@ namespace OliveHelpsLDK.Filesystem
                 Session = CreateSession(),
                 Directory = directoryPath,
             };
-            return _client.FilesystemDirAsync(request, CreateOptions(cancellationToken))
+            return Client.FilesystemDirAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
                 .ContinueWith(task => ConvertFileList(task.Result.Files), cancellationToken);
         }
@@ -36,7 +36,7 @@ namespace OliveHelpsLDK.Filesystem
                 Session = CreateSession(),
                 Path = filePath,
             };
-            return _client.FilesystemFileAsync(request, CreateOptions(cancellationToken))
+            return Client.FilesystemFileAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
                 .ContinueWith(task => ConvertProtoFileInfo(task.Result.File), cancellationToken);
         }
@@ -49,7 +49,7 @@ namespace OliveHelpsLDK.Filesystem
                 Session = CreateSession(),
                 Directory = directoryPath
             };
-            var call = _client.FilesystemDirStream(request, CreateOptions(cancellationToken));
+            var call = Client.FilesystemDirStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<FilesystemDirStreamResponse, FileEvent>(call, ConvertFileEvent);
         }
 
@@ -60,7 +60,7 @@ namespace OliveHelpsLDK.Filesystem
                 Session = CreateSession(),
                 Path = filePath
             };
-            var call = _client.FilesystemFileStream(request, CreateOptions(cancellationToken));
+            var call = Client.FilesystemFileStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<FilesystemFileStreamResponse, FileEvent>(call, ConvertFileEvent);
         }
 

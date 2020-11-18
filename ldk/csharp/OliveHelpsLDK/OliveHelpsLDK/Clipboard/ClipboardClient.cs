@@ -10,8 +10,8 @@ namespace OliveHelpsLDK.Clipboard
 
         internal ClipboardClient(ChannelBase channel, Session session)
         {
-            _client = new Proto.Clipboard.ClipboardClient(channel);
-            _session = session;
+            Client = new Proto.Clipboard.ClipboardClient(channel);
+            Session = session;
         }
 
         public Task<string> Read(CancellationToken cancellationToken = default)
@@ -20,7 +20,7 @@ namespace OliveHelpsLDK.Clipboard
             {
                 Session = CreateSession(),
             };
-            return _client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
+            return Client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
                 .ResponseAsync.ContinueWith(task => task.Result.Text, cancellationToken);
         }
 
@@ -31,7 +31,7 @@ namespace OliveHelpsLDK.Clipboard
                 Session = CreateSession(),
                 Text = contents
             };
-            return _client.ClipboardWriteAsync(request, new CallOptions(cancellationToken: cancellationToken))
+            return Client.ClipboardWriteAsync(request, new CallOptions(cancellationToken: cancellationToken))
                 .ResponseAsync;
         }
 
@@ -41,7 +41,7 @@ namespace OliveHelpsLDK.Clipboard
             {
                 Session = CreateSession(),
             };
-            var call = _client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
+            var call = Client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
             return new StreamingCall<ClipboardReadStreamResponse, string>(call, response => response.Text);
         }
     }

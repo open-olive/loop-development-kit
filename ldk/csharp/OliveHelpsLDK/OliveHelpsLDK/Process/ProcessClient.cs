@@ -11,8 +11,8 @@ namespace OliveHelpsLDK.Process
     {
         internal ProcessClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Process.ProcessClient(channelBase);
-            _session = session;
+            Client = new Proto.Process.ProcessClient(channelBase);
+            Session = session;
         }
 
         public Task<ProcessInfo[]> Query(CancellationToken cancellationToken = default)
@@ -21,7 +21,7 @@ namespace OliveHelpsLDK.Process
             {
                 Session = CreateSession(),
             };
-            return _client.ProcessStateAsync(request, CreateOptions(cancellationToken))
+            return Client.ProcessStateAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
                 .ContinueWith(task => FromProto(task.Result), cancellationToken);
         }
@@ -32,7 +32,7 @@ namespace OliveHelpsLDK.Process
             {
                 Session = CreateSession(),
             };
-            var call = _client.ProcessStateStream(request, CreateOptions(cancellationToken));
+            var call = Client.ProcessStateStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<ProcessStateStreamResponse,ProcessEvent>(call, FromProto);
         }
 

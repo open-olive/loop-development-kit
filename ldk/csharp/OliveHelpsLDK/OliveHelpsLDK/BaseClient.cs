@@ -4,17 +4,17 @@ using Grpc.Core;
 namespace OliveHelpsLDK
 {
     internal abstract class BaseClient<TClient>
-        {
-        protected TClient _client;
-        
-        internal Session _session;
+    {
+        protected TClient Client { get; set; }
+
+        internal Session Session { get; set; }
 
         protected Proto.Session CreateSession()
         {
             return new Proto.Session
             {
-                LoopID = _session.LoopId,
-                Token = _session.Token,
+                LoopID = Session.LoopId,
+                Token = Session.Token,
             };
         }
 

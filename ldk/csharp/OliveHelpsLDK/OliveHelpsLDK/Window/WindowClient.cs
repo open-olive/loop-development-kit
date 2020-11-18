@@ -11,8 +11,8 @@ namespace OliveHelpsLDK.Window
     {
         internal WindowClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Window.WindowClient(channelBase);
-            _session = session;
+            Client = new Proto.Window.WindowClient(channelBase);
+            Session = session;
         }
 
         public Task<WindowInfo> QueryActive(CancellationToken cancellationToken = default)
@@ -21,7 +21,7 @@ namespace OliveHelpsLDK.Window
             {
                 Session = CreateSession(),
             };
-            return _client.WindowActiveWindowAsync(req, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.WindowActiveWindowAsync(req, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => FromProto(task.Result.Window), cancellationToken);
         }
 
@@ -31,7 +31,7 @@ namespace OliveHelpsLDK.Window
             {
                 Session = CreateSession()
             };
-            var call = _client.WindowActiveWindowStream(req, CreateOptions(cancellationToken));
+            var call = Client.WindowActiveWindowStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<WindowActiveWindowStreamResponse, WindowInfo>(call,
                 task => FromProto(task.Window));
         }
@@ -42,7 +42,7 @@ namespace OliveHelpsLDK.Window
             {
                 Session = CreateSession(),
             };
-            return _client.WindowStateAsync(req, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.WindowStateAsync(req, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => FromProto(task.Result), cancellationToken);
         }
 
@@ -52,7 +52,7 @@ namespace OliveHelpsLDK.Window
             {
                 Session = CreateSession()
             };
-            var call = _client.WindowStateStream(req, CreateOptions(cancellationToken));
+            var call = Client.WindowStateStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<WindowStateStreamResponse, WindowEvent>(call, FromProto);
         }
 

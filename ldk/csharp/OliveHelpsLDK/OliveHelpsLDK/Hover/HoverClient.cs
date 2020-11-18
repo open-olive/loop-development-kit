@@ -8,8 +8,8 @@ namespace OliveHelpsLDK.Hover
     {
         internal HoverClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Hover.HoverClient(channelBase);
-            _session = session;
+            Client = new Proto.Hover.HoverClient(channelBase);
+            Session = session;
         }
 
         public Task<string> Query(HoverRequest request, CancellationToken cancellationToken = default)
@@ -20,7 +20,7 @@ namespace OliveHelpsLDK.Hover
                 XFromCenter = checked((uint) request.XFromCenter),
                 YFromCenter = checked((uint) request.YFromCenter),
             };
-            return _client.HoverReadAsync(msg, CreateOptions(cancellationToken)).ResponseAsync
+            return Client.HoverReadAsync(msg, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(task => task.Result.Text, cancellationToken);
         }
 
@@ -32,7 +32,7 @@ namespace OliveHelpsLDK.Hover
                 XFromCenter = checked((uint) request.XFromCenter),
                 YFromCenter = checked((uint) request.YFromCenter),
             };
-            var call = _client.HoverReadStream(msg, CreateOptions(cancellationToken));
+            var call = Client.HoverReadStream(msg, CreateOptions(cancellationToken));
             return new StreamingCall<Proto.HoverReadStreamResponse, string>(call, response => response.Text);
         }
     }

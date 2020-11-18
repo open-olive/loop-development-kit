@@ -8,8 +8,8 @@ namespace OliveHelpsLDK.Keyboard
     {
         internal KeyboardClient(ChannelBase channelBase, Session session)
         {
-            _client = new Proto.Keyboard.KeyboardClient(channelBase);
-            _session = session;
+            Client = new Proto.Keyboard.KeyboardClient(channelBase);
+            Session = session;
         }
 
         public IStreamingCall<bool> StreamHotKey(HotKey hotkey, CancellationToken cancellationToken = default)
@@ -19,7 +19,7 @@ namespace OliveHelpsLDK.Keyboard
                 Session = CreateSession(),
                 Hotkey = ToProto(hotkey),
             };
-            var call = _client.KeyboardHotkeyStream(req, CreateOptions(cancellationToken));
+            var call = Client.KeyboardHotkeyStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<KeyboardHotkeyStreamResponse, bool>(call, response => response.Scanned);
         }
 
@@ -29,7 +29,7 @@ namespace OliveHelpsLDK.Keyboard
             {
                 Session = CreateSession()
             };
-            var call = _client.KeyboardScancodeStream(req, CreateOptions(cancellationToken));
+            var call = Client.KeyboardScancodeStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<KeyboardScancodeStreamResponse, ScanCodeEvent>(call, FromProto);
         }
 
@@ -39,7 +39,7 @@ namespace OliveHelpsLDK.Keyboard
             {
                 Session = CreateSession()
             };
-            var call = _client.KeyboardTextStream(req, CreateOptions(cancellationToken));
+            var call = Client.KeyboardTextStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<KeyboardTextStreamResponse, string>(call, resp => resp.Text);
         }
 
@@ -49,7 +49,7 @@ namespace OliveHelpsLDK.Keyboard
             {
                 Session = CreateSession()
             };
-            var call = _client.KeyboardCharacterStream(req, CreateOptions(cancellationToken));
+            var call = Client.KeyboardCharacterStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<KeyboardCharacterStreamResponse, string>(call, resp => resp.Text);
         }
 
