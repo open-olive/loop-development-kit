@@ -27,6 +27,7 @@ class LoopServer {
         // Disabling any b/c the untyped server requires an indexed type.
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         server.addService(loop_grpc_pb_1.default.LoopService, this);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         server.addService(stdioGrpcServer_1.StdioService, new stdioGrpcServer_1.StdioGrpcServer());
     }
     /**

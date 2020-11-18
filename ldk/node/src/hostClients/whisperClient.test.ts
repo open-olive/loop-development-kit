@@ -1,6 +1,5 @@
 import { mocked } from 'ts-jest/utils';
 import * as Services from '../grpc/whisper_grpc_pb';
-import * as Messages from '../grpc/whisper_pb';
 import WhisperClient from './whisperClient';
 import { ConnInfo } from '../grpc/broker_pb';
 import { Session } from '../grpc/session_pb';
@@ -13,7 +12,6 @@ jest.mock('./whisperMessageBuilder');
 
 const WHISPER_ID = '1234-abcd';
 const hostClient = mocked(Services.WhisperClient);
-const newMessage = mocked(Messages.WhisperMarkdownRequest);
 const messageBuilders = mocked(Builders);
 const testLogger = new Logger('test-logger');
 

@@ -23,10 +23,12 @@ exports.buildWhisperConfirmMessage = exports.buildWhisperMarkdownRequest = expor
 const timestamp_pb_1 = require("google-protobuf/google/protobuf/timestamp_pb");
 const messages = __importStar(require("../grpc/whisper_pb"));
 /**
- * @param msg
- * @param input
+ * @param msg - The message.
+ * @param input - The whisper form input.
  */
-function setFormMessages(msg, input) {
+function setFormMessages(msg, 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+input) {
     msg.setLabel(input.label);
     msg.setTooltip(input.tooltip);
     if (input.order && input.order > 0) {
@@ -109,20 +111,8 @@ exports.generateWhisperInput = (input) => {
     return msg;
 };
 exports.generateWhisperMeta = (whisper) => {
-    const style = new messages.WhisperStyle();
-    if (whisper.style) {
-        style.setBackgroundcolor(whisper.style.backgroundColor || '#fff');
-        style.setPrimarycolor(whisper.style.primaryColor || '#666');
-        style.setHighlightcolor(whisper.style.highlightColor || '#651fff');
-    }
-    else {
-        style.setBackgroundcolor('#fff');
-        style.setPrimarycolor('#666');
-        style.setHighlightcolor('#651fff');
-    }
     const whisperMsg = new messages.WhisperMeta();
     whisperMsg.setLabel(whisper.label);
-    whisperMsg.setStyle(style);
     whisperMsg.setIcon(whisper.icon);
     return whisperMsg;
 };

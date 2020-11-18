@@ -73,11 +73,6 @@ func TestWhisperFormResolved(t *testing.T) {
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
 				SubmitLabel: "Submit",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 				Inputs: map[string]ldk.WhisperContentFormInput{
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
@@ -138,11 +133,6 @@ func TestWhisperFormResolved(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Hello Testy McTesterson",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 			}
 			if got := req; !cmp.Equal(got, exp) {
 				return fmt.Errorf("unexpected markdown:\n%s", cmp.Diff(got, exp))
@@ -155,7 +145,7 @@ func TestWhisperFormResolved(t *testing.T) {
 	}
 
 	// stage 4: send markdown response
-	if err := (func() error {
+	if err := func() error {
 		timeout := time.NewTimer(time.Second)
 		defer timeout.Stop()
 		select {
@@ -164,7 +154,7 @@ func TestWhisperFormResolved(t *testing.T) {
 		case markdownResponseChan <- nil:
 			return nil
 		}
-	}()); err != nil {
+	}(); err != nil {
 		t.Errorf("stage 4 failed\n%v", err)
 		return
 	}
@@ -250,11 +240,6 @@ func TestWhisperFormRejected(t *testing.T) {
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
 				SubmitLabel: "Submit",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 				Inputs: map[string]ldk.WhisperContentFormInput{
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
@@ -313,11 +298,6 @@ func TestWhisperFormRejected(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "It's rude to not tell us your name.",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 			}
 			if got := req; !cmp.Equal(got, exp) {
 				return fmt.Errorf("unexpected markdown:\n%s", cmp.Diff(got, exp))
@@ -330,7 +310,7 @@ func TestWhisperFormRejected(t *testing.T) {
 	}
 
 	// stage 4: send markdown response
-	if err := (func() error {
+	if err := func() error {
 		timeout := time.NewTimer(time.Second)
 		defer timeout.Stop()
 		select {
@@ -339,7 +319,7 @@ func TestWhisperFormRejected(t *testing.T) {
 		case markdownResponseChan <- nil:
 			return nil
 		}
-	}()); err != nil {
+	}(); err != nil {
 		t.Errorf("stage 4 failed\n%v", err)
 		return
 	}
@@ -432,11 +412,6 @@ func TestWhisperFormUpdateValid(t *testing.T) {
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
 				SubmitLabel: "Submit",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 				Inputs: map[string]ldk.WhisperContentFormInput{
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
@@ -496,11 +471,6 @@ func TestWhisperFormUpdateValid(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Valid Email Address: example@example.com",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 			}
 			if got := req; !cmp.Equal(got, exp) {
 				return fmt.Errorf("unexpected markdown:\n%s", cmp.Diff(got, exp))
@@ -600,11 +570,6 @@ func TestWhisperFormUpdateInvalid(t *testing.T) {
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
 				SubmitLabel: "Submit",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 				Inputs: map[string]ldk.WhisperContentFormInput{
 					"name": &ldk.WhisperContentFormInputText{
 						Label:   "Full Name",
@@ -664,11 +629,6 @@ func TestWhisperFormUpdateInvalid(t *testing.T) {
 				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Invalid Email Address: INVALID!!!!",
-				Style: ldk.Style{
-					BackgroundColor: "#fff",
-					HighlightColor:  "#651fff",
-					PrimaryColor:    "#666",
-				},
 			}
 			if got := req; !cmp.Equal(got, exp) {
 				return fmt.Errorf("unexpected markdown:\n%s", cmp.Diff(got, exp))

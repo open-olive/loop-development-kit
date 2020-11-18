@@ -5,8 +5,6 @@ type WhisperContentMarkdown struct {
 	Label string `json:"label"`
 
 	Markdown string `json:"markdown"`
-
-	Style Style `json:"style"`
 }
 
 // Type returns the type of the whisper content

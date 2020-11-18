@@ -7,12 +7,6 @@ import (
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
-const (
-	backgroundColor = "#fff"
-	highlightColor  = "#651fff"
-	primaryColor    = "#666"
-)
-
 func Serve() error {
 	l := ldk.NewLogger("example-storage")
 	loop, err := NewLoop(l)
@@ -30,18 +24,12 @@ type Loop struct {
 
 	sidekick ldk.Sidekick
 	logger   *ldk.Logger
-	style    ldk.Style
 }
 
 // NewLoop returns a pointer to a loop
 func NewLoop(logger *ldk.Logger) (*Loop, error) {
 	return &Loop{
 		logger: logger,
-		style: ldk.Style{
-			BackgroundColor: backgroundColor,
-			HighlightColor:  highlightColor,
-			PrimaryColor:    primaryColor,
-		},
 	}, nil
 }
 

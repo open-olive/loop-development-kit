@@ -9,7 +9,7 @@ import { StoppableStream, StreamListener } from './stoppables';
 /**
  * @internal
  *
- * @param message
+ * @param message - The message to transform.
  */
 const clipboardTransformer: StreamTransformer<
   messages.ClipboardReadResponse | messages.ClipboardReadStreamResponse,

@@ -8,8 +8,11 @@ const storageClient_1 = __importDefault(require("./hostClients/storageClient"));
 const keyboardClient_1 = __importDefault(require("./hostClients/keyboardClient"));
 const clipboardClient_1 = require("./hostClients/clipboardClient");
 const cursorClient_1 = require("./hostClients/cursorClient");
+// import { HoverClient } from './hostClients/hoverClient';
 const fileSystemClient_1 = require("./hostClients/fileSystemClient");
 const processClient_1 = require("./hostClients/processClient");
+// import { WindowClient } from './hostClients/windowClient';
+// import { BrowserClient } from './hostClients/browserClient';
 const networkClient_1 = require("./hostClients/networkClient");
 const uiClient_1 = require("./hostClients/uiClient");
 /**
