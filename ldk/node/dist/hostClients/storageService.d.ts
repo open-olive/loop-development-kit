@@ -8,18 +8,10 @@ export interface StorageService {
      */
     storageDelete(key: string): Promise<void>;
     /**
-     * @returns Promise that resolves when all the values are deleted from storage.
-     */
-    storageDeleteAll(): Promise<void>;
-    /**
      * @param key - Key to check for presence.
      * @returns Promise resolve with whether the storage has the key (true) or not (false).
      */
-    storageHasKey(key: string): Promise<boolean>;
-    /**
-     * @returns An array of all the keys currently present in storage.
-     */
-    storageKeys(): Promise<string[]>;
+    storageExists(key: string): Promise<boolean>;
     /**
      * Reads the value from storage and returns it in a promise.
      *
@@ -27,14 +19,6 @@ export interface StorageService {
      * @returns Resolves with the value of the key.
      */
     storageRead(key: string): Promise<string>;
-    /**
-     * Reads all keys in storage.
-     *
-     * @returns A promise resolving with an array of all the keys.
-     */
-    storageReadAll(): Promise<{
-        [index: string]: string;
-    }>;
     /**
      * Writes a value to storage.
      *

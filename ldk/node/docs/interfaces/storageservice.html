@@ -88,11 +88,8 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storagedelete" class="tsd-kind-icon">storage<wbr>Delete</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storagedeleteall" class="tsd-kind-icon">storage<wbr>Delete<wbr>All</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storagehaskey" class="tsd-kind-icon">storage<wbr>Has<wbr>Key</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storagekeys" class="tsd-kind-icon">storage<wbr>Keys</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storageexists" class="tsd-kind-icon">storage<wbr>Exists</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storageread" class="tsd-kind-icon">storage<wbr>Read</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storagereadall" class="tsd-kind-icon">storage<wbr>Read<wbr>All</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="storageservice.html#storagewrite" class="tsd-kind-icon">storage<wbr>Write</a></li>
 							</ul>
 						</section>
@@ -111,7 +108,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b9d77ea/ldk/node/src/hostClients/storageService.ts#L9">src/hostClients/storageService.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/e62c32e/ldk/node/src/hostClients/storageService.ts#L9">src/hostClients/storageService.ts:9</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -131,36 +128,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="storagedeleteall" class="tsd-anchor"></a>
-					<h3>storage<wbr>Delete<wbr>All</h3>
+					<a name="storageexists" class="tsd-anchor"></a>
+					<h3>storage<wbr>Exists</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">storage<wbr>Delete<wbr>All<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">storage<wbr>Exists<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b9d77ea/ldk/node/src/hostClients/storageService.ts#L14">src/hostClients/storageService.ts:14</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>Promise that resolves when all the values are deleted from storage.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="storagehaskey" class="tsd-anchor"></a>
-					<h3>storage<wbr>Has<wbr>Key</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">storage<wbr>Has<wbr>Key<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b9d77ea/ldk/node/src/hostClients/storageService.ts#L20">src/hostClients/storageService.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/e62c32e/ldk/node/src/hostClients/storageService.ts#L15">src/hostClients/storageService.ts:15</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -180,26 +157,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="storagekeys" class="tsd-anchor"></a>
-					<h3>storage<wbr>Keys</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">storage<wbr>Keys<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b9d77ea/ldk/node/src/hostClients/storageService.ts#L25">src/hostClients/storageService.ts:25</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>An array of all the keys currently present in storage.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="storageread" class="tsd-anchor"></a>
 					<h3>storage<wbr>Read</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -209,7 +166,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b9d77ea/ldk/node/src/hostClients/storageService.ts#L33">src/hostClients/storageService.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/e62c32e/ldk/node/src/hostClients/storageService.ts#L23">src/hostClients/storageService.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -232,29 +189,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="storagereadall" class="tsd-anchor"></a>
-					<h3>storage<wbr>Read<wbr>All</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">storage<wbr>Read<wbr>All<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b9d77ea/ldk/node/src/hostClients/storageService.ts#L40">src/hostClients/storageService.ts:40</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Reads all keys in storage.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise resolving with an array of all the keys.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
 					<a name="storagewrite" class="tsd-anchor"></a>
 					<h3>storage<wbr>Write</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
@@ -264,7 +198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/b9d77ea/ldk/node/src/hostClients/storageService.ts#L49">src/hostClients/storageService.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/e62c32e/ldk/node/src/hostClients/storageService.ts#L32">src/hostClients/storageService.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -328,19 +262,10 @@
 								<a href="storageservice.html#storagedelete" class="tsd-kind-icon">storage<wbr>Delete</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="storageservice.html#storagedeleteall" class="tsd-kind-icon">storage<wbr>Delete<wbr>All</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="storageservice.html#storagehaskey" class="tsd-kind-icon">storage<wbr>Has<wbr>Key</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="storageservice.html#storagekeys" class="tsd-kind-icon">storage<wbr>Keys</a>
+								<a href="storageservice.html#storageexists" class="tsd-kind-icon">storage<wbr>Exists</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="storageservice.html#storageread" class="tsd-kind-icon">storage<wbr>Read</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="storageservice.html#storagereadall" class="tsd-kind-icon">storage<wbr>Read<wbr>All</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="storageservice.html#storagewrite" class="tsd-kind-icon">storage<wbr>Write</a>

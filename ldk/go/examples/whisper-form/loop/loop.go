@@ -8,12 +8,6 @@ import (
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
-const (
-	backgroundColor = "#fff"
-	highlightColor  = "#651fff"
-	primaryColor    = "#666"
-)
-
 func Serve() error {
 	l := ldk.NewLogger("example-whisper-form")
 	loop, err := NewLoop(l)
@@ -31,18 +25,12 @@ type Loop struct {
 
 	sidekick ldk.Sidekick
 	logger   *ldk.Logger
-	style    ldk.Style
 }
 
 // NewLoop returns a pointer to a loop
 func NewLoop(logger *ldk.Logger) (*Loop, error) {
 	return &Loop{
 		logger: logger,
-		style: ldk.Style{
-			BackgroundColor: backgroundColor,
-			HighlightColor:  highlightColor,
-			PrimaryColor:    primaryColor,
-		},
 	}, nil
 }
 
@@ -64,7 +52,6 @@ func (c *Loop) run() {
 		Markdown:    "Tell us about yourself",
 		CancelLabel: "Cancel",
 		SubmitLabel: "Submit",
-		Style:       c.style,
 		Inputs: map[string]ldk.WhisperContentFormInput{
 			"name": &ldk.WhisperContentFormInputText{
 				Label:   "Full Name",
@@ -82,7 +69,6 @@ func (c *Loop) run() {
 							Icon:     "bathtub",
 							Label:    "Example Controller Go",
 							Markdown: "Invalid Email Address: " + email,
-							Style:    c.style,
 						})
 						if err != nil {
 							c.logger.Error("failed to emit whisper", "error", err)
@@ -93,7 +79,6 @@ func (c *Loop) run() {
 							Icon:     "bathtub",
 							Label:    "Example Controller Go",
 							Markdown: "Valid Email Address: " + email,
-							Style:    c.style,
 						})
 						if err != nil {
 							c.logger.Error("failed to emit whisper", "error", err)
@@ -118,13 +103,12 @@ func (c *Loop) run() {
 	err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
 		Icon:  "bathtub",
 		Label: "Example Controller Go",
-		Markdown: (func() string {
+		Markdown: func() string {
 			if isSubmitted {
 				return fmt.Sprintf("Hello %s", name)
 			}
 			return "It's rude to not tell us your name."
-		}()),
-		Style: c.style,
+		}(),
 	})
 	if err != nil {
 		c.logger.Error("failed to emit whisper", "error", err)
