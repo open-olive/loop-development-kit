@@ -1,8 +1,6 @@
 package ldk
 
 import (
-	"fmt"
-
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
@@ -23,7 +21,7 @@ func (a WhisperContentListElementAlign) ToProto() (proto.WhisperListElement_Alig
 	case WhisperContentListElementAlignRight:
 		return proto.WhisperListElement_ALIGN_RIGHT, nil
 	default:
-		return proto.WhisperListElement_ALIGN_LEFT, fmt.Errorf("unexpected align option %s", a)
+		return proto.WhisperListElement_ALIGN_LEFT, nil
 	}
 }
 
@@ -36,6 +34,6 @@ func WhisperContentListElementAlignFromProto(a proto.WhisperListElement_Align) (
 	case proto.WhisperListElement_ALIGN_RIGHT:
 		return WhisperContentListElementAlignRight, nil
 	default:
-		return WhisperContentListElementAlignLeft, fmt.Errorf("unexpected align option %s", a)
+		return WhisperContentListElementAlignLeft, nil
 	}
 }

@@ -1,8 +1,6 @@
 package ldk
 
 import (
-	"fmt"
-
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 )
 
@@ -26,7 +24,7 @@ func (s WhisperContentListElementStyle) ToProto() (proto.WhisperListElement_Styl
 	case WhisperContentListElementStyleWarning:
 		return proto.WhisperListElement_STYLE_WARN, nil
 	default:
-		return proto.WhisperListElement_STYLE_NONE, fmt.Errorf("unexpected style option %s", s)
+		return proto.WhisperListElement_STYLE_NONE, nil
 	}
 }
 
@@ -41,6 +39,6 @@ func WhisperContentListElementStyleFromProto(s proto.WhisperListElement_Style) (
 	case proto.WhisperListElement_STYLE_WARN:
 		return WhisperContentListElementStyleWarning, nil
 	default:
-		return WhisperContentListElementStyleNone, fmt.Errorf("unexpected style option %s", s)
+		return WhisperContentListElementStyleNone, nil
 	}
 }
