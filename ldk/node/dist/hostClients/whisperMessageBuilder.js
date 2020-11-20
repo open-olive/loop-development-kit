@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildWhisperConfirmMessage = exports.buildWhisperListRequest = exports.buildWhisperMarkdownRequest = exports.generateWhisperForm = exports.generateWhisperMeta = exports.generateWhisperListElement = exports.generateWhisperListElementAlertHighlight = exports.generateWhisperListElementPairHighlight = exports.generateWhisperInput = void 0;
+exports.buildWhisperConfirmMessage = exports.buildWhisperListRequest = exports.buildWhisperMarkdownRequest = exports.generateWhisperForm = exports.generateWhisperMeta = exports.generateWhisperListElement = exports.generateWhisperListAlign = exports.generateWhisperListStyle = exports.generateWhisperInput = void 0;
 const timestamp_pb_1 = require("google-protobuf/google/protobuf/timestamp_pb");
 const whisperService_1 = require("./whisperService");
 const messages = __importStar(require("../grpc/whisper_pb"));
@@ -123,32 +123,38 @@ input) {
         msg.setOrder(input.order);
     }
 }
-exports.generateWhisperListElementPairHighlight = (highlight) => {
-    switch (highlight) {
-        case whisperService_1.WhisperListPairHighlight.NONE: {
-            return messages.WhisperListElement.Pair.Highlight.NONE;
+exports.generateWhisperListStyle = (style) => {
+    switch (style) {
+        case whisperService_1.WhisperListStyle.NONE: {
+            return messages.WhisperListElement.Style.STYLE_NONE;
         }
-        case whisperService_1.WhisperListPairHighlight.YELLOW: {
-            return messages.WhisperListElement.Pair.Highlight.YELLOW;
+        case whisperService_1.WhisperListStyle.SUCCESS: {
+            return messages.WhisperListElement.Style.STYLE_SUCCESS;
+        }
+        case whisperService_1.WhisperListStyle.WARN: {
+            return messages.WhisperListElement.Style.STYLE_WARN;
+        }
+        case whisperService_1.WhisperListStyle.ERROR: {
+            return messages.WhisperListElement.Style.STYLE_ERROR;
         }
         default: {
-            throw new Error('Unexpected Input Type');
+            return messages.WhisperListElement.Style.STYLE_NONE;
         }
     }
 };
-exports.generateWhisperListElementAlertHighlight = (highlight) => {
-    switch (highlight) {
-        case whisperService_1.WhisperListAlertHighlight.NONE: {
-            return messages.WhisperListElement.Alert.Highlight.NONE;
+exports.generateWhisperListAlign = (align) => {
+    switch (align) {
+        case whisperService_1.WhisperListAlign.LEFT: {
+            return messages.WhisperListElement.Align.ALIGN_LEFT;
         }
-        case whisperService_1.WhisperListAlertHighlight.GREEN: {
-            return messages.WhisperListElement.Alert.Highlight.GREEN;
+        case whisperService_1.WhisperListAlign.CENTER: {
+            return messages.WhisperListElement.Align.ALIGN_CENTER;
         }
-        case whisperService_1.WhisperListAlertHighlight.RED: {
-            return messages.WhisperListElement.Alert.Highlight.RED;
+        case whisperService_1.WhisperListAlign.RIGHT: {
+            return messages.WhisperListElement.Align.ALIGN_RIGHT;
         }
         default: {
-            throw new Error('Unexpected Input Type');
+            return messages.WhisperListElement.Align.ALIGN_LEFT;
         }
     }
 };
@@ -159,17 +165,25 @@ exports.generateWhisperListElement = (element) => {
         case 'pair': {
             const inputMsg = new WLE.Pair();
             inputMsg.setCopyable(element.copyable);
-            inputMsg.setHighlight(exports.generateWhisperListElementPairHighlight(element.highlight));
-            inputMsg.setKey(element.key);
+            inputMsg.setLabel(element.label);
+            inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
             inputMsg.setValue(element.value);
             msg.setPair(inputMsg);
             break;
         }
-        case 'alert': {
-            const inputMsg = new WLE.Alert();
+        case 'message': {
+            const inputMsg = new WLE.Message();
+            inputMsg.setAlign(exports.generateWhisperListAlign(element.align));
             inputMsg.setBody(element.body);
-            inputMsg.setHighlight(exports.generateWhisperListElementAlertHighlight(element.highlight));
-            msg.setAlert(inputMsg);
+            inputMsg.setHeader(element.header);
+            inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            msg.setMessage(inputMsg);
+            break;
+        }
+        case 'divider': {
+            const inputMsg = new WLE.Divider();
+            inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            msg.setDivider(inputMsg);
             break;
         }
         default: {

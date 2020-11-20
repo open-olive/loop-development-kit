@@ -1,16 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WhisperListAlertHighlight = exports.WhisperListPairHighlight = void 0;
+exports.WhisperListAlign = exports.WhisperListStyle = void 0;
 // eslint-disable-next-line no-shadow
-var WhisperListPairHighlight;
-(function (WhisperListPairHighlight) {
-    WhisperListPairHighlight[WhisperListPairHighlight["NONE"] = 0] = "NONE";
-    WhisperListPairHighlight[WhisperListPairHighlight["YELLOW"] = 1] = "YELLOW";
-})(WhisperListPairHighlight = exports.WhisperListPairHighlight || (exports.WhisperListPairHighlight = {}));
+var WhisperListStyle;
+(function (WhisperListStyle) {
+    WhisperListStyle[WhisperListStyle["NONE"] = 0] = "NONE";
+    WhisperListStyle[WhisperListStyle["SUCCESS"] = 1] = "SUCCESS";
+    WhisperListStyle[WhisperListStyle["WARN"] = 2] = "WARN";
+    WhisperListStyle[WhisperListStyle["ERROR"] = 3] = "ERROR";
+})(WhisperListStyle = exports.WhisperListStyle || (exports.WhisperListStyle = {}));
 // eslint-disable-next-line no-shadow
-var WhisperListAlertHighlight;
-(function (WhisperListAlertHighlight) {
-    WhisperListAlertHighlight[WhisperListAlertHighlight["NONE"] = 0] = "NONE";
-    WhisperListAlertHighlight[WhisperListAlertHighlight["GREEN"] = 1] = "GREEN";
-    WhisperListAlertHighlight[WhisperListAlertHighlight["RED"] = 2] = "RED";
-})(WhisperListAlertHighlight = exports.WhisperListAlertHighlight || (exports.WhisperListAlertHighlight = {}));
+var WhisperListAlign;
+(function (WhisperListAlign) {
+    WhisperListAlign[WhisperListAlign["LEFT"] = 0] = "LEFT";
+    WhisperListAlign[WhisperListAlign["CENTER"] = 1] = "CENTER";
+    WhisperListAlign[WhisperListAlign["RIGHT"] = 2] = "RIGHT";
+})(WhisperListAlign = exports.WhisperListAlign || (exports.WhisperListAlign = {}));

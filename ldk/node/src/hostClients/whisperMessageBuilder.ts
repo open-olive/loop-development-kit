@@ -5,11 +5,11 @@ import {
   WhisperFormConfig,
   WhisperFormInput,
   WhisperFormInputs,
-  WhisperListAlertHighlight,
+  WhisperListAlign,
   WhisperListConfig,
   WhisperListElement,
   WhisperListElements,
-  WhisperListPairHighlight,
+  WhisperListStyle,
 } from './whisperService';
 import * as messages from '../grpc/whisper_pb';
 
@@ -133,40 +133,46 @@ function setListMessages<T>(
   }
 }
 
-export const generateWhisperListElementPairHighlight = (
-  highlight: WhisperListPairHighlight,
-): messages.WhisperListElement.Pair.Highlight => {
-  switch (highlight) {
-    case WhisperListPairHighlight.NONE: {
-      return messages.WhisperListElement.Pair.Highlight.NONE
+export const generateWhisperListStyle = (
+  style: WhisperListStyle,
+): messages.WhisperListElement.Style => {
+  switch (style) {
+    case WhisperListStyle.NONE: {
+      return messages.WhisperListElement.Style.STYLE_NONE;
     }
-    case WhisperListPairHighlight.YELLOW: {
-      return messages.WhisperListElement.Pair.Highlight.YELLOW
+    case WhisperListStyle.SUCCESS: {
+      return messages.WhisperListElement.Style.STYLE_SUCCESS;
+    }
+    case WhisperListStyle.WARN: {
+      return messages.WhisperListElement.Style.STYLE_WARN;
+    }
+    case WhisperListStyle.ERROR: {
+      return messages.WhisperListElement.Style.STYLE_ERROR;
     }
     default: {
-      throw new Error('Unexpected Input Type');
+      return messages.WhisperListElement.Style.STYLE_NONE;
     }
   }
-}
+};
 
-export const generateWhisperListElementAlertHighlight = (
-  highlight: WhisperListAlertHighlight,
-): messages.WhisperListElement.Alert.Highlight => {
-  switch (highlight) {
-    case WhisperListAlertHighlight.NONE: {
-      return messages.WhisperListElement.Alert.Highlight.NONE
+export const generateWhisperListAlign = (
+  align: WhisperListAlign,
+): messages.WhisperListElement.Align => {
+  switch (align) {
+    case WhisperListAlign.LEFT: {
+      return messages.WhisperListElement.Align.ALIGN_LEFT;
     }
-    case WhisperListAlertHighlight.GREEN: {
-      return messages.WhisperListElement.Alert.Highlight.GREEN
+    case WhisperListAlign.CENTER: {
+      return messages.WhisperListElement.Align.ALIGN_CENTER;
     }
-    case WhisperListAlertHighlight.RED: {
-      return messages.WhisperListElement.Alert.Highlight.RED
+    case WhisperListAlign.RIGHT: {
+      return messages.WhisperListElement.Align.ALIGN_RIGHT;
     }
     default: {
-      throw new Error('Unexpected Input Type');
+      return messages.WhisperListElement.Align.ALIGN_LEFT;
     }
   }
-}
+};
 
 export const generateWhisperListElement = (
   element: WhisperListElements,
@@ -177,17 +183,25 @@ export const generateWhisperListElement = (
     case 'pair': {
       const inputMsg = new WLE.Pair();
       inputMsg.setCopyable(element.copyable);
-      inputMsg.setHighlight(generateWhisperListElementPairHighlight(element.highlight));
-      inputMsg.setKey(element.key);
+      inputMsg.setLabel(element.label);
+      inputMsg.setStyle(generateWhisperListStyle(element.style));
       inputMsg.setValue(element.value);
       msg.setPair(inputMsg);
       break;
     }
-    case 'alert': {
-      const inputMsg = new WLE.Alert();
+    case 'message': {
+      const inputMsg = new WLE.Message();
+      inputMsg.setAlign(generateWhisperListAlign(element.align));
       inputMsg.setBody(element.body);
-      inputMsg.setHighlight(generateWhisperListElementAlertHighlight(element.highlight));
-      msg.setAlert(inputMsg);
+      inputMsg.setHeader(element.header);
+      inputMsg.setStyle(generateWhisperListStyle(element.style));
+      msg.setMessage(inputMsg);
+      break;
+    }
+    case 'divider': {
+      const inputMsg = new WLE.Divider();
+      inputMsg.setStyle(generateWhisperListStyle(element.style));
+      msg.setDivider(inputMsg);
       break;
     }
     default: {

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>WhisperListAlertHighlight | Loop Development Kit for Node.js</title>
+	<title>WhisperListStyle | Loop Development Kit for Node.js</title>
 	<meta name="description" content="Documentation for Loop Development Kit for Node.js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="whisperlistalerthighlight.html">WhisperListAlertHighlight</a>
+					<a href="whisperliststyle.html">WhisperListStyle</a>
 				</li>
 			</ul>
-			<h1>Enumeration WhisperListAlertHighlight</h1>
+			<h1>Enumeration WhisperListStyle</h1>
 		</div>
 	</div>
 </header>
@@ -72,9 +72,10 @@
 						<section class="tsd-index-section ">
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="whisperlistalerthighlight.html#green" class="tsd-kind-icon">GREEN</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="whisperlistalerthighlight.html#none" class="tsd-kind-icon">NONE</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="whisperlistalerthighlight.html#red" class="tsd-kind-icon">RED</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="whisperliststyle.html#error" class="tsd-kind-icon">ERROR</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="whisperliststyle.html#none" class="tsd-kind-icon">NONE</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="whisperliststyle.html#success" class="tsd-kind-icon">SUCCESS</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="whisperliststyle.html#warn" class="tsd-kind-icon">WARN</a></li>
 							</ul>
 						</section>
 					</div>
@@ -83,12 +84,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Enumeration members</h2>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="green" class="tsd-anchor"></a>
-					<h3>GREEN</h3>
-					<div class="tsd-signature tsd-kind-icon">GREEN<span class="tsd-signature-symbol">:</span></div>
+					<a name="error" class="tsd-anchor"></a>
+					<h3>ERROR</h3>
+					<div class="tsd-signature tsd-kind-icon">ERROR<span class="tsd-signature-symbol">:</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/db861a4/ldk/node/src/hostClients/whisperService.ts#L138">src/hostClients/whisperService.ts:138</a></li>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/16ad471/ldk/node/src/hostClients/whisperService.ts#L127">src/hostClients/whisperService.ts:127</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -98,17 +99,27 @@
 					<div class="tsd-signature tsd-kind-icon">NONE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/db861a4/ldk/node/src/hostClients/whisperService.ts#L137">src/hostClients/whisperService.ts:137</a></li>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/16ad471/ldk/node/src/hostClients/whisperService.ts#L124">src/hostClients/whisperService.ts:124</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
-					<a name="red" class="tsd-anchor"></a>
-					<h3>RED</h3>
-					<div class="tsd-signature tsd-kind-icon">RED<span class="tsd-signature-symbol">:</span></div>
+					<a name="success" class="tsd-anchor"></a>
+					<h3>SUCCESS</h3>
+					<div class="tsd-signature tsd-kind-icon">SUCCESS<span class="tsd-signature-symbol">:</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/db861a4/ldk/node/src/hostClients/whisperService.ts#L139">src/hostClients/whisperService.ts:139</a></li>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/16ad471/ldk/node/src/hostClients/whisperService.ts#L125">src/hostClients/whisperService.ts:125</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="warn" class="tsd-anchor"></a>
+					<h3>WARN</h3>
+					<div class="tsd-signature tsd-kind-icon">WARN<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/16ad471/ldk/node/src/hostClients/whisperService.ts#L126">src/hostClients/whisperService.ts:126</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -142,16 +153,19 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-enum">
-						<a href="whisperlistalerthighlight.html" class="tsd-kind-icon">Whisper<wbr>List<wbr>Alert<wbr>Highlight</a>
+						<a href="whisperliststyle.html" class="tsd-kind-icon">Whisper<wbr>List<wbr>Style</a>
 						<ul>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="whisperlistalerthighlight.html#green" class="tsd-kind-icon">GREEN</a>
+								<a href="whisperliststyle.html#error" class="tsd-kind-icon">ERROR</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="whisperlistalerthighlight.html#none" class="tsd-kind-icon">NONE</a>
+								<a href="whisperliststyle.html#none" class="tsd-kind-icon">NONE</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
-								<a href="whisperlistalerthighlight.html#red" class="tsd-kind-icon">RED</a>
+								<a href="whisperliststyle.html#success" class="tsd-kind-icon">SUCCESS</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="whisperliststyle.html#warn" class="tsd-kind-icon">WARN</a>
 							</li>
 						</ul>
 					</li>

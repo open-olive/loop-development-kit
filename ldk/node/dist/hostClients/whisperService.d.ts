@@ -79,26 +79,33 @@ export interface WhisperListElement<T extends string> {
      */
     order?: number;
 }
-export declare enum WhisperListPairHighlight {
+export declare enum WhisperListStyle {
     NONE = 0,
-    YELLOW = 1
+    SUCCESS = 1,
+    WARN = 2,
+    ERROR = 3
+}
+export declare enum WhisperListAlign {
+    LEFT = 0,
+    CENTER = 1,
+    RIGHT = 2
 }
 export declare type WhisperListPair = WhisperListElement<'pair'> & {
     copyable: boolean;
-    highlight: WhisperListPairHighlight;
-    key: string;
+    label: string;
+    style: WhisperListStyle;
     value: string;
 };
-export declare enum WhisperListAlertHighlight {
-    NONE = 0,
-    GREEN = 1,
-    RED = 2
-}
-export declare type WhisperListAlert = WhisperListElement<'alert'> & {
+export declare type WhisperListMessage = WhisperListElement<'message'> & {
+    align: WhisperListAlign;
     body: string;
-    highlight: WhisperListAlertHighlight;
+    header: string;
+    style: WhisperListStyle;
 };
-export declare type WhisperListElements = WhisperListAlert | WhisperListPair;
+export declare type WhisperListDivider = WhisperListElement<'divider'> & {
+    style: WhisperListStyle;
+};
+export declare type WhisperListElements = WhisperListMessage | WhisperListPair | WhisperListDivider;
 export interface WhisperListConfig extends Whisper {
     elements: {
         [name: string]: WhisperListElements;

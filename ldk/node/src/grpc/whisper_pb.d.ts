@@ -1127,10 +1127,16 @@ export class WhisperListElement extends jspb.Message {
     setPair(value?: WhisperListElement.Pair): WhisperListElement;
 
 
-    hasAlert(): boolean;
-    clearAlert(): void;
-    getAlert(): WhisperListElement.Alert | undefined;
-    setAlert(value?: WhisperListElement.Alert): WhisperListElement;
+    hasMessage(): boolean;
+    clearMessage(): void;
+    getMessage(): WhisperListElement.Message | undefined;
+    setMessage(value?: WhisperListElement.Message): WhisperListElement;
+
+
+    hasDivider(): boolean;
+    clearDivider(): void;
+    getDivider(): WhisperListElement.Divider | undefined;
+    setDivider(value?: WhisperListElement.Divider): WhisperListElement;
 
 
     getElementOneofCase(): WhisperListElement.ElementOneofCase;
@@ -1150,19 +1156,20 @@ export namespace WhisperListElement {
         order: number,
         extra: boolean,
         pair?: WhisperListElement.Pair.AsObject,
-        alert?: WhisperListElement.Alert.AsObject,
+        message?: WhisperListElement.Message.AsObject,
+        divider?: WhisperListElement.Divider.AsObject,
     }
 
 
     export class Pair extends jspb.Message { 
-        getKey(): string;
-        setKey(value: string): Pair;
+        getLabel(): string;
+        setLabel(value: string): Pair;
 
         getValue(): string;
         setValue(value: string): Pair;
 
-        getHighlight(): WhisperListElement.Pair.Highlight;
-        setHighlight(value: WhisperListElement.Pair.Highlight): Pair;
+        getStyle(): WhisperListElement.Style;
+        setStyle(value: WhisperListElement.Style): Pair;
 
         getCopyable(): boolean;
         setCopyable(value: boolean): Pair;
@@ -1180,58 +1187,90 @@ export namespace WhisperListElement {
 
     export namespace Pair {
         export type AsObject = {
-            key: string,
+            label: string,
             value: string,
-            highlight: WhisperListElement.Pair.Highlight,
+            style: WhisperListElement.Style,
             copyable: boolean,
         }
-
-        export enum Highlight {
-    NONE = 0,
-    YELLOW = 1,
-        }
-
     }
 
-    export class Alert extends jspb.Message { 
-        getBody(): string;
-        setBody(value: string): Alert;
+    export class Message extends jspb.Message { 
+        getHeader(): string;
+        setHeader(value: string): Message;
 
-        getHighlight(): WhisperListElement.Alert.Highlight;
-        setHighlight(value: WhisperListElement.Alert.Highlight): Alert;
+        getBody(): string;
+        setBody(value: string): Message;
+
+        getStyle(): WhisperListElement.Style;
+        setStyle(value: WhisperListElement.Style): Message;
+
+        getAlign(): WhisperListElement.Align;
+        setAlign(value: WhisperListElement.Align): Message;
 
 
         serializeBinary(): Uint8Array;
-        toObject(includeInstance?: boolean): Alert.AsObject;
-        static toObject(includeInstance: boolean, msg: Alert): Alert.AsObject;
+        toObject(includeInstance?: boolean): Message.AsObject;
+        static toObject(includeInstance: boolean, msg: Message): Message.AsObject;
         static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
         static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-        static serializeBinaryToWriter(message: Alert, writer: jspb.BinaryWriter): void;
-        static deserializeBinary(bytes: Uint8Array): Alert;
-        static deserializeBinaryFromReader(message: Alert, reader: jspb.BinaryReader): Alert;
+        static serializeBinaryToWriter(message: Message, writer: jspb.BinaryWriter): void;
+        static deserializeBinary(bytes: Uint8Array): Message;
+        static deserializeBinaryFromReader(message: Message, reader: jspb.BinaryReader): Message;
     }
 
-    export namespace Alert {
+    export namespace Message {
         export type AsObject = {
+            header: string,
             body: string,
-            highlight: WhisperListElement.Alert.Highlight,
+            style: WhisperListElement.Style,
+            align: WhisperListElement.Align,
         }
+    }
 
-        export enum Highlight {
-    NONE = 0,
-    RED = 1,
-    GREEN = 2,
+    export class Divider extends jspb.Message { 
+        getStyle(): WhisperListElement.Style;
+        setStyle(value: WhisperListElement.Style): Divider;
+
+
+        serializeBinary(): Uint8Array;
+        toObject(includeInstance?: boolean): Divider.AsObject;
+        static toObject(includeInstance: boolean, msg: Divider): Divider.AsObject;
+        static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+        static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+        static serializeBinaryToWriter(message: Divider, writer: jspb.BinaryWriter): void;
+        static deserializeBinary(bytes: Uint8Array): Divider;
+        static deserializeBinaryFromReader(message: Divider, reader: jspb.BinaryReader): Divider;
+    }
+
+    export namespace Divider {
+        export type AsObject = {
+            style: WhisperListElement.Style,
         }
+    }
 
+
+    export enum Style {
+    STYLE_NONE = 0,
+    STYLE_SUCCESS = 1,
+    STYLE_WARN = 2,
+    STYLE_ERROR = 3,
+    }
+
+    export enum Align {
+    ALIGN_LEFT = 0,
+    ALIGN_CENTER = 1,
+    ALIGN_RIGHT = 2,
     }
 
 
     export enum ElementOneofCase {
         ELEMENTONEOF_NOT_SET = 0,
     
-    PAIR = 3,
+    PAIR = 4,
 
-    ALERT = 4,
+    MESSAGE = 5,
+
+    DIVIDER = 6,
 
     }
 

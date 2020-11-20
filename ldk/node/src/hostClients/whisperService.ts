@@ -120,31 +120,42 @@ export interface WhisperListElement<T extends string> {
 }
 
 // eslint-disable-next-line no-shadow
-export enum WhisperListPairHighlight {
+export enum WhisperListStyle {
   NONE = 0,
-  YELLOW,
+  SUCCESS,
+  WARN,
+  ERROR,
+}
+
+// eslint-disable-next-line no-shadow
+export enum WhisperListAlign {
+  LEFT = 0,
+  CENTER,
+  RIGHT,
 }
 
 export type WhisperListPair = WhisperListElement<'pair'> & {
   copyable: boolean;
-  highlight: WhisperListPairHighlight;
-  key: string;
+  label: string;
+  style: WhisperListStyle;
   value: string;
 };
 
-// eslint-disable-next-line no-shadow
-export enum WhisperListAlertHighlight {
-  NONE = 0,
-  GREEN,
-  RED,
-}
-
-export type WhisperListAlert = WhisperListElement<'alert'> & {
+export type WhisperListMessage = WhisperListElement<'message'> & {
+  align: WhisperListAlign;
   body: string;
-  highlight: WhisperListAlertHighlight;
+  header: string;
+  style: WhisperListStyle;
 };
 
-export type WhisperListElements = WhisperListAlert | WhisperListPair;
+export type WhisperListDivider = WhisperListElement<'divider'> & {
+  style: WhisperListStyle;
+};
+
+export type WhisperListElements =
+  | WhisperListMessage
+  | WhisperListPair
+  | WhisperListDivider;
 
 export interface WhisperListConfig extends Whisper {
   elements: { [name: string]: WhisperListElements };

@@ -1,8 +1,8 @@
-import { Whisper, WhisperConfirmConfig, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlertHighlight, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListPairHighlight } from './whisperService';
+import { Whisper, WhisperConfirmConfig, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlign, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListStyle } from './whisperService';
 import * as messages from '../grpc/whisper_pb';
 export declare const generateWhisperInput: (input: WhisperFormInputs) => messages.WhisperFormInput;
-export declare const generateWhisperListElementPairHighlight: (highlight: WhisperListPairHighlight) => messages.WhisperListElement.Pair.Highlight;
-export declare const generateWhisperListElementAlertHighlight: (highlight: WhisperListAlertHighlight) => messages.WhisperListElement.Alert.Highlight;
+export declare const generateWhisperListStyle: (style: WhisperListStyle) => messages.WhisperListElement.Style;
+export declare const generateWhisperListAlign: (align: WhisperListAlign) => messages.WhisperListElement.Align;
 export declare const generateWhisperListElement: (element: WhisperListElements) => messages.WhisperListElement;
 export declare const generateWhisperMeta: (whisper: Whisper) => messages.WhisperMeta;
 export declare const generateWhisperForm: (config: WhisperFormConfig) => messages.WhisperFormRequest;
