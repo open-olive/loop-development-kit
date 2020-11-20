@@ -19,10 +19,17 @@ class BrokerGrpcServer {
      */
     constructor(server) {
         /**
+         * This callback is called when connection info is received from the host process.
+         *
+         * @callback BrokerGrpcServer~connInfoCallback
+         * @param connInfo - An object containing host process connection information.
+         */
+        /**
          * Start a connection info stream from the host process.
          *
-         *
-         * @param call - The callback that handles receiving connection info.
+         * @param connInfoCallback
+         * - The callback that handles receiving connection info.
+         * @param call
          */
         this.startStream = (call) => {
             call.on('data', (msg) => {

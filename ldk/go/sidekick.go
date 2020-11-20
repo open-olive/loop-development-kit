@@ -9,6 +9,7 @@ type Sidekick interface {
 	Process() ProcessService
 	Cursor() CursorService
 	Filesystem() FilesystemService
+	Window() WindowService
 	UI() UIService
 	Network() NetworkService
 }
