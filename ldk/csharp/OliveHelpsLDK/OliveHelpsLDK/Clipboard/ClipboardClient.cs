@@ -8,8 +8,13 @@ namespace OliveHelpsLDK.Clipboard
 {
     internal class ClipboardClient : BaseClient<Proto.Clipboard.ClipboardClient>, IClipboardService
     {
-        internal ClipboardClient(ChannelBase channel, Session session, ILogger logger) : base(
-            new Proto.Clipboard.ClipboardClient(channel), session, logger, "clipboard")
+        internal ClipboardClient(Proto.Clipboard.ClipboardClient client, Session session, ILogger logger) : base(
+            client, session, logger, "clipboard")
+        {
+        }
+
+        internal ClipboardClient(ChannelBase channel, Session session, ILogger logger) : this(
+            new Proto.Clipboard.ClipboardClient(channel), session, logger)
         {
         }
 
@@ -21,7 +26,7 @@ namespace OliveHelpsLDK.Clipboard
             };
             return Client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
                 .ResponseAsync
-                .ContinueWith(LoggedParser<Task<Proto.ClipboardReadResponse>, string>(task => task.Result.Text),
+                .ContinueWith(LoggedParser<Task<ClipboardReadResponse>, string>(task => task.Result.Text),
                     cancellationToken);
         }
 
@@ -44,7 +49,7 @@ namespace OliveHelpsLDK.Clipboard
             };
             var call = Client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
             return new StreamingCall<ClipboardReadStreamResponse, string>(call,
-                LoggedParser<Proto.ClipboardReadStreamResponse, string>(response => response.Text));
+                LoggedParser<ClipboardReadStreamResponse, string>(response => response.Text));
         }
     }
 }

@@ -7,8 +7,13 @@ namespace OliveHelpsLDK.Keyboard
 {
     internal class KeyboardClient : BaseClient<Proto.Keyboard.KeyboardClient>, IKeyboardService
     {
-        internal KeyboardClient(ChannelBase channelBase, Session session, ILogger logger) : base(
-            new Proto.Keyboard.KeyboardClient(channelBase), session, logger, "keyboard")
+        internal KeyboardClient(Proto.Keyboard.KeyboardClient client, Session session, ILogger logger) : base(
+            client, session, logger, "keyboard")
+        {
+        }
+
+        internal KeyboardClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+            new Proto.Keyboard.KeyboardClient(channelBase), session, logger)
         {
         }
 
@@ -37,7 +42,7 @@ namespace OliveHelpsLDK.Keyboard
 
         public IStreamingCall<string> StreamText(CancellationToken cancellationToken = default)
         {
-            var req = new KeyboardTextStreamRequest()
+            var req = new KeyboardTextStreamRequest
             {
                 Session = CreateSession()
             };
@@ -48,7 +53,7 @@ namespace OliveHelpsLDK.Keyboard
 
         public IStreamingCall<string> StreamChar(CancellationToken cancellationToken = default)
         {
-            var req = new KeyboardCharacterStreamRequest()
+            var req = new KeyboardCharacterStreamRequest
             {
                 Session = CreateSession()
             };

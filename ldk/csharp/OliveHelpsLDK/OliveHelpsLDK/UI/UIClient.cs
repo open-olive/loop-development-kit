@@ -1,6 +1,7 @@
 using System.Threading;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
+using Proto;
 
 namespace OliveHelpsLDK.UI
 {
@@ -11,26 +12,31 @@ namespace OliveHelpsLDK.UI
         {
         }
 
+        internal UIClient(Proto.UI.UIClient client, Session session, ILogger logger) : base(
+            client, session, logger, "ui")
+        {
+        }
+
         public IStreamingCall<string> StreamGlobalSearch(CancellationToken cancellationToken = default)
         {
-            var request = new Proto.GlobalSearchStreamRequest
+            var request = new GlobalSearchStreamRequest
             {
                 Session = CreateSession()
             };
             var call = Client.GlobalSearchStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.GlobalSearchStreamResponse, string>(call,
-                LoggedParser<Proto.GlobalSearchStreamResponse, string>(response => response.Text));
+            return new StreamingCall<GlobalSearchStreamResponse, string>(call,
+                LoggedParser<GlobalSearchStreamResponse, string>(response => response.Text));
         }
 
         public IStreamingCall<string> StreamSearchbar(CancellationToken cancellationToken = default)
         {
-            var request = new Proto.SearchbarStreamRequest()
+            var request = new SearchbarStreamRequest
             {
                 Session = CreateSession()
             };
             var call = Client.SearchbarStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.SearchbarStreamResponse, string>(call,
-                LoggedParser<Proto.SearchbarStreamResponse, string>(response => response.Text));
+            return new StreamingCall<SearchbarStreamResponse, string>(call,
+                LoggedParser<SearchbarStreamResponse, string>(response => response.Text));
         }
     }
 }

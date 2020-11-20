@@ -10,8 +10,13 @@ namespace OliveHelpsLDK.Process
 {
     internal class ProcessClient : BaseClient<Proto.Process.ProcessClient>, IProcessService
     {
-        internal ProcessClient(ChannelBase channelBase, Session session, ILogger logger) : base(
-            new Proto.Process.ProcessClient(channelBase), session, logger, "process")
+        internal ProcessClient(Proto.Process.ProcessClient client, Session session, ILogger logger) : base(
+            client, session, logger, "process")
+        {
+        }
+
+        internal ProcessClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+            new Proto.Process.ProcessClient(channelBase), session, logger)
         {
         }
 
@@ -24,7 +29,7 @@ namespace OliveHelpsLDK.Process
             return Client.ProcessStateAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
                 .ContinueWith(
-                    LoggedParser<Task<Proto.ProcessStateResponse>, ProcessInfo[]>(task => FromProto(task.Result)),
+                    LoggedParser<Task<ProcessStateResponse>, ProcessInfo[]>(task => FromProto(task.Result)),
                     cancellationToken);
         }
 

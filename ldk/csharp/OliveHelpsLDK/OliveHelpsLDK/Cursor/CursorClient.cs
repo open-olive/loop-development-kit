@@ -1,5 +1,3 @@
-using System;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -10,8 +8,13 @@ namespace OliveHelpsLDK.Cursor
 {
     internal class CursorClient : BaseClient<Proto.Cursor.CursorClient>, ICursorService
     {
-        internal CursorClient(ChannelBase channelBase, Session session, ILogger logger) : base(
-            new Proto.Cursor.CursorClient(channelBase), session, logger, "cursor")
+        internal CursorClient(Proto.Cursor.CursorClient client, Session session, ILogger logger) : base(
+            client, session, logger, "cursor")
+        {
+        }
+
+        internal CursorClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+            new Proto.Cursor.CursorClient(channelBase), session, logger)
         {
         }
 
@@ -22,7 +25,7 @@ namespace OliveHelpsLDK.Cursor
                 Session = CreateSession()
             };
             var continuationFunction =
-                LoggedParser<Task<Proto.CursorPositionResponse>, CursorPosition>(ToPosition);
+                LoggedParser<Task<CursorPositionResponse>, CursorPosition>(ToPosition);
             return Client.CursorPositionAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
                 .ContinueWith(continuationFunction, cancellationToken);
@@ -36,7 +39,7 @@ namespace OliveHelpsLDK.Cursor
             };
             var call = Client.CursorPositionStream(request, CreateOptions(cancellationToken));
             return new StreamingCall<CursorPositionStreamResponse, CursorPosition>(call,
-                LoggedParser<Proto.CursorPositionStreamResponse, CursorPosition>(ToPosition));
+                LoggedParser<CursorPositionStreamResponse, CursorPosition>(ToPosition));
         }
 
         private static CursorPosition ToPosition(Task<CursorPositionResponse> task)

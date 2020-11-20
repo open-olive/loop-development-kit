@@ -47,7 +47,7 @@ namespace OliveHelpsLDK
         {
             return func =>
             {
-                var dictionary = new Dictionary<string, object>() {{"method", callerMemberName}};
+                var dictionary = new Dictionary<string, object> {{"method", callerMemberName}};
                 try
                 {
                     Logger.Trace("Parsing Result", dictionary);
@@ -55,7 +55,7 @@ namespace OliveHelpsLDK
                 }
                 catch (Exception e)
                 {
-                    Logger.Error($"Parsing Caller Failed",
+                    Logger.Error("Parsing Caller Failed",
                         dictionary);
                     throw new ParsingException($"Parsing Failed in {callerMemberName}", e);
                 }

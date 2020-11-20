@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -9,19 +8,24 @@ namespace OliveHelpsLDK.Browser
 {
     internal class BrowserClient : BaseClient<Proto.Browser.BrowserClient>, IBrowserService
     {
-        internal BrowserClient(ChannelBase channelBase, Session session, ILogger logger) : base(
-            new Proto.Browser.BrowserClient(channelBase), session, logger, "browser")
+        internal BrowserClient(Proto.Browser.BrowserClient client, Session session, ILogger logger) : base(
+            client, session, logger, "browser")
+        {
+        }
+
+        internal BrowserClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+            new Proto.Browser.BrowserClient(channelBase), session, logger)
         {
         }
 
         public Task<string> QueryActiveURL(CancellationToken cancellationToken = default)
         {
-            var request = new Proto.BrowserActiveURLRequest
+            var request = new BrowserActiveURLRequest
             {
                 Session = CreateSession()
             };
             var continuationFunction =
-                LoggedParser<Task<Proto.BrowserActiveURLResponse>, string>(task => task.Result.Url);
+                LoggedParser<Task<BrowserActiveURLResponse>, string>(task => task.Result.Url);
             return Client.BrowserActiveURLAsync(request, CreateOptions(cancellationToken)).ResponseAsync
                 .ContinueWith(continuationFunction,
                     cancellationToken);
@@ -29,19 +33,19 @@ namespace OliveHelpsLDK.Browser
 
         public IStreamingCall<string> StreamActiveURL(CancellationToken cancellationToken = default)
         {
-            var request = new Proto.BrowserActiveURLStreamRequest
+            var request = new BrowserActiveURLStreamRequest
             {
                 Session = CreateSession()
             };
             var call = Client.BrowserActiveURLStream(request, CreateOptions(cancellationToken));
             var transformer =
                 LoggedParser<BrowserActiveURLStreamResponse, string>(resp => resp.Url);
-            return new StreamingCall<Proto.BrowserActiveURLStreamResponse, string>(call, transformer);
+            return new StreamingCall<BrowserActiveURLStreamResponse, string>(call, transformer);
         }
 
         public Task<SelectedText> QuerySelectedText(CancellationToken cancellationToken = default)
         {
-            var request = new Proto.BrowserSelectedTextRequest()
+            var request = new BrowserSelectedTextRequest
             {
                 Session = CreateSession()
             };
@@ -53,18 +57,18 @@ namespace OliveHelpsLDK.Browser
 
         public IStreamingCall<SelectedText> StreamSelectedText(CancellationToken cancellationToken = default)
         {
-            var request = new Proto.BrowserSelectedTextStreamRequest()
+            var request = new BrowserSelectedTextStreamRequest
             {
                 Session = CreateSession()
             };
             var call = Client.BrowserSelectedTextStream(request, CreateOptions(cancellationToken));
             var transformer =
                 LoggedParser<BrowserSelectedTextStreamResponse, SelectedText>(response => FromProto(response));
-            return new StreamingCall<Proto.BrowserSelectedTextStreamResponse, SelectedText>(call,
+            return new StreamingCall<BrowserSelectedTextStreamResponse, SelectedText>(call,
                 transformer);
         }
 
-        internal static SelectedText FromProto(Proto.BrowserSelectedTextResponse response)
+        internal static SelectedText FromProto(BrowserSelectedTextResponse response)
         {
             return new SelectedText
             {
@@ -74,7 +78,7 @@ namespace OliveHelpsLDK.Browser
             };
         }
 
-        internal static SelectedText FromProto(Proto.BrowserSelectedTextStreamResponse response)
+        internal static SelectedText FromProto(BrowserSelectedTextStreamResponse response)
         {
             return new SelectedText
             {

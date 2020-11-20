@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
 using Plugin;
 using Proto;
+
+[assembly: InternalsVisibleTo("OliveHelpsLDK_Test")]
 
 namespace OliveHelpsLDK
 {
@@ -54,10 +57,10 @@ namespace OliveHelpsLDK
             };
             var connectionInfo = await _brokerServer.ConnectionInfo;
             await _facade.Connect(connectionInfo, session, _logger);
-            #pragma warning disable 4014
+#pragma warning disable 4014
             // Intentional disable - Loop is intended to run indefinitely but should not delay LoopStart response.
             _loop.Start(_facade);
-            #pragma warning restore 4014
+#pragma warning restore 4014
             return new Empty();
         }
 

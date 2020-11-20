@@ -10,8 +10,13 @@ namespace OliveHelpsLDK.Window
 {
     internal class WindowClient : BaseClient<Proto.Window.WindowClient>, IWindowService
     {
-        internal WindowClient(ChannelBase channelBase, Session session, ILogger logger) : base(
-            new Proto.Window.WindowClient(channelBase), session, logger, "window")
+        internal WindowClient(Proto.Window.WindowClient client, Session session, ILogger logger) : base(
+            client, session, logger, "window")
+        {
+        }
+
+        internal WindowClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+            new Proto.Window.WindowClient(channelBase), session, logger)
         {
         }
 
@@ -57,7 +62,7 @@ namespace OliveHelpsLDK.Window
             };
             var call = Client.WindowStateStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<WindowStateStreamResponse, WindowEvent>(call,
-                LoggedParser<Proto.WindowStateStreamResponse, WindowEvent>(FromProto));
+                LoggedParser<WindowStateStreamResponse, WindowEvent>(FromProto));
         }
 
         internal static WindowEvent FromProto(WindowStateStreamResponse response)

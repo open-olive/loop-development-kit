@@ -11,15 +11,20 @@ namespace OliveHelpsLDK.Filesystem
 {
     internal class FilesystemClient : BaseClient<Proto.Filesystem.FilesystemClient>, IFilesystemService
     {
-        internal FilesystemClient(ChannelBase channel, Session session, ILogger logger) : base(
-            new Proto.Filesystem.FilesystemClient(channel), session, logger, "filesystem")
+        internal FilesystemClient(Proto.Filesystem.FilesystemClient client, Session session, ILogger logger) : base(
+            client, session, logger, "filesystem")
+        {
+        }
+
+        internal FilesystemClient(ChannelBase channel, Session session, ILogger logger) : this(
+            new Proto.Filesystem.FilesystemClient(channel), session, logger)
         {
         }
 
         public Task<IList<FileInfo>> QueryDirectory(string directoryPath,
             CancellationToken cancellationToken = default)
         {
-            var request = new FilesystemDirRequest()
+            var request = new FilesystemDirRequest
             {
                 Session = CreateSession(),
                 Directory = directoryPath,
@@ -33,7 +38,7 @@ namespace OliveHelpsLDK.Filesystem
 
         public Task<FileInfo> QueryFile(string filePath, CancellationToken cancellationToken = default)
         {
-            var request = new FilesystemFileRequest()
+            var request = new FilesystemFileRequest
             {
                 Session = CreateSession(),
                 Path = filePath,
@@ -60,7 +65,7 @@ namespace OliveHelpsLDK.Filesystem
 
         public IStreamingCall<FileEvent> StreamFile(string filePath, CancellationToken cancellationToken = default)
         {
-            var request = new FilesystemFileStreamRequest()
+            var request = new FilesystemFileStreamRequest
             {
                 Session = CreateSession(),
                 Path = filePath

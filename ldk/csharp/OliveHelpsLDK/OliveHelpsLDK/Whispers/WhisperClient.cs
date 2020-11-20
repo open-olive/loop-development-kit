@@ -7,10 +7,18 @@ using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
-    internal class WhisperClient : BaseClient<Proto.Whisper.WhisperClient>, IWhisperService
+    internal class WhisperClient : BaseClient<Whisper.WhisperClient>, IWhisperService
     {
         internal IWhisperFormParser Parser { get; }
         internal IWhisperFormBuilder Builder { get; }
+
+        public WhisperClient(Whisper.WhisperClient client, Session session, ILogger logger,
+            IWhisperFormBuilder formBuilder = null,
+            IWhisperFormParser parser = null) : base(client, session, logger, "whisper")
+        {
+            Parser = parser ?? new WhisperFormParser();
+            Builder = formBuilder ?? new WhisperFormBuilder();
+        }
 
         public WhisperClient(ChannelBase channel, Session session, ILogger logger,
             IWhisperFormBuilder formBuilder = null,
@@ -45,7 +53,7 @@ namespace OliveHelpsLDK.Whispers
             };
             var call = Client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return call.ResponseAsync.ContinueWith(
-                LoggedParser<Task<Proto.WhisperConfirmResponse>, bool>(resp => resp.Result.Response),
+                LoggedParser<Task<WhisperConfirmResponse>, bool>(resp => resp.Result.Response),
                 cancellationToken);
         }
 
@@ -55,7 +63,7 @@ namespace OliveHelpsLDK.Whispers
             var request = Builder.BuildRequest(message, CreateSession());
             var call = Client.WhisperForm(request, CreateOptions(cancellationToken));
             return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call,
-                LoggedParser<Proto.WhisperFormStreamResponse, IWhisperFormResponse>(response =>
+                LoggedParser<WhisperFormStreamResponse, IWhisperFormResponse>(response =>
                     Parser.ParseResponse(response)));
         }
     }
