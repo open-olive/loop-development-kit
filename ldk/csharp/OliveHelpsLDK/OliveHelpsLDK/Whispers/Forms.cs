@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using OliveHelpsLDK.Whispers.Forms.Outputs;
 
 // ReSharper disable once CheckNamespace
 namespace OliveHelpsLDK.Whispers.Forms
@@ -9,7 +10,7 @@ namespace OliveHelpsLDK.Whispers.Forms
     public struct WhisperUpdate : IWhisperFormResponse
     {
         public string Key;
-        public Outputs.IBase Output;
+        public IBase Output;
     }
 
     public struct WhisperResult : IWhisperFormResponse
@@ -19,6 +20,6 @@ namespace OliveHelpsLDK.Whispers.Forms
         public bool IsSubmitted => Result;
         public bool IsRejected => !Result;
 
-        public IDictionary<string, Outputs.IBase> Outputs;
+        public IDictionary<string, IBase> Outputs;
     }
 }

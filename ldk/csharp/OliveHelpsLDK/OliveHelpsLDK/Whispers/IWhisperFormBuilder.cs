@@ -1,8 +1,10 @@
+using Proto;
+
 namespace OliveHelpsLDK.Whispers
 {
     public interface IWhisperFormBuilder
     {
-        Proto.WhisperFormRequest BuildRequest(WhisperForm formRequest, Proto.Session session);
-        Proto.WhisperMeta BuildMeta(WhisperConfig config);
+        WhisperFormRequest BuildRequest(WhisperForm formRequest, Proto.Session session);
+        WhisperMeta BuildMeta(WhisperConfig config);
     }
 }

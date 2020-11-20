@@ -14,10 +14,11 @@ namespace OliveHelpsLDK
         public string Address;
     }
 
-    
+
     public class BrokerServer : GRPCBroker.GRPCBrokerBase
     {
-        private readonly TaskCompletionSource<ConnectionInfo> tcs = new TaskCompletionSource<ConnectionInfo>();
+        private TaskCompletionSource<ConnectionInfo> TaskCompletionSource { get; } =
+            new TaskCompletionSource<ConnectionInfo>();
 
         public override async Task StartStream(IAsyncStreamReader<ConnInfo> requestStream,
             IServerStreamWriter<ConnInfo> responseStream, ServerCallContext context)
@@ -31,11 +32,12 @@ namespace OliveHelpsLDK
                     Address = connInfo.Address,
                     ServiceId = connInfo.ServiceId
                 };
-                tcs.SetResult(conStruct);
-                Console.Error.WriteLine($"[INFO] connInfo #{connInfo.Address} #{connInfo.Network} #{connInfo.ServiceId}");
+                TaskCompletionSource.SetResult(conStruct);
+                Console.Error.WriteLine(
+                    $"[INFO] connInfo #{connInfo.Address} #{connInfo.Network} #{connInfo.ServiceId}");
             }
         }
 
-        public Task<ConnectionInfo> ConnectionInfo => tcs.Task;
+        public Task<ConnectionInfo> ConnectionInfo => TaskCompletionSource.Task;
     }
 }

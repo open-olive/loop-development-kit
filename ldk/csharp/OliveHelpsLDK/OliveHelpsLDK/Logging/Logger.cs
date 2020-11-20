@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -9,7 +8,7 @@ namespace OliveHelpsLDK.Logging
 {
     public class Logger : ILogger
     {
-        private readonly string _name;
+        public string Name { get; }
 
         private TextWriter Writer { get; }
 
@@ -28,7 +27,7 @@ namespace OliveHelpsLDK.Logging
         public Logger(string name, IDictionary<string, object> defaultFields, TextWriter writer = null)
         {
             Writer = writer ?? Console.Error;
-            _name = name;
+            Name = name;
             DefaultFields = defaultFields;
         }
 
@@ -59,7 +58,7 @@ namespace OliveHelpsLDK.Logging
 
         public ILogger WithFields(IDictionary<string, object> fields)
         {
-            return new Logger(_name, CombineDictionaries(new[] {DefaultFields, fields}));
+            return new Logger(Name, CombineDictionaries(new[] {DefaultFields, fields}));
         }
 
         private void Log(LogLevel level, string msg, IDictionary<string, object> fields)
@@ -105,7 +104,7 @@ namespace OliveHelpsLDK.Logging
                 {"@timestamp", GenerateTimestamp()},
                 {"@pid", System.Diagnostics.Process.GetCurrentProcess().Id},
                 {"@level", GenerateLevel(level)},
-                {"@module", _name},
+                {"@module", Name},
                 {"@message", msg},
             };
             return CombineDictionaries(new[] {fields, DefaultFields, defaultItems});
@@ -131,7 +130,7 @@ namespace OliveHelpsLDK.Logging
 
         private void Write(string msg)
         {
-            Console.Error.WriteLine(msg);
+            Writer.WriteLine(msg);
         }
     }
 

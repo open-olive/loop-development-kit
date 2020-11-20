@@ -46,18 +46,18 @@ namespace OliveHelpsLDK.Keyboard
         public int Modifiers()
         {
             var values = new List<int>{
-                { AltL ? 1 << 0 : 0},
-                { AltR ? 1 << 1 : 0},
-                { Alt ? 1 << 2 : 0},
-                { CtrlL ? 1 << 3 : 0},
-                { CtrlR ? 1 << 4 : 0},
-                { Ctrl ? 1 << 5 : 0},
-                { MetaL ? 1 << 6 : 0},
-                { MetaR ? 1 << 7 : 0},
-                { Meta ? 1 << 8 : 0},
-                { ShiftL ? 1 << 9 : 0},
-                { ShiftR ? 1 << 10 : 0},
-                { Shift ? 1 << 11 : 0},
+                AltL ? 1 << 0 : 0,
+                AltR ? 1 << 1 : 0,
+                Alt ? 1 << 2 : 0,
+                CtrlL ? 1 << 3 : 0,
+                CtrlR ? 1 << 4 : 0,
+                Ctrl ? 1 << 5 : 0,
+                MetaL ? 1 << 6 : 0,
+                MetaR ? 1 << 7 : 0,
+                Meta ? 1 << 8 : 0,
+                ShiftL ? 1 << 9 : 0,
+                ShiftR ? 1 << 10 : 0,
+                Shift ? 1 << 11 : 0,
             };
             return values.Sum();
         }

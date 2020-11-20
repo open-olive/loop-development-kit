@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using OliveHelpsLDK.Whispers.Forms;
+using OliveHelpsLDK.Whispers.Forms.Inputs;
 
 namespace OliveHelpsLDK.Whispers
 {
@@ -38,6 +39,6 @@ namespace OliveHelpsLDK.Whispers
         public WhisperConfig Config;
         public string SubmitLabel;
         public string CancelLabel;
-        public IDictionary<string, Forms.Inputs.IBase> Inputs;
+        public IDictionary<string, IBase> Inputs;
     }
 }

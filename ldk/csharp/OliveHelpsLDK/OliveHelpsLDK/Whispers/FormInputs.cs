@@ -17,38 +17,38 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         int Order { get; }
     }
 
-    public interface ICheckbox : IBase, IProtoable<Proto.WhisperFormInput.Types.Checkbox>
+    public interface ICheckbox : IBase, IProtoable<WhisperFormInput.Types.Checkbox>
     {
         bool Value { get; }
     }
 
-    public interface IEmail : IBase, IProtoable<Proto.WhisperFormInput.Types.Email>
+    public interface IEmail : IBase, IProtoable<WhisperFormInput.Types.Email>
     {
         string Value { get; }
     }
 
-    public interface IMarkdown : IBase, IProtoable<Proto.WhisperFormInput.Types.Markdown>
+    public interface IMarkdown : IBase, IProtoable<WhisperFormInput.Types.Markdown>
     {
         string Value { get; }
     }
 
-    public interface INumber : IBase, IProtoable<Proto.WhisperFormInput.Types.Number>
+    public interface INumber : IBase, IProtoable<WhisperFormInput.Types.Number>
     {
         float Value { get; }
         float Min { get; }
         float Max { get; }
     }
 
-    public interface IPassword : IBase, IProtoable<Proto.WhisperFormInput.Types.Password>
+    public interface IPassword : IBase, IProtoable<WhisperFormInput.Types.Password>
     {
     }
 
-    public interface IRadio : IBase, IProtoable<Proto.WhisperFormInput.Types.Radio>
+    public interface IRadio : IBase, IProtoable<WhisperFormInput.Types.Radio>
     {
         string[] Options { get; }
     }
 
-    public interface ISelect : IBase, IProtoable<Proto.WhisperFormInput.Types.Select>
+    public interface ISelect : IBase, IProtoable<WhisperFormInput.Types.Select>
     {
         string[] Options { get; }
     }
@@ -59,12 +59,12 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         string Pattern { get; }
     }
 
-    public interface IText : IBase, IProtoable<Proto.WhisperFormInput.Types.Text>
+    public interface IText : IBase, IProtoable<WhisperFormInput.Types.Text>
     {
         string Value { get; }
     }
 
-    public interface ITime : IBase, IProtoable<Proto.WhisperFormInput.Types.Time>
+    public interface ITime : IBase, IProtoable<WhisperFormInput.Types.Time>
     {
         DateTimeOffset Value { get; }
     }
