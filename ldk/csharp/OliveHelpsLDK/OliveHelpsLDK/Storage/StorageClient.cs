@@ -20,7 +20,8 @@ namespace OliveHelpsLDK.Storage
                 Session = CreateSession()
             };
             return Client.StorageExistsAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => task.Result.Exists, cancellationToken);
+                .ContinueWith(LoggedParser<Task<Proto.StorageExistsResponse>, bool>(task => task.Result.Exists),
+                    cancellationToken);
         }
 
         public Task<string> Read(string key, CancellationToken cancellationToken = default)
@@ -31,7 +32,8 @@ namespace OliveHelpsLDK.Storage
                 Session = CreateSession()
             };
             return Client.StorageReadAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => task.Result.Value, cancellationToken);
+                .ContinueWith(LoggedParser<Task<Proto.StorageReadResponse>, string>(task => task.Result.Value),
+                    cancellationToken);
         }
 
         public Task Delete(string key, CancellationToken cancellationToken = default)

@@ -22,7 +22,9 @@ namespace OliveHelpsLDK.Window
                 Session = CreateSession(),
             };
             return Client.WindowActiveWindowAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => FromProto(task.Result.Window), cancellationToken);
+                .ContinueWith(
+                    LoggedParser<Task<WindowActiveWindowResponse>, WindowInfo>(task => FromProto(task.Result.Window)),
+                    cancellationToken);
         }
 
         public IStreamingCall<WindowInfo> StreamActive(CancellationToken cancellationToken = default)
@@ -33,7 +35,7 @@ namespace OliveHelpsLDK.Window
             };
             var call = Client.WindowActiveWindowStream(req, CreateOptions(cancellationToken));
             return new StreamingCall<WindowActiveWindowStreamResponse, WindowInfo>(call,
-                task => FromProto(task.Window));
+                LoggedParser<WindowActiveWindowStreamResponse, WindowInfo>(task => FromProto(task.Window)));
         }
 
         public Task<WindowInfo[]> QueryState(CancellationToken cancellationToken = default)
@@ -43,7 +45,8 @@ namespace OliveHelpsLDK.Window
                 Session = CreateSession(),
             };
             return Client.WindowStateAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => FromProto(task.Result), cancellationToken);
+                .ContinueWith(LoggedParser<Task<WindowStateResponse>, WindowInfo[]>(task => FromProto(task.Result)),
+                    cancellationToken);
         }
 
         public IStreamingCall<WindowEvent> StreamState(CancellationToken cancellationToken = default)
@@ -53,7 +56,8 @@ namespace OliveHelpsLDK.Window
                 Session = CreateSession()
             };
             var call = Client.WindowStateStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<WindowStateStreamResponse, WindowEvent>(call, FromProto);
+            return new StreamingCall<WindowStateStreamResponse, WindowEvent>(call,
+                LoggedParser<Proto.WindowStateStreamResponse, WindowEvent>(FromProto));
         }
 
         internal static WindowEvent FromProto(WindowStateStreamResponse response)

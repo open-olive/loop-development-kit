@@ -24,9 +24,11 @@ namespace OliveHelpsLDK.Filesystem
                 Session = CreateSession(),
                 Directory = directoryPath,
             };
+            var continuationFunction =
+                LoggedParser<Task<FilesystemDirResponse>, IList<FileInfo>>(task => ConvertFileList(task.Result.Files));
             return Client.FilesystemDirAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
-                .ContinueWith(task => ConvertFileList(task.Result.Files), cancellationToken);
+                .ContinueWith(continuationFunction, cancellationToken);
         }
 
         public Task<FileInfo> QueryFile(string filePath, CancellationToken cancellationToken = default)
@@ -36,9 +38,11 @@ namespace OliveHelpsLDK.Filesystem
                 Session = CreateSession(),
                 Path = filePath,
             };
+            var continuationFunction =
+                LoggedParser<Task<FilesystemFileResponse>, FileInfo>(task => ConvertProtoFileInfo(task.Result.File));
             return Client.FilesystemFileAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
-                .ContinueWith(task => ConvertProtoFileInfo(task.Result.File), cancellationToken);
+                .ContinueWith(continuationFunction, cancellationToken);
         }
 
         public IStreamingCall<FileEvent> StreamDirectory(string directoryPath,
@@ -50,7 +54,8 @@ namespace OliveHelpsLDK.Filesystem
                 Directory = directoryPath
             };
             var call = Client.FilesystemDirStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<FilesystemDirStreamResponse, FileEvent>(call, ConvertFileEvent);
+            return new StreamingCall<FilesystemDirStreamResponse, FileEvent>(call,
+                LoggedParser<FilesystemDirStreamResponse, FileEvent>(ConvertFileEvent));
         }
 
         public IStreamingCall<FileEvent> StreamFile(string filePath, CancellationToken cancellationToken = default)
@@ -61,7 +66,8 @@ namespace OliveHelpsLDK.Filesystem
                 Path = filePath
             };
             var call = Client.FilesystemFileStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<FilesystemFileStreamResponse, FileEvent>(call, ConvertFileEvent);
+            return new StreamingCall<FilesystemFileStreamResponse, FileEvent>(call,
+                LoggedParser<FilesystemFileStreamResponse, FileEvent>(ConvertFileEvent));
         }
 
         private static IList<FileInfo> ConvertFileList(IEnumerable<Proto.FileInfo> files)

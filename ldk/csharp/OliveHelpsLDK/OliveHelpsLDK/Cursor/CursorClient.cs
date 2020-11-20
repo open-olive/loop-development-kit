@@ -1,3 +1,5 @@
+using System;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
@@ -19,9 +21,11 @@ namespace OliveHelpsLDK.Cursor
             {
                 Session = CreateSession()
             };
+            var continuationFunction =
+                LoggedParser<Task<Proto.CursorPositionResponse>, CursorPosition>(ToPosition);
             return Client.CursorPositionAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
-                .ContinueWith(task => ToPosition(task.Result), cancellationToken);
+                .ContinueWith(continuationFunction, cancellationToken);
         }
 
         public IStreamingCall<CursorPosition> Stream(CancellationToken cancellationToken = default)
@@ -31,7 +35,19 @@ namespace OliveHelpsLDK.Cursor
                 Session = CreateSession()
             };
             var call = Client.CursorPositionStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<CursorPositionStreamResponse, CursorPosition>(call, ToPosition);
+            return new StreamingCall<CursorPositionStreamResponse, CursorPosition>(call,
+                LoggedParser<Proto.CursorPositionStreamResponse, CursorPosition>(ToPosition));
+        }
+
+        private static CursorPosition ToPosition(Task<CursorPositionResponse> task)
+        {
+            var response = task.Result;
+            return new CursorPosition
+            {
+                Screen = checked((int) response.Screen),
+                X = response.X,
+                Y = response.Y
+            };
         }
 
         private static CursorPosition ToPosition(CursorPositionStreamResponse response)

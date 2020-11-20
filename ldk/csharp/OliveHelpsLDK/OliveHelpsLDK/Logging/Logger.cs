@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 
@@ -10,19 +11,23 @@ namespace OliveHelpsLDK.Logging
     {
         private readonly string _name;
 
-        private IDictionary<string, object> DefaultFields { get; set; }
+        private TextWriter Writer { get; }
+
+        public IDictionary<string, object> DefaultFields { get; set; }
+
 
         private static readonly JsonSerializerOptions Options = new JsonSerializerOptions
         {
             WriteIndented = false
         };
 
-        public Logger(string name) : this(name, new Dictionary<string, object>())
+        public Logger(string name, TextWriter writer = null) : this(name, new Dictionary<string, object>(), writer)
         {
         }
 
-        public Logger(string name, IDictionary<string, object> defaultFields)
+        public Logger(string name, IDictionary<string, object> defaultFields, TextWriter writer = null)
         {
+            Writer = writer ?? Console.Error;
             _name = name;
             DefaultFields = defaultFields;
         }
@@ -32,22 +37,22 @@ namespace OliveHelpsLDK.Logging
             Log(LogLevel.Trace, message, fields);
         }
 
-        public void Debug(string message, IDictionary<string, object> fields = default)
+        public void Debug(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Debug, message, fields);
         }
 
-        public void Info(string message, IDictionary<string, object> fields = default)
+        public void Info(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Info, message, fields);
         }
 
-        public void Warn(string message, IDictionary<string, object> fields = default)
+        public void Warn(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Warn, message, fields);
         }
 
-        public void Error(string message, IDictionary<string, object> fields = default)
+        public void Error(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Error, message, fields);
         }
@@ -59,18 +64,36 @@ namespace OliveHelpsLDK.Logging
 
         private void Log(LogLevel level, string msg, IDictionary<string, object> fields)
         {
-            fields ??= new Dictionary<string, object>();
-            var dictionary = AddDefaultValues(level, msg, fields);
+            // var keys = string.Concat(fields.Keys, ",");
+            // Console.Error.WriteLine("[TRACE] " + keys);
+            IDictionary<string, object> newFields = new Dictionary<string, object>();
+            if (fields != null)
+            {
+                newFields = fields;
+            }
+
+            var dictionary = AddDefaultValues(level, msg, newFields);
+            dictionary.Add("FIELDSRAW", JsonSerializer.Serialize(fields, Options));
+            dictionary.Add("NEWFIELDS", JsonSerializer.Serialize(newFields, Options));
+            if (DefaultFields != null)
+            {
+                dictionary.Add("DEFAULTFIELDS", JsonSerializer.Serialize(DefaultFields, Options));
+            }
+            else
+            {
+                dictionary.Add("DEFAULTFIELDS", "NOT PRESENT");
+            }
+
             var serializedDict = JsonSerializer.Serialize(dictionary, Options);
             Write(serializedDict);
         }
 
-        private static IDictionary<string, object> CombineDictionaries(
+        public static IDictionary<string, object> CombineDictionaries(
             IEnumerable<IDictionary<string, object>> dictionaries)
         {
             return dictionaries.ToList().SelectMany(dict => dict)
                 .ToLookup(pair => pair.Key, pair => pair.Value)
-                .ToDictionary(group => group.Key, group => group.First());
+                .ToDictionary(group => group.Key, group => group.Last());
             ;
         }
 
@@ -85,7 +108,7 @@ namespace OliveHelpsLDK.Logging
                 {"@module", _name},
                 {"@message", msg},
             };
-            return CombineDictionaries(new[] {fields, defaultItems});
+            return CombineDictionaries(new[] {fields, DefaultFields, defaultItems});
         }
 
         private static string GenerateTimestamp()

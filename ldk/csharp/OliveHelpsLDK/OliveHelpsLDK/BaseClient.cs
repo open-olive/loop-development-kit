@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
@@ -38,6 +40,26 @@ namespace OliveHelpsLDK
         protected CallOptions CreateOptions(CancellationToken token)
         {
             return new CallOptions(cancellationToken: token);
+        }
+
+        protected Func<TResult, TResponse> LoggedParser<TResult, TResponse>(
+            Func<TResult, TResponse> expression, [CallerMemberName] string callerMemberName = "")
+        {
+            return func =>
+            {
+                var dictionary = new Dictionary<string, object>() {{"method", callerMemberName}};
+                try
+                {
+                    Logger.Trace("Parsing Result", dictionary);
+                    return expression(func);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error($"Parsing Caller Failed",
+                        dictionary);
+                    throw new ParsingException($"Parsing Failed in {callerMemberName}", e);
+                }
+            };
         }
     }
 }

@@ -24,7 +24,8 @@ namespace OliveHelpsLDK.Network
                 Url = request.URL
             };
             return Client.HTTPRequestAsync(message, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => FromProto(task.Result), cancellationToken);
+                .ContinueWith(LoggedParser<Task<Proto.HTTPResponseMsg>, HTTPResponse>(task => FromProto(task.Result)),
+                    cancellationToken);
         }
 
         internal static HTTPResponse FromProto(Proto.HTTPResponseMsg response)

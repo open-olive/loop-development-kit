@@ -20,7 +20,8 @@ namespace OliveHelpsLDK.Keyboard
                 Hotkey = ToProto(hotkey),
             };
             var call = Client.KeyboardHotkeyStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardHotkeyStreamResponse, bool>(call, response => response.Scanned);
+            return new StreamingCall<KeyboardHotkeyStreamResponse, bool>(call,
+                LoggedParser<KeyboardHotkeyStreamResponse, bool>(response => response.Scanned));
         }
 
         public IStreamingCall<ScanCodeEvent> StreamScancode(CancellationToken cancellationToken = default)
@@ -30,7 +31,8 @@ namespace OliveHelpsLDK.Keyboard
                 Session = CreateSession()
             };
             var call = Client.KeyboardScancodeStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardScancodeStreamResponse, ScanCodeEvent>(call, FromProto);
+            return new StreamingCall<KeyboardScancodeStreamResponse, ScanCodeEvent>(call,
+                LoggedParser<KeyboardScancodeStreamResponse, ScanCodeEvent>(FromProto));
         }
 
         public IStreamingCall<string> StreamText(CancellationToken cancellationToken = default)
@@ -40,7 +42,8 @@ namespace OliveHelpsLDK.Keyboard
                 Session = CreateSession()
             };
             var call = Client.KeyboardTextStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardTextStreamResponse, string>(call, resp => resp.Text);
+            return new StreamingCall<KeyboardTextStreamResponse, string>(call,
+                LoggedParser<KeyboardTextStreamResponse, string>(resp => resp.Text));
         }
 
         public IStreamingCall<string> StreamChar(CancellationToken cancellationToken = default)
@@ -50,7 +53,8 @@ namespace OliveHelpsLDK.Keyboard
                 Session = CreateSession()
             };
             var call = Client.KeyboardCharacterStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardCharacterStreamResponse, string>(call, resp => resp.Text);
+            return new StreamingCall<KeyboardCharacterStreamResponse, string>(call,
+                LoggedParser<KeyboardCharacterStreamResponse, string>(resp => resp.Text));
         }
 
         private static KeyboardHotkey ToProto(HotKey hotKey)

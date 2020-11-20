@@ -20,7 +20,9 @@ namespace OliveHelpsLDK.Clipboard
                 Session = CreateSession(),
             };
             return Client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
-                .ResponseAsync.ContinueWith(task => task.Result.Text, cancellationToken);
+                .ResponseAsync
+                .ContinueWith(LoggedParser<Task<Proto.ClipboardReadResponse>, string>(task => task.Result.Text),
+                    cancellationToken);
         }
 
         public Task Write(string contents, CancellationToken cancellationToken = default)
@@ -41,7 +43,8 @@ namespace OliveHelpsLDK.Clipboard
                 Session = CreateSession(),
             };
             var call = Client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
-            return new StreamingCall<ClipboardReadStreamResponse, string>(call, response => response.Text);
+            return new StreamingCall<ClipboardReadStreamResponse, string>(call,
+                LoggedParser<Proto.ClipboardReadStreamResponse, string>(response => response.Text));
         }
     }
 }

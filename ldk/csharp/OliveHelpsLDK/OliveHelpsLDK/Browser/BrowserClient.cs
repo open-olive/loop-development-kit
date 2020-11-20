@@ -1,7 +1,9 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
+using Proto;
 
 namespace OliveHelpsLDK.Browser
 {
@@ -18,8 +20,11 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
+            var continuationFunction =
+                LoggedParser<Task<Proto.BrowserActiveURLResponse>, string>(task => task.Result.Url);
             return Client.BrowserActiveURLAsync(request, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => task.Result.Url, cancellationToken);
+                .ContinueWith(continuationFunction,
+                    cancellationToken);
         }
 
         public IStreamingCall<string> StreamActiveURL(CancellationToken cancellationToken = default)
@@ -29,7 +34,9 @@ namespace OliveHelpsLDK.Browser
                 Session = CreateSession()
             };
             var call = Client.BrowserActiveURLStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.BrowserActiveURLStreamResponse, string>(call, resp => resp.Url);
+            var transformer =
+                LoggedParser<BrowserActiveURLStreamResponse, string>(resp => resp.Url);
+            return new StreamingCall<Proto.BrowserActiveURLStreamResponse, string>(call, transformer);
         }
 
         public Task<SelectedText> QuerySelectedText(CancellationToken cancellationToken = default)
@@ -38,8 +45,10 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
+            var continuationFunction =
+                LoggedParser<Task<BrowserSelectedTextResponse>, SelectedText>(task => FromProto(task.Result));
             return Client.BrowserSelectedTextAsync(request, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => FromProto(task.Result), cancellationToken);
+                .ContinueWith(continuationFunction, cancellationToken);
         }
 
         public IStreamingCall<SelectedText> StreamSelectedText(CancellationToken cancellationToken = default)
@@ -49,7 +58,10 @@ namespace OliveHelpsLDK.Browser
                 Session = CreateSession()
             };
             var call = Client.BrowserSelectedTextStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.BrowserSelectedTextStreamResponse, SelectedText>(call, FromProto);
+            var transformer =
+                LoggedParser<BrowserSelectedTextStreamResponse, SelectedText>(response => FromProto(response));
+            return new StreamingCall<Proto.BrowserSelectedTextStreamResponse, SelectedText>(call,
+                transformer);
         }
 
         internal static SelectedText FromProto(Proto.BrowserSelectedTextResponse response)

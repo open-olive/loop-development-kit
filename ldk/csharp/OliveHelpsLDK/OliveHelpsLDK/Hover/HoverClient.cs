@@ -1,7 +1,9 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
+using Proto;
 
 namespace OliveHelpsLDK.Hover
 {
@@ -20,8 +22,9 @@ namespace OliveHelpsLDK.Hover
                 XFromCenter = checked((uint) request.XFromCenter),
                 YFromCenter = checked((uint) request.YFromCenter),
             };
+            Func<Task<HoverReadResponse>, string> continuationFunction = task => task.Result.Text;
             return Client.HoverReadAsync(msg, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(task => task.Result.Text, cancellationToken);
+                .ContinueWith(LoggedParser(continuationFunction), cancellationToken);
         }
 
         public IStreamingCall<string> Stream(HoverRequest request, CancellationToken cancellationToken = default)
@@ -33,7 +36,8 @@ namespace OliveHelpsLDK.Hover
                 YFromCenter = checked((uint) request.YFromCenter),
             };
             var call = Client.HoverReadStream(msg, CreateOptions(cancellationToken));
-            return new StreamingCall<Proto.HoverReadStreamResponse, string>(call, response => response.Text);
+            return new StreamingCall<Proto.HoverReadStreamResponse, string>(call,
+                LoggedParser<Proto.HoverReadStreamResponse, string>(response => response.Text));
         }
     }
 }

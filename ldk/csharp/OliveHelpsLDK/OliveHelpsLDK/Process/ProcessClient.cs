@@ -23,7 +23,9 @@ namespace OliveHelpsLDK.Process
             };
             return Client.ProcessStateAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
-                .ContinueWith(task => FromProto(task.Result), cancellationToken);
+                .ContinueWith(
+                    LoggedParser<Task<Proto.ProcessStateResponse>, ProcessInfo[]>(task => FromProto(task.Result)),
+                    cancellationToken);
         }
 
         public IStreamingCall<ProcessEvent> Stream(CancellationToken cancellationToken = default)
@@ -33,7 +35,8 @@ namespace OliveHelpsLDK.Process
                 Session = CreateSession(),
             };
             var call = Client.ProcessStateStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<ProcessStateStreamResponse, ProcessEvent>(call, FromProto);
+            return new StreamingCall<ProcessStateStreamResponse, ProcessEvent>(call,
+                LoggedParser<ProcessStateStreamResponse, ProcessEvent>(FromProto));
         }
 
         private static ProcessInfo FromProto(Proto.ProcessInfo info)
@@ -68,7 +71,7 @@ namespace OliveHelpsLDK.Process
 
         private static ProcessInfo[] FromProto(ProcessStateResponse response)
         {
-            return response.Processes.Select(process => FromProto(process)).ToArray();
+            return response.Processes.Select(FromProto).ToArray();
         }
     }
 }

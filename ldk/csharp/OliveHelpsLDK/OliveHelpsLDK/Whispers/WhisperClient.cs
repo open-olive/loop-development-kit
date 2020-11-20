@@ -44,7 +44,9 @@ namespace OliveHelpsLDK.Whispers
                 ResolveLabel = message.ResolveLabel,
             };
             var call = Client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
-            return call.ResponseAsync.ContinueWith(resp => resp.Result.Response, cancellationToken);
+            return call.ResponseAsync.ContinueWith(
+                LoggedParser<Task<Proto.WhisperConfirmResponse>, bool>(resp => resp.Result.Response),
+                cancellationToken);
         }
 
         public IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message,
@@ -53,7 +55,8 @@ namespace OliveHelpsLDK.Whispers
             var request = Builder.BuildRequest(message, CreateSession());
             var call = Client.WhisperForm(request, CreateOptions(cancellationToken));
             return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call,
-                response => Parser.ParseResponse(response));
+                LoggedParser<Proto.WhisperFormStreamResponse, IWhisperFormResponse>(response =>
+                    Parser.ParseResponse(response)));
         }
     }
 }
