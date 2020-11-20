@@ -221,34 +221,43 @@ message WhisperListRequest {
 }
 
 message WhisperListElement {
-    message Pair {
-        enum Highlight {
-            NONE = 0;
-            YELLOW = 1;
-        }
-        
-        string key = 1;
-        string value = 2;
-        Highlight highlight = 3;
-        bool copyable = 4;
+    enum Style {
+        STYLE_NONE = 0;
+        STYLE_SUCCESS = 1;
+        STYLE_WARN = 2;
+        STYLE_ERROR = 3;
     }
 
-    message Alert {
-        enum Highlight {
-            NONE = 0;
-            RED = 1;
-            GREEN = 2;
-        }
-        
-        string body = 1;
-        Highlight highlight = 2;
+    enum Align {
+        ALIGN_LEFT = 0;
+        ALIGN_CENTER = 1;
+        ALIGN_RIGHT = 2;
     }
 
     uint32 order = 1;
     bool extra = 2; // 0 = shows when whisper is in "less" mode AND "more" mode. 1 = shows only when whisper is in "more" mode.
 
+    message Pair {
+        string label = 1;
+        string value = 2;
+        Style style = 3;
+        bool copyable = 4;
+    }
+
+    message Message {
+        string header = 1;
+        string body = 2;
+        Style style = 3;
+        Align align = 4;
+    }
+
+    message Divider {
+        Style style = 1;
+    }
+
     oneof ElementOneof {
-        Pair pair = 3;
-        Alert alert = 4;
+        Pair pair = 4;
+        Message message = 5;
+        Divider divider = 6;
     }
 }

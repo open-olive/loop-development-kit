@@ -41,36 +41,115 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	go func() {
 		err := c.sidekick.Whisper().List(c.ctx, &ldk.WhisperContentList{
 			Icon:  "bathtub",
-			Label: "Example Controller Go",
+			Label: "MCMG Location",
 			Elements: map[string]ldk.WhisperContentListElement{
-				"headerAlert": &ldk.WhisperContentListElementAlert{
-					Body:      "This is an alert in the header! It should be highlighted green.",
-					Highlight: ldk.WhisperContentListElementAlertHighlightGreen,
-					Order:     0,
+				"topMessage": &ldk.WhisperContentListElementMessage{
+					Style:  ldk.WhisperContentListElementStyleNone,
+					Header: "Hello World, I am a subitle",
+					Body:   "This is what body copy looks like. Just a bit, don’t overdo it!",
+					Align:  ldk.WhisperContentListElementAlignLeft,
+					Order:  0,
 				},
-				"myKey1": &ldk.WhisperContentListElementPair{
-					Key:   "Key 1",
-					Order: 1,
-					Value: "This key is always shown and not highlighted.",
+				"successMessage": &ldk.WhisperContentListElementMessage{
+					Align:  ldk.WhisperContentListElementAlignCenter,
+					Header: "This is an alert message!",
+					Body:   "It should be highlighted green.",
+					Style:  ldk.WhisperContentListElementStyleSuccess,
+					Order:  1,
 				},
-				"myKey2": &ldk.WhisperContentListElementPair{
-					Highlight: ldk.WhisperContentListElementPairHighlightYellow,
-					Key:       "Key 2",
-					Order:     2,
-					Value:     "This key is always shown and highlighted yellow.",
+				"sectionDivider": &ldk.WhisperContentListElementDivider{
+					Order: 2,
 				},
-				"myKey3": &ldk.WhisperContentListElementPair{
-					Extra:     true,
-					Highlight: ldk.WhisperContentListElementPairHighlightYellow,
-					Key:       "Key 3",
-					Order:     3,
-					Value:     "This key is hidden.",
+				"sectionTitle": &ldk.WhisperContentListElementMessage{
+					Style:  ldk.WhisperContentListElementStyleNone,
+					Header: "Let’s set the table",
+					Align:  ldk.WhisperContentListElementAlignCenter,
+					Order:  0,
 				},
-				"footerAlert": &ldk.WhisperContentListElementAlert{
-					Extra:     true,
-					Body:      "This is an alert in the footer! It is hidden by default. It should be highlighted red.",
-					Highlight: ldk.WhisperContentListElementAlertHighlightRed,
-					Order:     4,
+				"name": &ldk.WhisperContentListElementPair{
+					Label: "Name",
+					Order: 2,
+					Value: "David Simon MD",
+				},
+				"shoeSize": &ldk.WhisperContentListElementPair{
+					Label: "Shoe Size",
+					Order: 3,
+					Value: "38",
+				},
+				"birthDate": &ldk.WhisperContentListElementPair{
+					Style: ldk.WhisperContentListElementStyleWarning,
+					Label: "Birth Date",
+					Order: 4,
+					Value: "Feb 30th, 1999",
+				},
+				"favoriteColor": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "FavoriteColor",
+					Order: 5,
+					Value: "Greige",
+				},
+				"favoriteAnimal": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "Dogs or Cats",
+					Order: 6,
+					Value: "Bats",
+				},
+				"streetName": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "Street Name",
+					Order: 7,
+					Value: "Main Street",
+				},
+				"zipCode": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "Zip Code",
+					Order: 8,
+					Value: "10000",
+				},
+				"city": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "City",
+					Order: 9,
+					Value: "Townsville",
+				},
+				"phone": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "Phone",
+					Order: 10,
+					Value: "123-456-7890",
+				},
+				"favoriteCondiment": &ldk.WhisperContentListElementPair{
+					Style: ldk.WhisperContentListElementStyleWarning,
+					Extra: true,
+					Label: "Favorite Condiment",
+					Order: 11,
+					Value: "Pizza",
+				},
+				"100MeterDashTime": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "100m Dash Time",
+					Order: 12,
+					Value: "4 minutes",
+				},
+				"nickname": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "Nickname",
+					Order: 13,
+					Value: "Old Greg",
+				},
+				"notes": &ldk.WhisperContentListElementPair{
+					Extra: true,
+					Label: "Notes",
+					Order: 14,
+					Value: "Lorem ipsum sit amet dolor why does this always feel like a decree by the ancient Romans? It’s just filler text.",
+				},
+				"failureMessage": &ldk.WhisperContentListElementMessage{
+					Align:  ldk.WhisperContentListElementAlignCenter,
+					Body:   "It should be highlighted red.",
+					Extra:  true,
+					Header: "This is an alert message!",
+					Order:  15,
+					Style:  ldk.WhisperContentListElementStyleError,
 				},
 			},
 		})

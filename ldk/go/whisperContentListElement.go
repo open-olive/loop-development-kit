@@ -14,28 +14,48 @@ type WhisperContentListElement interface {
 func whisperContentListElementFromProto(p *proto.WhisperListElement) (WhisperContentListElement, error) {
 	switch elementContainer := p.ElementOneof.(type) {
 	case *proto.WhisperListElement_Pair_:
-		highlight, err := WhisperContentListElementPairHighlightFromProto(elementContainer.Pair.Highlight)
+		style, err := WhisperContentListElementStyleFromProto(elementContainer.Pair.Style)
 		if err != nil {
 			return nil, err
 		}
 
 		return &WhisperContentListElementPair{
-			Key:       elementContainer.Pair.Key,
-			Value:     elementContainer.Pair.Value,
-			Order:     p.Order,
-			Extra:     p.Extra,
-			Copyable:  elementContainer.Pair.Copyable,
-			Highlight: highlight,
+			Copyable: elementContainer.Pair.Copyable,
+			Extra:    p.Extra,
+			Label:    elementContainer.Pair.Label,
+			Order:    p.Order,
+			Style:    style,
+			Value:    elementContainer.Pair.Value,
 		}, nil
-	case *proto.WhisperListElement_Alert_:
-		highlight, err := WhisperContentListElementAlertHighlightFromProto(elementContainer.Alert.Highlight)
+	case *proto.WhisperListElement_Message_:
+		align, err := WhisperContentListElementAlignFromProto(elementContainer.Message.Align)
 		if err != nil {
 			return nil, err
 		}
 
-		return &WhisperContentListElementAlert{
-			Body:      elementContainer.Alert.Body,
-			Highlight: highlight,
+		style, err := WhisperContentListElementStyleFromProto(elementContainer.Message.Style)
+		if err != nil {
+			return nil, err
+		}
+
+		return &WhisperContentListElementMessage{
+			Align:  align,
+			Body:   elementContainer.Message.Body,
+			Extra:  p.Extra,
+			Header: elementContainer.Message.Header,
+			Order:  p.Order,
+			Style:  style,
+		}, nil
+	case *proto.WhisperListElement_Divider_:
+		style, err := WhisperContentListElementStyleFromProto(elementContainer.Divider.Style)
+		if err != nil {
+			return nil, err
+		}
+
+		return &WhisperContentListElementDivider{
+			Extra: p.Extra,
+			Order: p.Order,
+			Style: style,
 		}, nil
 	default:
 		return nil, fmt.Errorf("element had unexpected type %T", elementContainer)
