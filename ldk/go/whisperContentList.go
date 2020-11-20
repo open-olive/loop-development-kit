@@ -1,6 +1,8 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 type WhisperContentList struct {
 	Icon  string `json:"icon"` // Material Icon name https://material.io/resources/icons/

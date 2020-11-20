@@ -7,8 +7,8 @@ import (
 )
 
 type WhisperContentListElement interface {
-	Type() WhisperContentListElementType
 	ToProto() (*proto.WhisperListElement, error)
+	Type() WhisperContentListElementType
 }
 
 func whisperContentListElementFromProto(p *proto.WhisperListElement) (WhisperContentListElement, error) {

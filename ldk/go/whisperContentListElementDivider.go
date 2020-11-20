@@ -1,6 +1,7 @@
 package ldk
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -38,4 +39,16 @@ func (e *WhisperContentListElementDivider) ToProto() (*proto.WhisperListElement,
 			},
 		},
 	}, nil
+}
+
+func (e *WhisperContentListElementDivider) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentListElementDivider
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*e),
+		Type: string(e.Type()),
+	})
 }
