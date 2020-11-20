@@ -1,6 +1,9 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"encoding/json"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 // WhisperContentFormInputCheckbox defines a checkbox field in a form
 type WhisperContentFormInputCheckbox struct {
@@ -27,4 +30,16 @@ func (fc *WhisperContentFormInputCheckbox) ToProto() (*proto.WhisperFormInput, e
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputCheckbox) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputCheckbox
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }

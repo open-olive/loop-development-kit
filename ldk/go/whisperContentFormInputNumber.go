@@ -1,6 +1,9 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"encoding/json"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 // WhisperContentFormInputNumber defines a number field in a form
 type WhisperContentFormInputNumber struct {
@@ -32,4 +35,16 @@ func (fc *WhisperContentFormInputNumber) ToProto() (*proto.WhisperFormInput, err
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputNumber) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputNumber
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }

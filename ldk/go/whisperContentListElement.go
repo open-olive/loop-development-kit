@@ -7,6 +7,7 @@ import (
 )
 
 type WhisperContentListElement interface {
+	MarshalJSON() ([]byte, error)
 	ToProto() (*proto.WhisperListElement, error)
 	Type() WhisperContentListElementType
 }

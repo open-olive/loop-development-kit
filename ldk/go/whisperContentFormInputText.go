@@ -1,6 +1,9 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"encoding/json"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 // WhisperContentFormInputText defines a text field in a form
 type WhisperContentFormInputText struct {
@@ -28,4 +31,16 @@ func (fc *WhisperContentFormInputText) ToProto() (*proto.WhisperFormInput, error
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputText) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputText
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }

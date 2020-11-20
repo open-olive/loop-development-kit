@@ -1,6 +1,9 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"encoding/json"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 // WhisperContentFormInputSelect defines a dropdown menu selection field in a form
 type WhisperContentFormInputSelect struct {
@@ -28,4 +31,16 @@ func (fc *WhisperContentFormInputSelect) ToProto() (*proto.WhisperFormInput, err
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputSelect) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputSelect
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }

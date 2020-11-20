@@ -1,6 +1,9 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"encoding/json"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 // WhisperContentFormInputRadio defines a radio button selection field in a form
 type WhisperContentFormInputRadio struct {
@@ -28,4 +31,16 @@ func (fc *WhisperContentFormInputRadio) ToProto() (*proto.WhisperFormInput, erro
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputRadio) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputRadio
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }

@@ -1,6 +1,7 @@
 package ldk
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
@@ -38,4 +39,16 @@ func (fc *WhisperContentFormInputTime) ToProto() (*proto.WhisperFormInput, error
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputTime) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputTime
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }

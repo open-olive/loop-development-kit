@@ -3,6 +3,7 @@ package ldk
 import "github.com/open-olive/loop-development-kit/ldk/go/proto"
 
 type WhisperContentFormInput interface {
-	Type() WhisperContentFormType
+	MarshalJSON() ([]byte, error)
 	ToProto() (*proto.WhisperFormInput, error)
+	Type() WhisperContentFormType
 }

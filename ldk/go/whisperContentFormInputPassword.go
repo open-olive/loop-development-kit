@@ -1,6 +1,9 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"encoding/json"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 // WhisperContentFormInputPassword defines a password field in a form
 type WhisperContentFormInputPassword struct {
@@ -26,4 +29,16 @@ func (fc *WhisperContentFormInputPassword) ToProto() (*proto.WhisperFormInput, e
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputPassword) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputPassword
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }

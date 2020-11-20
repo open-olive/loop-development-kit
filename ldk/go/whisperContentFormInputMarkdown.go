@@ -1,6 +1,9 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import (
+	"encoding/json"
+	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+)
 
 // WhisperContentFormInputMarkdown defines a markdown field in a form
 type WhisperContentFormInputMarkdown struct {
@@ -28,4 +31,16 @@ func (fc *WhisperContentFormInputMarkdown) ToProto() (*proto.WhisperFormInput, e
 			},
 		},
 	}, nil
+}
+
+func (fc *WhisperContentFormInputMarkdown) MarshalJSON() ([]byte, error) {
+	// temp type needed to prevent infinite recursion
+	type temp WhisperContentFormInputMarkdown
+	return json.Marshal(struct {
+		temp
+		Type string `json:"type"`
+	}{
+		temp: temp(*fc),
+		Type: string(fc.Type()),
+	})
 }
