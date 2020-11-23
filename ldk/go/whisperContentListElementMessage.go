@@ -14,7 +14,7 @@ const (
 // WhisperContentListElementMessage defines an alert element for a list whisper
 type WhisperContentListElementMessage struct {
 	Align  WhisperContentListElementAlign `json:"align"`
-	Body   string                         `json:"string"`
+	Body   string                         `json:"body"`
 	Extra  bool                           `json:"extra"`
 	Header string                         `json:"header"`
 	Order  uint32                         `json:"order"`
