@@ -142,7 +142,13 @@ export enum WhisperListAlign {
 }
 
 export type WhisperListPair = WhisperListElement<'pair'> & {
-  copyable: boolean;
+  /**
+   *  Value the UI uses to determine if if should copy the
+   *  value field to the clipboard when the user clicks it.
+   *  True means that clicking will copy to clipboard.
+   *  If this value is ommited it will deafult to false.
+   */
+  copyable?: boolean;
   label: string;
   style: WhisperListStyle;
   value: string;

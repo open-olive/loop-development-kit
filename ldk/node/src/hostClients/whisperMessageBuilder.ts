@@ -184,7 +184,9 @@ export const generateWhisperListElement = (
   switch (element.type) {
     case 'pair': {
       const inputMsg = new WLE.Pair();
-      inputMsg.setCopyable(element.copyable);
+      if (element.copyable) {
+        inputMsg.setCopyable(element.copyable);
+      }
       inputMsg.setLabel(element.label);
       inputMsg.setStyle(generateWhisperListStyle(element.style));
       inputMsg.setValue(element.value);
