@@ -65,29 +65,18 @@ namespace Console
             {
                 while (await _clipboardStream.MoveNext())
                 {
-                    var current = _clipboardStream.Current();
-                    Logger.Info($"Received Clipboard Update {current}");
                     try
                     {
-                        var ccs = new CancellationTokenSource();
-                        ccs.CancelAfter(5000);
-                        if (current == "formnew")
+                        var clipboardContent = _clipboardStream.Current();
+                        Logger.Info($"Received Clipboard Update \"{clipboardContent}\"");
+                        if (clipboardContent == "formnew")
                         {
                             FormStream();
                             Logger.Info("Starting Form Stream");
                         }
                         else
                         {
-                            _services.Whisper().MarkdownAsync(new WhisperMarkdown
-                            {
-                                Markdown = $"Clipboard Content {current}",
-                                Config = new WhisperConfig
-                                {
-                                    Icon = "bathtub",
-                                    Label = "C# Whisper"
-                                }
-                            }, ccs.Token);
-                            Logger.Info($"Sent Clipboard Update {current}");
+                            EmitWhisper(clipboardContent);
                         }
                     }
                     catch (Exception e)
@@ -96,6 +85,22 @@ namespace Console
                     }
                 }
             });
+        }
+
+        private void EmitWhisper(string content)
+        {
+            var ccs = new CancellationTokenSource();
+            ccs.CancelAfter(5000);
+            _services.Whisper().MarkdownAsync(new WhisperMarkdown
+            {
+                Markdown = $"Clipboard Content {content}",
+                Config = new WhisperConfig
+                {
+                    Icon = "bathtub",
+                    Label = "C# Whisper"
+                }
+            }, ccs.Token);
+            Logger.Info($"Sent Clipboard Update {content}");
         }
 
         private void FormStream()
@@ -109,7 +114,7 @@ namespace Console
                     Icon = "bathtub",
                     Label = "C# Whisper Form"
                 },
-                Inputs = new Dictionary<string, IBase>()
+                Inputs = new Dictionary<string, IBase>
                 {
                     ["Checkbox"] = new Checkbox {Label = "checkbox", Tooltip = "checkbox tooltip", Value = true},
                     ["Email"] = new Email {Label = "email", Tooltip = "email tooltip", Value = "hi@hi.com"},
@@ -119,10 +124,10 @@ namespace Console
                         {Label = "number", Tooltip = "number tooltip", Value = 5, Max = 10, Min = 0},
                     ["Password"] = new Password {Label = "password", Tooltip = "password tooltip"},
                     ["Radio"] = new Radio
-                        {Label = "radio", Tooltip = "radio tooltip", Options = new string[] {"Radio1", "Radio2"}},
+                        {Label = "radio", Tooltip = "radio tooltip", Options = new[] {"Radio1", "Radio2"}},
                     ["Select"] = new Select
                     {
-                        Label = "select", Tooltip = "select tooltip", Options = new string[] {"Select1", "Select2"}
+                        Label = "select", Tooltip = "select tooltip", Options = new[] {"Select1", "Select2"}
                     },
                     ["Telephone"] = new Telephone
                     {
@@ -141,7 +146,6 @@ namespace Console
                     switch (stream.Current())
                     {
                         case WhisperUpdate u:
-                            Logger.Info("Received Form Update");
                             LogFormUpdate(u);
                             break;
                         case WhisperResult r:
@@ -166,48 +170,48 @@ namespace Console
                     break;
                 case ICheckbox checkbox:
                     Logger.Info("Form Update Checkbox",
-                        new Dictionary<string, object>() {{"checkbox", checkbox.Value ? "true" : "false"}});
+                        new Dictionary<string, object> {{"checkbox", checkbox.Value ? "true" : "false"}});
                     break;
                 case IEmail email:
-                    Logger.Info("Form Update Email", new Dictionary<string, object>() {{"email", email.Value}});
+                    Logger.Info("Form Update Email", new Dictionary<string, object> {{"email", email.Value}});
                     break;
                 case IMarkdown markdown:
                     Logger.Info("Form Update Markdown",
-                        new Dictionary<string, object>() {{"markdown", markdown.Value}});
+                        new Dictionary<string, object> {{"markdown", markdown.Value}});
                     break;
                 case INone none:
                     Logger.Info("Form Update None");
                     break;
                 case INumber number:
                     Logger.Info("Form Update Number",
-                        new Dictionary<string, object>() {{"number", number.Value.ToString()}});
+                        new Dictionary<string, object> {{"number", number.Value.ToString()}});
                     break;
                 case IPassword password:
                     Logger.Info("Form Update Password",
-                        new Dictionary<string, object>() {{"password", password.Value}});
+                        new Dictionary<string, object> {{"password", password.Value}});
                     break;
                 case IRadio radio:
                     Logger.Info("Form Update Radio",
-                        new Dictionary<string, object>() {{"radio", radio.Value}});
+                        new Dictionary<string, object> {{"radio", radio.Value}});
                     break;
-                case ISelect @select:
+                case ISelect select:
                     Logger.Info("Form Update Select",
-                        new Dictionary<string, object>() {{"select", @select.Value}});
+                        new Dictionary<string, object> {{"select", select.Value}});
                     break;
                 case ITelephone telephone:
                     Logger.Info("Form Update Telephone",
-                        new Dictionary<string, object>() {{"telephone", telephone.Value}});
+                        new Dictionary<string, object> {{"telephone", telephone.Value}});
                     break;
                 case IText text:
                     Logger.Info("Form Update Text",
-                        new Dictionary<string, object>() {{"text", text.Value}});
+                        new Dictionary<string, object> {{"text", text.Value}});
                     break;
                 case ITime time:
                     Logger.Info("Form Update Time",
-                        new Dictionary<string, object>() {{"Time", time.Value.ToString()}});
+                        new Dictionary<string, object> {{"Time", time.Value.ToString()}});
                     break;
                 default:
-                    Logger.Warn("Unexpected Type");
+                    Logger.Warn("Form Update - Unexpected Type");
                     break;
             }
         }
