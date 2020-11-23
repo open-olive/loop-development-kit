@@ -71,7 +71,14 @@ export interface WhisperFormConfig extends Whisper {
 }
 export interface WhisperListElement<T extends string> {
     type: T;
-    extra: boolean;
+    /**
+     *  Value the UI uses to determine if the element is shown
+     *  in the condensed whisper view. Extra being false means
+     *  the element will always be shown. Extra being true means
+     *  the element will only show in the expanded view.
+     *  If this value is ommited it will deafult to false.
+     */
+    extra?: boolean;
     /**
      *  Value the UI uses to order the form inputs.
      *  Value must be greater than 0

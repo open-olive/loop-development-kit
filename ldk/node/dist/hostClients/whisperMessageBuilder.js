@@ -118,7 +118,9 @@ exports.generateWhisperInput = (input) => {
 function setListMessages(msg, 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 input) {
-    msg.setExtra(input.extra);
+    if (input.extra) {
+        msg.setExtra(input.extra);
+    }
     if (input.order && input.order > 0) {
         msg.setOrder(input.order);
     }
