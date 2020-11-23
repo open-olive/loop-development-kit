@@ -90,11 +90,11 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
     public struct Email : IEmail
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
 
-        public string Value { get; }
+        public string Value { get; set; }
 
         public WhisperFormInput.Types.Email ToProto()
         {
@@ -110,10 +110,10 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
     public struct Markdown : IMarkdown
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
-        public string Value { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
+        public string Value { get; set; }
 
         public WhisperFormInput.Types.Markdown ToProto()
         {
@@ -129,15 +129,15 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
     public struct Number : INumber
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
 
-        public float Value { get; }
+        public float Value { get; set; }
 
-        public float Min { get; }
+        public float Min { get; set; }
 
-        public float Max { get; }
+        public float Max { get; set; }
 
         public WhisperFormInput.Types.Number ToProto()
         {
@@ -155,9 +155,9 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
     public struct Password : IPassword
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
 
         public WhisperFormInput.Types.Password ToProto()
         {
@@ -172,9 +172,9 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
     public struct Radio : IRadio
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
 
         public WhisperFormInput.Types.Radio ToProto()
         {
@@ -192,14 +192,14 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
             return radio;
         }
 
-        public string[] Options { get; }
+        public string[] Options { get; set; }
     }
 
     public struct Select : ISelect
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
 
         public WhisperFormInput.Types.Select ToProto()
         {
@@ -217,18 +217,18 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
             return select;
         }
 
-        public string[] Options { get; }
+        public string[] Options { get; set; }
     }
 
     public struct Telephone : ITelephone
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
 
-        public string Value { get; }
+        public string Value { get; set; }
 
-        public string Pattern { get; }
+        public string Pattern { get; set; }
 
         public WhisperFormInput.Types.Tel ToProto()
         {
@@ -245,11 +245,11 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
     public struct Text : IText
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
 
-        public string Value { get; }
+        public string Value { get; set; }
 
         public WhisperFormInput.Types.Text ToProto()
         {
@@ -265,10 +265,10 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
     public struct Time : ITime
     {
-        public string Label { get; }
-        public string Tooltip { get; }
-        public int Order { get; }
-        public DateTimeOffset Value { get; }
+        public string Label { get; set; }
+        public string Tooltip { get; set; }
+        public int Order { get; set; }
+        public DateTimeOffset Value { get; set; }
 
         public WhisperFormInput.Types.Time ToProto()
         {

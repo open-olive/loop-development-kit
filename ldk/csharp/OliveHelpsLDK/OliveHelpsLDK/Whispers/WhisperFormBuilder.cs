@@ -14,7 +14,7 @@ namespace OliveHelpsLDK.Whispers
             {
                 Session = session,
                 CancelLabel = formRequest.CancelLabel,
-                Markdown = formRequest.Markdown,
+                Markdown = formRequest.Markdown ?? "Markdown",
                 Meta = BuildMeta(formRequest.Config),
                 SubmitLabel = formRequest.SubmitLabel,
             };

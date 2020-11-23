@@ -72,16 +72,16 @@ namespace OliveHelpsLDK.Logging
             }
 
             var dictionary = AddDefaultValues(level, msg, newFields);
-            dictionary.Add("FIELDSRAW", JsonSerializer.Serialize(fields, Options));
-            dictionary.Add("NEWFIELDS", JsonSerializer.Serialize(newFields, Options));
-            if (DefaultFields != null)
-            {
-                dictionary.Add("DEFAULTFIELDS", JsonSerializer.Serialize(DefaultFields, Options));
-            }
-            else
-            {
-                dictionary.Add("DEFAULTFIELDS", "NOT PRESENT");
-            }
+            // dictionary.Add("FIELDSRAW", JsonSerializer.Serialize(fields, Options));
+            // dictionary.Add("NEWFIELDS", JsonSerializer.Serialize(newFields, Options));
+            // if (DefaultFields != null)
+            // {
+            //     dictionary.Add("DEFAULTFIELDS", JsonSerializer.Serialize(DefaultFields, Options));
+            // }
+            // else
+            // {
+            //     dictionary.Add("DEFAULTFIELDS", "NOT PRESENT");
+            // }
 
             var serializedDict = JsonSerializer.Serialize(dictionary, Options);
             Write(serializedDict);
