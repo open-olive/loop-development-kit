@@ -66,7 +66,7 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want:    []byte("{\"icon\":\"bathtub\",\"label\":\"The Label\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"messageElement\":{\"align\":\"center\",\"string\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
+			want:    []byte("{\"icon\":\"bathtub\",\"label\":\"The Label\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"messageElement\":{\"align\":\"center\",\"body\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
 			wantErr: false,
 		},
 	}
