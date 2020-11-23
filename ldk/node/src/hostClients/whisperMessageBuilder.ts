@@ -199,7 +199,11 @@ export const generateWhisperListElement = (
     }
     case 'message': {
       const inputMsg = new WLE.Message();
-      inputMsg.setAlign(generateWhisperListAlign(element.align));
+      if (element.align) {
+        inputMsg.setAlign(generateWhisperListAlign(element.align));
+      } else {
+        inputMsg.setAlign(generateWhisperListAlign(WhisperListAlign.LEFT));
+      }
       if (element.body) {
         inputMsg.setBody(element.body);
       }

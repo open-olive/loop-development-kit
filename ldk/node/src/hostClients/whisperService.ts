@@ -159,7 +159,11 @@ export type WhisperListPair = WhisperListElement<'pair'> & {
 };
 
 export type WhisperListMessage = WhisperListElement<'message'> & {
-  align: WhisperListAlign;
+  /**
+   *  Value the UI uses to determine how to align text horizontally.
+   *  If this value is ommited it will default to LEFT.
+   */
+  align?: WhisperListAlign;
   body?: string;
   header?: string;
   /**

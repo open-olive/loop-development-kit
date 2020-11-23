@@ -182,7 +182,12 @@ exports.generateWhisperListElement = (element) => {
         }
         case 'message': {
             const inputMsg = new WLE.Message();
-            inputMsg.setAlign(exports.generateWhisperListAlign(element.align));
+            if (element.align) {
+                inputMsg.setAlign(exports.generateWhisperListAlign(element.align));
+            }
+            else {
+                inputMsg.setAlign(exports.generateWhisperListAlign(whisperService_1.WhisperListAlign.LEFT));
+            }
             if (element.body) {
                 inputMsg.setBody(element.body);
             }
