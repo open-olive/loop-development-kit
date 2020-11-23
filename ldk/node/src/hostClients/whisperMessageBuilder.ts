@@ -200,8 +200,12 @@ export const generateWhisperListElement = (
     case 'message': {
       const inputMsg = new WLE.Message();
       inputMsg.setAlign(generateWhisperListAlign(element.align));
-      inputMsg.setBody(element.body);
-      inputMsg.setHeader(element.header);
+      if (element.body) {
+        inputMsg.setBody(element.body);
+      }
+      if (element.header) {
+        inputMsg.setBody(element.header);
+      }
       if (element.style) {
         inputMsg.setStyle(generateWhisperListStyle(element.style));
       } else {

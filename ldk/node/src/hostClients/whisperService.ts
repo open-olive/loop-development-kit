@@ -160,8 +160,8 @@ export type WhisperListPair = WhisperListElement<'pair'> & {
 
 export type WhisperListMessage = WhisperListElement<'message'> & {
   align: WhisperListAlign;
-  body: string;
-  header: string;
+  body?: string;
+  header?: string;
   /**
    *  Value the UI uses to determine how to style the element.
    *  If this value is ommited it will default to NONE.
