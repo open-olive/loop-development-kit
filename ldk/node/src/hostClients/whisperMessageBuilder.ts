@@ -127,7 +127,9 @@ function setListMessages<T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   input: WhisperListElement<any>,
 ): void {
-  msg.setExtra(input.extra);
+  if (input.extra) {
+    msg.setExtra(input.extra);
+  }
   if (input.order && input.order > 0) {
     msg.setOrder(input.order);
   }
