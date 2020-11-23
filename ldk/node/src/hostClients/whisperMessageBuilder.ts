@@ -188,7 +188,11 @@ export const generateWhisperListElement = (
         inputMsg.setCopyable(element.copyable);
       }
       inputMsg.setLabel(element.label);
-      inputMsg.setStyle(generateWhisperListStyle(element.style));
+      if (element.style) {
+        inputMsg.setStyle(generateWhisperListStyle(element.style));
+      } else {
+        inputMsg.setStyle(generateWhisperListStyle(WhisperListStyle.NONE));
+      }
       inputMsg.setValue(element.value);
       msg.setPair(inputMsg);
       break;
@@ -198,13 +202,21 @@ export const generateWhisperListElement = (
       inputMsg.setAlign(generateWhisperListAlign(element.align));
       inputMsg.setBody(element.body);
       inputMsg.setHeader(element.header);
-      inputMsg.setStyle(generateWhisperListStyle(element.style));
+      if (element.style) {
+        inputMsg.setStyle(generateWhisperListStyle(element.style));
+      } else {
+        inputMsg.setStyle(generateWhisperListStyle(WhisperListStyle.NONE));
+      }
       msg.setMessage(inputMsg);
       break;
     }
     case 'divider': {
       const inputMsg = new WLE.Divider();
-      inputMsg.setStyle(generateWhisperListStyle(element.style));
+      if (element.style) {
+        inputMsg.setStyle(generateWhisperListStyle(element.style));
+      } else {
+        inputMsg.setStyle(generateWhisperListStyle(WhisperListStyle.NONE));
+      }
       msg.setDivider(inputMsg);
       break;
     }

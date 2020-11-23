@@ -170,7 +170,12 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setCopyable(element.copyable);
             }
             inputMsg.setLabel(element.label);
-            inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            if (element.style) {
+                inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            }
+            else {
+                inputMsg.setStyle(exports.generateWhisperListStyle(whisperService_1.WhisperListStyle.NONE));
+            }
             inputMsg.setValue(element.value);
             msg.setPair(inputMsg);
             break;
@@ -180,13 +185,23 @@ exports.generateWhisperListElement = (element) => {
             inputMsg.setAlign(exports.generateWhisperListAlign(element.align));
             inputMsg.setBody(element.body);
             inputMsg.setHeader(element.header);
-            inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            if (element.style) {
+                inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            }
+            else {
+                inputMsg.setStyle(exports.generateWhisperListStyle(whisperService_1.WhisperListStyle.NONE));
+            }
             msg.setMessage(inputMsg);
             break;
         }
         case 'divider': {
             const inputMsg = new WLE.Divider();
-            inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            if (element.style) {
+                inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
+            }
+            else {
+                inputMsg.setStyle(exports.generateWhisperListStyle(whisperService_1.WhisperListStyle.NONE));
+            }
             msg.setDivider(inputMsg);
             break;
         }

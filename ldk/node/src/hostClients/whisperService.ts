@@ -37,7 +37,7 @@ export interface WhisperFormInput<T extends string> {
   /**
    *  Value the UI uses to order the form inputs.
    *  Value must be greater than 0
-   *  If this value is ommited it will deafult to 0
+   *  If this value is ommited it will default to 0
    */
   order?: number;
 }
@@ -115,13 +115,13 @@ export interface WhisperListElement<T extends string> {
    *  in the condensed whisper view. Extra being false means
    *  the element will always be shown. Extra being true means
    *  the element will only show in the expanded view.
-   *  If this value is ommited it will deafult to false.
+   *  If this value is ommited it will default to false.
    */
   extra?: boolean;
   /**
    *  Value the UI uses to order the form inputs.
    *  Value must be greater than 0
-   *  If this value is ommited it will deafult to 0
+   *  If this value is ommited it will default to 0
    */
   order?: number;
 }
@@ -146,11 +146,15 @@ export type WhisperListPair = WhisperListElement<'pair'> & {
    *  Value the UI uses to determine if if should copy the
    *  value field to the clipboard when the user clicks it.
    *  True means that clicking will copy to clipboard.
-   *  If this value is ommited it will deafult to false.
+   *  If this value is ommited it will default to false.
    */
   copyable?: boolean;
   label: string;
-  style: WhisperListStyle;
+  /**
+   *  Value the UI uses to determine how to style the element.
+   *  If this value is ommited it will default to NONE.
+   */
+  style?: WhisperListStyle;
   value: string;
 };
 
@@ -158,11 +162,19 @@ export type WhisperListMessage = WhisperListElement<'message'> & {
   align: WhisperListAlign;
   body: string;
   header: string;
-  style: WhisperListStyle;
+  /**
+   *  Value the UI uses to determine how to style the element.
+   *  If this value is ommited it will default to NONE.
+   */
+  style?: WhisperListStyle;
 };
 
 export type WhisperListDivider = WhisperListElement<'divider'> & {
-  style: WhisperListStyle;
+  /**
+   *  Value the UI uses to determine how to style the element.
+   *  If this value is ommited it will default to NONE.
+   */
+  style?: WhisperListStyle;
 };
 
 export type WhisperListElements =
