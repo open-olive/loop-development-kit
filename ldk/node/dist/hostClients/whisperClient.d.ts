@@ -1,5 +1,5 @@
 import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
-import { Whisper, WhisperConfirmConfig, WhisperFormConfig, WhisperFormSubmitEvent, WhisperFormUpdateEvent, WhisperService } from './whisperService';
+import { Whisper, WhisperConfirmConfig, WhisperFormConfig, WhisperFormSubmitEvent, WhisperFormUpdateEvent, WhisperListConfig, WhisperService } from './whisperService';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StoppableMessage, StoppableStream, StreamListener } from './stoppables';
 /**
@@ -16,6 +16,7 @@ declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whi
      * @returns Promise resolving when the server responds to the command.
      */
     markdownWhisper(whisper: Whisper): StoppableMessage<void>;
+    listWhisper(whisper: WhisperListConfig): StoppableMessage<void>;
     confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
     formWhisper(whisper: WhisperFormConfig, listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;
     protected generateClient(): GRPCClientConstructor<WhisperGRPCClient>;

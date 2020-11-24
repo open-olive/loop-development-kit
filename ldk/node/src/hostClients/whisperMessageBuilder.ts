@@ -5,6 +5,11 @@ import {
   WhisperFormConfig,
   WhisperFormInput,
   WhisperFormInputs,
+  WhisperListAlign,
+  WhisperListConfig,
+  WhisperListElement,
+  WhisperListElements,
+  WhisperListStyle,
 } from './whisperService';
 import * as messages from '../grpc/whisper_pb';
 
@@ -107,6 +112,130 @@ export const generateWhisperInput = (
   setFormMessages(inputMsg, input);
   return msg;
 };
+
+type ListMessage<T> = {
+  setExtra(value: boolean): T;
+  setOrder(value: number): T;
+};
+
+/**
+ * @param msg - The message.
+ * @param input - The whisper list element.
+ */
+function setListMessages<T>(
+  msg: ListMessage<T>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  input: WhisperListElement<any>,
+): void {
+  if (input.extra) {
+    msg.setExtra(input.extra);
+  }
+  if (input.order && input.order > 0) {
+    msg.setOrder(input.order);
+  }
+}
+
+export const generateWhisperListStyle = (
+  style: WhisperListStyle,
+): messages.WhisperListElement.Style => {
+  switch (style) {
+    case WhisperListStyle.NONE: {
+      return messages.WhisperListElement.Style.STYLE_NONE;
+    }
+    case WhisperListStyle.SUCCESS: {
+      return messages.WhisperListElement.Style.STYLE_SUCCESS;
+    }
+    case WhisperListStyle.WARN: {
+      return messages.WhisperListElement.Style.STYLE_WARN;
+    }
+    case WhisperListStyle.ERROR: {
+      return messages.WhisperListElement.Style.STYLE_ERROR;
+    }
+    default: {
+      return messages.WhisperListElement.Style.STYLE_NONE;
+    }
+  }
+};
+
+export const generateWhisperListAlign = (
+  align: WhisperListAlign,
+): messages.WhisperListElement.Align => {
+  switch (align) {
+    case WhisperListAlign.LEFT: {
+      return messages.WhisperListElement.Align.ALIGN_LEFT;
+    }
+    case WhisperListAlign.CENTER: {
+      return messages.WhisperListElement.Align.ALIGN_CENTER;
+    }
+    case WhisperListAlign.RIGHT: {
+      return messages.WhisperListElement.Align.ALIGN_RIGHT;
+    }
+    default: {
+      return messages.WhisperListElement.Align.ALIGN_LEFT;
+    }
+  }
+};
+
+export const generateWhisperListElement = (
+  element: WhisperListElements,
+): messages.WhisperListElement => {
+  const WLE = messages.WhisperListElement;
+  const msg = new WLE();
+  switch (element.type) {
+    case 'pair': {
+      const inputMsg = new WLE.Pair();
+      if (element.copyable) {
+        inputMsg.setCopyable(element.copyable);
+      }
+      inputMsg.setLabel(element.label);
+      if (element.style) {
+        inputMsg.setStyle(generateWhisperListStyle(element.style));
+      } else {
+        inputMsg.setStyle(generateWhisperListStyle(WhisperListStyle.NONE));
+      }
+      inputMsg.setValue(element.value);
+      msg.setPair(inputMsg);
+      break;
+    }
+    case 'message': {
+      const inputMsg = new WLE.Message();
+      if (element.align) {
+        inputMsg.setAlign(generateWhisperListAlign(element.align));
+      } else {
+        inputMsg.setAlign(generateWhisperListAlign(WhisperListAlign.LEFT));
+      }
+      if (element.body) {
+        inputMsg.setBody(element.body);
+      }
+      if (element.header) {
+        inputMsg.setBody(element.header);
+      }
+      if (element.style) {
+        inputMsg.setStyle(generateWhisperListStyle(element.style));
+      } else {
+        inputMsg.setStyle(generateWhisperListStyle(WhisperListStyle.NONE));
+      }
+      msg.setMessage(inputMsg);
+      break;
+    }
+    case 'divider': {
+      const inputMsg = new WLE.Divider();
+      if (element.style) {
+        inputMsg.setStyle(generateWhisperListStyle(element.style));
+      } else {
+        inputMsg.setStyle(generateWhisperListStyle(WhisperListStyle.NONE));
+      }
+      msg.setDivider(inputMsg);
+      break;
+    }
+    default: {
+      throw new Error('Unexpected Input Type');
+    }
+  }
+  setListMessages(msg, element);
+  return msg;
+};
+
 export const generateWhisperMeta = (whisper: Whisper): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
@@ -136,6 +265,19 @@ export const buildWhisperMarkdownRequest = (
   const result = new messages.WhisperMarkdownRequest().setMeta(meta);
   result.setMarkdown(whisper.markdown);
   return result;
+};
+export const buildWhisperListRequest = (
+  config: WhisperListConfig,
+): messages.WhisperListRequest => {
+  const meta = generateWhisperMeta(config);
+  const request = new messages.WhisperListRequest().setMeta(meta);
+  const elements = request.getElementsMap();
+  Object.keys(config.elements).forEach((key) => {
+    const value = config.elements[key];
+    const input = generateWhisperListElement(value);
+    elements.set(key, input);
+  });
+  return request;
 };
 export const buildWhisperConfirmMessage = (
   whisper: WhisperConfirmConfig,

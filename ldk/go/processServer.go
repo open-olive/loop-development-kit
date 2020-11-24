@@ -20,6 +20,11 @@ func convertProcessInfo(pi ProcessInfo) *proto.ProcessInfo {
 }
 
 func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest, stream proto.Process_ProcessStateStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(event ProcessEvent, err error) {
 		var errText string
 		if err != nil {
@@ -33,30 +38,40 @@ func (p *ProcessServer) ProcessStateStream(req *proto.ProcessStateStreamRequest,
 			fmt.Println("error => ", err.Error())
 		}
 	}
+
 	go func() {
 		err := p.Impl.ListenState(
-			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, session),
 			handler,
 		)
 		if err != nil {
 			fmt.Println("error => ", err.Error())
 		}
 	}()
+
 	<-stream.Context().Done()
+
 	return nil
 }
 
 func (p *ProcessServer) ProcessState(ctx context.Context, req *proto.ProcessStateRequest) (*proto.ProcessStateResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	processes, err := p.Impl.State(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 	)
 	if err != nil {
 		return nil, err
 	}
+
 	var processPointers []*proto.ProcessInfo
 	for _, pi := range processes {
 		process := convertProcessInfo(pi)
 		processPointers = append(processPointers, process)
 	}
+
 	return &proto.ProcessStateResponse{Processes: processPointers}, nil
 }

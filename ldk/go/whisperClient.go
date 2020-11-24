@@ -156,3 +156,20 @@ func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (
 		}
 	}
 }
+
+// WhisperForm is used by loops to create form whispers
+func (m *WhisperClient) List(ctx context.Context, content *WhisperContentList) error {
+	req, err := content.ToProto()
+	if err != nil {
+		return fmt.Errorf("failed to encode content to proto: %w", err)
+	}
+
+	req.Session = m.session.ToProto()
+
+	_, err = m.client.WhisperList(ctx, req)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

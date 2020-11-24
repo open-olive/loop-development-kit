@@ -15,8 +15,13 @@ type ClipboardServer struct {
 
 // ClipboardRead is used by plugins to get the value of an entry
 func (m *ClipboardServer) ClipboardRead(ctx context.Context, req *proto.ClipboardReadRequest) (*proto.ClipboardReadResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	value, err := m.Impl.Read(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 	)
 	if err != nil {
 		return nil, err
@@ -29,6 +34,11 @@ func (m *ClipboardServer) ClipboardRead(ctx context.Context, req *proto.Clipboar
 
 // ClipboardReadStream is used by plugins to get the value of an entry
 func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequest, stream proto.Clipboard_ClipboardReadStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(text string, err error) {
 		var errText string
 		if err != nil {
@@ -45,7 +55,7 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 
 	go func() {
 		err := m.Impl.Listen(
-			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, session),
 			handler,
 		)
 		// TODO: move this to a real logger once we move this into sidekick
@@ -62,8 +72,13 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 
 // ClipboardWrite is used by plugins to set an entry
 func (m *ClipboardServer) ClipboardWrite(ctx context.Context, req *proto.ClipboardWriteRequest) (*emptypb.Empty, error) {
-	err := m.Impl.Write(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
+	err = m.Impl.Write(
+		context.WithValue(ctx, Session{}, session),
 		req.Text,
 	)
 	if err != nil {

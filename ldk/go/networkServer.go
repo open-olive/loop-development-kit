@@ -11,11 +11,19 @@ type NetworkServer struct {
 }
 
 func (ns *NetworkServer) HTTPRequest(ctx context.Context, req *proto.HTTPRequestMsg) (*proto.HTTPResponseMsg, error) {
-	resp, err := ns.Impl.HTTPRequest(context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)), &HTTPRequest{
-		URL:    req.Url,
-		Method: req.Method,
-		Body:   req.Body,
-	})
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := ns.Impl.HTTPRequest(
+		context.WithValue(ctx, Session{}, session),
+		&HTTPRequest{
+			URL:    req.Url,
+			Method: req.Method,
+			Body:   req.Body,
+		},
+	)
 	if err != nil {
 		return nil, err
 	}

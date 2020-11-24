@@ -13,8 +13,13 @@ type WindowServer struct {
 }
 
 func (w *WindowServer) WindowActiveWindow(ctx context.Context, req *proto.WindowActiveWindowRequest) (*proto.WindowActiveWindowResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	resp, err := w.Impl.ActiveWindow(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 	)
 
 	if err != nil {
@@ -27,6 +32,11 @@ func (w *WindowServer) WindowActiveWindow(ctx context.Context, req *proto.Window
 }
 
 func (w *WindowServer) WindowActiveWindowStream(req *proto.WindowActiveWindowStreamRequest, stream proto.Window_WindowActiveWindowStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(wi WindowInfo, err error) {
 		var errText string
 		if err != nil {
@@ -43,7 +53,7 @@ func (w *WindowServer) WindowActiveWindowStream(req *proto.WindowActiveWindowStr
 
 	go func() {
 		err := w.Impl.ListenActiveWindow(
-			context.WithValue(stream.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(stream.Context(), Session{}, session),
 			handler,
 		)
 		if err != nil {
@@ -55,8 +65,13 @@ func (w *WindowServer) WindowActiveWindowStream(req *proto.WindowActiveWindowStr
 }
 
 func (w *WindowServer) WindowState(ctx context.Context, req *proto.WindowStateRequest) (*proto.WindowStateResponse, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
 	resp, err := w.Impl.State(
-		context.WithValue(ctx, Session{}, NewSessionFromProto(req.Session)),
+		context.WithValue(ctx, Session{}, session),
 	)
 	if err != nil {
 		return nil, err
@@ -73,6 +88,11 @@ func (w *WindowServer) WindowState(ctx context.Context, req *proto.WindowStateRe
 }
 
 func (w *WindowServer) WindowStateStream(req *proto.WindowStateStreamRequest, server proto.Window_WindowStateStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
 	handler := func(we WindowEvent, err error) {
 		var errText string
 		if err != nil {
@@ -90,7 +110,7 @@ func (w *WindowServer) WindowStateStream(req *proto.WindowStateStreamRequest, se
 
 	go func() {
 		err := w.Impl.ListenState(
-			context.WithValue(server.Context(), Session{}, NewSessionFromProto(req.Session)),
+			context.WithValue(server.Context(), Session{}, session),
 			handler,
 		)
 		if err != nil {

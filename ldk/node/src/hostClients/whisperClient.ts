@@ -7,6 +7,7 @@ import {
   WhisperFormConfig,
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
+  WhisperListConfig,
   WhisperService,
 } from './whisperService';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
@@ -19,6 +20,7 @@ import { TransformingStream } from './transformingStream';
 import { transformResponse } from './whisperMessageParser';
 import {
   buildWhisperConfirmMessage,
+  buildWhisperListRequest,
   buildWhisperMarkdownRequest,
   generateWhisperForm,
 } from './whisperMessageBuilder';
@@ -46,6 +48,15 @@ class WhisperClient
     >(
       (message, callback) => this.client.whisperMarkdown(message, callback),
       () => buildWhisperMarkdownRequest(whisper),
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      () => {},
+    );
+  }
+
+  listWhisper(whisper: WhisperListConfig): StoppableMessage<void> {
+    return this.buildStoppableMessage<messages.WhisperListRequest, Empty, void>(
+      (message, callback) => this.client.whisperList(message, callback),
+      () => buildWhisperListRequest(whisper),
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       () => {},
     );

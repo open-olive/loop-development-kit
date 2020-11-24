@@ -10,4 +10,6 @@ type WhisperService interface {
 	Form(context.Context, *WhisperContentForm) (bool, map[string]WhisperContentFormOutput, error)
 	// This function only returns once the whisper is closed, or when the context provided is cancelled.
 	Markdown(context.Context, *WhisperContentMarkdown) error
+	// This function only returns once the whisper is closed, or when the context provided is cancelled.
+	List(context.Context, *WhisperContentList) error
 }
