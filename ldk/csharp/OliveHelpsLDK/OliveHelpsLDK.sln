@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OliveHelpsLDK", "OliveHelpsLDK\OliveHelpsLDK.csproj", "{C7389BD1-3F14-4E35-9E38-EC362AD1C4F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{FC985BCA-B275-4ED8-A01E-876E454E0F76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{FC985BCA-B275-4ED8-A01E-876E454E0F76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OliveHelpsLDK_Test", "OliveHelpsLDK_Test\OliveHelpsLDK_Test.csproj", "{707D3222-0CD6-4B86-A8A5-1C3149449009}"
 EndProject

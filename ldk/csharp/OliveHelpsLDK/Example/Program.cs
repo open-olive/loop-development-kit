@@ -22,7 +22,7 @@ using Telephone = OliveHelpsLDK.Whispers.Forms.Inputs.Telephone;
 using Text = OliveHelpsLDK.Whispers.Forms.Inputs.Text;
 using Time = OliveHelpsLDK.Whispers.Forms.Inputs.Time;
 
-namespace Console
+namespace Example
 {
     class Program
     {
