@@ -5,14 +5,14 @@ using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Whispers.Forms.Inputs;
 using Proto;
 
-namespace OliveHelpsLDK_Test.Whispers
+namespace OliveHelpsLDK.Test.Whispers
 {
     [TestFixture]
     public class WhisperFormBuilderTests
     {
         public WhisperFormBuilder Builder = new WhisperFormBuilder();
 
-        public Session Session = new Session
+        internal Proto.Session Session = new Proto.Session
         {
             LoopID = "LoopID",
             Token = "Token"
@@ -31,13 +31,18 @@ namespace OliveHelpsLDK_Test.Whispers
                     Icon = "Config.Icon",
                     Label = "Config.Label",
                 },
-                Inputs = new Dictionary<string, IBase>(){{"first", new Checkbox
+                Inputs = new Dictionary<string, IBase>()
                 {
-                    Value = true,
-                    Label = "CheckboxLabel",
-                    Tooltip = "CheckboxTooltip",
-                    Order = 0,
-                }}},
+                    {
+                        "first", new Checkbox
+                        {
+                            Value = true,
+                            Label = "CheckboxLabel",
+                            Tooltip = "CheckboxTooltip",
+                            Order = 0,
+                        }
+                    }
+                },
             };
             var result = Builder.BuildRequest(request, Session);
             var expected = new Proto.WhisperFormRequest()
@@ -50,21 +55,25 @@ namespace OliveHelpsLDK_Test.Whispers
                     Icon = "Config.Icon",
                     Label = "Config.Label",
                 },
-                Inputs = { {"first", new WhisperFormInput
+                Inputs =
                 {
-                    Checkbox = new WhisperFormInput.Types.Checkbox
                     {
-                        Value = true,
-                        Label = "CheckboxLabel",
-                        Tooltip = "CheckboxTooltip",
-                        Order = 0,
+                        "first", new WhisperFormInput
+                        {
+                            Checkbox = new WhisperFormInput.Types.Checkbox
+                            {
+                                Value = true,
+                                Label = "CheckboxLabel",
+                                Tooltip = "CheckboxTooltip",
+                                Order = 0,
+                            }
+                        }
                     }
-                }} },
+                },
                 Session = Session
             };
 
             Assert.That(result, Is.EqualTo(expected));
-
         }
     }
 }

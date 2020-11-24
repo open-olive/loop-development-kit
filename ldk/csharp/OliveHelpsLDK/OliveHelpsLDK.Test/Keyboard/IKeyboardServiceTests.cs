@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using NUnit.Framework;
 using OliveHelpsLDK.Keyboard;
 
-namespace OliveHelpsLDK_Test.Keyboard
+namespace OliveHelpsLDK.Test.Keyboard
 {
     [TestFixture]
     public class HotKeyTests

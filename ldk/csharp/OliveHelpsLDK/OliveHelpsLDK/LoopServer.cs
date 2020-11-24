@@ -8,7 +8,7 @@ using OliveHelpsLDK.Logging;
 using Plugin;
 using Proto;
 
-[assembly: InternalsVisibleTo("OliveHelpsLDK_Test")]
+[assembly: InternalsVisibleTo("OliveHelpsLDK.Test")]
 
 namespace OliveHelpsLDK
 {

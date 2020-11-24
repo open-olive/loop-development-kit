@@ -4,6 +4,10 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
 
         <IsPackable>false</IsPackable>
+
+        <AssemblyName>OliveHelpsLDK.Test</AssemblyName>
+
+        <RootNamespace>OliveHelpsLDK.Test</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
