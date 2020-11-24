@@ -42,6 +42,8 @@ namespace Console
 
         private IStreamingCall<string> _clipboardStream;
 
+        private IStreamingCall<string> _textStream;
+
         public ILogger Logger;
 
         public Task Start(ILoopServices services)
@@ -69,14 +71,21 @@ namespace Console
                     {
                         var clipboardContent = _clipboardStream.Current();
                         Logger.Info($"Received Clipboard Update \"{clipboardContent}\"");
-                        if (clipboardContent == "formnew")
+                        switch (clipboardContent)
                         {
-                            FormStream();
-                            Logger.Info("Starting Form Stream");
-                        }
-                        else
-                        {
-                            EmitWhisper(clipboardContent);
+                            case "formnew":
+                                FormStream();
+                                Logger.Info("Starting Form Stream");
+                                break;
+                            case "keystart":
+                                KeyboardStream();
+                                break;
+                            case "keystop":
+                                KeyboardStream(false);
+                                break;
+                            default:
+                                EmitWhisper(clipboardContent);
+                                break;
                         }
                     }
                     catch (Exception e)
@@ -85,6 +94,27 @@ namespace Console
                     }
                 }
             });
+        }
+
+        private void KeyboardStream(bool start = true)
+        {
+            if (start && _textStream == null)
+            {
+                _textStream = _services.Keyboard().StreamText();
+                Task.Run(async () =>
+                {
+                    while (await _textStream.MoveNext())
+                    {
+                        Logger.Info("Keyboard Stream Received",
+                            new Dictionary<string, object>() {["text"] = _textStream.Current()});
+                    }
+                });
+            }
+            else if (start == false && _textStream != null)
+            {
+                _textStream?.Dispose();
+                _textStream = null;
+            }
         }
 
         private void EmitWhisper(string content)

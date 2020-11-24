@@ -13,10 +13,10 @@ namespace OliveHelpsLDK.Whispers
             var request = new WhisperFormRequest
             {
                 Session = session,
-                CancelLabel = formRequest.CancelLabel,
+                CancelLabel = formRequest.CancelLabel ?? "Cancel",
                 Markdown = formRequest.Markdown ?? "Markdown",
                 Meta = BuildMeta(formRequest.Config),
-                SubmitLabel = formRequest.SubmitLabel,
+                SubmitLabel = formRequest.SubmitLabel ?? "Submit",
             };
             BuildInputs(request.Inputs, formRequest.Inputs);
             return request;
@@ -74,8 +74,8 @@ namespace OliveHelpsLDK.Whispers
         {
             return new WhisperMeta
             {
-                Icon = config.Icon,
-                Label = config.Label,
+                Icon = config.Icon ?? "announcement",
+                Label = config.Label ?? "Whisper",
             };
         }
     }
