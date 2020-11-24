@@ -2,7 +2,7 @@ on: [ push, pull_request ]
 name: C# Build
 defaults:
   run:
-    working-directory: ldk/go
+    working-directory: ldk/csharp
 jobs:
   build:
     runs-on: ubuntu-latest
