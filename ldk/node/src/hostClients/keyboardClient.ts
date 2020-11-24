@@ -20,14 +20,20 @@ const generateModifierFlag = (
   modifiers: Partial<KeyboardModifiers>,
 ): number => {
   return (
-    (modifiers?.altL ? 1 : 0) +
-    (modifiers?.altR ? 2 : 0) +
-    (modifiers?.ctrlL ? 4 : 0) +
-    (modifiers?.ctrlR ? 8 : 0) +
-    (modifiers?.metaL ? 16 : 0) +
-    (modifiers?.metaR ? 32 : 0) +
-    (modifiers?.shiftL ? 64 : 0) +
-    (modifiers?.shiftR ? 128 : 0)
+    /* eslint-disable no-bitwise */
+    (modifiers?.altL ? 1 << 0 : 0) +
+    (modifiers?.altR ? 1 << 1 : 0) +
+    (modifiers?.alt ? 1 << 2 : 0) +
+    (modifiers?.ctrlL ? 1 << 3 : 0) +
+    (modifiers?.ctrlR ? 1 << 4 : 0) +
+    (modifiers?.ctrl ? 1 << 5 : 0) +
+    (modifiers?.metaL ? 1 << 6 : 0) +
+    (modifiers?.metaR ? 1 << 7 : 0) +
+    (modifiers?.meta ? 1 << 8 : 0) +
+    (modifiers?.shiftL ? 1 << 9 : 0) +
+    (modifiers?.shiftR ? 1 << 10 : 0) +
+    (modifiers?.shift ? 1 << 10 : 0)
+    /* eslint-enable no-bitwise */
   );
 };
 
