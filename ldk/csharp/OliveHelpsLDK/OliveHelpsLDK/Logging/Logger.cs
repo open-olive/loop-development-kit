@@ -63,8 +63,6 @@ namespace OliveHelpsLDK.Logging
 
         private void Log(LogLevel level, string msg, IDictionary<string, object> fields)
         {
-            // var keys = string.Concat(fields.Keys, ",");
-            // Console.Error.WriteLine("[TRACE] " + keys);
             IDictionary<string, object> newFields = new Dictionary<string, object>();
             if (fields != null)
             {
@@ -72,17 +70,6 @@ namespace OliveHelpsLDK.Logging
             }
 
             var dictionary = AddDefaultValues(level, msg, newFields);
-            // dictionary.Add("FIELDSRAW", JsonSerializer.Serialize(fields, Options));
-            // dictionary.Add("NEWFIELDS", JsonSerializer.Serialize(newFields, Options));
-            // if (DefaultFields != null)
-            // {
-            //     dictionary.Add("DEFAULTFIELDS", JsonSerializer.Serialize(DefaultFields, Options));
-            // }
-            // else
-            // {
-            //     dictionary.Add("DEFAULTFIELDS", "NOT PRESENT");
-            // }
-
             var serializedDict = JsonSerializer.Serialize(dictionary, Options);
             Write(serializedDict);
         }
