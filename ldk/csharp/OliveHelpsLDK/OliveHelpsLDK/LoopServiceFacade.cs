@@ -19,30 +19,6 @@ namespace OliveHelpsLDK
 {
     internal class LoopServiceFacade : ILoopServices
     {
-        private IWhisperService _whisper;
-
-        private IClipboardService _clipboard;
-
-        private IFilesystemService _filesystem;
-
-        private ICursorService _cursor;
-
-        private IKeyboardService _keyboard;
-
-        private INetworkService _network;
-
-        private IProcessService _process;
-
-        private IBrowserService _browser;
-
-        private IHoverService _hover;
-
-        private IWindowService _window;
-
-        private IStorageService _storage;
-
-        private IUIService _ui;
-
         internal async Task Connect(ConnectionInfo connectionInfo, Session session, ILogger logger)
         {
             var address = connectionInfo.Network == "unix"
@@ -52,78 +28,42 @@ namespace OliveHelpsLDK
             var channel = new Channel(address, ChannelCredentials.Insecure);
             await channel.ConnectAsync();
             Console.Error.WriteLine("[DEBUG] GRPC Channel Connected");
-            _whisper = new WhisperClient(channel, session, logger);
-            _clipboard = new ClipboardClient(channel, session, logger);
-            _filesystem = new FilesystemClient(channel, session, logger);
-            _cursor = new CursorClient(channel, session, logger);
-            _keyboard = new KeyboardClient(channel, session, logger);
-            _network = new NetworkClient(channel, session, logger);
-            _process = new ProcessClient(channel, session, logger);
-            _browser = new BrowserClient(channel, session, logger);
-            _hover = new HoverClient(channel, session, logger);
-            _window = new WindowClient(channel, session, logger);
-            _storage = new StorageClient(channel, session, logger);
-            _ui = new UIClient(channel, session, logger);
+            Whisper = new WhisperClient(channel, session, logger);
+            Clipboard = new ClipboardClient(channel, session, logger);
+            Filesystem = new FilesystemClient(channel, session, logger);
+            Cursor = new CursorClient(channel, session, logger);
+            Keyboard = new KeyboardClient(channel, session, logger);
+            Network = new NetworkClient(channel, session, logger);
+            Process = new ProcessClient(channel, session, logger);
+            Browser = new BrowserClient(channel, session, logger);
+            Hover = new HoverClient(channel, session, logger);
+            Window = new WindowClient(channel, session, logger);
+            Storage = new StorageClient(channel, session, logger);
+            UI = new UIClient(channel, session, logger);
         }
 
-        public IWhisperService Whisper()
-        {
-            return _whisper;
-        }
+        public IWhisperService Whisper { get; private set; }
 
-        public IClipboardService Clipboard()
-        {
-            return _clipboard;
-        }
+        public IClipboardService Clipboard { get; private set; }
 
-        public IFilesystemService Filesystem()
-        {
-            return _filesystem;
-        }
+        public IFilesystemService Filesystem { get; private set; }
 
-        public ICursorService Cursor()
-        {
-            return _cursor;
-        }
+        public ICursorService Cursor { get; private set; }
 
-        public IKeyboardService Keyboard()
-        {
-            return _keyboard;
-        }
+        public IKeyboardService Keyboard { get; private set; }
 
-        public INetworkService Network()
-        {
-            return _network;
-        }
+        public INetworkService Network { get; private set; }
 
-        public IProcessService Process()
-        {
-            return _process;
-        }
+        public IProcessService Process { get; private set; }
 
-        public IStorageService Storage()
-        {
-            return _storage;
-        }
+        public IStorageService Storage { get; private set; }
 
-        public IBrowserService Browser()
-        {
-            return _browser;
-        }
+        public IBrowserService Browser { get; private set; }
 
-        public IHoverService Hover()
-        {
-            return _hover;
-        }
+        public IHoverService Hover { get; private set; }
 
-        public IWindowService Window()
-        {
-            return _window;
-        }
+        public IWindowService Window { get; private set; }
 
-        public IUIService UI()
-        {
-            return _ui;
-        }
+        public IUIService UI { get; private set; }
     }
 }

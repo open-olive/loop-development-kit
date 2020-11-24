@@ -62,7 +62,7 @@ namespace Console
 
         private void ClipboardStream()
         {
-            _clipboardStream = _services.Clipboard().Stream();
+            _clipboardStream = _services.Clipboard.Stream();
             Task.Run(async () =>
             {
                 while (await _clipboardStream.MoveNext())
@@ -100,7 +100,7 @@ namespace Console
         {
             if (start && _textStream == null)
             {
-                _textStream = _services.Keyboard().StreamText();
+                _textStream = _services.Keyboard.StreamText();
                 Task.Run(async () =>
                 {
                     while (await _textStream.MoveNext())
@@ -121,7 +121,7 @@ namespace Console
         {
             var ccs = new CancellationTokenSource();
             ccs.CancelAfter(5000);
-            _services.Whisper().MarkdownAsync(new WhisperMarkdown
+            _services.Whisper.MarkdownAsync(new WhisperMarkdown
             {
                 Markdown = $"Clipboard Content {content}",
                 Config = new WhisperConfig
@@ -168,7 +168,7 @@ namespace Console
                     ["Time"] = new Time {Label = "time", Tooltip = "time tooltip", Value = DateTimeOffset.Now},
                 }
             };
-            var stream = _services.Whisper().FormAsync(whisperForm);
+            var stream = _services.Whisper.FormAsync(whisperForm);
             Task.Run(async () =>
             {
                 while (await stream.MoveNext())

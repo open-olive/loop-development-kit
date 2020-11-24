@@ -12,32 +12,31 @@ namespace OliveHelpsLDK
 {
     public interface ILoopServices
     {
-        IWhisperService Whisper();
+        IWhisperService Whisper { get; }
 
-        IClipboardService Clipboard();
+        IClipboardService Clipboard { get; }
 
-        IFilesystemService Filesystem();
+        IFilesystemService Filesystem { get; }
 
-        ICursorService Cursor();
+        ICursorService Cursor { get; }
 
-        IKeyboardService Keyboard();
+        IKeyboardService Keyboard { get; }
 
-        INetworkService Network();
+        INetworkService Network { get; }
 
-        IProcessService Process();
-
-        // TODO: Uncomment once available in Olive Helps.
-        // IBrowserService Browser();
+        IProcessService Process { get; }
 
         // TODO: Uncomment once available in Olive Helps.
-        // IHoverService Hover();
+        // IBrowserService Browser { get ;}
 
         // TODO: Uncomment once available in Olive Helps.
-        // IWindowService Window();
+        // IHoverService Hover { get; }
 
-        IStorageService Storage();
+        // TODO: Uncomment once available in Olive Helps.
+        // IWindowService Window { get; }
 
-        IUIService UI();
+        IStorageService Storage { get; }
 
+        IUIService UI { get; }
     }
 }
