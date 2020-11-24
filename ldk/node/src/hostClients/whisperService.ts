@@ -37,7 +37,7 @@ export interface WhisperFormInput<T extends string> {
   /**
    *  Value the UI uses to order the form inputs.
    *  Value must be greater than 0
-   *  If this value is ommited it will deafult to 0
+   *  If this value is ommited it will default to 0
    */
   order?: number;
 }
@@ -108,6 +108,88 @@ export interface WhisperFormConfig extends Whisper {
   inputs: { [name: string]: WhisperFormInputs };
 }
 
+export interface WhisperListElement<T extends string> {
+  type: T;
+  /**
+   *  Value the UI uses to determine if the element is shown
+   *  in the condensed whisper view. Extra being false means
+   *  the element will always be shown. Extra being true means
+   *  the element will only show in the expanded view.
+   *  If this value is ommited it will default to false.
+   */
+  extra?: boolean;
+  /**
+   *  Value the UI uses to order the form inputs.
+   *  Value must be greater than 0
+   *  If this value is ommited it will default to 0
+   */
+  order?: number;
+}
+
+// eslint-disable-next-line no-shadow
+export enum WhisperListStyle {
+  NONE = 0,
+  SUCCESS,
+  WARN,
+  ERROR,
+}
+
+// eslint-disable-next-line no-shadow
+export enum WhisperListAlign {
+  LEFT = 0,
+  CENTER,
+  RIGHT,
+}
+
+export type WhisperListPair = WhisperListElement<'pair'> & {
+  /**
+   *  Value the UI uses to determine if if should copy the
+   *  value field to the clipboard when the user clicks it.
+   *  True means that clicking will copy to clipboard.
+   *  If this value is ommited it will default to false.
+   */
+  copyable?: boolean;
+  label: string;
+  /**
+   *  Value the UI uses to determine how to style the element.
+   *  If this value is ommited it will default to NONE.
+   */
+  style?: WhisperListStyle;
+  value: string;
+};
+
+export type WhisperListMessage = WhisperListElement<'message'> & {
+  /**
+   *  Value the UI uses to determine how to align text horizontally.
+   *  If this value is ommited it will default to LEFT.
+   */
+  align?: WhisperListAlign;
+  body?: string;
+  header?: string;
+  /**
+   *  Value the UI uses to determine how to style the element.
+   *  If this value is ommited it will default to NONE.
+   */
+  style?: WhisperListStyle;
+};
+
+export type WhisperListDivider = WhisperListElement<'divider'> & {
+  /**
+   *  Value the UI uses to determine how to style the element.
+   *  If this value is ommited it will default to NONE.
+   */
+  style?: WhisperListStyle;
+};
+
+export type WhisperListElements =
+  | WhisperListMessage
+  | WhisperListPair
+  | WhisperListDivider;
+
+export interface WhisperListConfig extends Whisper {
+  elements: { [name: string]: WhisperListElements };
+}
+
 export type WhisperFormOutputTypes = string | number | boolean | Date;
 
 export interface WhisperFormUpdateEvent {
@@ -134,6 +216,10 @@ export interface WhisperService {
    * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
   confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
+  /**
+   * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
+   */
+  listWhisper(whisper: WhisperListConfig): StoppableMessage<void>;
 
   formWhisper(
     whisper: WhisperFormConfig,

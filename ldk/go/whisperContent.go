@@ -12,6 +12,9 @@ const (
 
 	// WhisperContentTypeMarkdown is the content type used by a markdown whisper
 	WhisperContentTypeMarkdown WhisperContentType = "markdown"
+
+	// WhisperContentTypeList is the content type used by a list whisper
+	WhisperContentTypeList WhisperContentType = "list"
 )
 
 // WhisperContent is an interface for the different types of whisper content

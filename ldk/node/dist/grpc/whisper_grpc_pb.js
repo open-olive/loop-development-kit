@@ -50,6 +50,15 @@ function serialize_proto_WhisperFormStreamResponse(arg) {
 function deserialize_proto_WhisperFormStreamResponse(buffer_arg) {
     return whisper_pb.WhisperFormStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
+function serialize_proto_WhisperListRequest(arg) {
+    if (!(arg instanceof whisper_pb.WhisperListRequest)) {
+        throw new Error('Expected argument of type proto.WhisperListRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_WhisperListRequest(buffer_arg) {
+    return whisper_pb.WhisperListRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
 function serialize_proto_WhisperMarkdownRequest(arg) {
     if (!(arg instanceof whisper_pb.WhisperMarkdownRequest)) {
         throw new Error('Expected argument of type proto.WhisperMarkdownRequest');
@@ -95,6 +104,18 @@ var WhisperService = exports.WhisperService = {
         requestDeserialize: deserialize_proto_WhisperFormRequest,
         responseSerialize: serialize_proto_WhisperFormStreamResponse,
         responseDeserialize: deserialize_proto_WhisperFormStreamResponse,
+    },
+    // Send a list whisper
+    whisperList: {
+        path: '/proto.Whisper/WhisperList',
+        requestStream: false,
+        responseStream: false,
+        requestType: whisper_pb.WhisperListRequest,
+        responseType: google_protobuf_empty_pb.Empty,
+        requestSerialize: serialize_proto_WhisperListRequest,
+        requestDeserialize: deserialize_proto_WhisperListRequest,
+        responseSerialize: serialize_google_protobuf_Empty,
+        responseDeserialize: deserialize_google_protobuf_Empty,
     },
 };
 exports.WhisperClient = grpc.makeGenericClientConstructor(WhisperService);
