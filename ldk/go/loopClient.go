@@ -34,45 +34,17 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 		return err
 	}
 
-	// setup whisper server
-	whisperHostServer := &WhisperServer{
-		Impl: host.Whisper(),
-	}
-
-	// setup storage server
-	storageHostServer := &StorageServer{
-		Impl: host.Storage(),
-	}
-
-	// setup clipboard server
-	clipboardHostServer := &ClipboardServer{
-		Impl: host.Clipboard(),
-	}
-
-	//setup keyboard server
-	keyboardHostServer := &KeyboardServer{
-		Impl: host.Keyboard(),
-	}
-
-	processHostServer := &ProcessServer{
-		Impl: host.Process(),
-	}
-
-	cursorHostServer := &CursorServer{
-		Impl: host.Cursor(),
-	}
-
-	filesystemHostServer := &FilesystemServer{
-		Impl: host.Filesystem(),
-	}
-
-	uiHostServer := &UIServer{
-		Impl: host.UI(),
-	}
-
-	networkHostServer := &NetworkServer{
-		Impl: host.Network(),
-	}
+	// setup service servers
+	clipboardHostServer := &ClipboardServer{Impl: host.Clipboard()}
+	cursorHostServer := &CursorServer{Impl: host.Cursor()}
+	filesystemHostServer := &FilesystemServer{Impl: host.Filesystem()}
+	keyboardHostServer := &KeyboardServer{Impl: host.Keyboard()}
+	networkHostServer := &NetworkServer{Impl: host.Network()}
+	processHostServer := &ProcessServer{Impl: host.Process()}
+	storageHostServer := &StorageServer{Impl: host.Storage()}
+	uiHostServer := &UIServer{Impl: host.UI()}
+	whisperHostServer := &WhisperServer{Impl: host.Whisper()}
+	windowHostServer := &WindowServer{Impl: host.Window()}
 
 	brokerID := m.broker.NextId()
 
@@ -80,15 +52,16 @@ func (m *LoopClient) LoopStart(host Sidekick) error {
 
 	serverFunc := func(opts []grpc.ServerOption) *grpc.Server {
 		m.s = grpc.NewServer(opts...)
-		proto.RegisterFilesystemServer(m.s, filesystemHostServer)
-		proto.RegisterCursorServer(m.s, cursorHostServer)
-		proto.RegisterProcessServer(m.s, processHostServer)
-		proto.RegisterKeyboardServer(m.s, keyboardHostServer)
 		proto.RegisterClipboardServer(m.s, clipboardHostServer)
-		proto.RegisterStorageServer(m.s, storageHostServer)
-		proto.RegisterWhisperServer(m.s, whisperHostServer)
-		proto.RegisterUIServer(m.s, uiHostServer)
+		proto.RegisterCursorServer(m.s, cursorHostServer)
+		proto.RegisterFilesystemServer(m.s, filesystemHostServer)
+		proto.RegisterKeyboardServer(m.s, keyboardHostServer)
 		proto.RegisterNetworkServer(m.s, networkHostServer)
+		proto.RegisterProcessServer(m.s, processHostServer)
+		proto.RegisterStorageServer(m.s, storageHostServer)
+		proto.RegisterUIServer(m.s, uiHostServer)
+		proto.RegisterWhisperServer(m.s, whisperHostServer)
+		proto.RegisterWindowServer(m.s, windowHostServer)
 		readyChan <- true
 		return m.s
 	}
