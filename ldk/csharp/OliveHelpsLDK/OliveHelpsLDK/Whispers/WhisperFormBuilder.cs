@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OliveHelpsLDK.Whispers.Forms.Inputs;
+using OliveHelpsLDK.Whispers.List;
 using Proto;
 
 namespace OliveHelpsLDK.Whispers
@@ -20,6 +21,26 @@ namespace OliveHelpsLDK.Whispers
             };
             BuildInputs(request.Inputs, formRequest.Inputs);
             return request;
+        }
+
+        public WhisperListRequest BuildRequest(WhisperList list, Proto.Session session)
+        {
+            var request = new WhisperListRequest
+            {
+                Meta = BuildMeta(list.Config),
+                Session = session
+            };
+            BuildInputs(request.Elements, list.Elements);
+            return request;
+        }
+
+        public WhisperMeta BuildMeta(WhisperConfig config)
+        {
+            return new WhisperMeta
+            {
+                Icon = config.Icon ?? "announcement",
+                Label = config.Label ?? "Whisper",
+            };
         }
 
         private void BuildInputs(IDictionary<string, WhisperFormInput> inputs,
@@ -70,12 +91,75 @@ namespace OliveHelpsLDK.Whispers
             return formInput;
         }
 
-        public WhisperMeta BuildMeta(WhisperConfig config)
+        private void BuildInputs(IDictionary<string, WhisperListElement> messageElements,
+            IDictionary<string, ListBase> items)
         {
-            return new WhisperMeta
+            items.ToList().ForEach(input => messageElements.Add(input.Key, BuildInput(input.Value)));
+        }
+
+        private WhisperListElement BuildInput(ListBase element)
+        {
+            var listElement = new WhisperListElement
             {
-                Icon = config.Icon ?? "announcement",
-                Label = config.Label ?? "Whisper",
+                Order = element.Order,
+                Extra = element.Extra,
+            };
+            switch (element)
+            {
+                case ListDivider listDivider:
+                    var divider = new WhisperListElement.Types.Divider
+                    {
+                        Style = ToProto(listDivider.Style)
+                    };
+                    listElement.Divider = divider;
+                    break;
+                case ListMessage listMessage:
+                    var message = new WhisperListElement.Types.Message
+                    {
+                        Align = ToProto(listMessage.Align),
+                        Body = listMessage.Body,
+                        Header = listMessage.Body,
+                        Style = ToProto(listMessage.Style)
+                    };
+                    listElement.Message = message;
+                    break;
+                case ListPair listPair:
+                    var pair = new WhisperListElement.Types.Pair
+                    {
+                        Copyable = listPair.Copyable,
+                        Label = listPair.Label,
+                        Style = ToProto(listPair.Style),
+                        Value = listPair.Value,
+                    };
+                    listElement.Pair = pair;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(element));
+            }
+
+            return listElement;
+        }
+
+        private WhisperListElement.Types.Style ToProto(Style style)
+        {
+            return style switch
+            {
+                Style.None => WhisperListElement.Types.Style.None,
+                Style.Success => WhisperListElement.Types.Style.Success,
+                Style.Warn => WhisperListElement.Types.Style.Warn,
+                Style.Error => WhisperListElement.Types.Style.Error,
+                _ => throw new ArgumentOutOfRangeException(nameof(style), style, null)
+            };
+        }
+
+        private WhisperListElement.Types.Align ToProto(Align align)
+        {
+            return align switch
+            {
+                Align.Left => WhisperListElement.Types.Align.Left,
+                Align.Center => WhisperListElement.Types.Align.Center,
+                Align.Right => WhisperListElement.Types.Align.Right,
+                _ => throw new ArgumentOutOfRangeException(nameof(align), align, null)
             };
         }
     }

@@ -22,7 +22,7 @@ namespace OliveHelpsLDK.Whispers
 
         public WhisperClient(ChannelBase channel, Session session, ILogger logger,
             IWhisperFormBuilder formBuilder = null,
-            IWhisperFormParser parser = null) : base(new Whisper.WhisperClient(channel), session, logger, "whisper")
+            IWhisperFormParser parser = null) : this(new Whisper.WhisperClient(channel), session, logger)
         {
             Parser = parser ?? new WhisperFormParser();
             Builder = formBuilder ?? new WhisperFormBuilder();
@@ -65,6 +65,13 @@ namespace OliveHelpsLDK.Whispers
             return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call,
                 LoggedParser<WhisperFormStreamResponse, IWhisperFormResponse>(response =>
                     Parser.ParseResponse(response)));
+        }
+
+        public Task ListAsync(WhisperList message, CancellationToken cancellationToken = default)
+        {
+            var request = Builder.BuildRequest(message, CreateSession());
+            var call = Client.WhisperListAsync(request, CreateOptions(cancellationToken));
+            return call.ResponseAsync;
         }
     }
 }

@@ -10,7 +10,11 @@ namespace OliveHelpsLDK.Whispers
     {
         Task MarkdownAsync(WhisperMarkdown message, CancellationToken cancellationToken = default);
         Task<bool> ConfirmAsync(WhisperConfirm message, CancellationToken cancellationToken = default);
-        IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message, CancellationToken cancellationToken = default);
+
+        IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message,
+            CancellationToken cancellationToken = default);
+
+        Task ListAsync(WhisperList message, CancellationToken cancellationToken = default);
     }
 
     public struct WhisperConfig
@@ -40,5 +44,11 @@ namespace OliveHelpsLDK.Whispers
         public string SubmitLabel;
         public string CancelLabel;
         public IDictionary<string, IBase> Inputs;
+    }
+
+    public struct WhisperList
+    {
+        public WhisperConfig Config;
+        public IDictionary<string, List.ListBase> Elements;
     }
 }
