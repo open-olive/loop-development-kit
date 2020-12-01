@@ -1,10 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OliveHelpsLDK
-{
-}
-
 namespace OliveHelpsLDK.Clipboard
 {
     public interface IClipboardService

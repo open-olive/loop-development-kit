@@ -1,5 +1,8 @@
 import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
-import { WhisperListStyle, WhisperListAlign } from '../../../dist/hostClients/whisperService'
+import {
+  WhisperListStyle,
+  WhisperListAlign,
+} from '../../../dist/hostClients/whisperService';
 
 const logger = new Logger('olive-helps-node-example-whisper-list');
 
@@ -16,18 +19,19 @@ class ExampleLoop implements Loop {
         markdown: 'test',
         elements: {
           topMessage: {
-					  align:  WhisperListAlign.LEFT,
-					  body:   'This is what body copy looks like. Just a bit, don’t overdo it!',
-					  header: 'Hello World, I am a subitle',
-					  order:  0,
+            align: WhisperListAlign.LEFT,
+            body:
+              'This is what body copy looks like. Just a bit, don’t overdo it!',
+            header: 'Hello World, I am a subitle',
+            order: 0,
             style: WhisperListStyle.NONE,
             type: 'message',
           },
           successMessage: {
-					  align:  WhisperListAlign.CENTER,
-            body:   'It should be highlighted green.',
+            align: WhisperListAlign.CENTER,
+            body: 'It should be highlighted green.',
             header: 'This is an alert message!',
-            order:  1,
+            order: 1,
             style: WhisperListStyle.SUCCESS,
             type: 'message',
           },
@@ -36,9 +40,9 @@ class ExampleLoop implements Loop {
             type: 'divider',
           },
           sectionTitle: {
-					  align:  WhisperListAlign.CENTER,
+            align: WhisperListAlign.CENTER,
             header: 'Let’s set the table',
-            order:  0,
+            order: 0,
             style: WhisperListStyle.NONE,
             type: 'message',
           },
@@ -130,19 +134,20 @@ class ExampleLoop implements Loop {
             label: 'Notes',
             order: 14,
             type: 'pair',
-            value: 'Lorem ipsum sit amet dolor why does this always feel like a decree by the ancient Romans? It’s just filler text.',
+            value:
+              'Lorem ipsum sit amet dolor why does this always feel like a decree by the ancient Romans? It’s just filler text.',
           },
           failureMessage: {
-					  align:  WhisperListAlign.CENTER,
-            body:   'It should be highlighted red.',
-            extra:  true,
+            align: WhisperListAlign.CENTER,
+            body: 'It should be highlighted red.',
+            extra: true,
             header: 'This is an alert message!',
-            order:  15,
+            order: 15,
             style: WhisperListStyle.ERROR,
             type: 'message',
           },
-        }
-      })
+        },
+      });
     } catch (e) {
       logger.error('Error emitting list whipser', 'error', e.toString());
     }

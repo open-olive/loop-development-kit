@@ -1,19 +1,31 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
+using OliveHelpsLDK.Whispers.Forms;
 using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
-    internal class WhisperClient : BaseClient, IWhisperService
+    internal class WhisperClient : BaseClient<Whisper.WhisperClient>, IWhisperService
     {
-        private Proto.Whisper.WhisperClient client;
+        internal IWhisperFormParser Parser { get; }
+        internal IWhisperFormBuilder Builder { get; }
 
-        public WhisperClient(ChannelBase channel, Session session)
+        public WhisperClient(Whisper.WhisperClient client, Session session, ILogger logger,
+            IWhisperFormBuilder formBuilder = null,
+            IWhisperFormParser parser = null) : base(client, session, logger, "whisper")
         {
-            client = new Whisper.WhisperClient(channel);
-            _session = session;
+            Parser = parser ?? new WhisperFormParser();
+            Builder = formBuilder ?? new WhisperFormBuilder();
+        }
+
+        public WhisperClient(ChannelBase channel, Session session, ILogger logger,
+            IWhisperFormBuilder formBuilder = null,
+            IWhisperFormParser parser = null) : this(new Whisper.WhisperClient(channel), session, logger)
+        {
+            Parser = parser ?? new WhisperFormParser();
+            Builder = formBuilder ?? new WhisperFormBuilder();
         }
 
         public Task MarkdownAsync(WhisperMarkdown message, CancellationToken cancellationToken = default)
@@ -22,10 +34,10 @@ namespace OliveHelpsLDK.Whispers
             {
                 Markdown = message.Markdown,
                 Session = CreateSession(),
-                Meta = GenerateMeta(message.Config)
+                Meta = Builder.BuildMeta(message.Config)
             };
             var whisperMarkdownAsync =
-                client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
+                Client.WhisperMarkdownAsync(request, new CallOptions(cancellationToken: cancellationToken));
             return whisperMarkdownAsync.ResponseAsync;
         }
 
@@ -35,26 +47,31 @@ namespace OliveHelpsLDK.Whispers
             {
                 Markdown = message.Markdown,
                 Session = CreateSession(),
-                Meta = GenerateMeta(message.Config),
+                Meta = Builder.BuildMeta(message.Config),
                 RejectLabel = message.RejectLabel,
                 ResolveLabel = message.ResolveLabel,
             };
-            var call = client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
-            return call.ResponseAsync.ContinueWith(resp => resp.Result.Response, cancellationToken);
+            var call = Client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
+            return call.ResponseAsync.ContinueWith(
+                LoggedParser<Task<WhisperConfirmResponse>, bool>(resp => resp.Result.Response),
+                cancellationToken);
         }
 
-        public async Task FormAsync(WhisperForm message, CancellationToken cancellationToken = default)
+        public IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message,
+            CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var request = Builder.BuildRequest(message, CreateSession());
+            var call = Client.WhisperForm(request, CreateOptions(cancellationToken));
+            return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call,
+                LoggedParser<WhisperFormStreamResponse, IWhisperFormResponse>(response =>
+                    Parser.ParseResponse(response)));
         }
 
-        private static WhisperMeta GenerateMeta(WhisperConfig config)
+        public Task ListAsync(WhisperList message, CancellationToken cancellationToken = default)
         {
-            return new WhisperMeta
-            {
-                Icon = config.Icon,
-                Label = config.Label,
-            };
+            var request = Builder.BuildRequest(message, CreateSession());
+            var call = Client.WhisperListAsync(request, CreateOptions(cancellationToken));
+            return call.ResponseAsync;
         }
     }
 }

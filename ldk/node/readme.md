@@ -11,7 +11,7 @@ You should have the following installed:
 
 ### Setup
 
-#### Setting Up Your Plugin
+#### Setting Up Your Loop
 
 Olive Helps expects your library to start its Loop server when launched. The LDK takes care of most of that for you, what you need to do is:
 

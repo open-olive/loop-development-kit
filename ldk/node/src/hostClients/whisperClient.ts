@@ -54,11 +54,7 @@ class WhisperClient
   }
 
   listWhisper(whisper: WhisperListConfig): StoppableMessage<void> {
-    return this.buildStoppableMessage<
-      messages.WhisperListRequest,
-      Empty,
-      void
-    >(
+    return this.buildStoppableMessage<messages.WhisperListRequest, Empty, void>(
       (message, callback) => this.client.whisperList(message, callback),
       () => buildWhisperListRequest(whisper),
       // eslint-disable-next-line @typescript-eslint/no-empty-function

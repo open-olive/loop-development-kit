@@ -5,7 +5,7 @@ using Plugin;
 
 namespace OliveHelpsLDK
 {
-    public class StdioServer : Plugin.GRPCStdio.GRPCStdioBase
+    public class StdioServer : GRPCStdio.GRPCStdioBase
     {
         public override async Task StreamStdio(Empty request, IServerStreamWriter<StdioData> responseStream, ServerCallContext context)
         {

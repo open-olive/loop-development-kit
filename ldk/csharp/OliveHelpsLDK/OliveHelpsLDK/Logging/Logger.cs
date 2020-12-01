@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 
@@ -7,66 +8,93 @@ namespace OliveHelpsLDK.Logging
 {
     public class Logger : ILogger
     {
-        private readonly string _name;
+        public string Name { get; }
+
+        private TextWriter Writer { get; }
+
+        public IDictionary<string, object> DefaultFields { get; set; }
+
 
         private static readonly JsonSerializerOptions Options = new JsonSerializerOptions
         {
             WriteIndented = false
         };
 
-        public Logger(string name)
+        public Logger(string name, TextWriter writer = null) : this(name, new Dictionary<string, object>(), writer)
         {
-            _name = name;
         }
 
-        public void Trace(string message, Dictionary<string, object> fields = null)
+        public Logger(string name, IDictionary<string, object> defaultFields, TextWriter writer = null)
+        {
+            Writer = writer ?? Console.Error;
+            Name = name;
+            DefaultFields = defaultFields;
+        }
+
+        public void Trace(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Trace, message, fields);
         }
 
-        public void Debug(string message, Dictionary<string, object> fields = default)
+        public void Debug(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Debug, message, fields);
         }
 
-        public void Info(string message, Dictionary<string, object> fields = default)
+        public void Info(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Info, message, fields);
         }
 
-        public void Warn(string message, Dictionary<string, object> fields = default)
+        public void Warn(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Warn, message, fields);
         }
 
-        public void Error(string message, Dictionary<string, object> fields = default)
+        public void Error(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Error, message, fields);
         }
 
-        private void Log(LogLevel level, string msg, Dictionary<string, object> fields)
+        public ILogger WithFields(IDictionary<string, object> fields)
         {
-            fields ??= new Dictionary<string, object>();
-            var dictionary = AddDefaultValues(level, msg, fields);
+            return new Logger(Name, CombineDictionaries(new[] {DefaultFields, fields}));
+        }
+
+        private void Log(LogLevel level, string msg, IDictionary<string, object> fields)
+        {
+            IDictionary<string, object> newFields = new Dictionary<string, object>();
+            if (fields != null)
+            {
+                newFields = fields;
+            }
+
+            var dictionary = AddDefaultValues(level, msg, newFields);
             var serializedDict = JsonSerializer.Serialize(dictionary, Options);
             Write(serializedDict);
         }
 
-        private Dictionary<string, object> AddDefaultValues(LogLevel level, string msg,
-            Dictionary<string, object> fields)
+        public static IDictionary<string, object> CombineDictionaries(
+            IEnumerable<IDictionary<string, object>> dictionaries)
+        {
+            return dictionaries.ToList().SelectMany(dict => dict)
+                .ToLookup(pair => pair.Key, pair => pair.Value)
+                .ToDictionary(group => group.Key, group => group.Last());
+            ;
+        }
+
+        private IDictionary<string, object> AddDefaultValues(LogLevel level, string msg,
+            IDictionary<string, object> fields)
         {
             var defaultItems = new Dictionary<string, object>
             {
                 {"@timestamp", GenerateTimestamp()},
                 {"@pid", System.Diagnostics.Process.GetCurrentProcess().Id},
                 {"@level", GenerateLevel(level)},
-                {"@module", _name},
+                {"@module", Name},
                 {"@message", msg},
             };
-            return new List<Dictionary<string, object>> {defaultItems, fields}.SelectMany(dict => dict)
-                .ToLookup(pair => pair.Key, pair => pair.Value)
-                .ToDictionary(group => group.Key, group => group.First());
-            ;
+            return CombineDictionaries(new[] {fields, DefaultFields, defaultItems});
         }
 
         private static string GenerateTimestamp()
@@ -89,7 +117,7 @@ namespace OliveHelpsLDK.Logging
 
         private void Write(string msg)
         {
-            Console.Error.WriteLine(msg);
+            Writer.WriteLine(msg);
         }
     }
 

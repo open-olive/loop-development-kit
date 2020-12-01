@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Text.Json;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
 using Plugin;
 using Proto;
-using Process = System.Diagnostics.Process;
+
+[assembly: InternalsVisibleTo("OliveHelpsLDK.Test")]
 
 namespace OliveHelpsLDK
 {
@@ -43,12 +44,11 @@ namespace OliveHelpsLDK
             server.Start();
             var currentPort = server.Ports.First();
             Console.Out.WriteLine($"1|1|tcp|127.0.0.1:{currentPort.BoundPort}|grpc");
-            Process.GetCurrentProcess().WaitForExit();
+            System.Diagnostics.Process.GetCurrentProcess().WaitForExit();
         }
 
         public override async Task<Empty> LoopStart(LoopStartRequest request, ServerCallContext context)
         {
-            var requestJson = JsonSerializer.Serialize(request);
             _logger.Debug("Received Loop Start Request");
             var session = new Session
             {
@@ -56,11 +56,11 @@ namespace OliveHelpsLDK
                 Token = request.Session.Token
             };
             var connectionInfo = await _brokerServer.ConnectionInfo;
-            await _facade.Connect(connectionInfo, session);
-            #pragma warning disable 4014
+            await _facade.Connect(connectionInfo, session, _logger);
+#pragma warning disable 4014
             // Intentional disable - Loop is intended to run indefinitely but should not delay LoopStart response.
             _loop.Start(_facade);
-            #pragma warning restore 4014
+#pragma warning restore 4014
             return new Empty();
         }
 

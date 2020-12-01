@@ -3,12 +3,16 @@ import { StoppableStream, StreamListener } from './stoppables';
 export interface KeyboardModifiers {
   altL: boolean;
   altR: boolean;
+  alt: boolean;
   ctrlL: boolean;
   ctrlR: boolean;
+  ctrl: boolean;
   metaL: boolean;
   metaR: boolean;
+  meta: boolean;
   shiftL: boolean;
   shiftR: boolean;
+  shift: boolean;
 }
 
 export interface HotKeyRequest {

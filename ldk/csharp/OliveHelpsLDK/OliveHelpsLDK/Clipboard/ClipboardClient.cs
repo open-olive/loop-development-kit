@@ -1,18 +1,21 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
+using OliveHelpsLDK.Logging;
 using Proto;
 
 namespace OliveHelpsLDK.Clipboard
 {
-    internal class ClipboardClient : BaseClient, IClipboardService
+    internal class ClipboardClient : BaseClient<Proto.Clipboard.ClipboardClient>, IClipboardService
     {
-        private Proto.Clipboard.ClipboardClient _client;
-
-        internal ClipboardClient(ChannelBase channel, Session session)
+        internal ClipboardClient(Proto.Clipboard.ClipboardClient client, Session session, ILogger logger) : base(
+            client, session, logger, "clipboard")
         {
-            _client = new Proto.Clipboard.ClipboardClient(channel);
-            _session = session;
+        }
+
+        internal ClipboardClient(ChannelBase channel, Session session, ILogger logger) : this(
+            new Proto.Clipboard.ClipboardClient(channel), session, logger)
+        {
         }
 
         public Task<string> Read(CancellationToken cancellationToken = default)
@@ -21,8 +24,10 @@ namespace OliveHelpsLDK.Clipboard
             {
                 Session = CreateSession(),
             };
-            return _client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
-                .ResponseAsync.ContinueWith(task => task.Result.Text, cancellationToken);
+            return Client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
+                .ResponseAsync
+                .ContinueWith(LoggedParser<Task<ClipboardReadResponse>, string>(task => task.Result.Text),
+                    cancellationToken);
         }
 
         public Task Write(string contents, CancellationToken cancellationToken = default)
@@ -32,7 +37,7 @@ namespace OliveHelpsLDK.Clipboard
                 Session = CreateSession(),
                 Text = contents
             };
-            return _client.ClipboardWriteAsync(request, new CallOptions(cancellationToken: cancellationToken))
+            return Client.ClipboardWriteAsync(request, new CallOptions(cancellationToken: cancellationToken))
                 .ResponseAsync;
         }
 
@@ -42,8 +47,9 @@ namespace OliveHelpsLDK.Clipboard
             {
                 Session = CreateSession(),
             };
-            var call = _client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
-            return new StreamingCall<Proto.ClipboardReadStreamResponse, string>(call, response => response.Text);
+            var call = Client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
+            return new StreamingCall<ClipboardReadStreamResponse, string>(call,
+                LoggedParser<ClipboardReadStreamResponse, string>(response => response.Text));
         }
     }
 }
