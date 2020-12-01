@@ -29,7 +29,7 @@ func (u *UIClient) ListenSearchbar(ctx context.Context, handler ListenSearchHand
 				break
 			}
 			if err != nil {
-				handler(resp.Text, err)
+				handler("", err)
 				return
 			}
 			if resp.GetError() != "" {
@@ -58,7 +58,7 @@ func (u *UIClient) ListenGlobalSearch(ctx context.Context, handler ListenSearchH
 				break
 			}
 			if err != nil {
-				handler(resp.Text, err)
+				handler("", err)
 				return
 			}
 			if resp.GetError() != "" {
