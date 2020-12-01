@@ -29,7 +29,11 @@ func (u *UIClient) ListenSearchbar(ctx context.Context, handler ListenSearchHand
 				break
 			}
 			if err != nil {
-				handler(resp.Text, err)
+				message := "Error with SearchbarStream"
+				if resp != nil {
+					message = resp.Text
+				}
+				handler(message, err)
 				return
 			}
 			if resp.GetError() != "" {
@@ -58,7 +62,11 @@ func (u *UIClient) ListenGlobalSearch(ctx context.Context, handler ListenSearchH
 				break
 			}
 			if err != nil {
-				handler(resp.Text, err)
+				message := "Error with GlobalSearchStream"
+				if resp != nil {
+					message = resp.Text
+				}
+				handler(message, err)
 				return
 			}
 			if resp.GetError() != "" {
