@@ -5,9 +5,6 @@ type Source struct {
 	// Author is the creator of the entity.
 	Author string `json:"author" yaml:"author"`
 
-	// Icon is a URL for an icon representing this entity.
-	Icon string `json:"icon" yaml:"icon"`
-
 	// ID is a unique identifier for this entity that is consistent across all versions
 	// and modifications of this entity.
 	ID string `json:"id" yaml:"id"`

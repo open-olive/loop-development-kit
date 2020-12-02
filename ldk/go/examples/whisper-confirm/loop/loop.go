@@ -45,7 +45,6 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 func (c *Loop) run() {
 	isConfirmed, err := c.sidekick.Whisper().Confirm(c.ctx, &ldk.WhisperContentConfirm{
-		Icon:         "bathtub",
 		Label:        "Example Controller Go",
 		Markdown:     "Do you like bananas?",
 		RejectLabel:  "Nope",
@@ -58,7 +57,6 @@ func (c *Loop) run() {
 	c.logger.Debug("got response from confirm whisper", "isConfirmed", isConfirmed)
 
 	err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-		Icon:  "bathtub",
 		Label: "Example Controller Go",
 		Markdown: func() string {
 			if isConfirmed {

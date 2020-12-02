@@ -47,7 +47,6 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 func (c *Loop) run() {
 	isSubmitted, outputs, err := c.sidekick.Whisper().Form(c.ctx, &ldk.WhisperContentForm{
-		Icon:        "bathtub",
 		Label:       "Example Controller Go",
 		Markdown:    "Tell us about yourself",
 		CancelLabel: "Cancel",
@@ -66,7 +65,6 @@ func (c *Loop) run() {
 					match, err := regexp.MatchString("^\\S+@\\S+$", email)
 					if err != nil || !match {
 						err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-							Icon:     "bathtub",
 							Label:    "Example Controller Go",
 							Markdown: "Invalid Email Address: " + email,
 						})
@@ -76,7 +74,6 @@ func (c *Loop) run() {
 						}
 					} else {
 						err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-							Icon:     "bathtub",
 							Label:    "Example Controller Go",
 							Markdown: "Valid Email Address: " + email,
 						})
@@ -101,7 +98,6 @@ func (c *Loop) run() {
 	}
 
 	err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-		Icon:  "bathtub",
 		Label: "Example Controller Go",
 		Markdown: func() string {
 			if isSubmitted {
