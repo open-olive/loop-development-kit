@@ -21,7 +21,6 @@ class ClipboardLoop implements Loop {
         if (response) {
           this.host.whisper.markdownWhisper({
             markdown: `Clipboard Node Text: ${response}`,
-            icon: 'bathtub',
             label: 'Clipboard Node Event',
           });
         }

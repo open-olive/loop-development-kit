@@ -13,9 +13,6 @@ export class WhisperMeta extends jspb.Message {
     getLabel(): string;
     setLabel(value: string): WhisperMeta;
 
-    getIcon(): string;
-    setIcon(value: string): WhisperMeta;
-
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): WhisperMeta.AsObject;
@@ -30,7 +27,6 @@ export class WhisperMeta extends jspb.Message {
 export namespace WhisperMeta {
     export type AsObject = {
         label: string,
-        icon: string,
     }
 }
 

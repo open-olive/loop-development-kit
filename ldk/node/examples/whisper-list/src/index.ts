@@ -14,7 +14,6 @@ class ExampleLoop implements Loop {
     logger.info('Emitting list whisper');
     try {
       this.host.whisper.listWhisper({
-        icon: 'bathtub',
         label: 'MCMG Location',
         markdown: 'test',
         elements: {

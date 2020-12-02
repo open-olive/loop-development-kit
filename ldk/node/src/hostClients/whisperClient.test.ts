@@ -85,7 +85,6 @@ describe('WhisperHostClient', () => {
         await subject.connect(connInfo, session, testLogger);
         await subject.markdownWhisper({
           markdown: 'abc',
-          icon: 'ok',
           label: 'Hey',
         });
       });
@@ -97,16 +96,14 @@ describe('WhisperHostClient', () => {
       });
       it('should return the ID from the whisper', async () => {
         await expect(
-          subject
-            .markdownWhisper({ markdown: 'a', label: 'a', icon: 'a' })
-            .promise(),
+          subject.markdownWhisper({ markdown: 'a', label: 'a' }).promise(),
         ).resolves.toBe(undefined);
       });
     });
     describe('before connected', () => {
       it('should throw an error', async () => {
         expect(() => {
-          subject.markdownWhisper({ markdown: 'a', label: 'a', icon: 'a' });
+          subject.markdownWhisper({ markdown: 'a', label: 'a' });
         }).toThrow('Accessing session data before connection');
       });
     });
