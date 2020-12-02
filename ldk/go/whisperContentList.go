@@ -5,7 +5,6 @@ import (
 )
 
 type WhisperContentList struct {
-	Icon  string `json:"icon"` // Material Icon name https://material.io/resources/icons/
 	Label string `json:"label"`
 
 	Elements map[string]WhisperContentListElement `json:"elements"`
@@ -29,7 +28,6 @@ func (c *WhisperContentList) ToProto() (*proto.WhisperListRequest, error) {
 	return &proto.WhisperListRequest{
 		Meta: &proto.WhisperMeta{
 			Label: c.Label,
-			Icon:  c.Icon,
 		},
 		Elements: elements,
 	}, nil
@@ -47,7 +45,6 @@ func WhisperContentListFromProto(req *proto.WhisperListRequest) (*WhisperContent
 
 	return &WhisperContentList{
 		Label:    req.Meta.Label,
-		Icon:     req.Meta.Icon,
 		Elements: elements,
 	}, nil
 }
