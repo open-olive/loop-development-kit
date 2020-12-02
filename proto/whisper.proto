@@ -22,7 +22,6 @@ service Whisper {
 
 message WhisperMeta {
     string label = 1;
-    string icon = 2;
 }
 
 message WhisperMarkdownRequest {
