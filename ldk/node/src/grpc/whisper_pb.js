@@ -826,8 +826,7 @@ proto.proto.WhisperMeta.prototype.toObject = function(opt_includeInstance) {
  */
 proto.proto.WhisperMeta.toObject = function(includeInstance, msg) {
   var f, obj = {
-    label: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    icon: jspb.Message.getFieldWithDefault(msg, 2, "")
+    label: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -868,10 +867,6 @@ proto.proto.WhisperMeta.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setLabel(value);
       break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setIcon(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -908,13 +903,6 @@ proto.proto.WhisperMeta.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getIcon();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
 };
 
 
@@ -933,24 +921,6 @@ proto.proto.WhisperMeta.prototype.getLabel = function() {
  */
 proto.proto.WhisperMeta.prototype.setLabel = function(value) {
   return jspb.Message.setProto3StringField(this, 1, value);
-};
-
-
-/**
- * optional string icon = 2;
- * @return {string}
- */
-proto.proto.WhisperMeta.prototype.getIcon = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.proto.WhisperMeta} returns this
- */
-proto.proto.WhisperMeta.prototype.setIcon = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
 };
 
 

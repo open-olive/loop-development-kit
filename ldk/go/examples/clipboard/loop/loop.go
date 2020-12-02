@@ -50,7 +50,6 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 		go func() {
 			err = c.sidekick.Whisper().Markdown(ctx, &ldk.WhisperContentMarkdown{
-				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Text from the clipboard: " + text,
 			})

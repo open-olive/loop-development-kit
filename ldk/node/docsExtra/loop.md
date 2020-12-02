@@ -15,7 +15,6 @@ class Loop {
       // Emit a whisper containing the clipboard's contents.
       this.services.whisper.markdownWhisper({
         markdown: `Clipboard Contents: ${text}`,
-        icon: 'bathtub',
         label: 'Clipboard Change!'
       });
     });  
@@ -70,7 +69,6 @@ class MyLoop {
             this.services.whisper.emitWhisper({
                 markdown: `Starting with ${clipboardContents}`,
                 label: 'Starting Contents',
-                icon: 'bathtub',
             });
         });
         // Listener function generating whispers.
@@ -78,7 +76,6 @@ class MyLoop {
           this.services.whisper.emitWhisper({
               markdown: `Contents changed to ${clipboardContents}`,
               label: 'Clipboard Change',
-              icon: 'bathtub',
           });
         };   
         // Start listening to clipboard changes.
@@ -107,14 +104,12 @@ Note: The request will succeed even if the Whisper has been dismissed by the use
 const whisperId = await this.services.whisper.emitWhisper({
     markdown: "The Message Contents in Markdown",
     label: "The Title at the Cards Top Left",
-    icon: "The icon from the Material UI library"    
 });
 
 this.services.whisper.updateWhisper(whisperId, 
   {
     markdown: "The Message Contents in Markdown",
     label: "The Title at the Cards Top Left",
-    icon: "The icon from the Material UI library"    
   }
 );
 ```

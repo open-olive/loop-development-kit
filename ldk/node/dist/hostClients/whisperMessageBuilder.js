@@ -224,7 +224,6 @@ exports.generateWhisperListElement = (element) => {
 exports.generateWhisperMeta = (whisper) => {
     const whisperMsg = new messages.WhisperMeta();
     whisperMsg.setLabel(whisper.label);
-    whisperMsg.setIcon(whisper.icon);
     return whisperMsg;
 };
 exports.generateWhisperForm = (config) => {

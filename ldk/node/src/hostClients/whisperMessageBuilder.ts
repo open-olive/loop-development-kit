@@ -239,7 +239,6 @@ export const generateWhisperListElement = (
 export const generateWhisperMeta = (whisper: Whisper): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
-  whisperMsg.setIcon(whisper.icon);
   return whisperMsg;
 };
 export const generateWhisperForm = (

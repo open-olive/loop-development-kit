@@ -15,7 +15,6 @@ func TestController(t *testing.T) {
 		WhisperService: &ldktest.WhisperService{
 			Markdownf: func(ctx context.Context, w *ldk.WhisperContentMarkdown) error {
 				exp := &ldk.WhisperContentMarkdown{
-					Icon:     "bathtub",
 					Label:    "Example Controller Go",
 					Markdown: "## MARKDOWN!",
 				}

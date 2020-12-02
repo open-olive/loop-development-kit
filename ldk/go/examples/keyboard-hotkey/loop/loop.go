@@ -3,6 +3,7 @@ package loop
 import (
 	"context"
 	"fmt"
+
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
@@ -49,7 +50,6 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		}
 
 		err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-			Icon:     "bathtub",
 			Label:    "Example Controller Go",
 			Markdown: fmt.Sprintf("hotkey: %v, scanned: %t", hotkey, scanned),
 		})

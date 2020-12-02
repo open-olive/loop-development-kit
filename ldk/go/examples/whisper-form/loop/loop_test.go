@@ -68,7 +68,6 @@ func TestWhisperFormResolved(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-formRequestChan:
 			exp := &ldk.WhisperContentForm{
-				Icon:        "bathtub",
 				Label:       "Example Controller Go",
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
@@ -130,7 +129,6 @@ func TestWhisperFormResolved(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-markdownRequestChan:
 			exp := &ldk.WhisperContentMarkdown{
-				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Hello Testy McTesterson",
 			}
@@ -235,7 +233,6 @@ func TestWhisperFormRejected(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-formRequestChan:
 			exp := &ldk.WhisperContentForm{
-				Icon:        "bathtub",
 				Label:       "Example Controller Go",
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
@@ -295,7 +292,6 @@ func TestWhisperFormRejected(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-markdownRequestChan:
 			exp := &ldk.WhisperContentMarkdown{
-				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "It's rude to not tell us your name.",
 			}
@@ -407,7 +403,6 @@ func TestWhisperFormUpdateValid(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-formRequestChan:
 			exp := &ldk.WhisperContentForm{
-				Icon:        "bathtub",
 				Label:       "Example Controller Go",
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
@@ -468,7 +463,6 @@ func TestWhisperFormUpdateValid(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-markdownRequestChan:
 			exp := &ldk.WhisperContentMarkdown{
-				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Valid Email Address: example@example.com",
 			}
@@ -565,7 +559,6 @@ func TestWhisperFormUpdateInvalid(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-formRequestChan:
 			exp := &ldk.WhisperContentForm{
-				Icon:        "bathtub",
 				Label:       "Example Controller Go",
 				Markdown:    "Tell us about yourself",
 				CancelLabel: "Cancel",
@@ -626,7 +619,6 @@ func TestWhisperFormUpdateInvalid(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-markdownRequestChan:
 			exp := &ldk.WhisperContentMarkdown{
-				Icon:     "bathtub",
 				Label:    "Example Controller Go",
 				Markdown: "Invalid Email Address: INVALID!!!!",
 			}

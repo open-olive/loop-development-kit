@@ -57,7 +57,6 @@ func TestLoop(t *testing.T) {
 			return errors.New("timeout")
 		case req := <-listRequestChan:
 			exp := &ldk.WhisperContentList{
-				Icon:  "bathtub",
 				Label: "MCMG Location",
 				Elements: map[string]ldk.WhisperContentListElement{
 					"topMessage": &ldk.WhisperContentListElementMessage{

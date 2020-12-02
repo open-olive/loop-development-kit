@@ -38,7 +38,6 @@ namespace OliveHelpsLDK.Whispers
         {
             return new WhisperMeta
             {
-                Icon = config.Icon ?? "announcement",
                 Label = config.Label ?? "Whisper",
             };
         }
