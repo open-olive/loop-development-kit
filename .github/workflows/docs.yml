@@ -28,4 +28,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./ldk/node/docs
+          destination_dir: ldk/node
           force_orphan: true
