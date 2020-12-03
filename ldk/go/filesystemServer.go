@@ -99,8 +99,8 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 	return nil
 }
 
-// get information about a file
-func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.FilesystemFileRequest) (*proto.FilesystemFileResponse, error) {
+// FilesystemFileInfo gets information about a file
+func (f *FilesystemServer) FilesystemFileInfo(ctx context.Context, req *proto.FilesystemFileInfoRequest) (*proto.FilesystemFileInfoResponse, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
 		return nil, err
@@ -126,14 +126,14 @@ func (f *FilesystemServer) FilesystemFile(ctx context.Context, req *proto.Filesy
 		IsDir:   file.IsDir,
 	}
 
-	return &proto.FilesystemFileResponse{
+	return &proto.FilesystemFileInfoResponse{
 		File: fi,
 	}, nil
 
 }
 
-// stream any updates to a file
-func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamRequest, stream proto.Filesystem_FilesystemFileStreamServer) error {
+// FilesystemFileInfoStream stream any updates to a file
+func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInfoStreamRequest, stream proto.Filesystem_FilesystemFileInfoStreamServer) error {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
 		return err
@@ -149,7 +149,7 @@ func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamR
 		if err != nil {
 			fmt.Printf("error: ldk.FilesystemServer.FilesystemDirStream -> invalid proto time: %v - %v", fe.Info.Updated, err)
 		}
-		if e := stream.Send(&proto.FilesystemFileStreamResponse{
+		if e := stream.Send(&proto.FilesystemFileInfoStreamResponse{
 			Error: errText,
 			File: &proto.FileInfo{
 				Name:    fe.Info.Name,
@@ -179,5 +179,124 @@ func (f *FilesystemServer) FilesystemFileStream(req *proto.FilesystemFileStreamR
 	// don't exit this method until context is cancelled
 	// if you do, the handler called above that tries to call `Send` will fail as the context will be cancelled due to leaving method scope
 	<-stream.Context().Done()
+	return nil
+}
+
+// FilesystemFileReadStream - TODO
+
+// FilesystemFileWriteStream - TODO
+
+// FilesystemMakeDir creates new directory
+func (f *FilesystemServer) FilesystemMakeDir(ctx context.Context, req *proto.FilesystemMakeDirRequest) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	err := f.Impl.MakeDir(
+		context.WithValue(ctx, Session{}, session),
+		req.GetPath(),
+		req.GetPerm(),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// FilesystemCopy copies a file or directory to a new directory
+func (f *FilesystemServer) FilesystemCopy(ctx context.Context, req *proto.FilesystemCopyRequest) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	err := f.Impl.Copy(
+		context.WithValue(ctx, Session{}, session),
+		req.GetSource(),
+		req.GetDest(),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// FilesystemMove moves a file or directory to a new directory
+func (f *FilesystemServer) FilesystemMove(ctx context.Context, req *proto.FilesystemMoveRequest) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	err := f.Impl.Move(
+		context.WithValue(ctx, Session{}, session),
+		req.GetSource(),
+		req.GetDest(),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// FilesystemRemove removes a file or directory to a new directory
+func (f *FilesystemServer) FilesystemRemove(ctx context.Context, req *proto.FilesystemRemoveRequest) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	err := f.Impl.Remove(
+		context.WithValue(ctx, Session{}, session),
+		req.GetPath(),
+		req.GetRecursive(),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// FilesystemChmod changes file permissions
+func (f *FilesystemServer) FilesystemChmod(ctx context.Context, req *proto.FilesystemChmodRequest) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	err := f.Impl.Chmod(
+		context.WithValue(ctx, Session{}, session),
+		req.GetPath(),
+		req.GetMode(),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// FilesystemChown changes file owner
+func (f *FilesystemServer) FilesystemChown(ctx context.Context, req *proto.FilesystemChownRequest) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	err := f.Impl.Chown(
+		context.WithValue(ctx, Session{}, session),
+		req.GetPath(),
+		req.GetUid(),
+		req.GetGid(),
+	)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

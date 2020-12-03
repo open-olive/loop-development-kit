@@ -3,6 +3,7 @@ package proto;
 option go_package = ".;proto";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 import "session.proto";
 
 service Filesystem {
@@ -13,10 +14,37 @@ service Filesystem {
     rpc FilesystemDirStream (FilesystemDirStreamRequest) returns (stream FilesystemDirStreamResponse);
 
     // get information about a file
-    rpc FilesystemFile (FilesystemFileRequest) returns (FilesystemFileResponse);
+    rpc FilesystemFileInfo (FilesystemFileInfoRequest) returns (FilesystemFileInfoResponse);
 
     // stream any updates to a file
-    rpc FilesystemFileStream (FilesystemFileStreamRequest) returns (stream FilesystemFileStreamResponse);    
+    rpc FilesystemFileInfoStream (FilesystemFileInfoStreamRequest) returns (stream FilesystemFileInfoStreamResponse);    
+
+
+    // // read file stream
+    // rpc FilesystemFileReadStream (FilesystemFileReadStreamRequest) returns (stream FilesystemFileReadStreamResponse);
+
+    // // write file stream
+    // rpc FilesystemFileWriteStream (FilesystemFileWriteStreamRequest) returns (stream FilesystemFileWriteStreamResponse);
+
+    // create directory
+    rpc FilesystemMakeDir (FilesystemMakeDirRequest) returns (google.protobuf.Empty);
+
+    //  copy
+    rpc FilesystemCopy (FilesystemCopyRequest) returns ( google.protobuf.Empty);
+
+    //  move
+    rpc FilesystemMove (FilesystemMoveRequest) returns ( google.protobuf.Empty);
+
+    // remove
+    rpc FilesystemRemove (FilesystemRemoveRequest) returns (google.protobuf.Empty);
+
+    // chmod
+    rpc FilesystemChmod (FilesystemChmodRequest) returns (google.protobuf.Empty);
+
+    // chown
+    rpc FilesystemChown (FilesystemChownRequest) returns (google.protobuf.Empty);
+
+
 }
 
 message FileInfo {
@@ -56,22 +84,65 @@ message FilesystemDirStreamResponse {
     string error = 15;
 }
 
-message FilesystemFileRequest {
+message FilesystemFileInfoRequest {
     Session session = 1;
     string path = 2;
 }
 
-message FilesystemFileResponse {
+message FilesystemFileInfoResponse {
     FileInfo file = 1;
 }
 
-message FilesystemFileStreamRequest {
+message FilesystemFileInfoStreamRequest {
     Session session = 1;
     string path = 2;
 }
 
-message FilesystemFileStreamResponse {
+message FilesystemFileInfoStreamResponse {
     FileInfo file = 1;
     FileAction action = 2;
     string error = 15;
 }
+
+message FilesystemMakeDirRequest {
+    Session session = 1;
+    string path = 2;
+    uint32 perm =3;
+}
+
+
+message FilesystemCopyRequest {
+    Session session = 1;
+    string source = 2;
+    string dest = 3;
+}
+
+
+message FilesystemMoveRequest {
+    Session session = 1;
+    string source = 2;
+    string dest = 3;
+}
+
+
+message FilesystemRemoveRequest {
+    Session session = 1;
+    string path = 2;
+    bool recursive = 3;
+}
+
+
+message FilesystemChmodRequest {
+    Session session = 1;
+    string path = 2;
+    uint32 mode = 3;
+}
+
+
+message FilesystemChownRequest {
+    Session session = 1;
+    string path = 2;
+    int32 uid = 3;
+    int32 gid = 4;
+}
+

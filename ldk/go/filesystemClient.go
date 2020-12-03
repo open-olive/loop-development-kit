@@ -15,7 +15,7 @@ type FilesystemClient struct {
 	session *Session
 }
 
-// list the contents of a directory
+// Dir list the contents of a directory
 func (f *FilesystemClient) Dir(ctx context.Context, dir string) ([]FileInfo, error) {
 	resp, err := f.client.FilesystemDir(ctx, &proto.FilesystemDirRequest{
 		Directory: dir,
@@ -47,7 +47,7 @@ func (f *FilesystemClient) Dir(ctx context.Context, dir string) ([]FileInfo, err
 	return lfiles, nil
 }
 
-// stream any updates to the contents of a directory
+// ListenDir stream any updates to the contents of a directory
 func (f *FilesystemClient) ListenDir(ctx context.Context, dir string, handler ListenDirHandler) error {
 	client, err := f.client.FilesystemDirStream(ctx, &proto.FilesystemDirStreamRequest{
 		Directory: dir,
@@ -95,9 +95,9 @@ func (f *FilesystemClient) ListenDir(ctx context.Context, dir string, handler Li
 	return nil
 }
 
-// get information about a file
+// File get information about a file
 func (f *FilesystemClient) File(ctx context.Context, path string) (FileInfo, error) {
-	resp, err := f.client.FilesystemFile(ctx, &proto.FilesystemFileRequest{
+	resp, err := f.client.FilesystemFileInfo(ctx, &proto.FilesystemFileInfoRequest{
 		Path:    path,
 		Session: f.session.ToProto(),
 	})
@@ -122,9 +122,9 @@ func (f *FilesystemClient) File(ctx context.Context, path string) (FileInfo, err
 	return fi, nil
 }
 
-// stream any updates to a file
+// ListenFile stream any updates to a file
 func (f *FilesystemClient) ListenFile(ctx context.Context, path string, handler ListenFileHandler) error {
-	client, err := f.client.FilesystemFileStream(ctx, &proto.FilesystemFileStreamRequest{
+	client, err := f.client.FilesystemFileInfoStream(ctx, &proto.FilesystemFileInfoStreamRequest{
 		Path:    path,
 		Session: f.session.ToProto(),
 	})
@@ -166,6 +166,76 @@ func (f *FilesystemClient) ListenFile(ctx context.Context, path string, handler 
 			handler(FileEvent{Info: fi, Action: protoActionToAction(resp.GetAction())}, err)
 		}
 	}()
+
+	return nil
+}
+
+// MakeDir create new directory
+func (f *FilesystemClient) MakeDir(ctx context.Context, path string, perm uint32) error {
+	_, err := f.client.FilesystemMakeDir(ctx, &proto.FilesystemMakeDirRequest{
+		Session: f.session.ToProto(),
+		Path:    path,
+		Perm:    perm,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Copy file or directory
+func (f *FilesystemClient) Copy(ctx context.Context, source, dest string) error {
+	_, err := f.client.FilesystemCopy(ctx, &proto.FilesystemCopyRequest{
+		Session: f.session.ToProto(),
+		Source:  source,
+		Dest:    dest,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Move file or directory
+func (f *FilesystemClient) Move(ctx context.Context, source, dest string) error {
+	_, err := f.client.FilesystemMove(ctx, &proto.FilesystemMoveRequest{
+		Session: f.session.ToProto(),
+		Source:  source,
+		Dest:    dest,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Remove file or directory
+func (f *FilesystemClient) Remove(ctx context.Context, path string, recursive bool) error {
+	_, err := f.client.FilesystemRemove(ctx, &proto.FilesystemRemoveRequest{
+		Session:   f.session.ToProto(),
+		Path:      path,
+		Recursive: recursive,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// Chmod change permissions of file
+func (f *FilesystemClient) Chmod(ctx context.Context, path string, mode uint32) error {
+	_, err := f.client.FilesystemChmod(ctx, &proto.FilesystemChmodRequest{
+		Session: f.session.ToProto(),
+		Path:    path,
+		Mode:    mode,
+	})
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
