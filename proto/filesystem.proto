@@ -21,7 +21,7 @@ service Filesystem {
 
 
     // // read file stream
-    // rpc FilesystemFileReadStream (FilesystemFileReadStreamRequest) returns (stream FilesystemFileReadStreamResponse);
+    //  rpc FilesystemFileReadStream (FilesystemFileReadStreamRequest) returns (stream FilesystemFileReadStreamResponse);
 
     // // write file stream
     // rpc FilesystemFileWriteStream (FilesystemFileWriteStreamRequest) returns (stream FilesystemFileWriteStreamResponse);
@@ -30,10 +30,10 @@ service Filesystem {
     rpc FilesystemMakeDir (FilesystemMakeDirRequest) returns (google.protobuf.Empty);
 
     //  copy
-    rpc FilesystemCopy (FilesystemCopyRequest) returns ( google.protobuf.Empty);
+    rpc FilesystemCopy (FilesystemCopyRequest) returns (google.protobuf.Empty);
 
     //  move
-    rpc FilesystemMove (FilesystemMoveRequest) returns ( google.protobuf.Empty);
+    rpc FilesystemMove (FilesystemMoveRequest) returns (google.protobuf.Empty);
 
     // remove
     rpc FilesystemRemove (FilesystemRemoveRequest) returns (google.protobuf.Empty);
@@ -103,6 +103,22 @@ message FilesystemFileInfoStreamResponse {
     FileAction action = 2;
     string error = 15;
 }
+
+// message FilesystemFileReadStreamRequest {
+//     Session session = 1;
+//     string path = 2;
+// }
+
+// message FilesystemFileReadStreamResponse {
+//     bytes data = 1;
+//     string error = 15;
+// }
+
+// message FilesystemFileWriteStreamRequest {
+//     Session session = 1;
+//     string path = 2;
+//     bytes data = 3;
+// }
 
 message FilesystemMakeDirRequest {
     Session session = 1;

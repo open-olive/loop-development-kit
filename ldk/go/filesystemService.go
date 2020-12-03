@@ -13,6 +13,13 @@ type FilesystemService interface {
 	ListenDir(context.Context, string, ListenDirHandler) error
 	File(context.Context, string) (FileInfo, error)
 	ListenFile(context.Context, string, ListenFileHandler) error
+
+	MakeDir(context.Context, string, uint32) error
+	Copy(context.Context, string, string) error
+	Move(context.Context, string, string) error
+	Remove(context.Context, string, bool) error
+	Chmod(context.Context, string, uint32) error
+	Chown(context.Context, string, int32, int32) error
 }
 
 type FileInfo struct {

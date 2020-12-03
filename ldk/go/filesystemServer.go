@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // FilesystemServer is used by the controller plugin host to receive plugin initiated communication
@@ -13,7 +14,7 @@ type FilesystemServer struct {
 	Impl FilesystemService
 }
 
-// list the contents of a directory
+// FilesystemDir list the contents of a directory
 func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
@@ -49,7 +50,7 @@ func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.Filesys
 	}, nil
 }
 
-// stream any updates to the contents of a directory
+// FilesystemDirStream stream any updates to the contents of a directory
 func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamRequest, stream proto.Filesystem_FilesystemDirStreamServer) error {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
@@ -187,116 +188,116 @@ func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInf
 // FilesystemFileWriteStream - TODO
 
 // FilesystemMakeDir creates new directory
-func (f *FilesystemServer) FilesystemMakeDir(ctx context.Context, req *proto.FilesystemMakeDirRequest) error {
+func (f *FilesystemServer) FilesystemMakeDir(ctx context.Context, req *proto.FilesystemMakeDirRequest) (*emptypb.Empty, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err := f.Impl.MakeDir(
+	err = f.Impl.MakeDir(
 		context.WithValue(ctx, Session{}, session),
 		req.GetPath(),
 		req.GetPerm(),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &emptypb.Empty{}, nil
 }
 
 // FilesystemCopy copies a file or directory to a new directory
-func (f *FilesystemServer) FilesystemCopy(ctx context.Context, req *proto.FilesystemCopyRequest) error {
+func (f *FilesystemServer) FilesystemCopy(ctx context.Context, req *proto.FilesystemCopyRequest) (*emptypb.Empty, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err := f.Impl.Copy(
+	err = f.Impl.Copy(
 		context.WithValue(ctx, Session{}, session),
 		req.GetSource(),
 		req.GetDest(),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &emptypb.Empty{}, nil
 }
 
 // FilesystemMove moves a file or directory to a new directory
-func (f *FilesystemServer) FilesystemMove(ctx context.Context, req *proto.FilesystemMoveRequest) error {
+func (f *FilesystemServer) FilesystemMove(ctx context.Context, req *proto.FilesystemMoveRequest) (*emptypb.Empty, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err := f.Impl.Move(
+	err = f.Impl.Move(
 		context.WithValue(ctx, Session{}, session),
 		req.GetSource(),
 		req.GetDest(),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &emptypb.Empty{}, nil
 }
 
 // FilesystemRemove removes a file or directory to a new directory
-func (f *FilesystemServer) FilesystemRemove(ctx context.Context, req *proto.FilesystemRemoveRequest) error {
+func (f *FilesystemServer) FilesystemRemove(ctx context.Context, req *proto.FilesystemRemoveRequest) (*emptypb.Empty, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err := f.Impl.Remove(
+	err = f.Impl.Remove(
 		context.WithValue(ctx, Session{}, session),
 		req.GetPath(),
 		req.GetRecursive(),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &emptypb.Empty{}, nil
 }
 
 // FilesystemChmod changes file permissions
-func (f *FilesystemServer) FilesystemChmod(ctx context.Context, req *proto.FilesystemChmodRequest) error {
+func (f *FilesystemServer) FilesystemChmod(ctx context.Context, req *proto.FilesystemChmodRequest) (*emptypb.Empty, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err := f.Impl.Chmod(
+	err = f.Impl.Chmod(
 		context.WithValue(ctx, Session{}, session),
 		req.GetPath(),
 		req.GetMode(),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &emptypb.Empty{}, nil
 }
 
 // FilesystemChown changes file owner
-func (f *FilesystemServer) FilesystemChown(ctx context.Context, req *proto.FilesystemChownRequest) error {
+func (f *FilesystemServer) FilesystemChown(ctx context.Context, req *proto.FilesystemChownRequest) (*emptypb.Empty, error) {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err := f.Impl.Chown(
+	err = f.Impl.Chown(
 		context.WithValue(ctx, Session{}, session),
 		req.GetPath(),
 		req.GetUid(),
 		req.GetGid(),
 	)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &emptypb.Empty{}, nil
 }

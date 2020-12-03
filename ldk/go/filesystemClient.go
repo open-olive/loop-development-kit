@@ -239,3 +239,18 @@ func (f *FilesystemClient) Chmod(ctx context.Context, path string, mode uint32) 
 
 	return nil
 }
+
+// Chown change owner of file
+func (f *FilesystemClient) Chown(ctx context.Context, path string, uid, gid int32) error {
+	_, err := f.client.FilesystemChown(ctx, &proto.FilesystemChownRequest{
+		Session: f.session.ToProto(),
+		Path:    path,
+		Uid:     uid,
+		Gid:     gid,
+	})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
