@@ -6,9 +6,8 @@ defaults:
 
 on:
   push:
-#    Commenting out branch filtering for dev purposes.
-#    branches:
-#      - main
+    branches:
+      - main
 
 jobs:
   build:
