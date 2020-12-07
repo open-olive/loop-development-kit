@@ -19,12 +19,11 @@ service Filesystem {
     // stream any updates to a file
     rpc FilesystemFileInfoStream (FilesystemFileInfoStreamRequest) returns (stream FilesystemFileInfoStreamResponse);    
 
-
     // // read file stream
-    //  rpc FilesystemFileReadStream (FilesystemFileReadStreamRequest) returns (stream FilesystemFileReadStreamResponse);
+    rpc FilesystemFileReadStream (FilesystemFileReadStreamRequest) returns (stream FilesystemFileReadStreamResponse);
 
     // // write file stream
-    // rpc FilesystemFileWriteStream (FilesystemFileWriteStreamRequest) returns (stream FilesystemFileWriteStreamResponse);
+    // rpc FilesystemFileWriteStream (stream FilesystemFileWriteStreamRequest) returns (stream FilesystemFileWriteStreamResponse);
 
     // create directory
     rpc FilesystemMakeDir (FilesystemMakeDirRequest) returns (google.protobuf.Empty);
@@ -104,15 +103,14 @@ message FilesystemFileInfoStreamResponse {
     string error = 15;
 }
 
-// message FilesystemFileReadStreamRequest {
-//     Session session = 1;
-//     string path = 2;
-// }
+message FilesystemFileReadStreamRequest {
+    Session session = 1;
+    string path = 2;
+}
 
-// message FilesystemFileReadStreamResponse {
-//     bytes data = 1;
-//     string error = 15;
-// }
+message FilesystemFileReadStreamResponse {
+    bytes data = 1;
+}
 
 // message FilesystemFileWriteStreamRequest {
 //     Session session = 1;

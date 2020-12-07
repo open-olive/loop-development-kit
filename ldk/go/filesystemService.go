@@ -2,6 +2,7 @@ package ldk
 
 import (
 	"context"
+	"io"
 	"time"
 
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -14,6 +15,7 @@ type FilesystemService interface {
 	File(context.Context, string) (FileInfo, error)
 	ListenFile(context.Context, string, ListenFileHandler) error
 
+	ReadFile(context.Context, string) (io.Reader, error)
 	MakeDir(context.Context, string, uint32) error
 	Copy(context.Context, string, string) error
 	Move(context.Context, string, string) error

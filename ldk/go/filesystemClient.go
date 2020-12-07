@@ -1,9 +1,12 @@
 package ldk
 
 import (
+	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
+	"os"
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -168,6 +171,105 @@ func (f *FilesystemClient) ListenFile(ctx context.Context, path string, handler 
 	}()
 
 	return nil
+}
+
+type gRPCReadWriter struct {
+	err error
+	rw  bytes.Buffer
+}
+
+func (g *gRPCReadWriter) Read(b []byte) (int, error) {
+	fmt.Println("GRPC READ ATTEMPT 1 ================> ")
+	if g.err != nil {
+		fmt.Println("GRPC READ ATTEMPT 2 ================> ")
+		return 0, g.err
+	}
+	fmt.Println("GRPC READ ATTEMPT 3 ================> ")
+	n, err := g.rw.Read(b)
+	fmt.Println("GRPC READ ATTEMPT 4 ================> ")
+	return n, err
+
+}
+
+func (g *gRPCReadWriter) Write(b []byte, err error) (int, error) {
+	if err != nil {
+		g.err = err
+	}
+	return g.rw.Write(b)
+}
+
+func newGRPCReadWriter() *gRPCReadWriter {
+
+	return &gRPCReadWriter{
+		// rw: bufio.NewReadWriter(&reader, &writer),
+	}
+}
+
+// ReadFile reads file
+func (f *FilesystemClient) ReadFile(ctx context.Context, path string) (io.Reader, error) {
+	logFile, err := os.Create("/Users/scottkipfer/olive/sidekick/log_file.txt")
+	if err != nil {
+		return nil, err
+	}
+	defer logFile.Close()
+
+	_, err = logFile.Write([]byte(fmt.Sprintf("TOP OF FILE ================> \n")))
+	if err != nil {
+		return nil, err
+	}
+
+	fileReadStreamClient, err := f.client.FilesystemFileReadStream(ctx, &proto.FilesystemFileReadStreamRequest{
+		Session: f.session.ToProto(),
+		Path:    path,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	rw := newGRPCReadWriter()
+
+	logFile.Write([]byte(fmt.Sprintf("AAAAAAAAAAAAAAAAA ================> \n")))
+
+	func() {
+		// logFile.Write([]byte(fmt.Sprintf("READ START ================> \n")))
+		for {
+
+			select {
+			case <-ctx.Done():
+				// logFile.Write([]byte(fmt.Sprintf("CTX CLOSE ================> \n")))
+				return
+			case <-fileReadStreamClient.Context().Done():
+				// logFile.Write([]byte(fmt.Sprintf("CLIENT CLOSE ================> \n")))
+				return
+			default:
+				// logFile.Write([]byte(fmt.Sprintf("READ ATTEMPT ================> \n")))
+
+				resp, err := fileReadStreamClient.Recv()
+				if err != nil && err != io.EOF {
+					// logFile.Write([]byte(fmt.Sprintf("READ ERROR ================> \n")))
+					rw.Write(nil, err)
+					return
+				}
+				if err == io.EOF {
+					// logFile.Write([]byte(fmt.Sprintf("EOF ================> \n")))
+					return
+				}
+
+				// logFile.Write([]byte(fmt.Sprintf("Before WRite ================> \n")))
+				_, err = rw.Write(resp.Data, nil)
+				if err != nil {
+					// logFile.Write([]byte(fmt.Sprintf("WRITE Failed ================> \n")))
+					// logFile.WriteString(spew.Sdump(err))
+				}
+				// logFile.Write([]byte(fmt.Sprintf("PAST WRite ================> \n")))
+
+			}
+		}
+	}()
+	logFile.Write([]byte(fmt.Sprintf("BBBBBBBBBBBBBBBB ================> \n")))
+
+	return rw, nil
+
 }
 
 // MakeDir create new directory

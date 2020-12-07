@@ -3,6 +3,7 @@ package ldk
 import (
 	"context"
 	"fmt"
+	"io"
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -183,7 +184,44 @@ func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInf
 	return nil
 }
 
-// FilesystemFileReadStream - TODO
+// FilesystemFileReadStream reads file
+func (f *FilesystemServer) FilesystemFileReadStream(req *proto.FilesystemFileReadStreamRequest, stream proto.Filesystem_FilesystemFileReadStreamServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	reader, err := f.Impl.ReadFile(
+		context.WithValue(stream.Context(), Session{}, session),
+		req.GetPath(),
+	)
+	if err != nil {
+		return err
+	}
+
+	buf := make([]byte, 1024)
+
+	for {
+		select {
+		case <-stream.Context().Done():
+			return nil
+		default:
+			n, err := reader.Read(buf)
+			if err != nil && err != io.EOF {
+				return err
+			}
+
+			stream.Send(&proto.FilesystemFileReadStreamResponse{
+				Data: buf[0:n],
+			})
+
+			if err == io.EOF {
+				return nil
+			}
+		}
+	}
+
+}
 
 // FilesystemFileWriteStream - TODO
 
