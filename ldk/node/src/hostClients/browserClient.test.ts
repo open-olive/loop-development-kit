@@ -5,13 +5,13 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { BrowserClient } from './browserClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
-import { TransformingStream } from './transformingStream';
 import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
   identityCallback,
 } from '../jest.helpers';
+import { BrowserSelectedTextResponse } from './browserService';
 
 jest.mock('../grpc/browser_grpc_pb');
 
@@ -63,13 +63,26 @@ describe('BrowserClient', () => {
   });
 
   describe('#queryActiveURL', () => {
+    let sentRequest: Messages.BrowserActiveURLRequest;
+    let sentResponse: Messages.BrowserActiveURLResponse;
+    let queryResult: Promise<string>;
+
     beforeEach(async () => {
-      const response = new Messages.BrowserActiveURLResponse();
+      sentResponse = new Messages.BrowserActiveURLResponse();
+
       queryActiveURLMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(response));
+        .mockImplementation(createCallbackHandler(sentResponse));
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.queryActiveURL()).resolves.toBeDefined();
+
+      queryResult = subject.queryActiveURL();
+
+      sentRequest = captureMockArgument(queryActiveURLMock);
+    });
+
+    it('should return a transformed response', async () => {
+      await expect(queryResult).resolves.toBe(sentResponse.getUrl());
     });
 
     it('should call client.browserActiveURL and resolve successfully', async () => {
@@ -80,21 +93,36 @@ describe('BrowserClient', () => {
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.BrowserActiveURLRequest>(
-        queryActiveURLMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#querySelectedText', () => {
+    let sentRequest: Messages.BrowserSelectedTextRequest;
+    let sentResponse: Messages.BrowserSelectedTextResponse;
+    let queryResult: Promise<BrowserSelectedTextResponse>;
+
     beforeEach(async () => {
-      const response = new Messages.BrowserSelectedTextResponse();
+      sentResponse = new Messages.BrowserSelectedTextResponse();
       querySelectedTextMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(response));
+        .mockImplementation(createCallbackHandler(sentResponse));
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.querySelectedText()).resolves.toBeDefined();
+
+      queryResult = subject.querySelectedText();
+
+      sentRequest = captureMockArgument(querySelectedTextMock);
+    });
+
+    it('should return a transformed response', async () => {
+      const selectedText = {
+        text: sentResponse.getText(),
+        url: sentResponse.getUrl(),
+        tabTitle: sentResponse.getTabtitle(),
+      };
+
+      await expect(queryResult).resolves.toStrictEqual(selectedText);
     });
 
     it('should call client.browserSelectedText and resolve successfully', async () => {
@@ -105,48 +133,47 @@ describe('BrowserClient', () => {
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.BrowserSelectedTextRequest>(
-        querySelectedTextMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamActiveURL', () => {
+    let sentRequest: Messages.BrowserActiveURLStreamRequest;
+
     beforeEach(async () => {
       streamActiveURLMock = jest
         .fn()
         .mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.streamActiveURL(identityCallback)).toBeInstanceOf(
-        TransformingStream,
-      );
+
+      subject.streamActiveURL(identityCallback);
+
+      sentRequest = captureMockArgument(streamActiveURLMock);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<
-        Messages.BrowserActiveURLStreamRequest
-      >(streamActiveURLMock);
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamSelectedText', () => {
+    let sentRequest: Messages.BrowserSelectedTextStreamRequest;
+
     beforeEach(async () => {
       streamSelectedTextMock = jest
         .fn()
         .mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.streamSelectedText(identityCallback)).toBeInstanceOf(
-        TransformingStream,
-      );
+
+      subject.streamSelectedText(identityCallback);
+
+      sentRequest = captureMockArgument(streamSelectedTextMock);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<
-        Messages.BrowserSelectedTextStreamRequest
-      >(streamSelectedTextMock);
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 });

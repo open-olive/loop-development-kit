@@ -5,13 +5,13 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { CursorClient } from './cursorClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
-import { TransformingStream } from './transformingStream';
 import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
   identityCallback,
 } from '../jest.helpers';
+import { CursorResponse } from './cursorService';
 
 jest.mock('../grpc/cursor_grpc_pb');
 
@@ -59,13 +59,31 @@ describe('CursorClient', () => {
   });
 
   describe('#queryCursorPosition', () => {
+    let sentRequest: Messages.CursorPositionRequest;
+    let sentResponse: Messages.CursorPositionResponse;
+    let queryResult: Promise<CursorResponse>;
+
     beforeEach(async () => {
-      const response = new Messages.CursorPositionResponse();
+      sentResponse = new Messages.CursorPositionResponse();
+
       queryCursorPositionMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(response));
+        .mockImplementation(createCallbackHandler(sentResponse));
       await subject.connect(connInfo, session, logger);
-      await expect(subject.queryCursorPosition()).resolves.toBeDefined();
+
+      queryResult = subject.queryCursorPosition();
+
+      sentRequest = captureMockArgument(queryCursorPositionMock);
+    });
+
+    it('should return a transformed response', async () => {
+      const cursorResponse = {
+        x: sentResponse.getX(),
+        y: sentResponse.getY(),
+        screen: sentResponse.getScreen(),
+      };
+
+      await expect(queryResult).resolves.toStrictEqual(cursorResponse);
     });
 
     it('should call client.cursorPosition and resolve successfully', async () => {
@@ -76,29 +94,27 @@ describe('CursorClient', () => {
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.CursorPositionRequest>(
-        queryCursorPositionMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamCursorPosition', () => {
+    let sentRequest: Messages.CursorPositionStreamRequest;
+
     beforeEach(async () => {
       streamCursorPositionMock = jest
         .fn()
         .mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(
-        subject.streamCursorPosition(identityCallback),
-      ).toBeInstanceOf(TransformingStream);
+
+      subject.streamCursorPosition(identityCallback);
+
+      sentRequest = captureMockArgument(streamCursorPositionMock);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.CursorPositionStreamRequest>(
-        streamCursorPositionMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 });

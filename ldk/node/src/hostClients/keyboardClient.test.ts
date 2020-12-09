@@ -5,7 +5,6 @@ import { ConnInfo } from '../grpc/broker_pb';
 import KeyboardClient from './keyboardClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
-import { TransformingStream } from './transformingStream';
 import {
   captureMockArgument,
   createCallbackHandler,
@@ -68,98 +67,97 @@ describe('KeyboardClient', () => {
     const key = 'a';
     const modifiers = { ctrlL: true };
     const convertedModifiers = 8;
+    let sentRequest: Messages.KeyboardHotkeyStreamRequest;
 
     beforeEach(async () => {
       streamHotKeyMock = jest.fn().mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(
-        subject.streamHotKey({ key, modifiers }, identityCallback),
-      ).toBeInstanceOf(TransformingStream);
+
+      subject.streamHotKey({ key, modifiers }, identityCallback);
+
+      sentRequest = captureMockArgument(streamHotKeyMock);
     });
 
     it('should have configured the request with the right key and modifiers', () => {
       const hotKey = new KeyboardHotkey()
         .setKey(key)
         .setModifiers(convertedModifiers);
-      const request = captureMockArgument<Messages.KeyboardHotkeyStreamRequest>(
-        streamHotKeyMock,
-      );
-      expect(request.getHotkey()).toStrictEqual(hotKey);
+
+      expect(sentRequest.getHotkey()).toStrictEqual(hotKey);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.KeyboardHotkeyStreamRequest>(
-        streamHotKeyMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamText', () => {
     let streamCallback: jest.Mock;
-    const text = 'hello';
+    let sentRequest: Messages.KeyboardTextStreamRequest;
+    let sentResponse: Messages.KeyboardTextStreamResponse;
 
     beforeEach(async () => {
-      const response = new Messages.KeyboardTextStreamResponse().setText(text);
+      sentResponse = new Messages.KeyboardTextStreamResponse().setText('hello');
       const stream = createEmptyStream();
 
       streamCallback = jest.fn().mockImplementation(identityCallback);
       streamTextMock = jest
         .fn()
         .mockImplementation(createStreamingHandler(stream));
-      await subject.connect(connInfo, session, logger);
-      await expect(subject.streamText(streamCallback)).toBeInstanceOf(
-        TransformingStream,
-      );
 
-      stream.emit('data', response);
+      await subject.connect(connInfo, session, logger);
+
+      subject.streamText(streamCallback);
+
+      sentRequest = captureMockArgument(streamTextMock);
+      stream.emit('data', sentResponse);
     });
 
     it('should stream the text back to the callback', () => {
-      expect(streamCallback).toHaveBeenCalledWith(null, text);
+      expect(streamCallback).toHaveBeenCalledWith(null, sentResponse.getText());
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.KeyboardTextStreamRequest>(
-        streamTextMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamChar', () => {
+    let sentRequest: Messages.KeyboardCharacterStreamRequest;
+
     beforeEach(async () => {
       streamCharMock = jest.fn().mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.streamChar(identityCallback)).toBeInstanceOf(
-        TransformingStream,
-      );
+
+      subject.streamChar(identityCallback);
+
+      sentRequest = captureMockArgument(streamCharMock);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<
-        Messages.KeyboardCharacterStreamRequest
-      >(streamCharMock);
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamScanCode', () => {
+    let sentRequest: Messages.KeyboardScancodeStreamRequest;
+
     beforeEach(async () => {
       streamScanCodeMock = jest
         .fn()
         .mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.streamScanCode(identityCallback)).toBeInstanceOf(
-        TransformingStream,
-      );
+
+      subject.streamScanCode(identityCallback);
+
+      sentRequest = captureMockArgument(streamScanCodeMock);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<
-        Messages.KeyboardScancodeStreamRequest
-      >(streamScanCodeMock);
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 });

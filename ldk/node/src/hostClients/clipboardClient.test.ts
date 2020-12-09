@@ -5,7 +5,6 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { ClipboardClient } from './clipboardClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
-import { TransformingStream } from './transformingStream';
 import {
   captureMockArgument,
   createCallbackHandler,
@@ -59,13 +58,25 @@ describe('ClipboardClient', () => {
   });
 
   describe('#queryClipboard', () => {
+    let sentRequest: Messages.ClipboardReadRequest;
+    let sentResponse: Messages.ClipboardReadResponse;
+    let queryResult: Promise<string>;
+
     beforeEach(async () => {
-      const response = new Messages.ClipboardReadResponse();
+      sentResponse = new Messages.ClipboardReadResponse();
       queryClipboardMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(response));
+        .mockImplementation(createCallbackHandler(sentResponse));
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.queryClipboard()).resolves.toBeDefined();
+
+      queryResult = subject.queryClipboard();
+
+      sentRequest = captureMockArgument(queryClipboardMock);
+    });
+
+    it('should return a transformed response', async () => {
+      await expect(queryResult).resolves.toBe(sentResponse.getText());
     });
 
     it('should call client.clipboardRead and resolve successfully', async () => {
@@ -76,29 +87,27 @@ describe('ClipboardClient', () => {
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.ClipboardReadRequest>(
-        queryClipboardMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamClipboard', () => {
+    let sentRequest: Messages.ClipboardReadStreamRequest;
+
     beforeEach(async () => {
       streamClipboardMock = jest
         .fn()
         .mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(subject.streamClipboard(identityCallback)).toBeInstanceOf(
-        TransformingStream,
-      );
+
+      subject.streamClipboard(identityCallback);
+
+      sentRequest = captureMockArgument(streamClipboardMock);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.ClipboardReadStreamRequest>(
-        streamClipboardMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 });

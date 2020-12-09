@@ -5,13 +5,13 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { HoverClient } from './hoverClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
-import { TransformingStream } from './transformingStream';
 import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
   identityCallback,
 } from '../jest.helpers';
+import { HoverResponse } from './hoverService';
 
 jest.mock('../grpc/hover_grpc_pb');
 
@@ -59,18 +59,29 @@ describe('HoverClient', () => {
   });
 
   describe('#queryHover', () => {
+    let sentRequest: Messages.HoverReadRequest;
+    let sentResponse: Messages.HoverReadResponse;
+    let queryResult: Promise<HoverResponse>;
     const xFromCenter = 10;
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      const response = new Messages.HoverReadResponse();
+      sentResponse = new Messages.HoverReadResponse();
       queryHoverMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(response));
+        .mockImplementation(createCallbackHandler(sentResponse));
+
       await subject.connect(connInfo, session, logger);
-      await expect(
-        subject.queryHover({ xFromCenter, yFromCenter }),
-      ).resolves.toBeDefined();
+
+      queryResult = subject.queryHover({ xFromCenter, yFromCenter });
+
+      sentRequest = captureMockArgument(queryHoverMock);
+    });
+
+    it('should return a transformed response', async () => {
+      await expect(queryResult).resolves.toStrictEqual({
+        text: sentResponse.getText(),
+      });
     });
 
     it('should call client.hoverRead and resolve successfully', async () => {
@@ -81,58 +92,43 @@ describe('HoverClient', () => {
     });
 
     it('should have configured the request with the right x coordinates', () => {
-      const request = captureMockArgument<Messages.HoverReadRequest>(
-        queryHoverMock,
-      );
-      expect(request.getXfromcenter()).toBe(xFromCenter);
+      expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
     });
 
     it('should have configured the request with the right y coordinates', () => {
-      const request = captureMockArgument<Messages.HoverReadRequest>(
-        queryHoverMock,
-      );
-      expect(request.getXfromcenter()).toBe(xFromCenter);
+      expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.HoverReadRequest>(
-        queryHoverMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamHover', () => {
+    let sentRequest: Messages.HoverReadStreamRequest;
     const xFromCenter = 10;
     const yFromCenter = 20;
 
     beforeEach(async () => {
       streamHoverMock = jest.fn().mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(
-        subject.streamHover({ xFromCenter, yFromCenter }, identityCallback),
-      ).toBeInstanceOf(TransformingStream);
+
+      subject.streamHover({ xFromCenter, yFromCenter }, identityCallback);
+
+      sentRequest = captureMockArgument(streamHoverMock);
     });
 
     it('should have configured the request with the right x coordinates', () => {
-      const request = captureMockArgument<Messages.HoverReadStreamRequest>(
-        streamHoverMock,
-      );
-      expect(request.getXfromcenter()).toBe(xFromCenter);
+      expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
     });
 
     it('should have configured the request with the right y coordinates', () => {
-      const request = captureMockArgument<Messages.HoverReadStreamRequest>(
-        streamHoverMock,
-      );
-      expect(request.getYfromcenter()).toBe(yFromCenter);
+      expect(sentRequest.getYfromcenter()).toBe(yFromCenter);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.HoverReadStreamRequest>(
-        streamHoverMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 });

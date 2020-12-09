@@ -5,7 +5,6 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { FileSystemClient } from './filesystemClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
-import { TransformingStream } from './transformingStream';
 import {
   captureMockArgument,
   createCallbackHandler,
@@ -131,14 +130,17 @@ describe('FileSystemClient', () => {
   });
 
   describe('#streamFile', () => {
+    let sentRequest: Messages.FilesystemFileStreamRequest;
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
       streamFileMock = jest.fn().mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(
-        subject.streamFile({ file }, identityCallback),
-      ).toBeInstanceOf(TransformingStream);
+
+      subject.streamFile({ file }, identityCallback);
+
+      sentRequest = captureMockArgument(streamFileMock);
     });
 
     it('should call client.filesystemDirStream and resolve successfully', async () => {
@@ -148,45 +150,36 @@ describe('FileSystemClient', () => {
     });
 
     it('should have configured the request with the right path', () => {
-      const request = captureMockArgument<Messages.FilesystemFileStreamRequest>(
-        streamFileMock,
-      );
-      expect(request.getPath()).toBe(file);
+      expect(sentRequest.getPath()).toBe(file);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.FilesystemFileStreamRequest>(
-        streamFileMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#streamDirectory', () => {
+    let sentRequest: Messages.FilesystemDirStreamRequest;
     const directory = '/a-directory';
 
     beforeEach(async () => {
       streamDirectoryMock = jest
         .fn()
         .mockImplementation(createStreamingHandler());
+
       await subject.connect(connInfo, session, logger);
-      await expect(
-        subject.streamDirectory({ directory }, identityCallback),
-      ).toBeInstanceOf(TransformingStream);
+
+      subject.streamDirectory({ directory }, identityCallback);
+
+      sentRequest = captureMockArgument(streamDirectoryMock);
     });
 
     it('should have configured the request with the right path', () => {
-      const request = captureMockArgument<Messages.FilesystemDirStreamRequest>(
-        streamDirectoryMock,
-      );
-      expect(request.getDirectory()).toBe(directory);
+      expect(sentRequest.getDirectory()).toBe(directory);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.FilesystemDirStreamRequest>(
-        streamDirectoryMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 });
