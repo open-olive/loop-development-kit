@@ -179,12 +179,6 @@ describe('FileSystemClient', () => {
       ).toBeInstanceOf(TransformingStream);
     });
 
-    it('should call client.filesystemFileStream and resolve successfully', async () => {
-      expect(streamDirectoryMock).toHaveBeenCalledWith(
-        expect.any(Messages.FilesystemDirStreamRequest),
-      );
-    });
-
     it('should have configured the request with the right path', () => {
       const request = captureMockArgument<Messages.FilesystemDirStreamRequest>(
         streamDirectoryMock,
