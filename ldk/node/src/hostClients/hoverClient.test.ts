@@ -9,6 +9,8 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  defaultConnInfo,
+  defaultSession,
   identityCallback,
 } from '../jest.helpers';
 import { HoverResponse } from './hoverService';
@@ -27,19 +29,15 @@ describe('HoverClient', () => {
   let queryHoverMock: jest.Mock;
   let streamHoverMock: jest.Mock;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetAllMocks();
     subject = new HoverClient();
-    connInfo = {
-      address: 'a',
-      serviceId: 1,
-      network: 'n',
-    };
-    session = {
-      loopid: 'LOOP_ID',
-      token: 'TOKEN',
-    };
+    connInfo = defaultConnInfo;
+    session = defaultSession;
+
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
+    queryHoverMock = jest.fn();
+    streamHoverMock = jest.fn();
 
     hostClient.mockImplementation(() => {
       return {
@@ -48,14 +46,10 @@ describe('HoverClient', () => {
         hoverReadStream: streamHoverMock,
       } as any;
     });
-  });
 
-  describe('#connect', () => {
-    it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(
-        subject.connect(connInfo, session, logger),
-      ).resolves.toBeUndefined();
-    });
+    await expect(
+      subject.connect(connInfo, session, logger),
+    ).resolves.toBeUndefined();
   });
 
   describe('#queryHover', () => {
@@ -67,11 +61,8 @@ describe('HoverClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.HoverReadResponse();
-      queryHoverMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(sentResponse));
 
-      await subject.connect(connInfo, session, logger);
+      queryHoverMock.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryHover({ xFromCenter, yFromCenter });
 
@@ -110,9 +101,7 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      streamHoverMock = jest.fn().mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamHoverMock.mockImplementation(createStreamingHandler());
 
       subject.streamHover({ xFromCenter, yFromCenter }, identityCallback);
 

@@ -2,6 +2,8 @@ import {
   ClientReadableStream,
   ClientReadableStreamImpl,
 } from '@grpc/grpc-js/build/src/call';
+import { ConnInfo } from './grpc/broker_pb';
+import { Session } from './grpc/session_pb';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 type CallbackHandlerFunc<TRequest = any, TResponse = any> = (
@@ -74,3 +76,14 @@ export function captureMockArgument<TArgument>(
 export function identityCallback(err: any, value: any) {
   return value;
 }
+
+export const defaultConnInfo: ConnInfo.AsObject = {
+  address: 'a',
+  serviceId: 1,
+  network: 'n',
+};
+
+export const defaultSession: Session.AsObject = {
+  loopid: 'LOOP_ID',
+  token: 'TOKEN',
+};

@@ -9,8 +9,14 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  defaultConnInfo,
+  defaultSession,
   identityCallback,
 } from '../jest.helpers';
+import {
+  FileSystemQueryDirectoryResponse,
+  FileSystemQueryFileResponse,
+} from './fileSystemService';
 
 jest.mock('../grpc/filesystem_grpc_pb');
 
@@ -28,19 +34,17 @@ describe('FileSystemClient', () => {
   let streamDirectoryMock: jest.Mock;
   let streamFileMock: jest.Mock;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetAllMocks();
     subject = new FileSystemClient();
-    connInfo = {
-      address: 'a',
-      serviceId: 1,
-      network: 'n',
-    };
-    session = {
-      loopid: 'LOOP_ID',
-      token: 'TOKEN',
-    };
+    connInfo = defaultConnInfo;
+    session = defaultSession;
+
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
+    queryDirectoryMock = jest.fn();
+    queryFileMock = jest.fn();
+    streamDirectoryMock = jest.fn();
+    streamFileMock = jest.fn();
 
     hostClient.mockImplementation(() => {
       return {
@@ -51,27 +55,35 @@ describe('FileSystemClient', () => {
         filesystemFileStream: streamFileMock,
       } as any;
     });
+
+    await expect(
+      subject.connect(connInfo, session, logger),
+    ).resolves.toBeUndefined();
   });
 
-  describe('#connect', () => {
-    it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo, session, logger)).resolves.toBe(
-        undefined,
-      );
-    });
-  });
   describe('#queryDirectory', () => {
+    let sentRequest: Messages.FilesystemDirRequest;
+    let sentResponse: Messages.FilesystemDirResponse;
+    let queryResult: Promise<FileSystemQueryDirectoryResponse>;
     const directory = 'a-directory';
 
     beforeEach(async () => {
-      const response = new Messages.FilesystemDirResponse();
-      queryDirectoryMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(response));
-      await subject.connect(connInfo, session, logger);
-      await expect(
-        subject.queryDirectory({ directory }),
-      ).resolves.toBeDefined();
+      sentResponse = new Messages.FilesystemDirResponse();
+
+      queryDirectoryMock.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
+
+      queryResult = subject.queryDirectory({ directory });
+
+      sentRequest = captureMockArgument(queryDirectoryMock);
+    });
+
+    it('should return a transformed response', async () => {
+      const directoryInfo = {
+        files: sentResponse.getFilesList(),
+      };
+      await expect(queryResult).resolves.toStrictEqual(directoryInfo);
     });
 
     it('should call client.filesystemDir and resolve successfully', async () => {
@@ -80,31 +92,37 @@ describe('FileSystemClient', () => {
         expect.any(Function),
       );
     });
+
     it('should have configured the request with the right directory', () => {
-      const request = captureMockArgument<Messages.FilesystemDirRequest>(
-        queryDirectoryMock,
-      );
-      expect(request.getDirectory()).toBe(directory);
+      expect(sentRequest.getDirectory()).toBe(directory);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.FilesystemDirRequest>(
-        queryDirectoryMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
   describe('#queryFile', () => {
+    let sentRequest: Messages.FilesystemFileRequest;
+    let sentResponse: Messages.FilesystemFileResponse;
+    let queryResult: Promise<FileSystemQueryFileResponse>;
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      const response = new Messages.FilesystemFileResponse();
-      queryFileMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(response));
-      await subject.connect(connInfo, session, logger);
-      await expect(subject.queryFile({ file })).resolves.toBeDefined();
+      sentResponse = new Messages.FilesystemFileResponse();
+
+      queryFileMock.mockImplementation(createCallbackHandler(sentResponse));
+
+      queryResult = subject.queryFile({ file });
+
+      sentRequest = captureMockArgument(queryFileMock);
+    });
+
+    it('should return a transformed response', async () => {
+      const fileInfo = {
+        file: sentResponse.getFile(),
+      };
+      await expect(queryResult).resolves.toStrictEqual(fileInfo);
     });
 
     it('should call client.filesystemFile and resolve successfully', async () => {
@@ -115,17 +133,11 @@ describe('FileSystemClient', () => {
     });
 
     it('should have configured the request with the right path', () => {
-      const request = captureMockArgument<Messages.FilesystemFileRequest>(
-        queryFileMock,
-      );
-      expect(request.getPath()).toBe(file);
+      expect(sentRequest.getPath()).toBe(file);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<Messages.FilesystemFileRequest>(
-        queryFileMock,
-      );
-      expect(request.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
     });
   });
 
@@ -134,9 +146,7 @@ describe('FileSystemClient', () => {
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      streamFileMock = jest.fn().mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamFileMock.mockImplementation(createStreamingHandler());
 
       subject.streamFile({ file }, identityCallback);
 
@@ -163,11 +173,7 @@ describe('FileSystemClient', () => {
     const directory = '/a-directory';
 
     beforeEach(async () => {
-      streamDirectoryMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamDirectoryMock.mockImplementation(createStreamingHandler());
 
       subject.streamDirectory({ directory }, identityCallback);
 

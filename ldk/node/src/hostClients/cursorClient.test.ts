@@ -9,6 +9,8 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  defaultConnInfo,
+  defaultSession,
   identityCallback,
 } from '../jest.helpers';
 import { CursorResponse } from './cursorService';
@@ -27,19 +29,15 @@ describe('CursorClient', () => {
   let queryCursorPositionMock: jest.Mock;
   let streamCursorPositionMock: jest.Mock;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetAllMocks();
     subject = new CursorClient();
-    connInfo = {
-      address: 'a',
-      serviceId: 1,
-      network: 'n',
-    };
-    session = {
-      loopid: 'LOOP_ID',
-      token: 'TOKEN',
-    };
+    connInfo = defaultConnInfo;
+    session = defaultSession;
+
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
+    queryCursorPositionMock = jest.fn();
+    streamCursorPositionMock = jest.fn();
 
     hostClient.mockImplementation(() => {
       return {
@@ -48,14 +46,10 @@ describe('CursorClient', () => {
         cursorPositionStream: streamCursorPositionMock,
       } as any;
     });
-  });
 
-  describe('#connect', () => {
-    it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(
-        subject.connect(connInfo, session, logger),
-      ).resolves.toBeUndefined();
-    });
+    await expect(
+      subject.connect(connInfo, session, logger),
+    ).resolves.toBeUndefined();
   });
 
   describe('#queryCursorPosition', () => {
@@ -66,10 +60,9 @@ describe('CursorClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.CursorPositionResponse();
 
-      queryCursorPositionMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(sentResponse));
-      await subject.connect(connInfo, session, logger);
+      queryCursorPositionMock.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.queryCursorPosition();
 
@@ -102,11 +95,7 @@ describe('CursorClient', () => {
     let sentRequest: Messages.CursorPositionStreamRequest;
 
     beforeEach(async () => {
-      streamCursorPositionMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamCursorPositionMock.mockImplementation(createStreamingHandler());
 
       subject.streamCursorPosition(identityCallback);
 

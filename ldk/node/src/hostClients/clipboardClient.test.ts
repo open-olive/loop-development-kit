@@ -9,6 +9,8 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  defaultConnInfo,
+  defaultSession,
   identityCallback,
 } from '../jest.helpers';
 
@@ -26,19 +28,15 @@ describe('ClipboardClient', () => {
   let queryClipboardMock: jest.Mock;
   let streamClipboardMock: jest.Mock;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetAllMocks();
     subject = new ClipboardClient();
-    connInfo = {
-      address: 'a',
-      serviceId: 1,
-      network: 'n',
-    };
-    session = {
-      loopid: 'LOOP_ID',
-      token: 'TOKEN',
-    };
+    connInfo = defaultConnInfo;
+    session = defaultSession;
+
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
+    queryClipboardMock = jest.fn();
+    streamClipboardMock = jest.fn();
 
     hostClient.mockImplementation(() => {
       return {
@@ -47,14 +45,10 @@ describe('ClipboardClient', () => {
         clipboardReadStream: streamClipboardMock,
       } as any;
     });
-  });
 
-  describe('#connect', () => {
-    it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(
-        subject.connect(connInfo, session, logger),
-      ).resolves.toBeUndefined();
-    });
+    await expect(
+      subject.connect(connInfo, session, logger),
+    ).resolves.toBeUndefined();
   });
 
   describe('#queryClipboard', () => {
@@ -64,11 +58,10 @@ describe('ClipboardClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.ClipboardReadResponse();
-      queryClipboardMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(sentResponse));
 
-      await subject.connect(connInfo, session, logger);
+      queryClipboardMock.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.queryClipboard();
 
@@ -95,11 +88,7 @@ describe('ClipboardClient', () => {
     let sentRequest: Messages.ClipboardReadStreamRequest;
 
     beforeEach(async () => {
-      streamClipboardMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamClipboardMock.mockImplementation(createStreamingHandler());
 
       subject.streamClipboard(identityCallback);
 

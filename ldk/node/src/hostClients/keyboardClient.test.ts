@@ -10,6 +10,8 @@ import {
   createCallbackHandler,
   createEmptyStream,
   createStreamingHandler,
+  defaultConnInfo,
+  defaultSession,
   identityCallback,
 } from '../jest.helpers';
 import { KeyboardHotkey } from '../grpc/keyboard_pb';
@@ -30,19 +32,17 @@ describe('KeyboardClient', () => {
   let streamCharMock: jest.Mock;
   let streamScanCodeMock: jest.Mock;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetAllMocks();
     subject = new KeyboardClient();
-    connInfo = {
-      address: 'a',
-      serviceId: 1,
-      network: 'n',
-    };
-    session = {
-      loopid: 'LOOP_ID',
-      token: 'TOKEN',
-    };
+    connInfo = defaultConnInfo;
+    session = defaultSession;
+
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
+    streamHotKeyMock = jest.fn();
+    streamTextMock = jest.fn();
+    streamCharMock = jest.fn();
+    streamScanCodeMock = jest.fn();
 
     hostClient.mockImplementation(() => {
       return {
@@ -53,14 +53,10 @@ describe('KeyboardClient', () => {
         keyboardScancodeStream: streamScanCodeMock,
       } as any;
     });
-  });
 
-  describe('#connect', () => {
-    it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(
-        subject.connect(connInfo, session, logger),
-      ).resolves.toBeUndefined();
-    });
+    await expect(
+      subject.connect(connInfo, session, logger),
+    ).resolves.toBeUndefined();
   });
 
   describe('#streamHotKey', () => {
@@ -70,9 +66,7 @@ describe('KeyboardClient', () => {
     let sentRequest: Messages.KeyboardHotkeyStreamRequest;
 
     beforeEach(async () => {
-      streamHotKeyMock = jest.fn().mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamHotKeyMock.mockImplementation(createStreamingHandler());
 
       subject.streamHotKey({ key, modifiers }, identityCallback);
 
@@ -102,11 +96,7 @@ describe('KeyboardClient', () => {
       const stream = createEmptyStream();
 
       streamCallback = jest.fn().mockImplementation(identityCallback);
-      streamTextMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler(stream));
-
-      await subject.connect(connInfo, session, logger);
+      streamTextMock.mockImplementation(createStreamingHandler(stream));
 
       subject.streamText(streamCallback);
 
@@ -127,9 +117,7 @@ describe('KeyboardClient', () => {
     let sentRequest: Messages.KeyboardCharacterStreamRequest;
 
     beforeEach(async () => {
-      streamCharMock = jest.fn().mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamCharMock.mockImplementation(createStreamingHandler());
 
       subject.streamChar(identityCallback);
 
@@ -145,11 +133,7 @@ describe('KeyboardClient', () => {
     let sentRequest: Messages.KeyboardScancodeStreamRequest;
 
     beforeEach(async () => {
-      streamScanCodeMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamScanCodeMock.mockImplementation(createStreamingHandler());
 
       subject.streamScanCode(identityCallback);
 

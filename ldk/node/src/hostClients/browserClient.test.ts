@@ -9,6 +9,8 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  defaultConnInfo,
+  defaultSession,
   identityCallback,
 } from '../jest.helpers';
 import { BrowserSelectedTextResponse } from './browserService';
@@ -29,19 +31,17 @@ describe('BrowserClient', () => {
   let querySelectedTextMock: jest.Mock;
   let streamSelectedTextMock: jest.Mock;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetAllMocks();
     subject = new BrowserClient();
-    connInfo = {
-      address: 'a',
-      serviceId: 1,
-      network: 'n',
-    };
-    session = {
-      loopid: 'LOOP_ID',
-      token: 'TOKEN',
-    };
+    connInfo = defaultConnInfo;
+    session = defaultSession;
+
     waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
+    queryActiveURLMock = jest.fn();
+    streamActiveURLMock = jest.fn();
+    querySelectedTextMock = jest.fn();
+    streamSelectedTextMock = jest.fn();
 
     hostClient.mockImplementation(() => {
       return {
@@ -52,14 +52,10 @@ describe('BrowserClient', () => {
         browserSelectedTextStream: streamSelectedTextMock,
       } as any;
     });
-  });
 
-  describe('#connect', () => {
-    it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo, session, logger)).resolves.toBe(
-        undefined,
-      );
-    });
+    await expect(
+      subject.connect(connInfo, session, logger),
+    ).resolves.toBeUndefined();
   });
 
   describe('#queryActiveURL', () => {
@@ -70,11 +66,9 @@ describe('BrowserClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.BrowserActiveURLResponse();
 
-      queryActiveURLMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(sentResponse));
-
-      await subject.connect(connInfo, session, logger);
+      queryActiveURLMock.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.queryActiveURL();
 
@@ -104,11 +98,10 @@ describe('BrowserClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.BrowserSelectedTextResponse();
-      querySelectedTextMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(sentResponse));
 
-      await subject.connect(connInfo, session, logger);
+      querySelectedTextMock.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.querySelectedText();
 
@@ -141,11 +134,7 @@ describe('BrowserClient', () => {
     let sentRequest: Messages.BrowserActiveURLStreamRequest;
 
     beforeEach(async () => {
-      streamActiveURLMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamActiveURLMock.mockImplementation(createStreamingHandler());
 
       subject.streamActiveURL(identityCallback);
 
@@ -161,11 +150,7 @@ describe('BrowserClient', () => {
     let sentRequest: Messages.BrowserSelectedTextStreamRequest;
 
     beforeEach(async () => {
-      streamSelectedTextMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler());
-
-      await subject.connect(connInfo, session, logger);
+      streamSelectedTextMock.mockImplementation(createStreamingHandler());
 
       subject.streamSelectedText(identityCallback);
 
