@@ -48,7 +48,9 @@ export class HoverClient
   ): StoppableStream<HoverResponse> {
     const message = updateRequest(
       params,
-      new messages.HoverReadStreamRequest(),
+      new messages.HoverReadStreamRequest().setSession(
+        this.createSessionMessage(),
+      ),
     );
     return new TransformingStream(
       this.client.hoverReadStream(message),

@@ -5,12 +5,6 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { FileSystemClient } from './filesystemClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
-import {
-  FilesystemDirRequest,
-  FilesystemDirStreamRequest,
-  FilesystemFileRequest,
-  FilesystemFileStreamRequest,
-} from '../grpc/filesystem_pb';
 import { TransformingStream } from './transformingStream';
 import {
   captureMockArgument,
@@ -88,14 +82,14 @@ describe('FileSystemClient', () => {
       );
     });
     it('should have configured the request with the right directory', () => {
-      const request = captureMockArgument<FilesystemDirRequest>(
+      const request = captureMockArgument<Messages.FilesystemDirRequest>(
         queryDirectoryMock,
       );
       expect(request.getDirectory()).toBe(directory);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<FilesystemDirRequest>(
+      const request = captureMockArgument<Messages.FilesystemDirRequest>(
         queryDirectoryMock,
       );
       expect(request.getSession()?.toObject()).toStrictEqual(session);
@@ -124,12 +118,16 @@ describe('FileSystemClient', () => {
     });
 
     it('should have configured the request with the right path', () => {
-      const request = captureMockArgument<FilesystemFileRequest>(queryFileMock);
+      const request = captureMockArgument<Messages.FilesystemFileRequest>(
+        queryFileMock,
+      );
       expect(request.getPath()).toBe(file);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<FilesystemFileRequest>(queryFileMock);
+      const request = captureMockArgument<Messages.FilesystemFileRequest>(
+        queryFileMock,
+      );
       expect(request.getSession()?.toObject()).toStrictEqual(session);
     });
   });
@@ -155,14 +153,14 @@ describe('FileSystemClient', () => {
     });
 
     it('should have configured the request with the right path', () => {
-      const request = captureMockArgument<FilesystemFileStreamRequest>(
+      const request = captureMockArgument<Messages.FilesystemFileStreamRequest>(
         streamFileMock,
       );
       expect(request.getPath()).toBe(file);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<FilesystemFileStreamRequest>(
+      const request = captureMockArgument<Messages.FilesystemFileStreamRequest>(
         streamFileMock,
       );
       expect(request.getSession()?.toObject()).toStrictEqual(session);
@@ -190,14 +188,14 @@ describe('FileSystemClient', () => {
     });
 
     it('should have configured the request with the right path', () => {
-      const request = captureMockArgument<FilesystemDirStreamRequest>(
+      const request = captureMockArgument<Messages.FilesystemDirStreamRequest>(
         streamDirectoryMock,
       );
       expect(request.getDirectory()).toBe(directory);
     });
 
     it('should have attached the initial connection session to the request', () => {
-      const request = captureMockArgument<FilesystemDirStreamRequest>(
+      const request = captureMockArgument<Messages.FilesystemDirStreamRequest>(
         streamDirectoryMock,
       );
       expect(request.getSession()?.toObject()).toStrictEqual(session);
