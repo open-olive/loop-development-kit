@@ -134,10 +134,7 @@ describe('FileSystemClient', () => {
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      const response = new Messages.FilesystemFileStreamResponse();
-      streamFileMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler(response));
+      streamFileMock = jest.fn().mockImplementation(createStreamingHandler());
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.streamFile({ file }, identityCallback),
@@ -169,10 +166,9 @@ describe('FileSystemClient', () => {
     const directory = '/a-directory';
 
     beforeEach(async () => {
-      const response = new Messages.FilesystemDirStreamResponse();
       streamDirectoryMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(response));
+        .mockImplementation(createStreamingHandler());
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.streamDirectory({ directory }, identityCallback),

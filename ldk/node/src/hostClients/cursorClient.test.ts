@@ -85,10 +85,9 @@ describe('CursorClient', () => {
 
   describe('#streamCursorPosition', () => {
     beforeEach(async () => {
-      const response = new Messages.CursorPositionStreamResponse();
       streamCursorPositionMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(response));
+        .mockImplementation(createStreamingHandler());
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.streamCursorPosition(identityCallback),

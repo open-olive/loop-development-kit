@@ -114,10 +114,9 @@ describe('BrowserClient', () => {
 
   describe('#streamActiveURL', () => {
     beforeEach(async () => {
-      const response = new Messages.BrowserActiveURLStreamResponse();
       streamActiveURLMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(response));
+        .mockImplementation(createStreamingHandler());
       await subject.connect(connInfo, session, logger);
       await expect(subject.streamActiveURL(identityCallback)).toBeInstanceOf(
         TransformingStream,
@@ -134,10 +133,9 @@ describe('BrowserClient', () => {
 
   describe('#streamSelectedText', () => {
     beforeEach(async () => {
-      const response = new Messages.BrowserSelectedTextStreamResponse();
       streamSelectedTextMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(response));
+        .mockImplementation(createStreamingHandler());
       await subject.connect(connInfo, session, logger);
       await expect(subject.streamSelectedText(identityCallback)).toBeInstanceOf(
         TransformingStream,

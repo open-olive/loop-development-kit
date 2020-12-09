@@ -107,10 +107,7 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      const response = new Messages.HoverReadStreamResponse();
-      streamHoverMock = jest
-        .fn()
-        .mockImplementation(createStreamingHandler(response));
+      streamHoverMock = jest.fn().mockImplementation(createStreamingHandler());
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.streamHover({ xFromCenter, yFromCenter }, identityCallback),

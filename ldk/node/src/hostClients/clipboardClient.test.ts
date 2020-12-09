@@ -85,10 +85,9 @@ describe('ClipboardClient', () => {
 
   describe('#streamClipboard', () => {
     beforeEach(async () => {
-      const response = new Messages.ClipboardReadStreamResponse();
       streamClipboardMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(response));
+        .mockImplementation(createStreamingHandler());
       await subject.connect(connInfo, session, logger);
       await expect(subject.streamClipboard(identityCallback)).toBeInstanceOf(
         TransformingStream,

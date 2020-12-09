@@ -22,15 +22,30 @@ export function createCallbackHandler(response?: any): CallbackHandlerFunc {
 }
 
 /**
+ * A stream that is largely a target for later emits
+ */
+export function createEmptyStream<TResponse>(): ClientReadableStream<
+  TResponse
+> {
+  return new ClientReadableStreamImpl<TResponse>(() => {
+    return {} as TResponse;
+  });
+}
+
+/**
  * A simple streaming handler that passes back the response for every stream chunk
  *
- * @param response - the response to pass through each time the handler streams a chunk
+ * @param stream - an optional stream to use, if you don't want this to create it for you
  */
-export function createStreamingHandler<TResponse>(response: TResponse) {
+export function createStreamingHandler<TResponse>(
+  stream?: ClientReadableStream<TResponse>,
+) {
   return (): ClientReadableStream<TResponse> => {
-    return new ClientReadableStreamImpl<TResponse>(() => {
-      return response;
-    });
+    if (stream) {
+      return stream;
+    }
+
+    return createEmptyStream();
   };
 }
 
