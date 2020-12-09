@@ -65,17 +65,17 @@ describe('FileSystemClient', () => {
     const directory = 'a-directory';
 
     beforeEach(async () => {
-      const directoryResponse = new Messages.FilesystemDirResponse();
+      const response = new Messages.FilesystemDirResponse();
       queryDirectoryMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(directoryResponse));
+        .mockImplementation(createCallbackHandler(response));
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.queryDirectory({ directory }),
-      ).resolves.toStrictEqual({ files: [] });
+      ).resolves.toBeDefined();
     });
 
-    it('should call client.queryDirectory and resolve successfully', async () => {
+    it('should call client.filesystemDir and resolve successfully', async () => {
       expect(queryDirectoryMock).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemDirRequest),
         expect.any(Function),
@@ -100,17 +100,15 @@ describe('FileSystemClient', () => {
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      const fileResponse = new Messages.FilesystemFileResponse();
+      const response = new Messages.FilesystemFileResponse();
       queryFileMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(fileResponse));
+        .mockImplementation(createCallbackHandler(response));
       await subject.connect(connInfo, session, logger);
-      await expect(subject.queryFile({ file })).resolves.toStrictEqual({
-        file: undefined,
-      });
+      await expect(subject.queryFile({ file })).resolves.toBeDefined();
     });
 
-    it('should call client.queryFile and resolve successfully', async () => {
+    it('should call client.filesystemFile and resolve successfully', async () => {
       expect(queryFileMock).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemFileRequest),
         expect.any(Function),
@@ -136,17 +134,17 @@ describe('FileSystemClient', () => {
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      const fileStreamResponse = new Messages.FilesystemFileStreamResponse();
+      const response = new Messages.FilesystemFileStreamResponse();
       streamFileMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(fileStreamResponse));
+        .mockImplementation(createStreamingHandler(response));
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.streamFile({ file }, identityCallback),
       ).toBeInstanceOf(TransformingStream);
     });
 
-    it('should call client.streamFile and resolve successfully', async () => {
+    it('should call client.filesystemDirStream and resolve successfully', async () => {
       expect(streamFileMock).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemFileStreamRequest),
       );
@@ -171,17 +169,17 @@ describe('FileSystemClient', () => {
     const directory = '/a-directory';
 
     beforeEach(async () => {
-      const dirStreamResponse = new Messages.FilesystemDirStreamResponse();
+      const response = new Messages.FilesystemDirStreamResponse();
       streamDirectoryMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(dirStreamResponse));
+        .mockImplementation(createStreamingHandler(response));
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.streamDirectory({ directory }, identityCallback),
       ).toBeInstanceOf(TransformingStream);
     });
 
-    it('should call client.streamDir and resolve successfully', async () => {
+    it('should call client.filesystemFileStream and resolve successfully', async () => {
       expect(streamDirectoryMock).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemDirStreamRequest),
       );

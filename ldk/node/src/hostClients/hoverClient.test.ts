@@ -52,9 +52,9 @@ describe('HoverClient', () => {
 
   describe('#connect', () => {
     it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo, session, logger)).resolves.toBe(
-        undefined,
-      );
+      await expect(
+        subject.connect(connInfo, session, logger),
+      ).resolves.toBeUndefined();
     });
   });
 
@@ -63,17 +63,17 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      const directoryResponse = new Messages.HoverReadResponse();
+      const response = new Messages.HoverReadResponse();
       queryHoverMock = jest
         .fn()
-        .mockImplementation(createCallbackHandler(directoryResponse));
+        .mockImplementation(createCallbackHandler(response));
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.queryHover({ xFromCenter, yFromCenter }),
       ).resolves.toStrictEqual({ text: '' });
     });
 
-    it('should call client.queryHover and resolve successfully', async () => {
+    it('should call client.hoverRead and resolve successfully', async () => {
       expect(queryHoverMock).toHaveBeenCalledWith(
         expect.any(Messages.HoverReadRequest),
         expect.any(Function),
@@ -107,17 +107,17 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      const hoverStreamResponse = new Messages.HoverReadStreamResponse();
+      const response = new Messages.HoverReadStreamResponse();
       streamHoverMock = jest
         .fn()
-        .mockImplementation(createStreamingHandler(hoverStreamResponse));
+        .mockImplementation(createStreamingHandler(response));
       await subject.connect(connInfo, session, logger);
       await expect(
         subject.streamHover({ xFromCenter, yFromCenter }, identityCallback),
       ).toBeInstanceOf(TransformingStream);
     });
 
-    it('should call client.streamFile and resolve successfully', async () => {
+    it('should call client.hoverReadStream and resolve successfully', async () => {
       expect(streamHoverMock).toHaveBeenCalledWith(
         expect.any(Messages.HoverReadStreamRequest),
       );
