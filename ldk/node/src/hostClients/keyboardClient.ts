@@ -119,9 +119,7 @@ export default class KeyboardClient
           this.createSessionMessage(),
         ),
       ),
-      (response) => {
-        return response.getText();
-      },
+      (response) => response.getText(),
       listener,
     );
   }

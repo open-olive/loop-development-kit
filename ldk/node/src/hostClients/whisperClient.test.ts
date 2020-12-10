@@ -6,7 +6,12 @@ import { ConnInfo } from '../grpc/broker_pb';
 import { Session } from '../grpc/session_pb';
 import * as Builders from './whisperMessageBuilder';
 import { Logger } from '../logging';
-import { createCallbackHandler, createWaitHandler, defaultConnInfo, defaultSession } from '../jest.helpers';
+import {
+  createCallbackHandler,
+  createWaitHandler,
+  defaultConnInfo,
+  defaultSession,
+} from '../jest.helpers';
 
 jest.mock('../grpc/whisper_grpc_pb');
 jest.mock('./whisperMessageBuilder');
@@ -53,8 +58,8 @@ describe('WhisperHostClient', () => {
         ).resolves.toBeUndefined();
 
         mockGRPCClient.whisperMarkdown.mockImplementation(
-            createCallbackHandler({ getId: () => WHISPER_ID }),
-          );
+          createCallbackHandler({ getId: () => WHISPER_ID }),
+        );
 
         await subject.markdownWhisper({
           markdown: 'abc',
