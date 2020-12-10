@@ -12,13 +12,13 @@ type NetworkClient struct {
 	session *Session
 }
 
-// HTTPResponse is the structure recieved from HttpRequest
+// HTTPResponse is the structure received from HttpRequest
 type HTTPResponse struct {
 	ResponseCode int
 	Data         []byte
 }
 
-// HTTPRequest is the structure recieved from HttpRequest
+// HTTPRequest is the structure received from HttpRequest
 type HTTPRequest struct {
 	URL    string
 	Method string
