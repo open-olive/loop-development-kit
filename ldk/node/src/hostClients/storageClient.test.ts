@@ -1,113 +1,86 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/storage_grpc_pb';
 import * as Messages from '../grpc/storage_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import StorageClient from './storageClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
+import {
+  captureMockArgument,
+  createCallbackHandler,
+  createWaitHandler,
+  defaultConnInfo,
+  defaultSession,
+} from '../jest.helpers';
 
-jest.mock('../grpc/storage_pb');
 jest.mock('../grpc/storage_grpc_pb');
 
-const hostClient = mocked(Services.StorageClient);
+const MockClientClass = mocked(Services.StorageClient);
 
 const logger = new Logger('test-logger');
 
-type CallbackHandlerFunc<TRequest = any, TResponse = any> = (
-  request: TRequest,
-  callback: (err: Error | null, response: TResponse) => void,
-) => void;
-
 describe('StorageHostClient', () => {
   let subject: StorageClient;
+  let mockGRPCClient: jest.Mocked<Services.StorageClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let storageDeleteMock: jest.Mock;
-  let storageDeleteAllMock: jest.Mock;
-  let storageExistsMock: jest.Mock;
-  let storageKeysMock: jest.Mock;
-  let storageReadMock: jest.Mock;
-  let storageReadAllMock: jest.Mock;
-  let storageWriteMock: jest.Mock;
 
-  function createCallbackHandler(response?: any): CallbackHandlerFunc {
-    return (request, callback) => {
-      callback(null, response);
-    };
-  }
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetAllMocks();
     subject = new StorageClient();
-    connInfo = {
-      address: 'a',
-      serviceId: 1,
-      network: 'n',
-    };
-    session = {
-      loopid: 'LOOP_ID',
-      token: 'TOKEN',
-    };
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        storageDelete: storageDeleteMock,
-        storageDeleteAll: storageDeleteAllMock,
-        storageExists: storageExistsMock,
-        storageKeys: storageKeysMock,
-        storageRead: storageReadMock,
-        storageReadAll: storageReadAllMock,
-        storageWrite: storageWriteMock,
-      } as any;
-    });
-  });
-  describe('#connect', () => {
-    it('instantiates a new host client and waits for it to be ready', async () => {
-      await expect(subject.connect(connInfo, session, logger)).resolves.toBe(
-        undefined,
-      );
-    });
+    connInfo = defaultConnInfo;
+    session = defaultSession;
+
+    mockGRPCClient = createMockInstance(Services.StorageClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
+
+    await expect(
+      subject.connect(connInfo, session, logger),
+    ).resolves.toBeUndefined();
   });
   describe('#storageDelete', () => {
     const storageKey = 'key';
     beforeEach(async () => {
-      storageDeleteMock = jest.fn().mockImplementation(createCallbackHandler());
-      await subject.connect(connInfo, session, logger);
+      mockGRPCClient.storageDelete.mockImplementation(createCallbackHandler());
+
       await expect(subject.storageDelete(storageKey)).resolves.toBe(undefined);
     });
     it('should call grpc client function', async () => {
-      expect(storageDeleteMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.storageDelete).toHaveBeenCalledWith(
         expect.any(Messages.StorageDeleteRequest),
         expect.any(Function),
       );
     });
     it('should have configured the request with the right key', () => {
-      expect(
-        mocked(Messages.StorageDeleteRequest).mock.instances[0].setKey,
-      ).toHaveBeenCalledWith(storageKey);
+      const deleteRequest = captureMockArgument<Messages.StorageDeleteRequest>(
+        mockGRPCClient.storageDelete,
+      );
+      expect(deleteRequest.getKey()).toBe(storageKey);
     });
   });
   describe('#storageExists', () => {
     const storageKey = 'key';
     let mockResponse: Messages.StorageExistsResponse;
+
     beforeEach(async () => {
-      mockResponse = new Messages.StorageExistsResponse();
-      mocked(mockResponse.getExists).mockReturnValue(true);
-      storageExistsMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session, logger);
+      mockResponse = new Messages.StorageExistsResponse().setExists(true);
+
+      mockGRPCClient.storageExists.mockImplementation(
+        createCallbackHandler(mockResponse),
+      );
     });
     it('should call grpc client function', async () => {
       await expect(subject.storageExists(storageKey)).resolves.toBe(true);
-      expect(storageExistsMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.storageExists).toHaveBeenCalledWith(
         expect.any(Messages.StorageExistsRequest),
         expect.any(Function),
       );
-      expect(
-        mocked(Messages.StorageExistsRequest).mock.instances[0].setKey,
-      ).toHaveBeenCalledWith(storageKey);
+      const existsRequest = captureMockArgument<Messages.StorageExistsRequest>(
+        mockGRPCClient.storageExists,
+      );
+      expect(existsRequest.getKey()).toBe(storageKey);
     });
   });
   describe('#storageRead', () => {
@@ -115,43 +88,44 @@ describe('StorageHostClient', () => {
     const keyValue = 'value';
     const key = 'key';
     beforeEach(async () => {
-      mockResponse = new Messages.StorageReadResponse();
-      mocked(mockResponse.getValue).mockReturnValue(keyValue);
-      storageReadMock = jest
-        .fn()
-        .mockImplementation(createCallbackHandler(mockResponse));
-      await subject.connect(connInfo, session, logger);
+      mockResponse = new Messages.StorageReadResponse().setValue(keyValue);
+
+      mockGRPCClient.storageRead.mockImplementation(
+        createCallbackHandler(mockResponse),
+      );
     });
     it('should call grpc client function', async () => {
       await expect(subject.storageRead(key)).resolves.toEqual(keyValue);
-      expect(storageReadMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.storageRead).toHaveBeenCalledWith(
         expect.any(Messages.StorageReadRequest),
         expect.any(Function),
       );
-      expect(
-        mocked(Messages.StorageReadRequest).mock.instances[0].setKey,
-      ).toHaveBeenCalledWith(key);
+      const readRequest = captureMockArgument<Messages.StorageReadRequest>(
+        mockGRPCClient.storageRead,
+      );
+      expect(readRequest.getKey()).toBe(key);
     });
   });
   describe('#storageWrite', () => {
     const keyValue = 'value';
     const key = 'key';
     beforeEach(async () => {
-      storageWriteMock = jest.fn().mockImplementation(createCallbackHandler());
+      mockGRPCClient.storageWrite.mockImplementation(createCallbackHandler());
       await subject.connect(connInfo, session, logger);
     });
     it('should call grpc client function', async () => {
       await expect(subject.storageWrite(key, keyValue)).resolves.toEqual(
         undefined,
       );
-      expect(storageWriteMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.storageWrite).toHaveBeenCalledWith(
         expect.any(Messages.StorageWriteRequest),
         expect.any(Function),
       );
-      const writeRequest = mocked(Messages.StorageWriteRequest).mock
-        .instances[0];
-      expect(writeRequest.setKey).toHaveBeenCalledWith(key);
-      expect(writeRequest.setValue).toHaveBeenCalledWith(keyValue);
+      const writeRequest = captureMockArgument<Messages.StorageWriteRequest>(
+        mockGRPCClient.storageWrite,
+      );
+      expect(writeRequest.getKey()).toBe(key);
+      expect(writeRequest.getValue()).toBe(keyValue);
     });
   });
 });
