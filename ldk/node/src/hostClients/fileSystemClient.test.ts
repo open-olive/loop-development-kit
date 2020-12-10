@@ -14,7 +14,7 @@ import {
   defaultConnInfo,
   defaultSession,
   identityCallback,
-} from '../jest.helpers';
+} from '../test.helpers';
 import {
   FileSystemQueryDirectoryResponse,
   FileSystemQueryFileResponse,

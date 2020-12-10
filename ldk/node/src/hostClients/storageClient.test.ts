@@ -12,7 +12,7 @@ import {
   createWaitHandler,
   defaultConnInfo,
   defaultSession,
-} from '../jest.helpers';
+} from '../test.helpers';
 
 jest.mock('../grpc/storage_grpc_pb');
 

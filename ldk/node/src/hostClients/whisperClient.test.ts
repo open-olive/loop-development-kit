@@ -11,7 +11,7 @@ import {
   createWaitHandler,
   defaultConnInfo,
   defaultSession,
-} from '../jest.helpers';
+} from '../test.helpers';
 
 jest.mock('../grpc/whisper_grpc_pb');
 jest.mock('./whisperMessageBuilder');

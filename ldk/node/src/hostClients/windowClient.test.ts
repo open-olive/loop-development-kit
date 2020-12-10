@@ -14,7 +14,7 @@ import {
   defaultConnInfo,
   defaultSession,
   identityCallback,
-} from '../jest.helpers';
+} from '../test.helpers';
 import { WindowInfoResponse } from './windowService';
 
 jest.mock('../grpc/window_grpc_pb');

@@ -13,7 +13,7 @@ import {
   defaultConnInfo,
   defaultSession,
   identityCallback,
-} from '../jest.helpers';
+} from '../test.helpers';
 
 jest.mock('../grpc/ui_grpc_pb');
 

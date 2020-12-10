@@ -14,7 +14,7 @@ import {
   defaultConnInfo,
   defaultSession,
   identityCallback,
-} from '../jest.helpers';
+} from '../test.helpers';
 import { KeyboardHotkey } from '../grpc/keyboard_pb';
 
 jest.mock('../grpc/keyboard_grpc_pb');

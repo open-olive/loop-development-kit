@@ -14,7 +14,7 @@ import {
   defaultConnInfo,
   defaultSession,
   identityCallback,
-} from '../jest.helpers';
+} from '../test.helpers';
 import { CursorResponse } from './cursorService';
 
 jest.mock('../grpc/cursor_grpc_pb');

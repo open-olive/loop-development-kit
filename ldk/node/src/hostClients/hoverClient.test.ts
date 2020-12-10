@@ -14,7 +14,7 @@ import {
   defaultConnInfo,
   defaultSession,
   identityCallback,
-} from '../jest.helpers';
+} from '../test.helpers';
 import { HoverResponse } from './hoverService';
 
 jest.mock('../grpc/hover_grpc_pb');

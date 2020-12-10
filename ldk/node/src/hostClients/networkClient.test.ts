@@ -12,7 +12,7 @@ import {
   createWaitHandler,
   defaultConnInfo,
   defaultSession,
-} from '../jest.helpers';
+} from '../test.helpers';
 import { HttpResponse } from './networkService';
 
 jest.mock('../grpc/network_grpc_pb');
