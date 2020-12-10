@@ -2,8 +2,9 @@ package ldk
 
 import (
 	"context"
+	"errors"
 	"fmt"
-	"io"
+	"os"
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -14,6 +15,9 @@ import (
 type FilesystemServer struct {
 	Impl FilesystemService
 }
+
+// ErrNoFile File is not initiated
+var ErrNoFile = errors.New("no file")
 
 // FilesystemDir list the contents of a directory
 func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
@@ -32,16 +36,16 @@ func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.Filesys
 
 	pbFiles := make([]*proto.FileInfo, 0, len(files))
 	for _, f := range files {
-		ptime, err := ptypes.TimestampProto(f.Updated)
+		ptime, err := ptypes.TimestampProto(f.ModTime())
 		if err != nil {
 			return nil, err
 		}
 		file := &proto.FileInfo{
-			Name:    f.Name,
-			Size:    int64(f.Size),
-			Mode:    uint32(f.Mode),
+			Name:    f.Name(),
+			Size:    int64(f.Size()),
+			Mode:    uint32(f.Mode()),
 			Updated: ptime,
-			IsDir:   f.IsDir,
+			IsDir:   f.IsDir(),
 		}
 		pbFiles = append(pbFiles, file)
 	}
@@ -63,17 +67,17 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 		if err != nil {
 			errText = err.Error()
 		}
-		t, err := ptypes.TimestampProto(fe.Info.Updated)
+		t, err := ptypes.TimestampProto(fe.Info.ModTime())
 		// TODO: this should never happen...  not sure what to really do with the error
 		if err != nil {
-			fmt.Printf("error: ldk.FilesystemServer.FilesystemDirStream -> invalid proto time: %v - %v", fe.Info.Updated, err)
+			fmt.Printf("error: ldk.FilesystemServer.FilesystemDirStream -> invalid proto time: %v - %v", fe.Info.ModTime(), err)
 		}
 		if e := stream.Send(&proto.FilesystemDirStreamResponse{
 			Error: errText,
 			File: &proto.FileInfo{
-				Name:    fe.Info.Name,
-				Size:    int64(fe.Info.Size),
-				Mode:    uint32(fe.Info.Mode),
+				Name:    fe.Info.Name(),
+				Size:    int64(fe.Info.Size()),
+				Mode:    uint32(fe.Info.Mode()),
 				Updated: t,
 			},
 			Action: fe.Action.toProto(),
@@ -108,7 +112,7 @@ func (f *FilesystemServer) FilesystemFileInfo(ctx context.Context, req *proto.Fi
 		return nil, err
 	}
 
-	file, err := f.Impl.File(
+	file, err := f.Impl.FileInfo(
 		context.WithValue(ctx, Session{}, session),
 		req.GetPath(),
 	)
@@ -116,16 +120,16 @@ func (f *FilesystemServer) FilesystemFileInfo(ctx context.Context, req *proto.Fi
 		return nil, err
 	}
 
-	ptime, err := ptypes.TimestampProto(file.Updated)
+	ptime, err := ptypes.TimestampProto(file.ModTime())
 	if err != nil {
 		return nil, err
 	}
 	fi := &proto.FileInfo{
-		Name:    file.Name,
-		Size:    int64(file.Size),
-		Mode:    uint32(file.Mode),
+		Name:    file.Name(),
+		Size:    int64(file.Size()),
+		Mode:    uint32(file.Mode()),
 		Updated: ptime,
-		IsDir:   file.IsDir,
+		IsDir:   file.IsDir(),
 	}
 
 	return &proto.FilesystemFileInfoResponse{
@@ -146,17 +150,17 @@ func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInf
 		if err != nil {
 			errText = err.Error()
 		}
-		t, err := ptypes.TimestampProto(fe.Info.Updated)
+		t, err := ptypes.TimestampProto(fe.Info.ModTime())
 		// TODO: this should never happen...  not sure what to really do with the error
 		if err != nil {
-			fmt.Printf("error: ldk.FilesystemServer.FilesystemDirStream -> invalid proto time: %v - %v", fe.Info.Updated, err)
+			fmt.Printf("error: ldk.FilesystemServer.FilesystemDirStream -> invalid proto time: %v - %v", fe.Info.ModTime(), err)
 		}
 		if e := stream.Send(&proto.FilesystemFileInfoStreamResponse{
 			Error: errText,
 			File: &proto.FileInfo{
-				Name:    fe.Info.Name,
-				Size:    int64(fe.Info.Size),
-				Mode:    uint32(fe.Info.Mode),
+				Name:    fe.Info.Name(),
+				Size:    int64(fe.Info.Size()),
+				Mode:    uint32(fe.Info.Mode()),
 				Updated: t,
 			},
 			Action: fe.Action.toProto(),
@@ -184,46 +188,138 @@ func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInf
 	return nil
 }
 
-// FilesystemFileReadStream reads file
-func (f *FilesystemServer) FilesystemFileReadStream(req *proto.FilesystemFileReadStreamRequest, stream proto.Filesystem_FilesystemFileReadStreamServer) error {
-	session, err := NewSessionFromProto(req.Session)
-	if err != nil {
-		return err
-	}
+// FilesystemFileStream write data to a file
+func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_FilesystemFileStreamServer) error {
+	var file File
 
-	reader, err := f.Impl.ReadFile(
-		context.WithValue(stream.Context(), Session{}, session),
-		req.GetPath(),
-	)
-	if err != nil {
-		return err
-	}
-
-	buf := make([]byte, 1024)
+	defer func() {
+		if file != nil {
+			file.Close()
+		}
+	}()
 
 	for {
 		select {
 		case <-stream.Context().Done():
 			return nil
 		default:
-			n, err := reader.Read(buf)
-			if err != nil && err != io.EOF {
+			request, err := stream.Recv()
+			if err != nil {
 				return err
 			}
 
-			stream.Send(&proto.FilesystemFileReadStreamResponse{
-				Data: buf[0:n],
-			})
+			switch req := request.RequestOneOf.(type) {
+			case *proto.FilesystemFileStreamRequest_Open_:
+				session, err := NewSessionFromProto(req.Open.Session)
+				if err != nil {
+					return err
+				}
 
-			if err == io.EOF {
-				return nil
+				file, err = f.Impl.Open(
+					context.WithValue(stream.Context(), Session{}, session),
+					req.Open.GetPath(),
+				)
+
+				if err != nil {
+					return err
+				}
+
+			case *proto.FilesystemFileStreamRequest_Create_:
+				session, err := NewSessionFromProto(req.Create.Session)
+				if err != nil {
+					return err
+				}
+
+				file, err = f.Impl.Create(
+					context.WithValue(stream.Context(), Session{}, session),
+					req.Create.GetPath(),
+				)
+
+				if err != nil {
+					return err
+				}
+
+			case *proto.FilesystemFileStreamRequest_Read_:
+				if file == nil {
+					return ErrNoFile
+				}
+				buf := make([]byte, 1024)
+				n, err := file.Read(buf)
+				stream.Send(&proto.FilesystemFileStreamResponse{
+					ResponseOneOf: &proto.FilesystemFileStreamResponse_Read_{
+						Read: &proto.FilesystemFileStreamResponse_Read{
+							Data:  buf[0:n],
+							Error: fmt.Sprintf("%v", err),
+						},
+					},
+				})
+
+			case *proto.FilesystemFileStreamRequest_Write_:
+				if file == nil {
+					return ErrNoFile
+				}
+				n, err := file.Write(req.Write.Data)
+				stream.Send(&proto.FilesystemFileStreamResponse{
+					ResponseOneOf: &proto.FilesystemFileStreamResponse_Write_{
+						Write: &proto.FilesystemFileStreamResponse_Write{
+							NumOfBytes: int32(n),
+							Error:      fmt.Sprintf("%v", err),
+						},
+					},
+				})
+
+			case *proto.FilesystemFileStreamRequest_Chmod_:
+				if file == nil {
+					return ErrNoFile
+				}
+				err := file.Chmod(os.FileMode(req.Chmod.Mode))
+				stream.Send(&proto.FilesystemFileStreamResponse{
+					ResponseOneOf: &proto.FilesystemFileStreamResponse_Chmod_{
+						Chmod: &proto.FilesystemFileStreamResponse_Chmod{
+							Error: fmt.Sprintf("%v", err),
+						},
+					},
+				})
+
+			case *proto.FilesystemFileStreamRequest_Chown_:
+				if file == nil {
+					return ErrNoFile
+				}
+				err := file.Chown(int(req.Chown.Uid), int(req.Chown.Gid))
+				stream.Send(&proto.FilesystemFileStreamResponse{
+					ResponseOneOf: &proto.FilesystemFileStreamResponse_Chown_{
+						Chown: &proto.FilesystemFileStreamResponse_Chown{
+							Error: fmt.Sprintf("%v", err),
+						},
+					},
+				})
+
+			case *proto.FilesystemFileStreamRequest_Stat_:
+				if file == nil {
+					return ErrNoFile
+				}
+				info, err := file.Stat()
+				t, err := ptypes.TimestampProto(info.ModTime())
+				stream.Send(&proto.FilesystemFileStreamResponse{
+					ResponseOneOf: &proto.FilesystemFileStreamResponse_Stat_{
+						Stat: &proto.FilesystemFileStreamResponse_Stat{
+							Info: &proto.FileInfo{
+								Name:    info.Name(),
+								Size:    int64(info.Size()),
+								Mode:    uint32(info.Mode()),
+								Updated: t,
+								IsDir:   info.IsDir(),
+							},
+							Error: fmt.Sprintf("%v", err),
+						},
+					},
+				})
+
 			}
 		}
+
 	}
-
 }
-
-// FilesystemFileWriteStream - TODO
 
 // FilesystemMakeDir creates new directory
 func (f *FilesystemServer) FilesystemMakeDir(ctx context.Context, req *proto.FilesystemMakeDirRequest) (*emptypb.Empty, error) {
@@ -293,45 +389,6 @@ func (f *FilesystemServer) FilesystemRemove(ctx context.Context, req *proto.File
 		context.WithValue(ctx, Session{}, session),
 		req.GetPath(),
 		req.GetRecursive(),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return &emptypb.Empty{}, nil
-}
-
-// FilesystemChmod changes file permissions
-func (f *FilesystemServer) FilesystemChmod(ctx context.Context, req *proto.FilesystemChmodRequest) (*emptypb.Empty, error) {
-	session, err := NewSessionFromProto(req.Session)
-	if err != nil {
-		return nil, err
-	}
-
-	err = f.Impl.Chmod(
-		context.WithValue(ctx, Session{}, session),
-		req.GetPath(),
-		req.GetMode(),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return &emptypb.Empty{}, nil
-}
-
-// FilesystemChown changes file owner
-func (f *FilesystemServer) FilesystemChown(ctx context.Context, req *proto.FilesystemChownRequest) (*emptypb.Empty, error) {
-	session, err := NewSessionFromProto(req.Session)
-	if err != nil {
-		return nil, err
-	}
-
-	err = f.Impl.Chown(
-		context.WithValue(ctx, Session{}, session),
-		req.GetPath(),
-		req.GetUid(),
-		req.GetGid(),
 	)
 	if err != nil {
 		return nil, err

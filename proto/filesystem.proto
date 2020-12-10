@@ -19,11 +19,8 @@ service Filesystem {
     // stream any updates to a file
     rpc FilesystemFileInfoStream (FilesystemFileInfoStreamRequest) returns (stream FilesystemFileInfoStreamResponse);    
 
-    // // read file stream
-    rpc FilesystemFileReadStream (FilesystemFileReadStreamRequest) returns (stream FilesystemFileReadStreamResponse);
-
-    // // write file stream
-    // rpc FilesystemFileWriteStream (stream FilesystemFileWriteStreamRequest) returns (stream FilesystemFileWriteStreamResponse);
+    // file stream
+    rpc FilesystemFileStream (stream FilesystemFileStreamRequest) returns (stream FilesystemFileStreamResponse);
 
     // create directory
     rpc FilesystemMakeDir (FilesystemMakeDirRequest) returns (google.protobuf.Empty);
@@ -36,12 +33,6 @@ service Filesystem {
 
     // remove
     rpc FilesystemRemove (FilesystemRemoveRequest) returns (google.protobuf.Empty);
-
-    // chmod
-    rpc FilesystemChmod (FilesystemChmodRequest) returns (google.protobuf.Empty);
-
-    // chown
-    rpc FilesystemChown (FilesystemChownRequest) returns (google.protobuf.Empty);
 
 
 }
@@ -103,20 +94,85 @@ message FilesystemFileInfoStreamResponse {
     string error = 15;
 }
 
-message FilesystemFileReadStreamRequest {
-    Session session = 1;
-    string path = 2;
+message FilesystemFileStreamRequest{
+    message Open {
+        Session session = 1;
+        string path = 2;
+    }
+
+    message Create {
+        Session session = 1;
+        string path = 2;
+    }
+
+    message Write{
+        bytes data = 1;
+    }
+
+    message Read{
+    }
+
+    message Close{
+    }
+
+    message Chmod {
+        uint32 mode =1;
+    }
+
+    message Chown {
+        int32 uid = 1;
+        int32 gid = 2;
+    }
+
+    message Stat {
+    }
+
+    oneof RequestOneOf {
+        Create create = 1;
+        Open open = 2;
+        Read read = 3;
+        Write write = 4;
+        Chmod chmod = 5;
+        Chown chown = 6;
+        Stat stat = 7;
+        Close close = 8;
+    }
+
 }
 
-message FilesystemFileReadStreamResponse {
-    bytes data = 1;
+message FilesystemFileStreamResponse{
+    message Read {
+        bytes data = 1;
+        string error = 15;
+    }
+
+    message Write{
+        int32 numOfBytes = 1;
+        string error = 15;
+    }
+
+    message Chmod {
+        string error = 15;
+    }
+
+    message Chown {
+        string error = 15;
+    }
+
+    message Stat {
+        FileInfo info = 1;
+        string error = 15;
+    }
+
+    oneof ResponseOneOf {
+        Read read = 1;
+        Write write = 2;
+        Chmod chmod = 3;
+        Chown chown = 4;
+        Stat stat = 5;
+    }
 }
 
-// message FilesystemFileWriteStreamRequest {
-//     Session session = 1;
-//     string path = 2;
-//     bytes data = 3;
-// }
 
 message FilesystemMakeDirRequest {
     Session session = 1;
@@ -143,20 +199,5 @@ message FilesystemRemoveRequest {
     Session session = 1;
     string path = 2;
     bool recursive = 3;
-}
-
-
-message FilesystemChmodRequest {
-    Session session = 1;
-    string path = 2;
-    uint32 mode = 3;
-}
-
-
-message FilesystemChownRequest {
-    Session session = 1;
-    string path = 2;
-    int32 uid = 3;
-    int32 gid = 4;
 }
 

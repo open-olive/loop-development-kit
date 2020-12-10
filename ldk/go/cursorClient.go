@@ -36,25 +36,23 @@ func (c *CursorClient) ListenPosition(ctx context.Context, handler ListenPositio
 		return err
 	}
 
-	go func() {
-		for {
-			resp, err := cursorReadStreamClient.Recv()
-			if err == io.EOF {
-				break
-			}
-			if err != nil {
-				handler(CursorPosition{}, err)
-			}
-			if resp.GetError() != "" {
-				err = errors.New(resp.GetError())
-			}
-			handler(CursorPosition{
-				X:      int(resp.X),
-				Y:      int(resp.Y),
-				Screen: 0,
-			}, err)
+	for {
+		resp, err := cursorReadStreamClient.Recv()
+		if err == io.EOF {
+			break
 		}
-	}()
+		if err != nil {
+			handler(CursorPosition{}, err)
+		}
+		if resp.GetError() != "" {
+			err = errors.New(resp.GetError())
+		}
+		handler(CursorPosition{
+			X:      int(resp.X),
+			Y:      int(resp.Y),
+			Screen: 0,
+		}, err)
+	}
 
 	return nil
 }

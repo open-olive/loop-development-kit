@@ -2,7 +2,7 @@ package ldk
 
 import (
 	"context"
-	"io"
+	"os"
 	"time"
 
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
@@ -10,26 +10,48 @@ import (
 
 // FilesystemService is an interface that defines what methods plugins can expect from the host
 type FilesystemService interface {
-	Dir(context.Context, string) ([]FileInfo, error)
+	Dir(context.Context, string) ([]os.FileInfo, error)
 	ListenDir(context.Context, string, ListenDirHandler) error
-	File(context.Context, string) (FileInfo, error)
+	FileInfo(context.Context, string) (os.FileInfo, error)
 	ListenFile(context.Context, string, ListenFileHandler) error
 
-	ReadFile(context.Context, string) (io.Reader, error)
+	Open(context.Context, string) (File, error)
+	Create(context.Context, string) (File, error)
 	MakeDir(context.Context, string, uint32) error
 	Copy(context.Context, string, string) error
 	Move(context.Context, string, string) error
 	Remove(context.Context, string, bool) error
-	Chmod(context.Context, string, uint32) error
-	Chown(context.Context, string, int32, int32) error
 }
 
 type FileInfo struct {
-	Name    string
-	Mode    int
-	Size    int
-	Updated time.Time
-	IsDir   bool
+	name    string
+	mode    int
+	size    int
+	updated time.Time
+	isDir   bool
+}
+
+func (f *FileInfo) IsDir() bool {
+	return f.isDir
+}
+
+func (f *FileInfo) Name() string {
+	return f.name
+}
+func (f *FileInfo) Size() int64 {
+	return int64(f.size)
+}
+
+func (f *FileInfo) Mode() os.FileMode {
+	return os.FileMode(f.mode)
+}
+
+func (f *FileInfo) ModTime() time.Time {
+	return f.updated
+}
+
+func (f *FileInfo) Sys() interface{} {
+	return nil
 }
 
 type FileAction int
@@ -82,7 +104,7 @@ func (f FileAction) toProto() proto.FileAction {
 }
 
 type FileEvent struct {
-	Info   FileInfo
+	Info   os.FileInfo
 	Action FileAction
 }
 
