@@ -1,79 +1,90 @@
-export namespace WindowService {
-    namespace windowActiveWindow {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./window_pb.js").WindowActiveWindowRequest;
-        export const responseType: typeof import("./window_pb.js").WindowActiveWindowResponse;
-        export { serialize_proto_WindowActiveWindowRequest as requestSerialize };
-        export { deserialize_proto_WindowActiveWindowRequest as requestDeserialize };
-        export { serialize_proto_WindowActiveWindowResponse as responseSerialize };
-        export { deserialize_proto_WindowActiveWindowResponse as responseDeserialize };
-    }
-    namespace windowActiveWindowStream {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("./window_pb.js").WindowActiveWindowStreamRequest;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("./window_pb.js").WindowActiveWindowStreamResponse;
-        export { responseType_1 as responseType };
-        export { serialize_proto_WindowActiveWindowStreamRequest as requestSerialize };
-        export { deserialize_proto_WindowActiveWindowStreamRequest as requestDeserialize };
-        export { serialize_proto_WindowActiveWindowStreamResponse as responseSerialize };
-        export { deserialize_proto_WindowActiveWindowStreamResponse as responseDeserialize };
-    }
-    namespace windowState {
-        const path_2: string;
-        export { path_2 as path };
-        const requestStream_2: boolean;
-        export { requestStream_2 as requestStream };
-        const responseStream_2: boolean;
-        export { responseStream_2 as responseStream };
-        const requestType_2: typeof import("./window_pb.js").WindowStateRequest;
-        export { requestType_2 as requestType };
-        const responseType_2: typeof import("./window_pb.js").WindowStateResponse;
-        export { responseType_2 as responseType };
-        export { serialize_proto_WindowStateRequest as requestSerialize };
-        export { deserialize_proto_WindowStateRequest as requestDeserialize };
-        export { serialize_proto_WindowStateResponse as responseSerialize };
-        export { deserialize_proto_WindowStateResponse as responseDeserialize };
-    }
-    namespace windowStateStream {
-        const path_3: string;
-        export { path_3 as path };
-        const requestStream_3: boolean;
-        export { requestStream_3 as requestStream };
-        const responseStream_3: boolean;
-        export { responseStream_3 as responseStream };
-        const requestType_3: typeof import("./window_pb.js").WindowStateStreamRequest;
-        export { requestType_3 as requestType };
-        const responseType_3: typeof import("./window_pb.js").WindowStateStreamResponse;
-        export { responseType_3 as responseType };
-        export { serialize_proto_WindowStateStreamRequest as requestSerialize };
-        export { deserialize_proto_WindowStateStreamRequest as requestDeserialize };
-        export { serialize_proto_WindowStateStreamResponse as responseSerialize };
-        export { deserialize_proto_WindowStateStreamResponse as responseDeserialize };
-    }
+// package: proto
+// file: window.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as window_pb from "./window_pb";
+import * as session_pb from "./session_pb";
+
+interface IWindowService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    windowActiveWindow: IWindowService_IWindowActiveWindow;
+    windowActiveWindowStream: IWindowService_IWindowActiveWindowStream;
+    windowState: IWindowService_IWindowState;
+    windowStateStream: IWindowService_IWindowStateStream;
 }
-export var WindowClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_WindowActiveWindowRequest(arg: any): Buffer;
-declare function deserialize_proto_WindowActiveWindowRequest(buffer_arg: any): import("./window_pb.js").WindowActiveWindowRequest;
-declare function serialize_proto_WindowActiveWindowResponse(arg: any): Buffer;
-declare function deserialize_proto_WindowActiveWindowResponse(buffer_arg: any): import("./window_pb.js").WindowActiveWindowResponse;
-declare function serialize_proto_WindowActiveWindowStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_WindowActiveWindowStreamRequest(buffer_arg: any): import("./window_pb.js").WindowActiveWindowStreamRequest;
-declare function serialize_proto_WindowActiveWindowStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_WindowActiveWindowStreamResponse(buffer_arg: any): import("./window_pb.js").WindowActiveWindowStreamResponse;
-declare function serialize_proto_WindowStateRequest(arg: any): Buffer;
-declare function deserialize_proto_WindowStateRequest(buffer_arg: any): import("./window_pb.js").WindowStateRequest;
-declare function serialize_proto_WindowStateResponse(arg: any): Buffer;
-declare function deserialize_proto_WindowStateResponse(buffer_arg: any): import("./window_pb.js").WindowStateResponse;
-declare function serialize_proto_WindowStateStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_WindowStateStreamRequest(buffer_arg: any): import("./window_pb.js").WindowStateStreamRequest;
-declare function serialize_proto_WindowStateStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_WindowStateStreamResponse(buffer_arg: any): import("./window_pb.js").WindowStateStreamResponse;
-export {};
+
+interface IWindowService_IWindowActiveWindow extends grpc.MethodDefinition<window_pb.WindowActiveWindowRequest, window_pb.WindowActiveWindowResponse> {
+    path: string; // "/proto.Window/WindowActiveWindow"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<window_pb.WindowActiveWindowRequest>;
+    requestDeserialize: grpc.deserialize<window_pb.WindowActiveWindowRequest>;
+    responseSerialize: grpc.serialize<window_pb.WindowActiveWindowResponse>;
+    responseDeserialize: grpc.deserialize<window_pb.WindowActiveWindowResponse>;
+}
+interface IWindowService_IWindowActiveWindowStream extends grpc.MethodDefinition<window_pb.WindowActiveWindowStreamRequest, window_pb.WindowActiveWindowStreamResponse> {
+    path: string; // "/proto.Window/WindowActiveWindowStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<window_pb.WindowActiveWindowStreamRequest>;
+    requestDeserialize: grpc.deserialize<window_pb.WindowActiveWindowStreamRequest>;
+    responseSerialize: grpc.serialize<window_pb.WindowActiveWindowStreamResponse>;
+    responseDeserialize: grpc.deserialize<window_pb.WindowActiveWindowStreamResponse>;
+}
+interface IWindowService_IWindowState extends grpc.MethodDefinition<window_pb.WindowStateRequest, window_pb.WindowStateResponse> {
+    path: string; // "/proto.Window/WindowState"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<window_pb.WindowStateRequest>;
+    requestDeserialize: grpc.deserialize<window_pb.WindowStateRequest>;
+    responseSerialize: grpc.serialize<window_pb.WindowStateResponse>;
+    responseDeserialize: grpc.deserialize<window_pb.WindowStateResponse>;
+}
+interface IWindowService_IWindowStateStream extends grpc.MethodDefinition<window_pb.WindowStateStreamRequest, window_pb.WindowStateStreamResponse> {
+    path: string; // "/proto.Window/WindowStateStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<window_pb.WindowStateStreamRequest>;
+    requestDeserialize: grpc.deserialize<window_pb.WindowStateStreamRequest>;
+    responseSerialize: grpc.serialize<window_pb.WindowStateStreamResponse>;
+    responseDeserialize: grpc.deserialize<window_pb.WindowStateStreamResponse>;
+}
+
+export const WindowService: IWindowService;
+
+export interface IWindowServer {
+    windowActiveWindow: grpc.handleUnaryCall<window_pb.WindowActiveWindowRequest, window_pb.WindowActiveWindowResponse>;
+    windowActiveWindowStream: grpc.handleServerStreamingCall<window_pb.WindowActiveWindowStreamRequest, window_pb.WindowActiveWindowStreamResponse>;
+    windowState: grpc.handleUnaryCall<window_pb.WindowStateRequest, window_pb.WindowStateResponse>;
+    windowStateStream: grpc.handleServerStreamingCall<window_pb.WindowStateStreamRequest, window_pb.WindowStateStreamResponse>;
+}
+
+export interface IWindowClient {
+    windowActiveWindow(request: window_pb.WindowActiveWindowRequest, callback: (error: grpc.ServiceError | null, response: window_pb.WindowActiveWindowResponse) => void): grpc.ClientUnaryCall;
+    windowActiveWindow(request: window_pb.WindowActiveWindowRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: window_pb.WindowActiveWindowResponse) => void): grpc.ClientUnaryCall;
+    windowActiveWindow(request: window_pb.WindowActiveWindowRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: window_pb.WindowActiveWindowResponse) => void): grpc.ClientUnaryCall;
+    windowActiveWindowStream(request: window_pb.WindowActiveWindowStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowActiveWindowStreamResponse>;
+    windowActiveWindowStream(request: window_pb.WindowActiveWindowStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowActiveWindowStreamResponse>;
+    windowState(request: window_pb.WindowStateRequest, callback: (error: grpc.ServiceError | null, response: window_pb.WindowStateResponse) => void): grpc.ClientUnaryCall;
+    windowState(request: window_pb.WindowStateRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: window_pb.WindowStateResponse) => void): grpc.ClientUnaryCall;
+    windowState(request: window_pb.WindowStateRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: window_pb.WindowStateResponse) => void): grpc.ClientUnaryCall;
+    windowStateStream(request: window_pb.WindowStateStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowStateStreamResponse>;
+    windowStateStream(request: window_pb.WindowStateStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowStateStreamResponse>;
+}
+
+export class WindowClient extends grpc.Client implements IWindowClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public windowActiveWindow(request: window_pb.WindowActiveWindowRequest, callback: (error: grpc.ServiceError | null, response: window_pb.WindowActiveWindowResponse) => void): grpc.ClientUnaryCall;
+    public windowActiveWindow(request: window_pb.WindowActiveWindowRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: window_pb.WindowActiveWindowResponse) => void): grpc.ClientUnaryCall;
+    public windowActiveWindow(request: window_pb.WindowActiveWindowRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: window_pb.WindowActiveWindowResponse) => void): grpc.ClientUnaryCall;
+    public windowActiveWindowStream(request: window_pb.WindowActiveWindowStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowActiveWindowStreamResponse>;
+    public windowActiveWindowStream(request: window_pb.WindowActiveWindowStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowActiveWindowStreamResponse>;
+    public windowState(request: window_pb.WindowStateRequest, callback: (error: grpc.ServiceError | null, response: window_pb.WindowStateResponse) => void): grpc.ClientUnaryCall;
+    public windowState(request: window_pb.WindowStateRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: window_pb.WindowStateResponse) => void): grpc.ClientUnaryCall;
+    public windowState(request: window_pb.WindowStateRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: window_pb.WindowStateResponse) => void): grpc.ClientUnaryCall;
+    public windowStateStream(request: window_pb.WindowStateStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowStateStreamResponse>;
+    public windowStateStream(request: window_pb.WindowStateStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<window_pb.WindowStateStreamResponse>;
+}

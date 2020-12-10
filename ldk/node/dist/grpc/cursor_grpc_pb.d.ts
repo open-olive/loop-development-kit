@@ -1,39 +1,58 @@
-export namespace CursorService {
-    namespace cursorPosition {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./cursor_pb.js").CursorPositionRequest;
-        export const responseType: typeof import("./cursor_pb.js").CursorPositionResponse;
-        export { serialize_proto_CursorPositionRequest as requestSerialize };
-        export { deserialize_proto_CursorPositionRequest as requestDeserialize };
-        export { serialize_proto_CursorPositionResponse as responseSerialize };
-        export { deserialize_proto_CursorPositionResponse as responseDeserialize };
-    }
-    namespace cursorPositionStream {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("./cursor_pb.js").CursorPositionStreamRequest;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("./cursor_pb.js").CursorPositionStreamResponse;
-        export { responseType_1 as responseType };
-        export { serialize_proto_CursorPositionStreamRequest as requestSerialize };
-        export { deserialize_proto_CursorPositionStreamRequest as requestDeserialize };
-        export { serialize_proto_CursorPositionStreamResponse as responseSerialize };
-        export { deserialize_proto_CursorPositionStreamResponse as responseDeserialize };
-    }
+// package: proto
+// file: cursor.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as cursor_pb from "./cursor_pb";
+import * as session_pb from "./session_pb";
+
+interface ICursorService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    cursorPosition: ICursorService_ICursorPosition;
+    cursorPositionStream: ICursorService_ICursorPositionStream;
 }
-export var CursorClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_CursorPositionRequest(arg: any): Buffer;
-declare function deserialize_proto_CursorPositionRequest(buffer_arg: any): import("./cursor_pb.js").CursorPositionRequest;
-declare function serialize_proto_CursorPositionResponse(arg: any): Buffer;
-declare function deserialize_proto_CursorPositionResponse(buffer_arg: any): import("./cursor_pb.js").CursorPositionResponse;
-declare function serialize_proto_CursorPositionStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_CursorPositionStreamRequest(buffer_arg: any): import("./cursor_pb.js").CursorPositionStreamRequest;
-declare function serialize_proto_CursorPositionStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_CursorPositionStreamResponse(buffer_arg: any): import("./cursor_pb.js").CursorPositionStreamResponse;
-export {};
+
+interface ICursorService_ICursorPosition extends grpc.MethodDefinition<cursor_pb.CursorPositionRequest, cursor_pb.CursorPositionResponse> {
+    path: string; // "/proto.Cursor/CursorPosition"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<cursor_pb.CursorPositionRequest>;
+    requestDeserialize: grpc.deserialize<cursor_pb.CursorPositionRequest>;
+    responseSerialize: grpc.serialize<cursor_pb.CursorPositionResponse>;
+    responseDeserialize: grpc.deserialize<cursor_pb.CursorPositionResponse>;
+}
+interface ICursorService_ICursorPositionStream extends grpc.MethodDefinition<cursor_pb.CursorPositionStreamRequest, cursor_pb.CursorPositionStreamResponse> {
+    path: string; // "/proto.Cursor/CursorPositionStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<cursor_pb.CursorPositionStreamRequest>;
+    requestDeserialize: grpc.deserialize<cursor_pb.CursorPositionStreamRequest>;
+    responseSerialize: grpc.serialize<cursor_pb.CursorPositionStreamResponse>;
+    responseDeserialize: grpc.deserialize<cursor_pb.CursorPositionStreamResponse>;
+}
+
+export const CursorService: ICursorService;
+
+export interface ICursorServer {
+    cursorPosition: grpc.handleUnaryCall<cursor_pb.CursorPositionRequest, cursor_pb.CursorPositionResponse>;
+    cursorPositionStream: grpc.handleServerStreamingCall<cursor_pb.CursorPositionStreamRequest, cursor_pb.CursorPositionStreamResponse>;
+}
+
+export interface ICursorClient {
+    cursorPosition(request: cursor_pb.CursorPositionRequest, callback: (error: grpc.ServiceError | null, response: cursor_pb.CursorPositionResponse) => void): grpc.ClientUnaryCall;
+    cursorPosition(request: cursor_pb.CursorPositionRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: cursor_pb.CursorPositionResponse) => void): grpc.ClientUnaryCall;
+    cursorPosition(request: cursor_pb.CursorPositionRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: cursor_pb.CursorPositionResponse) => void): grpc.ClientUnaryCall;
+    cursorPositionStream(request: cursor_pb.CursorPositionStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<cursor_pb.CursorPositionStreamResponse>;
+    cursorPositionStream(request: cursor_pb.CursorPositionStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<cursor_pb.CursorPositionStreamResponse>;
+}
+
+export class CursorClient extends grpc.Client implements ICursorClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public cursorPosition(request: cursor_pb.CursorPositionRequest, callback: (error: grpc.ServiceError | null, response: cursor_pb.CursorPositionResponse) => void): grpc.ClientUnaryCall;
+    public cursorPosition(request: cursor_pb.CursorPositionRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: cursor_pb.CursorPositionResponse) => void): grpc.ClientUnaryCall;
+    public cursorPosition(request: cursor_pb.CursorPositionRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: cursor_pb.CursorPositionResponse) => void): grpc.ClientUnaryCall;
+    public cursorPositionStream(request: cursor_pb.CursorPositionStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<cursor_pb.CursorPositionStreamResponse>;
+    public cursorPositionStream(request: cursor_pb.CursorPositionStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<cursor_pb.CursorPositionStreamResponse>;
+}

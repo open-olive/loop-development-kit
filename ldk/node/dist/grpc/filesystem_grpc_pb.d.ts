@@ -1,79 +1,91 @@
-export namespace FilesystemService {
-    namespace filesystemDir {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./filesystem_pb.js").FilesystemDirRequest;
-        export const responseType: typeof import("./filesystem_pb.js").FilesystemDirResponse;
-        export { serialize_proto_FilesystemDirRequest as requestSerialize };
-        export { deserialize_proto_FilesystemDirRequest as requestDeserialize };
-        export { serialize_proto_FilesystemDirResponse as responseSerialize };
-        export { deserialize_proto_FilesystemDirResponse as responseDeserialize };
-    }
-    namespace filesystemDirStream {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("./filesystem_pb.js").FilesystemDirStreamRequest;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("./filesystem_pb.js").FilesystemDirStreamResponse;
-        export { responseType_1 as responseType };
-        export { serialize_proto_FilesystemDirStreamRequest as requestSerialize };
-        export { deserialize_proto_FilesystemDirStreamRequest as requestDeserialize };
-        export { serialize_proto_FilesystemDirStreamResponse as responseSerialize };
-        export { deserialize_proto_FilesystemDirStreamResponse as responseDeserialize };
-    }
-    namespace filesystemFile {
-        const path_2: string;
-        export { path_2 as path };
-        const requestStream_2: boolean;
-        export { requestStream_2 as requestStream };
-        const responseStream_2: boolean;
-        export { responseStream_2 as responseStream };
-        const requestType_2: typeof import("./filesystem_pb.js").FilesystemFileRequest;
-        export { requestType_2 as requestType };
-        const responseType_2: typeof import("./filesystem_pb.js").FilesystemFileResponse;
-        export { responseType_2 as responseType };
-        export { serialize_proto_FilesystemFileRequest as requestSerialize };
-        export { deserialize_proto_FilesystemFileRequest as requestDeserialize };
-        export { serialize_proto_FilesystemFileResponse as responseSerialize };
-        export { deserialize_proto_FilesystemFileResponse as responseDeserialize };
-    }
-    namespace filesystemFileStream {
-        const path_3: string;
-        export { path_3 as path };
-        const requestStream_3: boolean;
-        export { requestStream_3 as requestStream };
-        const responseStream_3: boolean;
-        export { responseStream_3 as responseStream };
-        const requestType_3: typeof import("./filesystem_pb.js").FilesystemFileStreamRequest;
-        export { requestType_3 as requestType };
-        const responseType_3: typeof import("./filesystem_pb.js").FilesystemFileStreamResponse;
-        export { responseType_3 as responseType };
-        export { serialize_proto_FilesystemFileStreamRequest as requestSerialize };
-        export { deserialize_proto_FilesystemFileStreamRequest as requestDeserialize };
-        export { serialize_proto_FilesystemFileStreamResponse as responseSerialize };
-        export { deserialize_proto_FilesystemFileStreamResponse as responseDeserialize };
-    }
+// package: proto
+// file: filesystem.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as filesystem_pb from "./filesystem_pb";
+import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/timestamp_pb";
+import * as session_pb from "./session_pb";
+
+interface IFilesystemService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    filesystemDir: IFilesystemService_IFilesystemDir;
+    filesystemDirStream: IFilesystemService_IFilesystemDirStream;
+    filesystemFile: IFilesystemService_IFilesystemFile;
+    filesystemFileStream: IFilesystemService_IFilesystemFileStream;
 }
-export var FilesystemClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_FilesystemDirRequest(arg: any): Buffer;
-declare function deserialize_proto_FilesystemDirRequest(buffer_arg: any): import("./filesystem_pb.js").FilesystemDirRequest;
-declare function serialize_proto_FilesystemDirResponse(arg: any): Buffer;
-declare function deserialize_proto_FilesystemDirResponse(buffer_arg: any): import("./filesystem_pb.js").FilesystemDirResponse;
-declare function serialize_proto_FilesystemDirStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_FilesystemDirStreamRequest(buffer_arg: any): import("./filesystem_pb.js").FilesystemDirStreamRequest;
-declare function serialize_proto_FilesystemDirStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_FilesystemDirStreamResponse(buffer_arg: any): import("./filesystem_pb.js").FilesystemDirStreamResponse;
-declare function serialize_proto_FilesystemFileRequest(arg: any): Buffer;
-declare function deserialize_proto_FilesystemFileRequest(buffer_arg: any): import("./filesystem_pb.js").FilesystemFileRequest;
-declare function serialize_proto_FilesystemFileResponse(arg: any): Buffer;
-declare function deserialize_proto_FilesystemFileResponse(buffer_arg: any): import("./filesystem_pb.js").FilesystemFileResponse;
-declare function serialize_proto_FilesystemFileStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_FilesystemFileStreamRequest(buffer_arg: any): import("./filesystem_pb.js").FilesystemFileStreamRequest;
-declare function serialize_proto_FilesystemFileStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_FilesystemFileStreamResponse(buffer_arg: any): import("./filesystem_pb.js").FilesystemFileStreamResponse;
-export {};
+
+interface IFilesystemService_IFilesystemDir extends grpc.MethodDefinition<filesystem_pb.FilesystemDirRequest, filesystem_pb.FilesystemDirResponse> {
+    path: string; // "/proto.Filesystem/FilesystemDir"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<filesystem_pb.FilesystemDirRequest>;
+    requestDeserialize: grpc.deserialize<filesystem_pb.FilesystemDirRequest>;
+    responseSerialize: grpc.serialize<filesystem_pb.FilesystemDirResponse>;
+    responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemDirResponse>;
+}
+interface IFilesystemService_IFilesystemDirStream extends grpc.MethodDefinition<filesystem_pb.FilesystemDirStreamRequest, filesystem_pb.FilesystemDirStreamResponse> {
+    path: string; // "/proto.Filesystem/FilesystemDirStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<filesystem_pb.FilesystemDirStreamRequest>;
+    requestDeserialize: grpc.deserialize<filesystem_pb.FilesystemDirStreamRequest>;
+    responseSerialize: grpc.serialize<filesystem_pb.FilesystemDirStreamResponse>;
+    responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemDirStreamResponse>;
+}
+interface IFilesystemService_IFilesystemFile extends grpc.MethodDefinition<filesystem_pb.FilesystemFileRequest, filesystem_pb.FilesystemFileResponse> {
+    path: string; // "/proto.Filesystem/FilesystemFile"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<filesystem_pb.FilesystemFileRequest>;
+    requestDeserialize: grpc.deserialize<filesystem_pb.FilesystemFileRequest>;
+    responseSerialize: grpc.serialize<filesystem_pb.FilesystemFileResponse>;
+    responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemFileResponse>;
+}
+interface IFilesystemService_IFilesystemFileStream extends grpc.MethodDefinition<filesystem_pb.FilesystemFileStreamRequest, filesystem_pb.FilesystemFileStreamResponse> {
+    path: string; // "/proto.Filesystem/FilesystemFileStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<filesystem_pb.FilesystemFileStreamRequest>;
+    requestDeserialize: grpc.deserialize<filesystem_pb.FilesystemFileStreamRequest>;
+    responseSerialize: grpc.serialize<filesystem_pb.FilesystemFileStreamResponse>;
+    responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemFileStreamResponse>;
+}
+
+export const FilesystemService: IFilesystemService;
+
+export interface IFilesystemServer {
+    filesystemDir: grpc.handleUnaryCall<filesystem_pb.FilesystemDirRequest, filesystem_pb.FilesystemDirResponse>;
+    filesystemDirStream: grpc.handleServerStreamingCall<filesystem_pb.FilesystemDirStreamRequest, filesystem_pb.FilesystemDirStreamResponse>;
+    filesystemFile: grpc.handleUnaryCall<filesystem_pb.FilesystemFileRequest, filesystem_pb.FilesystemFileResponse>;
+    filesystemFileStream: grpc.handleServerStreamingCall<filesystem_pb.FilesystemFileStreamRequest, filesystem_pb.FilesystemFileStreamResponse>;
+}
+
+export interface IFilesystemClient {
+    filesystemDir(request: filesystem_pb.FilesystemDirRequest, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemDirResponse) => void): grpc.ClientUnaryCall;
+    filesystemDir(request: filesystem_pb.FilesystemDirRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemDirResponse) => void): grpc.ClientUnaryCall;
+    filesystemDir(request: filesystem_pb.FilesystemDirRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemDirResponse) => void): grpc.ClientUnaryCall;
+    filesystemDirStream(request: filesystem_pb.FilesystemDirStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemDirStreamResponse>;
+    filesystemDirStream(request: filesystem_pb.FilesystemDirStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemDirStreamResponse>;
+    filesystemFile(request: filesystem_pb.FilesystemFileRequest, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemFileResponse) => void): grpc.ClientUnaryCall;
+    filesystemFile(request: filesystem_pb.FilesystemFileRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemFileResponse) => void): grpc.ClientUnaryCall;
+    filesystemFile(request: filesystem_pb.FilesystemFileRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemFileResponse) => void): grpc.ClientUnaryCall;
+    filesystemFileStream(request: filesystem_pb.FilesystemFileStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemFileStreamResponse>;
+    filesystemFileStream(request: filesystem_pb.FilesystemFileStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemFileStreamResponse>;
+}
+
+export class FilesystemClient extends grpc.Client implements IFilesystemClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public filesystemDir(request: filesystem_pb.FilesystemDirRequest, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemDirResponse) => void): grpc.ClientUnaryCall;
+    public filesystemDir(request: filesystem_pb.FilesystemDirRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemDirResponse) => void): grpc.ClientUnaryCall;
+    public filesystemDir(request: filesystem_pb.FilesystemDirRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemDirResponse) => void): grpc.ClientUnaryCall;
+    public filesystemDirStream(request: filesystem_pb.FilesystemDirStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemDirStreamResponse>;
+    public filesystemDirStream(request: filesystem_pb.FilesystemDirStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemDirStreamResponse>;
+    public filesystemFile(request: filesystem_pb.FilesystemFileRequest, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemFileResponse) => void): grpc.ClientUnaryCall;
+    public filesystemFile(request: filesystem_pb.FilesystemFileRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemFileResponse) => void): grpc.ClientUnaryCall;
+    public filesystemFile(request: filesystem_pb.FilesystemFileRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: filesystem_pb.FilesystemFileResponse) => void): grpc.ClientUnaryCall;
+    public filesystemFileStream(request: filesystem_pb.FilesystemFileStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemFileStreamResponse>;
+    public filesystemFileStream(request: filesystem_pb.FilesystemFileStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<filesystem_pb.FilesystemFileStreamResponse>;
+}
