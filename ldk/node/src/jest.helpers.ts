@@ -51,19 +51,29 @@ export function createStreamingHandler<TResponse>(
   };
 }
 
+interface CaptureParameters {
+  call?: number;
+  position?: number;
+}
 /**
  * A argument capture function for jest mocks that lets you do further investigation on a captured argument
  *
  * @param mock - a mock that you want to capture arguments for
- * @param time - the call time (first, second, etc.) of the mock
- * @param position - the position in the argument list for the mock
+ * @param params - the optional parameters for what call and arg to capture
  */
 export function captureMockArgument<TArgument>(
   mock: jest.Mock,
-  time = 0,
-  position = 0,
+  params?: CaptureParameters,
 ): TArgument {
-  return mock.mock.calls[time][position] as TArgument;
+  const call = params?.call || 0;
+  const position = params?.position || 0;
+
+  const called = mock.mock.calls[call];
+  if (!called) {
+    throw new Error(`mock ${mock} was not called at least ${call} times`);
+  }
+
+  return called[position] as TArgument;
 }
 
 /**
