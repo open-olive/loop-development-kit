@@ -86,7 +86,7 @@ describe('FileSystemClient', () => {
       await expect(queryResult).resolves.toStrictEqual(directoryInfo);
     });
 
-    it('should call client.filesystemDir and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(queryDirectoryMock).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemDirRequest),
         expect.any(Function),
@@ -125,7 +125,7 @@ describe('FileSystemClient', () => {
       await expect(queryResult).resolves.toStrictEqual(fileInfo);
     });
 
-    it('should call client.filesystemFile and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(queryFileMock).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemFileRequest),
         expect.any(Function),
@@ -153,7 +153,7 @@ describe('FileSystemClient', () => {
       sentRequest = captureMockArgument(streamFileMock);
     });
 
-    it('should call client.filesystemDirStream and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(streamFileMock).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemFileStreamRequest),
       );

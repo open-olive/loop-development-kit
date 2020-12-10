@@ -79,7 +79,7 @@ describe('BrowserClient', () => {
       await expect(queryResult).resolves.toBe(sentResponse.getUrl());
     });
 
-    it('should call client.browserActiveURL and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(queryActiveURLMock).toHaveBeenCalledWith(
         expect.any(Messages.BrowserActiveURLRequest),
         expect.any(Function),
@@ -118,7 +118,7 @@ describe('BrowserClient', () => {
       await expect(queryResult).resolves.toStrictEqual(selectedText);
     });
 
-    it('should call client.browserSelectedText and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(querySelectedTextMock).toHaveBeenCalledWith(
         expect.any(Messages.BrowserSelectedTextRequest),
         expect.any(Function),

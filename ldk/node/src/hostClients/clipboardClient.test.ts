@@ -72,7 +72,7 @@ describe('ClipboardClient', () => {
       await expect(queryResult).resolves.toBe(sentResponse.getText());
     });
 
-    it('should call client.clipboardRead and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(queryClipboardMock).toHaveBeenCalledWith(
         expect.any(Messages.ClipboardReadRequest),
         expect.any(Function),

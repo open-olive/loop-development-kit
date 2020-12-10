@@ -79,7 +79,7 @@ describe('CursorClient', () => {
       await expect(queryResult).resolves.toStrictEqual(cursorResponse);
     });
 
-    it('should call client.cursorPosition and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(queryCursorPositionMock).toHaveBeenCalledWith(
         expect.any(Messages.CursorPositionRequest),
         expect.any(Function),

@@ -52,7 +52,7 @@ export function createStreamingHandler<TResponse>(
 }
 
 /**
- * A argument capture function for jest mocks that lets you do further investigation on a capture argument
+ * A argument capture function for jest mocks that lets you do further investigation on a captured argument
  *
  * @param mock - a mock that you want to capture arguments for
  * @param time - the call time (first, second, etc.) of the mock

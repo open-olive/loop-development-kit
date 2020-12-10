@@ -75,7 +75,7 @@ describe('HoverClient', () => {
       });
     });
 
-    it('should call client.hoverRead and resolve successfully', async () => {
+    it('should call grpc client function', async () => {
       expect(queryHoverMock).toHaveBeenCalledWith(
         expect.any(Messages.HoverReadRequest),
         expect.any(Function),
