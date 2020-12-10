@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/browser_grpc_pb';
 import * as Messages from '../grpc/browser_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -9,6 +10,7 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -17,19 +19,15 @@ import { BrowserSelectedTextResponse } from './browserService';
 
 jest.mock('../grpc/browser_grpc_pb');
 
-const hostClient = mocked(Services.BrowserClient);
+const MockClientClass = mocked(Services.BrowserClient);
 
 const logger = new Logger('test-logger');
 
 describe('BrowserClient', () => {
   let subject: BrowserClient;
+  let mockGRPCClient: jest.Mocked<Services.BrowserClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let queryActiveURLMock: jest.Mock;
-  let streamActiveURLMock: jest.Mock;
-  let querySelectedTextMock: jest.Mock;
-  let streamSelectedTextMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -37,21 +35,9 @@ describe('BrowserClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    queryActiveURLMock = jest.fn();
-    streamActiveURLMock = jest.fn();
-    querySelectedTextMock = jest.fn();
-    streamSelectedTextMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        browserActiveURL: queryActiveURLMock,
-        browserActiveURLStream: streamActiveURLMock,
-        browserSelectedText: querySelectedTextMock,
-        browserSelectedTextStream: streamSelectedTextMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.BrowserClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -66,13 +52,13 @@ describe('BrowserClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.BrowserActiveURLResponse();
 
-      queryActiveURLMock.mockImplementation(
+      mockGRPCClient.browserActiveURL.mockImplementation(
         createCallbackHandler(sentResponse),
       );
 
       queryResult = subject.queryActiveURL();
 
-      sentRequest = captureMockArgument(queryActiveURLMock);
+      sentRequest = captureMockArgument(mockGRPCClient.browserActiveURL);
     });
 
     it('should return a transformed response', async () => {
@@ -80,7 +66,7 @@ describe('BrowserClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(queryActiveURLMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.browserActiveURL).toHaveBeenCalledWith(
         expect.any(Messages.BrowserActiveURLRequest),
         expect.any(Function),
       );
@@ -99,13 +85,13 @@ describe('BrowserClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.BrowserSelectedTextResponse();
 
-      querySelectedTextMock.mockImplementation(
+      mockGRPCClient.browserSelectedText.mockImplementation(
         createCallbackHandler(sentResponse),
       );
 
       queryResult = subject.querySelectedText();
 
-      sentRequest = captureMockArgument(querySelectedTextMock);
+      sentRequest = captureMockArgument(mockGRPCClient.browserSelectedText);
     });
 
     it('should return a transformed response', async () => {
@@ -119,7 +105,7 @@ describe('BrowserClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(querySelectedTextMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.browserSelectedText).toHaveBeenCalledWith(
         expect.any(Messages.BrowserSelectedTextRequest),
         expect.any(Function),
       );
@@ -134,11 +120,13 @@ describe('BrowserClient', () => {
     let sentRequest: Messages.BrowserActiveURLStreamRequest;
 
     beforeEach(async () => {
-      streamActiveURLMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.browserActiveURLStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamActiveURL(identityCallback);
 
-      sentRequest = captureMockArgument(streamActiveURLMock);
+      sentRequest = captureMockArgument(mockGRPCClient.browserActiveURLStream);
     });
 
     it('should have attached the initial connection session to the request', () => {
@@ -150,11 +138,15 @@ describe('BrowserClient', () => {
     let sentRequest: Messages.BrowserSelectedTextStreamRequest;
 
     beforeEach(async () => {
-      streamSelectedTextMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.browserSelectedTextStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamSelectedText(identityCallback);
 
-      sentRequest = captureMockArgument(streamSelectedTextMock);
+      sentRequest = captureMockArgument(
+        mockGRPCClient.browserSelectedTextStream,
+      );
     });
 
     it('should have attached the initial connection session to the request', () => {

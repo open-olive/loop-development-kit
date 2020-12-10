@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/cursor_grpc_pb';
 import * as Messages from '../grpc/cursor_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -9,6 +10,7 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -17,17 +19,15 @@ import { CursorResponse } from './cursorService';
 
 jest.mock('../grpc/cursor_grpc_pb');
 
-const hostClient = mocked(Services.CursorClient);
+const MockClientClass = mocked(Services.CursorClient);
 
 const logger = new Logger('test-logger');
 
 describe('CursorClient', () => {
   let subject: CursorClient;
+  let mockGRPCClient: jest.Mocked<Services.CursorClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let queryCursorPositionMock: jest.Mock;
-  let streamCursorPositionMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -35,17 +35,9 @@ describe('CursorClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    queryCursorPositionMock = jest.fn();
-    streamCursorPositionMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        cursorPosition: queryCursorPositionMock,
-        cursorPositionStream: streamCursorPositionMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.CursorClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -60,13 +52,13 @@ describe('CursorClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.CursorPositionResponse();
 
-      queryCursorPositionMock.mockImplementation(
+      mockGRPCClient.cursorPosition.mockImplementation(
         createCallbackHandler(sentResponse),
       );
 
       queryResult = subject.queryCursorPosition();
 
-      sentRequest = captureMockArgument(queryCursorPositionMock);
+      sentRequest = captureMockArgument(mockGRPCClient.cursorPosition);
     });
 
     it('should return a transformed response', async () => {
@@ -80,7 +72,7 @@ describe('CursorClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(queryCursorPositionMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.cursorPosition).toHaveBeenCalledWith(
         expect.any(Messages.CursorPositionRequest),
         expect.any(Function),
       );
@@ -95,11 +87,13 @@ describe('CursorClient', () => {
     let sentRequest: Messages.CursorPositionStreamRequest;
 
     beforeEach(async () => {
-      streamCursorPositionMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.cursorPositionStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamCursorPosition(identityCallback);
 
-      sentRequest = captureMockArgument(streamCursorPositionMock);
+      sentRequest = captureMockArgument(mockGRPCClient.cursorPositionStream);
     });
 
     it('should have attached the initial connection session to the request', () => {

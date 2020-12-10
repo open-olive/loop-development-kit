@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/ui_grpc_pb';
 import * as Messages from '../grpc/ui_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -7,8 +8,8 @@ import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
 import {
   captureMockArgument,
-  createCallbackHandler,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -16,17 +17,15 @@ import {
 
 jest.mock('../grpc/ui_grpc_pb');
 
-const hostClient = mocked(Services.UIClient);
+const MockClientClass = mocked(Services.UIClient);
 
 const logger = new Logger('test-logger');
 
 describe('UIClient', () => {
   let subject: UIClient;
+  let mockGRPCClient: jest.Mocked<Services.UIClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let streamSearchbarMock: jest.Mock;
-  let streamGlobalSearchMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -34,17 +33,9 @@ describe('UIClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    streamSearchbarMock = jest.fn();
-    streamGlobalSearchMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        searchbarStream: streamSearchbarMock,
-        globalSearchStream: streamGlobalSearchMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.UIClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -55,11 +46,13 @@ describe('UIClient', () => {
     let sentRequest: Messages.SearchbarStreamRequest;
 
     beforeEach(async () => {
-      streamSearchbarMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.searchbarStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamSearchbar(identityCallback);
 
-      sentRequest = captureMockArgument(streamSearchbarMock);
+      sentRequest = captureMockArgument(mockGRPCClient.searchbarStream);
     });
 
     it('should have attached the initial connection session to the request', () => {
@@ -71,11 +64,13 @@ describe('UIClient', () => {
     let sentRequest: Messages.GlobalSearchStreamRequest;
 
     beforeEach(async () => {
-      streamGlobalSearchMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.globalSearchStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamGlobalSearch(identityCallback);
 
-      sentRequest = captureMockArgument(streamGlobalSearchMock);
+      sentRequest = captureMockArgument(mockGRPCClient.globalSearchStream);
     });
 
     it('should have attached the initial connection session to the request', () => {

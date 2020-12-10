@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/clipboard_grpc_pb';
 import * as Messages from '../grpc/clipboard_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -9,6 +10,7 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -16,17 +18,15 @@ import {
 
 jest.mock('../grpc/clipboard_grpc_pb');
 
-const hostClient = mocked(Services.ClipboardClient);
+const MockClientClass = mocked(Services.ClipboardClient);
 
 const logger = new Logger('test-logger');
 
 describe('ClipboardClient', () => {
   let subject: ClipboardClient;
+  let mockGRPCClient: jest.Mocked<Services.ClipboardClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let queryClipboardMock: jest.Mock;
-  let streamClipboardMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -34,17 +34,9 @@ describe('ClipboardClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    queryClipboardMock = jest.fn();
-    streamClipboardMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        clipboardRead: queryClipboardMock,
-        clipboardReadStream: streamClipboardMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.ClipboardClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -59,13 +51,13 @@ describe('ClipboardClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.ClipboardReadResponse();
 
-      queryClipboardMock.mockImplementation(
+      mockGRPCClient.clipboardRead.mockImplementation(
         createCallbackHandler(sentResponse),
       );
 
       queryResult = subject.queryClipboard();
 
-      sentRequest = captureMockArgument(queryClipboardMock);
+      sentRequest = captureMockArgument(mockGRPCClient.clipboardRead);
     });
 
     it('should return a transformed response', async () => {
@@ -73,7 +65,7 @@ describe('ClipboardClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(queryClipboardMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.clipboardRead).toHaveBeenCalledWith(
         expect.any(Messages.ClipboardReadRequest),
         expect.any(Function),
       );
@@ -88,11 +80,13 @@ describe('ClipboardClient', () => {
     let sentRequest: Messages.ClipboardReadStreamRequest;
 
     beforeEach(async () => {
-      streamClipboardMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.clipboardReadStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamClipboard(identityCallback);
 
-      sentRequest = captureMockArgument(streamClipboardMock);
+      sentRequest = captureMockArgument(mockGRPCClient.clipboardReadStream);
     });
 
     it('should have attached the initial connection session to the request', () => {

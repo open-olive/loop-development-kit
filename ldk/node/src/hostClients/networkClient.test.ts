@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/network_grpc_pb';
 import * as Messages from '../grpc/network_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -8,6 +9,7 @@ import { Logger } from '../logging';
 import {
   captureMockArgument,
   createCallbackHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
 } from '../jest.helpers';
@@ -15,16 +17,15 @@ import { HttpResponse } from './networkService';
 
 jest.mock('../grpc/network_grpc_pb');
 
-const hostClient = mocked(Services.NetworkClient);
+const MockClientClass = mocked(Services.NetworkClient);
 
 const logger = new Logger('test-logger');
 
 describe('NetworkClient', () => {
   let subject: NetworkClient;
+  let mockGRPCClient: jest.Mocked<Services.NetworkClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let httpRequestMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -32,15 +33,9 @@ describe('NetworkClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    httpRequestMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        hTTPRequest: httpRequestMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.NetworkClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -60,11 +55,13 @@ describe('NetworkClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.HTTPResponseMsg();
 
-      httpRequestMock.mockImplementation(createCallbackHandler(sentResponse));
+      mockGRPCClient.hTTPRequest.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.httpRequest(request);
 
-      sentRequest = captureMockArgument(httpRequestMock);
+      sentRequest = captureMockArgument(mockGRPCClient.hTTPRequest);
     });
 
     it('should return a transformed response', async () => {
@@ -75,7 +72,7 @@ describe('NetworkClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(httpRequestMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.hTTPRequest).toHaveBeenCalledWith(
         expect.any(Messages.HTTPRequestMsg),
         expect.any(Function),
       );

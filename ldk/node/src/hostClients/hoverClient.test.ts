@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/hover_grpc_pb';
 import * as Messages from '../grpc/hover_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -9,6 +10,7 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -17,17 +19,15 @@ import { HoverResponse } from './hoverService';
 
 jest.mock('../grpc/hover_grpc_pb');
 
-const hostClient = mocked(Services.HoverClient);
+const MockClientClass = mocked(Services.HoverClient);
 
 const logger = new Logger('test-logger');
 
 describe('HoverClient', () => {
   let subject: HoverClient;
+  let mockGRPCClient: jest.Mocked<Services.HoverClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let queryHoverMock: jest.Mock;
-  let streamHoverMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -35,17 +35,9 @@ describe('HoverClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    queryHoverMock = jest.fn();
-    streamHoverMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        hoverRead: queryHoverMock,
-        hoverReadStream: streamHoverMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.HoverClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -62,11 +54,13 @@ describe('HoverClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.HoverReadResponse();
 
-      queryHoverMock.mockImplementation(createCallbackHandler(sentResponse));
+      mockGRPCClient.hoverRead.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.queryHover({ xFromCenter, yFromCenter });
 
-      sentRequest = captureMockArgument(queryHoverMock);
+      sentRequest = captureMockArgument(mockGRPCClient.hoverRead);
     });
 
     it('should return a transformed response', async () => {
@@ -76,7 +70,7 @@ describe('HoverClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(queryHoverMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.hoverRead).toHaveBeenCalledWith(
         expect.any(Messages.HoverReadRequest),
         expect.any(Function),
       );
@@ -101,11 +95,13 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      streamHoverMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.hoverReadStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamHover({ xFromCenter, yFromCenter }, identityCallback);
 
-      sentRequest = captureMockArgument(streamHoverMock);
+      sentRequest = captureMockArgument(mockGRPCClient.hoverReadStream);
     });
 
     it('should have configured the request with the right x coordinates', () => {

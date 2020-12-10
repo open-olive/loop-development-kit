@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/window_grpc_pb';
 import * as Messages from '../grpc/window_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -9,6 +10,7 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -17,19 +19,14 @@ import { WindowInfoResponse } from './windowService';
 
 jest.mock('../grpc/window_grpc_pb');
 
-const hostClient = mocked(Services.WindowClient);
-
+const MockClientClass = mocked(Services.WindowClient);
 const logger = new Logger('test-logger');
 
 describe('WindowClient', () => {
   let subject: WindowClient;
+  let mockGRPCClient: jest.Mocked<Services.WindowClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let queryActiveWindowMock: jest.Mock;
-  let streamActiveWindowMock: jest.Mock;
-  let queryWindowsMock: jest.Mock;
-  let streamWindowsMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -37,21 +34,9 @@ describe('WindowClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    queryActiveWindowMock = jest.fn();
-    streamActiveWindowMock = jest.fn();
-    queryWindowsMock = jest.fn();
-    streamWindowsMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        windowActiveWindow: queryActiveWindowMock,
-        windowActiveWindowStream: streamActiveWindowMock,
-        windowState: queryWindowsMock,
-        windowStateStream: streamWindowsMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.WindowClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -64,14 +49,17 @@ describe('WindowClient', () => {
     let queryResult: Promise<WindowInfoResponse>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.WindowActiveWindowResponse()
-        .setWindow(new Messages.WindowInfo());
+      sentResponse = new Messages.WindowActiveWindowResponse().setWindow(
+        new Messages.WindowInfo(),
+      );
 
-      queryActiveWindowMock.mockImplementation(createCallbackHandler(sentResponse));
+      mockGRPCClient.windowActiveWindow.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.queryActiveWindow();
 
-      sentRequest = captureMockArgument(queryActiveWindowMock);
+      sentRequest = captureMockArgument(mockGRPCClient.windowActiveWindow);
     });
 
     it('should return a transformed response', async () => {
@@ -87,7 +75,7 @@ describe('WindowClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(queryActiveWindowMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.windowActiveWindow).toHaveBeenCalledWith(
         expect.any(Messages.WindowActiveWindowRequest),
         expect.any(Function),
       );
@@ -104,30 +92,35 @@ describe('WindowClient', () => {
     let queryResult: Promise<WindowInfoResponse[]>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.WindowStateResponse()
-        .setWindowList([new Messages.WindowInfo()]);
+      sentResponse = new Messages.WindowStateResponse().setWindowList([
+        new Messages.WindowInfo(),
+      ]);
 
-      queryWindowsMock.mockImplementation(createCallbackHandler(sentResponse));
+      mockGRPCClient.windowState.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.queryWindows();
 
-      sentRequest = captureMockArgument(queryWindowsMock);
+      sentRequest = captureMockArgument(mockGRPCClient.windowState);
     });
 
     it('should return a transformed response', async () => {
-      await expect(queryResult).resolves.toContainEqual(expect.objectContaining({
-        title: expect.anything(),
-        path: expect.anything(),
-        pid: expect.anything(),
-        x: expect.anything(),
-        y: expect.anything(),
-        width: expect.anything(),
-        height: expect.anything(),
-      }));
+      await expect(queryResult).resolves.toContainEqual(
+        expect.objectContaining({
+          title: expect.anything(),
+          path: expect.anything(),
+          pid: expect.anything(),
+          x: expect.anything(),
+          y: expect.anything(),
+          width: expect.anything(),
+          height: expect.anything(),
+        }),
+      );
     });
 
     it('should call grpc client function', async () => {
-      expect(queryWindowsMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.windowState).toHaveBeenCalledWith(
         expect.any(Messages.WindowStateRequest),
         expect.any(Function),
       );
@@ -142,11 +135,15 @@ describe('WindowClient', () => {
     let sentRequest: Messages.WindowActiveWindowStreamRequest;
 
     beforeEach(async () => {
-      streamActiveWindowMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.windowActiveWindowStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamActiveWindow(identityCallback);
 
-      sentRequest = captureMockArgument(streamActiveWindowMock);
+      sentRequest = captureMockArgument(
+        mockGRPCClient.windowActiveWindowStream,
+      );
     });
 
     it('should have attached the initial connection session to the request', () => {
@@ -158,11 +155,13 @@ describe('WindowClient', () => {
     let sentRequest: Messages.WindowActiveWindowStreamRequest;
 
     beforeEach(async () => {
-      streamWindowsMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.windowStateStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamWindows(identityCallback);
 
-      sentRequest = captureMockArgument(streamWindowsMock);
+      sentRequest = captureMockArgument(mockGRPCClient.windowStateStream);
     });
 
     it('should have attached the initial connection session to the request', () => {

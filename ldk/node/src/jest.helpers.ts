@@ -1,25 +1,52 @@
 import {
   ClientReadableStream,
   ClientReadableStreamImpl,
+  ClientUnaryCall,
+  ClientUnaryCallImpl,
+  ServiceError,
 } from '@grpc/grpc-js/build/src/call';
+import { CallOptions, Deadline, Metadata } from '@grpc/grpc-js';
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-type CallbackHandlerFunc<TRequest = any, TResponse = any> = (
-  request: TRequest,
-  callback: (err: Error | null, response: TResponse) => void,
+type CallbackFunc<TResponse = any> = (
+  err: ServiceError | null,
+  response: TResponse,
 ) => void;
-
 /**
  * A simple callback handler that passes back the response when the callback gets invoked
  *
  * @param response - the response to pass through when the callback gets invoked
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-export function createCallbackHandler(response?: any): CallbackHandlerFunc {
-  return (request, callback) => {
-    callback(null, response);
+export function createCallbackHandler<TRequest, TResponse>(
+  response?: TResponse,
+) {
+  return (
+    request: TRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: CallbackFunc,
+  ): ClientUnaryCall => {
+    const clientCall = new ClientUnaryCallImpl();
+
+    const actualCallback = callback || options || metadata;
+    actualCallback(null, response);
+
+    return clientCall;
+  };
+}
+
+type WaitFunc = (err: Error | undefined) => void;
+
+/**
+ *
+ */
+export function createWaitHandler() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return (deadline: Deadline, callback: WaitFunc): void => {
+    callback(undefined);
   };
 }
 
@@ -62,7 +89,8 @@ interface CaptureParameters {
  * @param params - the optional parameters for what call and arg to capture
  */
 export function captureMockArgument<TArgument>(
-  mock: jest.Mock,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mock: jest.MockInstance<any, any>,
   params?: CaptureParameters,
 ): TArgument {
   const call = params?.call || 0;

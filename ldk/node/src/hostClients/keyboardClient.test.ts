@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/keyboard_grpc_pb';
 import * as Messages from '../grpc/keyboard_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -7,9 +8,9 @@ import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
 import {
   captureMockArgument,
-  createCallbackHandler,
   createEmptyStream,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -18,19 +19,15 @@ import { KeyboardHotkey } from '../grpc/keyboard_pb';
 
 jest.mock('../grpc/keyboard_grpc_pb');
 
-const hostClient = mocked(Services.KeyboardClient);
+const MockClientClass = mocked(Services.KeyboardClient);
 
 const logger = new Logger('test-logger');
 
 describe('KeyboardClient', () => {
   let subject: KeyboardClient;
+  let mockGRPCClient: jest.Mocked<Services.KeyboardClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let streamHotKeyMock: jest.Mock;
-  let streamTextMock: jest.Mock;
-  let streamCharMock: jest.Mock;
-  let streamScanCodeMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -38,21 +35,9 @@ describe('KeyboardClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    streamHotKeyMock = jest.fn();
-    streamTextMock = jest.fn();
-    streamCharMock = jest.fn();
-    streamScanCodeMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        keyboardHotkeyStream: streamHotKeyMock,
-        keyboardTextStream: streamTextMock,
-        keyboardCharacterStream: streamCharMock,
-        keyboardScancodeStream: streamScanCodeMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.KeyboardClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -66,11 +51,13 @@ describe('KeyboardClient', () => {
     let sentRequest: Messages.KeyboardHotkeyStreamRequest;
 
     beforeEach(async () => {
-      streamHotKeyMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.keyboardHotkeyStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamHotKey({ key, modifiers }, identityCallback);
 
-      sentRequest = captureMockArgument(streamHotKeyMock);
+      sentRequest = captureMockArgument(mockGRPCClient.keyboardHotkeyStream);
     });
 
     it('should have configured the request with the right key and modifiers', () => {
@@ -93,14 +80,16 @@ describe('KeyboardClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.KeyboardTextStreamResponse().setText('hello');
-      const stream = createEmptyStream();
+      const stream = createEmptyStream<Messages.KeyboardTextStreamResponse>();
 
       streamCallback = jest.fn().mockImplementation(identityCallback);
-      streamTextMock.mockImplementation(createStreamingHandler(stream));
+      mockGRPCClient.keyboardTextStream.mockImplementation(
+        createStreamingHandler(stream),
+      );
 
       subject.streamText(streamCallback);
 
-      sentRequest = captureMockArgument(streamTextMock);
+      sentRequest = captureMockArgument(mockGRPCClient.keyboardTextStream);
       stream.emit('data', sentResponse);
     });
 
@@ -117,11 +106,13 @@ describe('KeyboardClient', () => {
     let sentRequest: Messages.KeyboardCharacterStreamRequest;
 
     beforeEach(async () => {
-      streamCharMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.keyboardCharacterStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamChar(identityCallback);
 
-      sentRequest = captureMockArgument(streamCharMock);
+      sentRequest = captureMockArgument(mockGRPCClient.keyboardCharacterStream);
     });
 
     it('should have attached the initial connection session to the request', () => {
@@ -133,11 +124,13 @@ describe('KeyboardClient', () => {
     let sentRequest: Messages.KeyboardScancodeStreamRequest;
 
     beforeEach(async () => {
-      streamScanCodeMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.keyboardScancodeStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamScanCode(identityCallback);
 
-      sentRequest = captureMockArgument(streamScanCodeMock);
+      sentRequest = captureMockArgument(mockGRPCClient.keyboardScancodeStream);
     });
 
     it('should have attached the initial connection session to the request', () => {

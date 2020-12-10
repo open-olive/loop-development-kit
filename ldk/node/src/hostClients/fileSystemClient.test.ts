@@ -1,4 +1,5 @@
 import { mocked } from 'ts-jest/utils';
+import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/filesystem_grpc_pb';
 import * as Messages from '../grpc/filesystem_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -9,6 +10,7 @@ import {
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
+  createWaitHandler,
   defaultConnInfo,
   defaultSession,
   identityCallback,
@@ -20,19 +22,15 @@ import {
 
 jest.mock('../grpc/filesystem_grpc_pb');
 
-const hostClient = mocked(Services.FilesystemClient);
+const MockClientClass = mocked(Services.FilesystemClient);
 
 const logger = new Logger('test-logger');
 
 describe('FileSystemClient', () => {
   let subject: FileSystemClient;
+  let mockGRPCClient: jest.Mocked<Services.FilesystemClient>;
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
-  let waitForReadyMock: jest.Mock;
-  let queryDirectoryMock: jest.Mock;
-  let queryFileMock: jest.Mock;
-  let streamDirectoryMock: jest.Mock;
-  let streamFileMock: jest.Mock;
 
   beforeEach(async () => {
     jest.resetAllMocks();
@@ -40,21 +38,9 @@ describe('FileSystemClient', () => {
     connInfo = defaultConnInfo;
     session = defaultSession;
 
-    waitForReadyMock = jest.fn().mockImplementation(createCallbackHandler());
-    queryDirectoryMock = jest.fn();
-    queryFileMock = jest.fn();
-    streamDirectoryMock = jest.fn();
-    streamFileMock = jest.fn();
-
-    hostClient.mockImplementation(() => {
-      return {
-        waitForReady: waitForReadyMock,
-        filesystemDir: queryDirectoryMock,
-        filesystemFile: queryFileMock,
-        filesystemDirStream: streamDirectoryMock,
-        filesystemFileStream: streamFileMock,
-      } as any;
-    });
+    mockGRPCClient = createMockInstance(Services.FilesystemClient);
+    mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
+    MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
     await expect(
       subject.connect(connInfo, session, logger),
@@ -70,13 +56,13 @@ describe('FileSystemClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.FilesystemDirResponse();
 
-      queryDirectoryMock.mockImplementation(
+      mockGRPCClient.filesystemDir.mockImplementation(
         createCallbackHandler(sentResponse),
       );
 
       queryResult = subject.queryDirectory({ directory });
 
-      sentRequest = captureMockArgument(queryDirectoryMock);
+      sentRequest = captureMockArgument(mockGRPCClient.filesystemDir);
     });
 
     it('should return a transformed response', async () => {
@@ -87,7 +73,7 @@ describe('FileSystemClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(queryDirectoryMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.filesystemDir).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemDirRequest),
         expect.any(Function),
       );
@@ -111,11 +97,13 @@ describe('FileSystemClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.FilesystemFileResponse();
 
-      queryFileMock.mockImplementation(createCallbackHandler(sentResponse));
+      mockGRPCClient.filesystemFile.mockImplementation(
+        createCallbackHandler(sentResponse),
+      );
 
       queryResult = subject.queryFile({ file });
 
-      sentRequest = captureMockArgument(queryFileMock);
+      sentRequest = captureMockArgument(mockGRPCClient.filesystemFile);
     });
 
     it('should return a transformed response', async () => {
@@ -126,7 +114,7 @@ describe('FileSystemClient', () => {
     });
 
     it('should call grpc client function', async () => {
-      expect(queryFileMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.filesystemFile).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemFileRequest),
         expect.any(Function),
       );
@@ -146,15 +134,17 @@ describe('FileSystemClient', () => {
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      streamFileMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.filesystemFileStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamFile({ file }, identityCallback);
 
-      sentRequest = captureMockArgument(streamFileMock);
+      sentRequest = captureMockArgument(mockGRPCClient.filesystemFileStream);
     });
 
     it('should call grpc client function', async () => {
-      expect(streamFileMock).toHaveBeenCalledWith(
+      expect(mockGRPCClient.filesystemFileStream).toHaveBeenCalledWith(
         expect.any(Messages.FilesystemFileStreamRequest),
       );
     });
@@ -173,11 +163,13 @@ describe('FileSystemClient', () => {
     const directory = '/a-directory';
 
     beforeEach(async () => {
-      streamDirectoryMock.mockImplementation(createStreamingHandler());
+      mockGRPCClient.filesystemDirStream.mockImplementation(
+        createStreamingHandler(),
+      );
 
       subject.streamDirectory({ directory }, identityCallback);
 
-      sentRequest = captureMockArgument(streamDirectoryMock);
+      sentRequest = captureMockArgument(mockGRPCClient.filesystemDirStream);
     });
 
     it('should have configured the request with the right path', () => {
