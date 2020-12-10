@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileSystemStreamAction = void 0;
-// This rule is triggering for some reason.
-// eslint-disable-next-line no-shadow
 var FileSystemStreamAction;
 (function (FileSystemStreamAction) {
     FileSystemStreamAction["Unknown"] = "unknown";

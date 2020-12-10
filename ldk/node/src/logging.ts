@@ -10,7 +10,6 @@ const pid = process.pid;
 /**
  * @internal
  */
-// eslint-disable-next-line no-shadow
 enum LogLevels {
   TRACE = 'TRACE',
   DEBUG = 'DEBUG',

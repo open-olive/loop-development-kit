@@ -1,6 +1,5 @@
 import { StoppableStream, StreamListener } from './stoppables';
 
-// eslint-disable-next-line no-shadow
 export enum ProcessStreamAction {
   Unknown = 'unknown',
   Started = 'started',

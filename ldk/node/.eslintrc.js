@@ -36,6 +36,10 @@ module.exports = {
           '`with` is disallowed in strict mode because it makes code impossible to predict and optimize.',
       },
     ],
+    // The no-shadow rule set in airbnb-base generates false positives with TS.
+    // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/no-shadow.md
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
     'no-underscore-dangle': 'off',
     'no-console': ['off', { allow: ['warn', 'error'] }],
     'unicode-bom': 'off',

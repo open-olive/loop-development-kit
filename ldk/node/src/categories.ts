@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-shadow
 export enum Category {
   CONTROLLER = 'Controller',
   INTELLIGENCE = 'Intelligence',

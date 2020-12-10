@@ -39,8 +39,6 @@ export interface FileSystemQueryDirectoryResponse {
   files: FileInfo[];
 }
 
-// This rule is triggering for some reason.
-// eslint-disable-next-line no-shadow
 export enum FileSystemStreamAction {
   Unknown = 'unknown',
   Create = 'create',
