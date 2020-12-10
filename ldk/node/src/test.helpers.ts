@@ -41,7 +41,7 @@ export function createCallbackHandler<TRequest, TResponse>(
 type WaitFunc = (err: Error | undefined) => void;
 
 /**
- *
+ * A simple wait handler that stands in for what gRPC implements
  */
 export function createWaitHandler() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
