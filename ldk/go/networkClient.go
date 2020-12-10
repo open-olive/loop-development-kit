@@ -16,13 +16,15 @@ type NetworkClient struct {
 type HTTPResponse struct {
 	ResponseCode int
 	Data         []byte
+	Headers      []byte
 }
 
 // HTTPRequest is the structure received from HttpRequest
 type HTTPRequest struct {
-	URL    string
-	Method string
-	Body   []byte
+	URL     string
+	Method  string
+	Body    []byte
+	Headers map[string]string
 }
 
 func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTTPResponse, error) {
@@ -31,6 +33,7 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 		Url:     req.URL,
 		Method:  req.Method,
 		Body:    req.Body,
+		Headers: req.Headers,
 	})
 
 	if err != nil {
@@ -40,5 +43,6 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 	return &HTTPResponse{
 		ResponseCode: int(resp.ResponseCode),
 		Data:         resp.Data,
+		Headers:      resp.Headers,
 	}, err
 }

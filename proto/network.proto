@@ -13,9 +13,11 @@ message HTTPRequestMsg {
     string url = 2;
     string method = 3;
     bytes body = 4;
+    map <string, string> headers = 5;
 }
 
 message HTTPResponseMsg {
     uint32 responseCode = 1;
     bytes data = 2;
+    bytes headers = 3;
 }

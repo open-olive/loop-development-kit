@@ -3,6 +3,7 @@ package loop
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"time"
 
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
@@ -73,15 +74,26 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		URL:    "https://api.fda.gov/food/enforcement.json?search=report_date:[" + now.AddDate(0, -3, 0).Format("20060102") + "+TO+" + now.Format("20060102") + "]&limit=1",
 		Method: "GET",
 		Body:   nil,
+		Headers: map[string]string{
+			"A-Header-Name": "a header value",
+		},
 	})
 	if err != nil {
 		c.logger.Error("received error from callback", err)
 		return err
 	}
 
-	var data apiResponse
-
 	if response.ResponseCode == 200 {
+		var headers http.Header
+		var data apiResponse
+
+		if err := json.Unmarshal(response.Headers, &headers); err != nil {
+			c.logger.Error("Error unmarshaling response headers", err)
+			return err
+		}
+
+		c.logger.Info("Response headers", headers)
+
 		if err := json.Unmarshal(response.Data, &data); err != nil {
 			c.logger.Error("Error unmarshaling response payload", err)
 			return err

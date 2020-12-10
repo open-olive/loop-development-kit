@@ -19,9 +19,10 @@ func (ns *NetworkServer) HTTPRequest(ctx context.Context, req *proto.HTTPRequest
 	resp, err := ns.Impl.HTTPRequest(
 		context.WithValue(ctx, Session{}, session),
 		&HTTPRequest{
-			URL:    req.Url,
-			Method: req.Method,
-			Body:   req.Body,
+			URL:     req.Url,
+			Method:  req.Method,
+			Body:    req.Body,
+			Headers: req.Headers,
 		},
 	)
 	if err != nil {
@@ -31,6 +32,7 @@ func (ns *NetworkServer) HTTPRequest(ctx context.Context, req *proto.HTTPRequest
 	return &proto.HTTPResponseMsg{
 		ResponseCode: uint32(resp.ResponseCode),
 		Data:         resp.Data,
+		Headers:      resp.Headers,
 	}, nil
 
 }
