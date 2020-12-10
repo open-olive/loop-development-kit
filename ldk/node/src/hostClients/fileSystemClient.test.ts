@@ -2,7 +2,7 @@ import { mocked } from 'ts-jest/utils';
 import * as Services from '../grpc/filesystem_grpc_pb';
 import * as Messages from '../grpc/filesystem_pb';
 import { ConnInfo } from '../grpc/broker_pb';
-import { FileSystemClient } from './filesystemClient';
+import { FileSystemClient } from './fileSystemClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
 import {
