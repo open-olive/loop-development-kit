@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-shadow
 export enum Access {
   ORGANIZATION = 'organization',
   PUBLIC = 'public',

@@ -11,7 +11,6 @@ const pid = process.pid;
 /**
  * @internal
  */
-// eslint-disable-next-line no-shadow
 var LogLevels;
 (function (LogLevels) {
     LogLevels["TRACE"] = "TRACE";

@@ -10,7 +10,6 @@ export interface WindowInfoResponse {
   height: number;
 }
 
-// eslint-disable-next-line no-shadow
 export enum WindowStreamAction {
   Unknown = 'unknown',
   Focused = 'focused',

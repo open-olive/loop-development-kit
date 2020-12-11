@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WhisperListAlign = exports.WhisperListStyle = void 0;
-// eslint-disable-next-line no-shadow
 var WhisperListStyle;
 (function (WhisperListStyle) {
     WhisperListStyle[WhisperListStyle["NONE"] = 0] = "NONE";
@@ -9,7 +8,6 @@ var WhisperListStyle;
     WhisperListStyle[WhisperListStyle["WARN"] = 2] = "WARN";
     WhisperListStyle[WhisperListStyle["ERROR"] = 3] = "ERROR";
 })(WhisperListStyle = exports.WhisperListStyle || (exports.WhisperListStyle = {}));
-// eslint-disable-next-line no-shadow
 var WhisperListAlign;
 (function (WhisperListAlign) {
     WhisperListAlign[WhisperListAlign["LEFT"] = 0] = "LEFT";

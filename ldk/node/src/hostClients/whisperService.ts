@@ -121,7 +121,6 @@ export interface WhisperListElement<T extends string> {
   order?: number;
 }
 
-// eslint-disable-next-line no-shadow
 export enum WhisperListStyle {
   NONE = 0,
   SUCCESS,
@@ -129,7 +128,6 @@ export enum WhisperListStyle {
   ERROR,
 }
 
-// eslint-disable-next-line no-shadow
 export enum WhisperListAlign {
   LEFT = 0,
   CENTER,
