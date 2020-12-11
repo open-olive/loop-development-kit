@@ -1,59 +1,76 @@
-export namespace ClipboardService {
-    namespace clipboardRead {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./clipboard_pb.js").ClipboardReadRequest;
-        export const responseType: typeof import("./clipboard_pb.js").ClipboardReadResponse;
-        export { serialize_proto_ClipboardReadRequest as requestSerialize };
-        export { deserialize_proto_ClipboardReadRequest as requestDeserialize };
-        export { serialize_proto_ClipboardReadResponse as responseSerialize };
-        export { deserialize_proto_ClipboardReadResponse as responseDeserialize };
-    }
-    namespace clipboardReadStream {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("./clipboard_pb.js").ClipboardReadStreamRequest;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("./clipboard_pb.js").ClipboardReadStreamResponse;
-        export { responseType_1 as responseType };
-        export { serialize_proto_ClipboardReadStreamRequest as requestSerialize };
-        export { deserialize_proto_ClipboardReadStreamRequest as requestDeserialize };
-        export { serialize_proto_ClipboardReadStreamResponse as responseSerialize };
-        export { deserialize_proto_ClipboardReadStreamResponse as responseDeserialize };
-    }
-    namespace clipboardWrite {
-        const path_2: string;
-        export { path_2 as path };
-        const requestStream_2: boolean;
-        export { requestStream_2 as requestStream };
-        const responseStream_2: boolean;
-        export { responseStream_2 as responseStream };
-        const requestType_2: typeof import("./clipboard_pb.js").ClipboardWriteRequest;
-        export { requestType_2 as requestType };
-        const responseType_2: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
-        export { responseType_2 as responseType };
-        export { serialize_proto_ClipboardWriteRequest as requestSerialize };
-        export { deserialize_proto_ClipboardWriteRequest as requestDeserialize };
-        export { serialize_google_protobuf_Empty as responseSerialize };
-        export { deserialize_google_protobuf_Empty as responseDeserialize };
-    }
+// package: proto
+// file: clipboard.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as clipboard_pb from "./clipboard_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
+
+interface IClipboardService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    clipboardRead: IClipboardService_IClipboardRead;
+    clipboardReadStream: IClipboardService_IClipboardReadStream;
+    clipboardWrite: IClipboardService_IClipboardWrite;
 }
-export var ClipboardClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_ClipboardReadRequest(arg: any): Buffer;
-declare function deserialize_proto_ClipboardReadRequest(buffer_arg: any): import("./clipboard_pb.js").ClipboardReadRequest;
-declare function serialize_proto_ClipboardReadResponse(arg: any): Buffer;
-declare function deserialize_proto_ClipboardReadResponse(buffer_arg: any): import("./clipboard_pb.js").ClipboardReadResponse;
-declare function serialize_proto_ClipboardReadStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_ClipboardReadStreamRequest(buffer_arg: any): import("./clipboard_pb.js").ClipboardReadStreamRequest;
-declare function serialize_proto_ClipboardReadStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_ClipboardReadStreamResponse(buffer_arg: any): import("./clipboard_pb.js").ClipboardReadStreamResponse;
-declare function serialize_proto_ClipboardWriteRequest(arg: any): Buffer;
-declare function deserialize_proto_ClipboardWriteRequest(buffer_arg: any): import("./clipboard_pb.js").ClipboardWriteRequest;
-declare function serialize_google_protobuf_Empty(arg: any): Buffer;
-declare function deserialize_google_protobuf_Empty(buffer_arg: any): import("google-protobuf/google/protobuf/empty_pb").Empty;
-export {};
+
+interface IClipboardService_IClipboardRead extends grpc.MethodDefinition<clipboard_pb.ClipboardReadRequest, clipboard_pb.ClipboardReadResponse> {
+    path: string; // "/proto.Clipboard/ClipboardRead"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<clipboard_pb.ClipboardReadRequest>;
+    requestDeserialize: grpc.deserialize<clipboard_pb.ClipboardReadRequest>;
+    responseSerialize: grpc.serialize<clipboard_pb.ClipboardReadResponse>;
+    responseDeserialize: grpc.deserialize<clipboard_pb.ClipboardReadResponse>;
+}
+interface IClipboardService_IClipboardReadStream extends grpc.MethodDefinition<clipboard_pb.ClipboardReadStreamRequest, clipboard_pb.ClipboardReadStreamResponse> {
+    path: string; // "/proto.Clipboard/ClipboardReadStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<clipboard_pb.ClipboardReadStreamRequest>;
+    requestDeserialize: grpc.deserialize<clipboard_pb.ClipboardReadStreamRequest>;
+    responseSerialize: grpc.serialize<clipboard_pb.ClipboardReadStreamResponse>;
+    responseDeserialize: grpc.deserialize<clipboard_pb.ClipboardReadStreamResponse>;
+}
+interface IClipboardService_IClipboardWrite extends grpc.MethodDefinition<clipboard_pb.ClipboardWriteRequest, google_protobuf_empty_pb.Empty> {
+    path: string; // "/proto.Clipboard/ClipboardWrite"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<clipboard_pb.ClipboardWriteRequest>;
+    requestDeserialize: grpc.deserialize<clipboard_pb.ClipboardWriteRequest>;
+    responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+}
+
+export const ClipboardService: IClipboardService;
+
+export interface IClipboardServer {
+    clipboardRead: grpc.handleUnaryCall<clipboard_pb.ClipboardReadRequest, clipboard_pb.ClipboardReadResponse>;
+    clipboardReadStream: grpc.handleServerStreamingCall<clipboard_pb.ClipboardReadStreamRequest, clipboard_pb.ClipboardReadStreamResponse>;
+    clipboardWrite: grpc.handleUnaryCall<clipboard_pb.ClipboardWriteRequest, google_protobuf_empty_pb.Empty>;
+}
+
+export interface IClipboardClient {
+    clipboardRead(request: clipboard_pb.ClipboardReadRequest, callback: (error: grpc.ServiceError | null, response: clipboard_pb.ClipboardReadResponse) => void): grpc.ClientUnaryCall;
+    clipboardRead(request: clipboard_pb.ClipboardReadRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: clipboard_pb.ClipboardReadResponse) => void): grpc.ClientUnaryCall;
+    clipboardRead(request: clipboard_pb.ClipboardReadRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: clipboard_pb.ClipboardReadResponse) => void): grpc.ClientUnaryCall;
+    clipboardReadStream(request: clipboard_pb.ClipboardReadStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<clipboard_pb.ClipboardReadStreamResponse>;
+    clipboardReadStream(request: clipboard_pb.ClipboardReadStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<clipboard_pb.ClipboardReadStreamResponse>;
+    clipboardWrite(request: clipboard_pb.ClipboardWriteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    clipboardWrite(request: clipboard_pb.ClipboardWriteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    clipboardWrite(request: clipboard_pb.ClipboardWriteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+}
+
+export class ClipboardClient extends grpc.Client implements IClipboardClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public clipboardRead(request: clipboard_pb.ClipboardReadRequest, callback: (error: grpc.ServiceError | null, response: clipboard_pb.ClipboardReadResponse) => void): grpc.ClientUnaryCall;
+    public clipboardRead(request: clipboard_pb.ClipboardReadRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: clipboard_pb.ClipboardReadResponse) => void): grpc.ClientUnaryCall;
+    public clipboardRead(request: clipboard_pb.ClipboardReadRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: clipboard_pb.ClipboardReadResponse) => void): grpc.ClientUnaryCall;
+    public clipboardReadStream(request: clipboard_pb.ClipboardReadStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<clipboard_pb.ClipboardReadStreamResponse>;
+    public clipboardReadStream(request: clipboard_pb.ClipboardReadStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<clipboard_pb.ClipboardReadStreamResponse>;
+    public clipboardWrite(request: clipboard_pb.ClipboardWriteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public clipboardWrite(request: clipboard_pb.ClipboardWriteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public clipboardWrite(request: clipboard_pb.ClipboardWriteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+}

@@ -24,7 +24,8 @@
   "main": "dist/index.js",
   "bin": "./dist/bin/build.js",
   "scripts": {
-    "build": "rm -rf dist && tsc && git update-index --chmod=+x dist/bin/build.js",
+    "build": "rm -rf dist && tsc && npm run build:fixes && git update-index --chmod=+x dist/bin/build.js",
+    "build:fixes": "ts-node scripts/postBuild.ts",
     "doc": "rm -rf docs && mkdir -p docs && ./node_modules/.bin/typedoc --options typedoc.json",
     "lint": "./node_modules/.bin/eslint . --ext .js,.ts",
     "prettier-all": "prettier --write '**/*.{js,ts}'",

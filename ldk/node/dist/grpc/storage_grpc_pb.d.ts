@@ -1,77 +1,95 @@
-export namespace StorageService {
-    namespace storageDelete {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./storage_pb.js").StorageDeleteRequest;
-        export const responseType: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
-        export { serialize_proto_StorageDeleteRequest as requestSerialize };
-        export { deserialize_proto_StorageDeleteRequest as requestDeserialize };
-        export { serialize_google_protobuf_Empty as responseSerialize };
-        export { deserialize_google_protobuf_Empty as responseDeserialize };
-    }
-    namespace storageExists {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("./storage_pb.js").StorageExistsRequest;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("./storage_pb.js").StorageExistsResponse;
-        export { responseType_1 as responseType };
-        export { serialize_proto_StorageExistsRequest as requestSerialize };
-        export { deserialize_proto_StorageExistsRequest as requestDeserialize };
-        export { serialize_proto_StorageExistsResponse as responseSerialize };
-        export { deserialize_proto_StorageExistsResponse as responseDeserialize };
-    }
-    namespace storageRead {
-        const path_2: string;
-        export { path_2 as path };
-        const requestStream_2: boolean;
-        export { requestStream_2 as requestStream };
-        const responseStream_2: boolean;
-        export { responseStream_2 as responseStream };
-        const requestType_2: typeof import("./storage_pb.js").StorageReadRequest;
-        export { requestType_2 as requestType };
-        const responseType_2: typeof import("./storage_pb.js").StorageReadResponse;
-        export { responseType_2 as responseType };
-        export { serialize_proto_StorageReadRequest as requestSerialize };
-        export { deserialize_proto_StorageReadRequest as requestDeserialize };
-        export { serialize_proto_StorageReadResponse as responseSerialize };
-        export { deserialize_proto_StorageReadResponse as responseDeserialize };
-    }
-    namespace storageWrite {
-        const path_3: string;
-        export { path_3 as path };
-        const requestStream_3: boolean;
-        export { requestStream_3 as requestStream };
-        const responseStream_3: boolean;
-        export { responseStream_3 as responseStream };
-        const requestType_3: typeof import("./storage_pb.js").StorageWriteRequest;
-        export { requestType_3 as requestType };
-        const responseType_3: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
-        export { responseType_3 as responseType };
-        export { serialize_proto_StorageWriteRequest as requestSerialize };
-        export { deserialize_proto_StorageWriteRequest as requestDeserialize };
-        export { serialize_google_protobuf_Empty as responseSerialize };
-        export { deserialize_google_protobuf_Empty as responseDeserialize };
-    }
+// package: proto
+// file: storage.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as storage_pb from "./storage_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
+
+interface IStorageService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    storageDelete: IStorageService_IStorageDelete;
+    storageExists: IStorageService_IStorageExists;
+    storageRead: IStorageService_IStorageRead;
+    storageWrite: IStorageService_IStorageWrite;
 }
-export var StorageClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_StorageDeleteRequest(arg: any): Buffer;
-declare function deserialize_proto_StorageDeleteRequest(buffer_arg: any): import("./storage_pb.js").StorageDeleteRequest;
-declare function serialize_google_protobuf_Empty(arg: any): Buffer;
-declare function deserialize_google_protobuf_Empty(buffer_arg: any): import("google-protobuf/google/protobuf/empty_pb").Empty;
-declare function serialize_proto_StorageExistsRequest(arg: any): Buffer;
-declare function deserialize_proto_StorageExistsRequest(buffer_arg: any): import("./storage_pb.js").StorageExistsRequest;
-declare function serialize_proto_StorageExistsResponse(arg: any): Buffer;
-declare function deserialize_proto_StorageExistsResponse(buffer_arg: any): import("./storage_pb.js").StorageExistsResponse;
-declare function serialize_proto_StorageReadRequest(arg: any): Buffer;
-declare function deserialize_proto_StorageReadRequest(buffer_arg: any): import("./storage_pb.js").StorageReadRequest;
-declare function serialize_proto_StorageReadResponse(arg: any): Buffer;
-declare function deserialize_proto_StorageReadResponse(buffer_arg: any): import("./storage_pb.js").StorageReadResponse;
-declare function serialize_proto_StorageWriteRequest(arg: any): Buffer;
-declare function deserialize_proto_StorageWriteRequest(buffer_arg: any): import("./storage_pb.js").StorageWriteRequest;
-export {};
+
+interface IStorageService_IStorageDelete extends grpc.MethodDefinition<storage_pb.StorageDeleteRequest, google_protobuf_empty_pb.Empty> {
+    path: string; // "/proto.Storage/StorageDelete"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<storage_pb.StorageDeleteRequest>;
+    requestDeserialize: grpc.deserialize<storage_pb.StorageDeleteRequest>;
+    responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+}
+interface IStorageService_IStorageExists extends grpc.MethodDefinition<storage_pb.StorageExistsRequest, storage_pb.StorageExistsResponse> {
+    path: string; // "/proto.Storage/StorageExists"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<storage_pb.StorageExistsRequest>;
+    requestDeserialize: grpc.deserialize<storage_pb.StorageExistsRequest>;
+    responseSerialize: grpc.serialize<storage_pb.StorageExistsResponse>;
+    responseDeserialize: grpc.deserialize<storage_pb.StorageExistsResponse>;
+}
+interface IStorageService_IStorageRead extends grpc.MethodDefinition<storage_pb.StorageReadRequest, storage_pb.StorageReadResponse> {
+    path: string; // "/proto.Storage/StorageRead"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<storage_pb.StorageReadRequest>;
+    requestDeserialize: grpc.deserialize<storage_pb.StorageReadRequest>;
+    responseSerialize: grpc.serialize<storage_pb.StorageReadResponse>;
+    responseDeserialize: grpc.deserialize<storage_pb.StorageReadResponse>;
+}
+interface IStorageService_IStorageWrite extends grpc.MethodDefinition<storage_pb.StorageWriteRequest, google_protobuf_empty_pb.Empty> {
+    path: string; // "/proto.Storage/StorageWrite"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<storage_pb.StorageWriteRequest>;
+    requestDeserialize: grpc.deserialize<storage_pb.StorageWriteRequest>;
+    responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+}
+
+export const StorageService: IStorageService;
+
+export interface IStorageServer {
+    storageDelete: grpc.handleUnaryCall<storage_pb.StorageDeleteRequest, google_protobuf_empty_pb.Empty>;
+    storageExists: grpc.handleUnaryCall<storage_pb.StorageExistsRequest, storage_pb.StorageExistsResponse>;
+    storageRead: grpc.handleUnaryCall<storage_pb.StorageReadRequest, storage_pb.StorageReadResponse>;
+    storageWrite: grpc.handleUnaryCall<storage_pb.StorageWriteRequest, google_protobuf_empty_pb.Empty>;
+}
+
+export interface IStorageClient {
+    storageDelete(request: storage_pb.StorageDeleteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageExists(request: storage_pb.StorageExistsRequest, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageExistsResponse) => void): grpc.ClientUnaryCall;
+    storageExists(request: storage_pb.StorageExistsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageExistsResponse) => void): grpc.ClientUnaryCall;
+    storageExists(request: storage_pb.StorageExistsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageExistsResponse) => void): grpc.ClientUnaryCall;
+    storageRead(request: storage_pb.StorageReadRequest, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageReadResponse) => void): grpc.ClientUnaryCall;
+    storageRead(request: storage_pb.StorageReadRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageReadResponse) => void): grpc.ClientUnaryCall;
+    storageRead(request: storage_pb.StorageReadRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageReadResponse) => void): grpc.ClientUnaryCall;
+    storageWrite(request: storage_pb.StorageWriteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+}
+
+export class StorageClient extends grpc.Client implements IStorageClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public storageDelete(request: storage_pb.StorageDeleteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageDelete(request: storage_pb.StorageDeleteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageExists(request: storage_pb.StorageExistsRequest, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageExistsResponse) => void): grpc.ClientUnaryCall;
+    public storageExists(request: storage_pb.StorageExistsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageExistsResponse) => void): grpc.ClientUnaryCall;
+    public storageExists(request: storage_pb.StorageExistsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageExistsResponse) => void): grpc.ClientUnaryCall;
+    public storageRead(request: storage_pb.StorageReadRequest, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageReadResponse) => void): grpc.ClientUnaryCall;
+    public storageRead(request: storage_pb.StorageReadRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageReadResponse) => void): grpc.ClientUnaryCall;
+    public storageRead(request: storage_pb.StorageReadRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: storage_pb.StorageReadResponse) => void): grpc.ClientUnaryCall;
+    public storageWrite(request: storage_pb.StorageWriteRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public storageWrite(request: storage_pb.StorageWriteRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+}

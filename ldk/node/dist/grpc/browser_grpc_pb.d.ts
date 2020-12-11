@@ -1,79 +1,90 @@
-export namespace BrowserService {
-    namespace browserActiveURL {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./browser_pb.js").BrowserActiveURLRequest;
-        export const responseType: typeof import("./browser_pb.js").BrowserActiveURLResponse;
-        export { serialize_proto_BrowserActiveURLRequest as requestSerialize };
-        export { deserialize_proto_BrowserActiveURLRequest as requestDeserialize };
-        export { serialize_proto_BrowserActiveURLResponse as responseSerialize };
-        export { deserialize_proto_BrowserActiveURLResponse as responseDeserialize };
-    }
-    namespace browserActiveURLStream {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("./browser_pb.js").BrowserActiveURLStreamRequest;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("./browser_pb.js").BrowserActiveURLStreamResponse;
-        export { responseType_1 as responseType };
-        export { serialize_proto_BrowserActiveURLStreamRequest as requestSerialize };
-        export { deserialize_proto_BrowserActiveURLStreamRequest as requestDeserialize };
-        export { serialize_proto_BrowserActiveURLStreamResponse as responseSerialize };
-        export { deserialize_proto_BrowserActiveURLStreamResponse as responseDeserialize };
-    }
-    namespace browserSelectedText {
-        const path_2: string;
-        export { path_2 as path };
-        const requestStream_2: boolean;
-        export { requestStream_2 as requestStream };
-        const responseStream_2: boolean;
-        export { responseStream_2 as responseStream };
-        const requestType_2: typeof import("./browser_pb.js").BrowserSelectedTextRequest;
-        export { requestType_2 as requestType };
-        const responseType_2: typeof import("./browser_pb.js").BrowserSelectedTextResponse;
-        export { responseType_2 as responseType };
-        export { serialize_proto_BrowserSelectedTextRequest as requestSerialize };
-        export { deserialize_proto_BrowserSelectedTextRequest as requestDeserialize };
-        export { serialize_proto_BrowserSelectedTextResponse as responseSerialize };
-        export { deserialize_proto_BrowserSelectedTextResponse as responseDeserialize };
-    }
-    namespace browserSelectedTextStream {
-        const path_3: string;
-        export { path_3 as path };
-        const requestStream_3: boolean;
-        export { requestStream_3 as requestStream };
-        const responseStream_3: boolean;
-        export { responseStream_3 as responseStream };
-        const requestType_3: typeof import("./browser_pb.js").BrowserSelectedTextStreamRequest;
-        export { requestType_3 as requestType };
-        const responseType_3: typeof import("./browser_pb.js").BrowserSelectedTextStreamResponse;
-        export { responseType_3 as responseType };
-        export { serialize_proto_BrowserSelectedTextStreamRequest as requestSerialize };
-        export { deserialize_proto_BrowserSelectedTextStreamRequest as requestDeserialize };
-        export { serialize_proto_BrowserSelectedTextStreamResponse as responseSerialize };
-        export { deserialize_proto_BrowserSelectedTextStreamResponse as responseDeserialize };
-    }
+// package: proto
+// file: browser.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as browser_pb from "./browser_pb";
+import * as session_pb from "./session_pb";
+
+interface IBrowserService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    browserActiveURL: IBrowserService_IBrowserActiveURL;
+    browserActiveURLStream: IBrowserService_IBrowserActiveURLStream;
+    browserSelectedText: IBrowserService_IBrowserSelectedText;
+    browserSelectedTextStream: IBrowserService_IBrowserSelectedTextStream;
 }
-export var BrowserClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_BrowserActiveURLRequest(arg: any): Buffer;
-declare function deserialize_proto_BrowserActiveURLRequest(buffer_arg: any): import("./browser_pb.js").BrowserActiveURLRequest;
-declare function serialize_proto_BrowserActiveURLResponse(arg: any): Buffer;
-declare function deserialize_proto_BrowserActiveURLResponse(buffer_arg: any): import("./browser_pb.js").BrowserActiveURLResponse;
-declare function serialize_proto_BrowserActiveURLStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_BrowserActiveURLStreamRequest(buffer_arg: any): import("./browser_pb.js").BrowserActiveURLStreamRequest;
-declare function serialize_proto_BrowserActiveURLStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_BrowserActiveURLStreamResponse(buffer_arg: any): import("./browser_pb.js").BrowserActiveURLStreamResponse;
-declare function serialize_proto_BrowserSelectedTextRequest(arg: any): Buffer;
-declare function deserialize_proto_BrowserSelectedTextRequest(buffer_arg: any): import("./browser_pb.js").BrowserSelectedTextRequest;
-declare function serialize_proto_BrowserSelectedTextResponse(arg: any): Buffer;
-declare function deserialize_proto_BrowserSelectedTextResponse(buffer_arg: any): import("./browser_pb.js").BrowserSelectedTextResponse;
-declare function serialize_proto_BrowserSelectedTextStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_BrowserSelectedTextStreamRequest(buffer_arg: any): import("./browser_pb.js").BrowserSelectedTextStreamRequest;
-declare function serialize_proto_BrowserSelectedTextStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_BrowserSelectedTextStreamResponse(buffer_arg: any): import("./browser_pb.js").BrowserSelectedTextStreamResponse;
-export {};
+
+interface IBrowserService_IBrowserActiveURL extends grpc.MethodDefinition<browser_pb.BrowserActiveURLRequest, browser_pb.BrowserActiveURLResponse> {
+    path: string; // "/proto.Browser/BrowserActiveURL"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<browser_pb.BrowserActiveURLRequest>;
+    requestDeserialize: grpc.deserialize<browser_pb.BrowserActiveURLRequest>;
+    responseSerialize: grpc.serialize<browser_pb.BrowserActiveURLResponse>;
+    responseDeserialize: grpc.deserialize<browser_pb.BrowserActiveURLResponse>;
+}
+interface IBrowserService_IBrowserActiveURLStream extends grpc.MethodDefinition<browser_pb.BrowserActiveURLStreamRequest, browser_pb.BrowserActiveURLStreamResponse> {
+    path: string; // "/proto.Browser/BrowserActiveURLStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<browser_pb.BrowserActiveURLStreamRequest>;
+    requestDeserialize: grpc.deserialize<browser_pb.BrowserActiveURLStreamRequest>;
+    responseSerialize: grpc.serialize<browser_pb.BrowserActiveURLStreamResponse>;
+    responseDeserialize: grpc.deserialize<browser_pb.BrowserActiveURLStreamResponse>;
+}
+interface IBrowserService_IBrowserSelectedText extends grpc.MethodDefinition<browser_pb.BrowserSelectedTextRequest, browser_pb.BrowserSelectedTextResponse> {
+    path: string; // "/proto.Browser/BrowserSelectedText"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<browser_pb.BrowserSelectedTextRequest>;
+    requestDeserialize: grpc.deserialize<browser_pb.BrowserSelectedTextRequest>;
+    responseSerialize: grpc.serialize<browser_pb.BrowserSelectedTextResponse>;
+    responseDeserialize: grpc.deserialize<browser_pb.BrowserSelectedTextResponse>;
+}
+interface IBrowserService_IBrowserSelectedTextStream extends grpc.MethodDefinition<browser_pb.BrowserSelectedTextStreamRequest, browser_pb.BrowserSelectedTextStreamResponse> {
+    path: string; // "/proto.Browser/BrowserSelectedTextStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<browser_pb.BrowserSelectedTextStreamRequest>;
+    requestDeserialize: grpc.deserialize<browser_pb.BrowserSelectedTextStreamRequest>;
+    responseSerialize: grpc.serialize<browser_pb.BrowserSelectedTextStreamResponse>;
+    responseDeserialize: grpc.deserialize<browser_pb.BrowserSelectedTextStreamResponse>;
+}
+
+export const BrowserService: IBrowserService;
+
+export interface IBrowserServer {
+    browserActiveURL: grpc.handleUnaryCall<browser_pb.BrowserActiveURLRequest, browser_pb.BrowserActiveURLResponse>;
+    browserActiveURLStream: grpc.handleServerStreamingCall<browser_pb.BrowserActiveURLStreamRequest, browser_pb.BrowserActiveURLStreamResponse>;
+    browserSelectedText: grpc.handleUnaryCall<browser_pb.BrowserSelectedTextRequest, browser_pb.BrowserSelectedTextResponse>;
+    browserSelectedTextStream: grpc.handleServerStreamingCall<browser_pb.BrowserSelectedTextStreamRequest, browser_pb.BrowserSelectedTextStreamResponse>;
+}
+
+export interface IBrowserClient {
+    browserActiveURL(request: browser_pb.BrowserActiveURLRequest, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserActiveURLResponse) => void): grpc.ClientUnaryCall;
+    browserActiveURL(request: browser_pb.BrowserActiveURLRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserActiveURLResponse) => void): grpc.ClientUnaryCall;
+    browserActiveURL(request: browser_pb.BrowserActiveURLRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserActiveURLResponse) => void): grpc.ClientUnaryCall;
+    browserActiveURLStream(request: browser_pb.BrowserActiveURLStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserActiveURLStreamResponse>;
+    browserActiveURLStream(request: browser_pb.BrowserActiveURLStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserActiveURLStreamResponse>;
+    browserSelectedText(request: browser_pb.BrowserSelectedTextRequest, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserSelectedTextResponse) => void): grpc.ClientUnaryCall;
+    browserSelectedText(request: browser_pb.BrowserSelectedTextRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserSelectedTextResponse) => void): grpc.ClientUnaryCall;
+    browserSelectedText(request: browser_pb.BrowserSelectedTextRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserSelectedTextResponse) => void): grpc.ClientUnaryCall;
+    browserSelectedTextStream(request: browser_pb.BrowserSelectedTextStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserSelectedTextStreamResponse>;
+    browserSelectedTextStream(request: browser_pb.BrowserSelectedTextStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserSelectedTextStreamResponse>;
+}
+
+export class BrowserClient extends grpc.Client implements IBrowserClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public browserActiveURL(request: browser_pb.BrowserActiveURLRequest, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserActiveURLResponse) => void): grpc.ClientUnaryCall;
+    public browserActiveURL(request: browser_pb.BrowserActiveURLRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserActiveURLResponse) => void): grpc.ClientUnaryCall;
+    public browserActiveURL(request: browser_pb.BrowserActiveURLRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserActiveURLResponse) => void): grpc.ClientUnaryCall;
+    public browserActiveURLStream(request: browser_pb.BrowserActiveURLStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserActiveURLStreamResponse>;
+    public browserActiveURLStream(request: browser_pb.BrowserActiveURLStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserActiveURLStreamResponse>;
+    public browserSelectedText(request: browser_pb.BrowserSelectedTextRequest, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserSelectedTextResponse) => void): grpc.ClientUnaryCall;
+    public browserSelectedText(request: browser_pb.BrowserSelectedTextRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserSelectedTextResponse) => void): grpc.ClientUnaryCall;
+    public browserSelectedText(request: browser_pb.BrowserSelectedTextRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: browser_pb.BrowserSelectedTextResponse) => void): grpc.ClientUnaryCall;
+    public browserSelectedTextStream(request: browser_pb.BrowserSelectedTextStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserSelectedTextStreamResponse>;
+    public browserSelectedTextStream(request: browser_pb.BrowserSelectedTextStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<browser_pb.BrowserSelectedTextStreamResponse>;
+}
