@@ -48,7 +48,6 @@ describe('FileSystemClient', () => {
   });
 
   describe('#queryDirectory', () => {
-    let sentRequest: Messages.FilesystemDirRequest;
     let sentResponse: Messages.FilesystemDirResponse;
     let queryResult: Promise<FileSystemQueryDirectoryResponse>;
     const directory = 'a-directory';
@@ -61,8 +60,6 @@ describe('FileSystemClient', () => {
       );
 
       queryResult = subject.queryDirectory({ directory });
-
-      sentRequest = captureMockArgument(mockGRPCClient.filesystemDir);
     });
 
     it('should return a transformed response', async () => {
@@ -79,17 +76,17 @@ describe('FileSystemClient', () => {
       );
     });
 
-    it('should have configured the request with the right directory', () => {
-      expect(sentRequest.getDirectory()).toBe(directory);
-    });
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.FilesystemDirRequest = captureMockArgument(
+        mockGRPCClient.filesystemDir,
+      );
 
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getDirectory()).toBe(directory);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
   describe('#queryFile', () => {
-    let sentRequest: Messages.FilesystemFileRequest;
     let sentResponse: Messages.FilesystemFileResponse;
     let queryResult: Promise<FileSystemQueryFileResponse>;
     const file = '/a-directory/a-file';
@@ -102,8 +99,6 @@ describe('FileSystemClient', () => {
       );
 
       queryResult = subject.queryFile({ file });
-
-      sentRequest = captureMockArgument(mockGRPCClient.filesystemFile);
     });
 
     it('should return a transformed response', async () => {
@@ -120,17 +115,17 @@ describe('FileSystemClient', () => {
       );
     });
 
-    it('should have configured the request with the right path', () => {
-      expect(sentRequest.getPath()).toBe(file);
-    });
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.FilesystemFileRequest = captureMockArgument(
+        mockGRPCClient.filesystemFile,
+      );
 
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getPath()).toBe(file);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
   describe('#streamFile', () => {
-    let sentRequest: Messages.FilesystemFileStreamRequest;
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
@@ -139,8 +134,6 @@ describe('FileSystemClient', () => {
       );
 
       subject.streamFile({ file }, identityCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.filesystemFileStream);
     });
 
     it('should call grpc client function', async () => {
@@ -149,17 +142,17 @@ describe('FileSystemClient', () => {
       );
     });
 
-    it('should have configured the request with the right path', () => {
-      expect(sentRequest.getPath()).toBe(file);
-    });
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.FilesystemFileStreamRequest = captureMockArgument(
+        mockGRPCClient.filesystemFileStream,
+      );
 
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getPath()).toBe(file);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
   describe('#streamDirectory', () => {
-    let sentRequest: Messages.FilesystemDirStreamRequest;
     const directory = '/a-directory';
 
     beforeEach(async () => {
@@ -168,16 +161,15 @@ describe('FileSystemClient', () => {
       );
 
       subject.streamDirectory({ directory }, identityCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.filesystemDirStream);
     });
 
-    it('should have configured the request with the right path', () => {
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.FilesystemDirStreamRequest = captureMockArgument(
+        mockGRPCClient.filesystemDirStream,
+      );
+
       expect(sentRequest.getDirectory()).toBe(directory);
-    });
-
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 });

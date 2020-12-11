@@ -5,7 +5,7 @@ import {
   ClientUnaryCallImpl,
   ServiceError,
 } from '@grpc/grpc-js/build/src/call';
-import { CallOptions, Deadline, Metadata } from '@grpc/grpc-js';
+import { Deadline } from '@grpc/grpc-js';
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
 
@@ -23,19 +23,14 @@ type CallbackFunc<TResponse = any> = (
 export function createCallbackHandler<TRequest, TResponse>(
   response?: TResponse,
 ) {
-  return (
-    request: TRequest,
-    metadata: Metadata,
-    options: Partial<CallOptions>,
-    callback: CallbackFunc,
-  ): ClientUnaryCall => {
+  return ((request: TRequest, callback: CallbackFunc): ClientUnaryCall => {
     const clientCall = new ClientUnaryCallImpl();
 
-    const actualCallback = callback || options || metadata;
-    actualCallback(null, response);
+    callback(null, response);
 
     return clientCall;
-  };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  }) as any;
 }
 
 type WaitFunc = (err: Error | undefined) => void;

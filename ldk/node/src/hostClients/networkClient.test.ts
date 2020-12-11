@@ -43,9 +43,9 @@ describe('NetworkClient', () => {
   });
 
   describe('#httpRequest', () => {
-    let sentRequest: Messages.HTTPRequestMsg;
     let sentResponse: Messages.HTTPResponseMsg;
     let queryResult: Promise<HttpResponse>;
+
     const request = {
       url: 'http://test.example.com',
       method: 'GET',
@@ -60,8 +60,6 @@ describe('NetworkClient', () => {
       );
 
       queryResult = subject.httpRequest(request);
-
-      sentRequest = captureMockArgument(mockGRPCClient.hTTPRequest);
     });
 
     it('should return a transformed response', async () => {
@@ -78,20 +76,15 @@ describe('NetworkClient', () => {
       );
     });
 
-    it('should have configured the request with the right url', () => {
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.HTTPRequestMsg = captureMockArgument(
+        mockGRPCClient.hTTPRequest,
+      );
+
       expect(sentRequest.getUrl()).toBe(request.url);
-    });
-
-    it('should have configured the request with the right method', () => {
       expect(sentRequest.getMethod()).toBe(request.method);
-    });
-
-    it('should have configured the request with the right body', () => {
       expect(sentRequest.getBody()).toBe(request.body);
-    });
-
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 });

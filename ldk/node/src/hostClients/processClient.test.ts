@@ -1,5 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import createMockInstance from 'jest-create-mock-instance';
+import { ClientReadableStream } from '@grpc/grpc-js';
 import * as Services from '../grpc/process_grpc_pb';
 import * as Messages from '../grpc/process_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -46,7 +47,6 @@ describe('ProcessClient', () => {
   });
 
   describe('#queryProcess', () => {
-    let sentRequest: Messages.ProcessStateRequest;
     let sentResponse: Messages.ProcessStateResponse;
     let queryResult: Promise<ProcessListResponse>;
 
@@ -58,8 +58,6 @@ describe('ProcessClient', () => {
       );
 
       queryResult = subject.queryProcesses();
-
-      sentRequest = captureMockArgument(mockGRPCClient.processState);
     });
 
     it('should return a transformed response', async () => {
@@ -75,14 +73,18 @@ describe('ProcessClient', () => {
       );
     });
 
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.ProcessStateRequest = captureMockArgument(
+        mockGRPCClient.processState,
+      );
+
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
   describe('#streamProcess', () => {
+    let stream: ClientReadableStream<Messages.ProcessStateStreamResponse>;
     let streamCallback: jest.Mock;
-    let sentRequest: Messages.ProcessStateStreamRequest;
     let sentResponse: Messages.ProcessStateStreamResponse;
 
     beforeEach(async () => {
@@ -90,7 +92,7 @@ describe('ProcessClient', () => {
         new Messages.ProcessInfo(),
       );
 
-      const stream = createEmptyStream<Messages.ProcessStateStreamResponse>();
+      stream = createEmptyStream();
 
       streamCallback = jest.fn().mockImplementation(identityCallback);
       mockGRPCClient.processStateStream.mockImplementation(
@@ -98,12 +100,11 @@ describe('ProcessClient', () => {
       );
 
       subject.streamProcesses(streamCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.processStateStream);
-      stream.emit('data', sentResponse);
     });
 
     it('should stream the process info back to the callback', () => {
+      stream.emit('data', sentResponse);
+
       const transformedProcessInfo: ProcessStreamResponse = captureMockArgument(
         streamCallback,
         { position: 1 },
@@ -115,8 +116,12 @@ describe('ProcessClient', () => {
       });
     });
 
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.ProcessStateStreamRequest = captureMockArgument(
+        mockGRPCClient.processStateStream,
+      );
+
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 });

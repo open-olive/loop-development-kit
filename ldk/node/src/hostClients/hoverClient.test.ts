@@ -45,7 +45,6 @@ describe('HoverClient', () => {
   });
 
   describe('#queryHover', () => {
-    let sentRequest: Messages.HoverReadRequest;
     let sentResponse: Messages.HoverReadResponse;
     let queryResult: Promise<HoverResponse>;
     const xFromCenter = 10;
@@ -59,8 +58,6 @@ describe('HoverClient', () => {
       );
 
       queryResult = subject.queryHover({ xFromCenter, yFromCenter });
-
-      sentRequest = captureMockArgument(mockGRPCClient.hoverRead);
     });
 
     it('should return a transformed response', async () => {
@@ -76,21 +73,18 @@ describe('HoverClient', () => {
       );
     });
 
-    it('should have configured the request with the right x coordinates', () => {
-      expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
-    });
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.HoverReadRequest = captureMockArgument(
+        mockGRPCClient.hoverRead,
+      );
 
-    it('should have configured the request with the right y coordinates', () => {
       expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
-    });
-
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
   describe('#streamHover', () => {
-    let sentRequest: Messages.HoverReadStreamRequest;
     const xFromCenter = 10;
     const yFromCenter = 20;
 
@@ -100,20 +94,16 @@ describe('HoverClient', () => {
       );
 
       subject.streamHover({ xFromCenter, yFromCenter }, identityCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.hoverReadStream);
     });
 
     it('should have configured the request with the right x coordinates', () => {
+      const sentRequest: Messages.HoverReadStreamRequest = captureMockArgument(
+        mockGRPCClient.hoverReadStream,
+      );
+
       expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
-    });
-
-    it('should have configured the request with the right y coordinates', () => {
       expect(sentRequest.getYfromcenter()).toBe(yFromCenter);
-    });
-
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 });

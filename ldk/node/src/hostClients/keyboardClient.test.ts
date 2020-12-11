@@ -1,5 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import createMockInstance from 'jest-create-mock-instance';
+import { ClientReadableStream } from '@grpc/grpc-js/build/src/call';
 import * as Services from '../grpc/keyboard_grpc_pb';
 import * as Messages from '../grpc/keyboard_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -48,7 +49,6 @@ describe('KeyboardClient', () => {
     const key = 'a';
     const modifiers = { ctrlL: true };
     const convertedModifiers = 8;
-    let sentRequest: Messages.KeyboardHotkeyStreamRequest;
 
     beforeEach(async () => {
       mockGRPCClient.keyboardHotkeyStream.mockImplementation(
@@ -56,31 +56,30 @@ describe('KeyboardClient', () => {
       );
 
       subject.streamHotKey({ key, modifiers }, identityCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.keyboardHotkeyStream);
     });
 
-    it('should have configured the request with the right key and modifiers', () => {
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.KeyboardHotkeyStreamRequest = captureMockArgument(
+        mockGRPCClient.keyboardHotkeyStream,
+      );
+
       const hotKey = new KeyboardHotkey()
         .setKey(key)
         .setModifiers(convertedModifiers);
 
       expect(sentRequest.getHotkey()).toStrictEqual(hotKey);
-    });
-
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
   describe('#streamText', () => {
+    let stream: ClientReadableStream<Messages.KeyboardTextStreamResponse>;
     let streamCallback: jest.Mock;
-    let sentRequest: Messages.KeyboardTextStreamRequest;
     let sentResponse: Messages.KeyboardTextStreamResponse;
 
     beforeEach(async () => {
       sentResponse = new Messages.KeyboardTextStreamResponse().setText('hello');
-      const stream = createEmptyStream<Messages.KeyboardTextStreamResponse>();
+      stream = createEmptyStream();
 
       streamCallback = jest.fn().mockImplementation(identityCallback);
       mockGRPCClient.keyboardTextStream.mockImplementation(
@@ -88,17 +87,20 @@ describe('KeyboardClient', () => {
       );
 
       subject.streamText(streamCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.keyboardTextStream);
-      stream.emit('data', sentResponse);
     });
 
     it('should stream the text back to the callback', () => {
+      stream.emit('data', sentResponse);
+
       expect(streamCallback).toHaveBeenCalledWith(null, sentResponse.getText());
     });
 
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+    it('should have configured the request correctly', () => {
+      const sentRequest: Messages.KeyboardTextStreamRequest = captureMockArgument(
+        mockGRPCClient.keyboardTextStream,
+      );
+
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
@@ -116,7 +118,7 @@ describe('KeyboardClient', () => {
     });
 
     it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 
@@ -134,7 +136,7 @@ describe('KeyboardClient', () => {
     });
 
     it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()?.toObject()).toStrictEqual(session);
+      expect(sentRequest.getSession()).toBeDefined();
     });
   });
 });
