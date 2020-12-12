@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 // NetworkClient is the client used by the NetworkService
@@ -16,7 +17,7 @@ type NetworkClient struct {
 type HTTPResponse struct {
 	ResponseCode int
 	Data         []byte
-	Headers      []byte
+	Headers      map[string]*structpb.ListValue
 }
 
 // HTTPRequest is the structure received from HttpRequest

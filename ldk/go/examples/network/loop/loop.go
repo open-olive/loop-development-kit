@@ -3,7 +3,6 @@ package loop
 import (
 	"context"
 	"encoding/json"
-	"net/http"
 	"time"
 
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
@@ -84,15 +83,9 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	}
 
 	if response.ResponseCode == 200 {
-		var headers http.Header
 		var data apiResponse
 
-		if err := json.Unmarshal(response.Headers, &headers); err != nil {
-			c.logger.Error("Error unmarshaling response headers", err)
-			return err
-		}
-
-		c.logger.Info("Response headers", headers)
+		c.logger.Info("Response headers", response.Headers)
 
 		if err := json.Unmarshal(response.Data, &data); err != nil {
 			c.logger.Error("Error unmarshaling response payload", err)

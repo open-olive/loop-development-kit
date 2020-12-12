@@ -2,6 +2,7 @@ syntax = "proto3";
 package proto;
 option go_package = ".;proto";
 
+import "google/protobuf/struct.proto";
 import "session.proto";
 
 service Network {
@@ -19,5 +20,5 @@ message HTTPRequestMsg {
 message HTTPResponseMsg {
     uint32 responseCode = 1;
     bytes data = 2;
-    bytes headers = 3;
+    map <string, google.protobuf.ListValue> headers = 3;
 }
