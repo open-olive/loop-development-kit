@@ -7,6 +7,7 @@
 import * as grpc from "@grpc/grpc-js";
 import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
 import * as network_pb from "./network_pb";
+import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as session_pb from "./session_pb";
 
 interface INetworkService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {

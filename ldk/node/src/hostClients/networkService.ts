@@ -7,6 +7,7 @@ export interface HttpRequest {
 export interface HttpResponse {
   statusCode: number;
   data: string | Uint8Array;
+  headers: Map<string, Array<string>>;
 }
 
 export interface NetworkService {

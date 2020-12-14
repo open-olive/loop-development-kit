@@ -12,6 +12,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var google_protobuf_struct_pb = require('google-protobuf/google/protobuf/struct_pb.js');
+goog.object.extend(proto, google_protobuf_struct_pb);
 var session_pb = require('./session_pb.js');
 goog.object.extend(proto, session_pb);
 goog.exportSymbol('proto.proto.HTTPRequestMsg', null, global);
@@ -93,7 +95,8 @@ proto.proto.HTTPRequestMsg.toObject = function(includeInstance, msg) {
     session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
     url: jspb.Message.getFieldWithDefault(msg, 2, ""),
     method: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    body: msg.getBody_asB64()
+    body: msg.getBody_asB64(),
+    headersMap: (f = msg.getHeadersMap()) ? f.toObject(includeInstance, undefined) : []
   };
 
   if (includeInstance) {
@@ -146,6 +149,12 @@ proto.proto.HTTPRequestMsg.deserializeBinaryFromReader = function(msg, reader) {
     case 4:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setBody(value);
+      break;
+    case 5:
+      var value = msg.getHeadersMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readString, null, "", "");
+         });
       break;
     default:
       reader.skipField();
@@ -204,6 +213,10 @@ proto.proto.HTTPRequestMsg.serializeBinaryToWriter = function(message, writer) {
       4,
       f
     );
+  }
+  f = message.getHeadersMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(5, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeString);
   }
 };
 
@@ -323,6 +336,28 @@ proto.proto.HTTPRequestMsg.prototype.setBody = function(value) {
 };
 
 
+/**
+ * map<string, string> headers = 5;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,string>}
+ */
+proto.proto.HTTPRequestMsg.prototype.getHeadersMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,string>} */ (
+      jspb.Message.getMapField(this, 5, opt_noLazyCreate,
+      null));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.proto.HTTPRequestMsg} returns this
+ */
+proto.proto.HTTPRequestMsg.prototype.clearHeadersMap = function() {
+  this.getHeadersMap().clear();
+  return this;};
+
+
 
 
 
@@ -356,7 +391,8 @@ proto.proto.HTTPResponseMsg.prototype.toObject = function(opt_includeInstance) {
 proto.proto.HTTPResponseMsg.toObject = function(includeInstance, msg) {
   var f, obj = {
     responsecode: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    data: msg.getData_asB64()
+    data: msg.getData_asB64(),
+    headersMap: (f = msg.getHeadersMap()) ? f.toObject(includeInstance, proto.google.protobuf.ListValue.toObject) : []
   };
 
   if (includeInstance) {
@@ -401,6 +437,12 @@ proto.proto.HTTPResponseMsg.deserializeBinaryFromReader = function(msg, reader) 
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setData(value);
       break;
+    case 3:
+      var value = msg.getHeadersMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.google.protobuf.ListValue.deserializeBinaryFromReader, "", new proto.google.protobuf.ListValue());
+         });
+      break;
     default:
       reader.skipField();
       break;
@@ -443,6 +485,10 @@ proto.proto.HTTPResponseMsg.serializeBinaryToWriter = function(message, writer) 
       2,
       f
     );
+  }
+  f = message.getHeadersMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.google.protobuf.ListValue.serializeBinaryToWriter);
   }
 };
 
@@ -505,6 +551,28 @@ proto.proto.HTTPResponseMsg.prototype.getData_asU8 = function() {
 proto.proto.HTTPResponseMsg.prototype.setData = function(value) {
   return jspb.Message.setProto3BytesField(this, 2, value);
 };
+
+
+/**
+ * map<string, google.protobuf.ListValue> headers = 3;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,!proto.google.protobuf.ListValue>}
+ */
+proto.proto.HTTPResponseMsg.prototype.getHeadersMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,!proto.google.protobuf.ListValue>} */ (
+      jspb.Message.getMapField(this, 3, opt_noLazyCreate,
+      proto.google.protobuf.ListValue));
+};
+
+
+/**
+ * Clears values from the map. The map will be non-null.
+ * @return {!proto.proto.HTTPResponseMsg} returns this
+ */
+proto.proto.HTTPResponseMsg.prototype.clearHeadersMap = function() {
+  this.getHeadersMap().clear();
+  return this;};
 
 
 goog.object.extend(exports, proto.proto);

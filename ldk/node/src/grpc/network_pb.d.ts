@@ -5,6 +5,7 @@
 /* eslint-disable */
 
 import * as jspb from "google-protobuf";
+import * as google_protobuf_struct_pb from "google-protobuf/google/protobuf/struct_pb";
 import * as session_pb from "./session_pb";
 
 export class HTTPRequestMsg extends jspb.Message { 
@@ -26,6 +27,10 @@ export class HTTPRequestMsg extends jspb.Message {
     setBody(value: Uint8Array | string): HTTPRequestMsg;
 
 
+    getHeadersMap(): jspb.Map<string, string>;
+    clearHeadersMap(): void;
+
+
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): HTTPRequestMsg.AsObject;
     static toObject(includeInstance: boolean, msg: HTTPRequestMsg): HTTPRequestMsg.AsObject;
@@ -42,6 +47,8 @@ export namespace HTTPRequestMsg {
         url: string,
         method: string,
         body: Uint8Array | string,
+
+        headersMap: Array<[string, string]>,
     }
 }
 
@@ -53,6 +60,10 @@ export class HTTPResponseMsg extends jspb.Message {
     getData_asU8(): Uint8Array;
     getData_asB64(): string;
     setData(value: Uint8Array | string): HTTPResponseMsg;
+
+
+    getHeadersMap(): jspb.Map<string, google_protobuf_struct_pb.ListValue>;
+    clearHeadersMap(): void;
 
 
     serializeBinary(): Uint8Array;
@@ -69,5 +80,7 @@ export namespace HTTPResponseMsg {
     export type AsObject = {
         responsecode: number,
         data: Uint8Array | string,
+
+        headersMap: Array<[string, google_protobuf_struct_pb.ListValue.AsObject]>,
     }
 }

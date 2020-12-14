@@ -7,6 +7,25 @@ exports.NetworkClient = void 0;
 const baseClient_1 = __importDefault(require("./baseClient"));
 const network_grpc_pb_1 = require("../grpc/network_grpc_pb");
 const network_pb_1 = __importDefault(require("../grpc/network_pb"));
+/**
+ * @param values - a PB struct ListValue (list of Values)
+ * @internal
+ */
+function parseHeaderValues(values) {
+    return values.getValuesList().map((value) => {
+        return value.getStringValue();
+    });
+}
+/**
+ * @param headersMap - A map of headers
+ * @internal
+ */
+function parseHeadersMap(headersMap) {
+    const headerEntries = headersMap.getEntryList().map(([key, value]) => {
+        return [key, parseHeaderValues(value)];
+    });
+    return new Map(headerEntries);
+}
 class NetworkClient extends baseClient_1.default {
     generateClient() {
         return network_grpc_pb_1.NetworkClient;
@@ -21,6 +40,7 @@ class NetworkClient extends baseClient_1.default {
         }, (response) => ({
             statusCode: response.getResponsecode(),
             data: response.getData(),
+            headers: parseHeadersMap(response.getHeadersMap()),
         }));
     }
 }
