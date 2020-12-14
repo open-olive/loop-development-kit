@@ -49,7 +49,10 @@ describe('CursorClient', () => {
     let queryResult: Promise<CursorResponse>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.CursorPositionResponse();
+      sentResponse = new Messages.CursorPositionResponse()
+        .setX(100)
+        .setY(200)
+        .setScreen(0);
 
       mockGRPCClient.cursorPosition.mockImplementation(
         createCallbackHandler(sentResponse),

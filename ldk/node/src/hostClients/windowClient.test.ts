@@ -28,6 +28,14 @@ describe('WindowClient', () => {
   let connInfo: ConnInfo.AsObject;
   let session: Session.AsObject;
 
+  const windowHeight = 100;
+  const windowWidth = 200;
+  const windowX = 50;
+  const windowY = 75;
+  const windowPid = 10;
+  const windowPath = '/index.html';
+  const windowTitle = 'OliveHelps';
+
   beforeEach(async () => {
     jest.resetAllMocks();
     subject = new WindowClient();
@@ -49,7 +57,14 @@ describe('WindowClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.WindowActiveWindowResponse().setWindow(
-        new Messages.WindowInfo(),
+        new Messages.WindowInfo()
+          .setHeight(windowHeight)
+          .setWidth(windowWidth)
+          .setX(windowX)
+          .setY(windowY)
+          .setPid(windowPid)
+          .setPath(windowPath)
+          .setTitle(windowTitle),
       );
 
       mockGRPCClient.windowActiveWindow.mockImplementation(
@@ -61,13 +76,13 @@ describe('WindowClient', () => {
 
     it('should return a transformed response', async () => {
       await expect(queryResult).resolves.toMatchObject({
-        title: expect.anything(),
-        path: expect.anything(),
-        pid: expect.anything(),
-        x: expect.anything(),
-        y: expect.anything(),
-        width: expect.anything(),
-        height: expect.anything(),
+        title: windowTitle,
+        path: windowPath,
+        pid: windowPid,
+        x: windowX,
+        y: windowY,
+        width: windowWidth,
+        height: windowHeight,
       });
     });
 
@@ -93,7 +108,14 @@ describe('WindowClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.WindowStateResponse().setWindowList([
-        new Messages.WindowInfo(),
+        new Messages.WindowInfo()
+          .setHeight(windowHeight)
+          .setWidth(windowWidth)
+          .setX(windowX)
+          .setY(windowY)
+          .setPid(windowPid)
+          .setPath(windowPath)
+          .setTitle(windowTitle),
       ]);
 
       mockGRPCClient.windowState.mockImplementation(
@@ -106,13 +128,13 @@ describe('WindowClient', () => {
     it('should return a transformed response', async () => {
       await expect(queryResult).resolves.toContainEqual(
         expect.objectContaining({
-          title: expect.anything(),
-          path: expect.anything(),
-          pid: expect.anything(),
-          x: expect.anything(),
-          y: expect.anything(),
-          width: expect.anything(),
-          height: expect.anything(),
+          title: windowTitle,
+          path: windowPath,
+          pid: windowPid,
+          x: windowX,
+          y: windowY,
+          width: windowWidth,
+          height: windowHeight,
         }),
       );
     });

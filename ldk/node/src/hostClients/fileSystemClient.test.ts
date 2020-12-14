@@ -50,10 +50,13 @@ describe('FileSystemClient', () => {
   describe('#queryDirectory', () => {
     let sentResponse: Messages.FilesystemDirResponse;
     let queryResult: Promise<FileSystemQueryDirectoryResponse>;
-    const directory = 'a-directory';
+    const directory = '/a-directory';
+    const fileInDirectory = 'file-one.txt';
 
     beforeEach(async () => {
-      sentResponse = new Messages.FilesystemDirResponse();
+      sentResponse = new Messages.FilesystemDirResponse().setFilesList([
+        new Messages.FileInfo().setName(fileInDirectory),
+      ]);
 
       mockGRPCClient.filesystemDir.mockImplementation(
         createCallbackHandler(sentResponse),
@@ -64,9 +67,11 @@ describe('FileSystemClient', () => {
 
     it('should return a transformed response', async () => {
       const directoryInfo = {
-        files: sentResponse.getFilesList(),
+        files: sentResponse
+          .getFilesList()
+          .map((info) => ({ name: info.getName() })),
       };
-      await expect(queryResult).resolves.toStrictEqual(directoryInfo);
+      await expect(queryResult).resolves.toMatchObject(directoryInfo);
     });
 
     it('should call grpc client function', async () => {
@@ -89,10 +94,13 @@ describe('FileSystemClient', () => {
   describe('#queryFile', () => {
     let sentResponse: Messages.FilesystemFileResponse;
     let queryResult: Promise<FileSystemQueryFileResponse>;
-    const file = '/a-directory/a-file';
+    const fileName = 'a-file';
+    const file = `/a-directory/${fileName}`;
 
     beforeEach(async () => {
-      sentResponse = new Messages.FilesystemFileResponse();
+      sentResponse = new Messages.FilesystemFileResponse().setFile(
+        new Messages.FileInfo().setName(fileName),
+      );
 
       mockGRPCClient.filesystemFile.mockImplementation(
         createCallbackHandler(sentResponse),
@@ -103,9 +111,11 @@ describe('FileSystemClient', () => {
 
     it('should return a transformed response', async () => {
       const fileInfo = {
-        file: sentResponse.getFile(),
+        file: {
+          name: fileName,
+        },
       };
-      await expect(queryResult).resolves.toStrictEqual(fileInfo);
+      await expect(queryResult).resolves.toMatchObject(fileInfo);
     });
 
     it('should call grpc client function', async () => {

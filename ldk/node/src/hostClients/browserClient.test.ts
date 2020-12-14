@@ -49,7 +49,9 @@ describe('BrowserClient', () => {
     let queryResult: Promise<string>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.BrowserActiveURLResponse();
+      sentResponse = new Messages.BrowserActiveURLResponse().setUrl(
+        'http://test.example.com',
+      );
 
       mockGRPCClient.browserActiveURL.mockImplementation(
         createCallbackHandler(sentResponse),
@@ -83,7 +85,10 @@ describe('BrowserClient', () => {
     let queryResult: Promise<BrowserSelectedTextResponse>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.BrowserSelectedTextResponse();
+      sentResponse = new Messages.BrowserSelectedTextResponse()
+        .setTabtitle('OliveHelps')
+        .setText('you selected me')
+        .setUrl('http://test.example.com');
 
       mockGRPCClient.browserSelectedText.mockImplementation(
         createCallbackHandler(sentResponse),

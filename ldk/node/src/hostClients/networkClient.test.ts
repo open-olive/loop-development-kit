@@ -53,7 +53,9 @@ describe('NetworkClient', () => {
     };
 
     beforeEach(async () => {
-      sentResponse = new Messages.HTTPResponseMsg();
+      sentResponse = new Messages.HTTPResponseMsg()
+        .setData('response data')
+        .setResponsecode(200);
 
       mockGRPCClient.hTTPRequest.mockImplementation(
         createCallbackHandler(sentResponse),

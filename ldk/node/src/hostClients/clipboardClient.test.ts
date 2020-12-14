@@ -48,7 +48,9 @@ describe('ClipboardClient', () => {
     let queryResult: Promise<string>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.ClipboardReadResponse();
+      sentResponse = new Messages.ClipboardReadResponse().setText(
+        'clipboard text',
+      );
 
       mockGRPCClient.clipboardRead.mockImplementation(
         createCallbackHandler(sentResponse),

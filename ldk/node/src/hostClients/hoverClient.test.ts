@@ -51,7 +51,9 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      sentResponse = new Messages.HoverReadResponse();
+      sentResponse = new Messages.HoverReadResponse().setText(
+        'you hovered on me',
+      );
 
       mockGRPCClient.hoverRead.mockImplementation(
         createCallbackHandler(sentResponse),
