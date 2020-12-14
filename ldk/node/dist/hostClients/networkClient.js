@@ -26,6 +26,19 @@ function parseHeadersMap(headersMap) {
     });
     return new Map(headerEntries);
 }
+/**
+ * Adds headers to a request message
+ *
+ * @param message - the message that will be sent via gRPC - modified in place
+ * @param headers - the headers to add to the request as a map
+ * @internal
+ */
+function addHeadersToMessage(message, headers) {
+    headers.forEach((key, value) => {
+        message.getHeadersMap().set(key, value);
+    });
+    return message;
+}
 class NetworkClient extends baseClient_1.default {
     generateClient() {
         return network_grpc_pb_1.NetworkClient;
@@ -36,6 +49,7 @@ class NetworkClient extends baseClient_1.default {
             msg.setUrl(req.url);
             msg.setMethod(req.method);
             msg.setBody(req.body);
+            addHeadersToMessage(msg, req.headers);
             return msg;
         }, (response) => ({
             statusCode: response.getResponsecode(),

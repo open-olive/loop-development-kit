@@ -2,6 +2,8 @@ export interface HttpRequest {
   url: string;
   method: string;
   body: string | Uint8Array;
+
+  headers: Map<string, string>;
 }
 
 export interface HttpResponse {
