@@ -59,6 +59,29 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 	}, nil
 }
 
+// WhisperDisambiguation is used by loops to create disambiguation whispers
+func (m *WhisperServer) WhisperDisambiguation(ctx context.Context, req *proto.WhisperDisambiguationRequest) (*emptypb.Empty, error) {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return nil, err
+	}
+
+	content, err := WhisperContentDisambiguationFromProto(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decode whisper content list from proto: %w", err)
+	}
+
+	_, err = m.Impl.Disambiguation(
+		context.WithValue(ctx, Session{}, session),
+		content,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("ldk.WhisperServer.WhisperList -> m.Impl.List: error => %w", err)
+	}
+
+	return &emptypb.Empty{}, nil
+}
+
 // WhisperForm is used by loops to create form whispers
 func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.Whisper_WhisperFormServer) error {
 	session, err := NewSessionFromProto(req.Session)

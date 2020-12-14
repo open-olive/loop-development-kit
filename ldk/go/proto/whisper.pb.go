@@ -75,7 +75,7 @@ func (x WhisperListElement_Style) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use WhisperListElement_Style.Descriptor instead.
 func (WhisperListElement_Style) EnumDescriptor() ([]byte, []int) {
-	return file_whisper_proto_rawDescGZIP(), []int{11, 0}
+	return file_whisper_proto_rawDescGZIP(), []int{14, 0}
 }
 
 type WhisperListElement_Align int32
@@ -124,7 +124,7 @@ func (x WhisperListElement_Align) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use WhisperListElement_Align.Descriptor instead.
 func (WhisperListElement_Align) EnumDescriptor() ([]byte, []int) {
-	return file_whisper_proto_rawDescGZIP(), []int{11, 1}
+	return file_whisper_proto_rawDescGZIP(), []int{14, 1}
 }
 
 type WhisperMeta struct {
@@ -1032,6 +1032,204 @@ func (*WhisperFormStreamResponse_Result) isWhisperFormStreamResponse_WhisperForm
 
 func (*WhisperFormStreamResponse_Update) isWhisperFormStreamResponse_WhisperFormResponseOneof() {}
 
+type WhisperDisambiguationRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Session  *Session                                 `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Meta     *WhisperMeta                             `protobuf:"bytes,2,opt,name=meta,proto3" json:"meta,omitempty"`
+	Elements map[string]*WhisperDisambiguationElement `protobuf:"bytes,3,rep,name=elements,proto3" json:"elements,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+}
+
+func (x *WhisperDisambiguationRequest) Reset() {
+	*x = WhisperDisambiguationRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_whisper_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhisperDisambiguationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhisperDisambiguationRequest) ProtoMessage() {}
+
+func (x *WhisperDisambiguationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_whisper_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhisperDisambiguationRequest.ProtoReflect.Descriptor instead.
+func (*WhisperDisambiguationRequest) Descriptor() ([]byte, []int) {
+	return file_whisper_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *WhisperDisambiguationRequest) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+func (x *WhisperDisambiguationRequest) GetMeta() *WhisperMeta {
+	if x != nil {
+		return x.Meta
+	}
+	return nil
+}
+
+func (x *WhisperDisambiguationRequest) GetElements() map[string]*WhisperDisambiguationElement {
+	if x != nil {
+		return x.Elements
+	}
+	return nil
+}
+
+type WhisperDisambiguationElement struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Order uint32 `protobuf:"varint,1,opt,name=order,proto3" json:"order,omitempty"`
+	// Types that are assignable to ElementOneof:
+	//	*WhisperDisambiguationElement_Option_
+	//	*WhisperDisambiguationElement_Text_
+	ElementOneof isWhisperDisambiguationElement_ElementOneof `protobuf_oneof:"ElementOneof"`
+}
+
+func (x *WhisperDisambiguationElement) Reset() {
+	*x = WhisperDisambiguationElement{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_whisper_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhisperDisambiguationElement) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhisperDisambiguationElement) ProtoMessage() {}
+
+func (x *WhisperDisambiguationElement) ProtoReflect() protoreflect.Message {
+	mi := &file_whisper_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhisperDisambiguationElement.ProtoReflect.Descriptor instead.
+func (*WhisperDisambiguationElement) Descriptor() ([]byte, []int) {
+	return file_whisper_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *WhisperDisambiguationElement) GetOrder() uint32 {
+	if x != nil {
+		return x.Order
+	}
+	return 0
+}
+
+func (m *WhisperDisambiguationElement) GetElementOneof() isWhisperDisambiguationElement_ElementOneof {
+	if m != nil {
+		return m.ElementOneof
+	}
+	return nil
+}
+
+func (x *WhisperDisambiguationElement) GetOption() *WhisperDisambiguationElement_Option {
+	if x, ok := x.GetElementOneof().(*WhisperDisambiguationElement_Option_); ok {
+		return x.Option
+	}
+	return nil
+}
+
+func (x *WhisperDisambiguationElement) GetText() *WhisperDisambiguationElement_Text {
+	if x, ok := x.GetElementOneof().(*WhisperDisambiguationElement_Text_); ok {
+		return x.Text
+	}
+	return nil
+}
+
+type isWhisperDisambiguationElement_ElementOneof interface {
+	isWhisperDisambiguationElement_ElementOneof()
+}
+
+type WhisperDisambiguationElement_Option_ struct {
+	Option *WhisperDisambiguationElement_Option `protobuf:"bytes,2,opt,name=option,proto3,oneof"`
+}
+
+type WhisperDisambiguationElement_Text_ struct {
+	Text *WhisperDisambiguationElement_Text `protobuf:"bytes,3,opt,name=text,proto3,oneof"`
+}
+
+func (*WhisperDisambiguationElement_Option_) isWhisperDisambiguationElement_ElementOneof() {}
+
+func (*WhisperDisambiguationElement_Text_) isWhisperDisambiguationElement_ElementOneof() {}
+
+type WhisperDisambiguationResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Response bool `protobuf:"varint,1,opt,name=response,proto3" json:"response,omitempty"`
+}
+
+func (x *WhisperDisambiguationResponse) Reset() {
+	*x = WhisperDisambiguationResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_whisper_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhisperDisambiguationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhisperDisambiguationResponse) ProtoMessage() {}
+
+func (x *WhisperDisambiguationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_whisper_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhisperDisambiguationResponse.ProtoReflect.Descriptor instead.
+func (*WhisperDisambiguationResponse) Descriptor() ([]byte, []int) {
+	return file_whisper_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *WhisperDisambiguationResponse) GetResponse() bool {
+	if x != nil {
+		return x.Response
+	}
+	return false
+}
+
 type WhisperListRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1045,7 +1243,7 @@ type WhisperListRequest struct {
 func (x *WhisperListRequest) Reset() {
 	*x = WhisperListRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[10]
+		mi := &file_whisper_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1058,7 +1256,7 @@ func (x *WhisperListRequest) String() string {
 func (*WhisperListRequest) ProtoMessage() {}
 
 func (x *WhisperListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[10]
+	mi := &file_whisper_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1071,7 +1269,7 @@ func (x *WhisperListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhisperListRequest.ProtoReflect.Descriptor instead.
 func (*WhisperListRequest) Descriptor() ([]byte, []int) {
-	return file_whisper_proto_rawDescGZIP(), []int{10}
+	return file_whisper_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *WhisperListRequest) GetSession() *Session {
@@ -1112,7 +1310,7 @@ type WhisperListElement struct {
 func (x *WhisperListElement) Reset() {
 	*x = WhisperListElement{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[11]
+		mi := &file_whisper_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1125,7 +1323,7 @@ func (x *WhisperListElement) String() string {
 func (*WhisperListElement) ProtoMessage() {}
 
 func (x *WhisperListElement) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[11]
+	mi := &file_whisper_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1138,7 +1336,7 @@ func (x *WhisperListElement) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhisperListElement.ProtoReflect.Descriptor instead.
 func (*WhisperListElement) Descriptor() ([]byte, []int) {
-	return file_whisper_proto_rawDescGZIP(), []int{11}
+	return file_whisper_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *WhisperListElement) GetOrder() uint32 {
@@ -1219,7 +1417,7 @@ type WhisperFormInput_Checkbox struct {
 func (x *WhisperFormInput_Checkbox) Reset() {
 	*x = WhisperFormInput_Checkbox{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[13]
+		mi := &file_whisper_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1232,7 +1430,7 @@ func (x *WhisperFormInput_Checkbox) String() string {
 func (*WhisperFormInput_Checkbox) ProtoMessage() {}
 
 func (x *WhisperFormInput_Checkbox) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[13]
+	mi := &file_whisper_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1290,7 +1488,7 @@ type WhisperFormInput_Email struct {
 func (x *WhisperFormInput_Email) Reset() {
 	*x = WhisperFormInput_Email{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[14]
+		mi := &file_whisper_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1303,7 +1501,7 @@ func (x *WhisperFormInput_Email) String() string {
 func (*WhisperFormInput_Email) ProtoMessage() {}
 
 func (x *WhisperFormInput_Email) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[14]
+	mi := &file_whisper_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1361,7 +1559,7 @@ type WhisperFormInput_Markdown struct {
 func (x *WhisperFormInput_Markdown) Reset() {
 	*x = WhisperFormInput_Markdown{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[15]
+		mi := &file_whisper_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1374,7 +1572,7 @@ func (x *WhisperFormInput_Markdown) String() string {
 func (*WhisperFormInput_Markdown) ProtoMessage() {}
 
 func (x *WhisperFormInput_Markdown) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[15]
+	mi := &file_whisper_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1434,7 +1632,7 @@ type WhisperFormInput_Number struct {
 func (x *WhisperFormInput_Number) Reset() {
 	*x = WhisperFormInput_Number{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[16]
+		mi := &file_whisper_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1447,7 +1645,7 @@ func (x *WhisperFormInput_Number) String() string {
 func (*WhisperFormInput_Number) ProtoMessage() {}
 
 func (x *WhisperFormInput_Number) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[16]
+	mi := &file_whisper_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1518,7 +1716,7 @@ type WhisperFormInput_Password struct {
 func (x *WhisperFormInput_Password) Reset() {
 	*x = WhisperFormInput_Password{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[17]
+		mi := &file_whisper_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1531,7 +1729,7 @@ func (x *WhisperFormInput_Password) String() string {
 func (*WhisperFormInput_Password) ProtoMessage() {}
 
 func (x *WhisperFormInput_Password) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[17]
+	mi := &file_whisper_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1582,7 +1780,7 @@ type WhisperFormInput_Radio struct {
 func (x *WhisperFormInput_Radio) Reset() {
 	*x = WhisperFormInput_Radio{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[18]
+		mi := &file_whisper_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1595,7 +1793,7 @@ func (x *WhisperFormInput_Radio) String() string {
 func (*WhisperFormInput_Radio) ProtoMessage() {}
 
 func (x *WhisperFormInput_Radio) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[18]
+	mi := &file_whisper_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1653,7 +1851,7 @@ type WhisperFormInput_Select struct {
 func (x *WhisperFormInput_Select) Reset() {
 	*x = WhisperFormInput_Select{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[19]
+		mi := &file_whisper_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1666,7 +1864,7 @@ func (x *WhisperFormInput_Select) String() string {
 func (*WhisperFormInput_Select) ProtoMessage() {}
 
 func (x *WhisperFormInput_Select) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[19]
+	mi := &file_whisper_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1725,7 +1923,7 @@ type WhisperFormInput_Tel struct {
 func (x *WhisperFormInput_Tel) Reset() {
 	*x = WhisperFormInput_Tel{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[20]
+		mi := &file_whisper_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1738,7 +1936,7 @@ func (x *WhisperFormInput_Tel) String() string {
 func (*WhisperFormInput_Tel) ProtoMessage() {}
 
 func (x *WhisperFormInput_Tel) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[20]
+	mi := &file_whisper_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1803,7 +2001,7 @@ type WhisperFormInput_Text struct {
 func (x *WhisperFormInput_Text) Reset() {
 	*x = WhisperFormInput_Text{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[21]
+		mi := &file_whisper_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1816,7 +2014,7 @@ func (x *WhisperFormInput_Text) String() string {
 func (*WhisperFormInput_Text) ProtoMessage() {}
 
 func (x *WhisperFormInput_Text) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[21]
+	mi := &file_whisper_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1874,7 +2072,7 @@ type WhisperFormInput_Time struct {
 func (x *WhisperFormInput_Time) Reset() {
 	*x = WhisperFormInput_Time{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[22]
+		mi := &file_whisper_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1887,7 +2085,7 @@ func (x *WhisperFormInput_Time) String() string {
 func (*WhisperFormInput_Time) ProtoMessage() {}
 
 func (x *WhisperFormInput_Time) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[22]
+	mi := &file_whisper_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1942,7 +2140,7 @@ type WhisperFormOutput_Checkbox struct {
 func (x *WhisperFormOutput_Checkbox) Reset() {
 	*x = WhisperFormOutput_Checkbox{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[23]
+		mi := &file_whisper_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1955,7 +2153,7 @@ func (x *WhisperFormOutput_Checkbox) String() string {
 func (*WhisperFormOutput_Checkbox) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Checkbox) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[23]
+	mi := &file_whisper_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1989,7 +2187,7 @@ type WhisperFormOutput_Email struct {
 func (x *WhisperFormOutput_Email) Reset() {
 	*x = WhisperFormOutput_Email{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[24]
+		mi := &file_whisper_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2002,7 +2200,7 @@ func (x *WhisperFormOutput_Email) String() string {
 func (*WhisperFormOutput_Email) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Email) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[24]
+	mi := &file_whisper_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2036,7 +2234,7 @@ type WhisperFormOutput_Markdown struct {
 func (x *WhisperFormOutput_Markdown) Reset() {
 	*x = WhisperFormOutput_Markdown{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[25]
+		mi := &file_whisper_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2049,7 +2247,7 @@ func (x *WhisperFormOutput_Markdown) String() string {
 func (*WhisperFormOutput_Markdown) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Markdown) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[25]
+	mi := &file_whisper_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2083,7 +2281,7 @@ type WhisperFormOutput_Number struct {
 func (x *WhisperFormOutput_Number) Reset() {
 	*x = WhisperFormOutput_Number{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[26]
+		mi := &file_whisper_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2096,7 +2294,7 @@ func (x *WhisperFormOutput_Number) String() string {
 func (*WhisperFormOutput_Number) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Number) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[26]
+	mi := &file_whisper_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2130,7 +2328,7 @@ type WhisperFormOutput_Password struct {
 func (x *WhisperFormOutput_Password) Reset() {
 	*x = WhisperFormOutput_Password{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[27]
+		mi := &file_whisper_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2143,7 +2341,7 @@ func (x *WhisperFormOutput_Password) String() string {
 func (*WhisperFormOutput_Password) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Password) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[27]
+	mi := &file_whisper_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2177,7 +2375,7 @@ type WhisperFormOutput_Radio struct {
 func (x *WhisperFormOutput_Radio) Reset() {
 	*x = WhisperFormOutput_Radio{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[28]
+		mi := &file_whisper_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2190,7 +2388,7 @@ func (x *WhisperFormOutput_Radio) String() string {
 func (*WhisperFormOutput_Radio) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Radio) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[28]
+	mi := &file_whisper_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2224,7 +2422,7 @@ type WhisperFormOutput_Select struct {
 func (x *WhisperFormOutput_Select) Reset() {
 	*x = WhisperFormOutput_Select{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[29]
+		mi := &file_whisper_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2237,7 +2435,7 @@ func (x *WhisperFormOutput_Select) String() string {
 func (*WhisperFormOutput_Select) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Select) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[29]
+	mi := &file_whisper_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2271,7 +2469,7 @@ type WhisperFormOutput_Tel struct {
 func (x *WhisperFormOutput_Tel) Reset() {
 	*x = WhisperFormOutput_Tel{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[30]
+		mi := &file_whisper_proto_msgTypes[33]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2284,7 +2482,7 @@ func (x *WhisperFormOutput_Tel) String() string {
 func (*WhisperFormOutput_Tel) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Tel) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[30]
+	mi := &file_whisper_proto_msgTypes[33]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2318,7 +2516,7 @@ type WhisperFormOutput_Text struct {
 func (x *WhisperFormOutput_Text) Reset() {
 	*x = WhisperFormOutput_Text{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[31]
+		mi := &file_whisper_proto_msgTypes[34]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2331,7 +2529,7 @@ func (x *WhisperFormOutput_Text) String() string {
 func (*WhisperFormOutput_Text) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Text) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[31]
+	mi := &file_whisper_proto_msgTypes[34]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2365,7 +2563,7 @@ type WhisperFormOutput_Time struct {
 func (x *WhisperFormOutput_Time) Reset() {
 	*x = WhisperFormOutput_Time{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[32]
+		mi := &file_whisper_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2378,7 +2576,7 @@ func (x *WhisperFormOutput_Time) String() string {
 func (*WhisperFormOutput_Time) ProtoMessage() {}
 
 func (x *WhisperFormOutput_Time) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[32]
+	mi := &file_whisper_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2401,6 +2599,100 @@ func (x *WhisperFormOutput_Time) GetValue() *timestamp.Timestamp {
 	return nil
 }
 
+type WhisperDisambiguationElement_Option struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Label string `protobuf:"bytes,1,opt,name=label,proto3" json:"label,omitempty"`
+}
+
+func (x *WhisperDisambiguationElement_Option) Reset() {
+	*x = WhisperDisambiguationElement_Option{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_whisper_proto_msgTypes[38]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhisperDisambiguationElement_Option) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhisperDisambiguationElement_Option) ProtoMessage() {}
+
+func (x *WhisperDisambiguationElement_Option) ProtoReflect() protoreflect.Message {
+	mi := &file_whisper_proto_msgTypes[38]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhisperDisambiguationElement_Option.ProtoReflect.Descriptor instead.
+func (*WhisperDisambiguationElement_Option) Descriptor() ([]byte, []int) {
+	return file_whisper_proto_rawDescGZIP(), []int{11, 0}
+}
+
+func (x *WhisperDisambiguationElement_Option) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+type WhisperDisambiguationElement_Text struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Body string `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
+}
+
+func (x *WhisperDisambiguationElement_Text) Reset() {
+	*x = WhisperDisambiguationElement_Text{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_whisper_proto_msgTypes[39]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *WhisperDisambiguationElement_Text) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WhisperDisambiguationElement_Text) ProtoMessage() {}
+
+func (x *WhisperDisambiguationElement_Text) ProtoReflect() protoreflect.Message {
+	mi := &file_whisper_proto_msgTypes[39]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WhisperDisambiguationElement_Text.ProtoReflect.Descriptor instead.
+func (*WhisperDisambiguationElement_Text) Descriptor() ([]byte, []int) {
+	return file_whisper_proto_rawDescGZIP(), []int{11, 1}
+}
+
+func (x *WhisperDisambiguationElement_Text) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
 type WhisperListElement_Pair struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2415,7 +2707,7 @@ type WhisperListElement_Pair struct {
 func (x *WhisperListElement_Pair) Reset() {
 	*x = WhisperListElement_Pair{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[35]
+		mi := &file_whisper_proto_msgTypes[41]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2428,7 +2720,7 @@ func (x *WhisperListElement_Pair) String() string {
 func (*WhisperListElement_Pair) ProtoMessage() {}
 
 func (x *WhisperListElement_Pair) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[35]
+	mi := &file_whisper_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2441,7 +2733,7 @@ func (x *WhisperListElement_Pair) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhisperListElement_Pair.ProtoReflect.Descriptor instead.
 func (*WhisperListElement_Pair) Descriptor() ([]byte, []int) {
-	return file_whisper_proto_rawDescGZIP(), []int{11, 0}
+	return file_whisper_proto_rawDescGZIP(), []int{14, 0}
 }
 
 func (x *WhisperListElement_Pair) GetLabel() string {
@@ -2486,7 +2778,7 @@ type WhisperListElement_Message struct {
 func (x *WhisperListElement_Message) Reset() {
 	*x = WhisperListElement_Message{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[36]
+		mi := &file_whisper_proto_msgTypes[42]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2499,7 +2791,7 @@ func (x *WhisperListElement_Message) String() string {
 func (*WhisperListElement_Message) ProtoMessage() {}
 
 func (x *WhisperListElement_Message) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[36]
+	mi := &file_whisper_proto_msgTypes[42]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2512,7 +2804,7 @@ func (x *WhisperListElement_Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhisperListElement_Message.ProtoReflect.Descriptor instead.
 func (*WhisperListElement_Message) Descriptor() ([]byte, []int) {
-	return file_whisper_proto_rawDescGZIP(), []int{11, 1}
+	return file_whisper_proto_rawDescGZIP(), []int{14, 1}
 }
 
 func (x *WhisperListElement_Message) GetHeader() string {
@@ -2554,7 +2846,7 @@ type WhisperListElement_Divider struct {
 func (x *WhisperListElement_Divider) Reset() {
 	*x = WhisperListElement_Divider{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_whisper_proto_msgTypes[37]
+		mi := &file_whisper_proto_msgTypes[43]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2567,7 +2859,7 @@ func (x *WhisperListElement_Divider) String() string {
 func (*WhisperListElement_Divider) ProtoMessage() {}
 
 func (x *WhisperListElement_Divider) ProtoReflect() protoreflect.Message {
-	mi := &file_whisper_proto_msgTypes[37]
+	mi := &file_whisper_proto_msgTypes[43]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2580,7 +2872,7 @@ func (x *WhisperListElement_Divider) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhisperListElement_Divider.ProtoReflect.Descriptor instead.
 func (*WhisperListElement_Divider) Descriptor() ([]byte, []int) {
-	return file_whisper_proto_rawDescGZIP(), []int{11, 2}
+	return file_whisper_proto_rawDescGZIP(), []int{14, 2}
 }
 
 func (x *WhisperListElement_Divider) GetStyle() WhisperListElement_Style {
@@ -2844,81 +3136,125 @@ var file_whisper_proto_rawDesc = []byte{
 	0x74, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x42, 0x1a, 0x0a, 0x18, 0x57, 0x68, 0x69, 0x73,
 	0x70, 0x65, 0x72, 0x46, 0x6f, 0x72, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x4f,
-	0x6e, 0x65, 0x6f, 0x66, 0x22, 0x83, 0x02, 0x0a, 0x12, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72,
-	0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65,
-	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x26, 0x0a, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73,
-	0x70, 0x65, 0x72, 0x4d, 0x65, 0x74, 0x61, 0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x12, 0x43, 0x0a,
-	0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x27, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c,
-	0x69, 0x73, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x45, 0x6c, 0x65, 0x6d, 0x65,
-	0x6e, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x6e,
-	0x74, 0x73, 0x1a, 0x56, 0x0a, 0x0d, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x45, 0x6e,
-	0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x2f, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69,
-	0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x52,
-	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0xfd, 0x05, 0x0a, 0x12, 0x57,
-	0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e,
-	0x74, 0x12, 0x14, 0x0a, 0x05, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d,
-	0x52, 0x05, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x78, 0x74, 0x72, 0x61,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x65, 0x78, 0x74, 0x72, 0x61, 0x12, 0x34, 0x0a,
-	0x04, 0x70, 0x61, 0x69, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45,
-	0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x50, 0x61, 0x69, 0x72, 0x48, 0x00, 0x52, 0x04, 0x70,
-	0x61, 0x69, 0x72, 0x12, 0x3d, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x05,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69,
-	0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e,
-	0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x48, 0x00, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x12, 0x3d, 0x0a, 0x07, 0x64, 0x69, 0x76, 0x69, 0x64, 0x65, 0x72, 0x18, 0x06, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73,
-	0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x44,
-	0x69, 0x76, 0x69, 0x64, 0x65, 0x72, 0x48, 0x00, 0x52, 0x07, 0x64, 0x69, 0x76, 0x69, 0x64, 0x65,
-	0x72, 0x1a, 0x85, 0x01, 0x0a, 0x04, 0x50, 0x61, 0x69, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x61,
-	0x62, 0x65, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c,
-	0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x35, 0x0a, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68,
+	0x6e, 0x65, 0x6f, 0x66, 0x22, 0xa1, 0x02, 0x0a, 0x1c, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72,
+	0x44, 0x69, 0x73, 0x61, 0x6d, 0x62, 0x69, 0x67, 0x75, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12,
+	0x26, 0x0a, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4d, 0x65, 0x74,
+	0x61, 0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x12, 0x4d, 0x0a, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x31, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x44, 0x69, 0x73, 0x61, 0x6d, 0x62, 0x69,
+	0x67, 0x75, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x45,
+	0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52, 0x08, 0x65, 0x6c,
+	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x1a, 0x60, 0x0a, 0x0d, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e,
+	0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x39, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x44, 0x69, 0x73, 0x61, 0x6d, 0x62, 0x69, 0x67,
+	0x75, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x05, 0x76,
+	0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x86, 0x02, 0x0a, 0x1c, 0x57, 0x68, 0x69,
+	0x73, 0x70, 0x65, 0x72, 0x44, 0x69, 0x73, 0x61, 0x6d, 0x62, 0x69, 0x67, 0x75, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x6f, 0x72, 0x64,
+	0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x12,
+	0x44, 0x0a, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x2a, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x44,
+	0x69, 0x73, 0x61, 0x6d, 0x62, 0x69, 0x67, 0x75, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x45, 0x6c, 0x65,
+	0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x06, 0x6f,
+	0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3e, 0x0a, 0x04, 0x74, 0x65, 0x78, 0x74, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73,
+	0x70, 0x65, 0x72, 0x44, 0x69, 0x73, 0x61, 0x6d, 0x62, 0x69, 0x67, 0x75, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x54, 0x65, 0x78, 0x74, 0x48, 0x00, 0x52,
+	0x04, 0x74, 0x65, 0x78, 0x74, 0x1a, 0x1e, 0x0a, 0x06, 0x4f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12,
+	0x14, 0x0a, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
+	0x6c, 0x61, 0x62, 0x65, 0x6c, 0x1a, 0x1a, 0x0a, 0x04, 0x54, 0x65, 0x78, 0x74, 0x12, 0x12, 0x0a,
+	0x04, 0x62, 0x6f, 0x64, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x62, 0x6f, 0x64,
+	0x79, 0x42, 0x0e, 0x0a, 0x0c, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x4f, 0x6e, 0x65, 0x6f,
+	0x66, 0x22, 0x3b, 0x0a, 0x1d, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x44, 0x69, 0x73, 0x61,
+	0x6d, 0x62, 0x69, 0x67, 0x75, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x83,
+	0x02, 0x0a, 0x12, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12,
+	0x26, 0x0a, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4d, 0x65, 0x74,
+	0x61, 0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x12, 0x43, 0x0a, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65,
+	0x6e, 0x74, 0x73, 0x18, 0x03, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x2e, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x45, 0x6e, 0x74,
+	0x72, 0x79, 0x52, 0x08, 0x65, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x1a, 0x56, 0x0a, 0x0d,
+	0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a,
+	0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12,
+	0x2f, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69,
+	0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
+	0x3a, 0x02, 0x38, 0x01, 0x22, 0xfd, 0x05, 0x0a, 0x12, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72,
+	0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x6f,
+	0x72, 0x64, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x05, 0x6f, 0x72, 0x64, 0x65,
+	0x72, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x78, 0x74, 0x72, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08,
+	0x52, 0x05, 0x65, 0x78, 0x74, 0x72, 0x61, 0x12, 0x34, 0x0a, 0x04, 0x70, 0x61, 0x69, 0x72, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68,
 	0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74,
-	0x2e, 0x53, 0x74, 0x79, 0x6c, 0x65, 0x52, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x12, 0x1a, 0x0a,
-	0x08, 0x63, 0x6f, 0x70, 0x79, 0x61, 0x62, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52,
-	0x08, 0x63, 0x6f, 0x70, 0x79, 0x61, 0x62, 0x6c, 0x65, 0x1a, 0xa3, 0x01, 0x0a, 0x07, 0x4d, 0x65,
-	0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x12, 0x12, 0x0a,
-	0x04, 0x62, 0x6f, 0x64, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x62, 0x6f, 0x64,
-	0x79, 0x12, 0x35, 0x0a, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e,
-	0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72,
-	0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x53, 0x74, 0x79, 0x6c,
-	0x65, 0x52, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x12, 0x35, 0x0a, 0x05, 0x61, 0x6c, 0x69, 0x67,
-	0x6e, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
-	0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65,
-	0x6e, 0x74, 0x2e, 0x41, 0x6c, 0x69, 0x67, 0x6e, 0x52, 0x05, 0x61, 0x6c, 0x69, 0x67, 0x6e, 0x1a,
-	0x40, 0x0a, 0x07, 0x44, 0x69, 0x76, 0x69, 0x64, 0x65, 0x72, 0x12, 0x35, 0x0a, 0x05, 0x73, 0x74,
-	0x79, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65,
-	0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x53, 0x74, 0x79, 0x6c, 0x65, 0x52, 0x05, 0x73, 0x74, 0x79, 0x6c,
-	0x65, 0x22, 0x4b, 0x0a, 0x05, 0x53, 0x74, 0x79, 0x6c, 0x65, 0x12, 0x0e, 0x0a, 0x0a, 0x53, 0x54,
-	0x59, 0x4c, 0x45, 0x5f, 0x4e, 0x4f, 0x4e, 0x45, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d, 0x53, 0x54,
-	0x59, 0x4c, 0x45, 0x5f, 0x53, 0x55, 0x43, 0x43, 0x45, 0x53, 0x53, 0x10, 0x01, 0x12, 0x0e, 0x0a,
-	0x0a, 0x53, 0x54, 0x59, 0x4c, 0x45, 0x5f, 0x57, 0x41, 0x52, 0x4e, 0x10, 0x02, 0x12, 0x0f, 0x0a,
-	0x0b, 0x53, 0x54, 0x59, 0x4c, 0x45, 0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x03, 0x22, 0x3a,
-	0x0a, 0x05, 0x41, 0x6c, 0x69, 0x67, 0x6e, 0x12, 0x0e, 0x0a, 0x0a, 0x41, 0x4c, 0x49, 0x47, 0x4e,
-	0x5f, 0x4c, 0x45, 0x46, 0x54, 0x10, 0x00, 0x12, 0x10, 0x0a, 0x0c, 0x41, 0x4c, 0x49, 0x47, 0x4e,
-	0x5f, 0x43, 0x45, 0x4e, 0x54, 0x45, 0x52, 0x10, 0x01, 0x12, 0x0f, 0x0a, 0x0b, 0x41, 0x4c, 0x49,
-	0x47, 0x4e, 0x5f, 0x52, 0x49, 0x47, 0x48, 0x54, 0x10, 0x02, 0x42, 0x0e, 0x0a, 0x0c, 0x45, 0x6c,
-	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x4f, 0x6e, 0x65, 0x6f, 0x66, 0x32, 0xb2, 0x02, 0x0a, 0x07, 0x57,
-	0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x12, 0x48, 0x0a, 0x0f, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65,
-	0x72, 0x4d, 0x61, 0x72, 0x6b, 0x64, 0x6f, 0x77, 0x6e, 0x12, 0x1d, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4d, 0x61, 0x72, 0x6b, 0x64, 0x6f, 0x77,
-	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
-	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79,
-	0x12, 0x4d, 0x0a, 0x0e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x43, 0x6f, 0x6e, 0x66, 0x69,
-	0x72, 0x6d, 0x12, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70,
-	0x65, 0x72, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x1a, 0x1d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72,
-	0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x2e, 0x50, 0x61, 0x69, 0x72, 0x48, 0x00, 0x52, 0x04, 0x70, 0x61, 0x69, 0x72, 0x12, 0x3d, 0x0a,
+	0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69,
+	0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x48, 0x00, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x3d, 0x0a, 0x07,
+	0x64, 0x69, 0x76, 0x69, 0x64, 0x65, 0x72, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73,
+	0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x44, 0x69, 0x76, 0x69, 0x64, 0x65, 0x72,
+	0x48, 0x00, 0x52, 0x07, 0x64, 0x69, 0x76, 0x69, 0x64, 0x65, 0x72, 0x1a, 0x85, 0x01, 0x0a, 0x04,
+	0x50, 0x61, 0x69, 0x72, 0x12, 0x14, 0x0a, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x6c, 0x61, 0x62, 0x65, 0x6c, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
+	0x12, 0x35, 0x0a, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32,
+	0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c,
+	0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x53, 0x74, 0x79, 0x6c, 0x65,
+	0x52, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x63, 0x6f, 0x70, 0x79, 0x61,
+	0x62, 0x6c, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x63, 0x6f, 0x70, 0x79, 0x61,
+	0x62, 0x6c, 0x65, 0x1a, 0xa3, 0x01, 0x0a, 0x07, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12,
+	0x16, 0x0a, 0x06, 0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x06, 0x68, 0x65, 0x61, 0x64, 0x65, 0x72, 0x12, 0x12, 0x0a, 0x04, 0x62, 0x6f, 0x64, 0x79, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x62, 0x6f, 0x64, 0x79, 0x12, 0x35, 0x0a, 0x05, 0x73,
+	0x74, 0x79, 0x6c, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c,
+	0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x53, 0x74, 0x79, 0x6c, 0x65, 0x52, 0x05, 0x73, 0x74, 0x79,
+	0x6c, 0x65, 0x12, 0x35, 0x0a, 0x05, 0x61, 0x6c, 0x69, 0x67, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28,
+	0x0e, 0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65,
+	0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x41, 0x6c, 0x69,
+	0x67, 0x6e, 0x52, 0x05, 0x61, 0x6c, 0x69, 0x67, 0x6e, 0x1a, 0x40, 0x0a, 0x07, 0x44, 0x69, 0x76,
+	0x69, 0x64, 0x65, 0x72, 0x12, 0x35, 0x0a, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0e, 0x32, 0x1f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73,
+	0x70, 0x65, 0x72, 0x4c, 0x69, 0x73, 0x74, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x53,
+	0x74, 0x79, 0x6c, 0x65, 0x52, 0x05, 0x73, 0x74, 0x79, 0x6c, 0x65, 0x22, 0x4b, 0x0a, 0x05, 0x53,
+	0x74, 0x79, 0x6c, 0x65, 0x12, 0x0e, 0x0a, 0x0a, 0x53, 0x54, 0x59, 0x4c, 0x45, 0x5f, 0x4e, 0x4f,
+	0x4e, 0x45, 0x10, 0x00, 0x12, 0x11, 0x0a, 0x0d, 0x53, 0x54, 0x59, 0x4c, 0x45, 0x5f, 0x53, 0x55,
+	0x43, 0x43, 0x45, 0x53, 0x53, 0x10, 0x01, 0x12, 0x0e, 0x0a, 0x0a, 0x53, 0x54, 0x59, 0x4c, 0x45,
+	0x5f, 0x57, 0x41, 0x52, 0x4e, 0x10, 0x02, 0x12, 0x0f, 0x0a, 0x0b, 0x53, 0x54, 0x59, 0x4c, 0x45,
+	0x5f, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x03, 0x22, 0x3a, 0x0a, 0x05, 0x41, 0x6c, 0x69, 0x67,
+	0x6e, 0x12, 0x0e, 0x0a, 0x0a, 0x41, 0x4c, 0x49, 0x47, 0x4e, 0x5f, 0x4c, 0x45, 0x46, 0x54, 0x10,
+	0x00, 0x12, 0x10, 0x0a, 0x0c, 0x41, 0x4c, 0x49, 0x47, 0x4e, 0x5f, 0x43, 0x45, 0x4e, 0x54, 0x45,
+	0x52, 0x10, 0x01, 0x12, 0x0f, 0x0a, 0x0b, 0x41, 0x4c, 0x49, 0x47, 0x4e, 0x5f, 0x52, 0x49, 0x47,
+	0x48, 0x54, 0x10, 0x02, 0x42, 0x0e, 0x0a, 0x0c, 0x45, 0x6c, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x4f,
+	0x6e, 0x65, 0x6f, 0x66, 0x32, 0x88, 0x03, 0x0a, 0x07, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72,
+	0x12, 0x48, 0x0a, 0x0f, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x4d, 0x61, 0x72, 0x6b, 0x64,
+	0x6f, 0x77, 0x6e, 0x12, 0x1d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73,
+	0x70, 0x65, 0x72, 0x4d, 0x61, 0x72, 0x6b, 0x64, 0x6f, 0x77, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4d, 0x0a, 0x0e, 0x57, 0x68,
+	0x69, 0x73, 0x70, 0x65, 0x72, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72, 0x6d, 0x12, 0x1c, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x72, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x72,
+	0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x54, 0x0a, 0x15, 0x57, 0x68, 0x69,
+	0x73, 0x70, 0x65, 0x72, 0x44, 0x69, 0x73, 0x61, 0x6d, 0x62, 0x69, 0x67, 0x75, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x12, 0x23, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70,
+	0x65, 0x72, 0x44, 0x69, 0x73, 0x61, 0x6d, 0x62, 0x69, 0x67, 0x75, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12,
 	0x4c, 0x0a, 0x0b, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x46, 0x6f, 0x72, 0x6d, 0x12, 0x19,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x57, 0x68, 0x69, 0x73, 0x70, 0x65, 0x72, 0x46, 0x6f,
 	0x72, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x70, 0x72, 0x6f, 0x74,
@@ -2945,112 +3281,126 @@ func file_whisper_proto_rawDescGZIP() []byte {
 }
 
 var file_whisper_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_whisper_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_whisper_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_whisper_proto_goTypes = []interface{}{
-	(WhisperListElement_Style)(0),      // 0: proto.WhisperListElement.Style
-	(WhisperListElement_Align)(0),      // 1: proto.WhisperListElement.Align
-	(*WhisperMeta)(nil),                // 2: proto.WhisperMeta
-	(*WhisperMarkdownRequest)(nil),     // 3: proto.WhisperMarkdownRequest
-	(*WhisperConfirmRequest)(nil),      // 4: proto.WhisperConfirmRequest
-	(*WhisperConfirmResponse)(nil),     // 5: proto.WhisperConfirmResponse
-	(*WhisperFormRequest)(nil),         // 6: proto.WhisperFormRequest
-	(*WhisperFormInput)(nil),           // 7: proto.WhisperFormInput
-	(*WhisperFormOutput)(nil),          // 8: proto.WhisperFormOutput
-	(*WhisperFormResult)(nil),          // 9: proto.WhisperFormResult
-	(*WhisperFormUpdate)(nil),          // 10: proto.WhisperFormUpdate
-	(*WhisperFormStreamResponse)(nil),  // 11: proto.WhisperFormStreamResponse
-	(*WhisperListRequest)(nil),         // 12: proto.WhisperListRequest
-	(*WhisperListElement)(nil),         // 13: proto.WhisperListElement
-	nil,                                // 14: proto.WhisperFormRequest.InputsEntry
-	(*WhisperFormInput_Checkbox)(nil),  // 15: proto.WhisperFormInput.Checkbox
-	(*WhisperFormInput_Email)(nil),     // 16: proto.WhisperFormInput.Email
-	(*WhisperFormInput_Markdown)(nil),  // 17: proto.WhisperFormInput.Markdown
-	(*WhisperFormInput_Number)(nil),    // 18: proto.WhisperFormInput.Number
-	(*WhisperFormInput_Password)(nil),  // 19: proto.WhisperFormInput.Password
-	(*WhisperFormInput_Radio)(nil),     // 20: proto.WhisperFormInput.Radio
-	(*WhisperFormInput_Select)(nil),    // 21: proto.WhisperFormInput.Select
-	(*WhisperFormInput_Tel)(nil),       // 22: proto.WhisperFormInput.Tel
-	(*WhisperFormInput_Text)(nil),      // 23: proto.WhisperFormInput.Text
-	(*WhisperFormInput_Time)(nil),      // 24: proto.WhisperFormInput.Time
-	(*WhisperFormOutput_Checkbox)(nil), // 25: proto.WhisperFormOutput.Checkbox
-	(*WhisperFormOutput_Email)(nil),    // 26: proto.WhisperFormOutput.Email
-	(*WhisperFormOutput_Markdown)(nil), // 27: proto.WhisperFormOutput.Markdown
-	(*WhisperFormOutput_Number)(nil),   // 28: proto.WhisperFormOutput.Number
-	(*WhisperFormOutput_Password)(nil), // 29: proto.WhisperFormOutput.Password
-	(*WhisperFormOutput_Radio)(nil),    // 30: proto.WhisperFormOutput.Radio
-	(*WhisperFormOutput_Select)(nil),   // 31: proto.WhisperFormOutput.Select
-	(*WhisperFormOutput_Tel)(nil),      // 32: proto.WhisperFormOutput.Tel
-	(*WhisperFormOutput_Text)(nil),     // 33: proto.WhisperFormOutput.Text
-	(*WhisperFormOutput_Time)(nil),     // 34: proto.WhisperFormOutput.Time
-	nil,                                // 35: proto.WhisperFormResult.OutputsEntry
-	nil,                                // 36: proto.WhisperListRequest.ElementsEntry
-	(*WhisperListElement_Pair)(nil),    // 37: proto.WhisperListElement.Pair
-	(*WhisperListElement_Message)(nil), // 38: proto.WhisperListElement.Message
-	(*WhisperListElement_Divider)(nil), // 39: proto.WhisperListElement.Divider
-	(*Session)(nil),                    // 40: proto.Session
-	(*timestamp.Timestamp)(nil),        // 41: google.protobuf.Timestamp
-	(*empty.Empty)(nil),                // 42: google.protobuf.Empty
+	(WhisperListElement_Style)(0),               // 0: proto.WhisperListElement.Style
+	(WhisperListElement_Align)(0),               // 1: proto.WhisperListElement.Align
+	(*WhisperMeta)(nil),                         // 2: proto.WhisperMeta
+	(*WhisperMarkdownRequest)(nil),              // 3: proto.WhisperMarkdownRequest
+	(*WhisperConfirmRequest)(nil),               // 4: proto.WhisperConfirmRequest
+	(*WhisperConfirmResponse)(nil),              // 5: proto.WhisperConfirmResponse
+	(*WhisperFormRequest)(nil),                  // 6: proto.WhisperFormRequest
+	(*WhisperFormInput)(nil),                    // 7: proto.WhisperFormInput
+	(*WhisperFormOutput)(nil),                   // 8: proto.WhisperFormOutput
+	(*WhisperFormResult)(nil),                   // 9: proto.WhisperFormResult
+	(*WhisperFormUpdate)(nil),                   // 10: proto.WhisperFormUpdate
+	(*WhisperFormStreamResponse)(nil),           // 11: proto.WhisperFormStreamResponse
+	(*WhisperDisambiguationRequest)(nil),        // 12: proto.WhisperDisambiguationRequest
+	(*WhisperDisambiguationElement)(nil),        // 13: proto.WhisperDisambiguationElement
+	(*WhisperDisambiguationResponse)(nil),       // 14: proto.WhisperDisambiguationResponse
+	(*WhisperListRequest)(nil),                  // 15: proto.WhisperListRequest
+	(*WhisperListElement)(nil),                  // 16: proto.WhisperListElement
+	nil,                                         // 17: proto.WhisperFormRequest.InputsEntry
+	(*WhisperFormInput_Checkbox)(nil),           // 18: proto.WhisperFormInput.Checkbox
+	(*WhisperFormInput_Email)(nil),              // 19: proto.WhisperFormInput.Email
+	(*WhisperFormInput_Markdown)(nil),           // 20: proto.WhisperFormInput.Markdown
+	(*WhisperFormInput_Number)(nil),             // 21: proto.WhisperFormInput.Number
+	(*WhisperFormInput_Password)(nil),           // 22: proto.WhisperFormInput.Password
+	(*WhisperFormInput_Radio)(nil),              // 23: proto.WhisperFormInput.Radio
+	(*WhisperFormInput_Select)(nil),             // 24: proto.WhisperFormInput.Select
+	(*WhisperFormInput_Tel)(nil),                // 25: proto.WhisperFormInput.Tel
+	(*WhisperFormInput_Text)(nil),               // 26: proto.WhisperFormInput.Text
+	(*WhisperFormInput_Time)(nil),               // 27: proto.WhisperFormInput.Time
+	(*WhisperFormOutput_Checkbox)(nil),          // 28: proto.WhisperFormOutput.Checkbox
+	(*WhisperFormOutput_Email)(nil),             // 29: proto.WhisperFormOutput.Email
+	(*WhisperFormOutput_Markdown)(nil),          // 30: proto.WhisperFormOutput.Markdown
+	(*WhisperFormOutput_Number)(nil),            // 31: proto.WhisperFormOutput.Number
+	(*WhisperFormOutput_Password)(nil),          // 32: proto.WhisperFormOutput.Password
+	(*WhisperFormOutput_Radio)(nil),             // 33: proto.WhisperFormOutput.Radio
+	(*WhisperFormOutput_Select)(nil),            // 34: proto.WhisperFormOutput.Select
+	(*WhisperFormOutput_Tel)(nil),               // 35: proto.WhisperFormOutput.Tel
+	(*WhisperFormOutput_Text)(nil),              // 36: proto.WhisperFormOutput.Text
+	(*WhisperFormOutput_Time)(nil),              // 37: proto.WhisperFormOutput.Time
+	nil,                                         // 38: proto.WhisperFormResult.OutputsEntry
+	nil,                                         // 39: proto.WhisperDisambiguationRequest.ElementsEntry
+	(*WhisperDisambiguationElement_Option)(nil), // 40: proto.WhisperDisambiguationElement.Option
+	(*WhisperDisambiguationElement_Text)(nil),   // 41: proto.WhisperDisambiguationElement.Text
+	nil,                                // 42: proto.WhisperListRequest.ElementsEntry
+	(*WhisperListElement_Pair)(nil),    // 43: proto.WhisperListElement.Pair
+	(*WhisperListElement_Message)(nil), // 44: proto.WhisperListElement.Message
+	(*WhisperListElement_Divider)(nil), // 45: proto.WhisperListElement.Divider
+	(*Session)(nil),                    // 46: proto.Session
+	(*timestamp.Timestamp)(nil),        // 47: google.protobuf.Timestamp
+	(*empty.Empty)(nil),                // 48: google.protobuf.Empty
 }
 var file_whisper_proto_depIdxs = []int32{
-	40, // 0: proto.WhisperMarkdownRequest.session:type_name -> proto.Session
+	46, // 0: proto.WhisperMarkdownRequest.session:type_name -> proto.Session
 	2,  // 1: proto.WhisperMarkdownRequest.meta:type_name -> proto.WhisperMeta
-	40, // 2: proto.WhisperConfirmRequest.session:type_name -> proto.Session
+	46, // 2: proto.WhisperConfirmRequest.session:type_name -> proto.Session
 	2,  // 3: proto.WhisperConfirmRequest.meta:type_name -> proto.WhisperMeta
-	40, // 4: proto.WhisperFormRequest.session:type_name -> proto.Session
+	46, // 4: proto.WhisperFormRequest.session:type_name -> proto.Session
 	2,  // 5: proto.WhisperFormRequest.meta:type_name -> proto.WhisperMeta
-	14, // 6: proto.WhisperFormRequest.inputs:type_name -> proto.WhisperFormRequest.InputsEntry
-	15, // 7: proto.WhisperFormInput.checkbox:type_name -> proto.WhisperFormInput.Checkbox
-	16, // 8: proto.WhisperFormInput.email:type_name -> proto.WhisperFormInput.Email
-	17, // 9: proto.WhisperFormInput.markdown:type_name -> proto.WhisperFormInput.Markdown
-	18, // 10: proto.WhisperFormInput.number:type_name -> proto.WhisperFormInput.Number
-	19, // 11: proto.WhisperFormInput.password:type_name -> proto.WhisperFormInput.Password
-	20, // 12: proto.WhisperFormInput.radio:type_name -> proto.WhisperFormInput.Radio
-	21, // 13: proto.WhisperFormInput.select:type_name -> proto.WhisperFormInput.Select
-	22, // 14: proto.WhisperFormInput.tel:type_name -> proto.WhisperFormInput.Tel
-	23, // 15: proto.WhisperFormInput.text:type_name -> proto.WhisperFormInput.Text
-	24, // 16: proto.WhisperFormInput.time:type_name -> proto.WhisperFormInput.Time
-	25, // 17: proto.WhisperFormOutput.checkbox:type_name -> proto.WhisperFormOutput.Checkbox
-	26, // 18: proto.WhisperFormOutput.email:type_name -> proto.WhisperFormOutput.Email
-	27, // 19: proto.WhisperFormOutput.markdown:type_name -> proto.WhisperFormOutput.Markdown
-	28, // 20: proto.WhisperFormOutput.number:type_name -> proto.WhisperFormOutput.Number
-	29, // 21: proto.WhisperFormOutput.password:type_name -> proto.WhisperFormOutput.Password
-	30, // 22: proto.WhisperFormOutput.radio:type_name -> proto.WhisperFormOutput.Radio
-	31, // 23: proto.WhisperFormOutput.select:type_name -> proto.WhisperFormOutput.Select
-	32, // 24: proto.WhisperFormOutput.tel:type_name -> proto.WhisperFormOutput.Tel
-	33, // 25: proto.WhisperFormOutput.text:type_name -> proto.WhisperFormOutput.Text
-	34, // 26: proto.WhisperFormOutput.time:type_name -> proto.WhisperFormOutput.Time
-	35, // 27: proto.WhisperFormResult.outputs:type_name -> proto.WhisperFormResult.OutputsEntry
+	17, // 6: proto.WhisperFormRequest.inputs:type_name -> proto.WhisperFormRequest.InputsEntry
+	18, // 7: proto.WhisperFormInput.checkbox:type_name -> proto.WhisperFormInput.Checkbox
+	19, // 8: proto.WhisperFormInput.email:type_name -> proto.WhisperFormInput.Email
+	20, // 9: proto.WhisperFormInput.markdown:type_name -> proto.WhisperFormInput.Markdown
+	21, // 10: proto.WhisperFormInput.number:type_name -> proto.WhisperFormInput.Number
+	22, // 11: proto.WhisperFormInput.password:type_name -> proto.WhisperFormInput.Password
+	23, // 12: proto.WhisperFormInput.radio:type_name -> proto.WhisperFormInput.Radio
+	24, // 13: proto.WhisperFormInput.select:type_name -> proto.WhisperFormInput.Select
+	25, // 14: proto.WhisperFormInput.tel:type_name -> proto.WhisperFormInput.Tel
+	26, // 15: proto.WhisperFormInput.text:type_name -> proto.WhisperFormInput.Text
+	27, // 16: proto.WhisperFormInput.time:type_name -> proto.WhisperFormInput.Time
+	28, // 17: proto.WhisperFormOutput.checkbox:type_name -> proto.WhisperFormOutput.Checkbox
+	29, // 18: proto.WhisperFormOutput.email:type_name -> proto.WhisperFormOutput.Email
+	30, // 19: proto.WhisperFormOutput.markdown:type_name -> proto.WhisperFormOutput.Markdown
+	31, // 20: proto.WhisperFormOutput.number:type_name -> proto.WhisperFormOutput.Number
+	32, // 21: proto.WhisperFormOutput.password:type_name -> proto.WhisperFormOutput.Password
+	33, // 22: proto.WhisperFormOutput.radio:type_name -> proto.WhisperFormOutput.Radio
+	34, // 23: proto.WhisperFormOutput.select:type_name -> proto.WhisperFormOutput.Select
+	35, // 24: proto.WhisperFormOutput.tel:type_name -> proto.WhisperFormOutput.Tel
+	36, // 25: proto.WhisperFormOutput.text:type_name -> proto.WhisperFormOutput.Text
+	37, // 26: proto.WhisperFormOutput.time:type_name -> proto.WhisperFormOutput.Time
+	38, // 27: proto.WhisperFormResult.outputs:type_name -> proto.WhisperFormResult.OutputsEntry
 	8,  // 28: proto.WhisperFormUpdate.output:type_name -> proto.WhisperFormOutput
 	9,  // 29: proto.WhisperFormStreamResponse.result:type_name -> proto.WhisperFormResult
 	10, // 30: proto.WhisperFormStreamResponse.update:type_name -> proto.WhisperFormUpdate
-	40, // 31: proto.WhisperListRequest.session:type_name -> proto.Session
-	2,  // 32: proto.WhisperListRequest.meta:type_name -> proto.WhisperMeta
-	36, // 33: proto.WhisperListRequest.elements:type_name -> proto.WhisperListRequest.ElementsEntry
-	37, // 34: proto.WhisperListElement.pair:type_name -> proto.WhisperListElement.Pair
-	38, // 35: proto.WhisperListElement.message:type_name -> proto.WhisperListElement.Message
-	39, // 36: proto.WhisperListElement.divider:type_name -> proto.WhisperListElement.Divider
-	7,  // 37: proto.WhisperFormRequest.InputsEntry.value:type_name -> proto.WhisperFormInput
-	41, // 38: proto.WhisperFormInput.Time.value:type_name -> google.protobuf.Timestamp
-	41, // 39: proto.WhisperFormOutput.Time.value:type_name -> google.protobuf.Timestamp
-	8,  // 40: proto.WhisperFormResult.OutputsEntry.value:type_name -> proto.WhisperFormOutput
-	13, // 41: proto.WhisperListRequest.ElementsEntry.value:type_name -> proto.WhisperListElement
-	0,  // 42: proto.WhisperListElement.Pair.style:type_name -> proto.WhisperListElement.Style
-	0,  // 43: proto.WhisperListElement.Message.style:type_name -> proto.WhisperListElement.Style
-	1,  // 44: proto.WhisperListElement.Message.align:type_name -> proto.WhisperListElement.Align
-	0,  // 45: proto.WhisperListElement.Divider.style:type_name -> proto.WhisperListElement.Style
-	3,  // 46: proto.Whisper.WhisperMarkdown:input_type -> proto.WhisperMarkdownRequest
-	4,  // 47: proto.Whisper.WhisperConfirm:input_type -> proto.WhisperConfirmRequest
-	6,  // 48: proto.Whisper.WhisperForm:input_type -> proto.WhisperFormRequest
-	12, // 49: proto.Whisper.WhisperList:input_type -> proto.WhisperListRequest
-	42, // 50: proto.Whisper.WhisperMarkdown:output_type -> google.protobuf.Empty
-	5,  // 51: proto.Whisper.WhisperConfirm:output_type -> proto.WhisperConfirmResponse
-	11, // 52: proto.Whisper.WhisperForm:output_type -> proto.WhisperFormStreamResponse
-	42, // 53: proto.Whisper.WhisperList:output_type -> google.protobuf.Empty
-	50, // [50:54] is the sub-list for method output_type
-	46, // [46:50] is the sub-list for method input_type
-	46, // [46:46] is the sub-list for extension type_name
-	46, // [46:46] is the sub-list for extension extendee
-	0,  // [0:46] is the sub-list for field type_name
+	46, // 31: proto.WhisperDisambiguationRequest.session:type_name -> proto.Session
+	2,  // 32: proto.WhisperDisambiguationRequest.meta:type_name -> proto.WhisperMeta
+	39, // 33: proto.WhisperDisambiguationRequest.elements:type_name -> proto.WhisperDisambiguationRequest.ElementsEntry
+	40, // 34: proto.WhisperDisambiguationElement.option:type_name -> proto.WhisperDisambiguationElement.Option
+	41, // 35: proto.WhisperDisambiguationElement.text:type_name -> proto.WhisperDisambiguationElement.Text
+	46, // 36: proto.WhisperListRequest.session:type_name -> proto.Session
+	2,  // 37: proto.WhisperListRequest.meta:type_name -> proto.WhisperMeta
+	42, // 38: proto.WhisperListRequest.elements:type_name -> proto.WhisperListRequest.ElementsEntry
+	43, // 39: proto.WhisperListElement.pair:type_name -> proto.WhisperListElement.Pair
+	44, // 40: proto.WhisperListElement.message:type_name -> proto.WhisperListElement.Message
+	45, // 41: proto.WhisperListElement.divider:type_name -> proto.WhisperListElement.Divider
+	7,  // 42: proto.WhisperFormRequest.InputsEntry.value:type_name -> proto.WhisperFormInput
+	47, // 43: proto.WhisperFormInput.Time.value:type_name -> google.protobuf.Timestamp
+	47, // 44: proto.WhisperFormOutput.Time.value:type_name -> google.protobuf.Timestamp
+	8,  // 45: proto.WhisperFormResult.OutputsEntry.value:type_name -> proto.WhisperFormOutput
+	13, // 46: proto.WhisperDisambiguationRequest.ElementsEntry.value:type_name -> proto.WhisperDisambiguationElement
+	16, // 47: proto.WhisperListRequest.ElementsEntry.value:type_name -> proto.WhisperListElement
+	0,  // 48: proto.WhisperListElement.Pair.style:type_name -> proto.WhisperListElement.Style
+	0,  // 49: proto.WhisperListElement.Message.style:type_name -> proto.WhisperListElement.Style
+	1,  // 50: proto.WhisperListElement.Message.align:type_name -> proto.WhisperListElement.Align
+	0,  // 51: proto.WhisperListElement.Divider.style:type_name -> proto.WhisperListElement.Style
+	3,  // 52: proto.Whisper.WhisperMarkdown:input_type -> proto.WhisperMarkdownRequest
+	4,  // 53: proto.Whisper.WhisperConfirm:input_type -> proto.WhisperConfirmRequest
+	12, // 54: proto.Whisper.WhisperDisambiguation:input_type -> proto.WhisperDisambiguationRequest
+	6,  // 55: proto.Whisper.WhisperForm:input_type -> proto.WhisperFormRequest
+	15, // 56: proto.Whisper.WhisperList:input_type -> proto.WhisperListRequest
+	48, // 57: proto.Whisper.WhisperMarkdown:output_type -> google.protobuf.Empty
+	5,  // 58: proto.Whisper.WhisperConfirm:output_type -> proto.WhisperConfirmResponse
+	48, // 59: proto.Whisper.WhisperDisambiguation:output_type -> google.protobuf.Empty
+	11, // 60: proto.Whisper.WhisperForm:output_type -> proto.WhisperFormStreamResponse
+	48, // 61: proto.Whisper.WhisperList:output_type -> google.protobuf.Empty
+	57, // [57:62] is the sub-list for method output_type
+	52, // [52:57] is the sub-list for method input_type
+	52, // [52:52] is the sub-list for extension type_name
+	52, // [52:52] is the sub-list for extension extendee
+	0,  // [0:52] is the sub-list for field type_name
 }
 
 func init() { file_whisper_proto_init() }
@@ -3181,7 +3531,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperListRequest); i {
+			switch v := v.(*WhisperDisambiguationRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3193,7 +3543,19 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperListElement); i {
+			switch v := v.(*WhisperDisambiguationElement); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_whisper_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhisperDisambiguationResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3205,7 +3567,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Checkbox); i {
+			switch v := v.(*WhisperListRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3217,19 +3579,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Email); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_whisper_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Markdown); i {
+			switch v := v.(*WhisperListElement); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3241,7 +3591,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Number); i {
+			switch v := v.(*WhisperFormInput_Checkbox); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3253,7 +3603,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Password); i {
+			switch v := v.(*WhisperFormInput_Email); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3265,7 +3615,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Radio); i {
+			switch v := v.(*WhisperFormInput_Markdown); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3277,7 +3627,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Select); i {
+			switch v := v.(*WhisperFormInput_Number); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3289,7 +3639,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Tel); i {
+			switch v := v.(*WhisperFormInput_Password); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3301,7 +3651,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Text); i {
+			switch v := v.(*WhisperFormInput_Radio); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3313,7 +3663,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormInput_Time); i {
+			switch v := v.(*WhisperFormInput_Select); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3325,7 +3675,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Checkbox); i {
+			switch v := v.(*WhisperFormInput_Tel); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3337,7 +3687,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Email); i {
+			switch v := v.(*WhisperFormInput_Text); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3349,7 +3699,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Markdown); i {
+			switch v := v.(*WhisperFormInput_Time); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3361,7 +3711,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Number); i {
+			switch v := v.(*WhisperFormOutput_Checkbox); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3373,7 +3723,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Password); i {
+			switch v := v.(*WhisperFormOutput_Email); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3385,7 +3735,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Radio); i {
+			switch v := v.(*WhisperFormOutput_Markdown); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3397,7 +3747,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Select); i {
+			switch v := v.(*WhisperFormOutput_Number); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3409,7 +3759,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Tel); i {
+			switch v := v.(*WhisperFormOutput_Password); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3421,7 +3771,7 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Text); i {
+			switch v := v.(*WhisperFormOutput_Radio); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3433,7 +3783,31 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhisperFormOutput_Time); i {
+			switch v := v.(*WhisperFormOutput_Select); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_whisper_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhisperFormOutput_Tel); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_whisper_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhisperFormOutput_Text); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3445,6 +3819,42 @@ func file_whisper_proto_init() {
 			}
 		}
 		file_whisper_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhisperFormOutput_Time); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_whisper_proto_msgTypes[38].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhisperDisambiguationElement_Option); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_whisper_proto_msgTypes[39].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*WhisperDisambiguationElement_Text); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_whisper_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WhisperListElement_Pair); i {
 			case 0:
 				return &v.state
@@ -3456,7 +3866,7 @@ func file_whisper_proto_init() {
 				return nil
 			}
 		}
-		file_whisper_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
+		file_whisper_proto_msgTypes[42].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WhisperListElement_Message); i {
 			case 0:
 				return &v.state
@@ -3468,7 +3878,7 @@ func file_whisper_proto_init() {
 				return nil
 			}
 		}
-		file_whisper_proto_msgTypes[37].Exporter = func(v interface{}, i int) interface{} {
+		file_whisper_proto_msgTypes[43].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WhisperListElement_Divider); i {
 			case 0:
 				return &v.state
@@ -3510,6 +3920,10 @@ func file_whisper_proto_init() {
 		(*WhisperFormStreamResponse_Update)(nil),
 	}
 	file_whisper_proto_msgTypes[11].OneofWrappers = []interface{}{
+		(*WhisperDisambiguationElement_Option_)(nil),
+		(*WhisperDisambiguationElement_Text_)(nil),
+	}
+	file_whisper_proto_msgTypes[14].OneofWrappers = []interface{}{
 		(*WhisperListElement_Pair_)(nil),
 		(*WhisperListElement_Message_)(nil),
 		(*WhisperListElement_Divider_)(nil),
@@ -3520,7 +3934,7 @@ func file_whisper_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_whisper_proto_rawDesc,
 			NumEnums:      2,
-			NumMessages:   38,
+			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -3551,6 +3965,8 @@ type WhisperClient interface {
 	WhisperMarkdown(ctx context.Context, in *WhisperMarkdownRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Send a confirm whisper
 	WhisperConfirm(ctx context.Context, in *WhisperConfirmRequest, opts ...grpc.CallOption) (*WhisperConfirmResponse, error)
+	// Send a disambiguation whisper
+	WhisperDisambiguation(ctx context.Context, in *WhisperDisambiguationRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	// Send a form whisper
 	WhisperForm(ctx context.Context, in *WhisperFormRequest, opts ...grpc.CallOption) (Whisper_WhisperFormClient, error)
 	// Send a list whisper
@@ -3577,6 +3993,15 @@ func (c *whisperClient) WhisperMarkdown(ctx context.Context, in *WhisperMarkdown
 func (c *whisperClient) WhisperConfirm(ctx context.Context, in *WhisperConfirmRequest, opts ...grpc.CallOption) (*WhisperConfirmResponse, error) {
 	out := new(WhisperConfirmResponse)
 	err := c.cc.Invoke(ctx, "/proto.Whisper/WhisperConfirm", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *whisperClient) WhisperDisambiguation(ctx context.Context, in *WhisperDisambiguationRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/proto.Whisper/WhisperDisambiguation", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -3630,6 +4055,8 @@ type WhisperServer interface {
 	WhisperMarkdown(context.Context, *WhisperMarkdownRequest) (*empty.Empty, error)
 	// Send a confirm whisper
 	WhisperConfirm(context.Context, *WhisperConfirmRequest) (*WhisperConfirmResponse, error)
+	// Send a disambiguation whisper
+	WhisperDisambiguation(context.Context, *WhisperDisambiguationRequest) (*empty.Empty, error)
 	// Send a form whisper
 	WhisperForm(*WhisperFormRequest, Whisper_WhisperFormServer) error
 	// Send a list whisper
@@ -3645,6 +4072,9 @@ func (*UnimplementedWhisperServer) WhisperMarkdown(context.Context, *WhisperMark
 }
 func (*UnimplementedWhisperServer) WhisperConfirm(context.Context, *WhisperConfirmRequest) (*WhisperConfirmResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WhisperConfirm not implemented")
+}
+func (*UnimplementedWhisperServer) WhisperDisambiguation(context.Context, *WhisperDisambiguationRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WhisperDisambiguation not implemented")
 }
 func (*UnimplementedWhisperServer) WhisperForm(*WhisperFormRequest, Whisper_WhisperFormServer) error {
 	return status.Errorf(codes.Unimplemented, "method WhisperForm not implemented")
@@ -3689,6 +4119,24 @@ func _Whisper_WhisperConfirm_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(WhisperServer).WhisperConfirm(ctx, req.(*WhisperConfirmRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Whisper_WhisperDisambiguation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WhisperDisambiguationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WhisperServer).WhisperDisambiguation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Whisper/WhisperDisambiguation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WhisperServer).WhisperDisambiguation(ctx, req.(*WhisperDisambiguationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -3743,6 +4191,10 @@ var _Whisper_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "WhisperConfirm",
 			Handler:    _Whisper_WhisperConfirm_Handler,
+		},
+		{
+			MethodName: "WhisperDisambiguation",
+			Handler:    _Whisper_WhisperDisambiguation_Handler,
 		},
 		{
 			MethodName: "WhisperList",

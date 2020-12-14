@@ -16,7 +16,7 @@ type WhisperClient struct {
 	session *Session
 }
 
-// WhisperMarkdown is used by loops to create markdown whispers
+// Markdown is used by loops to create markdown whispers
 func (m *WhisperClient) Markdown(ctx context.Context, content *WhisperContentMarkdown) error {
 	_, err := m.client.WhisperMarkdown(ctx, &proto.WhisperMarkdownRequest{
 		Meta: &proto.WhisperMeta{
@@ -28,7 +28,7 @@ func (m *WhisperClient) Markdown(ctx context.Context, content *WhisperContentMar
 	return err
 }
 
-// WhisperConfirm is used by loops to create confirm whispers
+// Confirm is used by loops to create confirm whispers
 func (m *WhisperClient) Confirm(ctx context.Context, content *WhisperContentConfirm) (bool, error) {
 	response, err := m.client.WhisperConfirm(ctx, &proto.WhisperConfirmRequest{
 		Meta: &proto.WhisperMeta{
@@ -50,7 +50,24 @@ func (m *WhisperClient) Confirm(ctx context.Context, content *WhisperContentConf
 	return response.Response, nil
 }
 
-// WhisperForm is used by loops to create form whispers
+// Disambiguation is used by loops to create disambiguation whispers
+func (m *WhisperClient) Disambiguation(ctx context.Context, content *WhisperContentDisambiguation) (bool, error) {
+	req, err := content.ToProto()
+	if err != nil {
+		return false, fmt.Errorf("failed to encode content to proto: %w", err)
+	}
+
+	req.Session = m.session.ToProto()
+
+	_, err = m.client.WhisperDisambiguation(ctx, req)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+// Form is used by loops to create form whispers
 func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (bool, map[string]WhisperContentFormOutput, error) {
 	inputs := make(map[string]*proto.WhisperFormInput, len(content.Inputs))
 	for key, input := range content.Inputs {
@@ -154,7 +171,7 @@ func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (
 	}
 }
 
-// WhisperForm is used by loops to create form whispers
+// List is used by loops to create list whispers
 func (m *WhisperClient) List(ctx context.Context, content *WhisperContentList) error {
 	req, err := content.ToProto()
 	if err != nil {

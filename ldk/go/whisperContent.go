@@ -7,6 +7,9 @@ const (
 	// WhisperContentTypeConfirm is the content type used by a confirm whisper
 	WhisperContentTypeConfirm WhisperContentType = "confirm"
 
+	// WhisperContentTypeDisambiguation is the content type used by a disambiguation whisper
+	WhisperContentTypeDisambiguation WhisperContentType = "disambiguation"
+
 	// WhisperContentTypeForm is the content type used by a form whisper
 	WhisperContentTypeForm WhisperContentType = "form"
 
