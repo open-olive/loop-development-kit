@@ -10,6 +10,9 @@ using OliveHelpsLDK.Whispers;
 
 namespace OliveHelpsLDK
 {
+    /// <summary>
+    /// ILoopServices provides access to all the services offered by Olive Helps to Loop Consumers.
+    /// </summary>
     public interface ILoopServices
     {
         IWhisperService Whisper { get; }
