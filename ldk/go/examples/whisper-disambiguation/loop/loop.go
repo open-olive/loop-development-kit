@@ -92,7 +92,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		for index := range data.Results {
 			item := data.Results[index]
 			elements[item.ID] = &ldk.WhisperContentDisambiguationElementOption{
-				Label: item.Firm,
+				Label: "😝" + item.Firm + " (" + item.Date + ")",
 				Order: uint32(index) + 1,
 				OnChange: func(key string) {
 					go func() {
@@ -176,11 +176,11 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		}
 
 		elements["header1"] = &ldk.WhisperContentDisambiguationElementText{
-			Body:  "# JB section text",
+			Body:  "# Text header\n## Text subheader",
 			Order: 0,
 		}
 		elements["header2"] = &ldk.WhisperContentDisambiguationElementText{
-			Body:  "# JB section text",
+			Body:  "# Text header",
 			Order: 6,
 		}
 
