@@ -21,15 +21,14 @@ function parseHeaderValues(values: structpb.ListValue): Array<string> {
  */
 function parseHeadersMap(
   headersMap: jspb.Map<string, structpb.ListValue>,
-): Map<string, Array<string>> {
-  const headerEntries: Array<[
-    string,
-    Array<string>,
-  ]> = headersMap.getEntryList().map(([key, value]) => {
-    return [key, parseHeaderValues(value)];
-  });
+): Record<string, Array<string>> {
+  const record: Record<string, Array<string>> = {};
 
-  return new Map(headerEntries);
+  headersMap.forEach((values, key) => {
+    record[key] = parseHeaderValues(values);
+  })
+
+  return record;
 }
 
 /**
@@ -41,9 +40,9 @@ function parseHeadersMap(
  */
 function addHeadersToMessage(
   message: messages.HTTPRequestMsg,
-  headers: Map<string, string>,
+  headers: Record<string, string>,
 ): messages.HTTPRequestMsg {
-  headers.forEach((key, value) => {
+  Object.entries(headers).forEach(([key, value]) => {
     message.getHeadersMap().set(key, value);
   });
 
