@@ -59,12 +59,27 @@ func (m *WhisperClient) Disambiguation(ctx context.Context, content *WhisperCont
 
 	req.Session = m.session.ToProto()
 
-	_, err = m.client.WhisperDisambiguation(ctx, req)
+	client, err := m.client.WhisperDisambiguation(ctx, req)
 	if err != nil {
 		return false, err
 	}
 
-	return true, nil
+	for {
+		resp, err := client.Recv()
+		if err == io.EOF {
+			return false, errors.New("unexpected end of stream")
+		}
+		if err != nil {
+			return false, err
+		}
+
+		genericInput := content.Elements[resp.Key]
+		if element := genericInput.(*WhisperContentDisambiguationElementOption); element.OnChange != nil {
+			element.OnChange(resp.Key)
+		}
+	}
+
+	// return false, nil
 }
 
 // Form is used by loops to create form whispers

@@ -87,81 +87,107 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 			return err
 		}
 
-		// recallItem := data.Results[0]
+		elements := make(map[string]ldk.WhisperContentDisambiguationElement)
+
+		for index := range data.Results {
+			item := data.Results[index]
+			elements[item.ID] = &ldk.WhisperContentDisambiguationElementOption{
+				Label: item.Firm,
+				Order: uint32(index) + 1,
+				OnChange: func(key string) {
+					go func() {
+						err := c.sidekick.Whisper().List(c.ctx, &ldk.WhisperContentList{
+							Label: item.Firm + " Recall",
+							Elements: map[string]ldk.WhisperContentListElement{
+								"topMessage": &ldk.WhisperContentListElementMessage{
+									Style: ldk.WhisperContentListElementStyleNone,
+									Body:  item.Description,
+									Align: ldk.WhisperContentListElementAlignLeft,
+									Order: 0,
+								},
+								"sectionDivider": &ldk.WhisperContentListElementDivider{
+									Order: 1,
+								},
+								"reason": &ldk.WhisperContentListElementPair{
+									Label: "Reason",
+									Order: 2,
+									Value: item.Reason,
+								},
+								"distribution": &ldk.WhisperContentListElementPair{
+									Label: "Distribution",
+									Order: 3,
+									Value: item.Distribution,
+								},
+								"quantity": &ldk.WhisperContentListElementPair{
+									Label: "Quantity",
+									Order: 4,
+									Value: item.Quantity,
+								},
+								"codes": &ldk.WhisperContentListElementPair{
+									Extra: true,
+									Label: "Codes",
+									Order: 5,
+									Value: item.Codes,
+								},
+								"id": &ldk.WhisperContentListElementPair{
+									Extra: true,
+									Label: "Recall number",
+									Order: 6,
+									Value: item.ID,
+								},
+								"date": &ldk.WhisperContentListElementPair{
+									Extra: true,
+									Label: "Date initiated",
+									Order: 7,
+									Value: item.Date,
+								},
+								"recallType": &ldk.WhisperContentListElementPair{
+									Extra: true,
+									Label: "Recall type",
+									Order: 8,
+									Value: item.RecallType,
+								},
+								"type": &ldk.WhisperContentListElementPair{
+									Extra: true,
+									Label: "Product type",
+									Order: 9,
+									Value: item.Type,
+								},
+								"classification": &ldk.WhisperContentListElementPair{
+									Extra: true,
+									Label: "Classification",
+									Order: 10,
+									Value: item.Classification,
+								},
+								"address": &ldk.WhisperContentListElementPair{
+									Extra: true,
+									Label: "Company address",
+									Order: 11,
+									Value: item.Address1 + " " + item.Address2 + " " + item.City + ", " + item.State + " " + item.Zip + " " + item.Country,
+								},
+							},
+						})
+						if err != nil {
+							c.logger.Error("failed to emit whisper", "error", err)
+						}
+					}()
+				},
+			}
+		}
+
+		elements["header1"] = &ldk.WhisperContentDisambiguationElementText{
+			Body:  "# JB section text",
+			Order: 0,
+		}
+		elements["header2"] = &ldk.WhisperContentDisambiguationElementText{
+			Body:  "# JB section text",
+			Order: 6,
+		}
 
 		go func() {
 			_, err := c.sidekick.Whisper().Disambiguation(c.ctx, &ldk.WhisperContentDisambiguation{
-				Label: "Latest FDA Recall dis",
-				Elements: map[string]ldk.WhisperContentDisambiguationElement{
-					"header1": &ldk.WhisperContentDisambiguationElementText{
-						Body:  "# JB section text",
-						Order: 0,
-					},
-					"option1": &ldk.WhisperContentDisambiguationElementOption{
-						Label: "This is one option",
-						Order: 1,
-						OnChange: func(key string) {
-							c.logger.Info("OnChange", "key", key)
-							err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-								Label:    "Example Controller Go",
-								Markdown: "Link pressed " + key,
-							})
-							if err != nil {
-								c.logger.Error("failed to emit whisper", "error", err)
-								return
-							}
-						},
-					},
-					"option2": &ldk.WhisperContentDisambiguationElementOption{
-						Label: "This is two option",
-						Order: 2,
-						OnChange: func(key string) {
-							c.logger.Info("OnChange", "key", key)
-							err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-								Label:    "Example Controller Go",
-								Markdown: "Link pressed " + key,
-							})
-							if err != nil {
-								c.logger.Error("failed to emit whisper", "error", err)
-								return
-							}
-						},
-					},
-					"header2": &ldk.WhisperContentDisambiguationElementText{
-						Body:  "# JB section text two",
-						Order: 3,
-					},
-					"option3": &ldk.WhisperContentDisambiguationElementOption{
-						Label: "This is three option",
-						Order: 4,
-						OnChange: func(key string) {
-							c.logger.Info("OnChange", "key", key)
-							err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-								Label:    "Example Controller Go",
-								Markdown: "Link pressed " + key,
-							})
-							if err != nil {
-								c.logger.Error("failed to emit whisper", "error", err)
-								return
-							}
-						},
-					},
-					"option4": &ldk.WhisperContentDisambiguationElementOption{
-						Label: "This is four option",
-						Order: 5,
-						OnChange: func(key string) {
-							c.logger.Info("OnChange", "key", key)
-							err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-								Label:    "Example Controller Go",
-								Markdown: "Link pressed " + key,
-							})
-							if err != nil {
-								c.logger.Error("failed to emit whisper", "error", err)
-								return
-							}
-						},
-					},
-				},
+				Label:    "Latest FDA Food Recalls",
+				Elements: elements,
 			})
 			if err != nil {
 				c.logger.Error("failed to emit whisper", "error", err)

@@ -60,26 +60,52 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 }
 
 // WhisperDisambiguation is used by loops to create disambiguation whispers
-func (m *WhisperServer) WhisperDisambiguation(ctx context.Context, req *proto.WhisperDisambiguationRequest) (*emptypb.Empty, error) {
+func (m *WhisperServer) WhisperDisambiguation(req *proto.WhisperDisambiguationRequest, stream proto.Whisper_WhisperDisambiguationServer) error {
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	content, err := WhisperContentDisambiguationFromProto(req)
-	if err != nil {
-		return nil, fmt.Errorf("failed to decode whisper content list from proto: %w", err)
+	elements := make(map[string]WhisperContentDisambiguationElement, len(req.Elements))
+	for key, elementsProto := range req.Elements {
+		key := key
+		switch elementContainer := elementsProto.ElementOneof.(type) {
+		case *proto.WhisperDisambiguationElement_Option_:
+			elements[key] = &WhisperContentDisambiguationElementOption{
+				Label: elementContainer.Option.Label,
+				Order: elementsProto.Order,
+				OnChange: func(key string) {
+					err := stream.Send(&proto.WhisperDisambiguationStreamResponse{
+						Key: key,
+					})
+					// TODO: Fix this when we refactor to sidekick
+					if err != nil {
+						fmt.Println("ldk.WhisperServer.WhisperForm -> Checkbox onChange: error => ", err.Error())
+					}
+				},
+			}
+		case *proto.WhisperDisambiguationElement_Text_:
+			elements[key] = &WhisperContentDisambiguationElementText{
+				Body:  elementContainer.Text.Body,
+				Order: elementsProto.Order,
+			}
+		default:
+			return fmt.Errorf("input had unexpected type %T", elementContainer)
+		}
 	}
 
 	_, err = m.Impl.Disambiguation(
-		context.WithValue(ctx, Session{}, session),
-		content,
+		context.WithValue(stream.Context(), Session{}, session),
+		&WhisperContentDisambiguation{
+			Label:    req.Meta.Label,
+			Elements: elements,
+		},
 	)
 	if err != nil {
-		return nil, fmt.Errorf("ldk.WhisperServer.WhisperList -> m.Impl.List: error => %w", err)
+		fmt.Println("ldk.WhisperServer.WhisperDisambiguation -> m.Impl.Disambiguation: error => ", err.Error())
 	}
 
-	return &emptypb.Empty{}, nil
+	return nil
 }
 
 // WhisperForm is used by loops to create form whispers

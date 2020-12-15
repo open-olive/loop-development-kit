@@ -14,7 +14,7 @@ service Whisper {
     rpc WhisperConfirm(WhisperConfirmRequest) returns (WhisperConfirmResponse);
 
     // Send a disambiguation whisper
-    rpc WhisperDisambiguation(WhisperDisambiguationRequest) returns (google.protobuf.Empty);
+    rpc WhisperDisambiguation(WhisperDisambiguationRequest) returns (stream WhisperDisambiguationStreamResponse);
 
     // Send a form whisper
     rpc WhisperForm(WhisperFormRequest) returns (stream WhisperFormStreamResponse);
@@ -216,6 +216,11 @@ message WhisperFormStreamResponse {
     string error = 15;
 }
 
+message WhisperDisambiguationStreamResponse {
+    string key = 1;
+    string error = 2;
+}
+
 message WhisperDisambiguationRequest {
     Session session = 1;
     WhisperMeta meta = 2;
@@ -226,11 +231,11 @@ message WhisperDisambiguationElement {
     uint32 order = 1;
 
     message Option {
-        string label = 1;
+        string label = 2;
     }
 
     message Text {
-        string body = 1;
+        string body = 2;
     }
 
     oneof ElementOneof {
