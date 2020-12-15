@@ -3,7 +3,7 @@ package loop
 import (
 	"context"
 	"html/template"
-	"io/ioutil"
+	"io"
 
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-file/bind"
@@ -58,36 +58,26 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	c.sidekick = sidekick
 
 	go func() {
-		c.logger.Error("AAAAAAAAAAAAAAAAAAAAAAAA")
-		file, err := sidekick.Filesystem().Open(c.ctx, "./go.mod")
+
+		file, err := sidekick.Filesystem().Open(c.ctx, "./go.sum")
 		if err != nil {
 			c.logger.Error("error reading file info", "error", err)
 			return
 		}
 		defer file.Close()
-		c.logger.Error("BBBBBBBBBBBBBBBBBBBBB")
 
-		b, err := ioutil.ReadAll(file)
-		if err != nil {
-			c.logger.Error("error reading file", "error", err)
-			return
-		}
-		c.logger.Error("CCCCCCCCCCCCCCCCCCCCCCCCC")
-
-		logFile, err := sidekick.Filesystem().Create(c.ctx, "/Users/scottkipfer/olive/sidekick/read.txt")
+		logfile, err := sidekick.Filesystem().Create(c.ctx, "/users/scottkipfer/olive/sidekick/read.txt")
 		if err != nil {
 			c.logger.Error("error creating file info", "error", err)
 			return
 		}
-		defer logFile.Close()
-		c.logger.Error("DDDDDDDDDDDDDDDDDDd")
+		defer logfile.Close()
 
-		_, err = logFile.Write(b)
+		io.Copy(logfile, file)
+
 		if err != nil {
-			c.logger.Error("error writing file info", "error", err)
 			return
 		}
-		c.logger.Error("EEEEEEEEEEEEEEEEEEEEEEEEEEEE")
 
 	}()
 

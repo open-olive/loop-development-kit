@@ -1,6 +1,7 @@
 package ldk
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"io"
@@ -176,6 +177,8 @@ type GRPCFile struct {
 	ctx       context.Context
 	stream    proto.Filesystem_FilesystemFileStreamClient
 	fileMutex sync.Mutex
+	buffer    bytes.Buffer
+	readIndex int64
 }
 
 func newGRPCFile(ctx context.Context, stream proto.Filesystem_FilesystemFileStreamClient) *GRPCFile {
@@ -187,9 +190,7 @@ func newGRPCFile(ctx context.Context, stream proto.Filesystem_FilesystemFileStre
 	return GRPCFile
 }
 
-func (f *GRPCFile) Read(b []byte) (int, error) {
-	f.fileMutex.Lock()
-	defer f.fileMutex.Unlock()
+func (f *GRPCFile) makeRequest() (int, error) {
 	err := f.stream.Send(&proto.FilesystemFileStreamRequest{
 		RequestOneOf: &proto.FilesystemFileStreamRequest_Read_{
 			Read: &proto.FilesystemFileStreamRequest_Read{},
@@ -210,14 +211,63 @@ func (f *GRPCFile) Read(b []byte) (int, error) {
 			}
 			switch resp.ResponseOneOf.(type) {
 			case *proto.FilesystemFileStreamResponse_Read_:
-				b = resp.GetRead().GetData()
-				return len(b), errors.New(resp.GetRead().GetError())
+
+				recievedBytes := resp.GetRead().GetData()
+				n := len(recievedBytes)
+				f.buffer.Write(recievedBytes)
+
+				if resp.GetRead().Error == "EOF" {
+					return 0, io.EOF
+				}
+
+				if resp.GetRead().GetError() == "<nil>" {
+					return n, nil
+				}
+				return n, errors.New(resp.GetRead().GetError())
 			default:
 				return 0, errors.New("unexpected response from server")
 			}
 
 		}
 	}
+
+}
+
+func (f *GRPCFile) Read(b []byte) (int, error) {
+	f.fileMutex.Lock()
+	defer f.fileMutex.Unlock()
+	bufferLength := len(b)
+
+	f.readIndex = 0
+
+	for {
+		n, err := f.makeRequest()
+		if err != nil && err != io.EOF {
+			return 0, err
+		}
+		if err != nil && err == io.EOF {
+			readBytes := f.buffer.Bytes()
+			f.buffer.Read(b[0:len(readBytes)])
+
+			return len(readBytes), err
+		}
+
+		f.readIndex += int64(n)
+
+		if f.readIndex >= int64(bufferLength) {
+			f.buffer.Read(b)
+
+			readBytes := f.buffer.Bytes()
+			diff := f.readIndex - int64(bufferLength)
+			f.buffer.Reset()
+			f.buffer.Write(readBytes[bufferLength:f.readIndex])
+			f.readIndex = diff
+
+			return len(b), nil
+		}
+
+	}
+
 }
 
 func (f *GRPCFile) Write(b []byte) (int, error) {
@@ -245,6 +295,9 @@ func (f *GRPCFile) Write(b []byte) (int, error) {
 			}
 			switch resp.ResponseOneOf.(type) {
 			case *proto.FilesystemFileStreamResponse_Write_:
+				if resp.GetWrite().GetError() == "<nil>" {
+					return int(resp.GetWrite().GetNumOfBytes()), nil
+				}
 				return int(resp.GetWrite().GetNumOfBytes()), errors.New(resp.GetWrite().GetError())
 			default:
 				return 0, errors.New("unexpected response from server")

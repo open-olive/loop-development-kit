@@ -191,7 +191,6 @@ func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInf
 // FilesystemFileStream write data to a file
 func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_FilesystemFileStreamServer) error {
 	var file File
-
 	defer func() {
 		if file != nil {
 			file.Close()
@@ -243,7 +242,7 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 				if file == nil {
 					return ErrNoFile
 				}
-				buf := make([]byte, 1024)
+				buf := make([]byte, 512)
 				n, err := file.Read(buf)
 				stream.Send(&proto.FilesystemFileStreamResponse{
 					ResponseOneOf: &proto.FilesystemFileStreamResponse_Read_{
