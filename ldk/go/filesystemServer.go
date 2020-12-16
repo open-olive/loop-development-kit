@@ -243,63 +243,98 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 					return ErrNoFile
 				}
 				buf := make([]byte, 512)
+				var errorResponse string
 				n, err := file.Read(buf)
-				stream.Send(&proto.FilesystemFileStreamResponse{
+				if err != nil {
+					errorResponse = err.Error()
+				}
+				err = stream.Send(&proto.FilesystemFileStreamResponse{
 					ResponseOneOf: &proto.FilesystemFileStreamResponse_Read_{
 						Read: &proto.FilesystemFileStreamResponse_Read{
 							Data:  buf[0:n],
-							Error: fmt.Sprintf("%v", err),
+							Error: errorResponse,
 						},
 					},
 				})
+				if err != nil {
+					return err
+				}
 
 			case *proto.FilesystemFileStreamRequest_Write_:
 				if file == nil {
 					return ErrNoFile
 				}
+				var errorResponse string
 				n, err := file.Write(req.Write.Data)
-				stream.Send(&proto.FilesystemFileStreamResponse{
+				if err != nil {
+					errorResponse = err.Error()
+				}
+				err = stream.Send(&proto.FilesystemFileStreamResponse{
 					ResponseOneOf: &proto.FilesystemFileStreamResponse_Write_{
 						Write: &proto.FilesystemFileStreamResponse_Write{
 							NumOfBytes: int32(n),
-							Error:      fmt.Sprintf("%v", err),
+							Error:      errorResponse,
 						},
 					},
 				})
+				if err != nil {
+					return err
+				}
 
 			case *proto.FilesystemFileStreamRequest_Chmod_:
 				if file == nil {
 					return ErrNoFile
 				}
+				var errorResponse string
 				err := file.Chmod(os.FileMode(req.Chmod.Mode))
-				stream.Send(&proto.FilesystemFileStreamResponse{
+				if err != nil {
+					errorResponse = err.Error()
+				}
+				err = stream.Send(&proto.FilesystemFileStreamResponse{
 					ResponseOneOf: &proto.FilesystemFileStreamResponse_Chmod_{
 						Chmod: &proto.FilesystemFileStreamResponse_Chmod{
-							Error: fmt.Sprintf("%v", err),
+							Error: errorResponse,
 						},
 					},
 				})
+				if err != nil {
+					return err
+				}
 
 			case *proto.FilesystemFileStreamRequest_Chown_:
 				if file == nil {
 					return ErrNoFile
 				}
+				var errorResponse string
 				err := file.Chown(int(req.Chown.Uid), int(req.Chown.Gid))
-				stream.Send(&proto.FilesystemFileStreamResponse{
+				if err != nil {
+					errorResponse = err.Error()
+				}
+				err = stream.Send(&proto.FilesystemFileStreamResponse{
 					ResponseOneOf: &proto.FilesystemFileStreamResponse_Chown_{
 						Chown: &proto.FilesystemFileStreamResponse_Chown{
-							Error: fmt.Sprintf("%v", err),
+							Error: errorResponse,
 						},
 					},
 				})
+				if err != nil {
+					return err
+				}
 
 			case *proto.FilesystemFileStreamRequest_Stat_:
 				if file == nil {
 					return ErrNoFile
 				}
+				var errorResponse string
 				info, err := file.Stat()
+				if err != nil {
+					errorResponse = err.Error()
+				}
 				t, err := ptypes.TimestampProto(info.ModTime())
-				stream.Send(&proto.FilesystemFileStreamResponse{
+				if err != nil {
+					errorResponse = err.Error()
+				}
+				err = stream.Send(&proto.FilesystemFileStreamResponse{
 					ResponseOneOf: &proto.FilesystemFileStreamResponse_Stat_{
 						Stat: &proto.FilesystemFileStreamResponse_Stat{
 							Info: &proto.FileInfo{
@@ -309,10 +344,13 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 								Updated: t,
 								IsDir:   info.IsDir(),
 							},
-							Error: fmt.Sprintf("%v", err),
+							Error: errorResponse,
 						},
 					},
 				})
+				if err != nil {
+					return err
+				}
 
 			}
 		}

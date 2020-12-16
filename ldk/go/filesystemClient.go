@@ -220,7 +220,7 @@ func (f *GRPCFile) makeRequest() (int, error) {
 					return 0, io.EOF
 				}
 
-				if resp.GetRead().GetError() == "<nil>" {
+				if resp.GetRead().GetError() == "" {
 					return n, nil
 				}
 				return n, errors.New(resp.GetRead().GetError())
@@ -295,7 +295,7 @@ func (f *GRPCFile) Write(b []byte) (int, error) {
 			}
 			switch resp.ResponseOneOf.(type) {
 			case *proto.FilesystemFileStreamResponse_Write_:
-				if resp.GetWrite().GetError() == "<nil>" {
+				if resp.GetWrite().GetError() == "" {
 					return int(resp.GetWrite().GetNumOfBytes()), nil
 				}
 				return int(resp.GetWrite().GetNumOfBytes()), errors.New(resp.GetWrite().GetError())
@@ -353,6 +353,9 @@ func (f *GRPCFile) Chown(uid, gid int) error {
 			}
 			switch resp.ResponseOneOf.(type) {
 			case *proto.FilesystemFileStreamResponse_Chown_:
+				if resp.GetChown().GetError() == "" {
+					return nil
+				}
 				return errors.New(resp.GetChown().GetError())
 			default:
 				return errors.New("unexpected response from server")
@@ -387,6 +390,9 @@ func (f *GRPCFile) Chmod(mode os.FileMode) error {
 			}
 			switch resp.ResponseOneOf.(type) {
 			case *proto.FilesystemFileStreamResponse_Chmod_:
+				if resp.GetChmod().GetError() == "" {
+					return nil
+				}
 				return errors.New(resp.GetChmod().GetError())
 			default:
 				return errors.New("unexpected response from server")
@@ -425,13 +431,17 @@ func (f *GRPCFile) Stat() (os.FileInfo, error) {
 				if err != nil {
 					return nil, err
 				}
-				return &FileInfo{
+				fi := &FileInfo{
 					name:    info.GetName(),
 					size:    int(info.GetSize()),
 					mode:    int(info.GetMode()),
 					updated: t,
 					isDir:   info.GetIsDir(),
-				}, errors.New(resp.GetStat().GetError())
+				}
+				if resp.GetStat().GetError() == "" {
+					return fi, nil
+				}
+				return fi, errors.New(resp.GetStat().GetError())
 			}
 		}
 	}
