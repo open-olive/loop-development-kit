@@ -2,11 +2,14 @@ syntax = "proto3";
 package proto;
 option go_package = ".;proto";
 
-import "google/protobuf/struct.proto";
 import "session.proto";
 
 service Network {
     rpc HTTPRequest (HTTPRequestMsg) returns (HTTPResponseMsg);
+}
+
+message HTTPHeader {
+    repeated string values = 1;
 }
 
 message HTTPRequestMsg {
@@ -14,11 +17,11 @@ message HTTPRequestMsg {
     string url = 2;
     string method = 3;
     bytes body = 4;
-    map <string, string> headers = 5;
+    map <string, HTTPHeader> headers = 5;
 }
 
 message HTTPResponseMsg {
     uint32 responseCode = 1;
     bytes data = 2;
-    map <string, google.protobuf.ListValue> headers = 3;
+    map <string, HTTPHeader> headers = 3;
 }

@@ -16,23 +16,45 @@ func (ns *NetworkServer) HTTPRequest(ctx context.Context, req *proto.HTTPRequest
 		return nil, err
 	}
 
+	reqHeaders := make(map[string][]string)
+
+	for name, values := range req.Headers {
+		header := make([]string, len(values.Values))
+		for index, value := range values.Values {
+			header[index] = value
+		}
+		reqHeaders[name] = header
+	}
+
 	resp, err := ns.Impl.HTTPRequest(
 		context.WithValue(ctx, Session{}, session),
 		&HTTPRequest{
 			URL:     req.Url,
 			Method:  req.Method,
 			Body:    req.Body,
-			Headers: req.Headers,
+			Headers: reqHeaders,
 		},
 	)
 	if err != nil {
 		return nil, err
 	}
 
+	respHeaders := make(map[string]*proto.HTTPHeader)
+
+	for name, values := range resp.Headers {
+		header := make([]string, len(values))
+		for index, value := range values {
+			header[index] = value
+		}
+		respHeaders[name] = &proto.HTTPHeader{
+			Values: header,
+		}
+	}
+
 	return &proto.HTTPResponseMsg{
 		ResponseCode: uint32(resp.ResponseCode),
 		Data:         resp.Data,
-		Headers:      resp.Headers,
+		Headers:      respHeaders,
 	}, nil
 
 }

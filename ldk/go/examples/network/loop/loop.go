@@ -73,8 +73,8 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		URL:    "https://api.fda.gov/food/enforcement.json?search=report_date:[" + now.AddDate(0, -3, 0).Format("20060102") + "+TO+" + now.Format("20060102") + "]&limit=1",
 		Method: "GET",
 		Body:   nil,
-		Headers: map[string]string{
-			"A-Header-Name": "a header value",
+		Headers: map[string][]string{
+			"A-Header-Name": []string{"a header value", "another header value"},
 		},
 	})
 	if err != nil {
