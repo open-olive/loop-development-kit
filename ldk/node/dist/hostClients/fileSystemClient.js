@@ -84,7 +84,9 @@ class FileSystemClient extends baseClient_1.default {
         });
     }
     streamDirectory(params, listener) {
-        const message = new filesystem_pb_1.default.FilesystemDirStreamRequest().setDirectory(params.directory);
+        const message = new filesystem_pb_1.default.FilesystemDirStreamRequest()
+            .setDirectory(params.directory)
+            .setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.filesystemDirStream(message), (response) => {
             const fileInfo = response.getFile();
             if (fileInfo == null) {
@@ -97,7 +99,9 @@ class FileSystemClient extends baseClient_1.default {
         }, listener);
     }
     streamFile(params, listener) {
-        const message = new filesystem_pb_1.default.FilesystemFileStreamRequest().setPath(params.file);
+        const message = new filesystem_pb_1.default.FilesystemFileStreamRequest()
+            .setPath(params.file)
+            .setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.filesystemFileStream(message), (response) => {
             const fileInfo = response.getFile();
             if (fileInfo == null) {
