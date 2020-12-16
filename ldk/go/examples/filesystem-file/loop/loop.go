@@ -66,7 +66,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		}
 		defer file.Close()
 
-		logfile, err := sidekick.Filesystem().Create(c.ctx, "/users/scottkipfer/olive/sidekick/read.txt")
+		logfile, err := sidekick.Filesystem().Create(c.ctx, "./read.txt")
 		if err != nil {
 			c.logger.Error("error creating file info", "error", err)
 			return
