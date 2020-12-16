@@ -2,6 +2,7 @@ import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import {
   Whisper,
   WhisperConfirmConfig,
+  WhisperDisambiguationConfig,
   WhisperFormConfig,
   WhisperFormInput,
   WhisperFormInputs,
@@ -240,6 +241,22 @@ export const generateWhisperMeta = (whisper: Whisper): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
   return whisperMsg;
+};
+export const generateWhisperDisambiguation = (
+  config: WhisperDisambiguationConfig,
+): messages.WhisperDisambiguationRequest => {
+  const msg = new messages.WhisperDisambiguationRequest();
+  msg.setMeta(generateWhisperMeta(config));
+  msg.setMarkdown(config.markdown);
+  msg.setCancellabel(config.cancelButton);
+  msg.setSubmitlabel(config.submitButton);
+  const map = msg.getInputsMap();
+  Object.keys(config.inputs).forEach((key) => {
+    const value = config.inputs[key];
+    const input = generateWhisperInput(value);
+    map.set(key, input);
+  });
+  return msg;
 };
 export const generateWhisperForm = (
   config: WhisperFormConfig,

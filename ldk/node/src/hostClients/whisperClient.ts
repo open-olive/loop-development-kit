@@ -4,6 +4,7 @@ import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
 import {
   Whisper,
   WhisperConfirmConfig,
+  WhisperDisambiguationEvent,
   WhisperFormConfig,
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
@@ -72,6 +73,18 @@ class WhisperClient
       () => buildWhisperConfirmMessage(whisper),
       (response) => response.getResponse(),
     );
+  }
+
+  disambiguationWhisper(
+    whisper: WhisperDisambiguationConfig,
+    listener: StreamListener<WhisperDisambiguationEvent>,
+  ): StoppableStream<WhisperDisambiguationEvent> {
+    const msg = generateWhisperDisambiguation(whisper);
+    const stream = this.client.whisperDisambiguation(msg);
+    return new TransformingStream<
+      messages.WhisperDisambiguationStreamResponse,
+      WhisperDisambiguationEvent
+    >(stream, (response) => transformResponse(response), listener);
   }
 
   formWhisper(
