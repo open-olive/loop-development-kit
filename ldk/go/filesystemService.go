@@ -12,9 +12,7 @@ import (
 type FilesystemService interface {
 	Dir(context.Context, string) ([]os.FileInfo, error)
 	ListenDir(context.Context, string, ListenDirHandler) error
-	FileInfo(context.Context, string) (os.FileInfo, error)
 	ListenFile(context.Context, string, ListenFileHandler) error
-
 	Open(context.Context, string) (File, error)
 	Create(context.Context, string) (File, error)
 	MakeDir(context.Context, string, uint32) error

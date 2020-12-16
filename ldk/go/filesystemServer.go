@@ -105,39 +105,6 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 	return nil
 }
 
-// FilesystemFileInfo gets information about a file
-func (f *FilesystemServer) FilesystemFileInfo(ctx context.Context, req *proto.FilesystemFileInfoRequest) (*proto.FilesystemFileInfoResponse, error) {
-	session, err := NewSessionFromProto(req.Session)
-	if err != nil {
-		return nil, err
-	}
-
-	file, err := f.Impl.FileInfo(
-		context.WithValue(ctx, Session{}, session),
-		req.GetPath(),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	ptime, err := ptypes.TimestampProto(file.ModTime())
-	if err != nil {
-		return nil, err
-	}
-	fi := &proto.FileInfo{
-		Name:    file.Name(),
-		Size:    int64(file.Size()),
-		Mode:    uint32(file.Mode()),
-		Updated: ptime,
-		IsDir:   file.IsDir(),
-	}
-
-	return &proto.FilesystemFileInfoResponse{
-		File: fi,
-	}, nil
-
-}
-
 // FilesystemFileInfoStream stream any updates to a file
 func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInfoStreamRequest, stream proto.Filesystem_FilesystemFileInfoStreamServer) error {
 	session, err := NewSessionFromProto(req.Session)

@@ -98,33 +98,6 @@ func (f *FilesystemClient) ListenDir(ctx context.Context, dir string, handler Li
 	return nil
 }
 
-// File get information about a file
-func (f *FilesystemClient) FileInfo(ctx context.Context, path string) (os.FileInfo, error) {
-	resp, err := f.client.FilesystemFileInfo(ctx, &proto.FilesystemFileInfoRequest{
-		Path:    path,
-		Session: f.session.ToProto(),
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	file := resp.GetFile()
-
-	t, err := ptypes.Timestamp(file.Updated)
-	if err != nil {
-		return nil, err
-	}
-	fi := &FileInfo{
-		name:    file.GetName(),
-		size:    int(file.GetSize()),
-		mode:    int(file.GetMode()),
-		updated: t,
-		isDir:   file.GetIsDir(),
-	}
-
-	return fi, nil
-}
-
 // ListenFile stream any updates to a file
 func (f *FilesystemClient) ListenFile(ctx context.Context, path string, handler ListenFileHandler) error {
 	client, err := f.client.FilesystemFileInfoStream(ctx, &proto.FilesystemFileInfoStreamRequest{

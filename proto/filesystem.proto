@@ -13,9 +13,6 @@ service Filesystem {
     // stream any updates to the contents of a directory
     rpc FilesystemDirStream (FilesystemDirStreamRequest) returns (stream FilesystemDirStreamResponse);
 
-    // get information about a file
-    rpc FilesystemFileInfo (FilesystemFileInfoRequest) returns (FilesystemFileInfoResponse);
-
     // stream any updates to a file
     rpc FilesystemFileInfoStream (FilesystemFileInfoStreamRequest) returns (stream FilesystemFileInfoStreamResponse);    
 
@@ -72,15 +69,6 @@ message FilesystemDirStreamResponse {
     FileInfo file = 1;
     FileAction action = 2;
     string error = 15;
-}
-
-message FilesystemFileInfoRequest {
-    Session session = 1;
-    string path = 2;
-}
-
-message FilesystemFileInfoResponse {
-    FileInfo file = 1;
 }
 
 message FilesystemFileInfoStreamRequest {
