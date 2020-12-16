@@ -8,14 +8,20 @@ service Network {
     rpc HTTPRequest (HTTPRequestMsg) returns (HTTPResponseMsg);
 }
 
+message HTTPHeader {
+    repeated string values = 1;
+}
+
 message HTTPRequestMsg {
     Session session = 1;
     string url = 2;
     string method = 3;
     bytes body = 4;
+    map <string, HTTPHeader> headers = 5;
 }
 
 message HTTPResponseMsg {
     uint32 responseCode = 1;
     bytes data = 2;
+    map <string, HTTPHeader> headers = 3;
 }
