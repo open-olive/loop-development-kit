@@ -31,12 +31,8 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 	reqHeaders := make(map[string]*proto.HTTPHeader)
 
 	for name, values := range req.Headers {
-		header := make([]string, len(values))
-		for index, value := range values {
-			header[index] = value
-		}
 		reqHeaders[name] = &proto.HTTPHeader{
-			Values: header,
+			Values: values,
 		}
 	}
 
@@ -55,11 +51,7 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 	respHeaders := make(map[string][]string)
 
 	for name, values := range resp.Headers {
-		header := make([]string, len(values.Values))
-		for index, value := range values.Values {
-			header[index] = value
-		}
-		respHeaders[name] = header
+		respHeaders[name] = values.Values
 	}
 
 	return &HTTPResponse{

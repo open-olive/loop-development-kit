@@ -19,11 +19,7 @@ func (ns *NetworkServer) HTTPRequest(ctx context.Context, req *proto.HTTPRequest
 	reqHeaders := make(map[string][]string)
 
 	for name, values := range req.Headers {
-		header := make([]string, len(values.Values))
-		for index, value := range values.Values {
-			header[index] = value
-		}
-		reqHeaders[name] = header
+		reqHeaders[name] = values.Values
 	}
 
 	resp, err := ns.Impl.HTTPRequest(
@@ -42,12 +38,8 @@ func (ns *NetworkServer) HTTPRequest(ctx context.Context, req *proto.HTTPRequest
 	respHeaders := make(map[string]*proto.HTTPHeader)
 
 	for name, values := range resp.Headers {
-		header := make([]string, len(values))
-		for index, value := range values {
-			header[index] = value
-		}
 		respHeaders[name] = &proto.HTTPHeader{
-			Values: header,
+			Values: values,
 		}
 	}
 
