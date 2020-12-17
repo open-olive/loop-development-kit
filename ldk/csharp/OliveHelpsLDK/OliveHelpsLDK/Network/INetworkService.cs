@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ namespace OliveHelpsLDK.Network
         public string Method;
 
         public byte[] Body;
+
+        public IDictionary<string, IList<string>> Headers;
     }
 
     public struct HTTPResponse
@@ -22,5 +25,7 @@ namespace OliveHelpsLDK.Network
         public int ResponseCode;
 
         public byte[] Data;
+
+        public IDictionary<string, IList<string>> Headers;
     }
 }

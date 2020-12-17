@@ -14,6 +14,7 @@ import {
   defaultSession,
 } from '../test.helpers';
 import { HttpResponse } from './networkService';
+import { HTTPHeader } from '../grpc/network_pb';
 
 jest.mock('../grpc/network_grpc_pb');
 
@@ -50,12 +51,19 @@ describe('NetworkClient', () => {
       url: 'http://test.example.com',
       method: 'GET',
       body: '',
+      headers: {
+        Cookie: ['monster=false'],
+      },
     };
 
     beforeEach(async () => {
       sentResponse = new Messages.HTTPResponseMsg()
         .setData('response data')
         .setResponsecode(200);
+
+      sentResponse
+        .getHeadersMap()
+        .set('Set-Cookie', new HTTPHeader().setValuesList(['monster=true']));
 
       mockGRPCClient.hTTPRequest.mockImplementation(
         createCallbackHandler(sentResponse),
@@ -65,9 +73,10 @@ describe('NetworkClient', () => {
     });
 
     it('should return a transformed response', async () => {
-      await expect(queryResult).resolves.toStrictEqual({
+      await expect(queryResult).resolves.toMatchObject({
         statusCode: sentResponse.getResponsecode(),
         data: sentResponse.getData(),
+        headers: expect.any(Object),
       });
     });
 
@@ -86,6 +95,7 @@ describe('NetworkClient', () => {
       expect(sentRequest.getUrl()).toBe(request.url);
       expect(sentRequest.getMethod()).toBe(request.method);
       expect(sentRequest.getBody()).toBe(request.body);
+      expect(sentRequest.getHeadersMap()).toBeDefined();
       expect(sentRequest.getSession()).toBeDefined();
     });
   });
