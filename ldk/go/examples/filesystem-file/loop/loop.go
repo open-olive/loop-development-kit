@@ -73,9 +73,9 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		}
 		defer logfile.Close()
 
-		io.Copy(logfile, file)
-
+		_, err = io.Copy(logfile, file)
 		if err != nil {
+			c.logger.Error("error copying file", "error", err)
 			return
 		}
 

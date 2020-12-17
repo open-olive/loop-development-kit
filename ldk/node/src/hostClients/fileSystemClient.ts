@@ -100,9 +100,9 @@ export class FileSystemClient
     params: FileSystemQueryDirectoryParams,
     listener: StreamListener<FileSystemStreamDirectoryResponse>,
   ): StoppableStream<FileSystemStreamDirectoryResponse> {
-    const message = new messages.FilesystemDirStreamRequest().setDirectory(
-      params.directory,
-    );
+    const message = new messages.FilesystemDirStreamRequest()
+      .setDirectory(params.directory)
+      .setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.FilesystemDirStreamResponse,
       FileSystemStreamDirectoryResponse
@@ -126,9 +126,9 @@ export class FileSystemClient
     params: FileSystemQueryFileParams,
     listener: StreamListener<FileSystemStreamFileResponse>,
   ): StoppableStream<FileSystemStreamFileResponse> {
-    const message = new messages.FilesystemFileStreamRequest().setPath(
-      params.file,
-    );
+    const message = new messages.FilesystemFileStreamRequest()
+      .setPath(params.file)
+      .setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.FilesystemFileStreamResponse,
       FileSystemStreamFileResponse

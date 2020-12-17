@@ -126,7 +126,6 @@ namespace Example
                 Markdown = $"Clipboard Content {content}",
                 Config = new WhisperConfig
                 {
-                    Icon = "bathtub",
                     Label = "C# Whisper"
                 }
             }, ccs.Token);
@@ -141,7 +140,6 @@ namespace Example
                 SubmitLabel = "Submit",
                 Config = new WhisperConfig
                 {
-                    Icon = "bathtub",
                     Label = "C# Whisper Form"
                 },
                 Inputs = new Dictionary<string, IBase>

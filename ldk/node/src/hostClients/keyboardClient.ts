@@ -102,7 +102,9 @@ export default class KeyboardClient
     hotKeys: HotKeyRequest,
     listener: StreamListener<HotKeyEvent>,
   ): StoppableStream<HotKeyEvent> {
-    const message = generateHotkeyStreamRequest(hotKeys);
+    const message = generateHotkeyStreamRequest(hotKeys).setSession(
+      this.createSessionMessage(),
+    );
     return new TransformingStream(
       this.client.keyboardHotkeyStream(message),
       transformHotKeyEvent,
@@ -110,7 +112,7 @@ export default class KeyboardClient
     );
   }
 
-  streamText(): StoppableStream<string> {
+  streamText(listener: StreamListener<string>): StoppableStream<string> {
     return new TransformingStream(
       this.client.keyboardTextStream(
         new messages.KeyboardTextStreamRequest().setSession(
@@ -118,6 +120,7 @@ export default class KeyboardClient
         ),
       ),
       (response) => response.getText(),
+      listener,
     );
   }
 

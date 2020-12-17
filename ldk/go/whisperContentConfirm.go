@@ -1,7 +1,6 @@
 package ldk
 
 type WhisperContentConfirm struct {
-	Icon  string `json:"icon"`
 	Label string `json:"label"`
 
 	Markdown string `json:"markdown"`

@@ -103,7 +103,6 @@ Each command takes options. Run `ldk help <command>` for details.
   "created": "2020-06-22T00:00:00Z",
   "dependencies": [],
   "description": "Your Loop's Description",
-  "icon": "any material ui icon",
   "id": "A UNIQUE UUID",
   "name": "Your Loop Name",
   "organization": "Your Organization",

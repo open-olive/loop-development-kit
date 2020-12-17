@@ -74,11 +74,11 @@ const transformHotKeyEvent = (message) => {
  */
 class KeyboardClient extends baseClient_1.default {
     streamHotKey(hotKeys, listener) {
-        const message = generateHotkeyStreamRequest(hotKeys);
+        const message = generateHotkeyStreamRequest(hotKeys).setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.keyboardHotkeyStream(message), transformHotKeyEvent, listener);
     }
-    streamText() {
-        return new transformingStream_1.TransformingStream(this.client.keyboardTextStream(new keyboard_pb_1.default.KeyboardTextStreamRequest().setSession(this.createSessionMessage())), (response) => response.getText());
+    streamText(listener) {
+        return new transformingStream_1.TransformingStream(this.client.keyboardTextStream(new keyboard_pb_1.default.KeyboardTextStreamRequest().setSession(this.createSessionMessage())), (response) => response.getText(), listener);
     }
     streamChar(listener) {
         return new transformingStream_1.TransformingStream(this.client.keyboardCharacterStream(new keyboard_pb_1.default.KeyboardCharacterStreamRequest().setSession(this.createSessionMessage())), transformTextStream, listener);

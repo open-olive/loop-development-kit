@@ -1,79 +1,86 @@
-export namespace KeyboardService {
-    namespace keyboardHotkeyStream {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./keyboard_pb.js").KeyboardHotkeyStreamRequest;
-        export const responseType: typeof import("./keyboard_pb.js").KeyboardHotkeyStreamResponse;
-        export { serialize_proto_KeyboardHotkeyStreamRequest as requestSerialize };
-        export { deserialize_proto_KeyboardHotkeyStreamRequest as requestDeserialize };
-        export { serialize_proto_KeyboardHotkeyStreamResponse as responseSerialize };
-        export { deserialize_proto_KeyboardHotkeyStreamResponse as responseDeserialize };
-    }
-    namespace keyboardScancodeStream {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("./keyboard_pb.js").KeyboardScancodeStreamRequest;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("./keyboard_pb.js").KeyboardScancodeStreamResponse;
-        export { responseType_1 as responseType };
-        export { serialize_proto_KeyboardScancodeStreamRequest as requestSerialize };
-        export { deserialize_proto_KeyboardScancodeStreamRequest as requestDeserialize };
-        export { serialize_proto_KeyboardScancodeStreamResponse as responseSerialize };
-        export { deserialize_proto_KeyboardScancodeStreamResponse as responseDeserialize };
-    }
-    namespace keyboardTextStream {
-        const path_2: string;
-        export { path_2 as path };
-        const requestStream_2: boolean;
-        export { requestStream_2 as requestStream };
-        const responseStream_2: boolean;
-        export { responseStream_2 as responseStream };
-        const requestType_2: typeof import("./keyboard_pb.js").KeyboardTextStreamRequest;
-        export { requestType_2 as requestType };
-        const responseType_2: typeof import("./keyboard_pb.js").KeyboardTextStreamResponse;
-        export { responseType_2 as responseType };
-        export { serialize_proto_KeyboardTextStreamRequest as requestSerialize };
-        export { deserialize_proto_KeyboardTextStreamRequest as requestDeserialize };
-        export { serialize_proto_KeyboardTextStreamResponse as responseSerialize };
-        export { deserialize_proto_KeyboardTextStreamResponse as responseDeserialize };
-    }
-    namespace keyboardCharacterStream {
-        const path_3: string;
-        export { path_3 as path };
-        const requestStream_3: boolean;
-        export { requestStream_3 as requestStream };
-        const responseStream_3: boolean;
-        export { responseStream_3 as responseStream };
-        const requestType_3: typeof import("./keyboard_pb.js").KeyboardCharacterStreamRequest;
-        export { requestType_3 as requestType };
-        const responseType_3: typeof import("./keyboard_pb.js").KeyboardCharacterStreamResponse;
-        export { responseType_3 as responseType };
-        export { serialize_proto_KeyboardCharacterStreamRequest as requestSerialize };
-        export { deserialize_proto_KeyboardCharacterStreamRequest as requestDeserialize };
-        export { serialize_proto_KeyboardCharacterStreamResponse as responseSerialize };
-        export { deserialize_proto_KeyboardCharacterStreamResponse as responseDeserialize };
-    }
+// package: proto
+// file: keyboard.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as keyboard_pb from "./keyboard_pb";
+import * as session_pb from "./session_pb";
+
+interface IKeyboardService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    keyboardHotkeyStream: IKeyboardService_IKeyboardHotkeyStream;
+    keyboardScancodeStream: IKeyboardService_IKeyboardScancodeStream;
+    keyboardTextStream: IKeyboardService_IKeyboardTextStream;
+    keyboardCharacterStream: IKeyboardService_IKeyboardCharacterStream;
 }
-export var KeyboardClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_KeyboardHotkeyStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_KeyboardHotkeyStreamRequest(buffer_arg: any): import("./keyboard_pb.js").KeyboardHotkeyStreamRequest;
-declare function serialize_proto_KeyboardHotkeyStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_KeyboardHotkeyStreamResponse(buffer_arg: any): import("./keyboard_pb.js").KeyboardHotkeyStreamResponse;
-declare function serialize_proto_KeyboardScancodeStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_KeyboardScancodeStreamRequest(buffer_arg: any): import("./keyboard_pb.js").KeyboardScancodeStreamRequest;
-declare function serialize_proto_KeyboardScancodeStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_KeyboardScancodeStreamResponse(buffer_arg: any): import("./keyboard_pb.js").KeyboardScancodeStreamResponse;
-declare function serialize_proto_KeyboardTextStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_KeyboardTextStreamRequest(buffer_arg: any): import("./keyboard_pb.js").KeyboardTextStreamRequest;
-declare function serialize_proto_KeyboardTextStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_KeyboardTextStreamResponse(buffer_arg: any): import("./keyboard_pb.js").KeyboardTextStreamResponse;
-declare function serialize_proto_KeyboardCharacterStreamRequest(arg: any): Buffer;
-declare function deserialize_proto_KeyboardCharacterStreamRequest(buffer_arg: any): import("./keyboard_pb.js").KeyboardCharacterStreamRequest;
-declare function serialize_proto_KeyboardCharacterStreamResponse(arg: any): Buffer;
-declare function deserialize_proto_KeyboardCharacterStreamResponse(buffer_arg: any): import("./keyboard_pb.js").KeyboardCharacterStreamResponse;
-export {};
+
+interface IKeyboardService_IKeyboardHotkeyStream extends grpc.MethodDefinition<keyboard_pb.KeyboardHotkeyStreamRequest, keyboard_pb.KeyboardHotkeyStreamResponse> {
+    path: string; // "/proto.Keyboard/KeyboardHotkeyStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<keyboard_pb.KeyboardHotkeyStreamRequest>;
+    requestDeserialize: grpc.deserialize<keyboard_pb.KeyboardHotkeyStreamRequest>;
+    responseSerialize: grpc.serialize<keyboard_pb.KeyboardHotkeyStreamResponse>;
+    responseDeserialize: grpc.deserialize<keyboard_pb.KeyboardHotkeyStreamResponse>;
+}
+interface IKeyboardService_IKeyboardScancodeStream extends grpc.MethodDefinition<keyboard_pb.KeyboardScancodeStreamRequest, keyboard_pb.KeyboardScancodeStreamResponse> {
+    path: string; // "/proto.Keyboard/KeyboardScancodeStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<keyboard_pb.KeyboardScancodeStreamRequest>;
+    requestDeserialize: grpc.deserialize<keyboard_pb.KeyboardScancodeStreamRequest>;
+    responseSerialize: grpc.serialize<keyboard_pb.KeyboardScancodeStreamResponse>;
+    responseDeserialize: grpc.deserialize<keyboard_pb.KeyboardScancodeStreamResponse>;
+}
+interface IKeyboardService_IKeyboardTextStream extends grpc.MethodDefinition<keyboard_pb.KeyboardTextStreamRequest, keyboard_pb.KeyboardTextStreamResponse> {
+    path: string; // "/proto.Keyboard/KeyboardTextStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<keyboard_pb.KeyboardTextStreamRequest>;
+    requestDeserialize: grpc.deserialize<keyboard_pb.KeyboardTextStreamRequest>;
+    responseSerialize: grpc.serialize<keyboard_pb.KeyboardTextStreamResponse>;
+    responseDeserialize: grpc.deserialize<keyboard_pb.KeyboardTextStreamResponse>;
+}
+interface IKeyboardService_IKeyboardCharacterStream extends grpc.MethodDefinition<keyboard_pb.KeyboardCharacterStreamRequest, keyboard_pb.KeyboardCharacterStreamResponse> {
+    path: string; // "/proto.Keyboard/KeyboardCharacterStream"
+    requestStream: false;
+    responseStream: true;
+    requestSerialize: grpc.serialize<keyboard_pb.KeyboardCharacterStreamRequest>;
+    requestDeserialize: grpc.deserialize<keyboard_pb.KeyboardCharacterStreamRequest>;
+    responseSerialize: grpc.serialize<keyboard_pb.KeyboardCharacterStreamResponse>;
+    responseDeserialize: grpc.deserialize<keyboard_pb.KeyboardCharacterStreamResponse>;
+}
+
+export const KeyboardService: IKeyboardService;
+
+export interface IKeyboardServer {
+    keyboardHotkeyStream: grpc.handleServerStreamingCall<keyboard_pb.KeyboardHotkeyStreamRequest, keyboard_pb.KeyboardHotkeyStreamResponse>;
+    keyboardScancodeStream: grpc.handleServerStreamingCall<keyboard_pb.KeyboardScancodeStreamRequest, keyboard_pb.KeyboardScancodeStreamResponse>;
+    keyboardTextStream: grpc.handleServerStreamingCall<keyboard_pb.KeyboardTextStreamRequest, keyboard_pb.KeyboardTextStreamResponse>;
+    keyboardCharacterStream: grpc.handleServerStreamingCall<keyboard_pb.KeyboardCharacterStreamRequest, keyboard_pb.KeyboardCharacterStreamResponse>;
+}
+
+export interface IKeyboardClient {
+    keyboardHotkeyStream(request: keyboard_pb.KeyboardHotkeyStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardHotkeyStreamResponse>;
+    keyboardHotkeyStream(request: keyboard_pb.KeyboardHotkeyStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardHotkeyStreamResponse>;
+    keyboardScancodeStream(request: keyboard_pb.KeyboardScancodeStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardScancodeStreamResponse>;
+    keyboardScancodeStream(request: keyboard_pb.KeyboardScancodeStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardScancodeStreamResponse>;
+    keyboardTextStream(request: keyboard_pb.KeyboardTextStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardTextStreamResponse>;
+    keyboardTextStream(request: keyboard_pb.KeyboardTextStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardTextStreamResponse>;
+    keyboardCharacterStream(request: keyboard_pb.KeyboardCharacterStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardCharacterStreamResponse>;
+    keyboardCharacterStream(request: keyboard_pb.KeyboardCharacterStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardCharacterStreamResponse>;
+}
+
+export class KeyboardClient extends grpc.Client implements IKeyboardClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public keyboardHotkeyStream(request: keyboard_pb.KeyboardHotkeyStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardHotkeyStreamResponse>;
+    public keyboardHotkeyStream(request: keyboard_pb.KeyboardHotkeyStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardHotkeyStreamResponse>;
+    public keyboardScancodeStream(request: keyboard_pb.KeyboardScancodeStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardScancodeStreamResponse>;
+    public keyboardScancodeStream(request: keyboard_pb.KeyboardScancodeStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardScancodeStreamResponse>;
+    public keyboardTextStream(request: keyboard_pb.KeyboardTextStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardTextStreamResponse>;
+    public keyboardTextStream(request: keyboard_pb.KeyboardTextStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardTextStreamResponse>;
+    public keyboardCharacterStream(request: keyboard_pb.KeyboardCharacterStreamRequest, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardCharacterStreamResponse>;
+    public keyboardCharacterStream(request: keyboard_pb.KeyboardCharacterStreamRequest, metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientReadableStream<keyboard_pb.KeyboardCharacterStreamResponse>;
+}

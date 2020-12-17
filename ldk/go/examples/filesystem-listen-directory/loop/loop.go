@@ -120,7 +120,6 @@ func (c *Loop) emitExampleWhisper(fe ldk.FileEvent) error {
 
 	go func() {
 		err := c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-			Icon:     "bathtub",
 			Label:    "Example Controller Go",
 			Markdown: markdownBytes.String(),
 		})

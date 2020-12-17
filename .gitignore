@@ -10,6 +10,7 @@ ldk/node/build/bundle.js
 ldk/node/build/index.html
 ldk/node/build*
 ldk/node/build/*
+ldk/node/docs
 
 # Go LDK build files for examples
 ldk/go/examples/**/build
@@ -71,20 +72,20 @@ Thumbs.db:*
 mono_crash.*
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
+ldk/csharp/**/[Dd]ebug/
+ldk/csharp/**/[Dd]ebugPublic/
+ldk/csharp/**/[Rr]elease/
+ldk/csharp/**/[Rr]eleases/
+ldk/csharp/**/x64/
+ldk/csharp/**/x86/
+ldk/csharp/**/[Ww][Ii][Nn]32/
+ldk/csharp/**/[Aa][Rr][Mm]/
+ldk/csharp/**/[Aa][Rr][Mm]64/
+ldk/csharp/**/bld/
+ldk/csharp/**/[Bb]in/
+ldk/csharp/**/[Oo]bj/
+ldk/csharp/**/[Ll]og/
+ldk/csharp/**/[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -123,30 +124,30 @@ ScaffoldingReadMe.txt
 StyleCopReport.xml
 
 # Files built by Visual Studio
-*_i.c
-*_p.c
-*_h.h
-*.ilk
-*.meta
-*.obj
-*.iobj
-*.pch
-*.pdb
-*.ipdb
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
-*_wpftmp.csproj
-*.log
-*.vspscc
-*.vssscc
-.builds
-*.pidb
-*.svclog
-*.scc
+ldk/csharp/**/*_i.c
+ldk/csharp/**/*_p.c
+ldk/csharp/**/*_h.h
+ldk/csharp/**/*.ilk
+ldk/csharp/**/*.meta
+ldk/csharp/**/*.obj
+ldk/csharp/**/*.iobj
+ldk/csharp/**/*.pch
+ldk/csharp/**/*.pdb
+ldk/csharp/**/*.ipdb
+ldk/csharp/**/*.pgc
+ldk/csharp/**/*.pgd
+ldk/csharp/**/*.rsp
+ldk/csharp/**/*.sbr
+ldk/csharp/**/*.tlb
+ldk/csharp/**/*.tli
+ldk/csharp/**/*.tlh
+ldk/csharp/**/*.tmp
+ldk/csharp/**/*.tmp_proj
+ldk/csharp/**/*_wpftmp.csproj
+ldk/csharp/**/*.log
+ldk/csharp/**/*.vspscc
+ldk/csharp/**/*.vssscc
+ldk/csharp/**/.builds
+ldk/csharp/**/*.pidb
+ldk/csharp/**/*.svclog
+ldk/csharp/**/*.scc

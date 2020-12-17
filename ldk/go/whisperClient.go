@@ -21,7 +21,6 @@ func (m *WhisperClient) Markdown(ctx context.Context, content *WhisperContentMar
 	_, err := m.client.WhisperMarkdown(ctx, &proto.WhisperMarkdownRequest{
 		Meta: &proto.WhisperMeta{
 			Label: content.Label,
-			Icon:  content.Icon,
 		},
 		Markdown: content.Markdown,
 		Session:  m.session.ToProto(),
@@ -34,7 +33,6 @@ func (m *WhisperClient) Confirm(ctx context.Context, content *WhisperContentConf
 	response, err := m.client.WhisperConfirm(ctx, &proto.WhisperConfirmRequest{
 		Meta: &proto.WhisperMeta{
 			Label: content.Label,
-			Icon:  content.Icon,
 		},
 		Markdown:     content.Markdown,
 		RejectLabel:  content.RejectLabel,
@@ -67,7 +65,6 @@ func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (
 	client, err := m.client.WhisperForm(ctx, &proto.WhisperFormRequest{
 		Meta: &proto.WhisperMeta{
 			Label: content.Label,
-			Icon:  content.Icon,
 		},
 		Markdown:    content.Markdown,
 		SubmitLabel: content.SubmitLabel,

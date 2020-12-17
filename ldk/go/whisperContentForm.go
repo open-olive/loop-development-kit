@@ -1,7 +1,6 @@
 package ldk
 
 type WhisperContentForm struct {
-	Icon  string `json:"icon"` // Material Icon name https://material.io/resources/icons/
 	Label string `json:"label"`
 
 	Markdown string                             `json:"markdown"`

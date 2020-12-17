@@ -19,9 +19,6 @@ type Metadata struct {
 	// to run on plugin start (defaults to "plugin"/"plugin.exe").
 	Entrypoint []string `json:"entrypoint" yaml:"entrypoint"`
 
-	// Icon is a URL for an icon representing this entity.
-	Icon string `json:"icon" yaml:"icon"`
-
 	// ID is a unique identifier for this entity that is consistent across all versions
 	// and modifications of this entity.
 	ID string `json:"id" yaml:"id"`

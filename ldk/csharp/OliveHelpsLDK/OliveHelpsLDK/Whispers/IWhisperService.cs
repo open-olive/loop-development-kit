@@ -19,7 +19,6 @@ namespace OliveHelpsLDK.Whispers
 
     public struct WhisperConfig
     {
-        public string Icon;
         public string Label;
     }
 

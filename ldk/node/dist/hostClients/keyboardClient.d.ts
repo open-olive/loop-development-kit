@@ -7,7 +7,7 @@ import { HotKeyEvent, HotKeyRequest, KeyboardService, ScanCodeEvent, TextStream 
  */
 export default class KeyboardClient extends BaseClient<KeyboardGRPCClient> implements KeyboardService {
     streamHotKey(hotKeys: HotKeyRequest, listener: StreamListener<HotKeyEvent>): StoppableStream<HotKeyEvent>;
-    streamText(): StoppableStream<string>;
+    streamText(listener: StreamListener<string>): StoppableStream<string>;
     streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
     streamScanCode(listener: StreamListener<ScanCodeEvent>): StoppableStream<ScanCodeEvent>;
     protected generateClient(): GRPCClientConstructor<KeyboardGRPCClient>;

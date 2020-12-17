@@ -8,7 +8,6 @@ import (
 
 func TestWhisperContentList_MarshalJSON(t *testing.T) {
 	type fields struct {
-		Icon     string
 		Label    string
 		Elements map[string]WhisperContentListElement
 	}
@@ -21,7 +20,6 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 		{
 			name: "simple example with one element",
 			fields: fields{
-				Icon:  "bathtub",
 				Label: "The Label",
 				Elements: map[string]WhisperContentListElement{
 					"favoriteFood": &WhisperContentListElementPair{
@@ -34,13 +32,12 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want:    []byte("{\"icon\":\"bathtub\",\"label\":\"The Label\",\"elements\":{\"favoriteFood\":{\"copyable\":false,\"extra\":false,\"label\":\"Favorite Food\",\"order\":0,\"style\":\"\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
+			want:    []byte("{\"label\":\"The Label\",\"elements\":{\"favoriteFood\":{\"copyable\":false,\"extra\":false,\"label\":\"Favorite Food\",\"order\":0,\"style\":\"\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
 			wantErr: false,
 		},
 		{
 			name: "one of each element type",
 			fields: fields{
-				Icon:  "bathtub",
 				Label: "The Label",
 				Elements: map[string]WhisperContentListElement{
 					"pairElement": &WhisperContentListElementPair{
@@ -66,7 +63,7 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want:    []byte("{\"icon\":\"bathtub\",\"label\":\"The Label\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"messageElement\":{\"align\":\"center\",\"body\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
+			want:    []byte("{\"label\":\"The Label\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"messageElement\":{\"align\":\"center\",\"body\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
 			wantErr: false,
 		},
 	}
@@ -75,7 +72,6 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			c := &WhisperContentList{
-				Icon:     tt.fields.Icon,
 				Label:    tt.fields.Label,
 				Elements: tt.fields.Elements,
 			}

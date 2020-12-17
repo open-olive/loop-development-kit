@@ -3,7 +3,6 @@
   "created": "2020-06-22T00:00:00Z",
   "dependencies": [],
   "description": "This is an example controller written in the Node LDK",
-  "icon": "bathtub",
   "id": "b538b618-f2d1-4033-bb5f-8d9ac2c3da75",
   "name": "Node LDK - Clipboard",
   "organization": "OliveAI",

@@ -1,17 +1,41 @@
-export namespace GRPCBrokerService {
-    namespace startStream {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./broker_pb.js").ConnInfo;
-        export const responseType: typeof import("./broker_pb.js").ConnInfo;
-        export { serialize_plugin_ConnInfo as requestSerialize };
-        export { deserialize_plugin_ConnInfo as requestDeserialize };
-        export { serialize_plugin_ConnInfo as responseSerialize };
-        export { deserialize_plugin_ConnInfo as responseDeserialize };
-    }
+// package: plugin
+// file: broker.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as broker_pb from "./broker_pb";
+
+interface IGRPCBrokerService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    startStream: IGRPCBrokerService_IStartStream;
 }
-export var GRPCBrokerClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_plugin_ConnInfo(arg: any): Buffer;
-declare function deserialize_plugin_ConnInfo(buffer_arg: any): import("./broker_pb.js").ConnInfo;
-export {};
+
+interface IGRPCBrokerService_IStartStream extends grpc.MethodDefinition<broker_pb.ConnInfo, broker_pb.ConnInfo> {
+    path: string; // "/plugin.GRPCBroker/StartStream"
+    requestStream: true;
+    responseStream: true;
+    requestSerialize: grpc.serialize<broker_pb.ConnInfo>;
+    requestDeserialize: grpc.deserialize<broker_pb.ConnInfo>;
+    responseSerialize: grpc.serialize<broker_pb.ConnInfo>;
+    responseDeserialize: grpc.deserialize<broker_pb.ConnInfo>;
+}
+
+export const GRPCBrokerService: IGRPCBrokerService;
+
+export interface IGRPCBrokerServer {
+    startStream: grpc.handleBidiStreamingCall<broker_pb.ConnInfo, broker_pb.ConnInfo>;
+}
+
+export interface IGRPCBrokerClient {
+    startStream(): grpc.ClientDuplexStream<broker_pb.ConnInfo, broker_pb.ConnInfo>;
+    startStream(options: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<broker_pb.ConnInfo, broker_pb.ConnInfo>;
+    startStream(metadata: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<broker_pb.ConnInfo, broker_pb.ConnInfo>;
+}
+
+export class GRPCBrokerClient extends grpc.Client implements IGRPCBrokerClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public startStream(options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<broker_pb.ConnInfo, broker_pb.ConnInfo>;
+    public startStream(metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<broker_pb.ConnInfo, broker_pb.ConnInfo>;
+}

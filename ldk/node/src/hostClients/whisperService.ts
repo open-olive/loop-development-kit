@@ -11,7 +11,6 @@ import {
  * {
  *   markdown: '# Markdown\nThis is markdown',
  *   label: 'Whisper!',
- *   icon: 'bathtub',
  * }
  * ```
  */
@@ -20,10 +19,6 @@ export interface Whisper {
    * The content of the Whisper in markdown.
    */
   markdown: string;
-  /**
-   * The icon displayed at the top of the Whisper card.
-   */
-  icon: string;
   /**
    * The title displayed at the top of the Whisper card.
    */
@@ -126,7 +121,6 @@ export interface WhisperListElement<T extends string> {
   order?: number;
 }
 
-// eslint-disable-next-line no-shadow
 export enum WhisperListStyle {
   NONE = 0,
   SUCCESS,
@@ -134,7 +128,6 @@ export enum WhisperListStyle {
   ERROR,
 }
 
-// eslint-disable-next-line no-shadow
 export enum WhisperListAlign {
   LEFT = 0,
   CENTER,

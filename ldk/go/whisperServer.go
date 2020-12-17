@@ -25,7 +25,6 @@ func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperM
 	err = m.Impl.Markdown(
 		context.WithValue(ctx, Session{}, session),
 		&WhisperContentMarkdown{
-			Icon:     req.Meta.Icon,
 			Label:    req.Meta.Label,
 			Markdown: req.Markdown,
 		})
@@ -46,7 +45,6 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 	response, err := m.Impl.Confirm(
 		context.WithValue(ctx, Session{}, session),
 		&WhisperContentConfirm{
-			Icon:         req.Meta.Icon,
 			Label:        req.Meta.Label,
 			Markdown:     req.Markdown,
 			ResolveLabel: req.ResolveLabel,
@@ -360,7 +358,6 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 	submitted, outputs, err := m.Impl.Form(
 		context.WithValue(stream.Context(), Session{}, session),
 		&WhisperContentForm{
-			Icon:        req.Meta.Icon,
 			Label:       req.Meta.Label,
 			Markdown:    req.Markdown,
 			Inputs:      inputs,

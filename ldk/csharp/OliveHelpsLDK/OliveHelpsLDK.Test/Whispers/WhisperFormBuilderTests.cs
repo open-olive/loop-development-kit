@@ -28,7 +28,6 @@ namespace OliveHelpsLDK.Test.Whispers
                 SubmitLabel = "Submit",
                 Config = new WhisperConfig
                 {
-                    Icon = "Config.Icon",
                     Label = "Config.Label",
                 },
                 Inputs = new Dictionary<string, IBase>()
@@ -52,7 +51,6 @@ namespace OliveHelpsLDK.Test.Whispers
                 Markdown = request.Markdown,
                 Meta = new WhisperMeta
                 {
-                    Icon = "Config.Icon",
                     Label = "Config.Label",
                 },
                 Inputs =

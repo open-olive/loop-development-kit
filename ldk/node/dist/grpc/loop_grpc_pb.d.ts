@@ -1,35 +1,61 @@
-export namespace LoopService {
-    namespace loopStart {
-        export const path: string;
-        export const requestStream: boolean;
-        export const responseStream: boolean;
-        export const requestType: typeof import("./loop_pb.js").LoopStartRequest;
-        export const responseType: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
-        export { serialize_proto_LoopStartRequest as requestSerialize };
-        export { deserialize_proto_LoopStartRequest as requestDeserialize };
-        export { serialize_google_protobuf_Empty as responseSerialize };
-        export { deserialize_google_protobuf_Empty as responseDeserialize };
-    }
-    namespace loopStop {
-        const path_1: string;
-        export { path_1 as path };
-        const requestStream_1: boolean;
-        export { requestStream_1 as requestStream };
-        const responseStream_1: boolean;
-        export { responseStream_1 as responseStream };
-        const requestType_1: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
-        export { requestType_1 as requestType };
-        const responseType_1: typeof import("google-protobuf/google/protobuf/empty_pb").Empty;
-        export { responseType_1 as responseType };
-        export { serialize_google_protobuf_Empty as requestSerialize };
-        export { deserialize_google_protobuf_Empty as requestDeserialize };
-        export { serialize_google_protobuf_Empty as responseSerialize };
-        export { deserialize_google_protobuf_Empty as responseDeserialize };
-    }
+// package: proto
+// file: loop.proto
+
+/* tslint:disable */
+/* eslint-disable */
+
+import * as grpc from "@grpc/grpc-js";
+import {handleClientStreamingCall} from "@grpc/grpc-js/build/src/server-call";
+import * as loop_pb from "./loop_pb";
+import * as google_protobuf_empty_pb from "google-protobuf/google/protobuf/empty_pb";
+import * as session_pb from "./session_pb";
+
+interface ILoopService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    loopStart: ILoopService_ILoopStart;
+    loopStop: ILoopService_ILoopStop;
 }
-export var LoopClient: import("@grpc/grpc-js/build/src/make-client").ServiceClientConstructor;
-declare function serialize_proto_LoopStartRequest(arg: any): Buffer;
-declare function deserialize_proto_LoopStartRequest(buffer_arg: any): import("./loop_pb.js").LoopStartRequest;
-declare function serialize_google_protobuf_Empty(arg: any): Buffer;
-declare function deserialize_google_protobuf_Empty(buffer_arg: any): import("google-protobuf/google/protobuf/empty_pb").Empty;
-export {};
+
+interface ILoopService_ILoopStart extends grpc.MethodDefinition<loop_pb.LoopStartRequest, google_protobuf_empty_pb.Empty> {
+    path: string; // "/proto.Loop/LoopStart"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<loop_pb.LoopStartRequest>;
+    requestDeserialize: grpc.deserialize<loop_pb.LoopStartRequest>;
+    responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+}
+interface ILoopService_ILoopStop extends grpc.MethodDefinition<google_protobuf_empty_pb.Empty, google_protobuf_empty_pb.Empty> {
+    path: string; // "/proto.Loop/LoopStop"
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    requestDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+    responseSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;
+    responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
+}
+
+export const LoopService: ILoopService;
+
+export interface ILoopServer {
+    loopStart: grpc.handleUnaryCall<loop_pb.LoopStartRequest, google_protobuf_empty_pb.Empty>;
+    loopStop: grpc.handleUnaryCall<google_protobuf_empty_pb.Empty, google_protobuf_empty_pb.Empty>;
+}
+
+export interface ILoopClient {
+    loopStart(request: loop_pb.LoopStartRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    loopStart(request: loop_pb.LoopStartRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    loopStart(request: loop_pb.LoopStartRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    loopStop(request: google_protobuf_empty_pb.Empty, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    loopStop(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    loopStop(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+}
+
+export class LoopClient extends grpc.Client implements ILoopClient {
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
+    public loopStart(request: loop_pb.LoopStartRequest, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public loopStart(request: loop_pb.LoopStartRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public loopStart(request: loop_pb.LoopStartRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public loopStop(request: google_protobuf_empty_pb.Empty, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public loopStop(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+    public loopStop(request: google_protobuf_empty_pb.Empty, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: google_protobuf_empty_pb.Empty) => void): grpc.ClientUnaryCall;
+}
