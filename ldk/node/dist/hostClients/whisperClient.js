@@ -34,6 +34,11 @@ class WhisperClient extends baseClient_1.default {
     confirmWhisper(whisper) {
         return this.buildStoppableMessage((message, callback) => this.client.whisperConfirm(message, callback), () => whisperMessageBuilder_1.buildWhisperConfirmMessage(whisper), (response) => response.getResponse());
     }
+    disambiguationWhisper(whisper, listener) {
+        const msg = whisperMessageBuilder_1.generateWhisperDisambiguation(whisper);
+        const stream = this.client.whisperDisambiguation(msg);
+        return new transformingStream_1.TransformingStream(stream, (response) => whisperMessageParser_1.transformDisambiguationResponse(response), listener);
+    }
     formWhisper(whisper, listener) {
         const msg = whisperMessageBuilder_1.generateWhisperForm(whisper);
         const stream = this.client.whisperForm(msg);

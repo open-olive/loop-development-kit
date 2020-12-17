@@ -1,10 +1,12 @@
-import { Whisper, WhisperConfirmConfig, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlign, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListStyle } from './whisperService';
+import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationElements, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlign, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListStyle } from './whisperService';
 import * as messages from '../grpc/whisper_pb';
 export declare const generateWhisperInput: (input: WhisperFormInputs) => messages.WhisperFormInput;
 export declare const generateWhisperListStyle: (style: WhisperListStyle) => messages.WhisperListElement.Style;
 export declare const generateWhisperListAlign: (align: WhisperListAlign) => messages.WhisperListElement.Align;
 export declare const generateWhisperListElement: (element: WhisperListElements) => messages.WhisperListElement;
+export declare const generateWhisperDisambiguationElement: (element: WhisperDisambiguationElements) => messages.WhisperDisambiguationElement;
 export declare const generateWhisperMeta: (whisper: Whisper) => messages.WhisperMeta;
+export declare const generateWhisperDisambiguation: (config: WhisperDisambiguationConfig) => messages.WhisperDisambiguationRequest;
 export declare const generateWhisperForm: (config: WhisperFormConfig) => messages.WhisperFormRequest;
 export declare const buildWhisperMarkdownRequest: (whisper: Whisper) => messages.WhisperMarkdownRequest;
 export declare const buildWhisperListRequest: (config: WhisperListConfig) => messages.WhisperListRequest;

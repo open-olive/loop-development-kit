@@ -4,6 +4,7 @@ import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
 import {
   Whisper,
   WhisperConfirmConfig,
+  WhisperDisambiguationConfig,
   WhisperDisambiguationEvent,
   WhisperFormConfig,
   WhisperFormSubmitEvent,
@@ -18,11 +19,12 @@ import {
   StreamListener,
 } from './stoppables';
 import { TransformingStream } from './transformingStream';
-import { transformResponse } from './whisperMessageParser';
+import { transformDisambiguationResponse, transformResponse } from './whisperMessageParser';
 import {
   buildWhisperConfirmMessage,
   buildWhisperListRequest,
   buildWhisperMarkdownRequest,
+  generateWhisperDisambiguation,
   generateWhisperForm,
 } from './whisperMessageBuilder';
 
@@ -84,7 +86,7 @@ class WhisperClient
     return new TransformingStream<
       messages.WhisperDisambiguationStreamResponse,
       WhisperDisambiguationEvent
-    >(stream, (response) => transformResponse(response), listener);
+    >(stream, (response) => transformDisambiguationResponse(response), listener);
   }
 
   formWhisper(

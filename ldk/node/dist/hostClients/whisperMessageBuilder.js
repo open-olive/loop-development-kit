@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildWhisperConfirmMessage = exports.buildWhisperListRequest = exports.buildWhisperMarkdownRequest = exports.generateWhisperForm = exports.generateWhisperMeta = exports.generateWhisperListElement = exports.generateWhisperListAlign = exports.generateWhisperListStyle = exports.generateWhisperInput = void 0;
+exports.buildWhisperConfirmMessage = exports.buildWhisperListRequest = exports.buildWhisperMarkdownRequest = exports.generateWhisperForm = exports.generateWhisperDisambiguation = exports.generateWhisperMeta = exports.generateWhisperDisambiguationElement = exports.generateWhisperListElement = exports.generateWhisperListAlign = exports.generateWhisperListStyle = exports.generateWhisperInput = void 0;
 const timestamp_pb_1 = require("google-protobuf/google/protobuf/timestamp_pb");
 const whisperService_1 = require("./whisperService");
 const messages = __importStar(require("../grpc/whisper_pb"));
@@ -221,10 +221,50 @@ exports.generateWhisperListElement = (element) => {
     setListMessages(msg, element);
     return msg;
 };
+exports.generateWhisperDisambiguationElement = (element) => {
+    const WDE = messages.WhisperDisambiguationElement;
+    const msg = new WDE();
+    switch (element.type) {
+        case 'option': {
+            const inputMsg = new WDE.Option();
+            if (element.label) {
+                inputMsg.setLabel(element.label);
+            }
+            msg.setOption(inputMsg);
+            break;
+        }
+        case 'text': {
+            const inputMsg = new WDE.Text();
+            if (element.body) {
+                inputMsg.setBody(element.body);
+            }
+            msg.setText(inputMsg);
+            break;
+        }
+        default: {
+            throw new Error('Unexpected Input Type');
+        }
+    }
+    if (element.order && element.order > 0) {
+        msg.setOrder(element.order);
+    }
+    return msg;
+};
 exports.generateWhisperMeta = (whisper) => {
     const whisperMsg = new messages.WhisperMeta();
     whisperMsg.setLabel(whisper.label);
     return whisperMsg;
+};
+exports.generateWhisperDisambiguation = (config) => {
+    const meta = exports.generateWhisperMeta(config);
+    const request = new messages.WhisperDisambiguationRequest().setMeta(meta);
+    const elements = request.getElementsMap();
+    Object.keys(config.elements).forEach((key) => {
+        const value = config.elements[key];
+        const input = exports.generateWhisperDisambiguationElement(value);
+        elements.set(key, input);
+    });
+    return request;
 };
 exports.generateWhisperForm = (config) => {
     const msg = new messages.WhisperFormRequest();
