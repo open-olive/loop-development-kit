@@ -3,7 +3,7 @@ package ldk
 import (
 	"context"
 
-	"github.com/hashicorp/go-plugin"
+	"github.com/open-olive/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
 )

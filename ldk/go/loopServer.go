@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/go-multierror"
-	"github.com/hashicorp/go-plugin"
+	"github.com/open-olive/go-plugin"
 	"github.com/open-olive/loop-development-kit/ldk/go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"

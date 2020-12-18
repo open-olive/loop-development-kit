@@ -1,7 +1,7 @@
 package ldk
 
 import (
-	"github.com/hashicorp/go-plugin"
+	"github.com/open-olive/go-plugin"
 )
 
 // ServeLoopPlugin serves a specific loop plugin.

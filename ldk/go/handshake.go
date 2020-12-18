@@ -1,7 +1,7 @@
 package ldk
 
 import (
-	"github.com/hashicorp/go-plugin"
+	"github.com/open-olive/go-plugin"
 )
 
 // Handshake is a collection of information used to
