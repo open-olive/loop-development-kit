@@ -2,12 +2,13 @@ package ldktest
 
 import (
 	"context"
+	"os"
 
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 )
 
 type FilesystemService struct {
-	Dirf        func(context.Context, string) ([]ldk.FileInfo, error)
+	Dirf        func(context.Context, string) ([]os.FileInfo, error)
 	ListenDirf  func(context.Context, string, ldk.ListenDirHandler) error
 	ListenFilef func(context.Context, string, ldk.ListenFileHandler) error
 	Openf       func(context.Context, string) (ldk.File, error)
@@ -18,7 +19,7 @@ type FilesystemService struct {
 	Removef     func(context.Context, string, bool) error
 }
 
-func (f *FilesystemService) Dir(ctx context.Context, dir string) ([]ldk.FileInfo, error) {
+func (f *FilesystemService) Dir(ctx context.Context, dir string) ([]os.FileInfo, error) {
 	return f.Dirf(ctx, dir)
 }
 

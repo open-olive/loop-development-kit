@@ -13,19 +13,22 @@ import (
 )
 
 func TestController(t *testing.T) {
+	type template struct {
+		Name    string
+		Size    int
+		Mode    int
+		Updated time.Time
+		IsDir   bool
+	}
+
 	sidekick := &ldktest.Sidekick{
+
 		FilesystemService: &ldktest.FilesystemService{
-			Dirf: func(ctx context.Context, dir string) ([]ldk.FileInfo, error) {
-				fi := []ldk.FileInfo{
-					{
-						Name:    "foo.md",
-						Size:    1024,
-						Mode:    int(os.ModePerm),
-						Updated: time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC),
-						IsDir:   false,
-					},
-				}
-				return fi, nil
+			Dirf: func(ctx context.Context, dir string) ([]os.FileInfo, error) {
+				fi := ldk.NewFileInfo("foo.md", 1024, int(os.ModePerm), time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC), false)
+
+				fiArray := []os.FileInfo{&fi}
+				return fiArray, nil
 			},
 		},
 		WhisperService: &ldktest.WhisperService{

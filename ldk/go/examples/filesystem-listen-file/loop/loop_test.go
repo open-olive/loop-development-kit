@@ -16,14 +16,8 @@ func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
 		FilesystemService: &ldktest.FilesystemService{
 			ListenFilef: func(ctx context.Context, path string, cb ldk.ListenFileHandler) error {
-				fi := ldk.FileInfo{
-					Name:    "foo.md",
-					Size:    1024,
-					Mode:    int(os.ModePerm),
-					Updated: time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC),
-					IsDir:   false,
-				}
-				cb(ldk.FileEvent{Info: fi, Action: ldk.FileActionCreate}, nil)
+				fi := ldk.NewFileInfo("foo.md", 1024, int(os.ModePerm), time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC), false)
+				cb(ldk.FileEvent{Info: &fi, Action: ldk.FileActionCreate}, nil)
 				return nil
 			},
 		},

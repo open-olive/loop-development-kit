@@ -52,6 +52,16 @@ func (f *FileInfo) Sys() interface{} {
 	return nil
 }
 
+func NewFileInfo(name string, mode, size int, updated time.Time, isDir bool) FileInfo {
+	return FileInfo{
+		name:    name,
+		mode:    mode,
+		size:    size,
+		updated: updated,
+		isDir:   isDir,
+	}
+}
+
 type FileAction int
 
 func (f FileAction) String() string {
