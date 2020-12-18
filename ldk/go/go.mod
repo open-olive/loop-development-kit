@@ -2,6 +2,8 @@ module github.com/open-olive/loop-development-kit/ldk/go
 
 go 1.14
 
+replace github.com/hashicorp/go-plugin => github.com/open-olive/go-plugin v1.4.1-0.20201218171639-be5f1db86f0f
+
 require (
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/golang/protobuf v1.4.3
