@@ -66,7 +66,7 @@ class ProcessClient extends baseClient_1.default {
                 .map((processInfo) => parseProcessInfo(processInfo)),
         }));
     }
-    streamProcesses() {
+    streamProcesses(listener) {
         return new transformingStream_1.TransformingStream(this.client.processStateStream(new process_pb_1.default.ProcessStateStreamRequest().setSession(this.createSessionMessage())), (message) => {
             const processRaw = message.getProcess();
             if (processRaw == null) {
@@ -76,7 +76,7 @@ class ProcessClient extends baseClient_1.default {
                 process: parseProcessInfo(processRaw),
                 action: parseProcessAction(message.getAction()),
             };
-        });
+        }, listener);
     }
 }
 exports.ProcessClient = ProcessClient;
