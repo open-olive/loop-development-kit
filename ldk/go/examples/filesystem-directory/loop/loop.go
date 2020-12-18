@@ -83,7 +83,7 @@ func (c *Loop) LoopStop() error {
 	return nil
 }
 
-func (c *Loop) emitExampleWhisper(f ldk.FileInfo) error {
+func (c *Loop) emitExampleWhisper(f os.FileInfo) error {
 	type template struct {
 		Name    string
 		Size    string
@@ -93,20 +93,20 @@ func (c *Loop) emitExampleWhisper(f ldk.FileInfo) error {
 	}
 
 	var t template
-	if f.IsDir {
+	if f.IsDir() {
 		t = template{
-			Name:    f.Name,
-			Mode:    os.FileMode(f.Mode).String(),
-			Updated: f.Updated.Format(time.Stamp),
-			IsDir:   fmt.Sprintf("%t", f.IsDir),
+			Name:    f.Name(),
+			Mode:    f.Mode().String(),
+			Updated: f.ModTime().Format(time.Stamp),
+			IsDir:   fmt.Sprintf("%t", f.IsDir()),
 		}
 	} else {
 		t = template{
-			Name:    f.Name,
-			Size:    humanize.Bytes(uint64(f.Size)),
-			Mode:    os.FileMode(f.Mode).String(),
-			Updated: f.Updated.Format(time.Stamp),
-			IsDir:   fmt.Sprintf("%t", f.IsDir),
+			Name:    f.Name(),
+			Size:    humanize.Bytes(uint64(f.Size())),
+			Mode:    f.Mode().String(),
+			Updated: f.ModTime().Format(time.Stamp),
+			IsDir:   fmt.Sprintf("%t", f.IsDir()),
 		}
 	}
 
