@@ -220,7 +220,10 @@ func (f *GRPCFile) Read(b []byte) (int, error) {
 		}
 		if err != nil && err == io.EOF {
 			readBytes := f.buffer.Bytes()
-			f.buffer.Read(b[0:len(readBytes)])
+			_, err = f.buffer.Read(b[0:len(readBytes)])
+			if err != nil {
+				return 0, err
+			}
 
 			return len(readBytes), err
 		}
@@ -228,7 +231,10 @@ func (f *GRPCFile) Read(b []byte) (int, error) {
 		f.readIndex += int64(n)
 
 		if f.readIndex >= int64(bufferLength) {
-			f.buffer.Read(b)
+			_, err = f.buffer.Read(b)
+			if err != nil {
+				return 0, err
+			}
 
 			readBytes := f.buffer.Bytes()
 			diff := f.readIndex - int64(bufferLength)

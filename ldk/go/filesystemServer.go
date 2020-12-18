@@ -42,7 +42,7 @@ func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.Filesys
 		}
 		file := &proto.FileInfo{
 			Name:    f.Name(),
-			Size:    int64(f.Size()),
+			Size:    f.Size(),
 			Mode:    uint32(f.Mode()),
 			Updated: ptime,
 			IsDir:   f.IsDir(),
@@ -76,7 +76,7 @@ func (f *FilesystemServer) FilesystemDirStream(req *proto.FilesystemDirStreamReq
 			Error: errText,
 			File: &proto.FileInfo{
 				Name:    fe.Info.Name(),
-				Size:    int64(fe.Info.Size()),
+				Size:    fe.Info.Size(),
 				Mode:    uint32(fe.Info.Mode()),
 				Updated: t,
 			},
@@ -126,7 +126,7 @@ func (f *FilesystemServer) FilesystemFileInfoStream(req *proto.FilesystemFileInf
 			Error: errText,
 			File: &proto.FileInfo{
 				Name:    fe.Info.Name(),
-				Size:    int64(fe.Info.Size()),
+				Size:    fe.Info.Size(),
 				Mode:    uint32(fe.Info.Mode()),
 				Updated: t,
 			},
@@ -306,7 +306,7 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 						Stat: &proto.FilesystemFileStreamResponse_Stat{
 							Info: &proto.FileInfo{
 								Name:    info.Name(),
-								Size:    int64(info.Size()),
+								Size:    info.Size(),
 								Mode:    uint32(info.Mode()),
 								Updated: t,
 								IsDir:   info.IsDir(),
