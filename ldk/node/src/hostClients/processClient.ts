@@ -8,7 +8,7 @@ import {
   ProcessStreamAction,
   ProcessStreamResponse,
 } from './processService';
-import { StoppableStream } from './stoppables';
+import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
 /**
@@ -65,7 +65,9 @@ export class ProcessClient
     );
   }
 
-  streamProcesses(): StoppableStream<ProcessStreamResponse> {
+  streamProcesses(
+    listener: StreamListener<ProcessStreamResponse>,
+  ): StoppableStream<ProcessStreamResponse> {
     return new TransformingStream<
       Messages.ProcessStateStreamResponse,
       ProcessStreamResponse
@@ -85,6 +87,7 @@ export class ProcessClient
           action: parseProcessAction(message.getAction()),
         };
       },
+      listener,
     );
   }
 }
