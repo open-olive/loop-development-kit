@@ -35,7 +35,7 @@ class ExampleLoop implements Loop {
             topMessage: {
               align: WhisperListAlign.LEFT,
               body: recallItem.product_description,
-              header: recallItem.Firm,
+              header: recallItem.recalling_firm,
               order: 0,
               style: WhisperListStyle.NONE,
               type: 'message',
