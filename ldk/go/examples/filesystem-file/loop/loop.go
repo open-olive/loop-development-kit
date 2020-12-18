@@ -57,7 +57,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 	c.sidekick = sidekick
 
-	go func() {
+	func() {
 
 		file, err := sidekick.Filesystem().Open(c.ctx, "./go.sum")
 		if err != nil {
