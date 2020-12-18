@@ -36,20 +36,6 @@ namespace OliveHelpsLDK.Filesystem
                 .ContinueWith(continuationFunction, cancellationToken);
         }
 
-        public Task<FileInfo> QueryFile(string filePath, CancellationToken cancellationToken = default)
-        {
-            var request = new FilesystemFileRequest
-            {
-                Session = CreateSession(),
-                Path = filePath,
-            };
-            var continuationFunction =
-                LoggedParser<Task<FilesystemFileResponse>, FileInfo>(task => ConvertProtoFileInfo(task.Result.File));
-            return Client.FilesystemFileAsync(request, CreateOptions(cancellationToken))
-                .ResponseAsync
-                .ContinueWith(continuationFunction, cancellationToken);
-        }
-
         public IStreamingCall<FileEvent> StreamDirectory(string directoryPath,
             CancellationToken cancellationToken = default)
         {
@@ -63,16 +49,16 @@ namespace OliveHelpsLDK.Filesystem
                 LoggedParser<FilesystemDirStreamResponse, FileEvent>(ConvertFileEvent));
         }
 
-        public IStreamingCall<FileEvent> StreamFile(string filePath, CancellationToken cancellationToken = default)
+        public IStreamingCall<FileEvent> StreamFileInfo(string filePath, CancellationToken cancellationToken = default)
         {
-            var request = new FilesystemFileStreamRequest
+            var request = new FilesystemFileInfoStreamRequest
             {
                 Session = CreateSession(),
                 Path = filePath
             };
-            var call = Client.FilesystemFileStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<FilesystemFileStreamResponse, FileEvent>(call,
-                LoggedParser<FilesystemFileStreamResponse, FileEvent>(ConvertFileEvent));
+            var call = Client.FilesystemFileInfoStream(request, CreateOptions(cancellationToken));
+            return new StreamingCall<FilesystemFileInfoStreamResponse, FileEvent>(call,
+                LoggedParser<FilesystemFileInfoStreamResponse, FileEvent>(ConvertFileEvent));
         }
 
         private static IList<FileInfo> ConvertFileList(IEnumerable<Proto.FileInfo> files)
@@ -101,7 +87,7 @@ namespace OliveHelpsLDK.Filesystem
             };
         }
 
-        private static FileEvent ConvertFileEvent(FilesystemFileStreamResponse fileStreamResponse)
+        private static FileEvent ConvertFileEvent(FilesystemFileInfoStreamResponse fileStreamResponse)
         {
             return new FileEvent
             {
