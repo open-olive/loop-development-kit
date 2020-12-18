@@ -261,7 +261,7 @@ export const generateWhisperDisambiguationElement = (
       break;
     }
     default: {
-      throw new Error(`Unexpected Input Type ${JSON.stringify(element)}`);
+      throw new Error('Unexpected Input Type');
     }
   }
   if (element.order && element.order > 0) {
