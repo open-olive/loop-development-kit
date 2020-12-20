@@ -13,6 +13,9 @@ service Whisper {
     // Send a confirm whisper
     rpc WhisperConfirm(WhisperConfirmRequest) returns (WhisperConfirmResponse);
 
+    // Send a disambiguation whisper
+    rpc WhisperDisambiguation(WhisperDisambiguationRequest) returns (stream WhisperDisambiguationStreamResponse);
+
     // Send a form whisper
     rpc WhisperForm(WhisperFormRequest) returns (stream WhisperFormStreamResponse);
 
@@ -211,6 +214,38 @@ message WhisperFormStreamResponse {
     }
 
     string error = 15;
+}
+
+message WhisperDisambiguationStreamResponse {
+    string key = 1;
+    string error = 2;
+}
+
+message WhisperDisambiguationRequest {
+    Session session = 1;
+    WhisperMeta meta = 2;
+    map <string, WhisperDisambiguationElement> elements = 3;
+}
+
+message WhisperDisambiguationElement {
+    uint32 order = 1;
+
+    message Option {
+        string label = 2;
+    }
+
+    message Text {
+        string body = 2;
+    }
+
+    oneof ElementOneof {
+        Option option = 2;
+        Text text = 3;
+    }
+}
+
+message WhisperDisambiguationResponse {
+    bool response = 1;
 }
 
 message WhisperListRequest {

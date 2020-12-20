@@ -7,6 +7,8 @@ type WhisperService interface {
 	// This function only returns once the whisper is closed, or when the context provided is cancelled.
 	Confirm(context.Context, *WhisperContentConfirm) (bool, error)
 	// This function only returns once the whisper is closed, or when the context provided is cancelled.
+	Disambiguation(context.Context, *WhisperContentDisambiguation) (bool, error)
+	// This function only returns once the whisper is closed, or when the context provided is cancelled.
 	Form(context.Context, *WhisperContentForm) (bool, map[string]WhisperContentFormOutput, error)
 	// This function only returns once the whisper is closed, or when the context provided is cancelled.
 	Markdown(context.Context, *WhisperContentMarkdown) error
