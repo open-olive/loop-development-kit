@@ -57,7 +57,9 @@ export class NetworkClient
         msg.setUrl(req.url);
         msg.setMethod(req.method);
         msg.setBody(req.body);
-        addHeadersToMessage(msg, req.headers);
+        if (req.headers) {
+          addHeadersToMessage(msg, req.headers);
+        }
         return msg;
       },
       (response: messages.HTTPResponseMsg) => ({

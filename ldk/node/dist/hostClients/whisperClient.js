@@ -35,14 +35,14 @@ class WhisperClient extends baseClient_1.default {
         return this.buildStoppableMessage((message, callback) => this.client.whisperConfirm(message, callback), () => whisperMessageBuilder_1.buildWhisperConfirmMessage(whisper), (response) => response.getResponse());
     }
     disambiguationWhisper(whisper, listener) {
-        const msg = whisperMessageBuilder_1.generateWhisperDisambiguation(whisper);
-        const stream = this.client.whisperDisambiguation(msg);
-        return new transformingStream_1.TransformingStream(stream, (response) => whisperMessageParser_1.transformDisambiguationResponse(response), listener);
+        const message = whisperMessageBuilder_1.generateWhisperDisambiguation(whisper)
+            .setSession(this.createSessionMessage());
+        return new transformingStream_1.TransformingStream(this.client.whisperDisambiguation(message), (response) => whisperMessageParser_1.transformDisambiguationResponse(response), listener);
     }
     formWhisper(whisper, listener) {
-        const msg = whisperMessageBuilder_1.generateWhisperForm(whisper);
-        const stream = this.client.whisperForm(msg);
-        return new transformingStream_1.TransformingStream(stream, (response) => whisperMessageParser_1.transformResponse(response), listener);
+        const message = whisperMessageBuilder_1.generateWhisperForm(whisper)
+            .setSession(this.createSessionMessage());
+        return new transformingStream_1.TransformingStream(this.client.whisperForm(message), (response) => whisperMessageParser_1.transformResponse(response), listener);
     }
     generateClient() {
         return whisper_grpc_pb_1.WhisperClient;

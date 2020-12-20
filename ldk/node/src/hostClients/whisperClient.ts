@@ -81,24 +81,32 @@ class WhisperClient
     whisper: WhisperDisambiguationConfig,
     listener: StreamListener<WhisperDisambiguationEvent>,
   ): StoppableStream<WhisperDisambiguationEvent> {
-    const msg = generateWhisperDisambiguation(whisper);
-    const stream = this.client.whisperDisambiguation(msg);
+    const message = generateWhisperDisambiguation(whisper)
+      .setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.WhisperDisambiguationStreamResponse,
       WhisperDisambiguationEvent
-    >(stream, (response) => transformDisambiguationResponse(response), listener);
+    >(
+      this.client.whisperDisambiguation(message),
+      (response) => transformDisambiguationResponse(response), 
+      listener,
+    );
   }
 
   formWhisper(
     whisper: WhisperFormConfig,
     listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>,
   ): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent> {
-    const msg = generateWhisperForm(whisper);
-    const stream = this.client.whisperForm(msg);
+    const message = generateWhisperForm(whisper)
+      .setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.WhisperFormStreamResponse,
       WhisperFormSubmitEvent | WhisperFormUpdateEvent
-    >(stream, (response) => transformResponse(response), listener);
+    >(
+      this.client.whisperForm(message),
+      (response) => transformResponse(response),
+      listener,
+    );
   }
 
   protected generateClient(): GRPCClientConstructor<WhisperGRPCClient> {
