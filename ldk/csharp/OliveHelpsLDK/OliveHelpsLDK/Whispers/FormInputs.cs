@@ -5,78 +5,53 @@ using Proto;
 // ReSharper disable once CheckNamespace
 namespace OliveHelpsLDK.Whispers.Forms.Inputs
 {
-    public interface IProtoable<T>
-    {
-        T ToProto();
-    }
-
+    /// <summary>
+    /// Common values for all the Form Inputs.
+    /// </summary>
     public interface IBase
     {
+        /// <summary>
+        /// The Label presented for the form input.
+        /// </summary>
         string Label { get; }
+
+        /// <summary>
+        /// The Tooltip presented when the user hovers over the form.
+        /// </summary>
         string Tooltip { get; }
+
+        /// <summary>
+        /// The order of the field. Must be at least 0. 
+        /// </summary>
+        /// <remarks>
+        /// Fields with the same input order will be ordered by their key.
+        /// </remarks>
         int Order { get; }
     }
 
-    public interface ICheckbox : IBase, IProtoable<WhisperFormInput.Types.Checkbox>
+    /// <summary>
+    /// Base class for Form Input definition objects.
+    /// </summary>
+    public abstract class BaseInput : IBase
     {
-        bool Value { get; }
-    }
-
-    public interface IEmail : IBase, IProtoable<WhisperFormInput.Types.Email>
-    {
-        string Value { get; }
-    }
-
-    public interface IMarkdown : IBase, IProtoable<WhisperFormInput.Types.Markdown>
-    {
-        string Value { get; }
-    }
-
-    public interface INumber : IBase, IProtoable<WhisperFormInput.Types.Number>
-    {
-        float Value { get; }
-        float Min { get; }
-        float Max { get; }
-    }
-
-    public interface IPassword : IBase, IProtoable<WhisperFormInput.Types.Password>
-    {
-    }
-
-    public interface IRadio : IBase, IProtoable<WhisperFormInput.Types.Radio>
-    {
-        string[] Options { get; }
-    }
-
-    public interface ISelect : IBase, IProtoable<WhisperFormInput.Types.Select>
-    {
-        string[] Options { get; }
-    }
-
-    public interface ITelephone : IBase, IProtoable<WhisperFormInput.Types.Tel>
-    {
-        string Value { get; }
-        string Pattern { get; }
-    }
-
-    public interface IText : IBase, IProtoable<WhisperFormInput.Types.Text>
-    {
-        string Value { get; }
-    }
-
-    public interface ITime : IBase, IProtoable<WhisperFormInput.Types.Time>
-    {
-        DateTimeOffset Value { get; }
-    }
-
-    public struct Checkbox : ICheckbox
-    {
+        /// <inheritdoc />
         public string Label { get; set; }
+
+        /// <inheritdoc />
         public string Tooltip { get; set; }
+
+        /// <inheritdoc />
         public int Order { get; set; }
+    }
+
+    public class Checkbox : BaseInput
+    {
+        /// <summary>
+        /// Whether checkbox is checked (<c>true</c>) or not (<c>false</c>).
+        /// </summary>
         public bool Value { get; set; }
 
-        public WhisperFormInput.Types.Checkbox ToProto()
+        internal WhisperFormInput.Types.Checkbox ToProto()
         {
             return new WhisperFormInput.Types.Checkbox
             {
@@ -88,15 +63,17 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         }
     }
 
-    public struct Email : IEmail
+    /// <summary>
+    /// An email address field.
+    /// </summary>
+    public class Email : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
-
+        /// <summary>
+        /// Starting value.
+        /// </summary>
         public string Value { get; set; }
 
-        public WhisperFormInput.Types.Email ToProto()
+        internal WhisperFormInput.Types.Email ToProto()
         {
             return new WhisperFormInput.Types.Email
             {
@@ -108,14 +85,17 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         }
     }
 
-    public struct Markdown : IMarkdown
+    /// <summary>
+    /// A field with Markdown formatted content.
+    /// </summary>
+    public class Markdown : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
+        /// <summary>
+        /// The field content.
+        /// </summary>
         public string Value { get; set; }
 
-        public WhisperFormInput.Types.Markdown ToProto()
+        internal WhisperFormInput.Types.Markdown ToProto()
         {
             return new WhisperFormInput.Types.Markdown
             {
@@ -127,19 +107,27 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         }
     }
 
-    public struct Number : INumber
+    /// <summary>
+    /// A Numerical input field.
+    /// </summary>
+    public class Number : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
-
+        /// <summary>
+        /// The initial value.
+        /// </summary>
         public float Value { get; set; }
 
+        /// <summary>
+        /// The minimum acceptable value for the field.
+        /// </summary>
         public float Min { get; set; }
 
+        /// <summary>
+        /// The maximum acceptable value for the field.
+        /// </summary>
         public float Max { get; set; }
 
-        public WhisperFormInput.Types.Number ToProto()
+        internal WhisperFormInput.Types.Number ToProto()
         {
             return new WhisperFormInput.Types.Number
             {
@@ -153,13 +141,12 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         }
     }
 
-    public struct Password : IPassword
+    /// <summary>
+    /// A Password input field. Unlike other fields, this field cannot be pre-populated.
+    /// </summary>
+    public class Password : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
-
-        public WhisperFormInput.Types.Password ToProto()
+        internal WhisperFormInput.Types.Password ToProto()
         {
             return new WhisperFormInput.Types.Password
             {
@@ -170,13 +157,12 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         }
     }
 
-    public struct Radio : IRadio
+    /// <summary>
+    /// Presents a set of radio buttons. Only one button can be selected.
+    /// </summary>
+    public class Radio : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
-
-        public WhisperFormInput.Types.Radio ToProto()
+        internal WhisperFormInput.Types.Radio ToProto()
         {
             var radio = new WhisperFormInput.Types.Radio
             {
@@ -192,16 +178,18 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
             return radio;
         }
 
+        /// <summary>
+        /// An array of strings to be presented as the radio button choices.
+        /// </summary>
         public string[] Options { get; set; }
     }
 
-    public struct Select : ISelect
+    /// <summary>
+    /// Creates a HTML Select input. User can choose one of the options provided.
+    /// </summary>
+    public class Select : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
-
-        public WhisperFormInput.Types.Select ToProto()
+        internal WhisperFormInput.Types.Select ToProto()
         {
             var select = new WhisperFormInput.Types.Select
             {
@@ -217,20 +205,30 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
             return select;
         }
 
+        /// <summary>
+        /// The list of options the user can choose from.
+        /// </summary>
         public string[] Options { get; set; }
     }
 
-    public struct Telephone : ITelephone
+    /// <summary>
+    /// Presents an input for entering telephone numbers. You can both provide the prepopulated Value,
+    /// as well as providing a <see cref="Pattern"/> that the input must satisfy.
+    /// </summary>
+    public class Telephone : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
-
+        /// <summary>
+        /// Initial value.
+        /// </summary>
         public string Value { get; set; }
 
+        /// <summary>
+        /// The pattern of the field to be populated.
+        /// TODO: Provide example.
+        /// </summary>
         public string Pattern { get; set; }
 
-        public WhisperFormInput.Types.Tel ToProto()
+        internal WhisperFormInput.Types.Tel ToProto()
         {
             return new WhisperFormInput.Types.Tel
             {
@@ -243,15 +241,17 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         }
     }
 
-    public struct Text : IText
+    /// <summary>
+    /// A free form text field.
+    /// </summary>
+    public class Text : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
-
+        /// <summary>
+        /// The initial value.
+        /// </summary>
         public string Value { get; set; }
 
-        public WhisperFormInput.Types.Text ToProto()
+        internal WhisperFormInput.Types.Text ToProto()
         {
             return new WhisperFormInput.Types.Text
             {
@@ -263,14 +263,17 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         }
     }
 
-    public struct Time : ITime
+    /// <summary>
+    /// A field for inputting a time and date.
+    /// </summary>
+    public class Time : BaseInput
     {
-        public string Label { get; set; }
-        public string Tooltip { get; set; }
-        public int Order { get; set; }
+        /// <summary>
+        /// The initial value.
+        /// </summary>
         public DateTimeOffset Value { get; set; }
 
-        public WhisperFormInput.Types.Time ToProto()
+        internal WhisperFormInput.Types.Time ToProto()
         {
             return new WhisperFormInput.Types.Time
             {
