@@ -11,6 +11,7 @@ type WhisperService struct {
 	Formf     func(context.Context, *ldk.WhisperContentForm) (bool, map[string]ldk.WhisperContentFormOutput, error)
 	Listf     func(context.Context, *ldk.WhisperContentList) error
 	Markdownf func(context.Context, *ldk.WhisperContentMarkdown) error
+	Disambiguationf func(context.Context, *ldk.WhisperContentDisambiguation) (bool, error)
 }
 
 func (w *WhisperService) Confirm(ctx context.Context, content *ldk.WhisperContentConfirm) (bool, error) {
@@ -27,4 +28,8 @@ func (w *WhisperService) List(ctx context.Context, content *ldk.WhisperContentLi
 
 func (w *WhisperService) Markdown(ctx context.Context, content *ldk.WhisperContentMarkdown) error {
 	return w.Markdownf(ctx, content)
+}
+
+func (w *WhisperService) Disambiguation(ctx context.Context, content *ldk.WhisperContentDisambiguation) (bool, error) {
+	return w.Disambiguationf(ctx, content)
 }
