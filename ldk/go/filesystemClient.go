@@ -185,18 +185,18 @@ func (f *GRPCFile) makeRequest() (int, error) {
 			switch resp.ResponseOneOf.(type) {
 			case *proto.FilesystemFileStreamResponse_Read_:
 
-				recievedBytes := resp.GetRead().GetData()
-				n := len(recievedBytes)
-				f.buffer.Write(recievedBytes)
-
-				if resp.GetRead().Error == "EOF" {
+				if resp.GetRead().GetError() == "EOF" {
 					return 0, io.EOF
 				}
 
 				if resp.GetRead().GetError() == "" {
+					recievedBytes := resp.GetRead().GetData()
+					n := len(recievedBytes)
+					f.buffer.Write(recievedBytes)
 					return n, nil
 				}
-				return n, errors.New(resp.GetRead().GetError())
+
+				return 0, errors.New(resp.GetRead().GetError())
 			default:
 				return 0, errors.New("unexpected response from server")
 			}
@@ -205,48 +205,42 @@ func (f *GRPCFile) makeRequest() (int, error) {
 	}
 
 }
-
-func (f *GRPCFile) Read(b []byte) (int, error) {
+func (f *GRPCFile) Read(p []byte) (int, error) {
 	f.fileMutex.Lock()
 	defer f.fileMutex.Unlock()
-	bufferLength := len(b)
-
-	f.readIndex = 0
+	pl := len(p)
 
 	for {
-		n, err := f.makeRequest()
+		b := f.buffer.Bytes()
+		bl := len(b)
+
+		if bl >= pl {
+			n, err := f.buffer.Read(p)
+			if err != nil && err != io.EOF {
+				f.buffer.Reset()
+				return 0, err
+			}
+			return n, nil
+		}
+
+		_, err := f.makeRequest()
 		if err != nil && err != io.EOF {
+			f.buffer.Reset()
 			return 0, err
 		}
-		if err != nil && err == io.EOF {
+
+		if err == io.EOF {
 			readBytes := f.buffer.Bytes()
-			_, err = f.buffer.Read(b[0:len(readBytes)])
+			_, err = f.buffer.Read(p)
 			if err != nil {
+				f.buffer.Reset()
 				return 0, err
 			}
 
-			return len(readBytes), err
-		}
-
-		f.readIndex += int64(n)
-
-		if f.readIndex >= int64(bufferLength) {
-			_, err = f.buffer.Read(b)
-			if err != nil {
-				return 0, err
-			}
-
-			readBytes := f.buffer.Bytes()
-			diff := f.readIndex - int64(bufferLength)
-			f.buffer.Reset()
-			f.buffer.Write(readBytes[bufferLength:f.readIndex])
-			f.readIndex = diff
-
-			return len(b), nil
+			return len(readBytes), io.EOF
 		}
 
 	}
-
 }
 
 func (f *GRPCFile) Write(b []byte) (int, error) {
