@@ -8,7 +8,8 @@ import (
 func ServeLoopPlugin(logger *Logger, loop Loop) error {
 	plugin.Serve(&plugin.ServeConfig{
 		ConnectionConfig: plugin.ConnectionConfig{
-			Network: "unix",
+			Network:   "unix",
+			SocketDir: "C:\\Users\\user\\AppData\\Local\\Packages\\ian test container\\AC\\Temp\\",
 		},
 		Logger:          logger.Logger(),
 		HandshakeConfig: Handshake,
