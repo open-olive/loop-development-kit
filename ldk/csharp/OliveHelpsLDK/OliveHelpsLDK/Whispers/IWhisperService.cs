@@ -138,7 +138,14 @@ namespace OliveHelpsLDK.Whispers
     /// </summary>
     public struct WhisperList
     {
+        /// <summary>
+        /// Whisper configuration.
+        /// </summary>
         public WhisperConfig Config;
+
+        /// <summary>
+        /// The list elements for this field.
+        /// </summary>
         public IDictionary<string, List.ListBase> Elements;
     }
 }
