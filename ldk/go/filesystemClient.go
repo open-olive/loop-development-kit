@@ -151,7 +151,6 @@ type GRPCFile struct {
 	stream    proto.Filesystem_FilesystemFileStreamClient
 	fileMutex sync.Mutex
 	buffer    bytes.Buffer
-	readIndex int64
 }
 
 func newGRPCFile(ctx context.Context, stream proto.Filesystem_FilesystemFileStreamClient) *GRPCFile {
