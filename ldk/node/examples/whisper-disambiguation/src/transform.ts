@@ -39,7 +39,7 @@ export interface RecallJSON {
 }
 
 /**
- * @param json
+ * @param json - JSON object returned by the network sensor
  */
 export function decodeRecall(json: RecallJSON): Recall {
   return {

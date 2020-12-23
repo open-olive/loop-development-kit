@@ -1,4 +1,3 @@
-import { find, propEq } from 'ramda';
 import moment from "moment";
 
 import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
@@ -10,7 +9,7 @@ import {
 
 import { decodeRecall, Recall, RecallJSON } from './transform'
 
-const logger = new Logger('olive-helps-node-example-network');
+const logger = new Logger('olive-helps-node-example-whisper-disambiguation');
 
 export interface RecallMap {
   [key: string]: Recall

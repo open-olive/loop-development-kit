@@ -12,7 +12,6 @@
   "devDependencies": {
     "@types/jest": "26.0.13",
     "@types/node": "14.10.0",
-    "@types/ramda": "^0.27.34",
     "@typescript-eslint/eslint-plugin": "4.1.0",
     "@typescript-eslint/parser": "4.1.0",
     "eslint": "7.8.1",
@@ -31,7 +30,6 @@
   },
   "dependencies": {
     "@oliveai/ldk": "file:../..",
-    "moment": "^2.29.1",
-    "ramda": "0.27.1"
+    "moment": "^2.29.1"
   }
 }
