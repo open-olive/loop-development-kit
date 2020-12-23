@@ -4,6 +4,8 @@ import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
 import {
   Whisper,
   WhisperConfirmConfig,
+  WhisperDisambiguationConfig,
+  WhisperDisambiguationEvent,
   WhisperFormConfig,
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
@@ -17,11 +19,12 @@ import {
   StreamListener,
 } from './stoppables';
 import { TransformingStream } from './transformingStream';
-import { transformResponse } from './whisperMessageParser';
+import { transformDisambiguationResponse, transformResponse } from './whisperMessageParser';
 import {
   buildWhisperConfirmMessage,
   buildWhisperListRequest,
   buildWhisperMarkdownRequest,
+  generateWhisperDisambiguation,
   generateWhisperForm,
 } from './whisperMessageBuilder';
 
@@ -74,16 +77,36 @@ class WhisperClient
     );
   }
 
+  disambiguationWhisper(
+    whisper: WhisperDisambiguationConfig,
+    listener: StreamListener<WhisperDisambiguationEvent>,
+  ): StoppableStream<WhisperDisambiguationEvent> {
+    const message = generateWhisperDisambiguation(whisper)
+      .setSession(this.createSessionMessage());
+    return new TransformingStream<
+      messages.WhisperDisambiguationStreamResponse,
+      WhisperDisambiguationEvent
+    >(
+      this.client.whisperDisambiguation(message),
+      (response) => transformDisambiguationResponse(response), 
+      listener,
+    );
+  }
+
   formWhisper(
     whisper: WhisperFormConfig,
     listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>,
   ): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent> {
-    const msg = generateWhisperForm(whisper);
-    const stream = this.client.whisperForm(msg);
+    const message = generateWhisperForm(whisper)
+      .setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.WhisperFormStreamResponse,
       WhisperFormSubmitEvent | WhisperFormUpdateEvent
-    >(stream, (response) => transformResponse(response), listener);
+    >(
+      this.client.whisperForm(message),
+      (response) => transformResponse(response),
+      listener,
+    );
   }
 
   protected generateClient(): GRPCClientConstructor<WhisperGRPCClient> {

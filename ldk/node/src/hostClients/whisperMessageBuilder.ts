@@ -2,6 +2,8 @@ import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import {
   Whisper,
   WhisperConfirmConfig,
+  WhisperDisambiguationConfig,
+  WhisperDisambiguationElements,
   WhisperFormConfig,
   WhisperFormInput,
   WhisperFormInputs,
@@ -236,10 +238,55 @@ export const generateWhisperListElement = (
   return msg;
 };
 
+export const generateWhisperDisambiguationElement = (
+  element: WhisperDisambiguationElements,
+): messages.WhisperDisambiguationElement => {
+  const WDE = messages.WhisperDisambiguationElement;
+  const msg = new WDE();
+  switch (element.type) {
+    case 'option': {
+      const inputMsg = new WDE.Option();
+      if (element.label) {
+        inputMsg.setLabel(element.label);
+      }
+      msg.setOption(inputMsg);
+      break;
+    }
+    case 'text': {
+      const inputMsg = new WDE.Text();
+      if (element.body) {
+        inputMsg.setBody(element.body);
+      }
+      msg.setText(inputMsg);
+      break;
+    }
+    default: {
+      throw new Error('Unexpected Input Type');
+    }
+  }
+  if (element.order && element.order > 0) {
+    msg.setOrder(element.order);
+  }
+  return msg;
+};
+
 export const generateWhisperMeta = (whisper: Whisper): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
   return whisperMsg;
+};
+export const generateWhisperDisambiguation = (
+  config: WhisperDisambiguationConfig,
+): messages.WhisperDisambiguationRequest => {
+  const meta = generateWhisperMeta(config);
+  const request = new messages.WhisperDisambiguationRequest().setMeta(meta);
+  const elements = request.getElementsMap();
+  Object.keys(config.elements).forEach((key) => {
+    const value = config.elements[key];
+    const input = generateWhisperDisambiguationElement(value);
+    elements.set(key, input);
+  });
+  return request;
 };
 export const generateWhisperForm = (
   config: WhisperFormConfig,

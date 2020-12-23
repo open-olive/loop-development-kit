@@ -2,6 +2,7 @@
 import * as jspb from 'google-protobuf';
 import * as messages from '../grpc/whisper_pb';
 import {
+  WhisperDisambiguationEvent,
   WhisperFormOutputTypes,
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
@@ -67,6 +68,13 @@ const transformResult = (
     outputs: transformOutputMap(message.getOutputsMap()),
     type: 'submit',
   };
+};
+
+export const transformDisambiguationResponse: StreamTransformer<
+  messages.WhisperDisambiguationStreamResponse,
+  WhisperDisambiguationEvent
+> = (response) => {
+  return {key: response.getKey()}
 };
 
 export const transformResponse: StreamTransformer<

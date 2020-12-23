@@ -32,6 +32,24 @@ function serialize_proto_WhisperConfirmResponse(arg) {
 function deserialize_proto_WhisperConfirmResponse(buffer_arg) {
     return whisper_pb.WhisperConfirmResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
+function serialize_proto_WhisperDisambiguationRequest(arg) {
+    if (!(arg instanceof whisper_pb.WhisperDisambiguationRequest)) {
+        throw new Error('Expected argument of type proto.WhisperDisambiguationRequest');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_WhisperDisambiguationRequest(buffer_arg) {
+    return whisper_pb.WhisperDisambiguationRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+function serialize_proto_WhisperDisambiguationStreamResponse(arg) {
+    if (!(arg instanceof whisper_pb.WhisperDisambiguationStreamResponse)) {
+        throw new Error('Expected argument of type proto.WhisperDisambiguationStreamResponse');
+    }
+    return Buffer.from(arg.serializeBinary());
+}
+function deserialize_proto_WhisperDisambiguationStreamResponse(buffer_arg) {
+    return whisper_pb.WhisperDisambiguationStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
 function serialize_proto_WhisperFormRequest(arg) {
     if (!(arg instanceof whisper_pb.WhisperFormRequest)) {
         throw new Error('Expected argument of type proto.WhisperFormRequest');
@@ -92,6 +110,18 @@ var WhisperService = exports.WhisperService = {
         requestDeserialize: deserialize_proto_WhisperConfirmRequest,
         responseSerialize: serialize_proto_WhisperConfirmResponse,
         responseDeserialize: deserialize_proto_WhisperConfirmResponse,
+    },
+    // Send a disambiguation whisper
+    whisperDisambiguation: {
+        path: '/proto.Whisper/WhisperDisambiguation',
+        requestStream: false,
+        responseStream: true,
+        requestType: whisper_pb.WhisperDisambiguationRequest,
+        responseType: whisper_pb.WhisperDisambiguationStreamResponse,
+        requestSerialize: serialize_proto_WhisperDisambiguationRequest,
+        requestDeserialize: deserialize_proto_WhisperDisambiguationRequest,
+        responseSerialize: serialize_proto_WhisperDisambiguationStreamResponse,
+        responseDeserialize: deserialize_proto_WhisperDisambiguationStreamResponse,
     },
     // Send a form whisper
     whisperForm: {

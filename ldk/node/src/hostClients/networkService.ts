@@ -3,7 +3,7 @@ export interface HttpRequest {
   method: string;
   body: string | Uint8Array;
 
-  headers: Record<string, Array<string>>;
+  headers?: Record<string, Array<string>>;
 }
 
 export interface HttpResponse {
