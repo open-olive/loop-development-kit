@@ -50,6 +50,9 @@ function addHeadersToMessage(message, headers) {
     });
     return message;
 }
+/**
+ * @internal
+ */
 class NetworkClient extends baseClient_1.default {
     generateClient() {
         return network_grpc_pb_1.NetworkClient;
