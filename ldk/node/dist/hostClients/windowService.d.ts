@@ -21,6 +21,8 @@ export interface WindowInfoStreamResponse {
 }
 /**
  * The WindowService provides access to the windows opened in the user's session.
+ *
+ * This service is not yet implemented.
  */
 export interface WindowService {
     /**

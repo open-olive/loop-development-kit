@@ -45,14 +45,19 @@ A Loop:
 
 Olive Helps has Sensors that lets the Loop observe what's taking place in the user's system:
 
-- {@link BrowserService | Browser Activity}: Know when the user changes URLs and selects text in their browser (plugin must be installed).
 - {@link ClipboardService | Clipboard Contents}: Know when the user's clipboard's contents change.
 - {@link CursorService | Cursor Movement}: Know where the user's cursor is.
 - {@link FileSystemService | File System Changes}: Know when files change.
-- {@link HoverService | Text Hover}: Know what text the user's cursor is hovering over.
 - {@link KeyboardService | Keyboard Entry}: Know what keystrokes the user is typing.
 - {@link ProcessService | Process Changes}: Know what processes are active, starting, or stopping.
+- {@link NetworkService | Network}: Make HTTP requests.
+- {@link UIService | Olive Helps Search}: Know when users are searching with the Olive Helps Global Search or Searchbar.
+
+The following Sensors are under development and are not yet available:
+
+- {@link BrowserService | Browser Activity}: Know when the user changes URLs and selects text in their browser (plugin must be installed).
 - {@link WindowService | Windows}: Know what windows are open, which one is active, and when they change.
+- {@link HoverService | Text Hover}: Know what text the user's cursor is hovering over.
 
 Sensors are directly accessible from the {@link HostServices} object provided to your Loop when it starts.
 
@@ -66,14 +71,14 @@ class MyLoop {
         this.services = services;
         // Result generated only once.
         this.services.clipboard.queryClipboard().then((clipboardContents) => {
-            this.services.whisper.emitWhisper({
+            this.services.whisper.markdownWhisper({
                 markdown: `Starting with ${clipboardContents}`,
                 label: 'Starting Contents',
             });
         });
         // Listener function generating whispers.
         const clipboardListener = (errorOrNull, clipboardContents) => {
-          this.services.whisper.emitWhisper({
+          this.services.whisper.markdownWhisper({
               markdown: `Contents changed to ${clipboardContents}`,
               label: 'Clipboard Change',
           });
@@ -93,25 +98,20 @@ class MyLoop {
 
 Whispers are how you present information to users. The {@link WhisperService} is accessible on {@link HostServices.whisper}.
 
-To emit a whisper, call {@link WhisperService.emitWhisper} with the whisper display data. The call will return with the whisper ID.
+You can create different types of Whispers:
 
-To update that whisper, call {@link WhisperService.updateWhisper} with the updated whisper data. 
+- {@link WhisperService.markdownWhisper | Markdown}: A Whisper presenting content formatted with Markdown.
+- {@link WhisperService.confirmWhisper | Confirm}: A Whisper presenting the user with the choice to say Yes (Confirm) or No (Reject) to a prompt.
+- {@link WhisperService.listWhisper | List}: A Whisper presenting a data list, with the ability to expand the list and show additional data.
+- {@link WhisperService.formWhisper | Form}: A Whisper presenting a form that the user can complete, and then submit (or reject).
 
-Note: The request will succeed even if the Whisper has been dismissed by the user.
 
 ```typescript
 
-const whisperId = await this.services.whisper.emitWhisper({
+const whisperId = await this.services.whisper.markdownWhisper({
     markdown: "The Message Contents in Markdown",
     label: "The Title at the Cards Top Left",
 });
-
-this.services.whisper.updateWhisper(whisperId, 
-  {
-    markdown: "The Message Contents in Markdown",
-    label: "The Title at the Cards Top Left",
-  }
-);
 ```
 
 ### Storage
