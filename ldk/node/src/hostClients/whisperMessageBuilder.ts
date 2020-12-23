@@ -22,6 +22,7 @@ type FormMessage<T> = {
 };
 
 /**
+ * @internal
  * @param msg - The message.
  * @param input - The whisper form input.
  */
@@ -37,6 +38,10 @@ function setFormMessages<T>(
   }
 }
 
+/**
+ * @internal
+ * @param input - Whisper input to build
+ */
 export const generateWhisperInput = (
   input: WhisperFormInputs,
 ): messages.WhisperFormInput => {
@@ -121,6 +126,7 @@ type ListMessage<T> = {
 };
 
 /**
+ * @internal
  * @param msg - The message.
  * @param input - The whisper list element.
  */
@@ -137,6 +143,10 @@ function setListMessages<T>(
   }
 }
 
+/**
+ * @param style
+ * @internal
+ */
 export const generateWhisperListStyle = (
   style: WhisperListStyle,
 ): messages.WhisperListElement.Style => {
@@ -159,6 +169,10 @@ export const generateWhisperListStyle = (
   }
 };
 
+/**
+ * @param align
+ * @internal
+ */
 export const generateWhisperListAlign = (
   align: WhisperListAlign,
 ): messages.WhisperListElement.Align => {
@@ -178,6 +192,10 @@ export const generateWhisperListAlign = (
   }
 };
 
+/**
+ * @internal
+ * @param element - element to build
+ */
 export const generateWhisperListElement = (
   element: WhisperListElements,
 ): messages.WhisperListElement => {
@@ -291,11 +309,20 @@ export const generateWhisperDisambiguationElement = (
   return msg;
 };
 
+/**
+ * @internal
+ * @param whisper - whisper to build
+ */
 export const generateWhisperMeta = (whisper: Whisper): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
   return whisperMsg;
 };
+
+/**
+ * @internal
+ * @param config - whisper to build
+ */
 export const generateWhisperDisambiguation = (
   config: WhisperDisambiguationConfig,
 ): messages.WhisperDisambiguationRequest => {
@@ -309,6 +336,11 @@ export const generateWhisperDisambiguation = (
   });
   return request;
 };
+
+/**
+ * @internal
+ * @param config - whisper to build
+ */
 export const generateWhisperForm = (
   config: WhisperFormConfig,
 ): messages.WhisperFormRequest => {
@@ -325,6 +357,10 @@ export const generateWhisperForm = (
   });
   return msg;
 };
+/**
+ * @internal
+ * @param whisper - whisper to build
+ */
 export const buildWhisperMarkdownRequest = (
   whisper: Whisper,
 ): messages.WhisperMarkdownRequest => {
@@ -333,6 +369,10 @@ export const buildWhisperMarkdownRequest = (
   result.setMarkdown(whisper.markdown);
   return result;
 };
+/**
+ * @internal
+ * @param config - whisper to build
+ */
 export const buildWhisperListRequest = (
   config: WhisperListConfig,
 ): messages.WhisperListRequest => {
@@ -346,6 +386,11 @@ export const buildWhisperListRequest = (
   });
   return request;
 };
+
+/**
+ * @internal
+ * @param whisper - whisper to build
+ */
 export const buildWhisperConfirmMessage = (
   whisper: WhisperConfirmConfig,
 ): messages.WhisperConfirmRequest => {

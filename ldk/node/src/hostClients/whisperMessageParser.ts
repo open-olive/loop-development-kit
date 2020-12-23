@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-non-null-assertion,jsdoc/require-param */
 import * as jspb from 'google-protobuf';
 import * as messages from '../grpc/whisper_pb';
 import {
@@ -9,6 +9,9 @@ import {
 } from './whisperService';
 import { StreamTransformer } from './transformingStream';
 
+/**
+ * @internal
+ */
 const transformOutput = (
   message: messages.WhisperFormOutput,
 ): WhisperFormOutputTypes => {
@@ -40,6 +43,9 @@ const transformOutput = (
   }
 };
 
+/**
+ * @internal
+ */
 const transformUpdate = (
   message: messages.WhisperFormUpdate,
 ): WhisperFormUpdateEvent => ({
@@ -48,6 +54,9 @@ const transformUpdate = (
   type: 'update',
 });
 
+/**
+ * @internal
+ */
 const transformOutputMap = (
   map: jspb.Map<string, messages.WhisperFormOutput>,
 ): { [name: string]: WhisperFormOutputTypes } => {
@@ -58,6 +67,9 @@ const transformOutputMap = (
   return results;
 };
 
+/**
+ * @internal
+ */
 const transformResult = (
   message: messages.WhisperFormResult,
 ): WhisperFormSubmitEvent => ({
@@ -71,6 +83,9 @@ export const transformDisambiguationResponse: StreamTransformer<
   WhisperDisambiguationEvent
 > = (response) => ({ key: response.getKey() });
 
+/**
+ * @internal
+ */
 export const transformResponse: StreamTransformer<
   messages.WhisperFormStreamResponse,
   WhisperFormSubmitEvent | WhisperFormUpdateEvent
