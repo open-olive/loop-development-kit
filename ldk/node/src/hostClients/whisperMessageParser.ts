@@ -78,6 +78,9 @@ const transformResult = (
   type: 'submit',
 });
 
+/**
+ * @internal
+ */
 export const transformDisambiguationResponse: StreamTransformer<
   messages.WhisperDisambiguationStreamResponse,
   WhisperDisambiguationEvent

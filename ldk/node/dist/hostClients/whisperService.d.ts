@@ -69,7 +69,7 @@ export interface WhisperDisambiguationElement<T extends string> {
     /**
      *  Value the UI uses to order the form inputs.
      *  Value must be greater than 0
-     *  If this value is ommited it will default to 0
+     *  If this value is omitted it will default to 0
      */
     order?: number;
 }
@@ -190,6 +190,12 @@ export interface WhisperFormSubmitEvent {
  * The WhisperService lets consumers emit new whispers and update existing whispers.
  */
 export interface WhisperService {
+    /**
+     * Generates a whisper with a list of clickable values that generate a message once clicked.
+     *
+     * @param whisper - The configuration data.
+     * @param listener - A listener function that will receive an update whenever an element is clicked.
+     */
     disambiguationWhisper(whisper: WhisperDisambiguationConfig, listener: StreamListener<WhisperDisambiguationEvent>): StoppableStream<WhisperDisambiguationEvent>;
     /**
      * @param whisper - The whisper configuration.

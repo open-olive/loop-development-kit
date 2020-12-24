@@ -277,6 +277,10 @@ export const generateWhisperListElement = (
   return msg;
 };
 
+/**
+ * @param element
+ * @internal
+ */
 export const generateWhisperDisambiguationElement = (
   element: WhisperDisambiguationElements,
 ): messages.WhisperDisambiguationElement => {
