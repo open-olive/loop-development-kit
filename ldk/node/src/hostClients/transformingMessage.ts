@@ -1,6 +1,9 @@
 import * as GRPC from '@grpc/grpc-js';
 import { StoppableMessage } from './stoppables';
 
+/**
+ * @internal
+ */
 export class TransformingMessage<TOutput, TResponse>
   implements StoppableMessage<TOutput> {
   private callbackPromise: Promise<TOutput>;
