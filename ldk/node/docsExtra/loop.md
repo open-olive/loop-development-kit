@@ -104,6 +104,7 @@ You can create different types of Whispers:
 - {@link WhisperService.confirmWhisper | Confirm}: A Whisper presenting the user with the choice to say Yes (Confirm) or No (Reject) to a prompt.
 - {@link WhisperService.listWhisper | List}: A Whisper presenting a data list, with the ability to expand the list and show additional data.
 - {@link WhisperService.formWhisper | Form}: A Whisper presenting a form that the user can complete, and then submit (or reject).
+- {@link WhisperService.disambiguationWhisper | Disambiguation}: A Whisper presenting a list of links that the user can click on and send an event back to the Loop.
 
 
 ```typescript
