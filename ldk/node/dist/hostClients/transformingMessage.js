@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransformingMessage = void 0;
+/**
+ * @internal
+ */
 class TransformingMessage {
     constructor(transformer) {
         this.callback = (error, response) => {
