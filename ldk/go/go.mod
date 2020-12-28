@@ -15,7 +15,7 @@ require (
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/oklog/run v1.1.0 // indirect
-	github.com/open-olive/go-plugin v1.4.1-0.20201228162923-4c63c32a1c98
+	github.com/open-olive/go-plugin v1.4.1-0.20201228170917-422ab70d797e
 	github.com/stretchr/testify v1.6.1 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
