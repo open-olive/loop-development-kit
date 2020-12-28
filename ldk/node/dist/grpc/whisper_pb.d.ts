@@ -1072,6 +1072,180 @@ export namespace WhisperFormStreamResponse {
 
 }
 
+export class WhisperDisambiguationStreamResponse extends jspb.Message { 
+    getKey(): string;
+    setKey(value: string): WhisperDisambiguationStreamResponse;
+
+    getError(): string;
+    setError(value: string): WhisperDisambiguationStreamResponse;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WhisperDisambiguationStreamResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: WhisperDisambiguationStreamResponse): WhisperDisambiguationStreamResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WhisperDisambiguationStreamResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WhisperDisambiguationStreamResponse;
+    static deserializeBinaryFromReader(message: WhisperDisambiguationStreamResponse, reader: jspb.BinaryReader): WhisperDisambiguationStreamResponse;
+}
+
+export namespace WhisperDisambiguationStreamResponse {
+    export type AsObject = {
+        key: string,
+        error: string,
+    }
+}
+
+export class WhisperDisambiguationRequest extends jspb.Message { 
+
+    hasSession(): boolean;
+    clearSession(): void;
+    getSession(): session_pb.Session | undefined;
+    setSession(value?: session_pb.Session): WhisperDisambiguationRequest;
+
+
+    hasMeta(): boolean;
+    clearMeta(): void;
+    getMeta(): WhisperMeta | undefined;
+    setMeta(value?: WhisperMeta): WhisperDisambiguationRequest;
+
+
+    getElementsMap(): jspb.Map<string, WhisperDisambiguationElement>;
+    clearElementsMap(): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WhisperDisambiguationRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: WhisperDisambiguationRequest): WhisperDisambiguationRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WhisperDisambiguationRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WhisperDisambiguationRequest;
+    static deserializeBinaryFromReader(message: WhisperDisambiguationRequest, reader: jspb.BinaryReader): WhisperDisambiguationRequest;
+}
+
+export namespace WhisperDisambiguationRequest {
+    export type AsObject = {
+        session?: session_pb.Session.AsObject,
+        meta?: WhisperMeta.AsObject,
+
+        elementsMap: Array<[string, WhisperDisambiguationElement.AsObject]>,
+    }
+}
+
+export class WhisperDisambiguationElement extends jspb.Message { 
+    getOrder(): number;
+    setOrder(value: number): WhisperDisambiguationElement;
+
+
+    hasOption(): boolean;
+    clearOption(): void;
+    getOption(): WhisperDisambiguationElement.Option | undefined;
+    setOption(value?: WhisperDisambiguationElement.Option): WhisperDisambiguationElement;
+
+
+    hasText(): boolean;
+    clearText(): void;
+    getText(): WhisperDisambiguationElement.Text | undefined;
+    setText(value?: WhisperDisambiguationElement.Text): WhisperDisambiguationElement;
+
+
+    getElementOneofCase(): WhisperDisambiguationElement.ElementOneofCase;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WhisperDisambiguationElement.AsObject;
+    static toObject(includeInstance: boolean, msg: WhisperDisambiguationElement): WhisperDisambiguationElement.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WhisperDisambiguationElement, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WhisperDisambiguationElement;
+    static deserializeBinaryFromReader(message: WhisperDisambiguationElement, reader: jspb.BinaryReader): WhisperDisambiguationElement;
+}
+
+export namespace WhisperDisambiguationElement {
+    export type AsObject = {
+        order: number,
+        option?: WhisperDisambiguationElement.Option.AsObject,
+        text?: WhisperDisambiguationElement.Text.AsObject,
+    }
+
+
+    export class Option extends jspb.Message { 
+        getLabel(): string;
+        setLabel(value: string): Option;
+
+
+        serializeBinary(): Uint8Array;
+        toObject(includeInstance?: boolean): Option.AsObject;
+        static toObject(includeInstance: boolean, msg: Option): Option.AsObject;
+        static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+        static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+        static serializeBinaryToWriter(message: Option, writer: jspb.BinaryWriter): void;
+        static deserializeBinary(bytes: Uint8Array): Option;
+        static deserializeBinaryFromReader(message: Option, reader: jspb.BinaryReader): Option;
+    }
+
+    export namespace Option {
+        export type AsObject = {
+            label: string,
+        }
+    }
+
+    export class Text extends jspb.Message { 
+        getBody(): string;
+        setBody(value: string): Text;
+
+
+        serializeBinary(): Uint8Array;
+        toObject(includeInstance?: boolean): Text.AsObject;
+        static toObject(includeInstance: boolean, msg: Text): Text.AsObject;
+        static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+        static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+        static serializeBinaryToWriter(message: Text, writer: jspb.BinaryWriter): void;
+        static deserializeBinary(bytes: Uint8Array): Text;
+        static deserializeBinaryFromReader(message: Text, reader: jspb.BinaryReader): Text;
+    }
+
+    export namespace Text {
+        export type AsObject = {
+            body: string,
+        }
+    }
+
+
+    export enum ElementOneofCase {
+        ELEMENTONEOF_NOT_SET = 0,
+    
+    OPTION = 2,
+
+    TEXT = 3,
+
+    }
+
+}
+
+export class WhisperDisambiguationResponse extends jspb.Message { 
+    getResponse(): boolean;
+    setResponse(value: boolean): WhisperDisambiguationResponse;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): WhisperDisambiguationResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: WhisperDisambiguationResponse): WhisperDisambiguationResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: WhisperDisambiguationResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): WhisperDisambiguationResponse;
+    static deserializeBinaryFromReader(message: WhisperDisambiguationResponse, reader: jspb.BinaryReader): WhisperDisambiguationResponse;
+}
+
+export namespace WhisperDisambiguationResponse {
+    export type AsObject = {
+        response: boolean,
+    }
+}
+
 export class WhisperListRequest extends jspb.Message { 
 
     hasSession(): boolean;

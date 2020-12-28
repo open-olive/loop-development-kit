@@ -59,6 +59,55 @@ func (m *WhisperServer) WhisperConfirm(ctx context.Context, req *proto.WhisperCo
 	}, nil
 }
 
+// WhisperDisambiguation is used by loops to create disambiguation whispers
+func (m *WhisperServer) WhisperDisambiguation(req *proto.WhisperDisambiguationRequest, stream proto.Whisper_WhisperDisambiguationServer) error {
+	session, err := NewSessionFromProto(req.Session)
+	if err != nil {
+		return err
+	}
+
+	elements := make(map[string]WhisperContentDisambiguationElement, len(req.Elements))
+	for key, elementsProto := range req.Elements {
+		key := key
+		switch elementContainer := elementsProto.ElementOneof.(type) {
+		case *proto.WhisperDisambiguationElement_Option_:
+			elements[key] = &WhisperContentDisambiguationElementOption{
+				Label: elementContainer.Option.Label,
+				Order: elementsProto.Order,
+				OnChange: func(key string) {
+					err := stream.Send(&proto.WhisperDisambiguationStreamResponse{
+						Key: key,
+					})
+					// TODO: Fix this when we refactor to sidekick
+					if err != nil {
+						fmt.Println("ldk.WhisperServer.WhisperForm -> Checkbox onChange: error => ", err.Error())
+					}
+				},
+			}
+		case *proto.WhisperDisambiguationElement_Text_:
+			elements[key] = &WhisperContentDisambiguationElementText{
+				Body:  elementContainer.Text.Body,
+				Order: elementsProto.Order,
+			}
+		default:
+			return fmt.Errorf("input had unexpected type %T", elementContainer)
+		}
+	}
+
+	_, err = m.Impl.Disambiguation(
+		context.WithValue(stream.Context(), Session{}, session),
+		&WhisperContentDisambiguation{
+			Label:    req.Meta.Label,
+			Elements: elements,
+		},
+	)
+	if err != nil {
+		fmt.Println("ldk.WhisperServer.WhisperDisambiguation -> m.Impl.Disambiguation: error => ", err.Error())
+	}
+
+	return nil
+}
+
 // WhisperForm is used by loops to create form whispers
 func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.Whisper_WhisperFormServer) error {
 	session, err := NewSessionFromProto(req.Session)

@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.transformResponse = void 0;
+exports.transformResponse = exports.transformDisambiguationResponse = void 0;
 const messages = __importStar(require("../grpc/whisper_pb"));
 const transformOutput = (message) => {
     const messageObj = message.toObject();
@@ -69,6 +69,9 @@ const transformResult = (message) => {
         outputs: transformOutputMap(message.getOutputsMap()),
         type: 'submit',
     };
+};
+exports.transformDisambiguationResponse = (response) => {
+    return { key: response.getKey() };
 };
 exports.transformResponse = (response) => {
     const update = response.getUpdate();

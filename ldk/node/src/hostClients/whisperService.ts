@@ -103,6 +103,32 @@ export interface WhisperFormConfig extends Whisper {
   inputs: { [name: string]: WhisperFormInputs };
 }
 
+export interface WhisperDisambiguationElement<T extends string> {
+  type: T;
+  /**
+   *  Value the UI uses to order the form inputs.
+   *  Value must be greater than 0
+   *  If this value is ommited it will default to 0
+   */
+  order?: number;
+}
+
+export type WhisperDisambiguationOption = WhisperDisambiguationElement<'option'> & {
+  label: string;
+};
+
+export type WhisperDisambiguationText = WhisperDisambiguationElement<'text'> & {
+  body?: string;
+};
+
+export type WhisperDisambiguationElements =
+  | WhisperDisambiguationOption
+  | WhisperDisambiguationText;
+
+export interface WhisperDisambiguationConfig extends Whisper {
+  elements: { [name: string]: WhisperDisambiguationElements };
+}
+
 export interface WhisperListElement<T extends string> {
   type: T;
   /**
@@ -185,6 +211,10 @@ export interface WhisperListConfig extends Whisper {
 
 export type WhisperFormOutputTypes = string | number | boolean | Date;
 
+export interface WhisperDisambiguationEvent {
+  key: string;
+}
+
 export interface WhisperFormUpdateEvent {
   key: string;
   value: WhisperFormOutputTypes;
@@ -201,6 +231,10 @@ export interface WhisperFormSubmitEvent {
  * The WhisperService lets consumers emit new whispers and update existing whispers.
  */
 export interface WhisperService {
+  disambiguationWhisper(
+    whisper: WhisperDisambiguationConfig,
+    listener: StreamListener<WhisperDisambiguationEvent>,
+  ): StoppableStream<WhisperDisambiguationEvent>;
   /**
    * @returns - A StoppableMessage object containing a promise resolving when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
