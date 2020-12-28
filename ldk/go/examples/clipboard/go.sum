@@ -127,6 +127,10 @@ github.com/open-olive/go-plugin v1.4.1-0.20201228162923-4c63c32a1c98 h1:ClHd29yJ
 github.com/open-olive/go-plugin v1.4.1-0.20201228162923-4c63c32a1c98/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
 github.com/open-olive/go-plugin v1.4.1-0.20201228170917-422ab70d797e h1:Os0JmyO5/X4+aFUTmZxlwptOZ0J/5gxfN0nO1LkpTNs=
 github.com/open-olive/go-plugin v1.4.1-0.20201228170917-422ab70d797e/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
+github.com/open-olive/go-plugin v1.4.1-0.20201228171419-5a413415c520 h1:xeNy4BdvqMkHkpfk7T9GdwsLiHK6NkSkz1ZBeuGoXwg=
+github.com/open-olive/go-plugin v1.4.1-0.20201228171419-5a413415c520/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
+github.com/open-olive/go-plugin v1.4.1-0.20201228171937-5142587cf9b4 h1:RurGYfRX3i7AbEsjFVtrJlNY+kMi0dL53iI+GlGaMeQ=
+github.com/open-olive/go-plugin v1.4.1-0.20201228171937-5142587cf9b4/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
 github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-directory v0.0.0-20201113211321-2207db26517e/go.mod h1:s3EJzrRGJZ6Jnn8YV/VMFShjiOC0UhrNoK25PkYn5z0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
