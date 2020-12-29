@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 
@@ -29,6 +32,15 @@ namespace OliveHelpsLDK
         public Task<bool> MoveNext()
         {
             return _call.ResponseStream.MoveNext();
+        }
+
+        public async IAsyncEnumerable<TOutput> ToAsyncEnumerable(
+            [EnumeratorCancellation] CancellationToken cancellationToken = default)
+        {
+            await foreach (var output in _call.ResponseStream.ReadAllAsync(cancellationToken).ConfigureAwait(false))
+            {
+                yield return _transformer(output);
+            }
         }
     }
 }

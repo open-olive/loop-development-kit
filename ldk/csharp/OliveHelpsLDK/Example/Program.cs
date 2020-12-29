@@ -65,11 +65,10 @@ namespace Example
             _clipboardStream = _services.Clipboard.Stream();
             Task.Run(async () =>
             {
-                while (await _clipboardStream.MoveNext())
+                await foreach (var clipboardContent in _clipboardStream.ToAsyncEnumerable())
                 {
                     try
                     {
-                        var clipboardContent = _clipboardStream.Current();
                         Logger.Info($"Received Clipboard Update \"{clipboardContent}\"");
                         switch (clipboardContent)
                         {
