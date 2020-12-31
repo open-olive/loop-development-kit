@@ -17,7 +17,7 @@ jobs:
         with:
           dotnet-version: '3.1.x'
       - run: dotnet build OliveHelpsLDK
-      - uses: rohith/publish-nuget@v22
+      - uses: rohith/publish-nuget@v2
         name: Publish to Nuget
         with:
             PROJECT_FILE_PATH: ldk/csharp/OliveHelpsLDK/OliveHelpsLDK/OliveHelpsLDK.csproj
