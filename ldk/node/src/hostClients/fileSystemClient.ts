@@ -1,18 +1,23 @@
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { FilesystemClient as FilesystemGRPCClient } from '../grpc/filesystem_grpc_pb';
 import messages, { FileAction } from '../grpc/filesystem_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
-  FileInfo,
-  FileSystemService,
+  FileSystemCopyOrMoveParams,
+  FileSystemFile,
+  FileSystemMakeDirectoryParams,
   FileSystemQueryDirectoryParams,
   FileSystemQueryDirectoryResponse,
   FileSystemQueryFileParams,
+  FileSystemRemoveParams,
+  FileSystemService,
   FileSystemStreamAction,
   FileSystemStreamDirectoryResponse,
   FileSystemStreamFileInfoResponse,
 } from './fileSystemService';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
+import { FileSystemFileImpl, parseFileInfo } from './fileSystemFile';
 
 /**
  * @param action - The file action.
@@ -34,20 +39,6 @@ function parseFileAction(action: FileAction): FileSystemStreamAction {
     default:
       return FileSystemStreamAction.Unknown;
   }
-}
-
-/**
- * @param fileInfo - The file info.
- * @internal
- */
-function parseFileInfo(fileInfo: messages.FileInfo): FileInfo {
-  return {
-    name: fileInfo.getName(),
-    size: fileInfo.getSize(),
-    mode: fileInfo.getMode(),
-    updated: fileInfo.getUpdated()?.toDate(),
-    isDir: fileInfo.getIsdir(),
-  };
 }
 
 /**
@@ -127,6 +118,84 @@ export class FileSystemClient
         };
       },
       listener,
+    );
+  }
+
+  copyFile(params: FileSystemCopyOrMoveParams): Promise<void> {
+    const message = new messages.FilesystemCopyRequest()
+      .setDest(params.destination)
+      .setSource(params.source)
+      .setSession(this.createSessionMessage());
+    return this.buildQuery<messages.FilesystemCopyRequest, Empty, void>(
+      (request, callback) => {
+        this.client.filesystemCopy(request, callback);
+      },
+      () => message,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      () => {},
+    );
+  }
+
+  moveFile(params: FileSystemCopyOrMoveParams): Promise<void> {
+    const message = new messages.FilesystemMoveRequest()
+      .setDest(params.destination)
+      .setSource(params.source)
+      .setSession(this.createSessionMessage());
+    return this.buildQuery<messages.FilesystemMoveRequest, Empty, void>(
+      (request, callback) => {
+        this.client.filesystemMove(request, callback);
+      },
+      () => message,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      () => {},
+    );
+  }
+
+  makeDirectory(path: FileSystemMakeDirectoryParams): Promise<void> {
+    return this.buildQuery<messages.FilesystemMakeDirRequest, Empty, void>(
+      (request, callback) => {
+        this.client.filesystemMakeDir(request, callback);
+      },
+      () =>
+        new messages.FilesystemMakeDirRequest()
+          .setPath(path.path)
+          .setPerm(path.permissions)
+          .setSession(this.createSessionMessage()),
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      () => {},
+    );
+  }
+
+  openFile(path: string): FileSystemFile {
+    const impl = new FileSystemFileImpl(
+      this.session,
+      this.client.filesystemFileStream(),
+    );
+    impl.open(path);
+    return impl;
+  }
+
+  createFile(path: string): FileSystemFile {
+    const impl = new FileSystemFileImpl(
+      this.session,
+      this.client.filesystemFileStream(),
+    );
+    impl.create(path);
+    return impl;
+  }
+
+  removeFile(params: FileSystemRemoveParams): Promise<void> {
+    return this.buildQuery<messages.FilesystemRemoveRequest, Empty, void>(
+      (request, callback) => {
+        this.client.filesystemRemove(request, callback);
+      },
+      () =>
+        new messages.FilesystemRemoveRequest()
+          .setPath(params.path)
+          .setRecursive(params.recursive || false)
+          .setSession(this.createSessionMessage()),
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      () => {},
     );
   }
 }
