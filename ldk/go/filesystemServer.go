@@ -162,8 +162,9 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 		if file != nil {
 			file.Close()
 		}
+		fmt.Println("Closing File Stream")
 	}()
-
+    fmt.Println("Starting File Stream")
 	for {
 		select {
 		case <-stream.Context().Done():
@@ -185,7 +186,7 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 					context.WithValue(stream.Context(), Session{}, session),
 					req.Open.GetPath(),
 				)
-
+                fmt.Println("Opened File Stream");
 				if err != nil {
 					return err
 				}
@@ -292,6 +293,7 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 				if file == nil {
 					return ErrNoFile
 				}
+				fmt.Println("Request File Info");
 				var errorResponse string
 				info, err := file.Stat()
 				if err != nil {
@@ -301,6 +303,7 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 				if err != nil {
 					errorResponse = err.Error()
 				}
+				fmt.Println("Sending File Info");
 				err = stream.Send(&proto.FilesystemFileStreamResponse{
 					ResponseOneOf: &proto.FilesystemFileStreamResponse_Stat_{
 						Stat: &proto.FilesystemFileStreamResponse_Stat{
@@ -315,7 +318,9 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 						},
 					},
 				})
+				fmt.Println("File Info Sent");
 				if err != nil {
+				    fmt.Println("Returning with Error", err);
 					return err
 				}
 

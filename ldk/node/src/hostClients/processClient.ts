@@ -90,4 +90,8 @@ export class ProcessClient
       listener,
     );
   }
+
+  protected serviceName(): string {
+    return 'process';
+  }
 }

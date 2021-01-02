@@ -35,4 +35,8 @@ export class UIClient extends BaseClient<UIGRPCClient> implements UIService {
       listener,
     );
   }
+
+  protected serviceName(): string {
+    return 'ui';
+  }
 }

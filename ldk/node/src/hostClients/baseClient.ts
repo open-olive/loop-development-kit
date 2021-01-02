@@ -38,6 +38,8 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   implements CommonHostClient {
   private _client: THost | undefined;
 
+  private _logger: Logger | undefined;
+
   protected _session: Session.AsObject | undefined;
 
   /**
@@ -60,6 +62,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
     session: Session.AsObject,
     logger: Logger,
   ): Promise<void> {
+    this._logger = logger.with('service', this.serviceName());
     return new Promise((resolve, reject) => {
       let address: string;
       if (connInfo.network === 'unix') {
@@ -86,9 +89,10 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
       this.client.waitForReady(deadline, (err) => {
         if (err) {
-          logger.error('Connection Failed', 'address', address);
+          logger.error('Client Connection Failed', 'address', address);
           return reject(err);
         }
+        this.logger.trace('Client Connected');
         return resolve();
       });
     });
@@ -112,12 +116,17 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   ): Promise<TOutput> {
     return new Promise((resolve, reject) => {
       const message = builder();
+      this.logger.trace('buildQuery - Starting Message');
       message.setSession(this.createSessionMessage());
       const callback = (err: grpc.ServiceError | null, response: TResponse) => {
         if (err) {
+          this.logger.trace('buildQuery - Received Error');
           return reject(err);
         }
-        return resolve(renderer(response));
+        this.logger.trace('buildQuery - Received Response');
+        const renderer1 = renderer(response);
+        this.logger.trace('buildQuery - Parsed Response, Returning');
+        return resolve(renderer1);
       };
       clientRequest(message, callback);
     });
@@ -138,6 +147,8 @@ export default abstract class BaseClient<THost extends CommonHostServer>
     result.assignCall(call);
     return result;
   }
+
+  protected abstract serviceName(): string;
 
   protected createSessionMessage(): Session {
     const session = new Session();
@@ -166,5 +177,12 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
   protected set session(session: Session.AsObject) {
     this._session = session;
+  }
+
+  protected get logger(): Logger {
+    if (this._logger == null) {
+      throw new Error('Accessing Logger before Connection');
+    }
+    return this._logger;
   }
 }

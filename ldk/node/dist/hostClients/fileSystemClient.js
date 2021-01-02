@@ -127,12 +127,12 @@ class FileSystemClient extends baseClient_1.default {
         () => { });
     }
     openFile(path) {
-        const impl = new fileSystemFile_1.FileSystemFileImpl(this.session, this.client.filesystemFileStream());
+        const impl = new fileSystemFile_1.FileSystemFileImpl(this.session, this.client.filesystemFileStream(), this.logger);
         impl.open(path);
         return impl;
     }
     createFile(path) {
-        const impl = new fileSystemFile_1.FileSystemFileImpl(this.session, this.client.filesystemFileStream());
+        const impl = new fileSystemFile_1.FileSystemFileImpl(this.session, this.client.filesystemFileStream(), this.logger);
         impl.create(path);
         return impl;
     }
@@ -145,6 +145,9 @@ class FileSystemClient extends baseClient_1.default {
             .setSession(this.createSessionMessage()), 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
+    }
+    serviceName() {
+        return 'filesystem';
     }
 }
 exports.FileSystemClient = FileSystemClient;

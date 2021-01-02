@@ -6,6 +6,7 @@ import {
 } from './fileSystemService';
 import messages, { FilesystemFileStreamRequest } from '../grpc/filesystem_pb';
 import { Session } from '../grpc/session_pb';
+import { Logger } from '../logging';
 
 enum FilesystemFileStatus {
   Pending,
@@ -37,13 +38,17 @@ export class FileSystemFileImpl implements FileSystemFile {
 
   private status: FilesystemFileStatus = FilesystemFileStatus.Pending;
 
+  private logger: Logger;
+
   constructor(
     session: Session.AsObject,
     stream: grpc.ClientDuplexStream<
       messages.FilesystemFileStreamRequest,
       messages.FilesystemFileStreamResponse
     >,
+    logger: Logger,
   ) {
+    this.logger = logger.with('service', 'filesystem.file');
     this.session = session;
     this.stream = stream;
   }
@@ -149,23 +154,29 @@ export class FileSystemFileImpl implements FileSystemFile {
     ) => TResponse,
     transformer: (input: TResponse) => TOutput,
   ): Promise<TOutput> {
-    this.stream.write(message);
     return new Promise<TOutput>((resolve, reject) => {
-      try {
-        const read = this.stream.read();
-        const response = responseReader(read);
-        const transformed = transformer(response);
-        resolve(transformed);
-      } catch (e) {
-        reject();
-      }
+      this.logger.trace('Sending Duplex Request');
+      this.stream.once('data', (data) => {
+        try {
+          const response = responseReader(data);
+          const transformed = transformer(response);
+          resolve(transformed);
+        } catch (e) {
+          reject(e);
+        }
+      });
+      this.stream.write(message);
+      this.logger.trace('Waiting for Response');
     });
   }
 
   private checkStatus(expectPending = false): void {
     if (expectPending && this.status !== FilesystemFileStatus.Pending) {
       throw new Error('File is not pending');
-    } else if (this.status !== FilesystemFileStatus.Initialized) {
+    } else if (expectPending) {
+      return;
+    }
+    if (this.status !== FilesystemFileStatus.Initialized) {
       throw new Error('File is not open');
     }
   }

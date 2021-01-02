@@ -34,5 +34,8 @@ class HoverClient extends baseClient_1.default {
         const message = updateRequest(params, new hover_pb_1.default.HoverReadStreamRequest().setSession(this.createSessionMessage()));
         return new transformingStream_1.TransformingStream(this.client.hoverReadStream(message), (response) => ({ text: response.getText() }), listener);
     }
+    serviceName() {
+        return 'hover';
+    }
 }
 exports.HoverClient = HoverClient;

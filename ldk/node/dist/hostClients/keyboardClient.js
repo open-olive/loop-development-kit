@@ -80,5 +80,8 @@ class KeyboardClient extends baseClient_1.default {
     generateClient() {
         return keyboard_grpc_pb_1.KeyboardClient;
     }
+    serviceName() {
+        return 'keyboard';
+    }
 }
 exports.default = KeyboardClient;

@@ -170,6 +170,7 @@ export class FileSystemClient
     const impl = new FileSystemFileImpl(
       this.session,
       this.client.filesystemFileStream(),
+      this.logger,
     );
     impl.open(path);
     return impl;
@@ -179,6 +180,7 @@ export class FileSystemClient
     const impl = new FileSystemFileImpl(
       this.session,
       this.client.filesystemFileStream(),
+      this.logger,
     );
     impl.create(path);
     return impl;
@@ -197,5 +199,9 @@ export class FileSystemClient
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       () => {},
     );
+  }
+
+  protected serviceName(): string {
+    return 'filesystem';
   }
 }

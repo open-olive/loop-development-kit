@@ -112,4 +112,8 @@ export class WindowClient
       listener,
     );
   }
+
+  protected serviceName(): string {
+    return 'window';
+  }
 }

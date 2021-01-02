@@ -70,5 +70,8 @@ class NetworkClient extends baseClient_1.default {
             headers: parseHeadersMap(response.getHeadersMap()),
         }));
     }
+    serviceName() {
+        return 'network';
+    }
 }
 exports.NetworkClient = NetworkClient;

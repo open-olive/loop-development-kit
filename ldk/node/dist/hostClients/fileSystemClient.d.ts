@@ -16,4 +16,5 @@ export declare class FileSystemClient extends BaseClient<FilesystemGRPCClient> i
     openFile(path: string): FileSystemFile;
     createFile(path: string): FileSystemFile;
     removeFile(params: FileSystemRemoveParams): Promise<void>;
+    protected serviceName(): string;
 }

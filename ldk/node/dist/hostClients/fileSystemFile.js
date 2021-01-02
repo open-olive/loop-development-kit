@@ -25,8 +25,9 @@ function parseFileInfo(fileInfo) {
 }
 exports.parseFileInfo = parseFileInfo;
 class FileSystemFileImpl {
-    constructor(session, stream) {
+    constructor(session, stream, logger) {
         this.status = FilesystemFileStatus.Pending;
+        this.logger = logger.with('service', 'filesystem.file');
         this.session = session;
         this.stream = stream;
     }
@@ -105,24 +106,30 @@ class FileSystemFileImpl {
         (response) => response.getWrite(), (input) => input.getNumofbytes());
     }
     generateResponsePromise(message, responseReader, transformer) {
-        this.stream.write(message);
         return new Promise((resolve, reject) => {
-            try {
-                const read = this.stream.read();
-                const response = responseReader(read);
-                const transformed = transformer(response);
-                resolve(transformed);
-            }
-            catch (e) {
-                reject();
-            }
+            this.logger.trace('Sending Duplex Request');
+            this.stream.once('data', (data) => {
+                try {
+                    const response = responseReader(data);
+                    const transformed = transformer(response);
+                    resolve(transformed);
+                }
+                catch (e) {
+                    reject(e);
+                }
+            });
+            this.stream.write(message);
+            this.logger.trace('Waiting for Response');
         });
     }
     checkStatus(expectPending = false) {
         if (expectPending && this.status !== FilesystemFileStatus.Pending) {
             throw new Error('File is not pending');
         }
-        else if (this.status !== FilesystemFileStatus.Initialized) {
+        else if (expectPending) {
+            return;
+        }
+        if (this.status !== FilesystemFileStatus.Initialized) {
             throw new Error('File is not open');
         }
     }

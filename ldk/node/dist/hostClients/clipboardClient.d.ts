@@ -10,4 +10,5 @@ export declare class ClipboardClient extends BaseClient<ClipboardGRPCClient> imp
     queryClipboard(): Promise<string>;
     streamClipboard(listener: StreamListener<string>): StoppableStream<string>;
     writeClipboard(text: string): Promise<void>;
+    protected serviceName(): string;
 }
