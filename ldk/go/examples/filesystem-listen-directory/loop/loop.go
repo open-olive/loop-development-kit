@@ -128,7 +128,7 @@ func (c *Loop) emitExampleWhisper(fe ldk.FileEvent) error {
 		}
 	}()
 
-	// c.logger.Info("Sent message", "markdown", markdownBytes.String())
+	c.logger.Info("Sent message", "markdown", markdownBytes.String())
 
 	return nil
 }
