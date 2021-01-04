@@ -319,6 +319,11 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 					return err
 				}
 
+			case *proto.FilesystemFileStreamRequest_Close_:
+				// Closing the file is handled by the defer statement
+				// at the beginning of the function
+				return nil
+
 			}
 		}
 
