@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OliveHelpsLDK
@@ -8,5 +10,7 @@ namespace OliveHelpsLDK
         TOutput Current();
 
         Task<bool> MoveNext();
+
+        IAsyncEnumerable<TOutput> ToAsyncEnumerable(CancellationToken cancellationToken = default);
     }
 }
