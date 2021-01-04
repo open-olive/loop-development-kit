@@ -1,13 +1,15 @@
 {
   "name": "@oliveai/ldk",
   "version": "2.0.0-alpha",
-  "description": "The Loop Development Kit for Sidekick.",
+  "description": "The Loop Development Kit for Olive Helps.",
   "author": "Olive",
   "copyright": "Copyright 2020 Olive",
   "repository": {
     "type": "git",
-    "url": "https://github.com/open-olive/loop-development-kit-node.git"
+    "url": "https://github.com/open-olive/loop-development-kit.git",
+    "directory": "ldk/node"
   },
+  "homepage": "https://open-olive.github.io/loop-development-kit/ldk/node",
   "license": "MIT",
   "keywords": [
     "olive",

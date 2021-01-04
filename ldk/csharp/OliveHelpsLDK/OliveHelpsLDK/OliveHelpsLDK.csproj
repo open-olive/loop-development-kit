@@ -4,6 +4,12 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>default</LangVersion>
         <PackageVersion>2.0.0-alpha</PackageVersion>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Title>Olive Helps LDK</Title>
+        <Authors>rseviora-oliveai</Authors>
+        <Description>The Loop Development Kit for Olive Helps</Description>
+        <PackageProjectUrl>https://open-olive.github.io/olive-helps/</PackageProjectUrl>
+        <PackageTags>olive olivehelps loop loops loop-development-kit ldk sdk</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
