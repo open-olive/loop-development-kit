@@ -92,6 +92,13 @@ export interface FileSystemFile {
   info(): Promise<FileInfo>;
   changePermissions(permissions: number): Promise<void>;
   changeOwnership(params: FileSystemFileChownParams): Promise<void>;
+
+  /**
+   * The streamPromise will resolve when the stream is closed properly, or reject if the stream is closed due to an error.
+   *
+   * Trying to open a file that does not exist will return an error.
+   */
+  streamPromise: Promise<void>;
 }
 
 /**

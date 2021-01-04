@@ -10,9 +10,11 @@ import { Logger } from '../logging';
 export declare function parseFileInfo(fileInfo: messages.FileInfo): FileInfo;
 export declare class FileSystemFileImpl implements FileSystemFile {
     private stream;
+    streamPromise: Promise<void>;
     protected session: Session.AsObject;
     private status;
     private logger;
+    private filePath;
     constructor(session: Session.AsObject, stream: grpc.ClientDuplexStream<messages.FilesystemFileStreamRequest, messages.FilesystemFileStreamResponse>, logger: Logger);
     open(path: string): void;
     create(path: string): void;
@@ -24,5 +26,6 @@ export declare class FileSystemFileImpl implements FileSystemFile {
     write(contents: Uint8Array): Promise<number>;
     private generateResponsePromise;
     private checkStatus;
+    private setError;
     protected createSessionMessage(): Session;
 }

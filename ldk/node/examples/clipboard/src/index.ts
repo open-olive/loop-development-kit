@@ -35,6 +35,9 @@ class ClipboardLoop implements Loop {
       label: 'File Info',
       markdown: JSON.stringify(fileInfo),
     });
+    await new Promise((resolve) => {
+      setTimeout(resolve, 5000);
+    });
     await file.close();
     logger.debug('File Closed');
   }

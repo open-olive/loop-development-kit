@@ -12,6 +12,7 @@ enum FilesystemFileStatus {
   Pending,
   Initialized,
   Closed,
+  Errored,
 }
 
 /**
@@ -34,11 +35,15 @@ export class FileSystemFileImpl implements FileSystemFile {
     messages.FilesystemFileStreamResponse
   >;
 
+  public streamPromise: Promise<void>;
+
   protected session: Session.AsObject;
 
   private status: FilesystemFileStatus = FilesystemFileStatus.Pending;
 
   private logger: Logger;
+
+  private filePath: string | undefined;
 
   constructor(
     session: Session.AsObject,
@@ -51,24 +56,47 @@ export class FileSystemFileImpl implements FileSystemFile {
     this.logger = logger.with('service', 'filesystem.file');
     this.session = session;
     this.stream = stream;
+    this.streamPromise = new Promise<void>((resolve, reject) => {
+      this.stream.on('end', () => {
+        this.logger.info('Stream Closed');
+        resolve();
+      });
+      this.stream.on('error', (error) => {
+        this.setError(error);
+        reject(error);
+      });
+    });
   }
 
   open(path: string): void {
+    if (path == null || path === '' || typeof path !== 'string') {
+      throw new Error('Path must be a non-empty string');
+    }
+
     this.checkStatus(true);
     const openMsg = new FilesystemFileStreamRequest.Open()
       .setPath(path)
       .setSession(this.createSessionMessage());
     const message = new FilesystemFileStreamRequest().setOpen(openMsg);
+    this.filePath = path;
+    this.logger = this.logger.with('path', this.filePath);
+    this.logger.debug('Opening File');
     this.stream.write(message);
     this.status = FilesystemFileStatus.Initialized;
   }
 
   create(path: string): void {
+    if (path == null || path === '' || typeof path !== 'string') {
+      throw new Error('Path must be a non-empty string');
+    }
+
     this.checkStatus(true);
     const createMsg = new FilesystemFileStreamRequest.Create()
       .setPath(path)
       .setSession(this.createSessionMessage());
     const message = new FilesystemFileStreamRequest().setCreate(createMsg);
+    this.filePath = path;
+    this.logger.debug('Creating File');
     this.stream.write(message);
     this.status = FilesystemFileStatus.Initialized;
   }
@@ -155,18 +183,26 @@ export class FileSystemFileImpl implements FileSystemFile {
     transformer: (input: TResponse) => TOutput,
   ): Promise<TOutput> {
     return new Promise<TOutput>((resolve, reject) => {
-      this.logger.trace('Sending Duplex Request');
+      this.logger.trace('Duplex Request - Sending');
       this.stream.once('data', (data) => {
         try {
+          this.logger.trace('Duplex Response - Receiving');
           const response = responseReader(data);
+          this.logger.trace('Duplex Response - Transforming');
           const transformed = transformer(response);
+          this.logger.trace('Duplex Response - Resolving');
           resolve(transformed);
         } catch (e) {
+          this.logger.error(
+            'Duplex Response - Rejecting, Error Thrown',
+            'error',
+            e.message,
+          );
           reject(e);
         }
       });
       this.stream.write(message);
-      this.logger.trace('Waiting for Response');
+      this.logger.trace('Duplex Request - Waiting for Response');
     });
   }
 
@@ -179,6 +215,15 @@ export class FileSystemFileImpl implements FileSystemFile {
     if (this.status !== FilesystemFileStatus.Initialized) {
       throw new Error('File is not open');
     }
+  }
+
+  private setError(error: any): void {
+    this.logger.error(
+      'Stream Closed - Error Received',
+      'error',
+      JSON.stringify(error),
+    );
+    this.status = FilesystemFileStatus.Errored;
   }
 
   protected createSessionMessage(): Session {

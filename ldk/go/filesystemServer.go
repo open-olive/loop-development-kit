@@ -191,6 +191,9 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 					return err
 				}
 
+			case *proto.FilesystemFileStreamRequest_Close_:
+			    return nil
+
 			case *proto.FilesystemFileStreamRequest_Create_:
 				session, err := NewSessionFromProto(req.Create.Session)
 				if err != nil {
