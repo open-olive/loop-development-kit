@@ -1,8 +1,8 @@
 ## Network LDK Usage Example
 This NodeJS module utilizes the OliveHelps NodeJS LDK to demonstrate the usage of the Network sensor
 
-### Modifying and Building
-The Loop itself is defined in `src/index.ts` and can be built into `dist/index.js` for actual use by OliveHelps.
+### Modifying
+The Loop itself is defined in `src/index.ts`
 
 Install dependencies
 ```shell
@@ -10,11 +10,6 @@ npm install
 ```
 
 Modify `src/index.ts` as desired.
-
-Convert the TypeScript to JavaScript
-```shell
-npm run build
-```
 
 ### Running Locally
 
@@ -28,12 +23,11 @@ Olive Helps lets you add a local command as a Local Loop:
    2. Click Loop Library.
 3. Click the "Install Local Loop" button:
 4. Select the working directory for the Loop (the directory this README is in).
-5. Enter the command to be executed, including any arguments. For this example the command will be `node dist/index.js` (Refer to the "Modifying and Building" section above on how to generate this file)
+5. Enter the command to be executed, including any arguments. For this example the command will be `./node_modules/.bin/ts-node src/index.ts`
 6. Click Install.
 
 The command will be installed as a Loop. If you need to change the command or its arguments you'll need remove it and then add the new commands.
 
 Otherwise, if you instead want to make changes to the Loop itself, you can:
 - Modify `src/index.ts`
-- Follow the directions in the "Modifying and Building" section to turn it to JavaScript
 - Restart OliveHelps
