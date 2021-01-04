@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export interface Recall {
   Address1: string;
   Address2: string;
