@@ -17,7 +17,7 @@ type FilesystemServer struct {
 }
 
 // ErrNoFile File is not initiated
-var ErrNoFile = errors.New("no file")
+var ErrNoFile = errors.New("A file has not been opened or created.")
 
 // FilesystemDir list the contents of a directory
 func (f *FilesystemServer) FilesystemDir(ctx context.Context, req *proto.FilesystemDirRequest) (*proto.FilesystemDirResponse, error) {
