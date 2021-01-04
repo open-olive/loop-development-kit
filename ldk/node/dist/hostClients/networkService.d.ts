@@ -2,7 +2,7 @@ export interface HttpRequest {
     url: string;
     method: string;
     body: string | Uint8Array;
-    headers: Record<string, Array<string>>;
+    headers?: Record<string, Array<string>>;
 }
 export interface HttpResponse {
     statusCode: number;
