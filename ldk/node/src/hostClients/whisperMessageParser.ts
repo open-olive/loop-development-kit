@@ -74,7 +74,7 @@ export const transformDisambiguationResponse: StreamTransformer<
   messages.WhisperDisambiguationStreamResponse,
   WhisperDisambiguationEvent
 > = (response) => {
-  return {key: response.getKey()}
+  return { key: response.getKey() };
 };
 
 export const transformResponse: StreamTransformer<

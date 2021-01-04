@@ -12,8 +12,8 @@ namespace OliveHelpsLDK.Clipboard
             client, session, logger, "clipboard")
         {
         }
-
-        internal ClipboardClient(ChannelBase channel, Session session, ILogger logger) : this(
+        
+        internal ClipboardClient(CallInvoker channel, Session session, ILogger logger) : this(
             new Proto.Clipboard.ClipboardClient(channel), session, logger)
         {
         }

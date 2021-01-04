@@ -13,7 +13,7 @@ class TransformingStream {
     /**
      * @param stream - the stream object
      * @param transformer - a transformer function that converts the grpc input to the desired output.
-     * @param listener - the listener function provided by the consumer that is called whenever events are outputted.
+     * @param listener - an optional listener function provided by the consumer that is called whenever events are outputted.
      */
     constructor(stream, transformer, listener) {
         this.streamWatcher = (stream) => {
@@ -27,10 +27,16 @@ class TransformingStream {
                 }
             }
         };
+        this.errorWatcher = (error) => {
+            if (this.listener) {
+                this.listener(error.details);
+            }
+        };
         this.stream = stream;
         this.transformer = transformer;
         this.listener = listener;
         this.stream.addListener('data', this.streamWatcher);
+        this.stream.addListener('error', this.errorWatcher);
     }
     setListener(callback) {
         this.listener = callback;
@@ -38,6 +44,7 @@ class TransformingStream {
     stop() {
         this.stream.cancel();
         this.stream.removeAllListeners('data');
+        this.stream.removeAllListeners('error');
     }
 }
 exports.TransformingStream = TransformingStream;

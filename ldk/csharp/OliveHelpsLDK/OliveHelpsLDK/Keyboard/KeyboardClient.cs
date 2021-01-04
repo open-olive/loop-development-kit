@@ -12,7 +12,7 @@ namespace OliveHelpsLDK.Keyboard
         {
         }
 
-        internal KeyboardClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+        internal KeyboardClient(CallInvoker channelBase, Session session, ILogger logger) : this(
             new Proto.Keyboard.KeyboardClient(channelBase), session, logger)
         {
         }

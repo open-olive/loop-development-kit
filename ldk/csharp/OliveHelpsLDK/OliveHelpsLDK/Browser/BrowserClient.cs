@@ -13,7 +13,7 @@ namespace OliveHelpsLDK.Browser
         {
         }
 
-        internal BrowserClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+        internal BrowserClient(CallInvoker channelBase, Session session, ILogger logger) : this(
             new Proto.Browser.BrowserClient(channelBase), session, logger)
         {
         }

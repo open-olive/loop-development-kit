@@ -15,7 +15,7 @@ namespace OliveHelpsLDK.Process
         {
         }
 
-        internal ProcessClient(ChannelBase channelBase, Session session, ILogger logger) : this(
+        internal ProcessClient(CallInvoker channelBase, Session session, ILogger logger) : this(
             new Proto.Process.ProcessClient(channelBase), session, logger)
         {
         }

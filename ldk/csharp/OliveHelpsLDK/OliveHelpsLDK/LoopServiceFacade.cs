@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Grpc.Core.Interceptors;
 using OliveHelpsLDK.Browser;
 using OliveHelpsLDK.Clipboard;
 using OliveHelpsLDK.Cursor;
@@ -27,19 +28,21 @@ namespace OliveHelpsLDK
 
             var channel = new Channel(address, ChannelCredentials.Insecure);
             await channel.ConnectAsync();
+            var interceptedChannel = channel.Intercept(new ExceptionLoggingInterceptor(logger));
+            
             Console.Error.WriteLine("[DEBUG] GRPC Channel Connected");
-            Whisper = new WhisperClient(channel, session, logger);
-            Clipboard = new ClipboardClient(channel, session, logger);
-            Filesystem = new FilesystemClient(channel, session, logger);
-            Cursor = new CursorClient(channel, session, logger);
-            Keyboard = new KeyboardClient(channel, session, logger);
-            Network = new NetworkClient(channel, session, logger);
-            Process = new ProcessClient(channel, session, logger);
-            Browser = new BrowserClient(channel, session, logger);
-            Hover = new HoverClient(channel, session, logger);
-            Window = new WindowClient(channel, session, logger);
-            Storage = new StorageClient(channel, session, logger);
-            UI = new UIClient(channel, session, logger);
+            Whisper = new WhisperClient(interceptedChannel, session, logger);
+            Clipboard = new ClipboardClient(interceptedChannel, session, logger);
+            Filesystem = new FilesystemClient(interceptedChannel, session, logger);
+            Cursor = new CursorClient(interceptedChannel, session, logger);
+            Keyboard = new KeyboardClient(interceptedChannel, session, logger);
+            Network = new NetworkClient(interceptedChannel, session, logger);
+            Process = new ProcessClient(interceptedChannel, session, logger);
+            Browser = new BrowserClient(interceptedChannel, session, logger);
+            Hover = new HoverClient(interceptedChannel, session, logger);
+            Window = new WindowClient(interceptedChannel, session, logger);
+            Storage = new StorageClient(interceptedChannel, session, logger);
+            UI = new UIClient(interceptedChannel, session, logger);
         }
 
         public IWhisperService Whisper { get; private set; }
