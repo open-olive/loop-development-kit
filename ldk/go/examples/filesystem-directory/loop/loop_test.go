@@ -27,7 +27,7 @@ func TestController(t *testing.T) {
 
 		FilesystemService: &ldktest.FilesystemService{
 			Dirf: func(ctx context.Context, dir string) ([]os.FileInfo, error) {
-				fi := ldk.NewFileInfo("foo.md", 1024, int(os.ModePerm), time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC), false)
+				fi := ldk.NewFileInfo("foo.md", int(os.ModePerm), 1024, time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC), false)
 
 				fiArray := []os.FileInfo{&fi}
 				return fiArray, nil
