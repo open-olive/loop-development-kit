@@ -13,8 +13,8 @@ func CreateMockFile(rBytes []byte) MockFile {
 	mock := MockFile{}
 	fi := ldk.NewFileInfo(
 		"test.file",
-		1024,
 		42,
+		1024,
 		time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC),
 		false,
 	)
