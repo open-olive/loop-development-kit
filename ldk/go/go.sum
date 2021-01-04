@@ -120,6 +120,10 @@ github.com/open-olive/go-plugin v1.4.1-0.20201228171419-5a413415c520 h1:xeNy4Bdv
 github.com/open-olive/go-plugin v1.4.1-0.20201228171419-5a413415c520/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
 github.com/open-olive/go-plugin v1.4.1-0.20201228171937-5142587cf9b4 h1:RurGYfRX3i7AbEsjFVtrJlNY+kMi0dL53iI+GlGaMeQ=
 github.com/open-olive/go-plugin v1.4.1-0.20201228171937-5142587cf9b4/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
+github.com/open-olive/go-plugin v1.4.1-0.20210104075819-f30934171f00 h1:xPrpz2cHNo6fgWZH8TxhsZ9awo4xKt3B82HUhcBRYDI=
+github.com/open-olive/go-plugin v1.4.1-0.20210104075819-f30934171f00/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
+github.com/open-olive/go-plugin v1.4.1-0.20210104080407-e629b134651c h1:LXBClVMSzodFZvlMgd2uA6vyd745fI+teAfNxVKkcUc=
+github.com/open-olive/go-plugin v1.4.1-0.20210104080407-e629b134651c/go.mod h1:v/PSR1z+59VBpK0nDOkXPzMhqVwzaRvHOkDkl83Bq00=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=

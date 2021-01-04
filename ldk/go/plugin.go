@@ -1,6 +1,8 @@
 package ldk
 
 import (
+	"os"
+
 	"github.com/open-olive/go-plugin"
 )
 
@@ -8,7 +10,7 @@ import (
 func ServeLoopPlugin(logger *Logger, loop Loop) error {
 	plugin.Serve(&plugin.ServeConfig{
 		ConnectionConfig: plugin.ConnectionConfig{
-			Network: "unix",
+			Network: os.Getenv("OH_NETWORK"),
 		},
 		Logger:          logger.Logger(),
 		HandshakeConfig: Handshake,
