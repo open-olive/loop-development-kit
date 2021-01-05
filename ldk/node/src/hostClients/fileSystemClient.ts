@@ -7,10 +7,9 @@ import {
   FileSystemQueryDirectoryParams,
   FileSystemQueryDirectoryResponse,
   FileSystemQueryFileParams,
-  FileSystemQueryFileResponse,
   FileSystemStreamAction,
   FileSystemStreamDirectoryResponse,
-  FileSystemStreamFileResponse,
+  FileSystemStreamFileInfoResponse,
 } from './fileSystemService';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
@@ -79,23 +78,6 @@ export class FileSystemClient
     );
   }
 
-  queryFile(
-    params: FileSystemQueryFileParams,
-  ): Promise<FileSystemQueryFileResponse> {
-    return this.buildQuery<
-      messages.FilesystemFileRequest,
-      messages.FilesystemFileResponse,
-      FileSystemQueryFileResponse
-    >(
-      (message, callback) => this.client.filesystemFile(message, callback),
-      () => new messages.FilesystemFileRequest().setPath(params.file),
-      (message) => {
-        const fileInfo = message.getFile();
-        return { file: fileInfo ? parseFileInfo(fileInfo) : undefined };
-      },
-    );
-  }
-
   streamDirectory(
     params: FileSystemQueryDirectoryParams,
     listener: StreamListener<FileSystemStreamDirectoryResponse>,
@@ -122,18 +104,18 @@ export class FileSystemClient
     );
   }
 
-  streamFile(
+  streamFileInfo(
     params: FileSystemQueryFileParams,
-    listener: StreamListener<FileSystemStreamFileResponse>,
-  ): StoppableStream<FileSystemStreamFileResponse> {
-    const message = new messages.FilesystemFileStreamRequest()
+    listener: StreamListener<FileSystemStreamFileInfoResponse>,
+  ): StoppableStream<FileSystemStreamFileInfoResponse> {
+    const message = new messages.FilesystemFileInfoStreamRequest()
       .setPath(params.file)
       .setSession(this.createSessionMessage());
     return new TransformingStream<
-      messages.FilesystemFileStreamResponse,
-      FileSystemStreamFileResponse
+      messages.FilesystemFileInfoStreamResponse,
+      FileSystemStreamFileInfoResponse
     >(
-      this.client.filesystemFileStream(message),
+      this.client.filesystemFileInfoStream(message),
       (response) => {
         const fileInfo = response.getFile();
         if (fileInfo == null) {

@@ -8,9 +8,8 @@ namespace OliveHelpsLDK.Filesystem
     public interface IFilesystemService
     {
         Task<IList<FileInfo>> QueryDirectory(string directoryPath, CancellationToken cancellationToken = default);
-        Task<FileInfo> QueryFile(string filePath, CancellationToken cancellationToken = default);
         IStreamingCall<FileEvent> StreamDirectory(string directoryPath, CancellationToken cancellationToken = default);
-        IStreamingCall<FileEvent> StreamFile(string filePath, CancellationToken cancellationToken = default);
+        IStreamingCall<FileEvent> StreamFileInfo(string filePath, CancellationToken cancellationToken = default);
     }
     
     public struct FileInfo

@@ -3,6 +3,7 @@ module github.com/open-olive/loop-development-kit/ldk/go
 go 1.14
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.2 // indirect

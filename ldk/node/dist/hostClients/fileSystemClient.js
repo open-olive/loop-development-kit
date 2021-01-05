@@ -77,12 +77,6 @@ class FileSystemClient extends baseClient_1.default {
             files: message.getFilesList().map(parseFileInfo),
         }));
     }
-    queryFile(params) {
-        return this.buildQuery((message, callback) => this.client.filesystemFile(message, callback), () => new filesystem_pb_1.default.FilesystemFileRequest().setPath(params.file), (message) => {
-            const fileInfo = message.getFile();
-            return { file: fileInfo ? parseFileInfo(fileInfo) : undefined };
-        });
-    }
     streamDirectory(params, listener) {
         const message = new filesystem_pb_1.default.FilesystemDirStreamRequest()
             .setDirectory(params.directory)
@@ -98,11 +92,11 @@ class FileSystemClient extends baseClient_1.default {
             };
         }, listener);
     }
-    streamFile(params, listener) {
-        const message = new filesystem_pb_1.default.FilesystemFileStreamRequest()
+    streamFileInfo(params, listener) {
+        const message = new filesystem_pb_1.default.FilesystemFileInfoStreamRequest()
             .setPath(params.file)
             .setSession(this.createSessionMessage());
-        return new transformingStream_1.TransformingStream(this.client.filesystemFileStream(message), (response) => {
+        return new transformingStream_1.TransformingStream(this.client.filesystemFileInfoStream(message), (response) => {
             const fileInfo = response.getFile();
             if (fileInfo == null) {
                 return undefined;

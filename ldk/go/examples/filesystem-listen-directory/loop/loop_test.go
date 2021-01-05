@@ -13,17 +13,13 @@ import (
 )
 
 func TestController(t *testing.T) {
+	markdownDoneChan := make(chan bool)
+
 	sidekick := &ldktest.Sidekick{
 		FilesystemService: &ldktest.FilesystemService{
 			ListenDirf: func(ctx context.Context, dir string, cb ldk.ListenDirHandler) error {
-				fi := ldk.FileInfo{
-					Name:    "foo.md",
-					Size:    1024,
-					Mode:    int(os.ModePerm),
-					Updated: time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC),
-					IsDir:   false,
-				}
-				cb(ldk.FileEvent{Info: fi, Action: ldk.FileActionCreate}, nil)
+				fi := ldk.NewFileInfo("foo.md", int(os.ModePerm), 1024, time.Date(2020, 10, 1, 2, 34, 0, 0, time.UTC), false)
+				cb(ldk.FileEvent{Info: &fi, Action: ldk.FileActionCreate}, nil)
 				return nil
 			},
 		},
@@ -33,6 +29,7 @@ func TestController(t *testing.T) {
 				if got := w.Markdown; !cmp.Equal(got, exp) {
 					t.Errorf("unexpected markdown:\n%s\n", cmp.Diff(got, exp))
 				}
+				markdownDoneChan <- true
 				return nil
 			},
 		},
@@ -45,6 +42,7 @@ func TestController(t *testing.T) {
 	if err := c.LoopStart(sidekick); err != nil {
 		t.Fatal(err)
 	}
+	<-markdownDoneChan
 	if err := c.LoopStop(); err != nil {
 		t.Fatal(err)
 	}

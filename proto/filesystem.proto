@@ -3,6 +3,7 @@ package proto;
 option go_package = ".;proto";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 import "session.proto";
 
 service Filesystem {
@@ -12,11 +13,25 @@ service Filesystem {
     // stream any updates to the contents of a directory
     rpc FilesystemDirStream (FilesystemDirStreamRequest) returns (stream FilesystemDirStreamResponse);
 
-    // get information about a file
-    rpc FilesystemFile (FilesystemFileRequest) returns (FilesystemFileResponse);
-
     // stream any updates to a file
-    rpc FilesystemFileStream (FilesystemFileStreamRequest) returns (stream FilesystemFileStreamResponse);    
+    rpc FilesystemFileInfoStream (FilesystemFileInfoStreamRequest) returns (stream FilesystemFileInfoStreamResponse);    
+
+    // file stream
+    rpc FilesystemFileStream (stream FilesystemFileStreamRequest) returns (stream FilesystemFileStreamResponse);
+
+    // create directory
+    rpc FilesystemMakeDir (FilesystemMakeDirRequest) returns (google.protobuf.Empty);
+
+    //  copy
+    rpc FilesystemCopy (FilesystemCopyRequest) returns (google.protobuf.Empty);
+
+    //  move
+    rpc FilesystemMove (FilesystemMoveRequest) returns (google.protobuf.Empty);
+
+    // remove
+    rpc FilesystemRemove (FilesystemRemoveRequest) returns (google.protobuf.Empty);
+
+
 }
 
 message FileInfo {
@@ -56,22 +71,121 @@ message FilesystemDirStreamResponse {
     string error = 15;
 }
 
-message FilesystemFileRequest {
+message FilesystemFileInfoStreamRequest {
     Session session = 1;
     string path = 2;
 }
 
-message FilesystemFileResponse {
-    FileInfo file = 1;
-}
-
-message FilesystemFileStreamRequest {
-    Session session = 1;
-    string path = 2;
-}
-
-message FilesystemFileStreamResponse {
+message FilesystemFileInfoStreamResponse {
     FileInfo file = 1;
     FileAction action = 2;
     string error = 15;
 }
+
+message FilesystemFileStreamRequest{
+    message Open {
+        Session session = 1;
+        string path = 2;
+    }
+
+    message Create {
+        Session session = 1;
+        string path = 2;
+    }
+
+    message Write{
+        bytes data = 1;
+    }
+
+    message Read{
+    }
+
+    message Close{
+    }
+
+    message Chmod {
+        uint32 mode =1;
+    }
+
+    message Chown {
+        int32 uid = 1;
+        int32 gid = 2;
+    }
+
+    message Stat {
+    }
+
+    oneof RequestOneOf {
+        Create create = 1;
+        Open open = 2;
+        Read read = 3;
+        Write write = 4;
+        Chmod chmod = 5;
+        Chown chown = 6;
+        Stat stat = 7;
+        Close close = 8;
+    }
+
+}
+
+message FilesystemFileStreamResponse{
+    message Read {
+        bytes data = 1;
+        string error = 15;
+    }
+
+    message Write{
+        int32 numOfBytes = 1;
+        string error = 15;
+    }
+
+    message Chmod {
+        string error = 15;
+    }
+
+    message Chown {
+        string error = 15;
+    }
+
+    message Stat {
+        FileInfo info = 1;
+        string error = 15;
+    }
+
+    oneof ResponseOneOf {
+        Read read = 1;
+        Write write = 2;
+        Chmod chmod = 3;
+        Chown chown = 4;
+        Stat stat = 5;
+    }
+}
+
+
+message FilesystemMakeDirRequest {
+    Session session = 1;
+    string path = 2;
+    uint32 perm =3;
+}
+
+
+message FilesystemCopyRequest {
+    Session session = 1;
+    string source = 2;
+    string dest = 3;
+}
+
+
+message FilesystemMoveRequest {
+    Session session = 1;
+    string source = 2;
+    string dest = 3;
+}
+
+
+message FilesystemRemoveRequest {
+    Session session = 1;
+    string path = 2;
+    bool recursive = 3;
+}
+

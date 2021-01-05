@@ -8,6 +8,7 @@ package proto
 
 import (
 	context "context"
+	empty "github.com/golang/protobuf/ptypes/empty"
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -382,7 +383,7 @@ func (x *FilesystemDirStreamResponse) GetError() string {
 	return ""
 }
 
-type FilesystemFileRequest struct {
+type FilesystemFileInfoStreamRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -391,8 +392,8 @@ type FilesystemFileRequest struct {
 	Path    string   `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
 }
 
-func (x *FilesystemFileRequest) Reset() {
-	*x = FilesystemFileRequest{}
+func (x *FilesystemFileInfoStreamRequest) Reset() {
+	*x = FilesystemFileInfoStreamRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_filesystem_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -400,13 +401,13 @@ func (x *FilesystemFileRequest) Reset() {
 	}
 }
 
-func (x *FilesystemFileRequest) String() string {
+func (x *FilesystemFileInfoStreamRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FilesystemFileRequest) ProtoMessage() {}
+func (*FilesystemFileInfoStreamRequest) ProtoMessage() {}
 
-func (x *FilesystemFileRequest) ProtoReflect() protoreflect.Message {
+func (x *FilesystemFileInfoStreamRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_filesystem_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -418,35 +419,37 @@ func (x *FilesystemFileRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FilesystemFileRequest.ProtoReflect.Descriptor instead.
-func (*FilesystemFileRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use FilesystemFileInfoStreamRequest.ProtoReflect.Descriptor instead.
+func (*FilesystemFileInfoStreamRequest) Descriptor() ([]byte, []int) {
 	return file_filesystem_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *FilesystemFileRequest) GetSession() *Session {
+func (x *FilesystemFileInfoStreamRequest) GetSession() *Session {
 	if x != nil {
 		return x.Session
 	}
 	return nil
 }
 
-func (x *FilesystemFileRequest) GetPath() string {
+func (x *FilesystemFileInfoStreamRequest) GetPath() string {
 	if x != nil {
 		return x.Path
 	}
 	return ""
 }
 
-type FilesystemFileResponse struct {
+type FilesystemFileInfoStreamResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	File *FileInfo `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
+	File   *FileInfo  `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
+	Action FileAction `protobuf:"varint,2,opt,name=action,proto3,enum=proto.FileAction" json:"action,omitempty"`
+	Error  string     `protobuf:"bytes,15,opt,name=error,proto3" json:"error,omitempty"`
 }
 
-func (x *FilesystemFileResponse) Reset() {
-	*x = FilesystemFileResponse{}
+func (x *FilesystemFileInfoStreamResponse) Reset() {
+	*x = FilesystemFileInfoStreamResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_filesystem_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -454,13 +457,13 @@ func (x *FilesystemFileResponse) Reset() {
 	}
 }
 
-func (x *FilesystemFileResponse) String() string {
+func (x *FilesystemFileInfoStreamResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*FilesystemFileResponse) ProtoMessage() {}
+func (*FilesystemFileInfoStreamResponse) ProtoMessage() {}
 
-func (x *FilesystemFileResponse) ProtoReflect() protoreflect.Message {
+func (x *FilesystemFileInfoStreamResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_filesystem_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -472,16 +475,30 @@ func (x *FilesystemFileResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use FilesystemFileResponse.ProtoReflect.Descriptor instead.
-func (*FilesystemFileResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use FilesystemFileInfoStreamResponse.ProtoReflect.Descriptor instead.
+func (*FilesystemFileInfoStreamResponse) Descriptor() ([]byte, []int) {
 	return file_filesystem_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *FilesystemFileResponse) GetFile() *FileInfo {
+func (x *FilesystemFileInfoStreamResponse) GetFile() *FileInfo {
 	if x != nil {
 		return x.File
 	}
 	return nil
+}
+
+func (x *FilesystemFileInfoStreamResponse) GetAction() FileAction {
+	if x != nil {
+		return x.Action
+	}
+	return FileAction_FILE_ACTION_UNKNOWN
+}
+
+func (x *FilesystemFileInfoStreamResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
 }
 
 type FilesystemFileStreamRequest struct {
@@ -489,8 +506,16 @@ type FilesystemFileStreamRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
-	Path    string   `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	// Types that are assignable to RequestOneOf:
+	//	*FilesystemFileStreamRequest_Create_
+	//	*FilesystemFileStreamRequest_Open_
+	//	*FilesystemFileStreamRequest_Read_
+	//	*FilesystemFileStreamRequest_Write_
+	//	*FilesystemFileStreamRequest_Chmod_
+	//	*FilesystemFileStreamRequest_Chown_
+	//	*FilesystemFileStreamRequest_Stat_
+	//	*FilesystemFileStreamRequest_Close_
+	RequestOneOf isFilesystemFileStreamRequest_RequestOneOf `protobuf_oneof:"RequestOneOf"`
 }
 
 func (x *FilesystemFileStreamRequest) Reset() {
@@ -525,28 +550,133 @@ func (*FilesystemFileStreamRequest) Descriptor() ([]byte, []int) {
 	return file_filesystem_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *FilesystemFileStreamRequest) GetSession() *Session {
-	if x != nil {
-		return x.Session
+func (m *FilesystemFileStreamRequest) GetRequestOneOf() isFilesystemFileStreamRequest_RequestOneOf {
+	if m != nil {
+		return m.RequestOneOf
 	}
 	return nil
 }
 
-func (x *FilesystemFileStreamRequest) GetPath() string {
-	if x != nil {
-		return x.Path
+func (x *FilesystemFileStreamRequest) GetCreate() *FilesystemFileStreamRequest_Create {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Create_); ok {
+		return x.Create
 	}
-	return ""
+	return nil
 }
+
+func (x *FilesystemFileStreamRequest) GetOpen() *FilesystemFileStreamRequest_Open {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Open_); ok {
+		return x.Open
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest) GetRead() *FilesystemFileStreamRequest_Read {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Read_); ok {
+		return x.Read
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest) GetWrite() *FilesystemFileStreamRequest_Write {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Write_); ok {
+		return x.Write
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest) GetChmod() *FilesystemFileStreamRequest_Chmod {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Chmod_); ok {
+		return x.Chmod
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest) GetChown() *FilesystemFileStreamRequest_Chown {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Chown_); ok {
+		return x.Chown
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest) GetStat() *FilesystemFileStreamRequest_Stat {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Stat_); ok {
+		return x.Stat
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest) GetClose() *FilesystemFileStreamRequest_Close {
+	if x, ok := x.GetRequestOneOf().(*FilesystemFileStreamRequest_Close_); ok {
+		return x.Close
+	}
+	return nil
+}
+
+type isFilesystemFileStreamRequest_RequestOneOf interface {
+	isFilesystemFileStreamRequest_RequestOneOf()
+}
+
+type FilesystemFileStreamRequest_Create_ struct {
+	Create *FilesystemFileStreamRequest_Create `protobuf:"bytes,1,opt,name=create,proto3,oneof"`
+}
+
+type FilesystemFileStreamRequest_Open_ struct {
+	Open *FilesystemFileStreamRequest_Open `protobuf:"bytes,2,opt,name=open,proto3,oneof"`
+}
+
+type FilesystemFileStreamRequest_Read_ struct {
+	Read *FilesystemFileStreamRequest_Read `protobuf:"bytes,3,opt,name=read,proto3,oneof"`
+}
+
+type FilesystemFileStreamRequest_Write_ struct {
+	Write *FilesystemFileStreamRequest_Write `protobuf:"bytes,4,opt,name=write,proto3,oneof"`
+}
+
+type FilesystemFileStreamRequest_Chmod_ struct {
+	Chmod *FilesystemFileStreamRequest_Chmod `protobuf:"bytes,5,opt,name=chmod,proto3,oneof"`
+}
+
+type FilesystemFileStreamRequest_Chown_ struct {
+	Chown *FilesystemFileStreamRequest_Chown `protobuf:"bytes,6,opt,name=chown,proto3,oneof"`
+}
+
+type FilesystemFileStreamRequest_Stat_ struct {
+	Stat *FilesystemFileStreamRequest_Stat `protobuf:"bytes,7,opt,name=stat,proto3,oneof"`
+}
+
+type FilesystemFileStreamRequest_Close_ struct {
+	Close *FilesystemFileStreamRequest_Close `protobuf:"bytes,8,opt,name=close,proto3,oneof"`
+}
+
+func (*FilesystemFileStreamRequest_Create_) isFilesystemFileStreamRequest_RequestOneOf() {}
+
+func (*FilesystemFileStreamRequest_Open_) isFilesystemFileStreamRequest_RequestOneOf() {}
+
+func (*FilesystemFileStreamRequest_Read_) isFilesystemFileStreamRequest_RequestOneOf() {}
+
+func (*FilesystemFileStreamRequest_Write_) isFilesystemFileStreamRequest_RequestOneOf() {}
+
+func (*FilesystemFileStreamRequest_Chmod_) isFilesystemFileStreamRequest_RequestOneOf() {}
+
+func (*FilesystemFileStreamRequest_Chown_) isFilesystemFileStreamRequest_RequestOneOf() {}
+
+func (*FilesystemFileStreamRequest_Stat_) isFilesystemFileStreamRequest_RequestOneOf() {}
+
+func (*FilesystemFileStreamRequest_Close_) isFilesystemFileStreamRequest_RequestOneOf() {}
 
 type FilesystemFileStreamResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	File   *FileInfo  `protobuf:"bytes,1,opt,name=file,proto3" json:"file,omitempty"`
-	Action FileAction `protobuf:"varint,2,opt,name=action,proto3,enum=proto.FileAction" json:"action,omitempty"`
-	Error  string     `protobuf:"bytes,15,opt,name=error,proto3" json:"error,omitempty"`
+	// Types that are assignable to ResponseOneOf:
+	//	*FilesystemFileStreamResponse_Read_
+	//	*FilesystemFileStreamResponse_Write_
+	//	*FilesystemFileStreamResponse_Chmod_
+	//	*FilesystemFileStreamResponse_Chown_
+	//	*FilesystemFileStreamResponse_Stat_
+	ResponseOneOf isFilesystemFileStreamResponse_ResponseOneOf `protobuf_oneof:"ResponseOneOf"`
 }
 
 func (x *FilesystemFileStreamResponse) Reset() {
@@ -581,21 +711,960 @@ func (*FilesystemFileStreamResponse) Descriptor() ([]byte, []int) {
 	return file_filesystem_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *FilesystemFileStreamResponse) GetFile() *FileInfo {
-	if x != nil {
-		return x.File
+func (m *FilesystemFileStreamResponse) GetResponseOneOf() isFilesystemFileStreamResponse_ResponseOneOf {
+	if m != nil {
+		return m.ResponseOneOf
 	}
 	return nil
 }
 
-func (x *FilesystemFileStreamResponse) GetAction() FileAction {
-	if x != nil {
-		return x.Action
+func (x *FilesystemFileStreamResponse) GetRead() *FilesystemFileStreamResponse_Read {
+	if x, ok := x.GetResponseOneOf().(*FilesystemFileStreamResponse_Read_); ok {
+		return x.Read
 	}
-	return FileAction_FILE_ACTION_UNKNOWN
+	return nil
 }
 
-func (x *FilesystemFileStreamResponse) GetError() string {
+func (x *FilesystemFileStreamResponse) GetWrite() *FilesystemFileStreamResponse_Write {
+	if x, ok := x.GetResponseOneOf().(*FilesystemFileStreamResponse_Write_); ok {
+		return x.Write
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamResponse) GetChmod() *FilesystemFileStreamResponse_Chmod {
+	if x, ok := x.GetResponseOneOf().(*FilesystemFileStreamResponse_Chmod_); ok {
+		return x.Chmod
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamResponse) GetChown() *FilesystemFileStreamResponse_Chown {
+	if x, ok := x.GetResponseOneOf().(*FilesystemFileStreamResponse_Chown_); ok {
+		return x.Chown
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamResponse) GetStat() *FilesystemFileStreamResponse_Stat {
+	if x, ok := x.GetResponseOneOf().(*FilesystemFileStreamResponse_Stat_); ok {
+		return x.Stat
+	}
+	return nil
+}
+
+type isFilesystemFileStreamResponse_ResponseOneOf interface {
+	isFilesystemFileStreamResponse_ResponseOneOf()
+}
+
+type FilesystemFileStreamResponse_Read_ struct {
+	Read *FilesystemFileStreamResponse_Read `protobuf:"bytes,1,opt,name=read,proto3,oneof"`
+}
+
+type FilesystemFileStreamResponse_Write_ struct {
+	Write *FilesystemFileStreamResponse_Write `protobuf:"bytes,2,opt,name=write,proto3,oneof"`
+}
+
+type FilesystemFileStreamResponse_Chmod_ struct {
+	Chmod *FilesystemFileStreamResponse_Chmod `protobuf:"bytes,3,opt,name=chmod,proto3,oneof"`
+}
+
+type FilesystemFileStreamResponse_Chown_ struct {
+	Chown *FilesystemFileStreamResponse_Chown `protobuf:"bytes,4,opt,name=chown,proto3,oneof"`
+}
+
+type FilesystemFileStreamResponse_Stat_ struct {
+	Stat *FilesystemFileStreamResponse_Stat `protobuf:"bytes,5,opt,name=stat,proto3,oneof"`
+}
+
+func (*FilesystemFileStreamResponse_Read_) isFilesystemFileStreamResponse_ResponseOneOf() {}
+
+func (*FilesystemFileStreamResponse_Write_) isFilesystemFileStreamResponse_ResponseOneOf() {}
+
+func (*FilesystemFileStreamResponse_Chmod_) isFilesystemFileStreamResponse_ResponseOneOf() {}
+
+func (*FilesystemFileStreamResponse_Chown_) isFilesystemFileStreamResponse_ResponseOneOf() {}
+
+func (*FilesystemFileStreamResponse_Stat_) isFilesystemFileStreamResponse_ResponseOneOf() {}
+
+type FilesystemMakeDirRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Path    string   `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	Perm    uint32   `protobuf:"varint,3,opt,name=perm,proto3" json:"perm,omitempty"`
+}
+
+func (x *FilesystemMakeDirRequest) Reset() {
+	*x = FilesystemMakeDirRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemMakeDirRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemMakeDirRequest) ProtoMessage() {}
+
+func (x *FilesystemMakeDirRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemMakeDirRequest.ProtoReflect.Descriptor instead.
+func (*FilesystemMakeDirRequest) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *FilesystemMakeDirRequest) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+func (x *FilesystemMakeDirRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *FilesystemMakeDirRequest) GetPerm() uint32 {
+	if x != nil {
+		return x.Perm
+	}
+	return 0
+}
+
+type FilesystemCopyRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Source  string   `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
+	Dest    string   `protobuf:"bytes,3,opt,name=dest,proto3" json:"dest,omitempty"`
+}
+
+func (x *FilesystemCopyRequest) Reset() {
+	*x = FilesystemCopyRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemCopyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemCopyRequest) ProtoMessage() {}
+
+func (x *FilesystemCopyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemCopyRequest.ProtoReflect.Descriptor instead.
+func (*FilesystemCopyRequest) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *FilesystemCopyRequest) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+func (x *FilesystemCopyRequest) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *FilesystemCopyRequest) GetDest() string {
+	if x != nil {
+		return x.Dest
+	}
+	return ""
+}
+
+type FilesystemMoveRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Source  string   `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
+	Dest    string   `protobuf:"bytes,3,opt,name=dest,proto3" json:"dest,omitempty"`
+}
+
+func (x *FilesystemMoveRequest) Reset() {
+	*x = FilesystemMoveRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemMoveRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemMoveRequest) ProtoMessage() {}
+
+func (x *FilesystemMoveRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemMoveRequest.ProtoReflect.Descriptor instead.
+func (*FilesystemMoveRequest) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *FilesystemMoveRequest) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+func (x *FilesystemMoveRequest) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *FilesystemMoveRequest) GetDest() string {
+	if x != nil {
+		return x.Dest
+	}
+	return ""
+}
+
+type FilesystemRemoveRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Session   *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Path      string   `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	Recursive bool     `protobuf:"varint,3,opt,name=recursive,proto3" json:"recursive,omitempty"`
+}
+
+func (x *FilesystemRemoveRequest) Reset() {
+	*x = FilesystemRemoveRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemRemoveRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemRemoveRequest) ProtoMessage() {}
+
+func (x *FilesystemRemoveRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemRemoveRequest.ProtoReflect.Descriptor instead.
+func (*FilesystemRemoveRequest) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *FilesystemRemoveRequest) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+func (x *FilesystemRemoveRequest) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *FilesystemRemoveRequest) GetRecursive() bool {
+	if x != nil {
+		return x.Recursive
+	}
+	return false
+}
+
+type FilesystemFileStreamRequest_Open struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Path    string   `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+}
+
+func (x *FilesystemFileStreamRequest_Open) Reset() {
+	*x = FilesystemFileStreamRequest_Open{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Open) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Open) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Open) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Open.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Open) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 0}
+}
+
+func (x *FilesystemFileStreamRequest_Open) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest_Open) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+type FilesystemFileStreamRequest_Create struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Session *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Path    string   `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+}
+
+func (x *FilesystemFileStreamRequest_Create) Reset() {
+	*x = FilesystemFileStreamRequest_Create{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Create) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Create) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Create) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Create.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Create) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 1}
+}
+
+func (x *FilesystemFileStreamRequest_Create) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamRequest_Create) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+type FilesystemFileStreamRequest_Write struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Data []byte `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *FilesystemFileStreamRequest_Write) Reset() {
+	*x = FilesystemFileStreamRequest_Write{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Write) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Write) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Write) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Write.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Write) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 2}
+}
+
+func (x *FilesystemFileStreamRequest_Write) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+type FilesystemFileStreamRequest_Read struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *FilesystemFileStreamRequest_Read) Reset() {
+	*x = FilesystemFileStreamRequest_Read{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Read) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Read) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Read) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Read.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Read) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 3}
+}
+
+type FilesystemFileStreamRequest_Close struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *FilesystemFileStreamRequest_Close) Reset() {
+	*x = FilesystemFileStreamRequest_Close{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Close) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Close) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Close) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Close.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Close) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 4}
+}
+
+type FilesystemFileStreamRequest_Chmod struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Mode uint32 `protobuf:"varint,1,opt,name=mode,proto3" json:"mode,omitempty"`
+}
+
+func (x *FilesystemFileStreamRequest_Chmod) Reset() {
+	*x = FilesystemFileStreamRequest_Chmod{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Chmod) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Chmod) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Chmod) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Chmod.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Chmod) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 5}
+}
+
+func (x *FilesystemFileStreamRequest_Chmod) GetMode() uint32 {
+	if x != nil {
+		return x.Mode
+	}
+	return 0
+}
+
+type FilesystemFileStreamRequest_Chown struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Uid int32 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	Gid int32 `protobuf:"varint,2,opt,name=gid,proto3" json:"gid,omitempty"`
+}
+
+func (x *FilesystemFileStreamRequest_Chown) Reset() {
+	*x = FilesystemFileStreamRequest_Chown{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Chown) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Chown) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Chown) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Chown.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Chown) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 6}
+}
+
+func (x *FilesystemFileStreamRequest_Chown) GetUid() int32 {
+	if x != nil {
+		return x.Uid
+	}
+	return 0
+}
+
+func (x *FilesystemFileStreamRequest_Chown) GetGid() int32 {
+	if x != nil {
+		return x.Gid
+	}
+	return 0
+}
+
+type FilesystemFileStreamRequest_Stat struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *FilesystemFileStreamRequest_Stat) Reset() {
+	*x = FilesystemFileStreamRequest_Stat{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamRequest_Stat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamRequest_Stat) ProtoMessage() {}
+
+func (x *FilesystemFileStreamRequest_Stat) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamRequest_Stat.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamRequest_Stat) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{7, 7}
+}
+
+type FilesystemFileStreamResponse_Read struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Data  []byte `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	Error string `protobuf:"bytes,15,opt,name=error,proto3" json:"error,omitempty"`
+}
+
+func (x *FilesystemFileStreamResponse_Read) Reset() {
+	*x = FilesystemFileStreamResponse_Read{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[21]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamResponse_Read) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamResponse_Read) ProtoMessage() {}
+
+func (x *FilesystemFileStreamResponse_Read) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[21]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamResponse_Read.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamResponse_Read) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{8, 0}
+}
+
+func (x *FilesystemFileStreamResponse_Read) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamResponse_Read) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type FilesystemFileStreamResponse_Write struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	NumOfBytes int32  `protobuf:"varint,1,opt,name=numOfBytes,proto3" json:"numOfBytes,omitempty"`
+	Error      string `protobuf:"bytes,15,opt,name=error,proto3" json:"error,omitempty"`
+}
+
+func (x *FilesystemFileStreamResponse_Write) Reset() {
+	*x = FilesystemFileStreamResponse_Write{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[22]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamResponse_Write) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamResponse_Write) ProtoMessage() {}
+
+func (x *FilesystemFileStreamResponse_Write) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[22]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamResponse_Write.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamResponse_Write) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{8, 1}
+}
+
+func (x *FilesystemFileStreamResponse_Write) GetNumOfBytes() int32 {
+	if x != nil {
+		return x.NumOfBytes
+	}
+	return 0
+}
+
+func (x *FilesystemFileStreamResponse_Write) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type FilesystemFileStreamResponse_Chmod struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Error string `protobuf:"bytes,15,opt,name=error,proto3" json:"error,omitempty"`
+}
+
+func (x *FilesystemFileStreamResponse_Chmod) Reset() {
+	*x = FilesystemFileStreamResponse_Chmod{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamResponse_Chmod) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamResponse_Chmod) ProtoMessage() {}
+
+func (x *FilesystemFileStreamResponse_Chmod) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamResponse_Chmod.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamResponse_Chmod) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{8, 2}
+}
+
+func (x *FilesystemFileStreamResponse_Chmod) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type FilesystemFileStreamResponse_Chown struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Error string `protobuf:"bytes,15,opt,name=error,proto3" json:"error,omitempty"`
+}
+
+func (x *FilesystemFileStreamResponse_Chown) Reset() {
+	*x = FilesystemFileStreamResponse_Chown{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamResponse_Chown) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamResponse_Chown) ProtoMessage() {}
+
+func (x *FilesystemFileStreamResponse_Chown) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamResponse_Chown.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamResponse_Chown) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{8, 3}
+}
+
+func (x *FilesystemFileStreamResponse_Chown) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+type FilesystemFileStreamResponse_Stat struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Info  *FileInfo `protobuf:"bytes,1,opt,name=info,proto3" json:"info,omitempty"`
+	Error string    `protobuf:"bytes,15,opt,name=error,proto3" json:"error,omitempty"`
+}
+
+func (x *FilesystemFileStreamResponse_Stat) Reset() {
+	*x = FilesystemFileStreamResponse_Stat{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_filesystem_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *FilesystemFileStreamResponse_Stat) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FilesystemFileStreamResponse_Stat) ProtoMessage() {}
+
+func (x *FilesystemFileStreamResponse_Stat) ProtoReflect() protoreflect.Message {
+	mi := &file_filesystem_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FilesystemFileStreamResponse_Stat.ProtoReflect.Descriptor instead.
+func (*FilesystemFileStreamResponse_Stat) Descriptor() ([]byte, []int) {
+	return file_filesystem_proto_rawDescGZIP(), []int{8, 4}
+}
+
+func (x *FilesystemFileStreamResponse_Stat) GetInfo() *FileInfo {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
+func (x *FilesystemFileStreamResponse_Stat) GetError() string {
 	if x != nil {
 		return x.Error
 	}
@@ -608,100 +1677,233 @@ var file_filesystem_proto_rawDesc = []byte{
 	0x0a, 0x10, 0x66, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x2e, 0x70, 0x72, 0x6f,
 	0x74, 0x6f, 0x12, 0x05, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
 	0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73,
-	0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x0d, 0x73, 0x65, 0x73, 0x73,
-	0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x92, 0x01, 0x0a, 0x08, 0x46, 0x69,
-	0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x69,
-	0x7a, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x73, 0x69, 0x7a, 0x65, 0x12, 0x12,
-	0x0a, 0x04, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x6d, 0x6f,
-	0x64, 0x65, 0x12, 0x34, 0x0a, 0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x18, 0x04, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52,
-	0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x73, 0x44, 0x69,
-	0x72, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x69, 0x73, 0x44, 0x69, 0x72, 0x22, 0x5e,
-	0x0a, 0x14, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f,
-	0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
-	0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
-	0x12, 0x1c, 0x0a, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x79, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x79, 0x22, 0x3e,
-	0x0a, 0x15, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x05, 0x66, 0x69, 0x6c, 0x65, 0x73,
-	0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46,
-	0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x05, 0x66, 0x69, 0x6c, 0x65, 0x73, 0x22, 0x64,
-	0x0a, 0x1a, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x53,
-	0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07,
-	0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x1c, 0x0a, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74,
-	0x6f, 0x72, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63,
-	0x74, 0x6f, 0x72, 0x79, 0x22, 0x83, 0x01, 0x0a, 0x1b, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73,
-	0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23, 0x0a, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x49,
-	0x6e, 0x66, 0x6f, 0x52, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x12, 0x29, 0x0a, 0x06, 0x61, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x11, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x06, 0x61, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20,
-	0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x55, 0x0a, 0x15, 0x46, 0x69,
-	0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75,
+	0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b, 0x67, 0x6f, 0x6f, 0x67,
+	0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x65, 0x6d, 0x70, 0x74,
+	0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x0d, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x92, 0x01, 0x0a, 0x08, 0x46, 0x69, 0x6c, 0x65, 0x49,
+	0x6e, 0x66, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x69, 0x7a, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x04, 0x73, 0x69, 0x7a, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6d,
+	0x6f, 0x64, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x6d, 0x6f, 0x64, 0x65, 0x12,
+	0x34, 0x0a, 0x07, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x07, 0x75, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x73, 0x44, 0x69, 0x72, 0x18, 0x05,
+	0x20, 0x01, 0x28, 0x08, 0x52, 0x05, 0x69, 0x73, 0x44, 0x69, 0x72, 0x22, 0x5e, 0x0a, 0x14, 0x46,
+	0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x52, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73,
-	0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a,
-	0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74,
-	0x68, 0x22, 0x3d, 0x0a, 0x16, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46,
-	0x69, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23, 0x0a, 0x04, 0x66,
-	0x69, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x66, 0x69, 0x6c, 0x65,
-	0x22, 0x5b, 0x0a, 0x1b, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69,
-	0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x1c, 0x0a,
+	0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x79, 0x22, 0x3e, 0x0a, 0x15, 0x46,
+	0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x25, 0x0a, 0x05, 0x66, 0x69, 0x6c, 0x65, 0x73, 0x18, 0x01, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65,
+	0x49, 0x6e, 0x66, 0x6f, 0x52, 0x05, 0x66, 0x69, 0x6c, 0x65, 0x73, 0x22, 0x64, 0x0a, 0x1a, 0x46,
+	0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x53, 0x74, 0x72, 0x65,
+	0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x12, 0x1c, 0x0a, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x6f, 0x72, 0x79,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x6f, 0x72,
+	0x79, 0x22, 0x83, 0x01, 0x0a, 0x1b, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d,
+	0x44, 0x69, 0x72, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x12, 0x23, 0x0a, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x0f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f,
+	0x52, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x12, 0x29, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x11, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46,
+	0x69, 0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0x5f, 0x0a, 0x1f, 0x46, 0x69, 0x6c, 0x65, 0x73,
+	0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x53, 0x74, 0x72,
+	0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65,
+	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x22, 0x88, 0x01, 0x0a, 0x20, 0x46, 0x69, 0x6c,
+	0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x53,
+	0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23, 0x0a,
+	0x04, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x66, 0x69,
+	0x6c, 0x65, 0x12, 0x29, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0e, 0x32, 0x11, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x41,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14, 0x0a,
+	0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72,
+	0x72, 0x6f, 0x72, 0x22, 0xc5, 0x06, 0x0a, 0x1b, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x43, 0x0a, 0x06, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65,
+	0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x48, 0x00,
+	0x52, 0x06, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x3d, 0x0a, 0x04, 0x6f, 0x70, 0x65, 0x6e,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46,
+	0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72,
+	0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x4f, 0x70, 0x65, 0x6e, 0x48,
+	0x00, 0x52, 0x04, 0x6f, 0x70, 0x65, 0x6e, 0x12, 0x3d, 0x0a, 0x04, 0x72, 0x65, 0x61, 0x64, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69,
+	0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65,
+	0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x52, 0x65, 0x61, 0x64, 0x48, 0x00,
+	0x52, 0x04, 0x72, 0x65, 0x61, 0x64, 0x12, 0x40, 0x0a, 0x05, 0x77, 0x72, 0x69, 0x74, 0x65, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69,
+	0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65,
+	0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x57, 0x72, 0x69, 0x74, 0x65, 0x48,
+	0x00, 0x52, 0x05, 0x77, 0x72, 0x69, 0x74, 0x65, 0x12, 0x40, 0x0a, 0x05, 0x63, 0x68, 0x6d, 0x6f,
+	0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
+	0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74,
+	0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x43, 0x68, 0x6d, 0x6f,
+	0x64, 0x48, 0x00, 0x52, 0x05, 0x63, 0x68, 0x6d, 0x6f, 0x64, 0x12, 0x40, 0x0a, 0x05, 0x63, 0x68,
+	0x6f, 0x77, 0x6e, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65,
+	0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x43, 0x68,
+	0x6f, 0x77, 0x6e, 0x48, 0x00, 0x52, 0x05, 0x63, 0x68, 0x6f, 0x77, 0x6e, 0x12, 0x3d, 0x0a, 0x04,
+	0x73, 0x74, 0x61, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c,
+	0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x53,
+	0x74, 0x61, 0x74, 0x48, 0x00, 0x52, 0x04, 0x73, 0x74, 0x61, 0x74, 0x12, 0x40, 0x0a, 0x05, 0x63,
+	0x6c, 0x6f, 0x73, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c,
+	0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x43,
+	0x6c, 0x6f, 0x73, 0x65, 0x48, 0x00, 0x52, 0x05, 0x63, 0x6c, 0x6f, 0x73, 0x65, 0x1a, 0x44, 0x0a,
+	0x04, 0x4f, 0x70, 0x65, 0x6e, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12,
+	0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70,
+	0x61, 0x74, 0x68, 0x1a, 0x46, 0x0a, 0x06, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x12, 0x28, 0x0a,
+	0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07,
+	0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x1a, 0x1b, 0x0a, 0x05, 0x57,
+	0x72, 0x69, 0x74, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x1a, 0x06, 0x0a, 0x04, 0x52, 0x65, 0x61, 0x64,
+	0x1a, 0x07, 0x0a, 0x05, 0x43, 0x6c, 0x6f, 0x73, 0x65, 0x1a, 0x1b, 0x0a, 0x05, 0x43, 0x68, 0x6d,
+	0x6f, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d,
+	0x52, 0x04, 0x6d, 0x6f, 0x64, 0x65, 0x1a, 0x2b, 0x0a, 0x05, 0x43, 0x68, 0x6f, 0x77, 0x6e, 0x12,
+	0x10, 0x0a, 0x03, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03, 0x75, 0x69,
+	0x64, 0x12, 0x10, 0x0a, 0x03, 0x67, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x03,
+	0x67, 0x69, 0x64, 0x1a, 0x06, 0x0a, 0x04, 0x53, 0x74, 0x61, 0x74, 0x42, 0x0e, 0x0a, 0x0c, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x4f, 0x6e, 0x65, 0x4f, 0x66, 0x22, 0xea, 0x04, 0x0a, 0x1c,
+	0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74,
+	0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x3e, 0x0a, 0x04,
+	0x72, 0x65, 0x61, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c,
+	0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e,
+	0x52, 0x65, 0x61, 0x64, 0x48, 0x00, 0x52, 0x04, 0x72, 0x65, 0x61, 0x64, 0x12, 0x41, 0x0a, 0x05,
+	0x77, 0x72, 0x69, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69,
+	0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x2e, 0x57, 0x72, 0x69, 0x74, 0x65, 0x48, 0x00, 0x52, 0x05, 0x77, 0x72, 0x69, 0x74, 0x65, 0x12,
+	0x41, 0x0a, 0x05, 0x63, 0x68, 0x6d, 0x6f, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65,
+	0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x2e, 0x43, 0x68, 0x6d, 0x6f, 0x64, 0x48, 0x00, 0x52, 0x05, 0x63, 0x68, 0x6d,
+	0x6f, 0x64, 0x12, 0x41, 0x0a, 0x05, 0x63, 0x68, 0x6f, 0x77, 0x6e, 0x18, 0x04, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x29, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79,
+	0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x43, 0x68, 0x6f, 0x77, 0x6e, 0x48, 0x00, 0x52, 0x05,
+	0x63, 0x68, 0x6f, 0x77, 0x6e, 0x12, 0x3e, 0x0a, 0x04, 0x73, 0x74, 0x61, 0x74, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x28, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65,
+	0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x2e, 0x53, 0x74, 0x61, 0x74, 0x48, 0x00, 0x52,
+	0x04, 0x73, 0x74, 0x61, 0x74, 0x1a, 0x30, 0x0a, 0x04, 0x52, 0x65, 0x61, 0x64, 0x12, 0x12, 0x0a,
+	0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64, 0x61, 0x74,
+	0x61, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x1a, 0x3d, 0x0a, 0x05, 0x57, 0x72, 0x69, 0x74, 0x65,
+	0x12, 0x1e, 0x0a, 0x0a, 0x6e, 0x75, 0x6d, 0x4f, 0x66, 0x42, 0x79, 0x74, 0x65, 0x73, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x05, 0x52, 0x0a, 0x6e, 0x75, 0x6d, 0x4f, 0x66, 0x42, 0x79, 0x74, 0x65, 0x73,
+	0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x1a, 0x1d, 0x0a, 0x05, 0x43, 0x68, 0x6d, 0x6f, 0x64, 0x12,
+	0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
+	0x65, 0x72, 0x72, 0x6f, 0x72, 0x1a, 0x1d, 0x0a, 0x05, 0x43, 0x68, 0x6f, 0x77, 0x6e, 0x12, 0x14,
+	0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65,
+	0x72, 0x72, 0x6f, 0x72, 0x1a, 0x41, 0x0a, 0x04, 0x53, 0x74, 0x61, 0x74, 0x12, 0x23, 0x0a, 0x04,
+	0x69, 0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x69, 0x6e, 0x66,
+	0x6f, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x42, 0x0f, 0x0a, 0x0d, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x4f, 0x6e, 0x65, 0x4f, 0x66, 0x22, 0x6c, 0x0a, 0x18, 0x46, 0x69, 0x6c, 0x65,
+	0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x4d, 0x61, 0x6b, 0x65, 0x44, 0x69, 0x72, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65,
+	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12,
+	0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61,
+	0x74, 0x68, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x65, 0x72, 0x6d, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d,
+	0x52, 0x04, 0x70, 0x65, 0x72, 0x6d, 0x22, 0x6d, 0x0a, 0x15, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79,
+	0x73, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x70, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
+	0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x6f, 0x75,
+	0x72, 0x63, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x6f, 0x75, 0x72, 0x63,
+	0x65, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x65, 0x73, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x64, 0x65, 0x73, 0x74, 0x22, 0x6d, 0x0a, 0x15, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73,
+	0x74, 0x65, 0x6d, 0x4d, 0x6f, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x28,
+	0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52,
+	0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x6f, 0x75, 0x72,
+	0x63, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65,
+	0x12, 0x12, 0x0a, 0x04, 0x64, 0x65, 0x73, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x64, 0x65, 0x73, 0x74, 0x22, 0x75, 0x0a, 0x17, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
 	0x28, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
 	0x32, 0x0e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
 	0x52, 0x07, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a, 0x04, 0x70, 0x61, 0x74,
-	0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x22, 0x84, 0x01,
-	0x0a, 0x1c, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65,
-	0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x23,
-	0x0a, 0x04, 0x66, 0x69, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x66,
-	0x69, 0x6c, 0x65, 0x12, 0x29, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0e, 0x32, 0x11, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65,
-	0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x14,
-	0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x0f, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65,
-	0x72, 0x72, 0x6f, 0x72, 0x2a, 0x9b, 0x01, 0x0a, 0x0a, 0x46, 0x69, 0x6c, 0x65, 0x41, 0x63, 0x74,
-	0x69, 0x6f, 0x6e, 0x12, 0x17, 0x0a, 0x13, 0x46, 0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49,
-	0x4f, 0x4e, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x16, 0x0a, 0x12,
-	0x46, 0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x43, 0x52, 0x45, 0x41,
-	0x54, 0x45, 0x10, 0x01, 0x12, 0x15, 0x0a, 0x11, 0x46, 0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54,
-	0x49, 0x4f, 0x4e, 0x5f, 0x57, 0x52, 0x49, 0x54, 0x45, 0x10, 0x02, 0x12, 0x16, 0x0a, 0x12, 0x46,
-	0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x52, 0x45, 0x4d, 0x4f, 0x56,
-	0x45, 0x10, 0x03, 0x12, 0x16, 0x0a, 0x12, 0x46, 0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49,
-	0x4f, 0x4e, 0x5f, 0x52, 0x45, 0x4e, 0x41, 0x4d, 0x45, 0x10, 0x04, 0x12, 0x15, 0x0a, 0x11, 0x46,
-	0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x43, 0x48, 0x4d, 0x4f, 0x44,
-	0x10, 0x05, 0x32, 0xea, 0x02, 0x0a, 0x0a, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65,
-	0x6d, 0x12, 0x4a, 0x0a, 0x0d, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44,
-	0x69, 0x72, 0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73,
-	0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
-	0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74,
-	0x65, 0x6d, 0x44, 0x69, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5e, 0x0a,
-	0x13, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x53, 0x74,
-	0x72, 0x65, 0x61, 0x6d, 0x12, 0x21, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c,
-	0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e,
-	0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x53, 0x74, 0x72,
-	0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x30, 0x01, 0x12, 0x4d, 0x0a,
-	0x0e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x12,
-	0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74,
-	0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1d, 0x2e,
+	0x68, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70, 0x61, 0x74, 0x68, 0x12, 0x1c, 0x0a,
+	0x09, 0x72, 0x65, 0x63, 0x75, 0x72, 0x73, 0x69, 0x76, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x08,
+	0x52, 0x09, 0x72, 0x65, 0x63, 0x75, 0x72, 0x73, 0x69, 0x76, 0x65, 0x2a, 0x9b, 0x01, 0x0a, 0x0a,
+	0x46, 0x69, 0x6c, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x17, 0x0a, 0x13, 0x46, 0x49,
+	0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57,
+	0x4e, 0x10, 0x00, 0x12, 0x16, 0x0a, 0x12, 0x46, 0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49,
+	0x4f, 0x4e, 0x5f, 0x43, 0x52, 0x45, 0x41, 0x54, 0x45, 0x10, 0x01, 0x12, 0x15, 0x0a, 0x11, 0x46,
+	0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x57, 0x52, 0x49, 0x54, 0x45,
+	0x10, 0x02, 0x12, 0x16, 0x0a, 0x12, 0x46, 0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f,
+	0x4e, 0x5f, 0x52, 0x45, 0x4d, 0x4f, 0x56, 0x45, 0x10, 0x03, 0x12, 0x16, 0x0a, 0x12, 0x46, 0x49,
+	0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f, 0x4e, 0x5f, 0x52, 0x45, 0x4e, 0x41, 0x4d, 0x45,
+	0x10, 0x04, 0x12, 0x15, 0x0a, 0x11, 0x46, 0x49, 0x4c, 0x45, 0x5f, 0x41, 0x43, 0x54, 0x49, 0x4f,
+	0x4e, 0x5f, 0x43, 0x48, 0x4d, 0x4f, 0x44, 0x10, 0x05, 0x32, 0xb6, 0x05, 0x0a, 0x0a, 0x46, 0x69,
+	0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x12, 0x4a, 0x0a, 0x0d, 0x46, 0x69, 0x6c, 0x65,
+	0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x12, 0x1b, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46,
+	0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69, 0x72, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5e, 0x0a, 0x13, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x44, 0x69, 0x72, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x12, 0x21, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x44, 0x69,
+	0x72, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x22,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65,
+	0x6d, 0x44, 0x69, 0x72, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x30, 0x01, 0x12, 0x6d, 0x0a, 0x18, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d,
+	0x12, 0x26, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73,
+	0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x53, 0x74, 0x72, 0x65, 0x61,
+	0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x27, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x49,
+	0x6e, 0x66, 0x6f, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x30, 0x01, 0x12, 0x63, 0x0a, 0x14, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65,
+	0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x12, 0x22, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69,
+	0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x23, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74,
+	0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01, 0x12, 0x4c, 0x0a, 0x11, 0x46, 0x69, 0x6c, 0x65,
+	0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x4d, 0x61, 0x6b, 0x65, 0x44, 0x69, 0x72, 0x12, 0x1f, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d,
-	0x46, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x61, 0x0a, 0x14,
-	0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74,
-	0x72, 0x65, 0x61, 0x6d, 0x12, 0x22, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c,
-	0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53, 0x74, 0x72, 0x65, 0x61,
-	0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x46, 0x69, 0x6c, 0x65, 0x53,
-	0x74, 0x72, 0x65, 0x61, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x30, 0x01, 0x42,
-	0x09, 0x5a, 0x07, 0x2e, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x33,
+	0x4d, 0x61, 0x6b, 0x65, 0x44, 0x69, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x46, 0x0a, 0x0e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79,
+	0x73, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x70, 0x79, 0x12, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x43, 0x6f, 0x70, 0x79, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x46,
+	0x0a, 0x0e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x4d, 0x6f, 0x76, 0x65,
+	0x12, 0x1c, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73,
+	0x74, 0x65, 0x6d, 0x4d, 0x6f, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16,
+	0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x4a, 0x0a, 0x10, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79,
+	0x73, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x12, 0x1e, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x2e, 0x46, 0x69, 0x6c, 0x65, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x6d,
+	0x6f, 0x76, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f,
+	0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70,
+	0x74, 0x79, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x3b, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -717,46 +1919,90 @@ func file_filesystem_proto_rawDescGZIP() []byte {
 }
 
 var file_filesystem_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_filesystem_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_filesystem_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_filesystem_proto_goTypes = []interface{}{
-	(FileAction)(0),                      // 0: proto.FileAction
-	(*FileInfo)(nil),                     // 1: proto.FileInfo
-	(*FilesystemDirRequest)(nil),         // 2: proto.FilesystemDirRequest
-	(*FilesystemDirResponse)(nil),        // 3: proto.FilesystemDirResponse
-	(*FilesystemDirStreamRequest)(nil),   // 4: proto.FilesystemDirStreamRequest
-	(*FilesystemDirStreamResponse)(nil),  // 5: proto.FilesystemDirStreamResponse
-	(*FilesystemFileRequest)(nil),        // 6: proto.FilesystemFileRequest
-	(*FilesystemFileResponse)(nil),       // 7: proto.FilesystemFileResponse
-	(*FilesystemFileStreamRequest)(nil),  // 8: proto.FilesystemFileStreamRequest
-	(*FilesystemFileStreamResponse)(nil), // 9: proto.FilesystemFileStreamResponse
-	(*timestamp.Timestamp)(nil),          // 10: google.protobuf.Timestamp
-	(*Session)(nil),                      // 11: proto.Session
+	(FileAction)(0),                            // 0: proto.FileAction
+	(*FileInfo)(nil),                           // 1: proto.FileInfo
+	(*FilesystemDirRequest)(nil),               // 2: proto.FilesystemDirRequest
+	(*FilesystemDirResponse)(nil),              // 3: proto.FilesystemDirResponse
+	(*FilesystemDirStreamRequest)(nil),         // 4: proto.FilesystemDirStreamRequest
+	(*FilesystemDirStreamResponse)(nil),        // 5: proto.FilesystemDirStreamResponse
+	(*FilesystemFileInfoStreamRequest)(nil),    // 6: proto.FilesystemFileInfoStreamRequest
+	(*FilesystemFileInfoStreamResponse)(nil),   // 7: proto.FilesystemFileInfoStreamResponse
+	(*FilesystemFileStreamRequest)(nil),        // 8: proto.FilesystemFileStreamRequest
+	(*FilesystemFileStreamResponse)(nil),       // 9: proto.FilesystemFileStreamResponse
+	(*FilesystemMakeDirRequest)(nil),           // 10: proto.FilesystemMakeDirRequest
+	(*FilesystemCopyRequest)(nil),              // 11: proto.FilesystemCopyRequest
+	(*FilesystemMoveRequest)(nil),              // 12: proto.FilesystemMoveRequest
+	(*FilesystemRemoveRequest)(nil),            // 13: proto.FilesystemRemoveRequest
+	(*FilesystemFileStreamRequest_Open)(nil),   // 14: proto.FilesystemFileStreamRequest.Open
+	(*FilesystemFileStreamRequest_Create)(nil), // 15: proto.FilesystemFileStreamRequest.Create
+	(*FilesystemFileStreamRequest_Write)(nil),  // 16: proto.FilesystemFileStreamRequest.Write
+	(*FilesystemFileStreamRequest_Read)(nil),   // 17: proto.FilesystemFileStreamRequest.Read
+	(*FilesystemFileStreamRequest_Close)(nil),  // 18: proto.FilesystemFileStreamRequest.Close
+	(*FilesystemFileStreamRequest_Chmod)(nil),  // 19: proto.FilesystemFileStreamRequest.Chmod
+	(*FilesystemFileStreamRequest_Chown)(nil),  // 20: proto.FilesystemFileStreamRequest.Chown
+	(*FilesystemFileStreamRequest_Stat)(nil),   // 21: proto.FilesystemFileStreamRequest.Stat
+	(*FilesystemFileStreamResponse_Read)(nil),  // 22: proto.FilesystemFileStreamResponse.Read
+	(*FilesystemFileStreamResponse_Write)(nil), // 23: proto.FilesystemFileStreamResponse.Write
+	(*FilesystemFileStreamResponse_Chmod)(nil), // 24: proto.FilesystemFileStreamResponse.Chmod
+	(*FilesystemFileStreamResponse_Chown)(nil), // 25: proto.FilesystemFileStreamResponse.Chown
+	(*FilesystemFileStreamResponse_Stat)(nil),  // 26: proto.FilesystemFileStreamResponse.Stat
+	(*timestamp.Timestamp)(nil),                // 27: google.protobuf.Timestamp
+	(*Session)(nil),                            // 28: proto.Session
+	(*empty.Empty)(nil),                        // 29: google.protobuf.Empty
 }
 var file_filesystem_proto_depIdxs = []int32{
-	10, // 0: proto.FileInfo.updated:type_name -> google.protobuf.Timestamp
-	11, // 1: proto.FilesystemDirRequest.session:type_name -> proto.Session
+	27, // 0: proto.FileInfo.updated:type_name -> google.protobuf.Timestamp
+	28, // 1: proto.FilesystemDirRequest.session:type_name -> proto.Session
 	1,  // 2: proto.FilesystemDirResponse.files:type_name -> proto.FileInfo
-	11, // 3: proto.FilesystemDirStreamRequest.session:type_name -> proto.Session
+	28, // 3: proto.FilesystemDirStreamRequest.session:type_name -> proto.Session
 	1,  // 4: proto.FilesystemDirStreamResponse.file:type_name -> proto.FileInfo
 	0,  // 5: proto.FilesystemDirStreamResponse.action:type_name -> proto.FileAction
-	11, // 6: proto.FilesystemFileRequest.session:type_name -> proto.Session
-	1,  // 7: proto.FilesystemFileResponse.file:type_name -> proto.FileInfo
-	11, // 8: proto.FilesystemFileStreamRequest.session:type_name -> proto.Session
-	1,  // 9: proto.FilesystemFileStreamResponse.file:type_name -> proto.FileInfo
-	0,  // 10: proto.FilesystemFileStreamResponse.action:type_name -> proto.FileAction
-	2,  // 11: proto.Filesystem.FilesystemDir:input_type -> proto.FilesystemDirRequest
-	4,  // 12: proto.Filesystem.FilesystemDirStream:input_type -> proto.FilesystemDirStreamRequest
-	6,  // 13: proto.Filesystem.FilesystemFile:input_type -> proto.FilesystemFileRequest
-	8,  // 14: proto.Filesystem.FilesystemFileStream:input_type -> proto.FilesystemFileStreamRequest
-	3,  // 15: proto.Filesystem.FilesystemDir:output_type -> proto.FilesystemDirResponse
-	5,  // 16: proto.Filesystem.FilesystemDirStream:output_type -> proto.FilesystemDirStreamResponse
-	7,  // 17: proto.Filesystem.FilesystemFile:output_type -> proto.FilesystemFileResponse
-	9,  // 18: proto.Filesystem.FilesystemFileStream:output_type -> proto.FilesystemFileStreamResponse
-	15, // [15:19] is the sub-list for method output_type
-	11, // [11:15] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	28, // 6: proto.FilesystemFileInfoStreamRequest.session:type_name -> proto.Session
+	1,  // 7: proto.FilesystemFileInfoStreamResponse.file:type_name -> proto.FileInfo
+	0,  // 8: proto.FilesystemFileInfoStreamResponse.action:type_name -> proto.FileAction
+	15, // 9: proto.FilesystemFileStreamRequest.create:type_name -> proto.FilesystemFileStreamRequest.Create
+	14, // 10: proto.FilesystemFileStreamRequest.open:type_name -> proto.FilesystemFileStreamRequest.Open
+	17, // 11: proto.FilesystemFileStreamRequest.read:type_name -> proto.FilesystemFileStreamRequest.Read
+	16, // 12: proto.FilesystemFileStreamRequest.write:type_name -> proto.FilesystemFileStreamRequest.Write
+	19, // 13: proto.FilesystemFileStreamRequest.chmod:type_name -> proto.FilesystemFileStreamRequest.Chmod
+	20, // 14: proto.FilesystemFileStreamRequest.chown:type_name -> proto.FilesystemFileStreamRequest.Chown
+	21, // 15: proto.FilesystemFileStreamRequest.stat:type_name -> proto.FilesystemFileStreamRequest.Stat
+	18, // 16: proto.FilesystemFileStreamRequest.close:type_name -> proto.FilesystemFileStreamRequest.Close
+	22, // 17: proto.FilesystemFileStreamResponse.read:type_name -> proto.FilesystemFileStreamResponse.Read
+	23, // 18: proto.FilesystemFileStreamResponse.write:type_name -> proto.FilesystemFileStreamResponse.Write
+	24, // 19: proto.FilesystemFileStreamResponse.chmod:type_name -> proto.FilesystemFileStreamResponse.Chmod
+	25, // 20: proto.FilesystemFileStreamResponse.chown:type_name -> proto.FilesystemFileStreamResponse.Chown
+	26, // 21: proto.FilesystemFileStreamResponse.stat:type_name -> proto.FilesystemFileStreamResponse.Stat
+	28, // 22: proto.FilesystemMakeDirRequest.session:type_name -> proto.Session
+	28, // 23: proto.FilesystemCopyRequest.session:type_name -> proto.Session
+	28, // 24: proto.FilesystemMoveRequest.session:type_name -> proto.Session
+	28, // 25: proto.FilesystemRemoveRequest.session:type_name -> proto.Session
+	28, // 26: proto.FilesystemFileStreamRequest.Open.session:type_name -> proto.Session
+	28, // 27: proto.FilesystemFileStreamRequest.Create.session:type_name -> proto.Session
+	1,  // 28: proto.FilesystemFileStreamResponse.Stat.info:type_name -> proto.FileInfo
+	2,  // 29: proto.Filesystem.FilesystemDir:input_type -> proto.FilesystemDirRequest
+	4,  // 30: proto.Filesystem.FilesystemDirStream:input_type -> proto.FilesystemDirStreamRequest
+	6,  // 31: proto.Filesystem.FilesystemFileInfoStream:input_type -> proto.FilesystemFileInfoStreamRequest
+	8,  // 32: proto.Filesystem.FilesystemFileStream:input_type -> proto.FilesystemFileStreamRequest
+	10, // 33: proto.Filesystem.FilesystemMakeDir:input_type -> proto.FilesystemMakeDirRequest
+	11, // 34: proto.Filesystem.FilesystemCopy:input_type -> proto.FilesystemCopyRequest
+	12, // 35: proto.Filesystem.FilesystemMove:input_type -> proto.FilesystemMoveRequest
+	13, // 36: proto.Filesystem.FilesystemRemove:input_type -> proto.FilesystemRemoveRequest
+	3,  // 37: proto.Filesystem.FilesystemDir:output_type -> proto.FilesystemDirResponse
+	5,  // 38: proto.Filesystem.FilesystemDirStream:output_type -> proto.FilesystemDirStreamResponse
+	7,  // 39: proto.Filesystem.FilesystemFileInfoStream:output_type -> proto.FilesystemFileInfoStreamResponse
+	9,  // 40: proto.Filesystem.FilesystemFileStream:output_type -> proto.FilesystemFileStreamResponse
+	29, // 41: proto.Filesystem.FilesystemMakeDir:output_type -> google.protobuf.Empty
+	29, // 42: proto.Filesystem.FilesystemCopy:output_type -> google.protobuf.Empty
+	29, // 43: proto.Filesystem.FilesystemMove:output_type -> google.protobuf.Empty
+	29, // 44: proto.Filesystem.FilesystemRemove:output_type -> google.protobuf.Empty
+	37, // [37:45] is the sub-list for method output_type
+	29, // [29:37] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() { file_filesystem_proto_init() }
@@ -827,7 +2073,7 @@ func file_filesystem_proto_init() {
 			}
 		}
 		file_filesystem_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FilesystemFileRequest); i {
+			switch v := v.(*FilesystemFileInfoStreamRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -839,7 +2085,7 @@ func file_filesystem_proto_init() {
 			}
 		}
 		file_filesystem_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FilesystemFileResponse); i {
+			switch v := v.(*FilesystemFileInfoStreamResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -874,6 +2120,227 @@ func file_filesystem_proto_init() {
 				return nil
 			}
 		}
+		file_filesystem_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemMakeDirRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemCopyRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemMoveRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemRemoveRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Open); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Create); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Write); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Read); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Close); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Chmod); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Chown); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamRequest_Stat); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamResponse_Read); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamResponse_Write); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamResponse_Chmod); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamResponse_Chown); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_filesystem_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*FilesystemFileStreamResponse_Stat); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+	}
+	file_filesystem_proto_msgTypes[7].OneofWrappers = []interface{}{
+		(*FilesystemFileStreamRequest_Create_)(nil),
+		(*FilesystemFileStreamRequest_Open_)(nil),
+		(*FilesystemFileStreamRequest_Read_)(nil),
+		(*FilesystemFileStreamRequest_Write_)(nil),
+		(*FilesystemFileStreamRequest_Chmod_)(nil),
+		(*FilesystemFileStreamRequest_Chown_)(nil),
+		(*FilesystemFileStreamRequest_Stat_)(nil),
+		(*FilesystemFileStreamRequest_Close_)(nil),
+	}
+	file_filesystem_proto_msgTypes[8].OneofWrappers = []interface{}{
+		(*FilesystemFileStreamResponse_Read_)(nil),
+		(*FilesystemFileStreamResponse_Write_)(nil),
+		(*FilesystemFileStreamResponse_Chmod_)(nil),
+		(*FilesystemFileStreamResponse_Chown_)(nil),
+		(*FilesystemFileStreamResponse_Stat_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -881,7 +2348,7 @@ func file_filesystem_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_filesystem_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -912,10 +2379,18 @@ type FilesystemClient interface {
 	FilesystemDir(ctx context.Context, in *FilesystemDirRequest, opts ...grpc.CallOption) (*FilesystemDirResponse, error)
 	// stream any updates to the contents of a directory
 	FilesystemDirStream(ctx context.Context, in *FilesystemDirStreamRequest, opts ...grpc.CallOption) (Filesystem_FilesystemDirStreamClient, error)
-	// get information about a file
-	FilesystemFile(ctx context.Context, in *FilesystemFileRequest, opts ...grpc.CallOption) (*FilesystemFileResponse, error)
 	// stream any updates to a file
-	FilesystemFileStream(ctx context.Context, in *FilesystemFileStreamRequest, opts ...grpc.CallOption) (Filesystem_FilesystemFileStreamClient, error)
+	FilesystemFileInfoStream(ctx context.Context, in *FilesystemFileInfoStreamRequest, opts ...grpc.CallOption) (Filesystem_FilesystemFileInfoStreamClient, error)
+	// file stream
+	FilesystemFileStream(ctx context.Context, opts ...grpc.CallOption) (Filesystem_FilesystemFileStreamClient, error)
+	// create directory
+	FilesystemMakeDir(ctx context.Context, in *FilesystemMakeDirRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	//  copy
+	FilesystemCopy(ctx context.Context, in *FilesystemCopyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	//  move
+	FilesystemMove(ctx context.Context, in *FilesystemMoveRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	// remove
+	FilesystemRemove(ctx context.Context, in *FilesystemRemoveRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
 type filesystemClient struct {
@@ -967,21 +2442,12 @@ func (x *filesystemFilesystemDirStreamClient) Recv() (*FilesystemDirStreamRespon
 	return m, nil
 }
 
-func (c *filesystemClient) FilesystemFile(ctx context.Context, in *FilesystemFileRequest, opts ...grpc.CallOption) (*FilesystemFileResponse, error) {
-	out := new(FilesystemFileResponse)
-	err := c.cc.Invoke(ctx, "/proto.Filesystem/FilesystemFile", in, out, opts...)
+func (c *filesystemClient) FilesystemFileInfoStream(ctx context.Context, in *FilesystemFileInfoStreamRequest, opts ...grpc.CallOption) (Filesystem_FilesystemFileInfoStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Filesystem_serviceDesc.Streams[1], "/proto.Filesystem/FilesystemFileInfoStream", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
-}
-
-func (c *filesystemClient) FilesystemFileStream(ctx context.Context, in *FilesystemFileStreamRequest, opts ...grpc.CallOption) (Filesystem_FilesystemFileStreamClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_Filesystem_serviceDesc.Streams[1], "/proto.Filesystem/FilesystemFileStream", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &filesystemFilesystemFileStreamClient{stream}
+	x := &filesystemFilesystemFileInfoStreamClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -991,13 +2457,44 @@ func (c *filesystemClient) FilesystemFileStream(ctx context.Context, in *Filesys
 	return x, nil
 }
 
+type Filesystem_FilesystemFileInfoStreamClient interface {
+	Recv() (*FilesystemFileInfoStreamResponse, error)
+	grpc.ClientStream
+}
+
+type filesystemFilesystemFileInfoStreamClient struct {
+	grpc.ClientStream
+}
+
+func (x *filesystemFilesystemFileInfoStreamClient) Recv() (*FilesystemFileInfoStreamResponse, error) {
+	m := new(FilesystemFileInfoStreamResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *filesystemClient) FilesystemFileStream(ctx context.Context, opts ...grpc.CallOption) (Filesystem_FilesystemFileStreamClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Filesystem_serviceDesc.Streams[2], "/proto.Filesystem/FilesystemFileStream", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &filesystemFilesystemFileStreamClient{stream}
+	return x, nil
+}
+
 type Filesystem_FilesystemFileStreamClient interface {
+	Send(*FilesystemFileStreamRequest) error
 	Recv() (*FilesystemFileStreamResponse, error)
 	grpc.ClientStream
 }
 
 type filesystemFilesystemFileStreamClient struct {
 	grpc.ClientStream
+}
+
+func (x *filesystemFilesystemFileStreamClient) Send(m *FilesystemFileStreamRequest) error {
+	return x.ClientStream.SendMsg(m)
 }
 
 func (x *filesystemFilesystemFileStreamClient) Recv() (*FilesystemFileStreamResponse, error) {
@@ -1008,16 +2505,60 @@ func (x *filesystemFilesystemFileStreamClient) Recv() (*FilesystemFileStreamResp
 	return m, nil
 }
 
+func (c *filesystemClient) FilesystemMakeDir(ctx context.Context, in *FilesystemMakeDirRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/proto.Filesystem/FilesystemMakeDir", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *filesystemClient) FilesystemCopy(ctx context.Context, in *FilesystemCopyRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/proto.Filesystem/FilesystemCopy", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *filesystemClient) FilesystemMove(ctx context.Context, in *FilesystemMoveRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/proto.Filesystem/FilesystemMove", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *filesystemClient) FilesystemRemove(ctx context.Context, in *FilesystemRemoveRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
+	out := new(empty.Empty)
+	err := c.cc.Invoke(ctx, "/proto.Filesystem/FilesystemRemove", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FilesystemServer is the server API for Filesystem service.
 type FilesystemServer interface {
 	// list the contents of a directory
 	FilesystemDir(context.Context, *FilesystemDirRequest) (*FilesystemDirResponse, error)
 	// stream any updates to the contents of a directory
 	FilesystemDirStream(*FilesystemDirStreamRequest, Filesystem_FilesystemDirStreamServer) error
-	// get information about a file
-	FilesystemFile(context.Context, *FilesystemFileRequest) (*FilesystemFileResponse, error)
 	// stream any updates to a file
-	FilesystemFileStream(*FilesystemFileStreamRequest, Filesystem_FilesystemFileStreamServer) error
+	FilesystemFileInfoStream(*FilesystemFileInfoStreamRequest, Filesystem_FilesystemFileInfoStreamServer) error
+	// file stream
+	FilesystemFileStream(Filesystem_FilesystemFileStreamServer) error
+	// create directory
+	FilesystemMakeDir(context.Context, *FilesystemMakeDirRequest) (*empty.Empty, error)
+	//  copy
+	FilesystemCopy(context.Context, *FilesystemCopyRequest) (*empty.Empty, error)
+	//  move
+	FilesystemMove(context.Context, *FilesystemMoveRequest) (*empty.Empty, error)
+	// remove
+	FilesystemRemove(context.Context, *FilesystemRemoveRequest) (*empty.Empty, error)
 }
 
 // UnimplementedFilesystemServer can be embedded to have forward compatible implementations.
@@ -1030,11 +2571,23 @@ func (*UnimplementedFilesystemServer) FilesystemDir(context.Context, *Filesystem
 func (*UnimplementedFilesystemServer) FilesystemDirStream(*FilesystemDirStreamRequest, Filesystem_FilesystemDirStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method FilesystemDirStream not implemented")
 }
-func (*UnimplementedFilesystemServer) FilesystemFile(context.Context, *FilesystemFileRequest) (*FilesystemFileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FilesystemFile not implemented")
+func (*UnimplementedFilesystemServer) FilesystemFileInfoStream(*FilesystemFileInfoStreamRequest, Filesystem_FilesystemFileInfoStreamServer) error {
+	return status.Errorf(codes.Unimplemented, "method FilesystemFileInfoStream not implemented")
 }
-func (*UnimplementedFilesystemServer) FilesystemFileStream(*FilesystemFileStreamRequest, Filesystem_FilesystemFileStreamServer) error {
+func (*UnimplementedFilesystemServer) FilesystemFileStream(Filesystem_FilesystemFileStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method FilesystemFileStream not implemented")
+}
+func (*UnimplementedFilesystemServer) FilesystemMakeDir(context.Context, *FilesystemMakeDirRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FilesystemMakeDir not implemented")
+}
+func (*UnimplementedFilesystemServer) FilesystemCopy(context.Context, *FilesystemCopyRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FilesystemCopy not implemented")
+}
+func (*UnimplementedFilesystemServer) FilesystemMove(context.Context, *FilesystemMoveRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FilesystemMove not implemented")
+}
+func (*UnimplementedFilesystemServer) FilesystemRemove(context.Context, *FilesystemRemoveRequest) (*empty.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FilesystemRemove not implemented")
 }
 
 func RegisterFilesystemServer(s *grpc.Server, srv FilesystemServer) {
@@ -1080,34 +2633,34 @@ func (x *filesystemFilesystemDirStreamServer) Send(m *FilesystemDirStreamRespons
 	return x.ServerStream.SendMsg(m)
 }
 
-func _Filesystem_FilesystemFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FilesystemFileRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FilesystemServer).FilesystemFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Filesystem/FilesystemFile",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FilesystemServer).FilesystemFile(ctx, req.(*FilesystemFileRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Filesystem_FilesystemFileStream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(FilesystemFileStreamRequest)
+func _Filesystem_FilesystemFileInfoStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(FilesystemFileInfoStreamRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(FilesystemServer).FilesystemFileStream(m, &filesystemFilesystemFileStreamServer{stream})
+	return srv.(FilesystemServer).FilesystemFileInfoStream(m, &filesystemFilesystemFileInfoStreamServer{stream})
+}
+
+type Filesystem_FilesystemFileInfoStreamServer interface {
+	Send(*FilesystemFileInfoStreamResponse) error
+	grpc.ServerStream
+}
+
+type filesystemFilesystemFileInfoStreamServer struct {
+	grpc.ServerStream
+}
+
+func (x *filesystemFilesystemFileInfoStreamServer) Send(m *FilesystemFileInfoStreamResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _Filesystem_FilesystemFileStream_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FilesystemServer).FilesystemFileStream(&filesystemFilesystemFileStreamServer{stream})
 }
 
 type Filesystem_FilesystemFileStreamServer interface {
 	Send(*FilesystemFileStreamResponse) error
+	Recv() (*FilesystemFileStreamRequest, error)
 	grpc.ServerStream
 }
 
@@ -1119,6 +2672,86 @@ func (x *filesystemFilesystemFileStreamServer) Send(m *FilesystemFileStreamRespo
 	return x.ServerStream.SendMsg(m)
 }
 
+func (x *filesystemFilesystemFileStreamServer) Recv() (*FilesystemFileStreamRequest, error) {
+	m := new(FilesystemFileStreamRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _Filesystem_FilesystemMakeDir_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FilesystemMakeDirRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FilesystemServer).FilesystemMakeDir(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Filesystem/FilesystemMakeDir",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FilesystemServer).FilesystemMakeDir(ctx, req.(*FilesystemMakeDirRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Filesystem_FilesystemCopy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FilesystemCopyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FilesystemServer).FilesystemCopy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Filesystem/FilesystemCopy",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FilesystemServer).FilesystemCopy(ctx, req.(*FilesystemCopyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Filesystem_FilesystemMove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FilesystemMoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FilesystemServer).FilesystemMove(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Filesystem/FilesystemMove",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FilesystemServer).FilesystemMove(ctx, req.(*FilesystemMoveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Filesystem_FilesystemRemove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FilesystemRemoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FilesystemServer).FilesystemRemove(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.Filesystem/FilesystemRemove",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FilesystemServer).FilesystemRemove(ctx, req.(*FilesystemRemoveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Filesystem_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.Filesystem",
 	HandlerType: (*FilesystemServer)(nil),
@@ -1128,8 +2761,20 @@ var _Filesystem_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Filesystem_FilesystemDir_Handler,
 		},
 		{
-			MethodName: "FilesystemFile",
-			Handler:    _Filesystem_FilesystemFile_Handler,
+			MethodName: "FilesystemMakeDir",
+			Handler:    _Filesystem_FilesystemMakeDir_Handler,
+		},
+		{
+			MethodName: "FilesystemCopy",
+			Handler:    _Filesystem_FilesystemCopy_Handler,
+		},
+		{
+			MethodName: "FilesystemMove",
+			Handler:    _Filesystem_FilesystemMove_Handler,
+		},
+		{
+			MethodName: "FilesystemRemove",
+			Handler:    _Filesystem_FilesystemRemove_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -1139,9 +2784,15 @@ var _Filesystem_serviceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 		{
+			StreamName:    "FilesystemFileInfoStream",
+			Handler:       _Filesystem_FilesystemFileInfoStream_Handler,
+			ServerStreams: true,
+		},
+		{
 			StreamName:    "FilesystemFileStream",
 			Handler:       _Filesystem_FilesystemFileStream_Handler,
 			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "filesystem.proto",

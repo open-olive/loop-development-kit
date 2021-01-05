@@ -15,10 +15,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import {
-  FileSystemQueryDirectoryResponse,
-  FileSystemQueryFileResponse,
-} from './fileSystemService';
+import { FileSystemQueryDirectoryResponse } from './fileSystemService';
 
 jest.mock('../grpc/filesystem_grpc_pb');
 
@@ -91,70 +88,26 @@ describe('FileSystemClient', () => {
     });
   });
 
-  describe('#queryFile', () => {
-    let sentResponse: Messages.FilesystemFileResponse;
-    let queryResult: Promise<FileSystemQueryFileResponse>;
-    const fileName = 'a-file';
-    const file = `/a-directory/${fileName}`;
-
-    beforeEach(async () => {
-      sentResponse = new Messages.FilesystemFileResponse().setFile(
-        new Messages.FileInfo().setName(fileName),
-      );
-
-      mockGRPCClient.filesystemFile.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
-
-      queryResult = subject.queryFile({ file });
-    });
-
-    it('should return a transformed response', async () => {
-      const fileInfo = {
-        file: {
-          name: fileName,
-        },
-      };
-      await expect(queryResult).resolves.toMatchObject(fileInfo);
-    });
-
-    it('should call grpc client function', async () => {
-      expect(mockGRPCClient.filesystemFile).toHaveBeenCalledWith(
-        expect.any(Messages.FilesystemFileRequest),
-        expect.any(Function),
-      );
-    });
-
-    it('should have configured the request correctly', () => {
-      const sentRequest: Messages.FilesystemFileRequest = captureMockArgument(
-        mockGRPCClient.filesystemFile,
-      );
-
-      expect(sentRequest.getPath()).toBe(file);
-      expect(sentRequest.getSession()).toBeDefined();
-    });
-  });
-
-  describe('#streamFile', () => {
+  describe('#streamFileInfoInfo', () => {
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      mockGRPCClient.filesystemFileStream.mockImplementation(
+      mockGRPCClient.filesystemFileInfoStream.mockImplementation(
         createStreamingHandler(),
       );
 
-      subject.streamFile({ file }, identityCallback);
+      subject.streamFileInfo({ file }, identityCallback);
     });
 
     it('should call grpc client function', async () => {
-      expect(mockGRPCClient.filesystemFileStream).toHaveBeenCalledWith(
-        expect.any(Messages.FilesystemFileStreamRequest),
+      expect(mockGRPCClient.filesystemFileInfoStream).toHaveBeenCalledWith(
+        expect.any(Messages.FilesystemFileInfoStreamRequest),
       );
     });
 
     it('should have configured the request correctly', () => {
-      const sentRequest: Messages.FilesystemFileStreamRequest = captureMockArgument(
-        mockGRPCClient.filesystemFileStream,
+      const sentRequest: Messages.FilesystemFileInfoStreamRequest = captureMockArgument(
+        mockGRPCClient.filesystemFileInfoStream,
       );
 
       expect(sentRequest.getPath()).toBe(file);

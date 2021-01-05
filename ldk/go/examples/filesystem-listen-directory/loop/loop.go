@@ -93,21 +93,21 @@ func (c *Loop) emitExampleWhisper(fe ldk.FileEvent) error {
 	}
 
 	var t template
-	if fe.Info.IsDir {
+	if fe.Info.IsDir() {
 		t = template{
-			Name:    fe.Info.Name,
-			Mode:    os.FileMode(fe.Info.Mode).String(),
-			Updated: fe.Info.Updated.Format(time.Stamp),
-			IsDir:   fmt.Sprintf("%t", fe.Info.IsDir),
+			Name:    fe.Info.Name(),
+			Mode:    fe.Info.Mode().String(),
+			Updated: fe.Info.ModTime().Format(time.Stamp),
+			IsDir:   fmt.Sprintf("%t", fe.Info.IsDir()),
 			Action:  fe.Action.String(),
 		}
 	} else {
 		t = template{
-			Name:    fe.Info.Name,
-			Size:    humanize.Bytes(uint64(fe.Info.Size)),
-			Mode:    os.FileMode(fe.Info.Mode).String(),
-			Updated: fe.Info.Updated.Format(time.Stamp),
-			IsDir:   fmt.Sprintf("%t", fe.Info.IsDir),
+			Name:    fe.Info.Name(),
+			Size:    humanize.Bytes(uint64(fe.Info.Size())),
+			Mode:    os.FileMode(fe.Info.Mode()).String(),
+			Updated: fe.Info.ModTime().Format(time.Stamp),
+			IsDir:   fmt.Sprintf("%t", fe.Info.IsDir()),
 			Action:  fe.Action.String(),
 		}
 	}

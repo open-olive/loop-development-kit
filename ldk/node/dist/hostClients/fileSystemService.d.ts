@@ -49,7 +49,7 @@ export interface FileSystemStreamDirectoryResponse {
 export interface FileSystemQueryFileResponse {
     file: FileInfo | undefined;
 }
-export interface FileSystemStreamFileResponse {
+export interface FileSystemStreamFileInfoResponse {
     file: FileInfo;
     action: FileSystemStreamAction;
 }
@@ -71,19 +71,10 @@ export interface FileSystemService {
      */
     streamDirectory(params: FileSystemQueryDirectoryParams, listener: StreamListener<FileSystemStreamDirectoryResponse>): StoppableStream<FileSystemStreamDirectoryResponse>;
     /**
-     * Queries file data.
-     *
-     * @param params - The parameters for the query.
-     * @returns a Promise resolving with the File Information.
-     *
-     * TODO: What happens if the file does not exist?
-     */
-    queryFile(params: FileSystemQueryFileParams): Promise<FileSystemQueryFileResponse>;
-    /**
      * Streams changes to a specific file.
      *
      * @param params - The parameters for the stream.
      * @param listener - The listener function called when the file changes.
      */
-    streamFile(params: FileSystemQueryFileParams, listener: StreamListener<FileSystemStreamFileResponse>): StoppableStream<FileSystemStreamFileResponse>;
+    streamFileInfo(params: FileSystemQueryFileParams, listener: StreamListener<FileSystemStreamFileInfoResponse>): StoppableStream<FileSystemStreamFileInfoResponse>;
 }
