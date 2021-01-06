@@ -12,6 +12,7 @@ func ServeLoopPlugin(logger *Logger, loop Loop) {
 		Plugins: map[string]plugin.Plugin{
 			"loop": &LoopPlugin{
 				Impl: loop,
+				logger: logger,
 			},
 		},
 		GRPCServer: plugin.DefaultGRPCServer,

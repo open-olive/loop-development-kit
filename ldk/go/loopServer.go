@@ -16,6 +16,7 @@ type LoopServer struct {
 
 	broker *plugin.GRPCBroker
 	conn   *grpc.ClientConn
+	logger *Logger
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
@@ -34,45 +35,50 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 		return &emptypb.Empty{}, err
 	}
 
+	eli := &ExceptionLoggingInterceptor{
+		interceptedConn: m.conn,
+		logger: m.logger,
+	}
+
 	sidekickClient := &SidekickClient{
 		storage: &StorageClient{
-			client:  proto.NewStorageClient(m.conn),
+			client:  proto.NewStorageClient(eli),
 			session: session,
 		},
 		whisper: &WhisperClient{
-			client:  proto.NewWhisperClient(m.conn),
+			client:  proto.NewWhisperClient(eli),
 			session: session,
 		},
 		clipboard: &ClipboardClient{
-			client:  proto.NewClipboardClient(m.conn),
+			client:  proto.NewClipboardClient(eli),
 			session: session,
 		},
 		keyboard: &KeyboardClient{
-			client:  proto.NewKeyboardClient(m.conn),
+			client:  proto.NewKeyboardClient(eli),
 			session: session,
 		},
 		process: &ProcessClient{
-			client:  proto.NewProcessClient(m.conn),
+			client:  proto.NewProcessClient(eli),
 			session: session,
 		},
 		cursor: &CursorClient{
-			client:  proto.NewCursorClient(m.conn),
+			client:  proto.NewCursorClient(eli),
 			session: session,
 		},
 		filesystem: &FilesystemClient{
-			client:  proto.NewFilesystemClient(m.conn),
+			client:  proto.NewFilesystemClient(eli),
 			session: session,
 		},
 		ui: &UIClient{
-			client:  proto.NewUIClient(m.conn),
+			client:  proto.NewUIClient(eli),
 			session: session,
 		},
 		network: &NetworkClient{
-			client:  proto.NewNetworkClient(m.conn),
+			client:  proto.NewNetworkClient(eli),
 			session: session,
 		},
 		window: &WindowClient{
-			client:  proto.NewWindowClient(m.conn),
+			client:  proto.NewWindowClient(eli),
 			session: session,
 		},
 	}
