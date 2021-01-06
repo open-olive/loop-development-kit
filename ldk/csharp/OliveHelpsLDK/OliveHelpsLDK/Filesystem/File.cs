@@ -13,9 +13,17 @@ namespace OliveHelpsLDK.Filesystem
     {
         Pending,
         Initialized,
-        Closed
+        Closed,
+        Errored
     }
 
+    /// <summary>
+    /// Implementation of <see cref="IFile"/>.
+    /// </summary>
+    /// <remarks>
+    /// We only know if there's a failure when a request is attempted and fails.
+    /// https://github.com/grpc/grpc/issues/25101 has been opened to add this capability in a more intuitive fashion.
+    /// </remarks>
     internal class File : IFile
     {
         internal AsyncDuplexStreamingCall<FilesystemFileStreamRequest, FilesystemFileStreamResponse> Stream { get; }
@@ -27,13 +35,16 @@ namespace OliveHelpsLDK.Filesystem
 
         private FileStatus Status { get; set; }
 
+        private TaskCompletionSource<bool> CompletionSource { get; }
+
         internal File(AsyncDuplexStreamingCall<FilesystemFileStreamRequest, FilesystemFileStreamResponse> stream,
             ILogger logger, Session session)
         {
             Stream = stream ?? throw new ArgumentNullException(nameof(stream));
-            Logger = logger;
+            Logger = logger.WithFields(new Dictionary<string, object>() {{"service", "filesystem.file"}});
             Session = session;
             Status = FileStatus.Pending;
+            CompletionSource = new TaskCompletionSource<bool>();
         }
 
         internal Task Open(string path)
@@ -50,6 +61,7 @@ namespace OliveHelpsLDK.Filesystem
             };
             CheckStatus(true);
             Status = FileStatus.Initialized;
+            Logger.Debug("File Stream Opening");
             return WriteToStream(request);
         }
 
@@ -66,6 +78,7 @@ namespace OliveHelpsLDK.Filesystem
                 }
             };
             CheckStatus(true);
+            Logger.Debug("File Stream Creating");
             Status = FileStatus.Initialized;
             return WriteToStream(request);
         }
@@ -102,7 +115,11 @@ namespace OliveHelpsLDK.Filesystem
                 Close = new FilesystemFileStreamRequest.Types.Close() { },
             };
             CheckStatus();
-            return WriteToStream(message);
+            var writeTask = WriteToStream(message);
+            Status = FileStatus.Closed;
+            Logger.Debug("File Stream Closed");
+            CompletionSource.SetResult(true);
+            return writeTask;
         }
 
         public Task ChangePermissions(int permission)
@@ -146,6 +163,8 @@ namespace OliveHelpsLDK.Filesystem
             );
         }
 
+        public Task CompletionTask => CompletionSource.Task;
+
 
         protected Proto.Session CreateSession()
         {
@@ -172,6 +191,7 @@ namespace OliveHelpsLDK.Filesystem
             catch (Exception e)
             {
                 Logger.Error("Duplex Response - Error on Move Next", e);
+                SetErrorState(e);
                 throw e;
             }
 
@@ -179,7 +199,6 @@ namespace OliveHelpsLDK.Filesystem
             {
                 throw new Exception("Could Not Move Next");
             }
-
 
             try
             {
@@ -228,7 +247,25 @@ namespace OliveHelpsLDK.Filesystem
             catch (Exception e)
             {
                 Logger.Error("Duplex Request - Error Thrown", e);
+                SetErrorState(e);
                 throw e;
+            }
+        }
+
+        private void SetErrorState(Exception exception)
+        {
+            Logger.Debug("File Stream - Setting Error State");
+            Status = FileStatus.Errored;
+            try
+            {
+                CompletionSource.TrySetException(exception);
+            }
+            catch (Exception e)
+            {
+                Logger.Warn("Received Exception when setting Error State", new Dictionary<string, object>()
+                {
+                    ["error"] = e.ToString()
+                });
             }
         }
 

@@ -37,6 +37,11 @@ namespace OliveHelpsLDK.Filesystem
         Task ChangeOwnership(int userId, int groupId);
 
         Task<FileInfo> FileInfo();
+
+        /// <summary>
+        /// The CompletionTask completes when the stream is closed by the user. It set to faulted if the Stream encounters an error. 
+        /// </summary>
+        Task CompletionTask { get; }
     }
 
     public struct MakeDirectoryParameters
