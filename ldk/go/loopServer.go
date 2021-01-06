@@ -37,7 +37,7 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 
 	eli := &ExceptionLoggingInterceptor{
 		interceptedConn: m.conn,
-		logger: m.logger,
+		logger:          m.logger,
 	}
 
 	sidekickClient := &SidekickClient{

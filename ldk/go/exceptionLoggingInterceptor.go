@@ -2,12 +2,13 @@ package ldk
 
 import (
 	"context"
-	"google.golang.org/grpc"
 	"regexp"
+
+	"google.golang.org/grpc"
 )
 
 type ExceptionLoggingInterceptor struct {
-	logger *Logger
+	logger          *Logger
 	interceptedConn *grpc.ClientConn
 }
 
@@ -40,6 +41,7 @@ func extractContext(path string) (service string, method string) {
 }
 
 var pathRegex = regexp.MustCompile(`^/proto\.(?P<service>\w+)/(?P<method>\w+)$`)
+
 func findNamedMatches(str string) map[string]string {
 	match := pathRegex.FindStringSubmatch(str)
 

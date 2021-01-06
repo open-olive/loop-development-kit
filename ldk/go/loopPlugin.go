@@ -16,7 +16,7 @@ var LoopPluginMap = map[string]plugin.Plugin{
 // LoopPlugin is a structure used to define the parameters of the plugin communication
 type LoopPlugin struct {
 	plugin.NetRPCUnsupportedPlugin
-	Impl Loop
+	Impl   Loop
 	logger *Logger
 }
 

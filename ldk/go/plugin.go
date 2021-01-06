@@ -11,7 +11,7 @@ func ServeLoopPlugin(logger *Logger, loop Loop) {
 		HandshakeConfig: Handshake,
 		Plugins: map[string]plugin.Plugin{
 			"loop": &LoopPlugin{
-				Impl: loop,
+				Impl:   loop,
 				logger: logger,
 			},
 		},
