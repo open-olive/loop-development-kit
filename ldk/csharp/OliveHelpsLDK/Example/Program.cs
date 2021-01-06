@@ -94,7 +94,6 @@ namespace Example
                                         {
                                             Logger.Error("Handled Exception", task.Exception);
                                         }), TaskContinuationOptions.OnlyOnFaulted);
-                                    // fileInfoStream.Wait();
                                 }
                                 catch (Exception e)
                                 {
