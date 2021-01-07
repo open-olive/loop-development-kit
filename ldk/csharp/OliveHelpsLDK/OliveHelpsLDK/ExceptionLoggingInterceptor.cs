@@ -21,8 +21,9 @@ namespace OliveHelpsLDK
             AsyncUnaryCallContinuation<TRequest, TResponse> continuation)
         {
             var call = base.AsyncUnaryCall(request, context, continuation);
-            
-            var logger = new MethodExceptionLogger<TRequest, TResponse>(context, _logger);
+
+            var fields = FieldsFromContext(context);
+            var logger = _logger.WithFields(fields);
 
             return WrapCall(call, logger);
         }
@@ -33,33 +34,34 @@ namespace OliveHelpsLDK
             AsyncServerStreamingCallContinuation<TRequest, TResponse> continuation)
         {
             var call = base.AsyncServerStreamingCall(request, context, continuation);
-            
-            var logger = new MethodExceptionLogger<TRequest, TResponse>(context, _logger);
-            
+
+            var fields = FieldsFromContext(context);
+            var logger = _logger.WithFields(fields);
+
             return WrapCall(call, logger);
         }
 
         private static AsyncUnaryCall<TResponse> WrapCall<TResponse>(AsyncUnaryCall<TResponse> call, ILogger logger)
         {
-            return new AsyncUnaryCall<TResponse>(WrapContinueHandler(call.ResponseAsync, logger), call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
+            return new AsyncUnaryCall<TResponse>(WrapContinueHandler(call.ResponseAsync, logger),
+                call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
         }
-        
-        private static AsyncServerStreamingCall<TResponse> WrapCall<TResponse>(AsyncServerStreamingCall<TResponse> call, ILogger logger)
+
+        private static AsyncServerStreamingCall<TResponse> WrapCall<TResponse>(AsyncServerStreamingCall<TResponse> call,
+            ILogger logger)
         {
-            return new AsyncServerStreamingCall<TResponse>(WrapStreamHandler(call.ResponseStream, logger), call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
+            return new AsyncServerStreamingCall<TResponse>(WrapStreamHandler(call.ResponseStream, logger),
+                call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
         }
 
         private static Task<TResponse> WrapContinueHandler<TResponse>(Task<TResponse> task, ILogger logger)
         {
-            return task.ContinueWith((action) =>
+            return task.ContinueWith(action =>
             {
                 if (action.Exception == null) return action.Result;
-                action.Exception.Handle((exception) =>
+                action.Exception.Handle(exception =>
                 {
-                    if (exception is RpcException)
-                    {
-                        logger.Error(exception.Message);
-                    }
+                    if (exception is RpcException) logger.Error("Client exception", exception);
 
                     return exception is RpcException;
                 });
@@ -67,61 +69,22 @@ namespace OliveHelpsLDK
             });
         }
 
-        private static IAsyncStreamReader<TResponse> WrapStreamHandler<TResponse>(IAsyncStreamReader<TResponse> call, ILogger logger)
+        private static IAsyncStreamReader<TResponse> WrapStreamHandler<TResponse>(IAsyncStreamReader<TResponse> call,
+            ILogger logger)
         {
             return new AsyncStreamReaderWrapper<TResponse>(call, logger);
         }
 
-        private class MethodExceptionLogger<TRequest, TResponse> : ILogger where TRequest : class where TResponse : class
+        private static IDictionary<string, object> FieldsFromContext<TRequest, TResponse>(
+            ClientInterceptorContext<TRequest, TResponse> context) where TResponse : class where TRequest : class
         {
-            private readonly ClientInterceptorContext<TRequest, TResponse> _context;
-            private readonly ILogger _logger;
-            
-            public MethodExceptionLogger(ClientInterceptorContext<TRequest, TResponse> context, ILogger logger)
+            return new Dictionary<string, object>
             {
-                _logger = logger;
-                _context = context;
-            }
-
-            public void Error(string message, IDictionary<string, object> fields = null)
-            {
-                var details = new Dictionary<string, object>
-                {
-                    {"method", _context.Method.Name},
-                    {"service", _context.Method.ServiceName},
-                    {"error", message}
-                };
-                _logger.Error("Client exception", details);
-            }
-
-            public void Trace(string message, IDictionary<string, object> fields = null)
-            {
-                _logger.Trace(message, fields);
-            }
-
-            public void Debug(string message, IDictionary<string, object> fields = null)
-            {
-                _logger.Debug(message, fields);
-            }
-
-            public void Info(string message, IDictionary<string, object> fields = null)
-            {
-                _logger.Info(message, fields);
-            }
-
-            public void Warn(string message, IDictionary<string, object> fields = null)
-            {
-                _logger.Warn(message, fields);
-            }
-
-            public ILogger WithFields(IDictionary<string, object> fields)
-            {
-                return _logger.WithFields(fields);
-            }
-
-            public IDictionary<string, object> DefaultFields => _logger.DefaultFields;
+                {"method", context.Method.Name},
+                {"service", context.Method.ServiceName.Replace("proto.", "")}
+            };
         }
-        
+
         private class AsyncStreamReaderWrapper<TResponse> : IAsyncStreamReader<TResponse>
         {
             private readonly ILogger _logger;
