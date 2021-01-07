@@ -14,7 +14,6 @@ namespace OliveHelpsLDK
         internal ExceptionLoggingInterceptor(ILogger logger)
         {
             _logger = logger;
-            TaskScheduler.UnobservedTaskException += (sender, eventArgs) => { eventArgs.SetObserved(); };
         }
 
         public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(TRequest request,
