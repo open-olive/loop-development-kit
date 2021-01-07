@@ -26,9 +26,10 @@ namespace OliveHelpsLDK.Network
         {
             var message = ToProto(request);
 
+            var loggedParser = LoggedParser<Task<HTTPResponseMsg>, HTTPResponse>(task => FromProto(task.Result));
             return Client.HTTPRequestAsync(message, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(LoggedParser<Task<HTTPResponseMsg>, HTTPResponse>(task => FromProto(task.Result)),
-                    cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         private HTTPRequestMsg ToProto(HTTPRequest request)
@@ -39,14 +40,15 @@ namespace OliveHelpsLDK.Network
                 Body = ByteString.CopyFrom(request.Body),
                 Method = request.Method,
                 Url = request.URL
-            };        
-            
+            };
+
             AddHeadersToMessage(message, request.Headers);
-            
+
             return message;
         }
-        
-        private static void AddHeadersToMessage(HTTPRequestMsg message, IDictionary<string, IList<string>> requestHeaders)
+
+        private static void AddHeadersToMessage(HTTPRequestMsg message,
+            IDictionary<string, IList<string>> requestHeaders)
         {
             foreach (var kvp in requestHeaders)
             {

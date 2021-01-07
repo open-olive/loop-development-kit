@@ -24,11 +24,11 @@ namespace OliveHelpsLDK.Cursor
             {
                 Session = CreateSession()
             };
-            var continuationFunction =
-                LoggedParser<Task<CursorPositionResponse>, CursorPosition>(ToPosition);
+            var loggedParser = LoggedParser<Task<CursorPositionResponse>, CursorPosition>(ToPosition);
             return Client.CursorPositionAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
-                .ContinueWith(continuationFunction, cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public IStreamingCall<CursorPosition> Stream(CancellationToken cancellationToken = default)
@@ -38,8 +38,8 @@ namespace OliveHelpsLDK.Cursor
                 Session = CreateSession()
             };
             var call = Client.CursorPositionStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<CursorPositionStreamResponse, CursorPosition>(call,
-                LoggedParser<CursorPositionStreamResponse, CursorPosition>(ToPosition));
+            var loggedParser = LoggedParser<CursorPositionStreamResponse, CursorPosition>(ToPosition);
+            return new StreamingCall<CursorPositionStreamResponse, CursorPosition>(call, loggedParser);
         }
 
         private static CursorPosition ToPosition(Task<CursorPositionResponse> task)
@@ -54,16 +54,6 @@ namespace OliveHelpsLDK.Cursor
         }
 
         private static CursorPosition ToPosition(CursorPositionStreamResponse response)
-        {
-            return new CursorPosition
-            {
-                Screen = checked((int) response.Screen),
-                X = response.X,
-                Y = response.Y
-            };
-        }
-
-        private static CursorPosition ToPosition(CursorPositionResponse response)
         {
             return new CursorPosition
             {

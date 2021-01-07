@@ -11,7 +11,7 @@ namespace OliveHelpsLDK.Filesystem
         IStreamingCall<FileEvent> StreamDirectory(string directoryPath, CancellationToken cancellationToken = default);
         IStreamingCall<FileEvent> StreamFileInfo(string filePath, CancellationToken cancellationToken = default);
     }
-    
+
     public struct FileInfo
     {
         public string Name;

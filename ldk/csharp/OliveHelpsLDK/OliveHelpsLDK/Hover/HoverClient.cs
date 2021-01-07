@@ -28,8 +28,10 @@ namespace OliveHelpsLDK.Hover
                 YFromCenter = checked((uint) request.YFromCenter),
             };
             Func<Task<HoverReadResponse>, string> continuationFunction = task => task.Result.Text;
+            var loggedParser = LoggedParser(continuationFunction);
             return Client.HoverReadAsync(msg, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(LoggedParser(continuationFunction), cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public IStreamingCall<string> Stream(HoverRequest request, CancellationToken cancellationToken = default)
@@ -41,8 +43,8 @@ namespace OliveHelpsLDK.Hover
                 YFromCenter = checked((uint) request.YFromCenter),
             };
             var call = Client.HoverReadStream(msg, CreateOptions(cancellationToken));
-            return new StreamingCall<HoverReadStreamResponse, string>(call,
-                LoggedParser<HoverReadStreamResponse, string>(response => response.Text));
+            var loggedParser = LoggedParser<HoverReadStreamResponse, string>(response => response.Text);
+            return new StreamingCall<HoverReadStreamResponse, string>(call, loggedParser);
         }
     }
 }

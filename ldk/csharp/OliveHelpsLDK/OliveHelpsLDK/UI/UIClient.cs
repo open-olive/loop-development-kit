@@ -24,8 +24,8 @@ namespace OliveHelpsLDK.UI
                 Session = CreateSession()
             };
             var call = Client.GlobalSearchStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<GlobalSearchStreamResponse, string>(call,
-                LoggedParser<GlobalSearchStreamResponse, string>(response => response.Text));
+            var loggedParser = LoggedParser<GlobalSearchStreamResponse, string>(response => response.Text);
+            return new StreamingCall<GlobalSearchStreamResponse, string>(call, loggedParser);
         }
 
         public IStreamingCall<string> StreamSearchbar(CancellationToken cancellationToken = default)
@@ -35,8 +35,8 @@ namespace OliveHelpsLDK.UI
                 Session = CreateSession()
             };
             var call = Client.SearchbarStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<SearchbarStreamResponse, string>(call,
-                LoggedParser<SearchbarStreamResponse, string>(response => response.Text));
+            var loggedParser = LoggedParser<SearchbarStreamResponse, string>(response => response.Text);
+            return new StreamingCall<SearchbarStreamResponse, string>(call, loggedParser);
         }
     }
 }

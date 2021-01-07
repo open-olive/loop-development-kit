@@ -26,10 +26,11 @@ namespace OliveHelpsLDK.Window
             {
                 Session = CreateSession(),
             };
+            var loggedParser =
+                LoggedParser<Task<WindowActiveWindowResponse>, WindowInfo>(task => FromProto(task.Result.Window));
             return Client.WindowActiveWindowAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(
-                    LoggedParser<Task<WindowActiveWindowResponse>, WindowInfo>(task => FromProto(task.Result.Window)),
-                    cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public IStreamingCall<WindowInfo> StreamActive(CancellationToken cancellationToken = default)
@@ -39,8 +40,9 @@ namespace OliveHelpsLDK.Window
                 Session = CreateSession()
             };
             var call = Client.WindowActiveWindowStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<WindowActiveWindowStreamResponse, WindowInfo>(call,
-                LoggedParser<WindowActiveWindowStreamResponse, WindowInfo>(task => FromProto(task.Window)));
+            var loggedParser =
+                LoggedParser<WindowActiveWindowStreamResponse, WindowInfo>(task => FromProto(task.Window));
+            return new StreamingCall<WindowActiveWindowStreamResponse, WindowInfo>(call, loggedParser);
         }
 
         public Task<WindowInfo[]> QueryState(CancellationToken cancellationToken = default)
@@ -49,9 +51,10 @@ namespace OliveHelpsLDK.Window
             {
                 Session = CreateSession(),
             };
+            var loggedParser = LoggedParser<Task<WindowStateResponse>, WindowInfo[]>(task => FromProto(task.Result));
             return Client.WindowStateAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(LoggedParser<Task<WindowStateResponse>, WindowInfo[]>(task => FromProto(task.Result)),
-                    cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public IStreamingCall<WindowEvent> StreamState(CancellationToken cancellationToken = default)
@@ -61,8 +64,8 @@ namespace OliveHelpsLDK.Window
                 Session = CreateSession()
             };
             var call = Client.WindowStateStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<WindowStateStreamResponse, WindowEvent>(call,
-                LoggedParser<WindowStateStreamResponse, WindowEvent>(FromProto));
+            var loggedParser = LoggedParser<WindowStateStreamResponse, WindowEvent>(FromProto);
+            return new StreamingCall<WindowStateStreamResponse, WindowEvent>(call, loggedParser);
         }
 
         internal static WindowEvent FromProto(WindowStateStreamResponse response)

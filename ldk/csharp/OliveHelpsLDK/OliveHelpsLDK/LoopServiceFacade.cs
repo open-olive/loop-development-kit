@@ -29,7 +29,7 @@ namespace OliveHelpsLDK
             var channel = new Channel(address, ChannelCredentials.Insecure);
             await channel.ConnectAsync();
             var interceptedChannel = channel.Intercept(new ExceptionLoggingInterceptor(logger));
-            
+
             Console.Error.WriteLine("[DEBUG] GRPC Channel Connected");
             Whisper = new WhisperClient(interceptedChannel, session, logger);
             Clipboard = new ClipboardClient(interceptedChannel, session, logger);

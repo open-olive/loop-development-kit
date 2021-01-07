@@ -24,11 +24,10 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
-            var continuationFunction =
-                LoggedParser<Task<BrowserActiveURLResponse>, string>(task => task.Result.Url);
+            var loggedParser = LoggedParser<Task<BrowserActiveURLResponse>, string>(task => task.Result.Url);
             return Client.BrowserActiveURLAsync(request, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(continuationFunction,
-                    cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public IStreamingCall<string> StreamActiveURL(CancellationToken cancellationToken = default)
@@ -38,9 +37,8 @@ namespace OliveHelpsLDK.Browser
                 Session = CreateSession()
             };
             var call = Client.BrowserActiveURLStream(request, CreateOptions(cancellationToken));
-            var transformer =
-                LoggedParser<BrowserActiveURLStreamResponse, string>(resp => resp.Url);
-            return new StreamingCall<BrowserActiveURLStreamResponse, string>(call, transformer);
+            var loggedParser = LoggedParser<BrowserActiveURLStreamResponse, string>(resp => resp.Url);
+            return new StreamingCall<BrowserActiveURLStreamResponse, string>(call, loggedParser);
         }
 
         public Task<SelectedText> QuerySelectedText(CancellationToken cancellationToken = default)
@@ -49,10 +47,11 @@ namespace OliveHelpsLDK.Browser
             {
                 Session = CreateSession()
             };
-            var continuationFunction =
+            var loggedParser =
                 LoggedParser<Task<BrowserSelectedTextResponse>, SelectedText>(task => FromProto(task.Result));
             return Client.BrowserSelectedTextAsync(request, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(continuationFunction, cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public IStreamingCall<SelectedText> StreamSelectedText(CancellationToken cancellationToken = default)
@@ -62,10 +61,10 @@ namespace OliveHelpsLDK.Browser
                 Session = CreateSession()
             };
             var call = Client.BrowserSelectedTextStream(request, CreateOptions(cancellationToken));
-            var transformer =
+            var loggedParser =
                 LoggedParser<BrowserSelectedTextStreamResponse, SelectedText>(response => FromProto(response));
             return new StreamingCall<BrowserSelectedTextStreamResponse, SelectedText>(call,
-                transformer);
+                loggedParser);
         }
 
         internal static SelectedText FromProto(BrowserSelectedTextResponse response)

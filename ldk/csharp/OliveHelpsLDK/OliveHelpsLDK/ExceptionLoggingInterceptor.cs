@@ -14,6 +14,7 @@ namespace OliveHelpsLDK
         internal ExceptionLoggingInterceptor(ILogger logger)
         {
             _logger = logger;
+            TaskScheduler.UnobservedTaskException += (sender, eventArgs) => { eventArgs.SetObserved(); };
         }
 
         public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(TRequest request,
@@ -25,7 +26,7 @@ namespace OliveHelpsLDK
             var fields = FieldsFromContext(context);
             var logger = _logger.WithFields(fields);
 
-            return WrapCall(call, logger);
+            return WrapCall(call, logger, context.Options.CancellationToken);
         }
 
         public override AsyncServerStreamingCall<TResponse> AsyncServerStreamingCall<TRequest, TResponse>(
@@ -41,9 +42,10 @@ namespace OliveHelpsLDK
             return WrapCall(call, logger);
         }
 
-        private static AsyncUnaryCall<TResponse> WrapCall<TResponse>(AsyncUnaryCall<TResponse> call, ILogger logger)
+        private static AsyncUnaryCall<TResponse> WrapCall<TResponse>(AsyncUnaryCall<TResponse> call, ILogger logger,
+            CancellationToken token)
         {
-            return new AsyncUnaryCall<TResponse>(WrapContinueHandler(call.ResponseAsync, logger),
+            return new AsyncUnaryCall<TResponse>(WrapContinueHandler(call.ResponseAsync, logger, token),
                 call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
         }
 
@@ -54,19 +56,21 @@ namespace OliveHelpsLDK
                 call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
         }
 
-        private static Task<TResponse> WrapContinueHandler<TResponse>(Task<TResponse> task, ILogger logger)
+        private static Task<TResponse> WrapContinueHandler<TResponse>(Task<TResponse> task, ILogger logger,
+            CancellationToken token)
         {
             return task.ContinueWith(action =>
             {
                 if (action.Exception == null) return action.Result;
+                token.Register(() => throw action.Exception);
                 action.Exception.Handle(exception =>
                 {
-                    if (exception is RpcException) logger.Error("Client exception", exception);
-
-                    return exception is RpcException;
+                    logger.Error("Client exception", exception);
+                    return true;
                 });
+
                 return action.Result;
-            });
+            }, token, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Current);
         }
 
         private static IAsyncStreamReader<TResponse> WrapStreamHandler<TResponse>(IAsyncStreamReader<TResponse> call,
@@ -98,11 +102,11 @@ namespace OliveHelpsLDK
 
             public TResponse Current => _wrapped.Current;
 
-            public Task<bool> MoveNext(CancellationToken cancellationToken)
+            public Task<bool> MoveNext(CancellationToken token)
             {
-                var moved = _wrapped.MoveNext(cancellationToken);
+                var moved = _wrapped.MoveNext(token);
 
-                return WrapContinueHandler(moved, _logger);
+                return WrapContinueHandler(moved, _logger, token);
             }
         }
     }

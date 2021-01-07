@@ -12,7 +12,7 @@ namespace OliveHelpsLDK.Clipboard
             client, session, logger, "clipboard")
         {
         }
-        
+
         internal ClipboardClient(CallInvoker channel, Session session, ILogger logger) : this(
             new Proto.Clipboard.ClipboardClient(channel), session, logger)
         {
@@ -24,10 +24,11 @@ namespace OliveHelpsLDK.Clipboard
             {
                 Session = CreateSession(),
             };
+            var loggedParser = LoggedParser<Task<ClipboardReadResponse>, string>(task => task.Result.Text);
             return Client.ClipboardReadAsync(request, new CallOptions(cancellationToken: cancellationToken))
                 .ResponseAsync
-                .ContinueWith(LoggedParser<Task<ClipboardReadResponse>, string>(task => task.Result.Text),
-                    cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public Task Write(string contents, CancellationToken cancellationToken = default)
@@ -48,8 +49,8 @@ namespace OliveHelpsLDK.Clipboard
                 Session = CreateSession(),
             };
             var call = Client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
-            return new StreamingCall<ClipboardReadStreamResponse, string>(call,
-                LoggedParser<ClipboardReadStreamResponse, string>(response => response.Text));
+            var loggedParser = LoggedParser<ClipboardReadStreamResponse, string>(response => response.Text);
+            return new StreamingCall<ClipboardReadStreamResponse, string>(call, loggedParser);
         }
     }
 }

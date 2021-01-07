@@ -29,11 +29,13 @@ namespace OliveHelpsLDK.Filesystem
                 Session = CreateSession(),
                 Directory = directoryPath,
             };
-            var continuationFunction =
-                LoggedParser<Task<FilesystemDirResponse>, IList<FileInfo>>(task => ConvertFileList(task.Result.Files));
+            var loggedParser =
+                LoggedParser<Task<FilesystemDirResponse>, IList<FileInfo>>(response =>
+                    ConvertFileList(response.Result.Files));
             return Client.FilesystemDirAsync(request, CreateOptions(cancellationToken))
                 .ResponseAsync
-                .ContinueWith(continuationFunction, cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public IStreamingCall<FileEvent> StreamDirectory(string directoryPath,
@@ -45,8 +47,8 @@ namespace OliveHelpsLDK.Filesystem
                 Directory = directoryPath
             };
             var call = Client.FilesystemDirStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<FilesystemDirStreamResponse, FileEvent>(call,
-                LoggedParser<FilesystemDirStreamResponse, FileEvent>(ConvertFileEvent));
+            var loggedParser = LoggedParser<FilesystemDirStreamResponse, FileEvent>(ConvertFileEvent);
+            return new StreamingCall<FilesystemDirStreamResponse, FileEvent>(call, loggedParser);
         }
 
         public IStreamingCall<FileEvent> StreamFileInfo(string filePath, CancellationToken cancellationToken = default)
@@ -57,8 +59,8 @@ namespace OliveHelpsLDK.Filesystem
                 Path = filePath
             };
             var call = Client.FilesystemFileInfoStream(request, CreateOptions(cancellationToken));
-            return new StreamingCall<FilesystemFileInfoStreamResponse, FileEvent>(call,
-                LoggedParser<FilesystemFileInfoStreamResponse, FileEvent>(ConvertFileEvent));
+            var loggedParser = LoggedParser<FilesystemFileInfoStreamResponse, FileEvent>(ConvertFileEvent);
+            return new StreamingCall<FilesystemFileInfoStreamResponse, FileEvent>(call, loggedParser);
         }
 
         private static IList<FileInfo> ConvertFileList(IEnumerable<Proto.FileInfo> files)

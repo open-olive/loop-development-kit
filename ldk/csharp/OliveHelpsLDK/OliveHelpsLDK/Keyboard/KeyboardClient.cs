@@ -25,8 +25,8 @@ namespace OliveHelpsLDK.Keyboard
                 Hotkey = ToProto(hotkey),
             };
             var call = Client.KeyboardHotkeyStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardHotkeyStreamResponse, bool>(call,
-                LoggedParser<KeyboardHotkeyStreamResponse, bool>(response => response.Scanned));
+            var loggedParser = LoggedParser<KeyboardHotkeyStreamResponse, bool>(response => response.Scanned);
+            return new StreamingCall<KeyboardHotkeyStreamResponse, bool>(call, loggedParser);
         }
 
         public IStreamingCall<ScanCodeEvent> StreamScancode(CancellationToken cancellationToken = default)
@@ -36,8 +36,8 @@ namespace OliveHelpsLDK.Keyboard
                 Session = CreateSession()
             };
             var call = Client.KeyboardScancodeStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardScancodeStreamResponse, ScanCodeEvent>(call,
-                LoggedParser<KeyboardScancodeStreamResponse, ScanCodeEvent>(FromProto));
+            var loggedParser = LoggedParser<KeyboardScancodeStreamResponse, ScanCodeEvent>(FromProto);
+            return new StreamingCall<KeyboardScancodeStreamResponse, ScanCodeEvent>(call, loggedParser);
         }
 
         public IStreamingCall<string> StreamText(CancellationToken cancellationToken = default)
@@ -47,8 +47,8 @@ namespace OliveHelpsLDK.Keyboard
                 Session = CreateSession()
             };
             var call = Client.KeyboardTextStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardTextStreamResponse, string>(call,
-                LoggedParser<KeyboardTextStreamResponse, string>(resp => resp.Text));
+            var loggedParser = LoggedParser<KeyboardTextStreamResponse, string>(resp => resp.Text);
+            return new StreamingCall<KeyboardTextStreamResponse, string>(call, loggedParser);
         }
 
         public IStreamingCall<string> StreamChar(CancellationToken cancellationToken = default)
@@ -58,8 +58,8 @@ namespace OliveHelpsLDK.Keyboard
                 Session = CreateSession()
             };
             var call = Client.KeyboardCharacterStream(req, CreateOptions(cancellationToken));
-            return new StreamingCall<KeyboardCharacterStreamResponse, string>(call,
-                LoggedParser<KeyboardCharacterStreamResponse, string>(resp => resp.Text));
+            var loggedParser = LoggedParser<KeyboardCharacterStreamResponse, string>(resp => resp.Text);
+            return new StreamingCall<KeyboardCharacterStreamResponse, string>(call, loggedParser);
         }
 
         private static KeyboardHotkey ToProto(HotKey hotKey)

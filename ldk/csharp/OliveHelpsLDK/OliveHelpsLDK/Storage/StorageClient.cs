@@ -25,9 +25,10 @@ namespace OliveHelpsLDK.Storage
                 Key = key,
                 Session = CreateSession()
             };
+            var loggedParser = LoggedParser<Task<StorageExistsResponse>, bool>(task => task.Result.Exists);
             return Client.StorageExistsAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(LoggedParser<Task<StorageExistsResponse>, bool>(task => task.Result.Exists),
-                    cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public Task<string> Read(string key, CancellationToken cancellationToken = default)
@@ -37,9 +38,10 @@ namespace OliveHelpsLDK.Storage
                 Key = key,
                 Session = CreateSession()
             };
+            var loggedParser = LoggedParser<Task<StorageReadResponse>, string>(task => task.Result.Value);
             return Client.StorageReadAsync(req, CreateOptions(cancellationToken)).ResponseAsync
-                .ContinueWith(LoggedParser<Task<StorageReadResponse>, string>(task => task.Result.Value),
-                    cancellationToken);
+                .ContinueWith(loggedParser, cancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Current);
         }
 
         public Task Delete(string key, CancellationToken cancellationToken = default)
