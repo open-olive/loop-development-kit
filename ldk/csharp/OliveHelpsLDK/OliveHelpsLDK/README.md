@@ -48,11 +48,11 @@ namespace Console {
     }
 
     class Loop : ILoop {
-        public ILogger Logger { get; set; }
+        public ILogger Logger { get; set; };
         private IStreamingCall<string> Stream { get; set; }; 
 
         public Task Start(ILoopServices services) {
-            Stream = services.Clipboard().Stream();
+            Stream = services.Clipboard.Stream();
             Task.Run(async () => {
                 while (await Stream.MoveNext()) {
                     Logger.Info($"Received Clipboard Event {Stream.Current()}");
