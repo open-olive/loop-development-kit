@@ -14,8 +14,8 @@ namespace OliveHelpsLDK.Hover
         {
         }
 
-        internal HoverClient(CallInvoker channelBase, Session session, ILogger logger) : this(
-            new Proto.Hover.HoverClient(channelBase), session, logger)
+        internal HoverClient(CallInvoker callInvoker, Session session, ILogger logger) : this(
+            new Proto.Hover.HoverClient(callInvoker), session, logger)
         {
         }
 

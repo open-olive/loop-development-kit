@@ -15,8 +15,8 @@ namespace OliveHelpsLDK.Window
         {
         }
 
-        internal WindowClient(CallInvoker channelBase, Session session, ILogger logger) : this(
-            new Proto.Window.WindowClient(channelBase), session, logger)
+        internal WindowClient(CallInvoker callInvoker, Session session, ILogger logger) : this(
+            new Proto.Window.WindowClient(callInvoker), session, logger)
         {
         }
 

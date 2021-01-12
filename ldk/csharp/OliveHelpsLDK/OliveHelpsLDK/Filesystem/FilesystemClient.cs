@@ -16,8 +16,8 @@ namespace OliveHelpsLDK.Filesystem
         {
         }
 
-        internal FilesystemClient(CallInvoker channel, Session session, ILogger logger) : this(
-            new Proto.Filesystem.FilesystemClient(channel), session, logger)
+        internal FilesystemClient(CallInvoker callInvoker, Session session, ILogger logger) : this(
+            new Proto.Filesystem.FilesystemClient(callInvoker), session, logger)
         {
         }
 

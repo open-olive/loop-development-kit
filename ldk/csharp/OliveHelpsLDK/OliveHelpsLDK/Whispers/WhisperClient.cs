@@ -20,9 +20,9 @@ namespace OliveHelpsLDK.Whispers
             Builder = formBuilder ?? new WhisperFormBuilder();
         }
 
-        public WhisperClient(CallInvoker channel, Session session, ILogger logger,
+        public WhisperClient(CallInvoker callInvoker, Session session, ILogger logger,
             IWhisperFormBuilder formBuilder = null,
-            IWhisperFormParser parser = null) : this(new Whisper.WhisperClient(channel), session, logger)
+            IWhisperFormParser parser = null) : this(new Whisper.WhisperClient(callInvoker), session, logger)
         {
             Parser = parser ?? new WhisperFormParser();
             Builder = formBuilder ?? new WhisperFormBuilder();

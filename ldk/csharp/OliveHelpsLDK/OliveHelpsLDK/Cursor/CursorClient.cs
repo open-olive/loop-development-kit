@@ -13,8 +13,8 @@ namespace OliveHelpsLDK.Cursor
         {
         }
 
-        internal CursorClient(CallInvoker channelBase, Session session, ILogger logger) : this(
-            new Proto.Cursor.CursorClient(channelBase), session, logger)
+        internal CursorClient(CallInvoker callInvoker, Session session, ILogger logger) : this(
+            new Proto.Cursor.CursorClient(callInvoker), session, logger)
         {
         }
 

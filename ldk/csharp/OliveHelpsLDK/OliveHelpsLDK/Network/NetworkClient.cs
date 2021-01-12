@@ -16,8 +16,8 @@ namespace OliveHelpsLDK.Network
         {
         }
 
-        internal NetworkClient(CallInvoker channelBase, Session session, ILogger logger) : this(
-            new Proto.Network.NetworkClient(channelBase), session, logger)
+        internal NetworkClient(CallInvoker callInvoker, Session session, ILogger logger) : this(
+            new Proto.Network.NetworkClient(callInvoker), session, logger)
         {
         }
 

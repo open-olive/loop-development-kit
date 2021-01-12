@@ -13,8 +13,8 @@ namespace OliveHelpsLDK.Storage
         {
         }
 
-        internal StorageClient(CallInvoker channelBase, Session session, ILogger logger) : this(
-            new Proto.Storage.StorageClient(channelBase), session, logger)
+        internal StorageClient(CallInvoker callInvoker, Session session, ILogger logger) : this(
+            new Proto.Storage.StorageClient(callInvoker), session, logger)
         {
         }
 
