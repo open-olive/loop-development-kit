@@ -36,10 +36,12 @@ export interface ScanCodeEvent {
 
 /**
  * The KeyboardService allows you to observe key presses and text entry on the keyboard.
+ * For more information on Loop's keyboard sensor visit its {@link https://open-olive.github.io/olive-helps/#keyboard sensor doc}.
  */
 export interface KeyboardService {
   /**
    * Streams chunks of text, emitted when the user stops entering text for a moment.
+   * For more information on this sensor function visit its {@link https://open-olive.github.io/olive-helps/#keyboard-text sensor doc}.
    *
    * @param listener - Listener function called whenever a chunk of text is emitted.
    */
@@ -47,6 +49,7 @@ export interface KeyboardService {
 
   /**
    * Streams individual key presses as they happen.
+   * For more information on this sensor function visit its {@link https://open-olive.github.io/olive-helps/#keyboard-char sensor doc}.
    *
    * @param listener - Listener function called whenever an alphanumeric key is pressed.
    */
@@ -54,6 +57,7 @@ export interface KeyboardService {
 
   /**
    * Streams Keyboard Scan Codes as they're entered.
+   * For more information on this sensor function visit its {@link https://open-olive.github.io/olive-helps/#keyboard-scan-codes sensor doc}.
    *
    * @param listener - Listener function called whenever a key is pressed or released.
    */
@@ -65,6 +69,9 @@ export interface KeyboardService {
    * Streams when the provided hot key combinations are pressed or released.
    *
    * The listener function only knows that one of the hot keys provided was pressed or released. If you want to listen for different hot keys you'll need to create a different stream for each.
+   *
+   * The following is an example of something that would go in the sensor doc as a limitation VVV
+   * For more information on this sensor function visit its {@link https://open-olive.github.io/olive-helps/#keyboard-hot-keys sensor doc}.
    *
    * @param hotKeys - The list of hot keys to listen for.
    * @param listener - Listener function called whenever any of the provided hot key combinations is pressed or released.
