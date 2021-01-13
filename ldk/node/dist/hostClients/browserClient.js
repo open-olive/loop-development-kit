@@ -13,13 +13,11 @@ const transformingStream_1 = require("./transformingStream");
  *
  * @param message - The message to transform.
  */
-const transformSelectedTextResponse = (message) => {
-    return {
-        url: message.getUrl(),
-        text: message.getText(),
-        tabTitle: message.getTabtitle(),
-    };
-};
+const transformSelectedTextResponse = (message) => ({
+    url: message.getUrl(),
+    text: message.getText(),
+    tabTitle: message.getTabtitle(),
+});
 /**
  * @internal
  */

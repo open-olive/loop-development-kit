@@ -55,9 +55,7 @@ class WindowClient extends baseClient_1.default {
         return window_grpc_pb_1.WindowClient;
     }
     queryActiveWindow() {
-        return this.buildQuery((message, callback) => this.client.windowActiveWindow(message, callback), () => new window_pb_1.default.WindowActiveWindowRequest(), (response) => {
-            return response.toObject().window;
-        });
+        return this.buildQuery((message, callback) => this.client.windowActiveWindow(message, callback), () => new window_pb_1.default.WindowActiveWindowRequest(), (response) => response.toObject().window);
     }
     queryWindows() {
         return this.buildQuery((message, callback) => this.client.windowState(message, callback), () => new window_pb_1.default.WindowStateRequest(), (response) => response.toObject().windowList);

@@ -12,13 +12,11 @@ import { StoppableStream, StreamListener } from './stoppables';
 const cursorTransformer: StreamTransformer<
   messages.CursorPositionStreamResponse | messages.CursorPositionResponse,
   CursorResponse
-> = (message) => {
-  return {
-    screen: message.getScreen(),
-    x: message.getX(),
-    y: message.getY(),
-  };
-};
+> = (message) => ({
+  screen: message.getScreen(),
+  x: message.getX(),
+  y: message.getY(),
+});
 
 /**
  * @internal
