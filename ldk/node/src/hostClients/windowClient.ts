@@ -48,9 +48,7 @@ export class WindowClient
     >(
       (message, callback) => this.client.windowActiveWindow(message, callback),
       () => new Messages.WindowActiveWindowRequest(),
-      (response) => {
-        return response.toObject().window;
-      },
+      (response) => response.toObject().window,
     );
   }
 

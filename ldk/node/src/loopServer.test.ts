@@ -30,22 +30,23 @@ describe('LoopServer', () => {
       stop: jest.fn(),
     };
     server = new LoopServer(grpcServer, broker, impl, logger);
-    mockedBroker.mockImplementation(() => {
-      return {
-        getConnInfo: (): Promise<ConnInfo.AsObject> => {
-          return Promise.resolve({
-            serviceId: 1,
-            network: 'a',
-            address: 'b',
-          });
-        },
-      } as any;
-    });
-    mockedClient.mockImplementation(() => {
-      return {
-        connect: () => Promise.resolve(),
-      } as any;
-    });
+    mockedBroker.mockImplementation(
+      () =>
+        ({
+          getConnInfo: (): Promise<ConnInfo.AsObject> =>
+            Promise.resolve({
+              serviceId: 1,
+              network: 'a',
+              address: 'b',
+            }),
+        } as any),
+    );
+    mockedClient.mockImplementation(
+      () =>
+        ({
+          connect: () => Promise.resolve(),
+        } as any),
+    );
   });
   describe('constructor', () => {
     it('should call addService on the server', () => {

@@ -17,9 +17,7 @@ export class UIClient extends BaseClient<UIGRPCClient> implements UIService {
           this.createSessionMessage(),
         ),
       ),
-      (message) => {
-        return message.getText();
-      },
+      (message) => message.getText(),
       listener,
     );
   }
@@ -33,9 +31,7 @@ export class UIClient extends BaseClient<UIGRPCClient> implements UIService {
           this.createSessionMessage(),
         ),
       ),
-      (message) => {
-        return message.getText();
-      },
+      (message) => message.getText(),
       listener,
     );
   }

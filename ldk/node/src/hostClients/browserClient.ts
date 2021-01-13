@@ -14,13 +14,11 @@ const transformSelectedTextResponse: StreamTransformer<
   | Messages.BrowserSelectedTextResponse
   | Messages.BrowserSelectedTextStreamResponse,
   BrowserSelectedTextResponse
-> = (message) => {
-  return {
-    url: message.getUrl(),
-    text: message.getText(),
-    tabTitle: message.getTabtitle(),
-  };
-};
+> = (message) => ({
+  url: message.getUrl(),
+  text: message.getText(),
+  tabTitle: message.getTabtitle(),
+});
 
 /**
  * @internal

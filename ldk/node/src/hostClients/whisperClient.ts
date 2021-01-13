@@ -19,7 +19,10 @@ import {
   StreamListener,
 } from './stoppables';
 import { TransformingStream } from './transformingStream';
-import { transformDisambiguationResponse, transformResponse } from './whisperMessageParser';
+import {
+  transformDisambiguationResponse,
+  transformResponse,
+} from './whisperMessageParser';
 import {
   buildWhisperConfirmMessage,
   buildWhisperListRequest,
@@ -81,14 +84,15 @@ class WhisperClient
     whisper: WhisperDisambiguationConfig,
     listener: StreamListener<WhisperDisambiguationEvent>,
   ): StoppableStream<WhisperDisambiguationEvent> {
-    const message = generateWhisperDisambiguation(whisper)
-      .setSession(this.createSessionMessage());
+    const message = generateWhisperDisambiguation(whisper).setSession(
+      this.createSessionMessage(),
+    );
     return new TransformingStream<
       messages.WhisperDisambiguationStreamResponse,
       WhisperDisambiguationEvent
     >(
       this.client.whisperDisambiguation(message),
-      (response) => transformDisambiguationResponse(response), 
+      (response) => transformDisambiguationResponse(response),
       listener,
     );
   }
@@ -97,8 +101,9 @@ class WhisperClient
     whisper: WhisperFormConfig,
     listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>,
   ): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent> {
-    const message = generateWhisperForm(whisper)
-      .setSession(this.createSessionMessage());
+    const message = generateWhisperForm(whisper).setSession(
+      this.createSessionMessage(),
+    );
     return new TransformingStream<
       messages.WhisperFormStreamResponse,
       WhisperFormSubmitEvent | WhisperFormUpdateEvent

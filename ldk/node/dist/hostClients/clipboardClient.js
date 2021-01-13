@@ -13,9 +13,7 @@ const transformingStream_1 = require("./transformingStream");
  *
  * @param message - The message to transform.
  */
-const clipboardTransformer = (message) => {
-    return message.getText();
-};
+const clipboardTransformer = (message) => message.getText();
 /**
  * @internal
  */
