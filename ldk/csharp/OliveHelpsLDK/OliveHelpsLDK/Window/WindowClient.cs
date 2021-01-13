@@ -105,6 +105,9 @@ namespace OliveHelpsLDK.Window
                 WindowAction.Unfocused => WindowEventAction.Unfocused,
                 WindowAction.Opened => WindowEventAction.Opened,
                 WindowAction.Closed => WindowEventAction.Closed,
+                WindowAction.TitleChanged => WindowEventAction.TitleChanged,
+                WindowAction.Moved => WindowEventAction.Moved,
+                WindowAction.Resized => WindowEventAction.Resized,
                 _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
             };
         }

@@ -37,6 +37,15 @@ const (
 
 	// WindowActionClosed is the state for a window being closed
 	WindowActionClosed = 4
+
+	// WindowActionMoved is the state for a window being moved
+	WindowActionMoved = 5
+
+	// WindowActionResized is the state for a window being resized
+	WindowActionResized = 6
+
+	// WindowActionTitleChanged is the state for a window title being changed
+	WindowActionTitleChanged = 7
 )
 
 func convertWindowInfoToProto(resp WindowInfo) *proto.WindowInfo {
@@ -63,6 +72,12 @@ func protoWindowActionToAction(a proto.WindowAction) WindowAction {
 		return WindowActionOpened
 	case proto.WindowAction_WINDOW_ACTION_CLOSED:
 		return WindowActionClosed
+	case proto.WindowAction_WINDOW_ACTION_MOVED:
+		return WindowActionMoved
+	case proto.WindowAction_WINDOW_ACTION_RESIZED:
+		return WindowActionResized
+	case proto.WindowAction_WINDOW_ACTION_TITLE_CHANGED:
+		return WindowActionTitleChanged
 	default:
 		return WindowActionUnknown
 	}
@@ -78,6 +93,12 @@ func convertWindowActionToProtoAction(wa WindowAction) proto.WindowAction {
 		return proto.WindowAction_WINDOW_ACTION_OPENED
 	case WindowActionClosed:
 		return proto.WindowAction_WINDOW_ACTION_CLOSED
+	case WindowActionMoved:
+		return proto.WindowAction_WINDOW_ACTION_MOVED
+	case WindowActionResized:
+		return proto.WindowAction_WINDOW_ACTION_RESIZED
+	case WindowActionTitleChanged:
+		return proto.WindowAction_WINDOW_ACTION_TITLE_CHANGED
 	case WindowActionUnknown:
 		return proto.WindowAction_WINDOW_ACTION_UNKNOWN
 	default:

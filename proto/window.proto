@@ -34,6 +34,9 @@ enum WindowAction {
   WINDOW_ACTION_UNFOCUSED = 2;
   WINDOW_ACTION_OPENED = 3;
   WINDOW_ACTION_CLOSED = 4;
+  WINDOW_ACTION_MOVED = 5;
+  WINDOW_ACTION_RESIZED = 6;
+  WINDOW_ACTION_TITLE_CHANGED = 7;
 }
 // Note: New windows that open and take focus will be considered two separate actions.
 // One action for opening (WINDOW_ACTION_OPENED) and one action for focusing (WINDOW_ACTION_FOCUSED).

@@ -16,6 +16,9 @@ export enum WindowStreamAction {
   Unfocused = 'unfocused',
   Opened = 'opened',
   Closed = 'closed',
+  TitleChanged = 'titleChanged',
+  Moved = 'moved',
+  Resized = 'resized',
 }
 
 export interface WindowInfoStreamResponse {

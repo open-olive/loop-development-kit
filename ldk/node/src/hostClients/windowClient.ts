@@ -2,9 +2,9 @@ import Messages, { WindowAction } from '../grpc/window_pb';
 import { WindowClient as WindowGRPCClient } from '../grpc/window_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
-  WindowService,
   WindowInfoResponse,
   WindowInfoStreamResponse,
+  WindowService,
   WindowStreamAction,
 } from './windowService';
 import { StoppableStream, StreamListener } from './stoppables';
@@ -24,6 +24,12 @@ function parseWindowAction(action: Messages.WindowAction): WindowStreamAction {
       return WindowStreamAction.Opened;
     case WindowAction.WINDOW_ACTION_CLOSED:
       return WindowStreamAction.Closed;
+    case WindowAction.WINDOW_ACTION_TITLE_CHANGED:
+      return WindowStreamAction.TitleChanged;
+    case WindowAction.WINDOW_ACTION_MOVED:
+      return WindowStreamAction.Moved;
+    case WindowAction.WINDOW_ACTION_RESIZED:
+      return WindowStreamAction.Resized;
     case WindowAction.WINDOW_ACTION_UNKNOWN:
     default:
       return WindowStreamAction.Unknown;

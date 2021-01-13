@@ -31,7 +31,10 @@ namespace OliveHelpsLDK.Window
         Focused,
         Unfocused,
         Opened,
-        Closed
+        Closed,
+        TitleChanged,
+        Moved,
+        Resized
     }
 
     public struct WindowEvent
