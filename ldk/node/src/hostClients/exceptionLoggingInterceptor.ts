@@ -28,32 +28,33 @@ function extractContext(options: InterceptorOptions) {
  *
  * @param logger - the logger to use for logging exceptions
  */
-export default (logger: Logger): Interceptor => {
-  return (options: InterceptorOptions, nextCall: NextCall) => {
-    const listener = new ListenerBuilder()
-      .withOnReceiveStatus((status, next) => {
-        if (status.code !== grpc.status.OK) {
-          const { service, method } = extractContext(options);
-          logger.error(
-            'Client exception',
-            'error',
-            status.details,
-            'service',
-            service,
-            'method',
-            method,
-          );
-        }
-        next(status);
-      })
-      .build();
+export default (logger: Logger): Interceptor => (
+  options: InterceptorOptions,
+  nextCall: NextCall,
+) => {
+  const listener = new ListenerBuilder()
+    .withOnReceiveStatus((status, next) => {
+      if (status.code !== grpc.status.OK) {
+        const { service, method } = extractContext(options);
+        logger.error(
+          'Client exception',
+          'error',
+          status.details,
+          'service',
+          service,
+          'method',
+          method,
+        );
+      }
+      next(status);
+    })
+    .build();
 
-    const requester = new RequesterBuilder()
-      .withStart((metadata, _listener, next) => {
-        next(metadata, listener);
-      })
-      .build();
+  const requester = new RequesterBuilder()
+    .withStart((metadata, _listener, next) => {
+      next(metadata, listener);
+    })
+    .build();
 
-    return new InterceptingCall(nextCall(options), requester);
-  };
+  return new InterceptingCall(nextCall(options), requester);
 };

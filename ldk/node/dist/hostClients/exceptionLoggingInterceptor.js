@@ -40,22 +40,20 @@ function extractContext(options) {
  *
  * @param logger - the logger to use for logging exceptions
  */
-exports.default = (logger) => {
-    return (options, nextCall) => {
-        const listener = new grpc_js_1.ListenerBuilder()
-            .withOnReceiveStatus((status, next) => {
-            if (status.code !== grpc.status.OK) {
-                const { service, method } = extractContext(options);
-                logger.error('Client exception', 'error', status.details, 'service', service, 'method', method);
-            }
-            next(status);
-        })
-            .build();
-        const requester = new grpc_js_1.RequesterBuilder()
-            .withStart((metadata, _listener, next) => {
-            next(metadata, listener);
-        })
-            .build();
-        return new grpc_js_1.InterceptingCall(nextCall(options), requester);
-    };
+exports.default = (logger) => (options, nextCall) => {
+    const listener = new grpc_js_1.ListenerBuilder()
+        .withOnReceiveStatus((status, next) => {
+        if (status.code !== grpc.status.OK) {
+            const { service, method } = extractContext(options);
+            logger.error('Client exception', 'error', status.details, 'service', service, 'method', method);
+        }
+        next(status);
+    })
+        .build();
+    const requester = new grpc_js_1.RequesterBuilder()
+        .withStart((metadata, _listener, next) => {
+        next(metadata, listener);
+    })
+        .build();
+    return new grpc_js_1.InterceptingCall(nextCall(options), requester);
 };
