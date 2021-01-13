@@ -14,7 +14,7 @@ interface INetworkService extends grpc.ServiceDefinition<grpc.UntypedServiceImpl
 }
 
 interface INetworkService_IHTTPRequest extends grpc.MethodDefinition<network_pb.HTTPRequestMsg, network_pb.HTTPResponseMsg> {
-    path: string; // "/proto.Network/HTTPRequest"
+    path: "/proto.Network/HTTPRequest";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<network_pb.HTTPRequestMsg>;
