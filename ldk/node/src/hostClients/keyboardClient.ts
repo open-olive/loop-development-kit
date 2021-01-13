@@ -30,7 +30,7 @@ const generateModifierFlag = (modifiers: Partial<KeyboardModifiers>): number =>
   (modifiers?.shiftL ? 1 << 9 : 0) +
   (modifiers?.shiftR ? 1 << 10 : 0) +
   (modifiers?.shift ? 1 << 10 : 0);
-  /* eslint-enable no-bitwise */
+/* eslint-enable no-bitwise */
 
 /**
  * @internal

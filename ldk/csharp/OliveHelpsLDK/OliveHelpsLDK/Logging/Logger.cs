@@ -56,6 +56,11 @@ namespace OliveHelpsLDK.Logging
             Log(LogLevel.Error, message, fields);
         }
 
+        public void Error(string message, Exception exception)
+        {
+            Log(LogLevel.Error, message, new Dictionary<string, object>() {{"error", exception.ToString()}});
+        }
+
         public ILogger WithFields(IDictionary<string, object> fields)
         {
             return new Logger(Name, CombineDictionaries(new[] {DefaultFields, fields}));

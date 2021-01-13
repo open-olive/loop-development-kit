@@ -7,7 +7,8 @@ namespace OliveHelpsLDK
 {
     public class StdioServer : GRPCStdio.GRPCStdioBase
     {
-        public override async Task StreamStdio(Empty request, IServerStreamWriter<StdioData> responseStream, ServerCallContext context)
+        public override async Task StreamStdio(Empty request, IServerStreamWriter<StdioData> responseStream,
+            ServerCallContext context)
         {
             while (true)
             {

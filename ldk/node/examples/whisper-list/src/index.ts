@@ -148,7 +148,7 @@ class ExampleLoop implements Loop {
         },
       });
     } catch (e) {
-      logger.error('Error emitting list whipser', 'error', e.toString());
+      logger.error('Error emitting list whisper', 'error', e.toString());
     }
   }
 

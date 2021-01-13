@@ -20,9 +20,9 @@ namespace OliveHelpsLDK.Whispers
             Builder = formBuilder ?? new WhisperFormBuilder();
         }
 
-        public WhisperClient(ChannelBase channel, Session session, ILogger logger,
+        public WhisperClient(CallInvoker callInvoker, Session session, ILogger logger,
             IWhisperFormBuilder formBuilder = null,
-            IWhisperFormParser parser = null) : this(new Whisper.WhisperClient(channel), session, logger)
+            IWhisperFormParser parser = null) : this(new Whisper.WhisperClient(callInvoker), session, logger)
         {
             Parser = parser ?? new WhisperFormParser();
             Builder = formBuilder ?? new WhisperFormBuilder();
@@ -52,9 +52,9 @@ namespace OliveHelpsLDK.Whispers
                 ResolveLabel = message.ResolveLabel,
             };
             var call = Client.WhisperConfirmAsync(request, new CallOptions(cancellationToken: cancellationToken));
-            return call.ResponseAsync.ContinueWith(
-                LoggedParser<Task<WhisperConfirmResponse>, bool>(resp => resp.Result.Response),
-                cancellationToken);
+            var loggedParser = LoggedParser<Task<WhisperConfirmResponse>, bool>(resp => resp.Result.Response);
+            return call.ResponseAsync.ContinueWith(loggedParser, cancellationToken,
+                TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Current);
         }
 
         public IStreamingCall<IWhisperFormResponse> FormAsync(WhisperForm message,
@@ -62,9 +62,9 @@ namespace OliveHelpsLDK.Whispers
         {
             var request = Builder.BuildRequest(message, CreateSession());
             var call = Client.WhisperForm(request, CreateOptions(cancellationToken));
-            return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call,
-                LoggedParser<WhisperFormStreamResponse, IWhisperFormResponse>(response =>
-                    Parser.ParseResponse(response)));
+            var loggedParser = LoggedParser<WhisperFormStreamResponse, IWhisperFormResponse>(response =>
+                Parser.ParseResponse(response));
+            return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call, loggedParser);
         }
 
         public Task ListAsync(WhisperList message, CancellationToken cancellationToken = default)

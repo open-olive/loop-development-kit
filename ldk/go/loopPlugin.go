@@ -16,7 +16,8 @@ var LoopPluginMap = map[string]plugin.Plugin{
 // LoopPlugin is a structure used to define the parameters of the plugin communication
 type LoopPlugin struct {
 	plugin.NetRPCUnsupportedPlugin
-	Impl Loop
+	Impl   Loop
+	logger *Logger
 }
 
 // GRPCServer is used to register the controller plugin with the GRPC server
@@ -24,6 +25,7 @@ func (p *LoopPlugin) GRPCServer(broker *plugin.GRPCBroker, s *grpc.Server) error
 	proto.RegisterLoopServer(s, &LoopServer{
 		Impl:   p.Impl,
 		broker: broker,
+		logger: p.logger,
 	})
 	return nil
 }
