@@ -14,9 +14,7 @@ import { StoppableStream, StreamListener } from './stoppables';
 const clipboardTransformer: StreamTransformer<
   messages.ClipboardReadResponse | messages.ClipboardReadStreamResponse,
   string
-> = (message) => {
-  return message.getText();
-};
+> = (message) => message.getText();
 
 /**
  * @internal

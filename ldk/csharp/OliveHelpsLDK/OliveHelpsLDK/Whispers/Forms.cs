@@ -4,8 +4,9 @@ using OliveHelpsLDK.Whispers.Forms.Outputs;
 // ReSharper disable once CheckNamespace
 namespace OliveHelpsLDK.Whispers.Forms
 {
-    
-    public interface IWhisperFormResponse {}
+    public interface IWhisperFormResponse
+    {
+    }
 
     public struct WhisperUpdate : IWhisperFormResponse
     {

@@ -8,9 +8,10 @@ import {
 import { Deadline } from '@grpc/grpc-js';
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
+import BaseClient, { GRPCClientConstructor } from './hostClients/baseClient';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-type CallbackFunc<TResponse = any> = (
+export type CallbackFunc<TResponse = any> = (
   err: ServiceError | null,
   response: TResponse,
 ) => void;
@@ -18,15 +19,17 @@ type CallbackFunc<TResponse = any> = (
  * A simple callback handler that passes back the response when the callback gets invoked
  *
  * @param response - the response to pass through when the callback gets invoked
+ * @param error - an optional error to pass to the callback
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function createCallbackHandler<TRequest, TResponse>(
   response?: TResponse,
+  error?: ServiceError,
 ) {
   return ((request: TRequest, callback: CallbackFunc): ClientUnaryCall => {
     const clientCall = new ClientUnaryCallImpl();
 
-    callback(null, response);
+    callback(error || null, response);
 
     return clientCall;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,12 +51,10 @@ export function createWaitHandler() {
 /**
  * A stream that is largely a target for later emits
  */
-export function createEmptyStream<TResponse>(): ClientReadableStream<
+export function createEmptyStream<
   TResponse
-> {
-  return new ClientReadableStreamImpl<TResponse>(() => {
-    return {} as TResponse;
-  });
+>(): ClientReadableStream<TResponse> {
+  return new ClientReadableStreamImpl<TResponse>(() => ({} as TResponse));
 }
 
 /**
@@ -120,3 +121,42 @@ export const defaultSession: Session.AsObject = {
   loopid: 'LOOP_ID',
   token: 'TOKEN',
 };
+
+export class FakeGRPCClient {
+  waitForReady(deadline: Deadline, callback: (error?: Error) => void): void {
+    callback(undefined);
+  }
+}
+
+export class FakeHostServer extends BaseClient<FakeGRPCClient> {
+  protected generateClient(): GRPCClientConstructor<FakeGRPCClient> {
+    return FakeGRPCClient;
+  }
+}
+
+export class FakeRequestMessage {
+  private session: Session | undefined;
+
+  setSession(session: Session): void {
+    this.session = session;
+  }
+}
+
+export class FakeResponseMessage {
+  private readonly message: string;
+
+  private readonly error: string;
+
+  constructor(message: string, error = '') {
+    this.message = message;
+    this.error = error;
+  }
+
+  getMessage(): string {
+    return this.message;
+  }
+
+  getError(): string {
+    return this.error;
+  }
+}

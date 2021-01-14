@@ -42,13 +42,11 @@ const transformOutput = (
 
 const transformUpdate = (
   message: messages.WhisperFormUpdate,
-): WhisperFormUpdateEvent => {
-  return {
-    key: message.getKey(),
-    value: transformOutput(message.getOutput()!),
-    type: 'update',
-  };
-};
+): WhisperFormUpdateEvent => ({
+  key: message.getKey(),
+  value: transformOutput(message.getOutput()!),
+  type: 'update',
+});
 
 const transformOutputMap = (
   map: jspb.Map<string, messages.WhisperFormOutput>,
@@ -62,20 +60,16 @@ const transformOutputMap = (
 
 const transformResult = (
   message: messages.WhisperFormResult,
-): WhisperFormSubmitEvent => {
-  return {
-    submitted: message.getSubmitted(),
-    outputs: transformOutputMap(message.getOutputsMap()),
-    type: 'submit',
-  };
-};
+): WhisperFormSubmitEvent => ({
+  submitted: message.getSubmitted(),
+  outputs: transformOutputMap(message.getOutputsMap()),
+  type: 'submit',
+});
 
 export const transformDisambiguationResponse: StreamTransformer<
   messages.WhisperDisambiguationStreamResponse,
   WhisperDisambiguationEvent
-> = (response) => {
-  return {key: response.getKey()}
-};
+> = (response) => ({ key: response.getKey() });
 
 export const transformResponse: StreamTransformer<
   messages.WhisperFormStreamResponse,

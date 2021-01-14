@@ -12,13 +12,11 @@ const transformingStream_1 = require("./transformingStream");
  * @internal
  * @param message - The message to transform.
  */
-const cursorTransformer = (message) => {
-    return {
-        screen: message.getScreen(),
-        x: message.getX(),
-        y: message.getY(),
-    };
-};
+const cursorTransformer = (message) => ({
+    screen: message.getScreen(),
+    x: message.getX(),
+    y: message.getY(),
+});
 /**
  * @internal
  */

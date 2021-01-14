@@ -1,4 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
+import { ServiceError } from '@grpc/grpc-js/build/src/call';
 import { StoppableStream, StreamListener } from './stoppables';
 
 /**
@@ -34,7 +35,7 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
   /**
    * @param stream - the stream object
    * @param transformer - a transformer function that converts the grpc input to the desired output.
-   * @param listener - the listener function provided by the consumer that is called whenever events are outputted.
+   * @param listener - an optional listener function provided by the consumer that is called whenever events are outputted.
    */
   constructor(
     stream: grpc.ClientReadableStream<TInput>,
@@ -45,6 +46,7 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
     this.transformer = transformer;
     this.listener = listener;
     this.stream.addListener('data', this.streamWatcher);
+    this.stream.addListener('error', this.errorWatcher);
   }
 
   setListener(callback: StreamListener<TOutput>): void {
@@ -62,8 +64,15 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
     }
   };
 
+  errorWatcher = (error: ServiceError): void => {
+    if (this.listener) {
+      this.listener(error.details);
+    }
+  };
+
   stop(): void {
     this.stream.cancel();
     this.stream.removeAllListeners('data');
+    this.stream.removeAllListeners('error');
   }
 }

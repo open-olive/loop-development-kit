@@ -14,7 +14,7 @@ namespace OliveHelpsLDK.Keyboard
 
         IStreamingCall<string> StreamChar(CancellationToken cancellationToken = default);
     }
-    
+
     public struct HotKey
     {
         public string Key;
@@ -45,7 +45,8 @@ namespace OliveHelpsLDK.Keyboard
         // bit 11 = shift
         public int Modifiers()
         {
-            var values = new List<int>{
+            var values = new List<int>
+            {
                 AltL ? 1 << 0 : 0,
                 AltR ? 1 << 1 : 0,
                 Alt ? 1 << 2 : 0,

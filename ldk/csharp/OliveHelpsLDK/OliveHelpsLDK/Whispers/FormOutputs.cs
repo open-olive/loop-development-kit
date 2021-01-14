@@ -11,8 +11,10 @@ namespace OliveHelpsLDK.Whispers.Forms.Outputs
     {
         T Value { get; }
     }
-    
-    public interface INone : IBase {}
+
+    public interface INone : IBase
+    {
+    }
 
     public interface ICheckbox : IBase<bool>
     {
@@ -56,9 +58,8 @@ namespace OliveHelpsLDK.Whispers.Forms.Outputs
 
     public struct None : INone
     {
-        
     }
-    
+
     public struct Checkbox : ICheckbox
     {
         public bool Value { get; set; }
@@ -68,17 +69,17 @@ namespace OliveHelpsLDK.Whispers.Forms.Outputs
     {
         public string Value { get; set; }
     }
-    
-    public struct Markdown :IMarkdown
+
+    public struct Markdown : IMarkdown
     {
         public string Value { get; set; }
     }
-    
+
     public struct Number : INumber
     {
         public float Value { get; set; }
     }
-    
+
     public struct Password : IPassword
     {
         public string Value { get; set; }
@@ -88,11 +89,12 @@ namespace OliveHelpsLDK.Whispers.Forms.Outputs
     {
         public string Value { get; set; }
     }
+
     public struct Select : ISelect
     {
         public string Value { get; set; }
     }
-    
+
     public struct Telephone : ITelephone
     {
         public string Value { get; set; }
@@ -106,5 +108,5 @@ namespace OliveHelpsLDK.Whispers.Forms.Outputs
     public struct Time : ITime
     {
         public DateTimeOffset Value { get; set; }
-    } 
+    }
 }

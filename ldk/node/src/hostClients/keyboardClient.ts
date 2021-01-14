@@ -16,26 +16,21 @@ import {
  * @internal
  * @param modifiers - The modifiers to generate flags for.
  */
-const generateModifierFlag = (
-  modifiers: Partial<KeyboardModifiers>,
-): number => {
-  return (
-    /* eslint-disable no-bitwise */
-    (modifiers?.altL ? 1 << 0 : 0) +
-    (modifiers?.altR ? 1 << 1 : 0) +
-    (modifiers?.alt ? 1 << 2 : 0) +
-    (modifiers?.ctrlL ? 1 << 3 : 0) +
-    (modifiers?.ctrlR ? 1 << 4 : 0) +
-    (modifiers?.ctrl ? 1 << 5 : 0) +
-    (modifiers?.metaL ? 1 << 6 : 0) +
-    (modifiers?.metaR ? 1 << 7 : 0) +
-    (modifiers?.meta ? 1 << 8 : 0) +
-    (modifiers?.shiftL ? 1 << 9 : 0) +
-    (modifiers?.shiftR ? 1 << 10 : 0) +
-    (modifiers?.shift ? 1 << 10 : 0)
-    /* eslint-enable no-bitwise */
-  );
-};
+const generateModifierFlag = (modifiers: Partial<KeyboardModifiers>): number =>
+  /* eslint-disable no-bitwise */
+  (modifiers?.altL ? 1 << 0 : 0) +
+  (modifiers?.altR ? 1 << 1 : 0) +
+  (modifiers?.alt ? 1 << 2 : 0) +
+  (modifiers?.ctrlL ? 1 << 3 : 0) +
+  (modifiers?.ctrlR ? 1 << 4 : 0) +
+  (modifiers?.ctrl ? 1 << 5 : 0) +
+  (modifiers?.metaL ? 1 << 6 : 0) +
+  (modifiers?.metaR ? 1 << 7 : 0) +
+  (modifiers?.meta ? 1 << 8 : 0) +
+  (modifiers?.shiftL ? 1 << 9 : 0) +
+  (modifiers?.shiftR ? 1 << 10 : 0) +
+  (modifiers?.shift ? 1 << 10 : 0);
+/* eslint-enable no-bitwise */
 
 /**
  * @internal
@@ -44,11 +39,9 @@ const generateModifierFlag = (
 const transformTextStream: StreamTransformer<
   messages.KeyboardTextStreamResponse,
   TextStream
-> = (message) => {
-  return {
-    text: message.getText(),
-  };
-};
+> = (message) => ({
+  text: message.getText(),
+});
 
 /**
  * @internal
@@ -57,12 +50,10 @@ const transformTextStream: StreamTransformer<
 const transformScanCodeStream: StreamTransformer<
   messages.KeyboardScancodeStreamResponse,
   ScanCodeEvent
-> = (message) => {
-  return {
-    scanCode: message.getScancode(),
-    direction: message.getPressed() ? 'down' : 'up',
-  };
-};
+> = (message) => ({
+  scanCode: message.getScancode(),
+  direction: message.getPressed() ? 'down' : 'up',
+});
 
 /**
  * @internal
@@ -86,11 +77,9 @@ function generateHotkeyStreamRequest(
 const transformHotKeyEvent: StreamTransformer<
   messages.KeyboardHotkeyStreamResponse,
   HotKeyEvent
-> = (message) => {
-  return {
-    direction: message.getScanned() ? 'down' : 'up',
-  };
-};
+> = (message) => ({
+  direction: message.getScanned() ? 'down' : 'up',
+});
 
 /**
  * @internal

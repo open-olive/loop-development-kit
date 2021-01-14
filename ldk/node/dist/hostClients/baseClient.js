@@ -18,10 +18,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const grpc = __importStar(require("@grpc/grpc-js"));
 const session_pb_1 = require("../grpc/session_pb");
 const transformingMessage_1 = require("./transformingMessage");
+const exceptionLoggingInterceptor_1 = __importDefault(require("./exceptionLoggingInterceptor"));
 /**
  * The BaseClient class provides connectivity support to GRPC services as a client.
  *
@@ -49,7 +53,10 @@ class BaseClient {
             }
             const ClientConstructor = this.generateClient();
             this.session = session;
-            this.client = new ClientConstructor(address, grpc.credentials.createInsecure());
+            const interceptor = exceptionLoggingInterceptor_1.default(logger);
+            this.client = new ClientConstructor(address, grpc.credentials.createInsecure(), {
+                interceptors: [interceptor],
+            });
             // set a 5 second deadline
             const deadline = new Date();
             deadline.setSeconds(deadline.getSeconds() + 5);

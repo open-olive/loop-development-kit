@@ -49,13 +49,11 @@ const transformOutput = (message) => {
             return '';
     }
 };
-const transformUpdate = (message) => {
-    return {
-        key: message.getKey(),
-        value: transformOutput(message.getOutput()),
-        type: 'update',
-    };
-};
+const transformUpdate = (message) => ({
+    key: message.getKey(),
+    value: transformOutput(message.getOutput()),
+    type: 'update',
+});
 const transformOutputMap = (map) => {
     const results = {};
     map.forEach((entry, key) => {
@@ -63,16 +61,12 @@ const transformOutputMap = (map) => {
     });
     return results;
 };
-const transformResult = (message) => {
-    return {
-        submitted: message.getSubmitted(),
-        outputs: transformOutputMap(message.getOutputsMap()),
-        type: 'submit',
-    };
-};
-exports.transformDisambiguationResponse = (response) => {
-    return { key: response.getKey() };
-};
+const transformResult = (message) => ({
+    submitted: message.getSubmitted(),
+    outputs: transformOutputMap(message.getOutputsMap()),
+    type: 'submit',
+});
+exports.transformDisambiguationResponse = (response) => ({ key: response.getKey() });
 exports.transformResponse = (response) => {
     const update = response.getUpdate();
     const result = response.getResult();

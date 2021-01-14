@@ -6,6 +6,7 @@ import { Session } from '../grpc/session_pb';
 import { StoppableMessage } from './stoppables';
 import { TransformingMessage } from './transformingMessage';
 import { Logger } from '../logging';
+import buildLoggingInterceptor from './exceptionLoggingInterceptor';
 
 /**
  * @internal
@@ -68,9 +69,15 @@ export default abstract class BaseClient<THost extends CommonHostServer>
       }
       const ClientConstructor = this.generateClient();
       this.session = session;
+
+      const interceptor = buildLoggingInterceptor(logger);
+
       this.client = new ClientConstructor(
         address,
         grpc.credentials.createInsecure(),
+        {
+          interceptors: [interceptor],
+        },
       );
 
       // set a 5 second deadline
