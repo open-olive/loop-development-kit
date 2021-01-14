@@ -58,7 +58,7 @@ describe('NetworkClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.HTTPResponseMsg()
-        .setData('response data')
+        .setData(new Uint8Array([173, 235, 41, 162, 123, 30, 117, 171, 90]))
         .setResponsecode(200);
 
       sentResponse
