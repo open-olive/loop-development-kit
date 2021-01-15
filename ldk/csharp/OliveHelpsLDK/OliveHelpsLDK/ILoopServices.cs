@@ -7,6 +7,7 @@ using OliveHelpsLDK.Process;
 using OliveHelpsLDK.Storage;
 using OliveHelpsLDK.UI;
 using OliveHelpsLDK.Whispers;
+using OliveHelpsLDK.Window;
 
 namespace OliveHelpsLDK
 {
@@ -32,8 +33,7 @@ namespace OliveHelpsLDK
         // TODO: Uncomment once available in Olive Helps.
         // IHoverService Hover { get; }
 
-        // TODO: Uncomment once available in Olive Helps.
-        // IWindowService Window { get; }
+        IWindowService Window { get; }
 
         IStorageService Storage { get; }
 
