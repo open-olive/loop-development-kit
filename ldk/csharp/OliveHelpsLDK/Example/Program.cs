@@ -7,6 +7,7 @@ using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Whispers.Forms;
 using OliveHelpsLDK.Whispers.Forms.Outputs;
+using OliveHelpsLDK.Window;
 using Checkbox = OliveHelpsLDK.Whispers.Forms.Inputs.Checkbox;
 using Email = OliveHelpsLDK.Whispers.Forms.Inputs.Email;
 using IBase = OliveHelpsLDK.Whispers.Forms.Inputs.IBase;
@@ -82,6 +83,9 @@ namespace Example
                             case "keystop":
                                 KeyboardStream(false);
                                 break;
+                            case "windowtest":
+                                WindowStream();
+                                break;
                             default:
                                 EmitWhisper(clipboardContent);
                                 break;
@@ -90,6 +94,33 @@ namespace Example
                     catch (Exception e)
                     {
                         Logger.Error(e.ToString());
+                    }
+                }
+            });
+        }
+
+        private void WindowStream()
+        {
+            var stream = _services.Window.StreamState();
+            Task.Run(async () =>
+            {
+                while (await stream.MoveNext())
+                {
+                    if (stream.Current().Action == WindowEventAction.TitleChanged)
+                    {
+                        Logger.Info("Window Title Changed Action Received");
+                        continue;
+                    }
+
+                    if (stream.Current().Action == WindowEventAction.Moved)
+                    {
+                        Logger.Info("Window Moved Action Received");
+                        continue;
+                    }
+
+                    if (stream.Current().Action == WindowEventAction.Resized)
+                    {
+                        Logger.Info("Window Resized Action Received");
                     }
                 }
             });

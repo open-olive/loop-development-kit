@@ -21,7 +21,6 @@ func (w *WindowServer) WindowActiveWindow(ctx context.Context, req *proto.Window
 	resp, err := w.Impl.ActiveWindow(
 		context.WithValue(ctx, Session{}, session),
 	)
-
 	if err != nil {
 		return nil, err
 	}

@@ -8,4 +8,7 @@ var WindowStreamAction;
     WindowStreamAction["Unfocused"] = "unfocused";
     WindowStreamAction["Opened"] = "opened";
     WindowStreamAction["Closed"] = "closed";
+    WindowStreamAction["TitleChanged"] = "titleChanged";
+    WindowStreamAction["Moved"] = "moved";
+    WindowStreamAction["Resized"] = "resized";
 })(WindowStreamAction = exports.WindowStreamAction || (exports.WindowStreamAction = {}));
