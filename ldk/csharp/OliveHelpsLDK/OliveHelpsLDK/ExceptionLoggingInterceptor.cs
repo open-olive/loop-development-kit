@@ -65,7 +65,8 @@ namespace OliveHelpsLDK
         /// <param name="context">The gRPC context (service, method, etc.).</param>
         /// <param name="continuation">The actual client method implementation function.</param>
         /// <returns>A wrapped asynchronous call.</returns>
-        public override AsyncDuplexStreamingCall<TRequest, TResponse> AsyncDuplexStreamingCall<TRequest, TResponse>(ClientInterceptorContext<TRequest, TResponse> context,
+        public override AsyncDuplexStreamingCall<TRequest, TResponse> AsyncDuplexStreamingCall<TRequest, TResponse>(
+            ClientInterceptorContext<TRequest, TResponse> context,
             AsyncDuplexStreamingCallContinuation<TRequest, TResponse> continuation)
         {
             var call = base.AsyncDuplexStreamingCall(context, continuation);
@@ -102,7 +103,7 @@ namespace OliveHelpsLDK
             return new AsyncServerStreamingCall<TResponse>(WrapStreamHandler(call.ResponseStream, logger),
                 call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
         }
-        
+
         /// <summary>
         /// Wraps a gRPC call object in exception logging.
         /// </summary>
@@ -110,11 +111,14 @@ namespace OliveHelpsLDK
         /// <param name="logger">A logger to use for logging exceptions in Tasks.</param>
         /// <param name="token">A cancellation token to wire into the async logging continuations.</param>
         /// <returns>A wrapped asynchronous call.</returns>
-        private static AsyncDuplexStreamingCall<TRequest, TResponse> WrapCall<TRequest, TResponse>(AsyncDuplexStreamingCall<TRequest, TResponse> call,
+        private static AsyncDuplexStreamingCall<TRequest, TResponse> WrapCall<TRequest, TResponse>(
+            AsyncDuplexStreamingCall<TRequest, TResponse> call,
             ILogger logger, CancellationToken token)
         {
-            return new AsyncDuplexStreamingCall<TRequest, TResponse>(WrapStreamHandler(call.RequestStream, logger, token),
-                WrapStreamHandler(call.ResponseStream, logger), call.ResponseHeadersAsync, call.GetStatus, call.GetTrailers, call.Dispose);
+            return new AsyncDuplexStreamingCall<TRequest, TResponse>(
+                WrapStreamHandler(call.RequestStream, logger, token),
+                WrapStreamHandler(call.ResponseStream, logger), call.ResponseHeadersAsync, call.GetStatus,
+                call.GetTrailers, call.Dispose);
         }
 
         /// <summary>
@@ -133,9 +137,9 @@ namespace OliveHelpsLDK
                 if (action.Exception == null) return action.Result;
                 HandleException(action.Exception, logger, token);
                 return action.Result;
-            }, token, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Current);
+            }, token);
         }
-        
+
         /// <summary>
         /// Adds an exception logging continuation to a task.
         /// </summary>
@@ -147,7 +151,7 @@ namespace OliveHelpsLDK
             {
                 if (action.Exception == null) return;
                 HandleException(action.Exception, logger, token);
-            }, token, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Current);
+            }, token);
         }
 
         /// <summary>
@@ -158,12 +162,12 @@ namespace OliveHelpsLDK
         /// <param name="token">A cancellation token to which this will register a re-throw.</param>
         private static void HandleException(AggregateException aex, ILogger logger, CancellationToken token)
         {
-                token.Register(() => throw aex);
-                aex.Handle(exception =>
-                {
-                    logger.Error("Client exception", exception);
-                    return true;
-                });
+            token.Register(() => throw aex);
+            aex.Handle(exception =>
+            {
+                logger.Error("Client exception", exception);
+                return true;
+            });
         }
 
         /// <summary>
@@ -237,6 +241,7 @@ namespace OliveHelpsLDK
                 return WrapContinueHandler(moved, _logger, token);
             }
         }
+
         /// <summary>
         /// Wraps a client write stream in exception logging.
         /// </summary>
@@ -246,7 +251,8 @@ namespace OliveHelpsLDK
             private readonly IClientStreamWriter<TRequest> _wrapped;
             private readonly CancellationToken _token;
 
-            public ClientStreamWriterWrapper(IClientStreamWriter<TRequest> wrapped, ILogger logger, CancellationToken token)
+            public ClientStreamWriterWrapper(IClientStreamWriter<TRequest> wrapped, ILogger logger,
+                CancellationToken token)
             {
                 _wrapped = wrapped;
                 _logger = logger;
@@ -260,7 +266,7 @@ namespace OliveHelpsLDK
             public Task WriteAsync(TRequest message)
             {
                 var written = _wrapped.WriteAsync(message);
-                
+
                 return WrapContinueHandler(written, _logger, _token);
             }
 

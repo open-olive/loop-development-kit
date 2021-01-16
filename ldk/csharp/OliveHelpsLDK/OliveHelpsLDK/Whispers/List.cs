@@ -2,8 +2,8 @@ namespace OliveHelpsLDK.Whispers.List
 {
     public abstract class ListBase
     {
-        public uint Order { get; }
-        public bool Extra { get; }
+        public uint Order { get; set; }
+        public bool Extra { get; set; }
     }
 
     public enum Style
@@ -23,22 +23,22 @@ namespace OliveHelpsLDK.Whispers.List
 
     public class ListPair : ListBase
     {
-        public string Label { get; }
-        public string Value { get; }
-        public Style Style { get; }
-        public bool Copyable { get; }
+        public string Label { get; set; }
+        public string Value { get; set; }
+        public Style Style { get; set; }
+        public bool Copyable { get; set; }
     }
 
     public class ListMessage : ListBase
     {
-        public string Header { get; }
-        public string Body { get; }
-        public Style Style { get; }
-        public Align Align { get; }
+        public string Header { get; set; }
+        public string Body { get; set; }
+        public Style Style { get; set; }
+        public Align Align { get; set; }
     }
 
     public class ListDivider : ListBase
     {
-        public Style Style { get; }
+        public Style Style { get; set; }
     }
 }
