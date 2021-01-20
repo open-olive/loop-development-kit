@@ -1,5 +1,4 @@
-﻿using System;
-using OliveHelpsLDK;
+﻿using OliveHelpsLDK;
 using OliveHelpsLDK.Logging;
 
 namespace SelfTestLoop

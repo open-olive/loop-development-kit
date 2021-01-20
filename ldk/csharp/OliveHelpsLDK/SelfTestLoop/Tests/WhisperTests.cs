@@ -6,12 +6,16 @@ namespace SelfTestLoop.Tests
 {
     public class WhisperTests
     {
-        public Task PassingTest(ILoopServices services)
+        public ILoopServices Services { get; set; }
+
+        [Test("Passing Test")]
+        public Task PassingTest()
         {
             return Task.CompletedTask;
         }
 
-        public Task FailingTest(ILoopServices services)
+        [Test("Failing Test")]
+        public Task FailingTest()
         {
             throw new NotImplementedException("Intended to fail");
         }

@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading;
 using System.Threading.Tasks;
 using OliveHelpsLDK;
 using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Whispers.List;
-using SelfTestLoop.Tests;
 
 namespace SelfTestLoop
 {
@@ -17,39 +14,6 @@ namespace SelfTestLoop
         void Start();
 
         void Stop();
-    }
-
-    public enum TestStatus
-    {
-        NotExecuted,
-        Running,
-        Completed,
-        Failed
-    }
-
-    public interface ITest
-    {
-        string Name { get; set; }
-
-        string ID { get; set; }
-
-        TestStatus Status { get; set; }
-
-        string ErrorMessage { get; set; }
-
-        Exception Exception { get; set; }
-
-        public Func<Task> RunAction { get; set; }
-    }
-
-    public struct TestInstance : ITest
-    {
-        public string ID { get; set; }
-        public string Name { get; set; }
-        public TestStatus Status { get; set; }
-        public string ErrorMessage { get; set; }
-        public Exception Exception { get; set; }
-        public Func<Task> RunAction { get; set; }
     }
 
     public class TestRunner : ITestRunner
@@ -71,7 +35,14 @@ namespace SelfTestLoop
                 {
                     if (text == TextTrigger)
                     {
-                        RunTests();
+                        try
+                        {
+                            RunTests();
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.Error("Test Execution Failed", e);
+                        }
                     }
                 }
             });
@@ -92,6 +63,7 @@ namespace SelfTestLoop
                 test.Status = TestStatus.Running;
                 try
                 {
+                    Logger.Debug($"Test Starting: {test.ID}");
                     var task = test.RunAction();
                     task.ContinueWith(_ =>
                         {
@@ -121,29 +93,13 @@ namespace SelfTestLoop
             PresentResults(tests);
         }
 
-        public ITest[] BuildTests()
+        private IEnumerable<ITest> BuildTests()
         {
-            var testClass = new WhisperTests();
-            return new ITest[]
-            {
-                new TestInstance()
-                {
-                    ID = "successfulTest",
-                    Name = "Successful Test",
-                    Status = TestStatus.NotExecuted,
-                    RunAction = (() => testClass.PassingTest(Services))
-                },
-                new TestInstance()
-                {
-                    ID = "failingTest",
-                    Name = "Failing Test",
-                    Status = TestStatus.NotExecuted,
-                    RunAction = (() => testClass.FailingTest(Services))
-                }
-            };
+            var builder = new TestBuilder(Logger);
+            return builder.BuildTests(Services);
         }
 
-        private void PresentResults(ITest[] tests)
+        private void PresentResults(IEnumerable<ITest> tests)
         {
             Services.Whisper.ListAsync(RenderResults(tests));
         }
