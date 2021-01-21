@@ -290,14 +290,16 @@ message WhisperListElement {
     }
 
     message Link {
-        string href = 1;
-        Style style = 2;
-        string text = 3;
+        Align align = 1;
+        string href = 2;
+        Style style = 3;
+        string text = 4;
     }
 
     oneof ElementOneof {
         Pair pair = 4;
         Message message = 5;
         Divider divider = 6;
+        Link link = 7;
     }
 }

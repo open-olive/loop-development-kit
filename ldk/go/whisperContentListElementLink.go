@@ -13,6 +13,7 @@ const (
 
 // WhisperContentListElementLink defines a link element for a list whisper
 type WhisperContentListElementLink struct {
+	Align WhisperContentListElementAlign `json:"align"`
 	Extra bool                           `json:"extra"`
 	Href  string                         `json:"href"`
 	Order uint32                         `json:"order"`
@@ -27,6 +28,11 @@ func (e *WhisperContentListElementLink) Type() WhisperContentListElementType {
 
 // ToProto returns a protobuf representation of the object
 func (e *WhisperContentListElementLink) ToProto() (*proto.WhisperListElement, error) {
+	align, err := e.Align.ToProto()
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode align option: %w", err)
+	}
+
 	style, err := e.Style.ToProto()
 	if err != nil {
 		return nil, fmt.Errorf("failed to encode style option: %w", err)
@@ -37,9 +43,10 @@ func (e *WhisperContentListElementLink) ToProto() (*proto.WhisperListElement, er
 		Extra: e.Extra,
 		ElementOneof: &proto.WhisperListElement_Link_{
 			Link: &proto.WhisperListElement_Link{
-				href: e.Href,
+				Align: align,
+				Href: e.Href,
 				Style: style,
-				text: e.Text,
+				Text: e.Text,
 			},
 		},
 	}, nil

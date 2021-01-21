@@ -48,12 +48,18 @@ func whisperContentListElementFromProto(p *proto.WhisperListElement) (WhisperCon
 			Style:  style,
 		}, nil
 	case *proto.WhisperListElement_Link_:
+		align, err := WhisperContentListElementAlignFromProto(elementContainer.Link.Align)
+		if err != nil {
+			return nil, err
+		}
+
 		style, err := WhisperContentListElementStyleFromProto(elementContainer.Link.Style)
 		if err != nil {
 			return nil, err
 		}
 
-		return &WhisperContentListElementPair{
+		return &WhisperContentListElementLink{
+			Align:    align,
 			Extra:    p.Extra,
 			Href:     elementContainer.Link.Href,
 			Order:    p.Order,
