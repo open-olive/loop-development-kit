@@ -19,7 +19,12 @@ namespace SelfTestLoop
 
         public ITest[] BuildTests(ILoopServices services)
         {
-            var testClass = new WhisperTests() {Services = services};
+            var testServices = new TestServices()
+            {
+                Logger = Logger,
+                Services = services,
+            };
+            var testClass = new WhisperTests() {Services = testServices};
             return GetAttributes(new[] {testClass}).Select(x => x as ITest).ToArray();
         }
 
@@ -35,6 +40,7 @@ namespace SelfTestLoop
                         if (testAttribute != null)
                             return new TestInstance()
                             {
+                                Logger = Logger,
                                 Attribute = testAttribute,
                                 MethodInfo = memberInfo,
                                 ID = testAttribute.Name,

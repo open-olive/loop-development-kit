@@ -82,7 +82,7 @@ namespace SelfTestLoop
                 }
                 catch (Exception e)
                 {
-                    Logger.Warn($"Test Excepted: {test.ID}");
+                    Logger.Error($"Test Excepted: {test.ID}", e);
                     test.Status = TestStatus.Failed;
                     test.Exception = e;
                     test.ErrorMessage = e.Message;
