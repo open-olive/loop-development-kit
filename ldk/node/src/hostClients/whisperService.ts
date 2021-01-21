@@ -113,7 +113,9 @@ export interface WhisperDisambiguationElement<T extends string> {
   order?: number;
 }
 
-export type WhisperDisambiguationOption = WhisperDisambiguationElement<'option'> & {
+export type WhisperDisambiguationOption = WhisperDisambiguationElement<
+  'option'
+> & {
   label: string;
 };
 
@@ -200,10 +202,21 @@ export type WhisperListDivider = WhisperListElement<'divider'> & {
   style?: WhisperListStyle;
 };
 
+export type WhisperListLink = WhisperListElement<'link'> & {
+  href: string;
+  /**
+   *  Value the UI uses to determine how to style the element.
+   *  If this value is ommited it will default to NONE.
+   */
+  style?: WhisperListStyle;
+  text: string;
+};
+
 export type WhisperListElements =
   | WhisperListMessage
   | WhisperListPair
-  | WhisperListDivider;
+  | WhisperListDivider
+  | WhisperListLink;
 
 export interface WhisperListConfig extends Whisper {
   elements: { [name: string]: WhisperListElements };

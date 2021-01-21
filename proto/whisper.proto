@@ -289,6 +289,12 @@ message WhisperListElement {
         Style style = 1;
     }
 
+    message Link {
+        string href = 1;
+        Style style = 2;
+        string text = 3;
+    }
+
     oneof ElementOneof {
         Pair pair = 4;
         Message message = 5;

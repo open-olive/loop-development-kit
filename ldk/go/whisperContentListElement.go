@@ -47,6 +47,19 @@ func whisperContentListElementFromProto(p *proto.WhisperListElement) (WhisperCon
 			Order:  p.Order,
 			Style:  style,
 		}, nil
+	case *proto.WhisperListElement_Link_:
+		style, err := WhisperContentListElementStyleFromProto(elementContainer.Link.Style)
+		if err != nil {
+			return nil, err
+		}
+
+		return &WhisperContentListElementPair{
+			Extra:    p.Extra,
+			Href:     elementContainer.Link.Href,
+			Order:    p.Order,
+			Style:    style,
+			Text:     elementContainer.Link.Text,
+		}, nil
 	case *proto.WhisperListElement_Divider_:
 		style, err := WhisperContentListElementStyleFromProto(elementContainer.Divider.Style)
 		if err != nil {
