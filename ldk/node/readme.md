@@ -81,7 +81,6 @@ Olive Helps expects the following files when running a plugin:
 
 `plugin` - An executable that runs your plugin.
 `plugin.json` - Your plugin configuration file.
-`storage.json` - Your storage configuration file.
 
 ### Commands
 
@@ -112,48 +111,11 @@ Each command takes options. Run `ldk help <command>` for details.
 }
 ```
 
-#### `storage.json`
-
-Each storage key you access must be specified in the `storage.json` file.
-
-```json
-{
-  "storage-key": {
-    "name": "Storage Key Name",
-    "description": "What you're containing in this key"
-  },
-  "storage-key2": {
-    "name": "Storage Key 2",
-    "description": "What you're containing in this key"
-  }
-}
-```
-
-## Concepts
-
-### Plugins
-
-The LDK is a plugin system for Olive Helps. The LDK is built with [go-plugin](https://github.com/hashicorp/go-plugin), a HashiCorp plugin system used in several of their projects.
-
-Plugins developed with this library are executed by Olive Helps as separate processes. This ensures that crashes or instability in the plugin will not destabilize the Olive Helps process.
-
-Communication between Olive Helps and the plugin is first initialized over stdio and then performed using [GRPC](https://grpc.io/). On mac and linux the GRPC communication is sent over unix domain socket and on windows over local TCP socket.
-
-> NOTE: Currently, communication from Olive Helps to the plugin, takes place over local TCP socket on mac and linux. Communication from the plugin back to Sidekick still takes place over unix domain socket. This is due to a limitation of the GRPC libraries for NodeJS and will hopefully be fixed in the future.
-
-### Loops
-
-This LDK can be used to write Loops for Olive Helps. More detail about Loops is available on the {@page Loops} page.
-
-- [Basic Loops Example](https://github.com/open-olive/sidekick-controller-examplenode) - Recommend using as a starting point for new Loops.
-
-TODO: Change this link
-
 ## LDK Development
 
 ### Dependencies
 
-The `.proto` files in `src/shared/proto` are inserted with Git subtrees. To update the subtree, and rebuild the protoc files, execute `npm run protoc`.
+To rebuild the protoc files, execute `npm run protoc`.
 
 ### Testing
 
