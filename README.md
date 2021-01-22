@@ -9,9 +9,9 @@ This is the central repository for all the Olive Help LDKs. You'll probably want
 Each LDK must adhere to this contract:
 
 - They should start a GRPC server serving the following services:
-    - `proto.Loop`
-    - `plugin.Broker`
-    - `plugin.Stdio`
+  - `proto.Loop`
+  - `plugin.Broker`
+  - `plugin.Stdio`
 - When started up they write to STDOUT a connection string in the following format: `1|1|tcp|{HOST}:{PORT}|grpc`.
 - They do not write anything else to STDOUT until the Go LDK LoopClient calls the `proto.Loop.LoopStart` rpc.
 - The `LoopStart` rpc should complete once the Loop is started, it should not wait until the Loop is complete.
@@ -21,5 +21,4 @@ Each LDK must adhere to this contract:
   - `@module` - The name of the module, usually the loop name.
   - `@pid` - The Loop's process ID.
   - `@message` - The message to log.
-  - and other properties as appropriate.
- 
+  - and other properties as appropriate..
