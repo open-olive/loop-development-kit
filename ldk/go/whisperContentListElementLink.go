@@ -44,9 +44,9 @@ func (e *WhisperContentListElementLink) ToProto() (*proto.WhisperListElement, er
 		ElementOneof: &proto.WhisperListElement_Link_{
 			Link: &proto.WhisperListElement_Link{
 				Align: align,
-				Href: e.Href,
+				Href:  e.Href,
 				Style: style,
-				Text: e.Text,
+				Text:  e.Text,
 			},
 		},
 	}, nil
