@@ -21,4 +21,4 @@ Each LDK must adhere to this contract:
   - `@module` - The name of the module, usually the loop name.
   - `@pid` - The Loop's process ID.
   - `@message` - The message to log.
-  - and other properties as appropriate..
+  - and other properties as appropriate.
