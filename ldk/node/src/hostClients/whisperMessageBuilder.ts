@@ -230,6 +230,27 @@ export const generateWhisperListElement = (
       msg.setDivider(inputMsg);
       break;
     }
+    case 'link': {
+      const inputMsg = new WLE.Link();
+      if (element.align) {
+        inputMsg.setAlign(generateWhisperListAlign(element.align));
+      } else {
+        inputMsg.setAlign(generateWhisperListAlign(WhisperListAlign.LEFT));
+      }
+      if (element.href) {
+        inputMsg.setHref(element.href);
+      }
+      if (element.style) {
+        inputMsg.setStyle(generateWhisperListStyle(element.style));
+      } else {
+        inputMsg.setStyle(generateWhisperListStyle(WhisperListStyle.NONE));
+      }
+      if (element.text) {
+        inputMsg.setText(element.text);
+      }
+      msg.setLink(inputMsg);
+      break;
+    }
     default: {
       throw new Error('Unexpected Input Type');
     }

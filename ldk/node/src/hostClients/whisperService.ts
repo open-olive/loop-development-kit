@@ -113,9 +113,7 @@ export interface WhisperDisambiguationElement<T extends string> {
   order?: number;
 }
 
-export type WhisperDisambiguationOption = WhisperDisambiguationElement<
-  'option'
-> & {
+export type WhisperDisambiguationOption = WhisperDisambiguationElement<'option'> & {
   label: string;
 };
 
@@ -203,6 +201,11 @@ export type WhisperListDivider = WhisperListElement<'divider'> & {
 };
 
 export type WhisperListLink = WhisperListElement<'link'> & {
+  /**
+   *  Value the UI uses to determine how to align text horizontally.
+   *  If this value is ommited it will default to LEFT.
+   */
+  align?: WhisperListAlign;
   href: string;
   /**
    *  Value the UI uses to determine how to style the element.

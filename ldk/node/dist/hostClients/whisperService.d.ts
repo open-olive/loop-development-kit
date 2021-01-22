@@ -151,6 +151,11 @@ export declare type WhisperListDivider = WhisperListElement<'divider'> & {
     style?: WhisperListStyle;
 };
 export declare type WhisperListLink = WhisperListElement<'link'> & {
+    /**
+     *  Value the UI uses to determine how to align text horizontally.
+     *  If this value is ommited it will default to LEFT.
+     */
+    align?: WhisperListAlign;
     href: string;
     /**
      *  Value the UI uses to determine how to style the element.
