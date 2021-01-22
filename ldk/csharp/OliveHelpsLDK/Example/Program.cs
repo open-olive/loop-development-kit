@@ -14,6 +14,10 @@ using IBase = OliveHelpsLDK.Whispers.Forms.Inputs.IBase;
 using ICheckbox = OliveHelpsLDK.Whispers.Forms.Outputs.ICheckbox;
 using IEmail = OliveHelpsLDK.Whispers.Forms.Outputs.IEmail;
 using IMarkdown = OliveHelpsLDK.Whispers.Forms.Outputs.IMarkdown;
+using ListAlign = OliveHelpsLDK.Whispers.List.Align;
+using ListBase = OliveHelpsLDK.Whispers.List.ListBase;
+using ListLink = OliveHelpsLDK.Whispers.List.ListLink;
+using ListPair = OliveHelpsLDK.Whispers.List.ListPair;
 using Markdown = OliveHelpsLDK.Whispers.Forms.Inputs.Markdown;
 using Number = OliveHelpsLDK.Whispers.Forms.Inputs.Number;
 using Password = OliveHelpsLDK.Whispers.Forms.Inputs.Password;
@@ -85,6 +89,9 @@ namespace Example
                                 break;
                             case "windowtest":
                                 WindowStream();
+                                break;
+                            case "listtest":
+                                EmitListWhisper();
                                 break;
                             default:
                                 EmitWhisper(clipboardContent);
@@ -160,6 +167,25 @@ namespace Example
                 }
             }, ccs.Token);
             Logger.Info($"Sent Clipboard Update {content}");
+        }
+
+        private void EmitListWhisper()
+        {
+            var ccs = new CancellationTokenSource();
+            ccs.CancelAfter(5000);
+            var whisperList = new WhisperList
+            {
+                Config = new WhisperConfig {
+                    Label = "C# Whisper"
+                },
+                Elements =  new Dictionary<string, ListBase>
+                {
+                    ["Nickname"] = new ListPair {Label="Nickname", Order=1, Value="Old Greg"},
+                    ["Link"] = new ListLink {Align=ListAlign.Center, Href="https://isitchristmas.com/", Order=2, Text="Is it Christmas?" }
+                },
+            };       
+            _services.Whisper.ListAsync(whisperList, ccs.Token);
+            Logger.Info($"Sent List Whisper");
         }
 
         private void FormStream()

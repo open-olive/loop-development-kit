@@ -150,6 +150,14 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 					Order:  17,
 					Style:  ldk.WhisperContentListElementStyleError,
 				},
+				"link": &ldk.WhisperContentListElementLink {
+					Align:  ldk.WhisperContentListElementAlignCenter,
+					Extra: 	true,
+					Href: 	"https://isitchristmas.com/",
+					Order: 	18,
+					Style:  ldk.WhisperContentListElementStyleNone,
+					Text:	"IsItChristmas.com",
+				},	
 			},
 		})
 		if err != nil {
