@@ -10,7 +10,7 @@ namespace OliveHelpsLDK.Whispers
     /// <summary>
     /// Builds messages for Whisper Forms.
     /// </summary>
-    internal class WhisperFormBuilder : IWhisperFormBuilder
+    public class WhisperFormBuilder : IWhisperFormBuilder
     {
         public WhisperFormRequest BuildRequest(WhisperForm formRequest, Proto.Session session)
         {
