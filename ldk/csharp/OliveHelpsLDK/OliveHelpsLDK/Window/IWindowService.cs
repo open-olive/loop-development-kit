@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Window
 {
+    /// <summary>
+    /// Provides access to windows displayed by the OS.
+    /// </summary>
     public interface IWindowService
     {
         /// <summary>
@@ -105,8 +108,20 @@ namespace OliveHelpsLDK.Window
         /// The Window has closed.
         /// </summary>        
         Closed,
+
+        /// <summary>
+        /// The Title of the window has changed.
+        /// </summary>
         TitleChanged,
+
+        /// <summary>
+        /// The Window's top-left corner has moved.
+        /// </summary>
         Moved,
+
+        /// <summary>
+        /// The Window has been resized (height and/or width has changed).
+        /// </summary>
         Resized
     }
 

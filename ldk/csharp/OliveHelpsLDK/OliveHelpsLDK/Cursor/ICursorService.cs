@@ -8,6 +8,11 @@ namespace OliveHelpsLDK.Cursor
     /// </summary>
     public interface ICursorService
     {
+        /// <summary>
+        /// Gets the current position of the cursor.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<CursorPosition> Query(CancellationToken cancellationToken = default);
 
         /// <summary>

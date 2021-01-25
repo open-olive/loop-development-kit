@@ -41,6 +41,9 @@ namespace OliveHelpsLDK.Network
         /// </summary>
         public byte[] Body;
 
+        /// <summary>
+        /// The header data to send with the request.
+        /// </summary>
         public IDictionary<string, IList<string>> Headers;
     }
 
@@ -59,6 +62,9 @@ namespace OliveHelpsLDK.Network
         /// </summary>
         public byte[] Data;
 
+        /// <summary>
+        /// The header data sent with the response.
+        /// </summary>
         public IDictionary<string, IList<string>> Headers;
     }
 }

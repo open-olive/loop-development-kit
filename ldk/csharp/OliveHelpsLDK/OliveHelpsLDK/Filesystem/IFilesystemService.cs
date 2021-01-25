@@ -19,20 +19,13 @@ namespace OliveHelpsLDK.Filesystem
         Task<IList<FileInfo>> QueryDirectory(string directoryPath, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Gets file info.
-        /// </summary>
-        /// <param name="filePath">The absolute path of the file.</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>Task resolving with the file information.</returns>
-        Task<FileInfo> QueryFile(string filePath, CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Creates a stream receiving updates to directory contents.
         /// </summary>
         /// <param name="directoryPath">The absolute path of the directory.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         IStreamingCall<FileEvent> StreamDirectory(string directoryPath, CancellationToken cancellationToken = default);
+
         /// <summary>
         /// Create a stream receiving updates to a specific file.
         /// </summary>
@@ -40,34 +33,99 @@ namespace OliveHelpsLDK.Filesystem
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         IStreamingCall<FileEvent> StreamFileInfo(string filePath, CancellationToken cancellationToken = default);
-        
-        IStreamingCall<FileEvent> StreamFile(string filePath, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Creates a directory in the specified location.
+        /// </summary>
+        /// <param name="parameters">The parameters for the new directory.</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task MakeDirectory(MakeDirectoryParameters parameters, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Copies a file from one location to another.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task Copy(MoveOrCopyFileParameters parameters, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Moves a file from one location to another.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task Move(MoveOrCopyFileParameters parameters, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Removes a file or directory.
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task Remove(RemoveParameters parameters, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Opens a File object for the specified file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<IFile> OpenFile(string path, CancellationToken cancellationToken = default);
 
+        /// <summary>
+        /// Creates a file at the specified path. Will fail if the file cannot be created.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<IFile> CreateFile(string path, CancellationToken cancellationToken = default);
     }
 
+    /// <summary>
+    /// Provides access to read various properties of and make changes to a given file.
+    /// </summary>
     public interface IFile
     {
+        /// <summary>
+        /// Writes data to a file.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         Task<int> Write(byte[] data);
 
+        /// <summary>
+        /// Reads the file's contents.
+        /// </summary>
+        /// <returns></returns>
         Task<byte[]> Read();
 
+        /// <summary>
+        /// Closes the file. Once this has been called, other methods on this interface will throw.
+        /// </summary>
+        /// <returns></returns>
         Task Close();
 
+        /// <summary>
+        /// Changes the file permissions.
+        /// </summary>
+        /// <param name="permission"></param>
+        /// <returns></returns>
         Task ChangePermissions(int permission);
 
+        /// <summary>
+        /// Changes the file ownership.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
         Task ChangeOwnership(int userId, int groupId);
 
+        /// <summary>
+        /// Gets the current file information.
+        /// </summary>
+        /// <returns></returns>
         Task<FileInfo> FileInfo();
 
         /// <summary>
@@ -76,21 +134,51 @@ namespace OliveHelpsLDK.Filesystem
         Task CompletionTask { get; }
     }
 
+    /// <summary>
+    /// Parameters for constructing a directory.
+    /// </summary>
     public struct MakeDirectoryParameters
     {
+        /// <summary>
+        /// The path of the directory to create.
+        /// </summary>
         public string Path;
+
+        /// <summary>
+        /// The permissions to grant that directory.
+        /// </summary>
         public uint Permissions;
     }
 
+    /// <summary>
+    /// The parameters for moving or copying a file.
+    /// </summary>
     public struct MoveOrCopyFileParameters
     {
+        /// <summary>
+        /// The source path of the file to move/copy.
+        /// </summary>
         public string Source;
+
+        /// <summary>
+        /// The destination path of the file to move/copy.
+        /// </summary>
         public string Destination;
     }
 
+    /// <summary>
+    /// The parameters for removing a file.
+    /// </summary>
     public struct RemoveParameters
     {
+        /// <summary>
+        /// Path of the file or directory to remove.
+        /// </summary>
         public string Path;
+
+        /// <summary>
+        /// Whether the removal is recursive or not.
+        /// </summary>
         public bool Recursive;
     }
 

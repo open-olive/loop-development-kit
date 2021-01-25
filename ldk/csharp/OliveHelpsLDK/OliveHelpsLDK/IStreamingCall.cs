@@ -37,6 +37,11 @@ namespace OliveHelpsLDK
         /// </returns>
         Task<bool> MoveNext();
 
+        /// <summary>
+        /// Provides this stream as an <see cref="IAsyncEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         IAsyncEnumerable<TOutput> ToAsyncEnumerable(CancellationToken cancellationToken = default);
     }
 }

@@ -9,6 +9,7 @@ namespace OliveHelpsLDK.Whispers.List
         /// The field order. Must be at least zero. List entries are ordered by order, then by key. 
         /// </summary>
         public uint Order { get; set; }
+
         /// <summary>
         /// Whether the field is visible when the whisper is expanded or not.
         /// TODO: Confirm this is accurate.
@@ -127,11 +128,29 @@ namespace OliveHelpsLDK.Whispers.List
         public Style Style { get; set; }
     }
 
+    /// <summary>
+    /// A Link entry.
+    /// </summary>
     public class ListLink : ListBase
     {
+        /// <summary>
+        /// The text alignment of the link.
+        /// </summary>
         public Align Align { get; set; }
+
+        /// <summary>
+        /// The URL opened when the link is clicked on.
+        /// </summary>
         public string Href { get; set; }
+
+        /// <summary>
+        /// The style to be assigned to the link.
+        /// </summary>
         public Style Style { get; set; }
+
+        /// <summary>
+        /// The label displayed for the link.
+        /// </summary>
         public string Text { get; set; }
     }
 }

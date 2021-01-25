@@ -44,6 +44,9 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         public int Order { get; set; }
     }
 
+    /// <summary>
+    /// A checkbox field.
+    /// </summary>
     public class Checkbox : BaseInput
     {
         /// <summary>

@@ -12,13 +12,12 @@ namespace OliveHelpsLDK.Logging
         /// The DefaultFields set for this logger.
         /// </summary>        
         IDictionary<string, object> DefaultFields { get; }
-        
+
         /// <summary>
         /// Logs an event at the Trace level.
         /// </summary>
         /// <param name="message">The specific message to log.</param>
         /// <param name="fields">Any fields to be logged with it. The value should be serializeable to JSON.</param>
-        
         void Trace(string message, IDictionary<string, object> fields = null);
 
         /// <summary>
@@ -44,6 +43,12 @@ namespace OliveHelpsLDK.Logging
         /// </summary>
         /// <inheritdoc cref="Trace"/>
         void Error(string message, IDictionary<string, object> fields = null);
+
+        /// <summary>
+        /// Logs an event and Exception at the Error level.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="exception"></param>
         void Error(string message, Exception exception);
 
         /// <summary>
