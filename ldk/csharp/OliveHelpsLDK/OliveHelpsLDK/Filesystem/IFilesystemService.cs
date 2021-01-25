@@ -199,7 +199,7 @@ namespace OliveHelpsLDK.Filesystem
 
         /// <summary>
         /// The file permissions (if applicable).
-        /// TODO: Determine what values are sent for each of MacOS and Windows.
+        /// The values are set according to Go's <see href="https://golang.org/pkg/os/#FileMode">FileMode</see>.
         /// </summary>
         public uint Mode { get; set; }
 

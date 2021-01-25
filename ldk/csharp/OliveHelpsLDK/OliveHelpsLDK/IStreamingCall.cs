@@ -8,7 +8,6 @@ namespace OliveHelpsLDK
     /// <summary>
     /// The IStreamingCall interface represents an iterable call that users can iterate over.
     /// Call <see cref="IStreamingCall{TOutput}.MoveNext">MoveNext</see> to begin accessing values.
-    /// .
     /// </summary>
     /// <example>
     /// Task.Run(async () =>

@@ -12,7 +12,6 @@ namespace OliveHelpsLDK.Whispers.List
 
         /// <summary>
         /// Whether the field is visible when the whisper is expanded or not.
-        /// TODO: Confirm this is accurate.
         /// </summary>
         public bool Extra { get; set; }
     }
@@ -28,17 +27,17 @@ namespace OliveHelpsLDK.Whispers.List
         None,
 
         /// <summary>
-        /// TODO: Find this out.
+        /// Displays as a successful/positive item.
         /// </summary>
         Success,
 
         /// <summary>
-        /// TODO: Find this out.
+        /// Displays as a warning.
         /// </summary>
         Warn,
 
         /// <summary>
-        /// TODO: Find this out.
+        /// Displays as an error/failure.
         /// </summary>
         Error
     }
@@ -85,8 +84,7 @@ namespace OliveHelpsLDK.Whispers.List
         public Style Style { get; set; }
 
         /// <summary>
-        /// Whether the field can be copied or not.
-        /// TODO: Confirm
+        /// Whether the field can be one-clicked copied.
         /// </summary>
         public bool Copyable { get; set; }
     }

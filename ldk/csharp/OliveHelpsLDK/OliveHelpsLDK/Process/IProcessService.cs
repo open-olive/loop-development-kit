@@ -29,7 +29,7 @@ namespace OliveHelpsLDK.Process
     public struct ProcessInfo
     {
         /// <summary>
-        /// The Process ID
+        /// The Process ID.
         /// </summary>
         public int Pid;
 

@@ -227,7 +227,7 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
 
         /// <summary>
         /// The pattern of the field to be populated.
-        /// TODO: Provide example.
+        /// Should be formatted as per <see href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/tel#pattern">HTML Tel Input</see> specifications.
         /// </summary>
         public string Pattern { get; set; }
 

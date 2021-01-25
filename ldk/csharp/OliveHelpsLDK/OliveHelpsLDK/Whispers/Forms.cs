@@ -34,8 +34,7 @@ namespace OliveHelpsLDK.Whispers.Forms
     public struct WhisperResult : IWhisperFormResponse
     {
         /// <summary>
-        /// Whether the form was submitted (<c>true</c>), or rejected/dismissed (<c>false</c>).
-        /// TODO: Confirm that dismissed forms return false.
+        /// Whether the form was submitted (<c>true</c>), or rejected (<c>false</c>).
         /// </summary>
         public bool Result;
 
