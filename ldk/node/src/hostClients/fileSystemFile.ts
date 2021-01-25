@@ -6,7 +6,7 @@ import {
 } from './fileSystemService';
 import messages, { FilesystemFileStreamRequest } from '../grpc/filesystem_pb';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
+import { ILogger } from '../logging';
 
 enum FilesystemFileStatus {
   Pending,
@@ -41,7 +41,7 @@ export class FileSystemFileImpl implements FileSystemFile {
 
   private status: FilesystemFileStatus = FilesystemFileStatus.Pending;
 
-  private logger: Logger;
+  private logger: ILogger;
 
   private filePath: string | undefined;
 
@@ -51,7 +51,7 @@ export class FileSystemFileImpl implements FileSystemFile {
       messages.FilesystemFileStreamRequest,
       messages.FilesystemFileStreamResponse
     >,
-    logger: Logger,
+    logger: ILogger,
   ) {
     this.logger = logger.with('service', 'filesystem.file');
     this.session = session;

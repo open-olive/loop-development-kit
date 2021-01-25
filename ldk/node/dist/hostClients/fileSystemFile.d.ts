@@ -2,7 +2,7 @@ import * as grpc from '@grpc/grpc-js';
 import { FileInfo, FileSystemFile, FileSystemFileChownParams } from './fileSystemService';
 import messages from '../grpc/filesystem_pb';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
+import { ILogger } from '../logging';
 /**
  * @param fileInfo - The file info.
  * @internal
@@ -15,7 +15,7 @@ export declare class FileSystemFileImpl implements FileSystemFile {
     private status;
     private logger;
     private filePath;
-    constructor(session: Session.AsObject, stream: grpc.ClientDuplexStream<messages.FilesystemFileStreamRequest, messages.FilesystemFileStreamResponse>, logger: Logger);
+    constructor(session: Session.AsObject, stream: grpc.ClientDuplexStream<messages.FilesystemFileStreamRequest, messages.FilesystemFileStreamResponse>, logger: ILogger);
     open(path: string): void;
     create(path: string): void;
     changeOwnership(params: FileSystemFileChownParams): Promise<void>;

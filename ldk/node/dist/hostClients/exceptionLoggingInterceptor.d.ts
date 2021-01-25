@@ -1,6 +1,6 @@
 import { Interceptor } from '@grpc/grpc-js';
-import { Logger } from '../logging';
-declare const _default: (logger: Logger) => Interceptor;
+import { ILogger } from '../logging';
+declare const _default: (logger: ILogger) => Interceptor;
 /**
  * Builds an interceptor that logs low-level exceptions
  *

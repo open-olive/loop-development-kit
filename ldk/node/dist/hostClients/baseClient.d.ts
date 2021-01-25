@@ -4,7 +4,7 @@ import { CommonHostServer } from '../commonHostServer';
 import { CommonHostClient } from './commonHostClient';
 import { Session } from '../grpc/session_pb';
 import { StoppableMessage } from './stoppables';
-import { Logger } from '../logging';
+import { ILogger } from '../logging';
 /**
  * @internal
  */
@@ -42,7 +42,7 @@ export default abstract class BaseClient<THost extends CommonHostServer> impleme
      * @param session - An object containing the loop Session information.
      * @param logger - An object containing logging methods.
      */
-    connect(connInfo: ConnInfo.AsObject, session: Session.AsObject, logger: Logger): Promise<void>;
+    connect(connInfo: ConnInfo.AsObject, session: Session.AsObject, logger: ILogger): Promise<void>;
     /**
      * This convenience function returns a promise that resolves once the request has been completed and the response
      * converted to the desired output.
@@ -59,5 +59,5 @@ export default abstract class BaseClient<THost extends CommonHostServer> impleme
     protected set client(client: THost);
     protected get session(): Session.AsObject;
     protected set session(session: Session.AsObject);
-    protected get logger(): Logger;
+    protected get logger(): ILogger;
 }

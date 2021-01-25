@@ -1,6 +1,17 @@
 /** @module logging */
+/**
+ * Logging interface.
+ */
+export interface ILogger {
+    with(...args: any[]): ILogger;
+    trace(msg: string, ...fields: any[]): void;
+    debug(msg: string, ...fields: any[]): void;
+    info(msg: string, ...fields: any[]): void;
+    warn(msg: string, ...fields: any[]): void;
+    error(msg: string, ...fields: any[]): void;
+}
 /** Logger is a supported way to get logs to Olive Helps in the expected format. */
-declare class Logger {
+export declare class Logger implements ILogger {
     private _name;
     private _fields;
     /**
@@ -161,5 +172,4 @@ declare class Logger {
  *
  * @internal
  */
-declare const prepareLogging: () => void;
-export { Logger, prepareLogging };
+export declare const prepareLogging: () => void;

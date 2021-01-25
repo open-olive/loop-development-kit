@@ -5,8 +5,8 @@ import * as Messages from '../grpc/storage_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import StorageClient from './storageClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createWaitHandler,
@@ -18,7 +18,7 @@ jest.mock('../grpc/storage_grpc_pb');
 
 const MockClientClass = mocked(Services.StorageClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('StorageHostClient', () => {
   let subject: StorageClient;

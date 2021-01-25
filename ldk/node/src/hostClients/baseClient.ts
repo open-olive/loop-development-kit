@@ -5,7 +5,7 @@ import { CommonHostClient } from './commonHostClient';
 import { Session } from '../grpc/session_pb';
 import { StoppableMessage } from './stoppables';
 import { TransformingMessage } from './transformingMessage';
-import { Logger } from '../logging';
+import { ILogger } from '../logging';
 import buildLoggingInterceptor from './exceptionLoggingInterceptor';
 
 /**
@@ -38,7 +38,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   implements CommonHostClient {
   private _client: THost | undefined;
 
-  private _logger: Logger | undefined;
+  private _logger: ILogger | undefined;
 
   protected _session: Session.AsObject | undefined;
 
@@ -60,7 +60,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
   connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
-    logger: Logger,
+    logger: ILogger,
   ): Promise<void> {
     this._logger = logger.with('service', this.serviceName());
     return new Promise((resolve, reject) => {
@@ -179,7 +179,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
     this._session = session;
   }
 
-  protected get logger(): Logger {
+  protected get logger(): ILogger {
     if (this._logger == null) {
       throw new Error('Accessing Logger before Connection');
     }
