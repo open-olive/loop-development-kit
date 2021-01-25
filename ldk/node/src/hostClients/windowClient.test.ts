@@ -5,8 +5,8 @@ import * as Messages from '../grpc/window_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { WindowClient } from './windowClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
@@ -20,7 +20,7 @@ import { WindowInfoResponse } from './windowService';
 jest.mock('../grpc/window_grpc_pb');
 
 const MockClientClass = mocked(Services.WindowClient);
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('WindowClient', () => {
   let subject: WindowClient;

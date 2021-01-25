@@ -9,4 +9,5 @@ export declare class HoverClient extends BaseClient<HoverGRPCClient> implements 
     protected generateClient(): GRPCClientConstructor<HoverGRPCClient>;
     queryHover(params: HoverReadRequest): Promise<HoverResponse>;
     streamHover(params: HoverReadRequest, listener: StreamListener<HoverResponse>): StoppableStream<HoverResponse>;
+    protected serviceName(): string;
 }

@@ -11,4 +11,5 @@ export default class KeyboardClient extends BaseClient<KeyboardGRPCClient> imple
     streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
     streamScanCode(listener: StreamListener<ScanCodeEvent>): StoppableStream<ScanCodeEvent>;
     protected generateClient(): GRPCClientConstructor<KeyboardGRPCClient>;
+    protected serviceName(): string;
 }

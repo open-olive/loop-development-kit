@@ -81,5 +81,8 @@ class WindowClient extends baseClient_1.default {
             };
         }, listener);
     }
+    serviceName() {
+        return 'window';
+    }
 }
 exports.WindowClient = WindowClient;

@@ -43,6 +43,7 @@ class BaseClient {
      * @param logger - An object containing logging methods.
      */
     connect(connInfo, session, logger) {
+        this._logger = logger.with('service', this.serviceName());
         return new Promise((resolve, reject) => {
             let address;
             if (connInfo.network === 'unix') {
@@ -62,9 +63,10 @@ class BaseClient {
             deadline.setSeconds(deadline.getSeconds() + 5);
             this.client.waitForReady(deadline, (err) => {
                 if (err) {
-                    logger.error('Connection Failed', 'address', address);
+                    logger.error('Client Connection Failed', 'address', address);
                     return reject(err);
                 }
+                this.logger.trace('Client Connected');
                 return resolve();
             });
         });
@@ -80,12 +82,17 @@ class BaseClient {
     buildQuery(clientRequest, builder, renderer) {
         return new Promise((resolve, reject) => {
             const message = builder();
+            this.logger.trace('buildQuery - Starting Message');
             message.setSession(this.createSessionMessage());
             const callback = (err, response) => {
                 if (err) {
+                    this.logger.trace('buildQuery - Received Error');
                     return reject(err);
                 }
-                return resolve(renderer(response));
+                this.logger.trace('buildQuery - Received Response');
+                const renderer1 = renderer(response);
+                this.logger.trace('buildQuery - Parsed Response, Returning');
+                return resolve(renderer1);
             };
             clientRequest(message, callback);
         });
@@ -121,6 +128,12 @@ class BaseClient {
     }
     set session(session) {
         this._session = session;
+    }
+    get logger() {
+        if (this._logger == null) {
+            throw new Error('Accessing Logger before Connection');
+        }
+        return this._logger;
     }
 }
 exports.default = BaseClient;

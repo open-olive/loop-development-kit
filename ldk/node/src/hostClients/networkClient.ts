@@ -69,4 +69,8 @@ export class NetworkClient
       }),
     );
   }
+
+  protected serviceName(): string {
+    return 'network';
+  }
 }

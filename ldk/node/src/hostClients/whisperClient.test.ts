@@ -5,8 +5,8 @@ import WhisperClient from './whisperClient';
 import { ConnInfo } from '../grpc/broker_pb';
 import { Session } from '../grpc/session_pb';
 import * as Builders from './whisperMessageBuilder';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   createCallbackHandler,
   createWaitHandler,
   defaultConnInfo,
@@ -19,7 +19,7 @@ jest.mock('./whisperMessageBuilder');
 const WHISPER_ID = '1234-abcd';
 const MockClientClass = mocked(Services.WhisperClient);
 const messageBuilders = mocked(Builders);
-const testLogger = new Logger('test-logger');
+const testLogger = buildLogger();
 
 describe('WhisperHostClient', () => {
   let subject: WhisperClient;

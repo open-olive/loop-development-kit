@@ -15,5 +15,6 @@ namespace OliveHelpsLDK.Logging
         void Error(string message, Exception exception);
 
         ILogger WithFields(IDictionary<string, object> fields);
+
     }
 }
