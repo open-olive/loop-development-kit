@@ -11,4 +11,5 @@ export declare class BrowserClient extends BaseClient<BrowserGRPCClient> impleme
     streamActiveURL(listener: StreamListener<string>): StoppableStream<string>;
     streamSelectedText(listener: StreamListener<BrowserSelectedTextResponse>): StoppableStream<BrowserSelectedTextResponse>;
     protected generateClient(): GRPCClientConstructor<BrowserGRPCClient>;
+    protected serviceName(): string;
 }

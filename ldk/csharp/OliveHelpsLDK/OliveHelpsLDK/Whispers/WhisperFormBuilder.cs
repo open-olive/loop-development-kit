@@ -132,6 +132,16 @@ namespace OliveHelpsLDK.Whispers
                     };
                     listElement.Pair = pair;
                     break;
+                case ListLink listLink:
+                    var link = new WhisperListElement.Types.Link
+                    {
+                        Align = ToProto(listLink.Align),
+                        Href = listLink.Href,
+                        Style = ToProto(listLink.Style),
+                        Text = listLink.Text,
+                    };
+                    listElement.Link = link;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(element));
             }

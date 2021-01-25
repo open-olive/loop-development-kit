@@ -12,22 +12,34 @@ class ClipboardLoop implements Loop {
     this._host = host;
     logger.info('Requesting Stream');
     try {
-      this.host.clipboard.streamClipboard((error, response) => {
-        logger.info(
-          'Received Clipboard Event',
-          'response',
-          JSON.stringify(response),
-        );
-        if (response) {
-          this.host.whisper.markdownWhisper({
-            markdown: `Clipboard Node Text: ${response}`,
-            label: 'Clipboard Node Event',
-          });
+      this.host.clipboard.streamClipboard(async (error, response) => {
+        if (response !== 'fileinfo') {
+          return;
         }
+        this.workFile().catch((e) => {
+          logger.error('Received Error', 'error', e);
+        });
       });
     } catch (e) {
       logger.error('Error Streaming', 'error', e.toString());
     }
+  }
+
+  async workFile(): Promise<void> {
+    logger.debug('Opening File');
+    const file = this.host.fileSystem.openFile('/tmp/log.txt');
+    logger.debug('Getting File');
+    const fileInfo = await file.info();
+    logger.debug('Received File', 'info', JSON.stringify(fileInfo));
+    this.host.whisper.markdownWhisper({
+      label: 'File Info',
+      markdown: JSON.stringify(fileInfo),
+    });
+    await new Promise((resolve) => {
+      setTimeout(resolve, 5000);
+    });
+    await file.close();
+    logger.debug('File Closed');
   }
 
   stop(): void {

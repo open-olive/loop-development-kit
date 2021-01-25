@@ -7,6 +7,7 @@ import { ClipboardClient } from './clipboardClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
@@ -20,7 +21,7 @@ jest.mock('../grpc/clipboard_grpc_pb');
 
 const MockClientClass = mocked(Services.ClipboardClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('ClipboardClient', () => {
   let subject: ClipboardClient;

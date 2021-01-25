@@ -6,8 +6,8 @@ import * as Messages from '../grpc/process_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { ProcessClient } from './processClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createEmptyStream,
@@ -23,7 +23,7 @@ jest.mock('../grpc/process_grpc_pb');
 
 const MockClientClass = mocked(Services.ProcessClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('ProcessClient', () => {
   let subject: ProcessClient;

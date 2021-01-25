@@ -167,6 +167,14 @@ func TestLoop(t *testing.T) {
 						Order:  17,
 						Style:  ldk.WhisperContentListElementStyleError,
 					},
+					"link": &ldk.WhisperContentListElementLink {
+						Align:  ldk.WhisperContentListElementAlignCenter,
+						Extra: 	true,
+						Href: 	"https://isitchristmas.com/",
+						Order: 	18,
+						Style:  ldk.WhisperContentListElementStyleNone,
+						Text:	"IsItChristmas.com",
+					},	
 				},
 			}
 			if got := req.w; !cmp.Equal(got, exp) {

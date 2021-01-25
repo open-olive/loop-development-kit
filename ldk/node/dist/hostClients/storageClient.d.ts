@@ -36,4 +36,5 @@ export default class StorageClient extends BaseClient<StorageGRPCClient> impleme
      */
     storageWrite(key: string, value: string): Promise<void>;
     protected generateClient(): GRPCClientConstructor<StorageGRPCClient>;
+    protected serviceName(): string;
 }

@@ -39,12 +39,16 @@ export class ClipboardClient
   }
 
   streamClipboard(listener: StreamListener<string>): StoppableStream<string> {
+    const request = new messages.ClipboardReadStreamRequest().setSession(
+      this.createSessionMessage(),
+    );
+    this.logger.info(
+      'Stream Clipboard Request',
+      'request',
+      request.getJsPbMessageId() || 'not assigned',
+    );
     return new TransformingStream<messages.ClipboardReadStreamResponse, string>(
-      this.client.clipboardReadStream(
-        new messages.ClipboardReadStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
-      ),
+      this.client.clipboardReadStream(request),
       clipboardTransformer,
       listener,
     );
@@ -59,5 +63,9 @@ export class ClipboardClient
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       () => {},
     );
+  }
+
+  protected serviceName(): string {
+    return 'clipboard';
   }
 }

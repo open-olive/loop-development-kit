@@ -74,5 +74,8 @@ class StorageClient extends baseClient_1.default {
     generateClient() {
         return storage_grpc_pb_1.StorageClient;
     }
+    serviceName() {
+        return 'storage';
+    }
 }
 exports.default = StorageClient;

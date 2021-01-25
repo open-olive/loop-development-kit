@@ -58,4 +58,8 @@ export class HoverClient
       listener,
     );
   }
+
+  protected serviceName(): string {
+    return 'hover';
+  }
 }

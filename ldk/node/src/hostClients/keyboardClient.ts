@@ -144,4 +144,8 @@ export default class KeyboardClient
   protected generateClient(): GRPCClientConstructor<KeyboardGRPCClient> {
     return KeyboardGRPCClient;
   }
+
+  protected serviceName(): string {
+    return 'keyboard';
+  }
 }

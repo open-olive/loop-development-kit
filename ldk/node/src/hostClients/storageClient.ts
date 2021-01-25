@@ -99,4 +99,8 @@ export default class StorageClient
   protected generateClient(): GRPCClientConstructor<StorageGRPCClient> {
     return StorageGRPCClient;
   }
+
+  protected serviceName(): string {
+    return 'storage';
+  }
 }
