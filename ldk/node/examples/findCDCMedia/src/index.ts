@@ -8,6 +8,7 @@ import {
   WhisperListStyle,
   WhisperListAlign,
   WhisperFormSubmitEvent,
+  WhisperFormUpdateEvent,
 } from '../../../dist/hostClients/whisperService';
 
 const logger = new Logger('olive-helps-node-example-clipboard');
@@ -17,74 +18,79 @@ class ClipboardLoop implements Loop {
 
   private clipboardStream: StoppableStream<string> | undefined;
 
-  private formSubmissionStream:
-    | StreamListener<WhisperFormSubmitEvent>
-    | undefined;
-
   start(host: HostServices): void {
     this._host = host;
 
     logger.info('Requesting Stream');
 
+    const hotkeys = {
+      key: 'a',
+      modifiers: {
+        ctrl: true,
+      },
+    };
+
     try {
-      this.host.clipboard.streamClipboard((error, response) => {
+      this.host.keyboard.streamHotKey(hotkeys, (error, response) => {
         logger.info(
           'Food recall event started',
           'response',
           JSON.stringify(response),
         );
-        if (response) {
-          this.host.whisper.formWhisper(
-            {
-              submitButton: 'Submit',
-              cancelButton: 'Cancel',
-              label: 'Form Whisper',
-              markdown: '',
-              inputs: {
-                startDate: {
-                  type: 'text',
-                  value: '',
-                  label: 'Start Date',
-                  tooltip: 'YYYY-MM-DD',
-                  order: 1,
-                },
-                endDate: {
-                  type: 'text',
-                  value: '',
-                  label: 'End Date',
-                  tooltip: 'YYYY-MM-DD',
-                  order: 2,
-                },
+        this.host.whisper.formWhisper(
+          {
+            submitButton: 'Submit',
+            cancelButton: 'Cancel',
+            label: 'CDC Media Lookup',
+            markdown: 'The hotkey worked',
+            inputs: {
+              topic: {
+                type: 'text',
+                value: '',
+                label: 'Topic',
+                tooltip: 'Enter a topic, like "Coronavirus"',
+                order: 1,
               },
             },
-            (e, input) => {
-              if (e !== null) {
-                logger.error('Error in FDA form submit', e);
-              }
+          },
+          (e, input) => {
+            if (e !== null) {
+              logger.error('Error in FDA form submit', e);
+            }
 
-              if (typeof input !== 'undefined') {
-                const submitEvent = input as WhisperFormSubmitEvent;
+            if (typeof input === 'undefined') {
+              // Do nothing
+              return;
+            }
 
-                this.makeNetworkCall();
+            const updateEvent = input as WhisperFormUpdateEvent;
+            const submitEvent = input as WhisperFormSubmitEvent;
 
-                /* logger.info(
-                  'FDA input keys',
-                  Object.keys(submitEvent).toString(),
-                );
+            if (updateEvent.type === 'update') {
+              logger.info('Update detected', updateEvent.key);
+            } else if (submitEvent.type === 'submit') {
+              logger.info('Submit detected');
+              logger.info(JSON.stringify(submitEvent));
+            } else {
+              logger.info('IDK what happened');
+            }
 
-                if (typeof submitEvent.outputs === 'undefined') {
-                  logger.info('FDA outputs do not exist');
-                  return;
-                }
+            /* logger.info(
+              'FDA input keys',
+              Object.keys(submitEvent).toString(),
+            );
 
-                logger.info(
-                  'FDA Keys',
-                  Object.keys(submitEvent.outputs).toString(),
-                ); */
-              }
-            },
-          );
-        }
+            if (typeof submitEvent.outputs === 'undefined') {
+              logger.info('FDA outputs do not exist');
+              return;
+            }
+
+            logger.info(
+              'FDA Keys',
+              Object.keys(submitEvent.outputs).toString(),
+            ); */
+          },
+        );
       });
     } catch (e) {
       logger.error('Error Streaming', 'error', e.toString());
