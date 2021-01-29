@@ -36,14 +36,14 @@ goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.Close', null, global)
 goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.Create', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.Open', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.Read', null, global);
-goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.RequestOneofCase', null, global);
+goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.RequestOneOfCase', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.Stat', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamRequest.Write', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamResponse', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamResponse.Chmod', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamResponse.Chown', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamResponse.Read', null, global);
-goog.exportSymbol('proto.proto.FilesystemFileStreamResponse.ResponseOneofCase', null, global);
+goog.exportSymbol('proto.proto.FilesystemFileStreamResponse.ResponseOneOfCase', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamResponse.Stat', null, global);
 goog.exportSymbol('proto.proto.FilesystemFileStreamResponse.Write', null, global);
 goog.exportSymbol('proto.proto.FilesystemMakeDirRequest', null, global);
@@ -2005,8 +2005,8 @@ proto.proto.FilesystemFileStreamRequest.oneofGroups_ = [[1,2,3,4,5,6,7,8]];
 /**
  * @enum {number}
  */
-proto.proto.FilesystemFileStreamRequest.RequestOneofCase = {
-  REQUEST_ONEOF_NOT_SET: 0,
+proto.proto.FilesystemFileStreamRequest.RequestOneOfCase = {
+  REQUEST_ONE_OF_NOT_SET: 0,
   CREATE: 1,
   OPEN: 2,
   READ: 3,
@@ -2018,10 +2018,10 @@ proto.proto.FilesystemFileStreamRequest.RequestOneofCase = {
 };
 
 /**
- * @return {proto.proto.FilesystemFileStreamRequest.RequestOneofCase}
+ * @return {proto.proto.FilesystemFileStreamRequest.RequestOneOfCase}
  */
-proto.proto.FilesystemFileStreamRequest.prototype.getRequestOneofCase = function() {
-  return /** @type {proto.proto.FilesystemFileStreamRequest.RequestOneofCase} */(jspb.Message.computeOneofCase(this, proto.proto.FilesystemFileStreamRequest.oneofGroups_[0]));
+proto.proto.FilesystemFileStreamRequest.prototype.getRequestOneOfCase = function() {
+  return /** @type {proto.proto.FilesystemFileStreamRequest.RequestOneOfCase} */(jspb.Message.computeOneofCase(this, proto.proto.FilesystemFileStreamRequest.oneofGroups_[0]));
 };
 
 
@@ -3654,8 +3654,8 @@ proto.proto.FilesystemFileStreamResponse.oneofGroups_ = [[1,2,3,4,5]];
 /**
  * @enum {number}
  */
-proto.proto.FilesystemFileStreamResponse.ResponseOneofCase = {
-  RESPONSE_ONEOF_NOT_SET: 0,
+proto.proto.FilesystemFileStreamResponse.ResponseOneOfCase = {
+  RESPONSE_ONE_OF_NOT_SET: 0,
   READ: 1,
   WRITE: 2,
   CHMOD: 3,
@@ -3664,10 +3664,10 @@ proto.proto.FilesystemFileStreamResponse.ResponseOneofCase = {
 };
 
 /**
- * @return {proto.proto.FilesystemFileStreamResponse.ResponseOneofCase}
+ * @return {proto.proto.FilesystemFileStreamResponse.ResponseOneOfCase}
  */
-proto.proto.FilesystemFileStreamResponse.prototype.getResponseOneofCase = function() {
-  return /** @type {proto.proto.FilesystemFileStreamResponse.ResponseOneofCase} */(jspb.Message.computeOneofCase(this, proto.proto.FilesystemFileStreamResponse.oneofGroups_[0]));
+proto.proto.FilesystemFileStreamResponse.prototype.getResponseOneOfCase = function() {
+  return /** @type {proto.proto.FilesystemFileStreamResponse.ResponseOneOfCase} */(jspb.Message.computeOneofCase(this, proto.proto.FilesystemFileStreamResponse.oneofGroups_[0]));
 };
 
 

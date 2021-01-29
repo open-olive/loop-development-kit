@@ -17,7 +17,7 @@ interface IKeyboardService extends grpc.ServiceDefinition<grpc.UntypedServiceImp
 }
 
 interface IKeyboardService_IKeyboardHotkeyStream extends grpc.MethodDefinition<keyboard_pb.KeyboardHotkeyStreamRequest, keyboard_pb.KeyboardHotkeyStreamResponse> {
-    path: string; // "/proto.Keyboard/KeyboardHotkeyStream"
+    path: "/proto.Keyboard/KeyboardHotkeyStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<keyboard_pb.KeyboardHotkeyStreamRequest>;
@@ -26,7 +26,7 @@ interface IKeyboardService_IKeyboardHotkeyStream extends grpc.MethodDefinition<k
     responseDeserialize: grpc.deserialize<keyboard_pb.KeyboardHotkeyStreamResponse>;
 }
 interface IKeyboardService_IKeyboardScancodeStream extends grpc.MethodDefinition<keyboard_pb.KeyboardScancodeStreamRequest, keyboard_pb.KeyboardScancodeStreamResponse> {
-    path: string; // "/proto.Keyboard/KeyboardScancodeStream"
+    path: "/proto.Keyboard/KeyboardScancodeStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<keyboard_pb.KeyboardScancodeStreamRequest>;
@@ -35,7 +35,7 @@ interface IKeyboardService_IKeyboardScancodeStream extends grpc.MethodDefinition
     responseDeserialize: grpc.deserialize<keyboard_pb.KeyboardScancodeStreamResponse>;
 }
 interface IKeyboardService_IKeyboardTextStream extends grpc.MethodDefinition<keyboard_pb.KeyboardTextStreamRequest, keyboard_pb.KeyboardTextStreamResponse> {
-    path: string; // "/proto.Keyboard/KeyboardTextStream"
+    path: "/proto.Keyboard/KeyboardTextStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<keyboard_pb.KeyboardTextStreamRequest>;
@@ -44,7 +44,7 @@ interface IKeyboardService_IKeyboardTextStream extends grpc.MethodDefinition<key
     responseDeserialize: grpc.deserialize<keyboard_pb.KeyboardTextStreamResponse>;
 }
 interface IKeyboardService_IKeyboardCharacterStream extends grpc.MethodDefinition<keyboard_pb.KeyboardCharacterStreamRequest, keyboard_pb.KeyboardCharacterStreamResponse> {
-    path: string; // "/proto.Keyboard/KeyboardCharacterStream"
+    path: "/proto.Keyboard/KeyboardCharacterStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<keyboard_pb.KeyboardCharacterStreamRequest>;

@@ -270,7 +270,7 @@ export class FilesystemFileStreamRequest extends jspb.Message {
     setClose(value?: FilesystemFileStreamRequest.Close): FilesystemFileStreamRequest;
 
 
-    getRequestOneofCase(): FilesystemFileStreamRequest.RequestOneofCase;
+    getRequestOneOfCase(): FilesystemFileStreamRequest.RequestOneOfCase;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): FilesystemFileStreamRequest.AsObject;
@@ -472,8 +472,8 @@ export namespace FilesystemFileStreamRequest {
     }
 
 
-    export enum RequestOneofCase {
-        REQUEST_ONEOF_NOT_SET = 0,
+    export enum RequestOneOfCase {
+        REQUEST_ONE_OF_NOT_SET = 0,
     
     CREATE = 1,
 
@@ -527,7 +527,7 @@ export class FilesystemFileStreamResponse extends jspb.Message {
     setStat(value?: FilesystemFileStreamResponse.Stat): FilesystemFileStreamResponse;
 
 
-    getResponseOneofCase(): FilesystemFileStreamResponse.ResponseOneofCase;
+    getResponseOneOfCase(): FilesystemFileStreamResponse.ResponseOneOfCase;
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): FilesystemFileStreamResponse.AsObject;
@@ -672,8 +672,8 @@ export namespace FilesystemFileStreamResponse {
     }
 
 
-    export enum ResponseOneofCase {
-        RESPONSE_ONEOF_NOT_SET = 0,
+    export enum ResponseOneOfCase {
+        RESPONSE_ONE_OF_NOT_SET = 0,
     
     READ = 1,
 

@@ -473,7 +473,7 @@ export namespace FilesystemFileStreamRequest {
 
 
     export enum RequestOneOfCase {
-        REQUESTONEOF_NOT_SET = 0,
+        REQUEST_ONE_OF_NOT_SET = 0,
     
     CREATE = 1,
 
@@ -673,7 +673,7 @@ export namespace FilesystemFileStreamResponse {
 
 
     export enum ResponseOneOfCase {
-        RESPONSEONEOF_NOT_SET = 0,
+        RESPONSE_ONE_OF_NOT_SET = 0,
     
     READ = 1,
 

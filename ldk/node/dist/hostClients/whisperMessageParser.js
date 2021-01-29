@@ -44,7 +44,7 @@ const transformOutput = (message) => {
             return messageObj.text.value;
         case messages.WhisperFormOutput.OutputOneofCase.TIME:
             return message.getTime().getValue().toDate();
-        case messages.WhisperFormOutput.OutputOneofCase.OUTPUTONEOF_NOT_SET:
+        case messages.WhisperFormOutput.OutputOneofCase.OUTPUT_ONEOF_NOT_SET:
         default:
             return '';
     }
