@@ -614,7 +614,7 @@ export namespace WhisperFormInput {
 
 
     export enum InputOneofCase {
-        INPUTONEOF_NOT_SET = 0,
+        INPUT_ONEOF_NOT_SET = 0,
     
     CHECKBOX = 1,
 
@@ -944,7 +944,7 @@ export namespace WhisperFormOutput {
 
 
     export enum OutputOneofCase {
-        OUTPUTONEOF_NOT_SET = 0,
+        OUTPUT_ONEOF_NOT_SET = 0,
     
     CHECKBOX = 1,
 
@@ -1062,7 +1062,7 @@ export namespace WhisperFormStreamResponse {
     }
 
     export enum WhisperFormResponseOneofCase {
-        WHISPERFORMRESPONSEONEOF_NOT_SET = 0,
+        WHISPER_FORM_RESPONSE_ONEOF_NOT_SET = 0,
     
     RESULT = 1,
 
@@ -1215,7 +1215,7 @@ export namespace WhisperDisambiguationElement {
 
 
     export enum ElementOneofCase {
-        ELEMENTONEOF_NOT_SET = 0,
+        ELEMENT_ONEOF_NOT_SET = 0,
     
     OPTION = 2,
 
@@ -1474,7 +1474,7 @@ export namespace WhisperListElement {
 
 
     export enum ElementOneofCase {
-        ELEMENTONEOF_NOT_SET = 0,
+        ELEMENT_ONEOF_NOT_SET = 0,
     
     PAIR = 4,
 
