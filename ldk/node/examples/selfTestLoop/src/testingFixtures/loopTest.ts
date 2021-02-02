@@ -1,4 +1,5 @@
 import { Logger } from '../../../../dist/logging';
+import { HostServices } from '../../../../dist';
 
 export enum Status {
   PASS = 'pass',
@@ -9,25 +10,32 @@ export enum Status {
 export class LoopTest {
   private id: string;
 
-  private methodToExecute: () => void;
+  private methodToExecute: (host: HostServices) => void;
 
   private status: Status;
 
-  constructor(name: string, methodToExecute: () => void) {
+  constructor(name: string, methodToExecute: (host: HostServices) => void) {
     this.id = name;
     this.methodToExecute = methodToExecute;
     this.status = Status.NOT_STARTED;
   }
 
-  public runTest(logger: Logger): void {
+  public async runTest(host: HostServices, logger: Logger): Promise<Status> {
     try {
-      this.methodToExecute();
+      await this.methodToExecute(host);
       this.status = Status.PASS;
       logger.info(`PASS - ${this.id}`);
+
+      return new Promise((resolve) => {
+        resolve(this.status);
+      });
     } catch (error: any) {
       this.status = Status.FAIL;
       logger.error(`ERROR - ${this.id}`);
       logger.error(typeof error === 'string' ? error : error.message);
+      return new Promise((resolve, reject) => {
+        reject(this.status);
+      });
     }
   }
 }
