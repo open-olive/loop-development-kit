@@ -6,6 +6,7 @@ export declare class TransformingMessage<TOutput, TResponse> implements Stoppabl
     private promiseReject;
     private transformer;
     private _call;
+    private logger;
     constructor(transformer: (input: TResponse) => TOutput);
     promise(): Promise<TOutput>;
     stop(): void;

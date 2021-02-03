@@ -16,13 +16,36 @@ class ClipboardLoop implements Loop {
     try {
       this.host.clipboard.streamClipboard((error, response) => {
         const loopTest1 = new LoopTest(
-          'Keyboard Service',
-          this.keyboardService,
+          'Keyboard Service - Hotkey Test',
+          this.hotkeyTest,
         );
-        // const loopTest2 = new LoopTest('Failing Test', this.fail);
-        const suite = new TestSuite([loopTest1], logger);
+        const loopTest2 = new LoopTest(
+          'Keyboard Service - Char Test',
+          this.charTest,
+        );
+        const loopTest3 = new LoopTest(
+          'Keyboard Service - Char Stream Test',
+          this.charStreamTest,
+        );
+        const loopTest4 = new LoopTest(
+          'Keyboard Service = Char Scancode Test',
+          this.charScancodeTest,
+        );
+
+        const suite = new TestSuite(
+          [loopTest1, loopTest3, loopTest2, loopTest4],
+          logger,
+        );
+
         suite.start(host).then(() => {
-          logger.debug('Done!');
+          logger.info('🎉 Done!');
+          const prompt = this.host.whisper.markdownWhisper({
+            markdown: 'All tests have been run',
+            label: 'Testing Complete',
+          });
+          setTimeout(() => {
+            prompt.stop();
+          }, 5000);
         });
       });
     } catch (e) {
@@ -30,7 +53,7 @@ class ClipboardLoop implements Loop {
     }
   }
 
-  keyboardService(host: HostServices): Promise<boolean> {
+  hotkeyTest(host: HostServices): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const hotkeys = {
         key: 'a',
@@ -41,21 +64,31 @@ class ClipboardLoop implements Loop {
 
       if (typeof host !== 'undefined') {
         try {
-          host.whisper.markdownWhisper({
+          const prompt = host.whisper.markdownWhisper({
             markdown: 'Press Ctrl+A to test the hotkey functionality.',
-            label: 'Keyboard Test',
+            label: 'Hotkey Test',
           });
-          host.keyboard.streamHotKey(hotkeys, (error, response) => {
-            if (error) {
-              reject(error);
-            }
-            logger.info(
-              'Hotkeys pressed',
-              'response',
-              JSON.stringify(response),
-            );
-            resolve(true);
-          });
+          const hotkeyStream = host.keyboard.streamHotKey(
+            hotkeys,
+            (error, response) => {
+              if (error) {
+                reject(error);
+              }
+              logger.debug(
+                'Hotkey pressed',
+                'response',
+                JSON.stringify(response),
+              );
+              resolve(true);
+              prompt.stop();
+              hotkeyStream.stop();
+            },
+          );
+          setTimeout(() => {
+            prompt.stop();
+            hotkeyStream.stop();
+            reject(new Error('Timeout - Too much time has passed'));
+          }, 10000);
         } catch (e) {
           reject(new Error(e));
         }
@@ -64,139 +97,120 @@ class ClipboardLoop implements Loop {
       }
     });
   }
-  /* this.host.keyboard.streamHotKey(hotkeys, (error, response) => {
-        logger.info(
-          'Hotkeys pressed',
-          'response',
-          JSON.stringify(response),
-        );
-        this.host.whisper.markdownWhisper(
-          {
-            markdown: 'Submit',
-            label: 'Cancel',
-          }
-          (e, input) => {
-            if (e !== null) {
-              logger.error('Error in FDA form submit', e);
-            }
-  
-            if (typeof input === 'undefined') {
-              // Do nothing
-              return;
-            }
-  
-            const updateEvent = input as WhisperFormUpdateEvent;
-            const submitEvent = input as WhisperFormSubmitEvent;
-  
-            if (updateEvent.type === 'update') {
-              logger.info('Update detected', updateEvent.key);
-            } else if (submitEvent.type === 'submit') {
-              logger.info('Submit detected');
-              logger.info(JSON.stringify(submitEvent));
-            } else {
-              logger.info('IDK what happened');
-            }
-  
-            logger.info(
-              'FDA input keys',
-              Object.keys(submitEvent).toString(),
-            );
-  
-            if (typeof submitEvent.outputs === 'undefined') {
-              logger.info('FDA outputs do not exist');
-              return;
-            }
-  
-            logger.info(
-              'FDA Keys',
-              Object.keys(submitEvent.outputs).toString(),
-            ); 
-          },
-        );
-      });
-    } catch (e) {
-      logger.error('Error Streaming', 'error', e.toString());
-    }
 
+  charTest(host: HostServices): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (typeof host !== 'undefined') {
+        try {
+          const prompt = host.whisper.markdownWhisper({
+            markdown: 'Type the letter "F"',
+            label: 'Char Test',
+          });
+          const characterStream = host.keyboard.streamChar(
+            (error, response) => {
+              if (error) {
+                reject(error);
+              }
 
-    logger.info('passing test...');
+              if (typeof response !== 'undefined') {
+                logger.debug('Character pressed', 'response', response.text);
+
+                if (response.text === 'f' || response.text === 'F') {
+                  resolve(true);
+                  prompt.stop();
+                  characterStream.stop();
+                }
+              }
+            },
+          );
+        } catch (e) {
+          reject(new Error(e));
+        }
+      } else {
+        reject(new Error('Host services are unavailable'));
+      }
+    });
   }
 
-  /* const hotkeys = {
-    key: 'a',
-    modifiers: {
-      ctrl: true,
-    },
-  };
+  charStreamTest(host: HostServices): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (typeof host !== 'undefined') {
+        try {
+          const prompt = host.whisper.markdownWhisper({
+            markdown: 'Type the word "Olive"',
+            label: 'Char Stream Test',
+          });
+          const characterStream = host.keyboard.streamText(
+            (error, response) => {
+              if (error) {
+                reject(error);
+              }
 
-  try {
-    this.host.keyboard.streamHotKey(hotkeys, (error, response) => {
-      logger.info(
-        'Food recall event started',
-        'response',
-        JSON.stringify(response),
-      );
-      this.host.whisper.formWhisper(
-        {
-          submitButton: 'Submit',
-          cancelButton: 'Cancel',
-          label: 'CDC Media Lookup',
-          markdown: 'The hotkey worked',
-          inputs: {
-            topic: {
-              type: 'text',
-              value: '',
-              label: 'Topic',
-              tooltip: 'Enter a topic, like "Coronavirus"',
-              order: 1,
+              if (typeof response !== 'undefined') {
+                logger.debug(
+                  'Characters pressed',
+                  'response',
+                  response.toString(),
+                );
+
+                if (response.toString() === 'Olive') {
+                  resolve(true);
+                  prompt.stop();
+                  characterStream.stop();
+                }
+              }
             },
-          },
-        },
-        (e, input) => {
-          if (e !== null) {
-            logger.error('Error in FDA form submit', e);
-          }
-
-          if (typeof input === 'undefined') {
-            // Do nothing
-            return;
-          }
-
-          const updateEvent = input as WhisperFormUpdateEvent;
-          const submitEvent = input as WhisperFormSubmitEvent;
-
-          if (updateEvent.type === 'update') {
-            logger.info('Update detected', updateEvent.key);
-          } else if (submitEvent.type === 'submit') {
-            logger.info('Submit detected');
-            logger.info(JSON.stringify(submitEvent));
-          } else {
-            logger.info('IDK what happened');
-          }
-
-          logger.info(
-            'FDA input keys',
-            Object.keys(submitEvent).toString(),
           );
-
-          if (typeof submitEvent.outputs === 'undefined') {
-            logger.info('FDA outputs do not exist');
-            return;
-          }
-
-          logger.info(
-            'FDA Keys',
-            Object.keys(submitEvent.outputs).toString(),
-          ); 
-        },
-      );
+        } catch (e) {
+          reject(new Error(e));
+        }
+      } else {
+        reject(new Error('Host services are unavailable'));
+      }
     });
-  } catch (e) {
-    logger.error('Error Streaming', 'error', e.toString());
-  } */
+  }
 
-  fail(): void {
-    throw new Error('This test is supposed to fail');
+  charScancodeTest(host: HostServices): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      if (typeof host !== 'undefined') {
+        try {
+          const prompt = host.whisper.markdownWhisper({
+            markdown: 'Type the word "Olive"',
+            label: 'Char Scancode Test',
+          });
+          const characterStream = host.keyboard.streamScanCode(
+            (error, response) => {
+              if (error) {
+                reject(error);
+              }
+
+              if (typeof response !== 'undefined') {
+                logger.info(
+                  'Characters pressed',
+                  'response',
+                  response.scanCode.toString(),
+                );
+                logger.info(
+                  'Characters pressed',
+                  'response',
+                  response.direction.toString(),
+                );
+
+                /* if (response.toString() === 'Olive') {
+                  resolve(true);
+                  prompt.stop();
+                  characterStream.stop();
+                } */
+              }
+            },
+          );
+        } catch (e) {
+          reject(new Error(e));
+        }
+      } else {
+        reject(new Error('Host services are unavailable'));
+      }
+    });
   }
 
   stop(): void {

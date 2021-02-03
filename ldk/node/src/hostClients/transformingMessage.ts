@@ -1,5 +1,6 @@
 import * as GRPC from '@grpc/grpc-js';
 import { StoppableMessage } from './stoppables';
+import { Logger } from '../logging';
 
 export class TransformingMessage<TOutput, TResponse>
   implements StoppableMessage<TOutput> {
@@ -14,12 +15,15 @@ export class TransformingMessage<TOutput, TResponse>
 
   private _call: GRPC.ClientUnaryCall | undefined;
 
+  private logger: Logger;
+
   constructor(transformer: (input: TResponse) => TOutput) {
     this.callbackPromise = new Promise<TOutput>((resolve, reject) => {
       this.promiseResolve = resolve;
       this.promiseReject = reject;
     });
     this.transformer = transformer;
+    this.logger = new Logger('loop-core');
   }
 
   promise(): Promise<TOutput> {
@@ -31,7 +35,8 @@ export class TransformingMessage<TOutput, TResponse>
   }
 
   callback = (error: GRPC.ServiceError | null, response: TResponse): void => {
-    if (error) {
+    // Error code = 1 is what happens when we call stop()
+    if (error && error.code !== 1) {
       this.promiseReject(error);
     } else if (response) {
       this.promiseResolve(this.transformer(response));

@@ -12,12 +12,10 @@ export default class TestSuite {
     this.logger = logger;
   }
 
-  public async start(host: HostServices): Promise<void> {
+  public async start(host: HostServices): Promise<boolean> {
     for await (const test of this.tests) {
-      test.runTest(host, this.logger);
+      await test.runTest(host, this.logger);
     }
-    return new Promise((resolve) => {
-      resolve();
-    });
+    return true;
   }
 }

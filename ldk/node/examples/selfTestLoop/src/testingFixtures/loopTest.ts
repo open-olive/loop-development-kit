@@ -24,14 +24,14 @@ export class LoopTest {
     try {
       await this.methodToExecute(host);
       this.status = Status.PASS;
-      logger.info(`PASS - ${this.id}`);
+      logger.info(`✅ PASS - ${this.id}`);
 
       return new Promise((resolve) => {
         resolve(this.status);
       });
     } catch (error: any) {
       this.status = Status.FAIL;
-      logger.error(`ERROR - ${this.id}`);
+      logger.error(`💀 FAIL - ${this.id}`);
       logger.error(typeof error === 'string' ? error : error.message);
       return new Promise((resolve, reject) => {
         reject(this.status);
