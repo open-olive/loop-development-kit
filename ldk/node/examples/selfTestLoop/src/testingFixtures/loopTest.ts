@@ -34,7 +34,7 @@ export class LoopTest {
       logger.error(`💀 FAIL - ${this.id}`);
       logger.error(typeof error === 'string' ? error : error.message);
       return new Promise((resolve, reject) => {
-        reject(this.status);
+        reject(error);
       });
     }
   }

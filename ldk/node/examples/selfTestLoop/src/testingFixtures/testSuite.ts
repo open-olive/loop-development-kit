@@ -14,7 +14,11 @@ export default class TestSuite {
 
   public async start(host: HostServices): Promise<boolean> {
     for await (const test of this.tests) {
-      await test.runTest(host, this.logger);
+      try {
+        await test.runTest(host, this.logger);
+      } catch (err) {
+        // do nothing, already logging
+      }
     }
     return true;
   }
