@@ -40,5 +40,13 @@ namespace OliveHelpsLDK.Whispers.List
     public class ListDivider : ListBase
     {
         public Style Style { get; set; }
+
+    }
+    public class ListLink : ListBase
+    {
+        public Align Align { get; set; }
+        public string Href { get; set; }
+        public Style Style { get; set; }
+        public string Text { get; set; }
     }
 }

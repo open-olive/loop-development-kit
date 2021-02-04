@@ -8,8 +8,6 @@
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
@@ -1519,6 +1517,9 @@ proto.proto.WindowAction = {
     WINDOW_ACTION_FOCUSED: 1,
     WINDOW_ACTION_UNFOCUSED: 2,
     WINDOW_ACTION_OPENED: 3,
-    WINDOW_ACTION_CLOSED: 4
+    WINDOW_ACTION_CLOSED: 4,
+    WINDOW_ACTION_MOVED: 5,
+    WINDOW_ACTION_RESIZED: 6,
+    WINDOW_ACTION_TITLE_CHANGED: 7
 };
 goog.object.extend(exports, proto.proto);

@@ -45,5 +45,8 @@ class WhisperClient extends baseClient_1.default {
     generateClient() {
         return whisper_grpc_pb_1.WhisperClient;
     }
+    serviceName() {
+        return 'whisper';
+    }
 }
 exports.default = WhisperClient;

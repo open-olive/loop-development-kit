@@ -163,7 +163,6 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 			file.Close()
 		}
 	}()
-
 	for {
 		select {
 		case <-stream.Context().Done():
@@ -185,7 +184,6 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 					context.WithValue(stream.Context(), Session{}, session),
 					req.Open.GetPath(),
 				)
-
 				if err != nil {
 					return err
 				}
@@ -316,6 +314,7 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 					},
 				})
 				if err != nil {
+					fmt.Println("Returning with Error", err)
 					return err
 				}
 

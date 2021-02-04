@@ -85,4 +85,8 @@ export class BrowserClient
   protected generateClient(): GRPCClientConstructor<BrowserGRPCClient> {
     return BrowserGRPCClient;
   }
+
+  protected serviceName(): string {
+    return 'browser';
+  }
 }

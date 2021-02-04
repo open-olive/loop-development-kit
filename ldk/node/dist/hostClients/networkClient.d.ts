@@ -4,4 +4,5 @@ import { NetworkService, HttpRequest, HttpResponse } from './networkService';
 export declare class NetworkClient extends BaseClient<NetworkGRPCClient> implements NetworkService {
     protected generateClient(): GRPCClientConstructor<NetworkGRPCClient>;
     httpRequest(req: HttpRequest): Promise<HttpResponse>;
+    protected serviceName(): string;
 }

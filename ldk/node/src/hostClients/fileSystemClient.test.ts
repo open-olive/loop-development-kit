@@ -5,8 +5,8 @@ import * as Messages from '../grpc/filesystem_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { FileSystemClient } from './fileSystemClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
@@ -21,7 +21,7 @@ jest.mock('../grpc/filesystem_grpc_pb');
 
 const MockClientClass = mocked(Services.FilesystemClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('FileSystemClient', () => {
   let subject: FileSystemClient;

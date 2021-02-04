@@ -9,6 +9,18 @@ import { Deadline } from '@grpc/grpc-js';
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
 import BaseClient, { GRPCClientConstructor } from './hostClients/baseClient';
+import { ILogger, Logger } from './logging';
+import { TestLogger } from './testLogger';
+
+/**
+ * @internal
+ */
+export function buildLogger(): ILogger {
+  if (process.env.TEST_LOGGING != null) {
+    return new Logger('test-logger');
+  }
+  return new TestLogger();
+}
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export type CallbackFunc<TResponse = any> = (
@@ -131,6 +143,10 @@ export class FakeGRPCClient {
 export class FakeHostServer extends BaseClient<FakeGRPCClient> {
   protected generateClient(): GRPCClientConstructor<FakeGRPCClient> {
     return FakeGRPCClient;
+  }
+
+  protected serviceName(): string {
+    return '';
   }
 }
 

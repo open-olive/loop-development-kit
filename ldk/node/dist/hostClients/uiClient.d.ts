@@ -6,4 +6,5 @@ export declare class UIClient extends BaseClient<UIGRPCClient> implements UIServ
     protected generateClient(): GRPCClientConstructor<UIGRPCClient>;
     streamSearchbar(listener: StreamListener<string>): StoppableStream<string>;
     streamGlobalSearch(listener: StreamListener<string>): StoppableStream<string>;
+    protected serviceName(): string;
 }

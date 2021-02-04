@@ -162,12 +162,12 @@ namespace OliveHelpsLDK
         /// <param name="token">A cancellation token to which this will register a re-throw.</param>
         private static void HandleException(AggregateException aex, ILogger logger, CancellationToken token)
         {
-            token.Register(() => throw aex);
-            aex.Handle(exception =>
-            {
-                logger.Error("Client exception", exception);
-                return true;
-            });
+                token.Register(() => throw aex);
+                aex.Handle(exception =>
+                {
+                    logger.Error("Client exception", exception);
+                    return false;
+                });
         }
 
         /// <summary>

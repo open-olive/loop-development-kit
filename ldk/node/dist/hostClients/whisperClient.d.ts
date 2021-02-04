@@ -21,5 +21,6 @@ declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whi
     disambiguationWhisper(whisper: WhisperDisambiguationConfig, listener: StreamListener<WhisperDisambiguationEvent>): StoppableStream<WhisperDisambiguationEvent>;
     formWhisper(whisper: WhisperFormConfig, listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;
     protected generateClient(): GRPCClientConstructor<WhisperGRPCClient>;
+    protected serviceName(): string;
 }
 export default WhisperClient;

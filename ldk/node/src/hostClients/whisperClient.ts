@@ -117,6 +117,10 @@ class WhisperClient
   protected generateClient(): GRPCClientConstructor<WhisperGRPCClient> {
     return WhisperGRPCClient;
   }
+
+  protected serviceName(): string {
+    return 'whisper';
+  }
 }
 
 export default WhisperClient;

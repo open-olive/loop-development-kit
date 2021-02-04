@@ -5,8 +5,8 @@ import * as Messages from '../grpc/hover_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { HoverClient } from './hoverClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
@@ -21,7 +21,7 @@ jest.mock('../grpc/hover_grpc_pb');
 
 const MockClientClass = mocked(Services.HoverClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('HoverClient', () => {
   let subject: HoverClient;

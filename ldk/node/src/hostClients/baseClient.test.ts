@@ -8,10 +8,10 @@ import {
   createCallbackHandler,
   defaultConnInfo,
   defaultSession,
+  buildLogger,
 } from '../test.helpers';
-import { Logger } from '../logging';
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('BaseClient', () => {
   let subject: BaseClient<FakeGRPCClient>;

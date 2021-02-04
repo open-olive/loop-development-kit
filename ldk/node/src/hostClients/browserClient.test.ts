@@ -7,6 +7,7 @@ import { BrowserClient } from './browserClient';
 import { Session } from '../grpc/session_pb';
 import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
@@ -21,7 +22,7 @@ jest.mock('../grpc/browser_grpc_pb');
 
 const MockClientClass = mocked(Services.BrowserClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('BrowserClient', () => {
   let subject: BrowserClient;

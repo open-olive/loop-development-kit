@@ -6,8 +6,8 @@ import * as Messages from '../grpc/keyboard_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import KeyboardClient from './keyboardClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createEmptyStream,
   createStreamingHandler,
@@ -22,7 +22,7 @@ jest.mock('../grpc/keyboard_grpc_pb');
 
 const MockClientClass = mocked(Services.KeyboardClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('KeyboardClient', () => {
   let subject: KeyboardClient;

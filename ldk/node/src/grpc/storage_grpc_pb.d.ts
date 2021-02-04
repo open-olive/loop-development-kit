@@ -18,7 +18,7 @@ interface IStorageService extends grpc.ServiceDefinition<grpc.UntypedServiceImpl
 }
 
 interface IStorageService_IStorageDelete extends grpc.MethodDefinition<storage_pb.StorageDeleteRequest, google_protobuf_empty_pb.Empty> {
-    path: "/proto.Storage/StorageDelete";
+    path: string; // "/proto.Storage/StorageDelete"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<storage_pb.StorageDeleteRequest>;
@@ -27,7 +27,7 @@ interface IStorageService_IStorageDelete extends grpc.MethodDefinition<storage_p
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
 interface IStorageService_IStorageExists extends grpc.MethodDefinition<storage_pb.StorageExistsRequest, storage_pb.StorageExistsResponse> {
-    path: "/proto.Storage/StorageExists";
+    path: string; // "/proto.Storage/StorageExists"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<storage_pb.StorageExistsRequest>;
@@ -36,7 +36,7 @@ interface IStorageService_IStorageExists extends grpc.MethodDefinition<storage_p
     responseDeserialize: grpc.deserialize<storage_pb.StorageExistsResponse>;
 }
 interface IStorageService_IStorageRead extends grpc.MethodDefinition<storage_pb.StorageReadRequest, storage_pb.StorageReadResponse> {
-    path: "/proto.Storage/StorageRead";
+    path: string; // "/proto.Storage/StorageRead"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<storage_pb.StorageReadRequest>;
@@ -45,7 +45,7 @@ interface IStorageService_IStorageRead extends grpc.MethodDefinition<storage_pb.
     responseDeserialize: grpc.deserialize<storage_pb.StorageReadResponse>;
 }
 interface IStorageService_IStorageWrite extends grpc.MethodDefinition<storage_pb.StorageWriteRequest, google_protobuf_empty_pb.Empty> {
-    path: "/proto.Storage/StorageWrite";
+    path: string; // "/proto.Storage/StorageWrite"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<storage_pb.StorageWriteRequest>;

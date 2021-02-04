@@ -25,7 +25,9 @@ class ClipboardClient extends baseClient_1.default {
         return this.buildQuery((message, callback) => this.client.clipboardRead(message, callback), () => new clipboard_pb_1.default.ClipboardReadRequest(), clipboardTransformer);
     }
     streamClipboard(listener) {
-        return new transformingStream_1.TransformingStream(this.client.clipboardReadStream(new clipboard_pb_1.default.ClipboardReadStreamRequest().setSession(this.createSessionMessage())), clipboardTransformer, listener);
+        const request = new clipboard_pb_1.default.ClipboardReadStreamRequest().setSession(this.createSessionMessage());
+        this.logger.info('Stream Clipboard Request', 'request', request.getJsPbMessageId() || 'not assigned');
+        return new transformingStream_1.TransformingStream(this.client.clipboardReadStream(request), clipboardTransformer, listener);
     }
     writeClipboard(text) {
         return this.buildQuery((message, callback) => {
@@ -33,6 +35,9 @@ class ClipboardClient extends baseClient_1.default {
         }, () => new clipboard_pb_1.default.ClipboardWriteRequest().setText(text), 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
+    }
+    serviceName() {
+        return 'clipboard';
     }
 }
 exports.ClipboardClient = ClipboardClient;

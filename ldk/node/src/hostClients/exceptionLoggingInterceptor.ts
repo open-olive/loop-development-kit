@@ -7,7 +7,7 @@ import {
 } from '@grpc/grpc-js';
 import * as grpc from '@grpc/grpc-js';
 import { NextCall } from '@grpc/grpc-js/build/src/client-interceptors';
-import { Logger } from '../logging';
+import { ILogger, Logger } from '../logging';
 
 const METHOD_PATH = /^\/proto\.(?<service>\w+)\/(?<method>\w+)$/;
 /**
@@ -28,7 +28,7 @@ function extractContext(options: InterceptorOptions) {
  *
  * @param logger - the logger to use for logging exceptions
  */
-export default (logger: Logger): Interceptor => (
+export default (logger: ILogger): Interceptor => (
   options: InterceptorOptions,
   nextCall: NextCall,
 ) => {

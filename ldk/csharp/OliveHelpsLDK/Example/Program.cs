@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using OliveHelpsLDK;
@@ -7,12 +8,17 @@ using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Whispers.Forms;
 using OliveHelpsLDK.Whispers.Forms.Outputs;
+using OliveHelpsLDK.Window;
 using Checkbox = OliveHelpsLDK.Whispers.Forms.Inputs.Checkbox;
 using Email = OliveHelpsLDK.Whispers.Forms.Inputs.Email;
 using IBase = OliveHelpsLDK.Whispers.Forms.Inputs.IBase;
 using ICheckbox = OliveHelpsLDK.Whispers.Forms.Outputs.ICheckbox;
 using IEmail = OliveHelpsLDK.Whispers.Forms.Outputs.IEmail;
 using IMarkdown = OliveHelpsLDK.Whispers.Forms.Outputs.IMarkdown;
+using ListAlign = OliveHelpsLDK.Whispers.List.Align;
+using ListBase = OliveHelpsLDK.Whispers.List.ListBase;
+using ListLink = OliveHelpsLDK.Whispers.List.ListLink;
+using ListPair = OliveHelpsLDK.Whispers.List.ListPair;
 using Markdown = OliveHelpsLDK.Whispers.Forms.Inputs.Markdown;
 using Number = OliveHelpsLDK.Whispers.Forms.Inputs.Number;
 using Password = OliveHelpsLDK.Whispers.Forms.Inputs.Password;
@@ -29,6 +35,11 @@ namespace Example
         public static void Main(string[] args)
         {
             ILogger logger = new Logger("csharp-clipboard-example");
+            TaskScheduler.UnobservedTaskException += (sender, eventArgs) =>
+            {
+                logger.Error("Unhandled Task Exception",
+                    new Dictionary<string, object>() {{"error", eventArgs.Exception}});
+            };
             LoopServer.Start(new Loop
             {
                 Logger = logger
@@ -63,6 +74,7 @@ namespace Example
         private void ClipboardStream()
         {
             _clipboardStream = _services.Clipboard.Stream();
+            Logger.Info("Started Streaming Clipboard");
             Task.Run(async () =>
             {
                 await foreach (var clipboardContent in _clipboardStream.ToAsyncEnumerable())
@@ -72,6 +84,24 @@ namespace Example
                         Logger.Info($"Received Clipboard Update \"{clipboardContent}\"");
                         switch (clipboardContent)
                         {
+                            case "fileinfo":
+                                Logger.Info("Starting File Info");
+                                try
+                                {
+                                    var fileInfoStream = FileInfoStream();
+                                    fileInfoStream.ContinueWith(
+                                        continuationAction: (task =>
+                                        {
+                                            Logger.Error("Handled Exception", task.Exception);
+                                        }), TaskContinuationOptions.OnlyOnFaulted);
+                                }
+                                catch (Exception e)
+                                {
+                                    Logger.Error("Exception Caught",
+                                        new Dictionary<string, object>() {{"error", e.ToString()}});
+                                }
+
+                                break;
                             case "formnew":
                                 FormStream();
                                 Logger.Info("Starting Form Stream");
@@ -82,6 +112,12 @@ namespace Example
                             case "keystop":
                                 KeyboardStream(false);
                                 break;
+                            case "windowtest":
+                                WindowStream();
+                                break;
+                            case "listtest":
+                                EmitListWhisper();
+                                break;
                             default:
                                 EmitWhisper(clipboardContent);
                                 break;
@@ -90,6 +126,33 @@ namespace Example
                     catch (Exception e)
                     {
                         Logger.Error(e.ToString());
+                    }
+                }
+            });
+        }
+
+        private void WindowStream()
+        {
+            var stream = _services.Window.StreamState();
+            Task.Run(async () =>
+            {
+                while (await stream.MoveNext())
+                {
+                    if (stream.Current().Action == WindowEventAction.TitleChanged)
+                    {
+                        Logger.Info("Window Title Changed Action Received");
+                        continue;
+                    }
+
+                    if (stream.Current().Action == WindowEventAction.Moved)
+                    {
+                        Logger.Info("Window Moved Action Received");
+                        continue;
+                    }
+
+                    if (stream.Current().Action == WindowEventAction.Resized)
+                    {
+                        Logger.Info("Window Resized Action Received");
                     }
                 }
             });
@@ -122,13 +185,46 @@ namespace Example
             ccs.CancelAfter(5000);
             _services.Whisper.MarkdownAsync(new WhisperMarkdown
             {
-                Markdown = $"Clipboard Content {content}",
+                Markdown = content,
                 Config = new WhisperConfig
                 {
                     Label = "C# Whisper"
                 }
             }, ccs.Token);
-            Logger.Info($"Sent Clipboard Update {content}");
+            Logger.Info($"Sent Whisper {content}");
+        }
+
+        private async Task FileInfoStream()
+        {
+            var file = await _services.Filesystem.OpenFile("/tmp/log3.txt");
+            Logger.Info("Requesting File Info");
+            var fileInfo = await file.FileInfo();
+            Logger.Info($"Received File Info - {fileInfo.ToString()}",
+                new Dictionary<string, object>() {{"file", fileInfo.ToString()}});
+            await file.Close();
+            Logger.Info("File Closed");
+            var fileInfoJson = JsonSerializer.Serialize(fileInfo);
+            Logger.Info(fileInfoJson);
+            EmitWhisper(fileInfoJson);
+        }
+
+        private void EmitListWhisper()
+        {
+            var ccs = new CancellationTokenSource();
+            ccs.CancelAfter(5000);
+            var whisperList = new WhisperList
+            {
+                Config = new WhisperConfig {
+                    Label = "C# Whisper"
+                },
+                Elements =  new Dictionary<string, ListBase>
+                {
+                    ["Nickname"] = new ListPair {Label="Nickname", Order=1, Value="Old Greg"},
+                    ["Link"] = new ListLink {Align=ListAlign.Center, Href="https://isitchristmas.com/", Order=2, Text="Is it Christmas?" }
+                },
+            };       
+            _services.Whisper.ListAsync(whisperList, ccs.Token);
+            Logger.Info($"Sent List Whisper");
         }
 
         private void FormStream()

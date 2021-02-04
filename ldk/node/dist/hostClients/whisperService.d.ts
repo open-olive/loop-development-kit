@@ -150,7 +150,21 @@ export declare type WhisperListDivider = WhisperListElement<'divider'> & {
      */
     style?: WhisperListStyle;
 };
-export declare type WhisperListElements = WhisperListMessage | WhisperListPair | WhisperListDivider;
+export declare type WhisperListLink = WhisperListElement<'link'> & {
+    /**
+     *  Value the UI uses to determine how to align text horizontally.
+     *  If this value is ommited it will default to LEFT.
+     */
+    align?: WhisperListAlign;
+    href: string;
+    /**
+     *  Value the UI uses to determine how to style the element.
+     *  If this value is ommited it will default to NONE.
+     */
+    style?: WhisperListStyle;
+    text: string;
+};
+export declare type WhisperListElements = WhisperListMessage | WhisperListPair | WhisperListDivider | WhisperListLink;
 export interface WhisperListConfig extends Whisper {
     elements: {
         [name: string]: WhisperListElements;

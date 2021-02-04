@@ -56,4 +56,8 @@ export class CursorClient
       listener,
     );
   }
+
+  protected serviceName(): string {
+    return 'cursor';
+  }
 }
