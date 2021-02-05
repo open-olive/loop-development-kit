@@ -128,7 +128,7 @@ message WhisperFormInput {
         uint32 order = 4;
     }
 
-    oneof InputOneof {
+    oneof input_oneof {
         Checkbox checkbox = 1;
         Email email = 2;
         Markdown markdown = 3;
@@ -183,7 +183,7 @@ message WhisperFormOutput {
         google.protobuf.Timestamp value = 1;
     }
 
-    oneof OutputOneof {
+    oneof output_oneof {
         Checkbox checkbox = 1;
         Email email = 2;
         Markdown markdown = 3;
@@ -208,7 +208,7 @@ message WhisperFormUpdate {
 }
 
 message WhisperFormStreamResponse {
-    oneof WhisperFormResponseOneof {
+    oneof whisper_form_response_oneof {
         WhisperFormResult result = 1;
         WhisperFormUpdate update = 2;
     }
@@ -238,7 +238,7 @@ message WhisperDisambiguationElement {
         string body = 2;
     }
 
-    oneof ElementOneof {
+    oneof element_oneof {
         Option option = 2;
         Text text = 3;
     }
@@ -296,7 +296,7 @@ message WhisperListElement {
         string text = 4;
     }
 
-    oneof ElementOneof {
+    oneof element_oneof {
         Pair pair = 4;
         Message message = 5;
         Divider divider = 6;

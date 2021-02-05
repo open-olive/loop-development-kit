@@ -23,7 +23,7 @@ interface IFilesystemService extends grpc.ServiceDefinition<grpc.UntypedServiceI
 }
 
 interface IFilesystemService_IFilesystemDir extends grpc.MethodDefinition<filesystem_pb.FilesystemDirRequest, filesystem_pb.FilesystemDirResponse> {
-    path: string; // "/proto.Filesystem/FilesystemDir"
+    path: "/proto.Filesystem/FilesystemDir";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemDirRequest>;
@@ -32,7 +32,7 @@ interface IFilesystemService_IFilesystemDir extends grpc.MethodDefinition<filesy
     responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemDirResponse>;
 }
 interface IFilesystemService_IFilesystemDirStream extends grpc.MethodDefinition<filesystem_pb.FilesystemDirStreamRequest, filesystem_pb.FilesystemDirStreamResponse> {
-    path: string; // "/proto.Filesystem/FilesystemDirStream"
+    path: "/proto.Filesystem/FilesystemDirStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemDirStreamRequest>;
@@ -41,7 +41,7 @@ interface IFilesystemService_IFilesystemDirStream extends grpc.MethodDefinition<
     responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemDirStreamResponse>;
 }
 interface IFilesystemService_IFilesystemFileInfoStream extends grpc.MethodDefinition<filesystem_pb.FilesystemFileInfoStreamRequest, filesystem_pb.FilesystemFileInfoStreamResponse> {
-    path: string; // "/proto.Filesystem/FilesystemFileInfoStream"
+    path: "/proto.Filesystem/FilesystemFileInfoStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemFileInfoStreamRequest>;
@@ -50,7 +50,7 @@ interface IFilesystemService_IFilesystemFileInfoStream extends grpc.MethodDefini
     responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemFileInfoStreamResponse>;
 }
 interface IFilesystemService_IFilesystemFileStream extends grpc.MethodDefinition<filesystem_pb.FilesystemFileStreamRequest, filesystem_pb.FilesystemFileStreamResponse> {
-    path: string; // "/proto.Filesystem/FilesystemFileStream"
+    path: "/proto.Filesystem/FilesystemFileStream";
     requestStream: true;
     responseStream: true;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemFileStreamRequest>;
@@ -59,7 +59,7 @@ interface IFilesystemService_IFilesystemFileStream extends grpc.MethodDefinition
     responseDeserialize: grpc.deserialize<filesystem_pb.FilesystemFileStreamResponse>;
 }
 interface IFilesystemService_IFilesystemMakeDir extends grpc.MethodDefinition<filesystem_pb.FilesystemMakeDirRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Filesystem/FilesystemMakeDir"
+    path: "/proto.Filesystem/FilesystemMakeDir";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemMakeDirRequest>;
@@ -68,7 +68,7 @@ interface IFilesystemService_IFilesystemMakeDir extends grpc.MethodDefinition<fi
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
 interface IFilesystemService_IFilesystemCopy extends grpc.MethodDefinition<filesystem_pb.FilesystemCopyRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Filesystem/FilesystemCopy"
+    path: "/proto.Filesystem/FilesystemCopy";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemCopyRequest>;
@@ -77,7 +77,7 @@ interface IFilesystemService_IFilesystemCopy extends grpc.MethodDefinition<files
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
 interface IFilesystemService_IFilesystemMove extends grpc.MethodDefinition<filesystem_pb.FilesystemMoveRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Filesystem/FilesystemMove"
+    path: "/proto.Filesystem/FilesystemMove";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemMoveRequest>;
@@ -86,7 +86,7 @@ interface IFilesystemService_IFilesystemMove extends grpc.MethodDefinition<files
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
 interface IFilesystemService_IFilesystemRemove extends grpc.MethodDefinition<filesystem_pb.FilesystemRemoveRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Filesystem/FilesystemRemove"
+    path: "/proto.Filesystem/FilesystemRemove";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<filesystem_pb.FilesystemRemoveRequest>;
