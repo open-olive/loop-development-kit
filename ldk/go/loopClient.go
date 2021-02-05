@@ -19,7 +19,7 @@ type LoopClient struct {
 }
 
 // LoopStart is called by the host when the plugin is started to provide access to the host process
-func (m *LoopClient) LoopStart(ctx context.Context, host Sidekick, session Session) error {
+func (m *LoopClient) LoopStart(ctx context.Context, host Sidekick, session *Session) error {
 	// setup service servers
 	clipboardHostServer := &ClipboardServer{Impl: host.Clipboard()}
 	cursorHostServer := &CursorServer{Impl: host.Cursor()}
