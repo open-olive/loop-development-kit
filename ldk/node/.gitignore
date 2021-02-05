@@ -49,3 +49,6 @@ Thumbs.db:*
 .#*
 *.orig
 *.swp
+
+# Examples
+examples/**/dist
