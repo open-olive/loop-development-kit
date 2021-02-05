@@ -5,7 +5,6 @@ import * as Messages from '../grpc/browser_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { BrowserClient } from './browserClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
   buildLogger,
   captureMockArgument,

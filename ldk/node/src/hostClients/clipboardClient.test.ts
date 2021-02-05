@@ -5,7 +5,6 @@ import * as Messages from '../grpc/clipboard_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { ClipboardClient } from './clipboardClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
   buildLogger,
   captureMockArgument,

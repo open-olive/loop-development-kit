@@ -7,7 +7,7 @@ import {
 } from '@grpc/grpc-js';
 import * as grpc from '@grpc/grpc-js';
 import { NextCall } from '@grpc/grpc-js/build/src/client-interceptors';
-import { ILogger, Logger } from '../logging';
+import { ILogger } from '../logging';
 
 const METHOD_PATH = /^\/proto\.(?<service>\w+)\/(?<method>\w+)$/;
 /**

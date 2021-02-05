@@ -217,6 +217,7 @@ export class FileSystemFileImpl implements FileSystemFile {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private setError(error: any): void {
     this.logger.error(
       'Stream Closed - Error Received',

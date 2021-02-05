@@ -159,6 +159,7 @@ class FileSystemFileImpl {
             throw new Error('File is not open');
         }
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setError(error) {
         this.logger.error('Stream Closed - Error Received', 'error', JSON.stringify(error));
         this.status = FilesystemFileStatus.Errored;
