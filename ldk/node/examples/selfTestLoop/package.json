@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@oliveai/ldk": "file:../..",
+    "moment": "^2.29.1",
     "pkg": "4.4.9"
   }
 }
