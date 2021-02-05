@@ -6,7 +6,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Storage
 {
-    internal class StorageClient : BaseClient<Proto.Storage.StorageClient>, IStorageService
+    internal class StorageClient : BaseClient<Proto.Storage.StorageClient>, IStorageSensor
     {
         internal StorageClient(Proto.Storage.StorageClient client, Session session, ILogger logger) : base(
             client, session, logger, "storage")

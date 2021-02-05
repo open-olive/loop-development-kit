@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Filesystem
 {
-    public interface IFilesystemService
+    public interface IFilesystemSensor
     {
         Task<IList<FileInfo>> QueryDirectory(string directoryPath, CancellationToken cancellationToken = default);
         IStreamingCall<FileEvent> StreamDirectory(string directoryPath, CancellationToken cancellationToken = default);

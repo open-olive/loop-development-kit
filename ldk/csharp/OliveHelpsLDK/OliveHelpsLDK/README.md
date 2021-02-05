@@ -51,8 +51,8 @@ namespace Console {
         public ILogger Logger { get; set; };
         private IStreamingCall<string> Stream { get; set; }; 
 
-        public Task Start(ILoopServices services) {
-            Stream = services.Clipboard.Stream();
+        public Task Start(ILoopSensors sensors) {
+            Stream = sensors.Clipboard.Stream();
             Task.Run(async () => {
                 while (await Stream.MoveNext()) {
                     Logger.Info($"Received Clipboard Event {Stream.Current()}");

@@ -16,7 +16,7 @@ namespace OliveHelpsLDK
     {
         private readonly BrokerServer _brokerServer = new BrokerServer();
 
-        private readonly LoopServiceFacade _facade = new LoopServiceFacade();
+        private readonly LoopSensorFacade _facade = new LoopSensorFacade();
 
         private readonly ILoop _loop;
 

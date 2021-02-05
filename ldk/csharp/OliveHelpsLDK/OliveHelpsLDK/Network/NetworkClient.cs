@@ -9,7 +9,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Network
 {
-    internal class NetworkClient : BaseClient<Proto.Network.NetworkClient>, INetworkService
+    internal class NetworkClient : BaseClient<Proto.Network.NetworkClient>, INetworkSensor
     {
         internal NetworkClient(Proto.Network.NetworkClient client, Session session, ILogger logger) : base(client,
             session, logger, "network")

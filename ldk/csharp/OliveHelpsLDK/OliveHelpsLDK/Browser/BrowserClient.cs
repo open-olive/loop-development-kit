@@ -6,7 +6,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Browser
 {
-    internal class BrowserClient : BaseClient<Proto.Browser.BrowserClient>, IBrowserService
+    internal class BrowserClient : BaseClient<Proto.Browser.BrowserClient>, IBrowserSensor
     {
         internal BrowserClient(Proto.Browser.BrowserClient client, Session session, ILogger logger) : base(
             client, session, logger, "browser")

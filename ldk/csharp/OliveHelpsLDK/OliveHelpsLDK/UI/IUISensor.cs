@@ -2,7 +2,7 @@ using System.Threading;
 
 namespace OliveHelpsLDK.UI
 {
-    public interface IUIService
+    public interface IUISensor
     {
         IStreamingCall<string> StreamGlobalSearch(CancellationToken cancellationToken = default);
 

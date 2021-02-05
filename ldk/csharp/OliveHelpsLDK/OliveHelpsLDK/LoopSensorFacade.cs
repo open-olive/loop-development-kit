@@ -18,7 +18,7 @@ using OliveHelpsLDK.Window;
 
 namespace OliveHelpsLDK
 {
-    internal class LoopServiceFacade : ILoopServices
+    internal class LoopSensorFacade : ILoopSensors
     {
         internal async Task Connect(ConnectionInfo connectionInfo, Session session, ILogger logger)
         {
@@ -45,28 +45,28 @@ namespace OliveHelpsLDK
             UI = new UIClient(interceptedChannel, session, logger);
         }
 
-        public IWhisperService Whisper { get; private set; }
+        public IWhisperSensor Whisper { get; private set; }
 
-        public IClipboardService Clipboard { get; private set; }
+        public IClipboardSensor Clipboard { get; private set; }
 
-        public IFilesystemService Filesystem { get; private set; }
+        public IFilesystemSensor Filesystem { get; private set; }
 
-        public ICursorService Cursor { get; private set; }
+        public ICursorSensor Cursor { get; private set; }
 
-        public IKeyboardService Keyboard { get; private set; }
+        public IKeyboardSensor Keyboard { get; private set; }
 
-        public INetworkService Network { get; private set; }
+        public INetworkSensor Network { get; private set; }
 
-        public IProcessService Process { get; private set; }
+        public IProcessSensor Process { get; private set; }
 
-        public IStorageService Storage { get; private set; }
+        public IStorageSensor Storage { get; private set; }
 
-        public IBrowserService Browser { get; private set; }
+        public IBrowserSensor Browser { get; private set; }
 
-        public IHoverService Hover { get; private set; }
+        public IHoverSensor Hover { get; private set; }
 
-        public IWindowService Window { get; private set; }
+        public IWindowSensor Window { get; private set; }
 
-        public IUIService UI { get; private set; }
+        public IUISensor UI { get; private set; }
     }
 }

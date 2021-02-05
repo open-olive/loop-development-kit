@@ -9,7 +9,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Filesystem
 {
-    internal class FilesystemClient : BaseClient<Proto.Filesystem.FilesystemClient>, IFilesystemService
+    internal class FilesystemClient : BaseClient<Proto.Filesystem.FilesystemClient>, IFilesystemSensor
     {
         internal FilesystemClient(Proto.Filesystem.FilesystemClient client, Session session, ILogger logger) : base(
             client, session, logger, "filesystem")

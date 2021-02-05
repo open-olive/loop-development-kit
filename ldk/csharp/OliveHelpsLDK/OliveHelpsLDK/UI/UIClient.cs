@@ -5,7 +5,7 @@ using Proto;
 
 namespace OliveHelpsLDK.UI
 {
-    internal class UIClient : BaseClient<Proto.UI.UIClient>, IUIService
+    internal class UIClient : BaseClient<Proto.UI.UIClient>, IUISensor
     {
         internal UIClient(CallInvoker callInvoker, Session session, ILogger logger) : base(
             new Proto.UI.UIClient(callInvoker), session, logger, "ui")

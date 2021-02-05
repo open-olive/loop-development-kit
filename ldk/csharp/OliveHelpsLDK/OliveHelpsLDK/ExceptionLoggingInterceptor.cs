@@ -202,7 +202,7 @@ namespace OliveHelpsLDK
             return new Dictionary<string, object>
             {
                 {"method", context.Method.Name},
-                {"service", context.Method.ServiceName.Replace("proto.", "")}
+                {"sensor", context.Method.ServiceName.Replace("proto.", "")}
             };
         }
 

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Process
 {
-    public interface IProcessService
+    public interface IProcessSensor
     {
         Task<ProcessInfo[]> Query(CancellationToken cancellationToken = default);
 

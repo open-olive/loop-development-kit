@@ -41,7 +41,7 @@ namespace OliveHelpsLDK.Filesystem
             ILogger logger, Session session)
         {
             Stream = stream ?? throw new ArgumentNullException(nameof(stream));
-            Logger = logger.WithFields(new Dictionary<string, object>() {{"service", "filesystem.file"}});
+            Logger = logger.WithFields(new Dictionary<string, object>() {{"sensor", "filesystem.file"}});
             Session = session;
             Status = FileStatus.Pending;
             CompletionSource = new TaskCompletionSource<bool>();

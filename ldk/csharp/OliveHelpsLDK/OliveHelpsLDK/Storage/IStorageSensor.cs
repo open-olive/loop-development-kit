@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Storage
 {
-    public interface IStorageService
+    public interface IStorageSensor
     {
         Task<bool> HasKey(string key, CancellationToken cancellationToken = default);
         Task<string> Read(string key, CancellationToken cancellationToken = default);

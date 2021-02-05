@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Browser
 {
-    public interface IBrowserService
+    public interface IBrowserSensor
     {
         Task<string> QueryActiveURL(CancellationToken cancellationToken = default);
         IStreamingCall<string> StreamActiveURL(CancellationToken cancellationToken = default);

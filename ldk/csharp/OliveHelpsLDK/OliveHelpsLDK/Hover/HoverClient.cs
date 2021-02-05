@@ -7,7 +7,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Hover
 {
-    internal class HoverClient : BaseClient<Proto.Hover.HoverClient>, IHoverService
+    internal class HoverClient : BaseClient<Proto.Hover.HoverClient>, IHoverSensor
     {
         internal HoverClient(Proto.Hover.HoverClient client, Session session, ILogger logger) : base(
             client, session, logger, "hover")

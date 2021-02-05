@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Cursor
 {
-    public interface ICursorService
+    public interface ICursorSensor
     {
         Task<CursorPosition> Query(CancellationToken cancellationToken = default);
         IStreamingCall<CursorPosition> Stream(CancellationToken cancellationToken = default);

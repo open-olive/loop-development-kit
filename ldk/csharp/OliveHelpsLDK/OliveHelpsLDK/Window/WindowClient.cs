@@ -8,7 +8,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Window
 {
-    internal class WindowClient : BaseClient<Proto.Window.WindowClient>, IWindowService
+    internal class WindowClient : BaseClient<Proto.Window.WindowClient>, IWindowSensor
     {
         internal WindowClient(Proto.Window.WindowClient client, Session session, ILogger logger) : base(
             client, session, logger, "window")

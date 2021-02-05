@@ -6,7 +6,7 @@ using OliveHelpsLDK.Whispers.Forms.Inputs;
 
 namespace OliveHelpsLDK.Whispers
 {
-    public interface IWhisperService
+    public interface IWhisperSensor
     {
         Task MarkdownAsync(WhisperMarkdown message, CancellationToken cancellationToken = default);
         Task<bool> ConfirmAsync(WhisperConfirm message, CancellationToken cancellationToken = default);

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Window
 {
-    public interface IWindowService
+    public interface IWindowSensor
     {
         Task<WindowInfo> QueryActive(CancellationToken cancellationToken = default);
 

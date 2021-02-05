@@ -6,7 +6,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Clipboard
 {
-    internal class ClipboardClient : BaseClient<Proto.Clipboard.ClipboardClient>, IClipboardService
+    internal class ClipboardClient : BaseClient<Proto.Clipboard.ClipboardClient>, IClipboardSensor
     {
         internal ClipboardClient(Proto.Clipboard.ClipboardClient client, Session session, ILogger logger) : base(
             client, session, logger, "clipboard")

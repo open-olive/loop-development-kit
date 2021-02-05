@@ -6,7 +6,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Cursor
 {
-    internal class CursorClient : BaseClient<Proto.Cursor.CursorClient>, ICursorService
+    internal class CursorClient : BaseClient<Proto.Cursor.CursorClient>, ICursorSensor
     {
         internal CursorClient(Proto.Cursor.CursorClient client, Session session, ILogger logger) : base(
             client, session, logger, "cursor")

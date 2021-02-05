@@ -16,14 +16,14 @@ namespace OliveHelpsLDK
 
         internal Session Session { get; set; }
 
-        internal BaseClient(TClient client, Session session, ILogger logger, string service)
+        internal BaseClient(TClient client, Session session, ILogger logger, string sensor)
         {
             Client = client;
             Session = session;
             Logger = logger.WithFields(new Dictionary<string, object>
                 {
                     {
-                        "service", service
+                        "sensor", sensor
                     }
                 }
             );

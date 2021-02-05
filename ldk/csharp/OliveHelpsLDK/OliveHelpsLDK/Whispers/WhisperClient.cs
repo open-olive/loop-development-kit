@@ -7,7 +7,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
-    internal class WhisperClient : BaseClient<Whisper.WhisperClient>, IWhisperService
+    internal class WhisperClient : BaseClient<Whisper.WhisperClient>, IWhisperSensor
     {
         internal IWhisperFormParser Parser { get; }
         internal IWhisperFormBuilder Builder { get; }

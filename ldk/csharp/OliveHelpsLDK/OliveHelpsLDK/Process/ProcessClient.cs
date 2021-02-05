@@ -8,7 +8,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Process
 {
-    internal class ProcessClient : BaseClient<Proto.Process.ProcessClient>, IProcessService
+    internal class ProcessClient : BaseClient<Proto.Process.ProcessClient>, IProcessSensor
     {
         internal ProcessClient(Proto.Process.ProcessClient client, Session session, ILogger logger) : base(
             client, session, logger, "process")

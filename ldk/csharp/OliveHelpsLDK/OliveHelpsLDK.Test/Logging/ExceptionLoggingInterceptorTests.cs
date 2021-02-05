@@ -20,14 +20,14 @@ namespace OliveHelpsLDK.Test.Logging
 
         private ExceptionLoggingInterceptor _subject;
         private const string Host = "localhost";
-        private const string ServiceName = "MyService";
+        private const string SensorName = "MySensor";
         private const string Name = "FunctionName";
 
         private static readonly Marshaller<string> Marshaller =
             new Marshaller<string>(stuff => new byte[0], stuff => "");
 
         private static readonly Method<string, string> Method =
-            new Method<string, string>(MethodType.Unary, ServiceName, Name, Marshaller, Marshaller);
+            new Method<string, string>(MethodType.Unary, SensorName, Name, Marshaller, Marshaller);
 
         private static readonly CallOptions CallOptions = new CallOptions();
 

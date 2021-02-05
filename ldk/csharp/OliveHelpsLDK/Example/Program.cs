@@ -49,7 +49,7 @@ namespace Example
 
     class Loop : ILoop
     {
-        private ILoopServices _services;
+        private ILoopSensors _sensors;
 
         private IStreamingCall<string> _clipboardStream;
 
@@ -57,23 +57,23 @@ namespace Example
 
         public ILogger Logger;
 
-        public Task Start(ILoopServices services)
+        public Task Start(ILoopSensors sensors)
         {
-            _services = services;
+            _sensors = sensors;
             ClipboardStream();
             return Task.CompletedTask;
         }
 
         public Task Stop()
         {
-            _services = null;
+            _sensors = null;
             _clipboardStream?.Dispose();
             return Task.CompletedTask;
         }
 
         private void ClipboardStream()
         {
-            _clipboardStream = _services.Clipboard.Stream();
+            _clipboardStream = _sensors.Clipboard.Stream();
             Logger.Info("Started Streaming Clipboard");
             Task.Run(async () =>
             {
@@ -133,7 +133,7 @@ namespace Example
 
         private void WindowStream()
         {
-            var stream = _services.Window.StreamState();
+            var stream = _sensors.Window.StreamState();
             Task.Run(async () =>
             {
                 while (await stream.MoveNext())
@@ -162,7 +162,7 @@ namespace Example
         {
             if (start && _textStream == null)
             {
-                _textStream = _services.Keyboard.StreamText();
+                _textStream = _sensors.Keyboard.StreamText();
                 Task.Run(async () =>
                 {
                     while (await _textStream.MoveNext())
@@ -183,7 +183,7 @@ namespace Example
         {
             var ccs = new CancellationTokenSource();
             ccs.CancelAfter(5000);
-            _services.Whisper.MarkdownAsync(new WhisperMarkdown
+            _sensors.Whisper.MarkdownAsync(new WhisperMarkdown
             {
                 Markdown = content,
                 Config = new WhisperConfig
@@ -196,7 +196,7 @@ namespace Example
 
         private async Task FileInfoStream()
         {
-            var file = await _services.Filesystem.OpenFile("/tmp/log3.txt");
+            var file = await _sensors.Filesystem.OpenFile("/tmp/log3.txt");
             Logger.Info("Requesting File Info");
             var fileInfo = await file.FileInfo();
             Logger.Info($"Received File Info - {fileInfo.ToString()}",
@@ -223,7 +223,7 @@ namespace Example
                     ["Link"] = new ListLink {Align=ListAlign.Center, Href="https://isitchristmas.com/", Order=2, Text="Is it Christmas?" }
                 },
             };       
-            _services.Whisper.ListAsync(whisperList, ccs.Token);
+            _sensors.Whisper.ListAsync(whisperList, ccs.Token);
             Logger.Info($"Sent List Whisper");
         }
 
@@ -261,7 +261,7 @@ namespace Example
                     ["Time"] = new Time {Label = "time", Tooltip = "time tooltip", Value = DateTimeOffset.Now},
                 }
             };
-            var stream = _services.Whisper.FormAsync(whisperForm);
+            var stream = _sensors.Whisper.FormAsync(whisperForm);
             Task.Run(async () =>
             {
                 while (await stream.MoveNext())

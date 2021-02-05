@@ -4,7 +4,7 @@ namespace OliveHelpsLDK
 {
     public interface ILoop
     {
-        Task Start(ILoopServices services);
+        Task Start(ILoopSensors sensors);
 
         Task Stop();
     }

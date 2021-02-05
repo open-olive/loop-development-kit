@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace OliveHelpsLDK.Keyboard
 {
-    public interface IKeyboardService
+    public interface IKeyboardSensor
     {
         IStreamingCall<bool> StreamHotKey(HotKey hotkey, CancellationToken cancellationToken = default);
 

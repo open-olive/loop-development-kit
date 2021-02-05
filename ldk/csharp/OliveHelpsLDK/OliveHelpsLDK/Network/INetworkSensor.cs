@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace OliveHelpsLDK.Network
 {
-    public interface INetworkService
+    public interface INetworkSensor
     {
         Task<HTTPResponse> HTTPRequest(HTTPRequest request, CancellationToken cancellationToken = default);
     }

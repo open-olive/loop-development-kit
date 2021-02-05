@@ -5,7 +5,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Keyboard
 {
-    internal class KeyboardClient : BaseClient<Proto.Keyboard.KeyboardClient>, IKeyboardService
+    internal class KeyboardClient : BaseClient<Proto.Keyboard.KeyboardClient>, IKeyboardSensor
     {
         internal KeyboardClient(Proto.Keyboard.KeyboardClient client, Session session, ILogger logger) : base(
             client, session, logger, "keyboard")
