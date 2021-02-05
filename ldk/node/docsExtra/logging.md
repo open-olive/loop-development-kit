@@ -7,7 +7,7 @@ Example usage:
 ```javascript
 const { Logger } = require('ldk');
 
-const logger = new Logger('my-Loop-name');
+const logger = new Logger('my-loop-name');
 
 // ...
 

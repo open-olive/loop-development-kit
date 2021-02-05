@@ -1,6 +1,6 @@
 # Storage
 
-The host object provided to the Loop through `Start` provides the Loop with methods it can use for storing information.
+The sensors object provided to the Loop through `Start` provides the Loop with methods it can use for storing information.
 
 ## Applications
 

@@ -1,18 +1,18 @@
-import { HostSensors, Logger, Loop, serveLoop } from '../../../dist';
-import { StoppableStream } from '../../../dist/hostClients/stoppables';
+import { LoopSensors, Logger, Loop, serveLoop } from '../../../dist';
+import { StoppableStream } from '../../../dist/loopClients/stoppables';
 
 const logger = new Logger('olive-helps-node-example-clipboard');
 
 class ClipboardLoop implements Loop {
-  private _host: HostSensors | undefined;
+  private _sensors: LoopSensors | undefined;
 
   private clipboardStream: StoppableStream<string> | undefined;
 
-  start(host: HostSensors): void {
-    this._host = host;
+  start(sensors: LoopSensors): void {
+    this._sensors = sensors;
     logger.info('Requesting Stream');
     try {
-      this.host.clipboard.streamClipboard(async (error, response) => {
+      this.sensors.clipboard.streamClipboard(async (error, response) => {
         if (response !== 'fileinfo') {
           return;
         }
@@ -27,11 +27,11 @@ class ClipboardLoop implements Loop {
 
   async workFile(): Promise<void> {
     logger.debug('Opening File');
-    const file = this.host.fileSystem.openFile('/tmp/log.txt');
+    const file = this.sensors.fileSystem.openFile('/tmp/log.txt');
     logger.debug('Getting File');
     const fileInfo = await file.info();
     logger.debug('Received File', 'info', JSON.stringify(fileInfo));
-    this.host.whisper.markdownWhisper({
+    this.sensors.whisper.markdownWhisper({
       label: 'File Info',
       markdown: JSON.stringify(fileInfo),
     });
@@ -46,15 +46,15 @@ class ClipboardLoop implements Loop {
     logger.info('Stopping');
     this.clipboardStream?.stop();
     this.clipboardStream = undefined;
-    this._host = undefined;
+    this._sensors = undefined;
     process.exit(0);
   }
 
-  private get host(): HostSensors {
-    if (this._host == null) {
+  private get sensors(): LoopSensors {
+    if (this._sensors == null) {
       throw new Error('Cannot Retrieve Host Before Set');
     }
-    return this._host;
+    return this._sensors;
   }
 }
 

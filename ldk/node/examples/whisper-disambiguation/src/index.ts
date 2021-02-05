@@ -1,11 +1,11 @@
 import moment from 'moment';
 
-import { HostSensors, Logger, Loop, serveLoop } from '../../../dist';
+import { LoopSensors, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperDisambiguationElements,
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/hostClients/whisperSensor';
+} from '../../../dist/loopClients/whisperSensor';
 
 import { decodeRecall, Recall, RecallJSON } from './transform';
 
@@ -20,10 +20,10 @@ export interface Element {
 }
 
 class ExampleLoop implements Loop {
-  private _host: HostSensors | undefined;
+  private _sensors: LoopSensors | undefined;
 
-  start(host: HostSensors): void {
-    this._host = host;
+  start(sensors: LoopSensors): void {
+    this._sensors = sensors;
     const now = moment();
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
       .subtract(3, 'months')
@@ -34,7 +34,7 @@ class ExampleLoop implements Loop {
 
     logger.info('Emitting disambiguation whisper', url);
 
-    this.host.network
+    this.sensors.network
       .httpRequest({
         url,
         method: 'GET',
@@ -57,7 +57,7 @@ class ExampleLoop implements Loop {
           results[resultItem.recall_number] = decodeRecall(resultItem);
         });
 
-        this.host.whisper.disambiguationWhisper(
+        this.sensors.whisper.disambiguationWhisper(
           {
             label: 'Latest FDA Food Recall',
             markdown: '',
@@ -81,7 +81,7 @@ class ExampleLoop implements Loop {
               );
 
               if (recallItem) {
-                this.host.whisper.listWhisper({
+                this.sensors.whisper.listWhisper({
                   label: 'Latest FDA Food Recall',
                   markdown: '',
                   elements: {
@@ -184,15 +184,15 @@ class ExampleLoop implements Loop {
 
   stop(): void {
     logger.info('Stopping');
-    this._host = undefined;
+    this._sensors = undefined;
     process.exit(0);
   }
 
-  private get host(): HostSensors {
-    if (this._host == null) {
+  private get sensors(): LoopSensors {
+    if (this._sensors == null) {
       throw new Error('Cannot Retrieve Host Before Set');
     }
-    return this._host;
+    return this._sensors;
   }
 }
 

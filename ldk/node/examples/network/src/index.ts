@@ -1,18 +1,18 @@
 import moment from 'moment';
 
-import { HostSensors, Logger, Loop, serveLoop } from '../../../dist';
+import { LoopSensors, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/hostClients/whisperSensor';
+} from '../../../dist/loopClients/whisperSensor';
 
 const logger = new Logger('olive-helps-node-example-network');
 
 class ExampleLoop implements Loop {
-  private _host: HostSensors | undefined;
+  private _sensors: LoopSensors | undefined;
 
-  start(host: HostSensors): void {
-    this._host = host;
+  start(sensors: LoopSensors): void {
+    this._sensors = sensors;
     const now = moment();
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
       .subtract(3, 'months')
@@ -24,7 +24,7 @@ class ExampleLoop implements Loop {
     logger.info('Emitting list whisper', url);
 
     try {
-      this.host.network
+      this.sensors.network
         .httpRequest({
           url,
           method: 'GET',
@@ -36,7 +36,7 @@ class ExampleLoop implements Loop {
           );
           const [recallItem] = results;
 
-          this.host.whisper.listWhisper({
+          this.sensors.whisper.listWhisper({
             label: 'Latest FDA Food Recall',
             markdown: '',
             elements: {
@@ -129,15 +129,15 @@ class ExampleLoop implements Loop {
 
   stop(): void {
     logger.info('Stopping');
-    this._host = undefined;
+    this._sensors = undefined;
     process.exit(0);
   }
 
-  private get host(): HostSensors {
-    if (this._host == null) {
+  private get sensors(): LoopSensors {
+    if (this._sensors == null) {
       throw new Error('Cannot Retrieve Host Before Set');
     }
-    return this._host;
+    return this._sensors;
   }
 }
 
