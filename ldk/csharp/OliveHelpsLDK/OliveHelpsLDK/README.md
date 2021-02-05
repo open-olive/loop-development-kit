@@ -1,4 +1,4 @@
-# Loop Development Kit (LDK) for NodeJS
+# Loop Development Kit (LDK) for C#
 
 ## Developing
 
@@ -27,7 +27,7 @@ Olive Helps expects your library to start its Loop server when launched. The LDK
 
 ##### Example Loop
 
-Here's an example Loop plugin:
+Here's an example Loop:
 
 ```c#
 using System.Threading.Tasks;
@@ -70,21 +70,21 @@ namespace Console {
 
 ### Running Locally
 
-#### Local Plugin Command (Recommended)
+#### Local Loop Command (Recommended)
 
-Olive Helps lets you add a local command as Local Plugins:
+Olive Helps lets you add a local command as a Local Loop:
 
 1. Run your application and copy the command executed to start the program.
 2. Open Olive Helps.
 3. Open the Loop Library:
     1. Click the Hamburger icon.
     2. Click Loop Library.
-4. Click the Install Local Plugin button:
+4. Click the Install Local Loop button:
 5. Select the working directory for the command.
 6. Paste the command from Step 1.
 7. Click Install.
 
-The command will be installed as a plugin. If you need to change the command or its arguments you'll need remove it and then add the new commands.
+The command will be installed as a Loop. If you need to change the command or its arguments you'll need remove it and then add the new commands.
 
 #### Packaged Command
 
