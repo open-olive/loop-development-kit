@@ -53,7 +53,7 @@ export default abstract class BaseClient<THost extends CommonHostServer> impleme
      */
     buildQuery<TMessage extends SetSessionable, TResponse, TOutput>(clientRequest: (message: TMessage, callback: (err: grpc.ServiceError | null, response: TResponse) => void) => void, builder: () => TMessage, renderer: (response: TResponse) => TOutput | undefined): Promise<TOutput>;
     buildStoppableMessage<TMessage extends SetSessionable, TResponse, TOutput>(clientRequest: (message: TMessage, callback: (err: grpc.ServiceError | null, response: TResponse) => void) => grpc.ClientUnaryCall, builder: () => TMessage, renderer: (response: TResponse) => TOutput): StoppableMessage<TOutput>;
-    protected abstract serviceName(): string;
+    protected abstract sensorName(): string;
     protected createSessionMessage(): Session;
     protected get client(): THost;
     protected set client(client: THost);

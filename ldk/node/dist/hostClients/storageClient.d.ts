@@ -1,10 +1,10 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StorageClient as StorageGRPCClient } from '../grpc/storage_grpc_pb';
-import { StorageService } from './storageService';
+import { StorageSensor } from './storageSensor';
 /**
  * @internal
  */
-export default class StorageClient extends BaseClient<StorageGRPCClient> implements StorageService {
+export default class StorageClient extends BaseClient<StorageGRPCClient> implements StorageSensor {
     /**
      * Delete a key from storage.
      *
@@ -36,5 +36,5 @@ export default class StorageClient extends BaseClient<StorageGRPCClient> impleme
      */
     storageWrite(key: string, value: string): Promise<void>;
     protected generateClient(): GRPCClientConstructor<StorageGRPCClient>;
-    protected serviceName(): string;
+    protected sensorName(): string;
 }

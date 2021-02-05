@@ -30,7 +30,7 @@ class CursorClient extends baseClient_1.default {
     streamCursorPosition(listener) {
         return new transformingStream_1.TransformingStream(this.client.cursorPositionStream(new cursor_pb_1.default.CursorPositionStreamRequest().setSession(this.createSessionMessage())), cursorTransformer, listener);
     }
-    serviceName() {
+    sensorName() {
         return 'cursor';
     }
 }

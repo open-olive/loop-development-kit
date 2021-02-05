@@ -37,7 +37,7 @@ class BrowserClient extends baseClient_1.default {
     generateClient() {
         return browser_grpc_pb_1.BrowserClient;
     }
-    serviceName() {
+    sensorName() {
         return 'browser';
     }
 }

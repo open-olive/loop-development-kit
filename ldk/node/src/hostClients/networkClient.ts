@@ -1,7 +1,7 @@
 import jspb from 'google-protobuf';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { NetworkClient as NetworkGRPCClient } from '../grpc/network_grpc_pb';
-import { NetworkService, HttpRequest, HttpResponse } from './networkService';
+import { NetworkSensor, HttpRequest, HttpResponse } from './networkSensor';
 import messages, { HTTPHeader } from '../grpc/network_pb';
 
 /**
@@ -40,7 +40,7 @@ function addHeadersToMessage(
 
 export class NetworkClient
   extends BaseClient<NetworkGRPCClient>
-  implements NetworkService {
+  implements NetworkSensor {
   protected generateClient(): GRPCClientConstructor<NetworkGRPCClient> {
     return NetworkGRPCClient;
   }
@@ -70,7 +70,7 @@ export class NetworkClient
     );
   }
 
-  protected serviceName(): string {
+  protected sensorName(): string {
     return 'network';
   }
 }

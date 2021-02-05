@@ -43,7 +43,7 @@ class BaseClient {
      * @param logger - An object containing logging methods.
      */
     connect(connInfo, session, logger) {
-        this._logger = logger.with('service', this.serviceName());
+        this._logger = logger.with('service', this.sensorName());
         return new Promise((resolve, reject) => {
             let address;
             if (connInfo.network === 'unix') {

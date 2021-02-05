@@ -10,8 +10,8 @@ import {
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
   WhisperListConfig,
-  WhisperService,
-} from './whisperService';
+  WhisperSensor,
+} from './whisperSensor';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
   StoppableMessage,
@@ -38,7 +38,7 @@ import {
  */
 class WhisperClient
   extends BaseClient<WhisperGRPCClient>
-  implements WhisperService {
+  implements WhisperSensor {
   /**
    * Send a Whisper to the host process.
    *
@@ -118,7 +118,7 @@ class WhisperClient
     return WhisperGRPCClient;
   }
 
-  protected serviceName(): string {
+  protected sensorName(): string {
     return 'whisper';
   }
 }

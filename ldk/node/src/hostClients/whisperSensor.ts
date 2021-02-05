@@ -244,9 +244,9 @@ export interface WhisperFormSubmitEvent {
 }
 
 /**
- * The WhisperService lets consumers emit new whispers and update existing whispers.
+ * The WhisperSensor lets consumers emit new whispers and update existing whispers.
  */
-export interface WhisperService {
+export interface WhisperSensor {
   disambiguationWhisper(
     whisper: WhisperDisambiguationConfig,
     listener: StreamListener<WhisperDisambiguationEvent>,

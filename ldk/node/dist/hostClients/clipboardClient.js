@@ -36,7 +36,7 @@ class ClipboardClient extends baseClient_1.default {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
-    serviceName() {
+    sensorName() {
         return 'clipboard';
     }
 }

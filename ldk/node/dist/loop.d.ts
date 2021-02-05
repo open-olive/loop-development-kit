@@ -1,4 +1,4 @@
-import { HostServices } from './hostServices';
+import { HostSensors } from './hostSensors';
 /**
  * Your Loop must implement this interface.
  *
@@ -11,8 +11,8 @@ import { HostServices } from './hostServices';
  *     this.logger = new Logger('my-loop');
  *   }
  *
- *   start(services) {
- *     this.services = services;
+ *   start(sensors) {
+ *     this.sensors = sensors;
  *     this.logger.info('started');
  *   }
  *
@@ -28,9 +28,9 @@ export interface Loop {
      * Executed when the host starts the plugin.
      * The plugin should not do anything before this is called.
      *
-     * @param host - The host services. You should assign this as an instance property for use by the Loop.
+     * @param host - The host sensors. You should assign this as an instance property for use by the Loop.
      */
-    start(host: HostServices): void;
+    start(host: HostSensors): void;
     /**
      * Executed by the host to stop the plugin.
      * All plugin activity should stop when this is called.

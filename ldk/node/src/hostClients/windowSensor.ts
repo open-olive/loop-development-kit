@@ -27,9 +27,9 @@ export interface WindowInfoStreamResponse {
 }
 
 /**
- * The WindowService provides access to the windows opened in the user's session.
+ * The WindowSensor provides access to the windows opened in the user's session.
  */
-export interface WindowService {
+export interface WindowSensor {
   /**
    * Gets the current active window.
    *

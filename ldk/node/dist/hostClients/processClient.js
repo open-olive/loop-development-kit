@@ -26,7 +26,7 @@ exports.ProcessClient = void 0;
 const process_grpc_pb_1 = require("../grpc/process_grpc_pb");
 const process_pb_1 = __importStar(require("../grpc/process_pb"));
 const baseClient_1 = __importDefault(require("./baseClient"));
-const processService_1 = require("./processService");
+const processSensor_1 = require("./processSensor");
 const transformingStream_1 = require("./transformingStream");
 /**
  * @param info - The process info to parse.
@@ -42,12 +42,12 @@ function parseProcessInfo(info) {
 function parseProcessAction(action) {
     switch (action) {
         case process_pb_1.ProcessAction.PROCESS_ACTION_STARTED:
-            return processService_1.ProcessStreamAction.Started;
+            return processSensor_1.ProcessStreamAction.Started;
         case process_pb_1.ProcessAction.PROCESS_ACTION_STOPPED:
-            return processService_1.ProcessStreamAction.Stopped;
+            return processSensor_1.ProcessStreamAction.Stopped;
         case process_pb_1.ProcessAction.PROCESS_ACTION_UNKNOWN:
         default:
-            return processService_1.ProcessStreamAction.Unknown;
+            return processSensor_1.ProcessStreamAction.Unknown;
     }
 }
 /**
@@ -78,7 +78,7 @@ class ProcessClient extends baseClient_1.default {
             };
         }, listener);
     }
-    serviceName() {
+    sensorName() {
         return 'process';
     }
 }

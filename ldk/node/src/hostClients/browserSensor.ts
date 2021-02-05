@@ -7,9 +7,9 @@ export interface BrowserSelectedTextResponse {
 }
 
 /**
- * The BrowserService provides access to the active URL and selected text.
+ * The BrowserSensor provides access to the active URL and selected text.
  */
-export interface BrowserService {
+export interface BrowserSensor {
   /**
    * Queries for the active URL in the active tab.
    *

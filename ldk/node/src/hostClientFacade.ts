@@ -1,6 +1,6 @@
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
-import { HostServices } from './hostServices';
+import { HostSensors } from './hostSensors';
 import WhisperClient from './hostClients/whisperClient';
 import StorageClient from './hostClients/storageClient';
 import KeyboardClient from './hostClients/keyboardClient';
@@ -18,7 +18,7 @@ import { Logger } from './logging';
 /**
  * @internal
  */
-export default class HostClientFacade implements HostServices {
+export default class HostClientFacade implements HostSensors {
   private logger: Logger;
 
   public whisper: WhisperClient = new WhisperClient();
@@ -37,7 +37,7 @@ export default class HostClientFacade implements HostServices {
 
   public ui: UIClient = new UIClient();
 
-  // These services are not yet implemented.
+  // These sensors are not yet implemented.
   // public hover: HoverClient = new HoverClient();
 
   // public window: WindowClient = new WindowClient();
@@ -55,7 +55,7 @@ export default class HostClientFacade implements HostServices {
     session: Session.AsObject,
   ): Promise<void[]> {
     return Promise.all([
-      // These services are not yet implemented.
+      // These sensors are not yet implemented.
       // this.browser.connect(connInfo, session, this.logger),
       // this.hover.connect(connInfo, session, this.logger),
       // this.window.connect(connInfo, session, this.logger),

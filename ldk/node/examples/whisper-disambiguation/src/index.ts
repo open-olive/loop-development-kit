@@ -1,11 +1,11 @@
 import moment from 'moment';
 
-import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
+import { HostSensors, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperDisambiguationElements,
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/hostClients/whisperService';
+} from '../../../dist/hostClients/whisperSensor';
 
 import { decodeRecall, Recall, RecallJSON } from './transform';
 
@@ -20,9 +20,9 @@ export interface Element {
 }
 
 class ExampleLoop implements Loop {
-  private _host: HostServices | undefined;
+  private _host: HostSensors | undefined;
 
-  start(host: HostServices): void {
+  start(host: HostSensors): void {
     this._host = host;
     const now = moment();
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
@@ -178,7 +178,7 @@ class ExampleLoop implements Loop {
         );
       })
       .catch((e) => {
-        logger.error('Error using network service', 'error', e.toString());
+        logger.error('Error using network sensor', 'error', e.toString());
       });
   }
 
@@ -188,7 +188,7 @@ class ExampleLoop implements Loop {
     process.exit(0);
   }
 
-  private get host(): HostServices {
+  private get host(): HostSensors {
     if (this._host == null) {
       throw new Error('Cannot Retrieve Host Before Set');
     }

@@ -17,9 +17,9 @@ export interface ProcessListResponse {
     processes: ProcessInfoResponse[];
 }
 /**
- * The ProcessService provides access to the list of running processes.
+ * The ProcessSensor provides access to the list of running processes.
  */
-export interface ProcessService {
+export interface ProcessSensor {
     /**
      * Gets a list of the current running processes.
      *

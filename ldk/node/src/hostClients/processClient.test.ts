@@ -17,7 +17,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { ProcessListResponse, ProcessStreamResponse } from './processService';
+import { ProcessListResponse, ProcessStreamResponse } from './processSensor';
 
 jest.mock('../grpc/process_grpc_pb');
 

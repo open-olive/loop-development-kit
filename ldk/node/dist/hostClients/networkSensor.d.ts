@@ -9,6 +9,6 @@ export interface HttpResponse {
     data: string | Uint8Array;
     headers: Record<string, Array<string>>;
 }
-export interface NetworkService {
+export interface NetworkSensor {
     httpRequest(req: HttpRequest): Promise<HttpResponse>;
 }

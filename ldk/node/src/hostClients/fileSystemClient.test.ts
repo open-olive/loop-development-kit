@@ -15,7 +15,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { FileSystemQueryDirectoryResponse } from './fileSystemService';
+import { FileSystemQueryDirectoryResponse } from './fileSystemSensor';
 
 jest.mock('../grpc/filesystem_grpc_pb');
 

@@ -2,14 +2,14 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StorageClient as StorageGRPCClient } from '../grpc/storage_grpc_pb';
 import messages from '../grpc/storage_pb';
-import { StorageService } from './storageService';
+import { StorageSensor } from './storageSensor';
 
 /**
  * @internal
  */
 export default class StorageClient
   extends BaseClient<StorageGRPCClient>
-  implements StorageService {
+  implements StorageSensor {
   /**
    * Delete a key from storage.
    *
@@ -100,7 +100,7 @@ export default class StorageClient
     return StorageGRPCClient;
   }
 
-  protected serviceName(): string {
+  protected sensorName(): string {
     return 'storage';
   }
 }

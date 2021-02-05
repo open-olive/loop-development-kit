@@ -16,7 +16,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { BrowserSelectedTextResponse } from './browserService';
+import { BrowserSelectedTextResponse } from './browserSensor';
 
 jest.mock('../grpc/browser_grpc_pb');
 

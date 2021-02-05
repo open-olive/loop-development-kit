@@ -145,7 +145,7 @@ export class FakeHostServer extends BaseClient<FakeGRPCClient> {
     return FakeGRPCClient;
   }
 
-  protected serviceName(): string {
+  protected sensorName(): string {
     return '';
   }
 }

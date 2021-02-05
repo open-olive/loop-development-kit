@@ -13,9 +13,9 @@ export interface CursorResponse {
 }
 
 /**
- * The CursorService provides access to the cursor position.
+ * The CursorSensor provides access to the cursor position.
  */
-export interface CursorService {
+export interface CursorSensor {
   /**
    * @returns Promise resolving with the cursor position.
    */

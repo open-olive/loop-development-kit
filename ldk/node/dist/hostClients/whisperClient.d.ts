@@ -1,5 +1,5 @@
 import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
-import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationEvent, WhisperFormConfig, WhisperFormSubmitEvent, WhisperFormUpdateEvent, WhisperListConfig, WhisperService } from './whisperService';
+import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationEvent, WhisperFormConfig, WhisperFormSubmitEvent, WhisperFormUpdateEvent, WhisperListConfig, WhisperSensor } from './whisperSensor';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StoppableMessage, StoppableStream, StreamListener } from './stoppables';
 /**
@@ -7,7 +7,7 @@ import { StoppableMessage, StoppableStream, StreamListener } from './stoppables'
  *
  * @internal
  */
-declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements WhisperService {
+declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements WhisperSensor {
     /**
      * Send a Whisper to the host process.
      *
@@ -21,6 +21,6 @@ declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whi
     disambiguationWhisper(whisper: WhisperDisambiguationConfig, listener: StreamListener<WhisperDisambiguationEvent>): StoppableStream<WhisperDisambiguationEvent>;
     formWhisper(whisper: WhisperFormConfig, listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;
     protected generateClient(): GRPCClientConstructor<WhisperGRPCClient>;
-    protected serviceName(): string;
+    protected sensorName(): string;
 }
 export default WhisperClient;

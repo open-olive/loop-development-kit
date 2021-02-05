@@ -1,4 +1,4 @@
-import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationElements, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlign, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListStyle } from './whisperService';
+import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationElements, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlign, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListStyle } from './whisperSensor';
 import * as messages from '../grpc/whisper_pb';
 export declare const generateWhisperInput: (input: WhisperFormInputs) => messages.WhisperFormInput;
 export declare const generateWhisperListStyle: (style: WhisperListStyle) => messages.WhisperListElement.Style;

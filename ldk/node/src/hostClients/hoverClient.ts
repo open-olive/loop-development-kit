@@ -1,7 +1,7 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { HoverClient as HoverGRPCClient } from '../grpc/hover_grpc_pb';
 import messages from '../grpc/hover_pb';
-import { HoverService, HoverReadRequest, HoverResponse } from './hoverService';
+import { HoverSensor, HoverReadRequest, HoverResponse } from './hoverSensor';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
@@ -23,7 +23,7 @@ function updateRequest<
  */
 export class HoverClient
   extends BaseClient<HoverGRPCClient>
-  implements HoverService {
+  implements HoverSensor {
   protected generateClient(): GRPCClientConstructor<HoverGRPCClient> {
     return HoverGRPCClient;
   }
@@ -59,7 +59,7 @@ export class HoverClient
     );
   }
 
-  protected serviceName(): string {
+  protected sensorName(): string {
     return 'hover';
   }
 }

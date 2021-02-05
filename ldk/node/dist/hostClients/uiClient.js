@@ -18,7 +18,7 @@ class UIClient extends baseClient_1.default {
     streamGlobalSearch(listener) {
         return new transformingStream_1.TransformingStream(this.client.globalSearchStream(new ui_pb_1.default.GlobalSearchStreamRequest().setSession(this.createSessionMessage())), (message) => message.getText(), listener);
     }
-    serviceName() {
+    sensorName() {
         return 'ui';
     }
 }

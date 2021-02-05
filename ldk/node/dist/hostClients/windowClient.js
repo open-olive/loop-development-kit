@@ -26,7 +26,7 @@ exports.WindowClient = void 0;
 const window_pb_1 = __importStar(require("../grpc/window_pb"));
 const window_grpc_pb_1 = require("../grpc/window_grpc_pb");
 const baseClient_1 = __importDefault(require("./baseClient"));
-const windowService_1 = require("./windowService");
+const windowSensor_1 = require("./windowSensor");
 const transformingStream_1 = require("./transformingStream");
 /**
  * @param action - The action.
@@ -35,22 +35,22 @@ const transformingStream_1 = require("./transformingStream");
 function parseWindowAction(action) {
     switch (action) {
         case window_pb_1.WindowAction.WINDOW_ACTION_FOCUSED:
-            return windowService_1.WindowStreamAction.Focused;
+            return windowSensor_1.WindowStreamAction.Focused;
         case window_pb_1.WindowAction.WINDOW_ACTION_UNFOCUSED:
-            return windowService_1.WindowStreamAction.Unfocused;
+            return windowSensor_1.WindowStreamAction.Unfocused;
         case window_pb_1.WindowAction.WINDOW_ACTION_OPENED:
-            return windowService_1.WindowStreamAction.Opened;
+            return windowSensor_1.WindowStreamAction.Opened;
         case window_pb_1.WindowAction.WINDOW_ACTION_CLOSED:
-            return windowService_1.WindowStreamAction.Closed;
+            return windowSensor_1.WindowStreamAction.Closed;
         case window_pb_1.WindowAction.WINDOW_ACTION_TITLE_CHANGED:
-            return windowService_1.WindowStreamAction.TitleChanged;
+            return windowSensor_1.WindowStreamAction.TitleChanged;
         case window_pb_1.WindowAction.WINDOW_ACTION_MOVED:
-            return windowService_1.WindowStreamAction.Moved;
+            return windowSensor_1.WindowStreamAction.Moved;
         case window_pb_1.WindowAction.WINDOW_ACTION_RESIZED:
-            return windowService_1.WindowStreamAction.Resized;
+            return windowSensor_1.WindowStreamAction.Resized;
         case window_pb_1.WindowAction.WINDOW_ACTION_UNKNOWN:
         default:
-            return windowService_1.WindowStreamAction.Unknown;
+            return windowSensor_1.WindowStreamAction.Unknown;
     }
 }
 /**
@@ -81,7 +81,7 @@ class WindowClient extends baseClient_1.default {
             };
         }, listener);
     }
-    serviceName() {
+    sensorName() {
         return 'window';
     }
 }

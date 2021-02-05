@@ -1,7 +1,7 @@
 import { BrowserClient as BrowserGRPCClient } from '../grpc/browser_grpc_pb';
 import Messages from '../grpc/browser_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import { BrowserSelectedTextResponse, BrowserService } from './browserService';
+import { BrowserSelectedTextResponse, BrowserSensor } from './browserSensor';
 import { StoppableStream, StreamListener } from './stoppables';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 
@@ -25,7 +25,7 @@ const transformSelectedTextResponse: StreamTransformer<
  */
 export class BrowserClient
   extends BaseClient<BrowserGRPCClient>
-  implements BrowserService {
+  implements BrowserSensor {
   queryActiveURL(): Promise<string> {
     return this.buildQuery<
       Messages.BrowserActiveURLRequest,
@@ -86,7 +86,7 @@ export class BrowserClient
     return BrowserGRPCClient;
   }
 
-  protected serviceName(): string {
+  protected sensorName(): string {
     return 'browser';
   }
 }

@@ -187,9 +187,9 @@ export interface WhisperFormSubmitEvent {
     type: 'submit';
 }
 /**
- * The WhisperService lets consumers emit new whispers and update existing whispers.
+ * The WhisperSensor lets consumers emit new whispers and update existing whispers.
  */
-export interface WhisperService {
+export interface WhisperSensor {
     disambiguationWhisper(whisper: WhisperDisambiguationConfig, listener: StreamListener<WhisperDisambiguationEvent>): StoppableStream<WhisperDisambiguationEvent>;
     /**
      * @returns - A StoppableMessage object containing a promise resolving when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.

@@ -1,15 +1,15 @@
-import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
+import { HostSensors, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/hostClients/whisperService';
+} from '../../../dist/hostClients/whisperSensor';
 
 const logger = new Logger('olive-helps-node-example-whisper-list');
 
 class ExampleLoop implements Loop {
-  private _host: HostServices | undefined;
+  private _host: HostSensors | undefined;
 
-  start(host: HostServices): void {
+  start(host: HostSensors): void {
     this._host = host;
     logger.info('Emitting list whisper');
     try {
@@ -158,7 +158,7 @@ class ExampleLoop implements Loop {
     process.exit(0);
   }
 
-  private get host(): HostServices {
+  private get host(): HostSensors {
     if (this._host == null) {
       throw new Error('Cannot Retrieve Host Before Set');
     }

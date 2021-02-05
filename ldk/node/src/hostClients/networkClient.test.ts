@@ -13,7 +13,7 @@ import {
   defaultConnInfo,
   defaultSession,
 } from '../test.helpers';
-import { HttpResponse } from './networkService';
+import { HttpResponse } from './networkSensor';
 import { HTTPHeader } from '../grpc/network_pb';
 
 jest.mock('../grpc/network_grpc_pb');

@@ -12,6 +12,6 @@ export interface HttpResponse {
   headers: Record<string, Array<string>>;
 }
 
-export interface NetworkService {
+export interface NetworkSensor {
   httpRequest(req: HttpRequest): Promise<HttpResponse>;
 }

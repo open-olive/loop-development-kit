@@ -1,7 +1,7 @@
 /**
- * The StorageService allows users to save/load data from storage. The Storage values can be modified by the user.
+ * The StorageSensor allows users to save/load data from storage. The Storage values can be modified by the user.
  */
-export interface StorageService {
+export interface StorageSensor {
   /**
    * @param key - Key of the item to delete from storage.
    * @returns Promise that resolves when the deletion completes.

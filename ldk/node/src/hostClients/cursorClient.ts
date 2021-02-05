@@ -1,7 +1,7 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { CursorClient as CursorGRPCClient } from '../grpc/cursor_grpc_pb';
 import messages from '../grpc/cursor_pb';
-import { CursorService, CursorResponse } from './cursorService';
+import { CursorSensor, CursorResponse } from './cursorSensor';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 import { StoppableStream, StreamListener } from './stoppables';
 
@@ -23,7 +23,7 @@ const cursorTransformer: StreamTransformer<
  */
 export class CursorClient
   extends BaseClient<CursorGRPCClient>
-  implements CursorService {
+  implements CursorSensor {
   protected generateClient(): GRPCClientConstructor<CursorGRPCClient> {
     return CursorGRPCClient;
   }
@@ -57,7 +57,7 @@ export class CursorClient
     );
   }
 
-  protected serviceName(): string {
+  protected sensorName(): string {
     return 'cursor';
   }
 }

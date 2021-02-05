@@ -80,7 +80,7 @@ class KeyboardClient extends baseClient_1.default {
     generateClient() {
         return keyboard_grpc_pb_1.KeyboardClient;
     }
-    serviceName() {
+    sensorName() {
         return 'keyboard';
     }
 }

@@ -19,7 +19,7 @@ const uiClient_1 = require("./hostClients/uiClient");
  * @internal
  */
 class HostClientFacade {
-    // These services are not yet implemented.
+    // These sensors are not yet implemented.
     // public hover: HoverClient = new HoverClient();
     // public window: WindowClient = new WindowClient();
     // public browser: BrowserClient = new BrowserClient();
@@ -37,7 +37,7 @@ class HostClientFacade {
     }
     connect(connInfo, session) {
         return Promise.all([
-            // These services are not yet implemented.
+            // These sensors are not yet implemented.
             // this.browser.connect(connInfo, session, this.logger),
             // this.hover.connect(connInfo, session, this.logger),
             // this.window.connect(connInfo, session, this.logger),

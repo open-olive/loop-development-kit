@@ -12,7 +12,7 @@ import {
   WhisperListElement,
   WhisperListElements,
   WhisperListStyle,
-} from './whisperService';
+} from './whisperSensor';
 import * as messages from '../grpc/whisper_pb';
 
 type FormMessage<T> = {

@@ -6,7 +6,7 @@ import {
   WhisperFormOutputTypes,
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
-} from './whisperService';
+} from './whisperSensor';
 import { StreamTransformer } from './transformingStream';
 
 const transformOutput = (

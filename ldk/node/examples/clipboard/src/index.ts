@@ -1,14 +1,14 @@
-import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
+import { HostSensors, Logger, Loop, serveLoop } from '../../../dist';
 import { StoppableStream } from '../../../dist/hostClients/stoppables';
 
 const logger = new Logger('olive-helps-node-example-clipboard');
 
 class ClipboardLoop implements Loop {
-  private _host: HostServices | undefined;
+  private _host: HostSensors | undefined;
 
   private clipboardStream: StoppableStream<string> | undefined;
 
-  start(host: HostServices): void {
+  start(host: HostSensors): void {
     this._host = host;
     logger.info('Requesting Stream');
     try {
@@ -50,7 +50,7 @@ class ClipboardLoop implements Loop {
     process.exit(0);
   }
 
-  private get host(): HostServices {
+  private get host(): HostSensors {
     if (this._host == null) {
       throw new Error('Cannot Retrieve Host Before Set');
     }

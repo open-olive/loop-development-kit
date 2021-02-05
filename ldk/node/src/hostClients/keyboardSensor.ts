@@ -35,9 +35,9 @@ export interface ScanCodeEvent {
 }
 
 /**
- * The KeyboardService allows you to observe key presses and text entry on the keyboard.
+ * The KeyboardSensor allows you to observe key presses and text entry on the keyboard.
  */
-export interface KeyboardService {
+export interface KeyboardSensor {
   /**
    * Streams chunks of text, emitted when the user stops entering text for a moment.
    *

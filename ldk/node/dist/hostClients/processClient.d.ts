@@ -1,13 +1,13 @@
 import { ProcessClient as ProcessGRPCClient } from '../grpc/process_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import { ProcessService, ProcessListResponse, ProcessStreamResponse } from './processService';
+import { ProcessSensor, ProcessListResponse, ProcessStreamResponse } from './processSensor';
 import { StoppableStream, StreamListener } from './stoppables';
 /**
  * @internal
  */
-export declare class ProcessClient extends BaseClient<ProcessGRPCClient> implements ProcessService {
+export declare class ProcessClient extends BaseClient<ProcessGRPCClient> implements ProcessSensor {
     protected generateClient(): GRPCClientConstructor<ProcessGRPCClient>;
     queryProcesses(): Promise<ProcessListResponse>;
     streamProcesses(listener: StreamListener<ProcessStreamResponse>): StoppableStream<ProcessStreamResponse>;
-    protected serviceName(): string;
+    protected sensorName(): string;
 }
