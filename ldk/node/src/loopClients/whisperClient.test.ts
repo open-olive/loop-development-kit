@@ -21,7 +21,7 @@ const MockClientClass = mocked(Services.WhisperClient);
 const messageBuilders = mocked(Builders);
 const testLogger = buildLogger();
 
-describe('WhisperHostClient', () => {
+describe('WhisperClient', () => {
   let subject: WhisperClient;
   let mockGRPCClient: jest.Mocked<Services.WhisperClient>;
   let connInfo: ConnInfo.AsObject;

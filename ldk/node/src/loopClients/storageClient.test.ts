@@ -20,7 +20,7 @@ const MockClientClass = mocked(Services.StorageClient);
 
 const logger = buildLogger();
 
-describe('StorageHostClient', () => {
+describe('StorageClient', () => {
   let subject: StorageClient;
   let mockGRPCClient: jest.Mocked<Services.StorageClient>;
   let connInfo: ConnInfo.AsObject;

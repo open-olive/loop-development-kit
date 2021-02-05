@@ -53,17 +53,17 @@ export default class LoopServer implements ILoopServer {
       return;
     }
 
-    const hostClient = new LoopSensorFacade(this.logger);
+    const loopClient = new LoopSensorFacade(this.logger);
 
-    await hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
+    await loopClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
       this.logger.error(
-        'loopServer - Failed to Connect to Facades',
+        'loopServer - Failed to Connect Facades',
         'error',
         JSON.stringify(err),
       );
       throw err;
     });
-    await this.loop.start(hostClient);
+    await this.loop.start(loopClient);
     callback(null, response);
   }
 

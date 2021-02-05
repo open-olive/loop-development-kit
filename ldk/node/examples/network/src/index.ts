@@ -135,7 +135,7 @@ class ExampleLoop implements Loop {
 
   private get sensors(): LoopSensors {
     if (this._sensors == null) {
-      throw new Error('Cannot Retrieve Host Before Set');
+      throw new Error('Cannot Retrieve Sensors Before Set');
     }
     return this._sensors;
   }

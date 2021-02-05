@@ -13,7 +13,7 @@ Modify `src/index.ts` as desired.
 
 ### Running Locally
 
-#### Local Plugin Command (Recommended)
+#### Local Loop Command (Recommended)
 
 Olive Helps lets you add a local command as a Local Loop:
 

@@ -18,7 +18,7 @@ import { LoopSensors } from './loopSensors';
  *   }
  *
  *   stop() {
- *     this.host = null;
+ *     this.sensors = null;
  *     this.logger.info('stopped');
  *   }
  * }
@@ -26,15 +26,15 @@ import { LoopSensors } from './loopSensors';
  */
 export interface Loop {
   /**
-   * Executed when the host starts the plugin.
-   * The plugin should not do anything before this is called.
+   * Executed when the host starts the Loop.
+   * The Loop should not do anything before this is called.
    *
-   * @param host - The host sensors. You should assign this as an instance property for use by the Loop.
+   * @param sensors - The Loop sensors. You should assign this as an instance property for use by the Loop.
    */
-  start(host: LoopSensors): void;
+  start(sensors: LoopSensors): void;
   /**
-   * Executed by the host to stop the plugin.
-   * All plugin activity should stop when this is called.
+   * Executed by when the Loop is stopped.
+   * All Loop activity should stop when this is called.
    */
   stop(): void;
 }
