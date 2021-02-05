@@ -28,7 +28,7 @@ exports.parseFileInfo = parseFileInfo;
 class FileSystemFileImpl {
     constructor(session, stream, logger) {
         this.status = FilesystemFileStatus.Pending;
-        this.logger = logger.with('service', 'filesystem.file');
+        this.logger = logger.with('sensor', 'filesystem.file');
         this.session = session;
         this.stream = stream;
         this.streamPromise = new Promise((resolve, reject) => {

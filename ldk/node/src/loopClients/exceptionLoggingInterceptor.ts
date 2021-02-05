@@ -40,7 +40,7 @@ export default (logger: ILogger): Interceptor => (
           'Client exception',
           'error',
           status.details,
-          'service',
+          'sensor',
           service,
           'method',
           method,

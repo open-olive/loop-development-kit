@@ -1,24 +1,24 @@
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
-import { HostSensors } from './hostSensors';
-import WhisperClient from './hostClients/whisperClient';
-import StorageClient from './hostClients/storageClient';
-import KeyboardClient from './hostClients/keyboardClient';
-import { ClipboardClient } from './hostClients/clipboardClient';
-import { CursorClient } from './hostClients/cursorClient';
-// import { HoverClient } from './hostClients/hoverClient';
-import { FileSystemClient } from './hostClients/fileSystemClient';
-import { ProcessClient } from './hostClients/processClient';
-// import { WindowClient } from './hostClients/windowClient';
-// import { BrowserClient } from './hostClients/browserClient';
-import { NetworkClient } from './hostClients/networkClient';
-import { UIClient } from './hostClients/uiClient';
+import { LoopSensors } from './loopSensors';
+import WhisperClient from './loopClients/whisperClient';
+import StorageClient from './loopClients/storageClient';
+import KeyboardClient from './loopClients/keyboardClient';
+import { ClipboardClient } from './loopClients/clipboardClient';
+import { CursorClient } from './loopClients/cursorClient';
+// import { HoverClient } from './loopClients/hoverClient';
+import { FileSystemClient } from './loopClients/fileSystemClient';
+import { ProcessClient } from './loopClients/processClient';
+// import { WindowClient } from './loopClients/windowClient';
+// import { BrowserClient } from './loopClients/browserClient';
+import { NetworkClient } from './loopClients/networkClient';
+import { UIClient } from './loopClients/uiClient';
 import { Logger } from './logging';
 
 /**
  * @internal
  */
-export default class HostClientFacade implements HostSensors {
+export default class LoopSensorFacade implements LoopSensors {
   private logger: Logger;
 
   public whisper: WhisperClient = new WhisperClient();

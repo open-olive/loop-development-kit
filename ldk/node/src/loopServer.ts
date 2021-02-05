@@ -4,7 +4,7 @@ import services, { ILoopServer } from './grpc/loop_grpc_pb';
 import BrokerGrpcServer from './brokerGrpcServer';
 import messages from './grpc/loop_pb';
 import { Loop } from './loop';
-import HostClientFacade from './hostClientFacade';
+import LoopSensorFacade from './loopSensorFacade';
 import { StdioGrpcServer, StdioService } from './stdioGrpcServer';
 import { Logger } from './logging';
 
@@ -53,7 +53,7 @@ export default class LoopServer implements ILoopServer {
       return;
     }
 
-    const hostClient = new HostClientFacade(this.logger);
+    const hostClient = new LoopSensorFacade(this.logger);
 
     await hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
       this.logger.error(

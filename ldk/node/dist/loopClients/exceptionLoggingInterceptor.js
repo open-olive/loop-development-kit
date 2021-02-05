@@ -45,7 +45,7 @@ exports.default = (logger) => (options, nextCall) => {
         .withOnReceiveStatus((status, next) => {
         if (status.code !== grpc.status.OK) {
             const { service, method } = extractContext(options);
-            logger.error('Client exception', 'error', status.details, 'service', service, 'method', method);
+            logger.error('Client exception', 'error', status.details, 'sensor', service, 'method', method);
         }
         next(status);
     })

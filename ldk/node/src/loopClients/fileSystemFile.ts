@@ -53,7 +53,7 @@ export class FileSystemFileImpl implements FileSystemFile {
     >,
     logger: ILogger,
   ) {
-    this.logger = logger.with('service', 'filesystem.file');
+    this.logger = logger.with('sensor', 'filesystem.file');
     this.session = session;
     this.stream = stream;
     this.streamPromise = new Promise<void>((resolve, reject) => {

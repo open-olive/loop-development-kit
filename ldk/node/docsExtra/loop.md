@@ -26,7 +26,7 @@ class Loop {
 }
 ```
 
-**Start** - The Loop should wait to start operating until this is called. The provided {@link HostSensors} should be stored in memory for continued use.
+**Start** - The Loop should wait to start operating until this is called. The provided {@link LoopSensors} should be stored in memory for continued use.
 
 **Stop** - The Loop should stop operating when this is called. You should terminate any timers and other long-running processes.
 
@@ -54,7 +54,7 @@ Olive Helps has Sensors that lets the Loop observe what's taking place in the us
 - {@link ProcessSensor | Process Changes}: Know what processes are active, starting, or stopping.
 - {@link WindowSensor | Windows}: Know what windows are open, which one is active, and when they change.
 
-Sensors are directly accessible from the {@link HostSensors} object provided to your Loop when it starts.
+Sensors are directly accessible from the {@link LoopSensors} object provided to your Loop when it starts.
 
 Sensors let you **query** the current state, and **stream** changes as they happen. Some sensor methods require configuration to listen, others don't. Query methods return a Promise that resolves with the current state. Stream methods require a listener function that's called with updates, and returns a {@link StoppableStream} object.
 
@@ -91,7 +91,7 @@ class MyLoop {
 
 ### Whispers
 
-Whispers are how you present information to users. The {@link WhisperSensor} is accessible on {@link HostSensors.whisper}.
+Whispers are how you present information to users. The {@link WhisperSensor} is accessible on {@link LoopSensors.whisper}.
 
 To emit a whisper, call {@link WhisperSensor.emitWhisper} with the whisper display data. The call will return with the whisper ID.
 
@@ -116,7 +116,7 @@ this.sensors.whisper.updateWhisper(whisperId,
 
 ### Storage
 
-You can store and retrieve user credentials and other data with the {@link StorageSensor} accessible from {@link HostSensors.storage}.
+You can store and retrieve user credentials and other data with the {@link StorageSensor} accessible from {@link LoopSensors.storage}.
 
 ```javascript
 

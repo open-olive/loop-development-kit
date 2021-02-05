@@ -3,22 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const whisperClient_1 = __importDefault(require("./hostClients/whisperClient"));
-const storageClient_1 = __importDefault(require("./hostClients/storageClient"));
-const keyboardClient_1 = __importDefault(require("./hostClients/keyboardClient"));
-const clipboardClient_1 = require("./hostClients/clipboardClient");
-const cursorClient_1 = require("./hostClients/cursorClient");
-// import { HoverClient } from './hostClients/hoverClient';
-const fileSystemClient_1 = require("./hostClients/fileSystemClient");
-const processClient_1 = require("./hostClients/processClient");
-// import { WindowClient } from './hostClients/windowClient';
-// import { BrowserClient } from './hostClients/browserClient';
-const networkClient_1 = require("./hostClients/networkClient");
-const uiClient_1 = require("./hostClients/uiClient");
+const whisperClient_1 = __importDefault(require("./loopClients/whisperClient"));
+const storageClient_1 = __importDefault(require("./loopClients/storageClient"));
+const keyboardClient_1 = __importDefault(require("./loopClients/keyboardClient"));
+const clipboardClient_1 = require("./loopClients/clipboardClient");
+const cursorClient_1 = require("./loopClients/cursorClient");
+// import { HoverClient } from './loopClients/hoverClient';
+const fileSystemClient_1 = require("./loopClients/fileSystemClient");
+const processClient_1 = require("./loopClients/processClient");
+// import { WindowClient } from './loopClients/windowClient';
+// import { BrowserClient } from './loopClients/browserClient';
+const networkClient_1 = require("./loopClients/networkClient");
+const uiClient_1 = require("./loopClients/uiClient");
 /**
  * @internal
  */
-class HostClientFacade {
+class LoopSensorFacade {
     // These sensors are not yet implemented.
     // public hover: HoverClient = new HoverClient();
     // public window: WindowClient = new WindowClient();
@@ -52,4 +52,4 @@ class HostClientFacade {
         ]);
     }
 }
-exports.default = HostClientFacade;
+exports.default = LoopSensorFacade;

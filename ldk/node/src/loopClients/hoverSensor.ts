@@ -13,7 +13,7 @@ export interface HoverReadRequest {
 }
 
 /**
- * The HoverServices watches the cursor move and uses OCR to read the text in an area around the cursor position.
+ * The HoverSensor watches the cursor move and uses OCR to read the text in an area around the cursor position.
  */
 export interface HoverSensor {
   /**

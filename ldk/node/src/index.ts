@@ -5,18 +5,18 @@ import Plugin from './plugin';
 import { Loop } from './loop';
 import { Logger } from './logging';
 import { serveLoop } from './serve';
-import { HostSensors } from './hostSensors';
-import * as Browser from './hostClients/browserSensor';
-import * as Clipboard from './hostClients/clipboardSensor';
-import * as Cursor from './hostClients/cursorSensor';
-import * as FileSystem from './hostClients/fileSystemSensor';
-import * as Hover from './hostClients/hoverSensor';
-import * as Keyboard from './hostClients/keyboardSensor';
-import * as Process from './hostClients/processSensor';
-import * as Storage from './hostClients/storageClient';
-import * as Whisper from './hostClients/whisperSensor';
-import * as Window from './hostClients/windowSensor';
-import * as Network from './hostClients/networkSensor';
+import { LoopSensors } from './loopSensors';
+import * as Browser from './loopClients/browserSensor';
+import * as Clipboard from './loopClients/clipboardSensor';
+import * as Cursor from './loopClients/cursorSensor';
+import * as FileSystem from './loopClients/fileSystemSensor';
+import * as Hover from './loopClients/hoverSensor';
+import * as Keyboard from './loopClients/keyboardSensor';
+import * as Process from './loopClients/processSensor';
+import * as Storage from './loopClients/storageClient';
+import * as Whisper from './loopClients/whisperSensor';
+import * as Window from './loopClients/windowSensor';
+import * as Network from './loopClients/networkSensor';
 
 export {
   access,
@@ -26,7 +26,7 @@ export {
   Plugin,
   Logger,
   serveLoop,
-  HostSensors,
+  LoopSensors,
   Browser,
   Clipboard,
   Cursor,

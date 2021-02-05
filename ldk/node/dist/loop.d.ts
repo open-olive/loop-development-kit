@@ -1,4 +1,4 @@
-import { HostSensors } from './hostSensors';
+import { LoopSensors } from './loopSensors';
 /**
  * Your Loop must implement this interface.
  *
@@ -30,7 +30,7 @@ export interface Loop {
      *
      * @param host - The host sensors. You should assign this as an instance property for use by the Loop.
      */
-    start(host: HostSensors): void;
+    start(host: LoopSensors): void;
     /**
      * Executed by the host to stop the plugin.
      * All plugin activity should stop when this is called.

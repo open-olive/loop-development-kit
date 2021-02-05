@@ -62,7 +62,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
     session: Session.AsObject,
     logger: ILogger,
   ): Promise<void> {
-    this._logger = logger.with('service', this.sensorName());
+    this._logger = logger.with('sensor', this.sensorName());
     return new Promise((resolve, reject) => {
       let address: string;
       if (connInfo.network === 'unix') {

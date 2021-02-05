@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const empty_pb_1 = require("google-protobuf/google/protobuf/empty_pb");
 const loop_grpc_pb_1 = __importDefault(require("./grpc/loop_grpc_pb"));
-const hostClientFacade_1 = __importDefault(require("./hostClientFacade"));
+const loopSensorFacade_1 = __importDefault(require("./loopSensorFacade"));
 const stdioGrpcServer_1 = require("./stdioGrpcServer");
 /**
  * @internal
@@ -47,7 +47,7 @@ class LoopServer {
                 callback(new Error('Invalid Session Information'), response);
                 return;
             }
-            const hostClient = new hostClientFacade_1.default(this.logger);
+            const hostClient = new loopSensorFacade_1.default(this.logger);
             yield hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
                 this.logger.error('loopServer - Failed to Connect to Facades', 'error', JSON.stringify(err));
                 throw err;

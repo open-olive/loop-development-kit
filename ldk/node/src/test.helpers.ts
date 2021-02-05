@@ -8,7 +8,7 @@ import {
 import { Deadline } from '@grpc/grpc-js';
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
-import BaseClient, { GRPCClientConstructor } from './hostClients/baseClient';
+import BaseClient, { GRPCClientConstructor } from './loopClients/baseClient';
 import { ILogger, Logger } from './logging';
 import { TestLogger } from './testLogger';
 
