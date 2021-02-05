@@ -63,9 +63,9 @@ export function createWaitHandler() {
 /**
  * A stream that is largely a target for later emits
  */
-export function createEmptyStream<
+export function createEmptyStream<TResponse>(): ClientReadableStream<
   TResponse
->(): ClientReadableStream<TResponse> {
+> {
   return new ClientReadableStreamImpl<TResponse>(() => ({} as TResponse));
 }
 

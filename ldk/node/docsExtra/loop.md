@@ -45,7 +45,7 @@ A Loop:
 
 Olive Helps has Sensors that lets the Loop observe what's taking place in the user's system:
 
-- {@link BrowserSensor | Browser Activity}: Know when the user changes URLs and selects text in their browser (plugin must be installed).
+- {@link BrowserSensor | Browser Activity}: Know when the user changes URLs and selects text in their browser (browser plugin must be installed).
 - {@link ClipboardSensor | Clipboard Contents}: Know when the user's clipboard's contents change.
 - {@link CursorSensor | Cursor Movement}: Know where the user's cursor is.
 - {@link FileSystemSensor | File System Changes}: Know when files change.

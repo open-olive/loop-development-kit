@@ -113,7 +113,9 @@ export interface WhisperDisambiguationElement<T extends string> {
   order?: number;
 }
 
-export type WhisperDisambiguationOption = WhisperDisambiguationElement<'option'> & {
+export type WhisperDisambiguationOption = WhisperDisambiguationElement<
+  'option'
+> & {
   label: string;
 };
 

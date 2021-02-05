@@ -25,7 +25,7 @@ class Logger {
     /**
      * Create a Logger.
      *
-     * @param name - The name of the plugin.
+     * @param name - The name of the Loop.
      * @param fields - Additional fields to include with each log.
      * @example
      * ```
@@ -54,7 +54,7 @@ class Logger {
      * //   "@timestamp": "2020-07-30T14:58:21.057000Z",
      * //   "@pid": 1234,
      * //   "@level": "INFO",
-     * //   "@module": "my-plugin-name",
+     * //   "@module": "my-loop-name",
      * //   "@message": "Yet another message",
      * //   "persistentKey": "persistentValue",
      * //   "yetAnotherKey": "yetAnotherValue"
@@ -77,7 +77,7 @@ class Logger {
      * //   "@timestamp": "2020-07-30T14:58:21.057000Z",
      * //   "@pid": 1234,
      * //   "@level": "TRACE",
-     * //   "@module": "my-plugin-name",
+     * //   "@module": "my-loop-name",
      * //   "@message": "Some message"
      * // }
      * ```
@@ -97,7 +97,7 @@ class Logger {
      * //   "@timestamp": "2020-07-30T14:58:21.057000Z",
      * //   "@pid": 1234,
      * //   "@level": "DEBUG",
-     * //   "@module": "my-plugin-name",
+     * //   "@module": "my-loop-name",
      * //   "@message": "Some message"
      * // }
      * ```
@@ -117,7 +117,7 @@ class Logger {
      * //   "@timestamp": "2020-07-30T14:58:21.057000Z",
      * //   "@pid": 1234,
      * //   "@level": "INFO",
-     * //   "@module": "my-plugin-name",
+     * //   "@module": "my-loop-name",
      * //   "@message": "Some message"
      * // }
      * ```
@@ -137,7 +137,7 @@ class Logger {
      * //   "@timestamp": "2020-07-30T14:58:21.057000Z",
      * //   "@pid": 1234,
      * //   "@level": "WARN",
-     * //   "@module": "my-plugin-name",
+     * //   "@module": "my-loop-name",
      * //   "@message": "Some message"
      * // }
      * ```
@@ -157,7 +157,7 @@ class Logger {
      * //   "@timestamp": "2020-07-30T14:58:21.057000Z",
      * //   "@pid": 1234,
      * //   "@level": "ERROR",
-     * //   "@module": "my-plugin-name",
+     * //   "@module": "my-loop-name",
      * //   "@message": "Some message"
      * // }
      * ```
