@@ -115,7 +115,7 @@ message FilesystemFileStreamRequest{
     message Stat {
     }
 
-    oneof RequestOneOf {
+    oneof request_one_of {
         Create create = 1;
         Open open = 2;
         Read read = 3;
@@ -152,7 +152,7 @@ message FilesystemFileStreamResponse{
         string error = 15;
     }
 
-    oneof ResponseOneOf {
+    oneof response_one_of {
         Read read = 1;
         Write write = 2;
         Chmod chmod = 3;

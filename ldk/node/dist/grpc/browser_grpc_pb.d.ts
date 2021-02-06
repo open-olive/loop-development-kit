@@ -17,7 +17,7 @@ interface IBrowserService extends grpc.ServiceDefinition<grpc.UntypedServiceImpl
 }
 
 interface IBrowserService_IBrowserActiveURL extends grpc.MethodDefinition<browser_pb.BrowserActiveURLRequest, browser_pb.BrowserActiveURLResponse> {
-    path: string; // "/proto.Browser/BrowserActiveURL"
+    path: "/proto.Browser/BrowserActiveURL";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<browser_pb.BrowserActiveURLRequest>;
@@ -26,7 +26,7 @@ interface IBrowserService_IBrowserActiveURL extends grpc.MethodDefinition<browse
     responseDeserialize: grpc.deserialize<browser_pb.BrowserActiveURLResponse>;
 }
 interface IBrowserService_IBrowserActiveURLStream extends grpc.MethodDefinition<browser_pb.BrowserActiveURLStreamRequest, browser_pb.BrowserActiveURLStreamResponse> {
-    path: string; // "/proto.Browser/BrowserActiveURLStream"
+    path: "/proto.Browser/BrowserActiveURLStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<browser_pb.BrowserActiveURLStreamRequest>;
@@ -35,7 +35,7 @@ interface IBrowserService_IBrowserActiveURLStream extends grpc.MethodDefinition<
     responseDeserialize: grpc.deserialize<browser_pb.BrowserActiveURLStreamResponse>;
 }
 interface IBrowserService_IBrowserSelectedText extends grpc.MethodDefinition<browser_pb.BrowserSelectedTextRequest, browser_pb.BrowserSelectedTextResponse> {
-    path: string; // "/proto.Browser/BrowserSelectedText"
+    path: "/proto.Browser/BrowserSelectedText";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<browser_pb.BrowserSelectedTextRequest>;
@@ -44,7 +44,7 @@ interface IBrowserService_IBrowserSelectedText extends grpc.MethodDefinition<bro
     responseDeserialize: grpc.deserialize<browser_pb.BrowserSelectedTextResponse>;
 }
 interface IBrowserService_IBrowserSelectedTextStream extends grpc.MethodDefinition<browser_pb.BrowserSelectedTextStreamRequest, browser_pb.BrowserSelectedTextStreamResponse> {
-    path: string; // "/proto.Browser/BrowserSelectedTextStream"
+    path: "/proto.Browser/BrowserSelectedTextStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<browser_pb.BrowserSelectedTextStreamRequest>;
