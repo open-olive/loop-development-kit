@@ -31,13 +31,40 @@ export default class TestSuite {
         };
         i += 1;
       } catch (err) {
-        // do nothing, already logging
+        elements[`${i}`] = {
+          value: test.getStatus(),
+          label: test.getId(),
+          order: i + 1,
+          type: 'pair',
+        };
+        i += 1;
       }
     }
-    host.whisper.listWhisper({
+
+    const hotkeys = {
+      key: '/',
+      modifiers: {
+        ctrl: true,
+      },
+    };
+
+    const listWhisper = host.whisper.listWhisper({
       label: 'Self Test - Results',
       markdown: '',
       elements,
+    });
+    const markdown = host.whisper.markdownWhisper({
+      label: 'Self Test - Results',
+      markdown: 'Press "Ctrl + /" to bring back up the original whisper',
+    });
+    const keyboard = host.keyboard.streamHotKey(hotkeys, (error, response) => {
+      if (error) {
+        // Do nothing
+      } else {
+        listWhisper.stop();
+        markdown.stop();
+        keyboard.stop();
+      }
     });
     return true;
   }

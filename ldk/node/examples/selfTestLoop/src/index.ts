@@ -9,6 +9,7 @@ import {
   charTest,
   charScancodeTest,
   charStreamTest,
+  clipboardStream,
   confirmWhisper,
   cursorPosition,
   clipboardWriteAndQuery,
@@ -34,6 +35,12 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Copying value to clipboard and reading it back',
     ),
+    new LoopTest(
+      'Clipboard Service - Clipboard Stream',
+      clipboardStream,
+      10000,
+      'Copying teh value "LDKThxBai" the the clipboard',
+    ),
   ]),
   cursor: new TestGroup('Cursor Service', [
     new LoopTest(
@@ -50,9 +57,9 @@ const testConfig: { [key: string]: any } = {
     ),
   ]),
   file: new TestGroup('File Service', [
-    /* new LoopTest(
+    new LoopTest(
       'File Service - Query File Directory',
-      this.queryFileDirectory,
+      queryFileDirectory,
       10000,
       'Querying root directory to look for "go.mod"...',
     ),
@@ -82,7 +89,7 @@ const testConfig: { [key: string]: any } = {
       'Keyboard Service - Char Test',
       charTest,
       10000,
-      'Type the letter "F"',
+      'Type the letter "F" to pay respects...and test the individual character test',
     ),
     /*
     new LoopTest(
@@ -100,14 +107,13 @@ const testConfig: { [key: string]: any } = {
       this.confirmWhisper,
       10000,
       'Click the resolve button',
-    ),
+    ), */
     new LoopTest(
       'Whispser Service - Form Whisper',
-      this.formWhisper,
+      formWhisper,
       10000,
       'Type in "Stonks" and submit',
     ),
-    */
     new LoopTest(
       'Whisper Service - List Whisper',
       networkAndListWhisper,
@@ -131,90 +137,94 @@ class ClipboardLoop implements Loop {
   start(host: HostServices): void {
     this._host = host;
     logger.info('Starting Self Test...');
+    const hotkeys = {
+      key: '/',
+      modifiers: {
+        ctrl: true,
+      },
+    };
+
     try {
-      /* const initial = this.host.whisper.markdownWhisper({
-        markdown: 'Copy the word "LDKThxBai" to your clipboard to begin',
-        label: 'Begin Test',
+      this.openTestGroups(this.host);
+      this.host.keyboard.streamHotKey(hotkeys, (error, response) => {
+        if (error) {
+          logger.error('Something is wrong with the hotkey sensor');
+          logger.error(error);
+        } else {
+          this.openTestGroups(this.host);
+        }
       });
-      this.host.clipboard.streamClipboard((error, response) => {
-        logger.info(
-          typeof response !== 'undefined' ? response.toString() : 'undefined',
-        ); */
-
-      let allTests = [] as LoopTest[];
-      const elements = {} as Element;
-      const keys = Object.keys(testConfig);
-      for (let i = 0; i < keys.length; i += 1) {
-        const group = testConfig[keys[i]];
-        elements[keys[i]] = {
-          label: group.getId(),
-          order: i + 1,
-          type: 'option',
-        };
-        allTests = allTests.concat(testConfig[keys[i]].getTests());
-      }
-
-      elements.all = {
-        label: `Run all tests`,
-        order: keys.length + 1,
-        type: 'option',
-      };
-
-      logger.info(`Length of all tests ${allTests.length}`);
-
-      const whisper = host.whisper.disambiguationWhisper(
-        {
-          label: 'Self Test Loop groups',
-          markdown: '',
-          elements,
-        },
-        (error, response) => {
-          if (error) {
-            whisper.stop();
-          }
-          if (typeof response !== 'undefined' && response.key !== 'all') {
-            const suite = new TestSuite(
-              testConfig[response.key].getTests(),
-              logger,
-            );
-
-            suite.start(host).then(() => {
-              logger.info('🎉 Group Done!');
-              const prompt = this.host.whisper.markdownWhisper({
-                markdown: `All tests for ${testConfig[
-                  response.key
-                ].getId()} have been run`,
-                label: 'Testing Complete',
-              });
-              setTimeout(() => {
-                prompt.stop();
-              }, 5000);
-            });
-
-            whisper.stop();
-          } else if (
-            typeof response !== 'undefined' &&
-            response.key === 'all'
-          ) {
-            const suite = new TestSuite(allTests, logger);
-
-            suite.start(host).then(() => {
-              logger.info('🎉 Done!');
-              const prompt = this.host.whisper.markdownWhisper({
-                markdown: 'All tests have been run',
-                label: 'Testing Complete',
-              });
-              setTimeout(() => {
-                prompt.stop();
-              }, 5000);
-            });
-            whisper.stop();
-          }
-        },
-      );
     } catch (e) {
       logger.error('Error Streaming', 'error', e.toString());
     }
+  }
+
+  openTestGroups(host: HostServices): void {
+    let allTests = [] as LoopTest[];
+    const elements = {} as Element;
+    const keys = Object.keys(testConfig);
+    for (let i = 0; i < keys.length; i += 1) {
+      const group = testConfig[keys[i]];
+      elements[keys[i]] = {
+        label: group.getId(),
+        order: i + 1,
+        type: 'option',
+      };
+      allTests = allTests.concat(testConfig[keys[i]].getTests());
+    }
+
+    elements.all = {
+      label: `Run all tests`,
+      order: keys.length + 1,
+      type: 'option',
+    };
+    const whisper = host.whisper.disambiguationWhisper(
+      {
+        label: 'Self Test Loop groups',
+        markdown: '',
+        elements,
+      },
+      (error, response) => {
+        if (error) {
+          whisper.stop();
+        }
+        if (typeof response !== 'undefined' && response.key !== 'all') {
+          const suite = new TestSuite(
+            testConfig[response.key].getTests(),
+            logger,
+          );
+
+          suite.start(host).then(() => {
+            logger.info('🎉 Group Done!');
+            const prompt = this.host.whisper.markdownWhisper({
+              markdown: `All tests for ${testConfig[
+                response.key
+              ].getId()} have been run`,
+              label: 'Testing Complete',
+            });
+            setTimeout(() => {
+              prompt.stop();
+            }, 5000);
+          });
+
+          whisper.stop();
+        } else if (typeof response !== 'undefined' && response.key === 'all') {
+          const suite = new TestSuite(allTests, logger);
+
+          suite.start(host).then(() => {
+            logger.info('🎉 Done!');
+            const prompt = this.host.whisper.markdownWhisper({
+              markdown: 'All tests have been run',
+              label: 'Testing Complete',
+            });
+            setTimeout(() => {
+              prompt.stop();
+            }, 5000);
+          });
+          whisper.stop();
+        }
+      },
+    );
   }
 
   stop(): void {

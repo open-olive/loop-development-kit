@@ -39,6 +39,19 @@ export const clipboardWriteAndQuery = (
   });
 };
 
+export const clipboardStream = (host: HostServices): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    host.clipboard.streamClipboard((error, response) => {
+      if (error) {
+        reject(error);
+      }
+      if (response === 'LDKThxBai') {
+        resolve(true);
+      }
+    });
+  });
+};
+
 export const hotkeyTest = (host: HostServices): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     const hotkeys = {
@@ -177,7 +190,9 @@ export const queryFileDirectory = (host: HostServices): Promise<boolean> => {
       .then((response) => {
         for (let i = 0; i < response.files.length; i += 1) {
           if (response.files[i].name === 'go.mod' && !response.files[i].isDir) {
-            resolve(true);
+            setTimeout(() => {
+              resolve(true);
+            }, 1500);
           }
         }
       })
@@ -230,7 +245,7 @@ export const confirmWhisper = (host: HostServices): Promise<boolean> => {
 
 export const formWhisper = (host: HostServices): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    const firstForm = host.whisper.formWhisper(
+    const form = host.whisper.formWhisper(
       {
         submitButton: 'Submit',
         cancelButton: 'Cancel',
@@ -247,23 +262,30 @@ export const formWhisper = (host: HostServices): Promise<boolean> => {
         },
       },
       (e, response) => {
+        // TODO: calling stop here seems to break things, unsure why
         if (e !== null) {
-          logger.error('Error in form whisper submit', e);
+          // form.stop();
+          reject(e);
         }
 
         if (typeof response === 'undefined') {
-          // Do nothing
-          return;
+          // form.stop();
+          reject(new Error('Form response is undefined'));
         }
 
         const updateEvent = response as WhisperFormUpdateEvent;
         const submitEvent = response as WhisperFormSubmitEvent;
 
         if (updateEvent.type === 'update') {
-          logger.info(JSON.stringify(updateEvent));
-        } else if (submitEvent.type === 'submit') {
-          logger.info('Submit detected');
-          logger.info(JSON.stringify(submitEvent));
+          logger.debug(JSON.stringify(updateEvent));
+        } else if (
+          submitEvent.type === 'submit' &&
+          submitEvent.submitted &&
+          submitEvent.outputs.topic === 'Stonks'
+        ) {
+          logger.debug(JSON.stringify(submitEvent));
+          // form.stop();
+          resolve(true);
         }
       },
     );
