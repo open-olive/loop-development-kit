@@ -11,26 +11,29 @@ import (
 	"time"
 )
 
-type handlerStatus struct {
-	handler string
-	status  string
-}
-
 type StatusReporter struct {
 	aggregator chan handlerStatus
 	wiper      chan string
+	wipeAll    chan int
 	ctx        context.Context
 	cancel     context.CancelFunc
+}
+
+type handlerStatus struct {
+	handler string
+	status  string
 }
 
 func NewStatusReporter(logger *ldk.Logger) *StatusReporter {
 	ctx, cancel := context.WithCancel(context.Background())
 	aggregator := make(chan handlerStatus)
 	wiper := make(chan string)
+	wipeAll := make(chan int)
 
 	sr := &StatusReporter{
 		aggregator: aggregator,
 		wiper: wiper,
+		wipeAll: wipeAll,
 		ctx: ctx,
 		cancel: cancel,
 	}
@@ -53,6 +56,12 @@ func (sr *StatusReporter) Wipe(handlerName string) {
 	}()
 }
 
+func (sr *StatusReporter) WipeAll() {
+	go func() {
+		sr.wipeAll <- 0
+	}()
+}
+
 func (sr *StatusReporter) worker(logger *ldk.Logger) {
 	aggregation := make(map[string]string)
 	aggregationMutex := sync.RWMutex{}
@@ -67,7 +76,15 @@ func (sr *StatusReporter) worker(logger *ldk.Logger) {
 				func() {
 					aggregationMutex.Lock()
 					defer aggregationMutex.Unlock()
+
 					delete(aggregation, keyToWipe)
+				}()
+			case <-sr.wipeAll:
+				func() {
+					aggregationMutex.Lock()
+					defer aggregationMutex.Unlock()
+
+					aggregation = make(map[string]string)
 				}()
 			default:
 				lines := func() []string {

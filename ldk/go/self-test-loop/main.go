@@ -55,8 +55,6 @@ func (loop *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		return err
 	}
 
-	// todo: one-offs?
-
 	return nil
 }
 
@@ -414,6 +412,7 @@ func (loop *Loop) emitPlaygroundWhisper() error {
 	_, err := loop.sidekick.Whisper().Disambiguation(loop.ctx, &ldk.WhisperContentDisambiguation{
 		Label:    "Actions",
 		Elements: map[string]ldk.WhisperContentDisambiguationElement{
+			"CLEAR":                makeLink("CLEAR", onClickClear),
 			"NETWORK_HTTP_REQUEST": makeLink("Network: HTTPRequest", onClickNetworkHttpRequest),
 			"CLIPBOARD_READ":       makeLink("Clipboard: Read", onClickClipboardRead),
 			"CLIPBOARD_WRITE":      makeLink("Clipboard: Write", onClickClipboardWrite),
@@ -421,10 +420,20 @@ func (loop *Loop) emitPlaygroundWhisper() error {
 			"STORAGE_WRITE":        makeLink("Storage: Write", onClickStorageWrite),
 			"STORAGE_EXISTS":       makeLink("Storage: Exists", onClickStorageExists),
 			"STORAGE_DELETE":       makeLink("Storage: Delete", onClickStorageDelete),
+			"WINDOW_ACTIVE_WINDOW": makeLink("Window: Active Window", onClickActiveWindow),
+			"WINDOW_STATE":         makeLink("Window: State", onClickWindowState),
+			"PROCESS_STATE":        makeLink("Process: State", onClickProcessState),
+			"CURSOR_POSITION":      makeLink("Cursor: Position", onClickCursorPosition),
 		},
 	})
 
 	return err
+}
+
+func onClickClear(loop *Loop) OnChangeFn {
+	return func(_ string) {
+		loop.statusReporter.WipeAll()
+	}
 }
 
 func onClickNetworkHttpRequest(loop *Loop) OnChangeFn {
@@ -523,5 +532,45 @@ func onClickStorageDelete(loop *Loop) OnChangeFn {
 		loop.statusReporter.Wipe("onClickStorageRead")
 		loop.statusReporter.Wipe("onClickStorageWrite")
 		loop.statusReporter.Report("onClickStorageDelete", storageTestKey + " deleted")
+	}
+}
+
+func onClickActiveWindow(loop *Loop) OnChangeFn {
+	return func(_ string) {
+		info, err := loop.sidekick.Window().ActiveWindow(loop.ctx)
+		if err != nil {
+			loop.logger.Error("active window error", err)
+		}
+		loop.statusReporter.Report("onClickActiveWindow", info)
+	}
+}
+
+func onClickWindowState(loop *Loop) OnChangeFn {
+	return func(_ string) {
+		info, err := loop.sidekick.Window().State(loop.ctx)
+		if err != nil {
+			loop.logger.Error("window state error", err)
+		}
+		loop.statusReporter.Report("onClickWindowState", info)
+	}
+}
+
+func onClickProcessState(loop *Loop) OnChangeFn {
+	return func(_ string) {
+		info, err := loop.sidekick.Process().State(loop.ctx)
+		if err != nil {
+			loop.logger.Error("process state error", err)
+		}
+		loop.statusReporter.Report("onClickProcessState", info)
+	}
+}
+
+func onClickCursorPosition(loop *Loop) OnChangeFn {
+	return func(_ string) {
+		position, err := loop.sidekick.Cursor().Position(loop.ctx)
+		if err != nil {
+			loop.logger.Error("cursor position error", err)
+		}
+		loop.statusReporter.Report("onClickCursorPosition", position)
 	}
 }
