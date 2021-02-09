@@ -2,16 +2,19 @@ package main
 
 import (
 	"context"
+	"crypto/rand"
 	"errors"
 	"fmt"
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 )
 
 const storageTestKey = "TEST_KEY"
 const storageTestValue = "TEST_VALUE"
+const testFileSize = 512
 
 func main() {
 	logger := ldk.NewLogger("self-test-loop-go")
@@ -32,6 +35,8 @@ type Loop struct {
 
 	testData       TestData
 	statusReporter *StatusReporter
+
+	playgroundCancel context.CancelFunc
 }
 
 type TestData struct {
@@ -44,7 +49,7 @@ func (loop *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	loop.sidekick = sidekick
 	loop.ctx, loop.cancel = context.WithCancel(context.Background())
 
-	err := loop.prepareTestData()
+	err := loop.testFileWrite()
 	if err != nil {
 		return err
 	}
@@ -54,7 +59,9 @@ func (loop *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		return err
 	}
 
-	loop.emitPlaygroundWhisper()
+	playgroundCtx, playgroundCancel := context.WithCancel(loop.ctx)
+	loop.playgroundCancel = playgroundCancel
+	loop.emitPlaygroundWhisper(playgroundCtx)
 
 	return nil
 }
@@ -65,6 +72,7 @@ func (loop *Loop) LoopStop() error {
 		return err
 	}
 
+	loop.playgroundCancel()
 	loop.statusReporter.cancel()
 	loop.cancel()
 	return nil
@@ -352,7 +360,7 @@ func (loop *Loop) dirHandler() ldk.ListenDirHandler {
 	}
 }
 
-func (loop *Loop) prepareTestData() error {
+func (loop *Loop) testFileWrite() error {
 	dirName := fmt.Sprintf("loop_example_%d", time.Now().UnixNano())
 	dirPath := filepath.Join(os.TempDir(), dirName)
 	err := loop.sidekick.Filesystem().MakeDir(loop.ctx, dirPath, 0755)
@@ -369,9 +377,43 @@ func (loop *Loop) prepareTestData() error {
 	// todo: this will block forever
 	// defer file.Close()
 
-	_, err = file.Write([]byte("data\n"))
+	loop.statusReporter.Report("testFileWrite", filePath)
+
+	randomBuffer := make([]byte, testFileSize)
+	bn, err := rand.Read(randomBuffer)
 	if err != nil {
 		return err
+	}
+
+	nw, err := file.Write(randomBuffer)
+	if err != nil {
+		loop.logger.Error("file write error")
+		return err
+	}
+	if bn != nw {
+		loop.logger.Error("num bytes written differs from num bytes generated", map[string]string{
+			"generated": strconv.Itoa(bn),
+			"written": strconv.Itoa(nw),
+		})
+	}
+
+	rFile, err := loop.sidekick.Filesystem().Open(loop.ctx, filePath)
+	if err != nil {
+		loop.logger.Error("file open error")
+		return err
+	}
+
+	buffer := make([]byte, testFileSize)
+	nr, err := rFile.Read(buffer)
+	if err != nil {
+		loop.logger.Error("file read error")
+		return err
+	}
+	if nr != nw {
+		loop.logger.Error("num bytes read differs from num bytes written", map[string]string{
+			"read": strconv.Itoa(nr),
+			"written": strconv.Itoa(nw),
+		})
 	}
 
 	loop.testData = TestData{
@@ -397,30 +439,42 @@ func (loop *Loop) cleanupTestData() error {
 	return nil
 }
 
-func (loop *Loop) emitPlaygroundWhisper() {
+func (loop *Loop) emitPlaygroundWhisper(ctx context.Context) {
 	go func() {
 		makeLink := orderedMakeLink(loop)
-		_, err := loop.sidekick.Whisper().Disambiguation(loop.ctx, &ldk.WhisperContentDisambiguation{
-			Label:    "Actions",
-			Elements: map[string]ldk.WhisperContentDisambiguationElement{
-				"CLEAR_ALL":            makeLink("CLEAR ALL", onClickClear),
-				"NETWORK_HTTP_REQUEST": makeLink("Network: HTTPRequest", onClickNetworkHttpRequest),
-				"CLIPBOARD_READ":       makeLink("Clipboard: Read", onClickClipboardRead),
-				"CLIPBOARD_WRITE":      makeLink("Clipboard: Write", onClickClipboardWrite),
-				"STORAGE_READ":         makeLink("Storage: Read", onClickStorageRead),
-				"STORAGE_WRITE":        makeLink("Storage: Write", onClickStorageWrite),
-				"STORAGE_EXISTS":       makeLink("Storage: Exists", onClickStorageExists),
-				"STORAGE_DELETE":       makeLink("Storage: Delete", onClickStorageDelete),
-				"WINDOW_ACTIVE_WINDOW": makeLink("Window: Active Window", onClickActiveWindow),
-				"WINDOW_STATE":         makeLink("Window: State", onClickWindowState),
-				"PROCESS_STATE":        makeLink("Process: State", onClickProcessState),
-				"CURSOR_POSITION":      makeLink("Cursor: Position", onClickCursorPosition),
-				"FILESYSTEM":           makeLink("Filesystem (Opens Form Whisper)", onClickFilesystem),
-				"WHISPER":              makeLink("Whisper (Opens Disambiguation Whisper)", onClickWhisper),
-			},
-		})
-		if err != nil {
-			loop.logger.Error("action disambiguation whisper error", err)
+		restarted := false
+		for {
+			select {
+				case <-ctx.Done():
+					return
+				default:
+					if restarted {
+						loop.logger.Info("RESTARTING PLAYGROUND WHISPER")
+					}
+					_, err := loop.sidekick.Whisper().Disambiguation(loop.ctx, &ldk.WhisperContentDisambiguation{
+						Label:    "Actions",
+						Elements: map[string]ldk.WhisperContentDisambiguationElement{
+							"CLEAR_ALL":            makeLink("CLEAR ALL", onClickClear),
+							"NETWORK_HTTP_REQUEST": makeLink("Network: HTTPRequest", onClickNetworkHttpRequest),
+							"CLIPBOARD_READ":       makeLink("Clipboard: Read", onClickClipboardRead),
+							"CLIPBOARD_WRITE":      makeLink("Clipboard: Write", onClickClipboardWrite),
+							"STORAGE_READ":         makeLink("Storage: Read", onClickStorageRead),
+							"STORAGE_WRITE":        makeLink("Storage: Write", onClickStorageWrite),
+							"STORAGE_EXISTS":       makeLink("Storage: Exists", onClickStorageExists),
+							"STORAGE_DELETE":       makeLink("Storage: Delete", onClickStorageDelete),
+							"WINDOW_ACTIVE_WINDOW": makeLink("Window: Active Window", onClickActiveWindow),
+							"WINDOW_STATE":         makeLink("Window: State", onClickWindowState),
+							"PROCESS_STATE":        makeLink("Process: State", onClickProcessState),
+							"CURSOR_POSITION":      makeLink("Cursor: Position", onClickCursorPosition),
+							"FILESYSTEM":           makeLink("Filesystem (Opens Form Whisper)", onClickFilesystem),
+							"WHISPER":              makeLink("Whisper (Opens Disambiguation Whisper)", onClickWhisper),
+						},
+					})
+					if err != nil {
+						loop.logger.Error("action disambiguation whisper error", err)
+					}
+					restarted = true
+			}
 		}
 	}()
 }
@@ -448,7 +502,7 @@ func onClickClear(loop *Loop) OnChangeFn {
 func onClickNetworkHttpRequest(loop *Loop) OnChangeFn {
 	return func(_ string) {
 		response, err := loop.sidekick.Network().HTTPRequest(loop.ctx, &ldk.HTTPRequest{
-			URL:     "http://www.google.com",
+			URL:     "http://oliveai.com",
 			Method:  "GET",
 		})
 		if err != nil {
@@ -880,7 +934,13 @@ func onClickFormWhisper(loop *Loop) OnChangeFn {
 func onClickMarkdownWhisper(loop *Loop) OnChangeFn {
 	return func(_ string) {
 		go func() {
-
+			err := loop.sidekick.Whisper().Markdown(loop.ctx, &ldk.WhisperContentMarkdown{
+				Label:    "Markdown",
+				Markdown: "**Hello!**  This is some *Markdown.*",
+			})
+			if err != nil {
+				loop.logger.Error("markdown test whisper error")
+			}
 		}()
 	}
 }
@@ -888,7 +948,44 @@ func onClickMarkdownWhisper(loop *Loop) OnChangeFn {
 func onClickListWhisper(loop *Loop) OnChangeFn {
 	return func(_ string) {
 		go func() {
-
+			err := loop.sidekick.Whisper().List(loop.ctx, &ldk.WhisperContentList{
+				Label:    "List",
+				Elements: map[string]ldk.WhisperContentListElement{
+					"MESSAGE": &ldk.WhisperContentListElementMessage{
+						Align:  "left",
+						Body:   "Message Element",
+						Extra:  false,
+						Header: "Message Element Header",
+						Order:  0,
+						// todo: style is not applied
+						Style:  "color: green;",
+					},
+					"DIVIDER": &ldk.WhisperContentListElementDivider{
+						Extra: false,
+						Order: 1,
+						Style: "color: green;",
+					},
+					"PAIR": &ldk.WhisperContentListElementPair{
+						Copyable: true,
+						Extra:    false,
+						Label:    "Pair Element",
+						Order:    2,
+						Style:    "color: green;",
+						Value:    "Pair Element Value",
+					},
+					"LINK": &ldk.WhisperContentListElementLink{
+						Align: "",
+						Extra: true,
+						Href:  "http://oliveai.com",
+						Order: 3,
+						Style: "color: green;",
+						Text:  "Link to Olive AI Website",
+					},
+				},
+			})
+			if err != nil {
+				loop.logger.Error("list test whisper error")
+			}
 		}()
 	}
 }
