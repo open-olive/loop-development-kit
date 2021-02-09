@@ -2,12 +2,16 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
 	"os"
 	"path/filepath"
 	"time"
 )
+
+const storageTestKey = "TEST_KEY"
+const storageTestValue = "TEST_VALUE"
 
 func main() {
 	logger := ldk.NewLogger("self-test-loop-go")
@@ -397,10 +401,9 @@ func (loop *Loop) cleanupTestData() error {
 }
 
 type OnChangeFn func(string)
-type OnChangeGenerator func(loop *Loop) OnChangeFn
 func (loop *Loop) emitPlaygroundWhisper() error {
 	var order uint32 = 0
-	makeLink := func(label string, fn OnChangeGenerator) ldk.WhisperContentDisambiguationElement {
+	makeLink := func(label string, fn func(loop *Loop) OnChangeFn) ldk.WhisperContentDisambiguationElement {
 		order++
 		return &ldk.WhisperContentDisambiguationElementOption{
 			Label:    label,
@@ -424,6 +427,7 @@ func (loop *Loop) emitPlaygroundWhisper() error {
 			"WINDOW_STATE":         makeLink("Window: State", onClickWindowState),
 			"PROCESS_STATE":        makeLink("Process: State", onClickProcessState),
 			"CURSOR_POSITION":      makeLink("Cursor: Position", onClickCursorPosition),
+			"FILESYSTEM":           makeLink("Filesystem (Opens Form Whisper)", onClickFilesystem),
 		},
 	})
 
@@ -468,8 +472,8 @@ func onClickClipboardRead(loop *Loop) OnChangeFn {
 }
 
 func onClickClipboardWrite(loop *Loop) OnChangeFn {
-	str := "PASTE ME"
 	return func(_ string) {
+		str := "PASTE ME"
 		err := loop.sidekick.Clipboard().Write(loop.ctx, str)
 		if err != nil {
 			loop.logger.Error("clipboard write error", err)
@@ -479,8 +483,6 @@ func onClickClipboardWrite(loop *Loop) OnChangeFn {
 	}
 }
 
-const storageTestKey = "TEST_KEY"
-const storageTestValue = "TEST_VALUE"
 func onClickStorageRead(loop *Loop) OnChangeFn {
 	return func(_ string) {
 		value, err := loop.sidekick.Storage().Read(loop.ctx, storageTestKey)
@@ -572,5 +574,122 @@ func onClickCursorPosition(loop *Loop) OnChangeFn {
 			loop.logger.Error("cursor position error", err)
 		}
 		loop.statusReporter.Report("onClickCursorPosition", position)
+	}
+}
+
+func onClickFilesystem(loop *Loop) OnChangeFn {
+	return func(_ string) {
+		_, output, err := loop.sidekick.Whisper().Form(loop.ctx, &ldk.WhisperContentForm{
+			Label: "Filesystem Operation Tester",
+			Markdown: "Pair an operation with a target file",
+			Inputs: map[string]ldk.WhisperContentFormInput{
+				"Operation": &ldk.WhisperContentFormInputSelect{
+					Label: "Operation",
+					Options: []string{
+						"Dir",
+						"Open",
+						"Create",
+						"MakeDir",
+						"Copy",
+						"Move",
+						"Remove",
+					},
+					Order: 0,
+				},
+				"Target": &ldk.WhisperContentFormInputText{
+					Label: "Target",
+					Order: 1,
+				},
+				"Destination": &ldk.WhisperContentFormInputText{
+					Label: "Destination (Optional)",
+					Order: 2,
+				},
+				"Recursive": &ldk.WhisperContentFormInputCheckbox{
+					Label: "Recursive (Optional)",
+					Order: 3,
+				},
+			},
+			SubmitLabel: "Submit",
+			CancelLabel: "Cancel",
+		})
+		if err != nil {
+			loop.logger.Error("filesystem operation error", err)
+		}
+		loop.statusReporter.Report("onClickFilesystem", output)
+
+		operation, ok := output["Operation"].(*ldk.WhisperContentFormOutputSelect)
+		if !ok {
+			loop.logger.Info("no operation provided", err)
+			return
+		}
+		target, ok := output["Target"].(*ldk.WhisperContentFormOutputText)
+		if !ok {
+			loop.logger.Info("no target provided", err)
+			return
+		}
+
+		switch operation.Value {
+		case "Dir":
+			// todo: no actual file metadata returned here either; though it is aware of files
+			info, err := loop.sidekick.Filesystem().Dir(loop.ctx, target.Value)
+			if err != nil {
+				loop.logger.Error("filesystem dir error", err)
+			}
+			loop.statusReporter.Report("filesystemTestDir", info)
+		case "Open":
+			file, err := loop.sidekick.Filesystem().Open(loop.ctx, target.Value)
+			if err != nil {
+				loop.logger.Error("filesystem open error", err)
+			}
+			loop.statusReporter.Report("filesystemTestOpen", file)
+		case "Create":
+			// todo: no actual file metadata returned?
+			file, err := loop.sidekick.Filesystem().Create(loop.ctx, target.Value)
+			if err != nil {
+				loop.logger.Error("filesystem create error", err)
+			}
+			stat, _ := file.Stat()
+			loop.statusReporter.Report("filesystemTestCreate", stat)
+		case "MakeDir":
+			err := loop.sidekick.Filesystem().MakeDir(loop.ctx, target.Value, 0755)
+			if err != nil {
+				loop.logger.Error("filesystem make dir error", err)
+				return
+			}
+			loop.statusReporter.Report("filesystemTestMakeDir", "OK")
+		case "Copy":
+			destination, ok := output["Destination"].(*ldk.WhisperContentFormOutputText)
+			if !ok {
+				loop.logger.Error("filesystem copy error", errors.New("no destination provided"))
+			}
+			err := loop.sidekick.Filesystem().Copy(loop.ctx, target.Value, destination.Value)
+			if err != nil {
+				loop.logger.Error("filesystem copy error", err)
+				return
+			}
+			loop.statusReporter.Report("filesystemTestCopy", "OK")
+		case "Move":
+			destination, ok := output["Destination"].(*ldk.WhisperContentFormOutputText)
+			if !ok {
+				loop.logger.Error("filesystem move error", errors.New("no destination provided"))
+			}
+			err := loop.sidekick.Filesystem().Move(loop.ctx, target.Value, destination.Value)
+			if err != nil {
+				loop.logger.Error("filesystem move error", err)
+				return
+			}
+			loop.statusReporter.Report("filesystemTestMove", "OK")
+		case "Remove":
+			recursive, ok := output["Recursive"].(*ldk.WhisperContentFormOutputCheckbox)
+			if !ok {
+				loop.logger.Error("filesystem remove error", errors.New("no recursive provided"))
+			}
+			err := loop.sidekick.Filesystem().Remove(loop.ctx, target.Value, recursive.Value)
+			if err != nil {
+				loop.logger.Error("filesystem remove error", err)
+				return
+			}
+			loop.statusReporter.Report("filesystemTestRemove", "OK")
+		}
 	}
 }

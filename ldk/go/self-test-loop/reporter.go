@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+const sleepTime = 1 * time.Second
+
 type StatusReporter struct {
 	aggregator chan handlerStatus
 	wiper      chan string
@@ -67,25 +69,11 @@ func (sr *StatusReporter) worker(logger *ldk.Logger) {
 	aggregationMutex := sync.RWMutex{}
 
 	printerCtx, printerCancel := context.WithCancel(sr.ctx)
-	go func() {
+	printer := func() {
 		for {
 			select {
 			case <-printerCtx.Done():
 				return
-			case keyToWipe := <-sr.wiper:
-				func() {
-					aggregationMutex.Lock()
-					defer aggregationMutex.Unlock()
-
-					delete(aggregation, keyToWipe)
-				}()
-			case <-sr.wipeAll:
-				func() {
-					aggregationMutex.Lock()
-					defer aggregationMutex.Unlock()
-
-					aggregation = make(map[string]string)
-				}()
 			default:
 				lines := func() []string {
 					aggregationMutex.RLock()
@@ -101,19 +89,31 @@ func (sr *StatusReporter) worker(logger *ldk.Logger) {
 				sort.Strings(lines)
 				logger.Info(fmt.Sprintf("HANDLER STATUS:\n%s\n", strings.Join(lines, "\n")))
 
-				time.Sleep(1 * time.Second)
+				time.Sleep(sleepTime)
 			}
 		}
-	}()
+	}
 
+	go printer()
 	for {
 		select {
 		case s := <-sr.aggregator:
 			func() {
 				aggregationMutex.Lock()
 				defer aggregationMutex.Unlock()
-
 				aggregation[s.handler] = s.status
+			}()
+		case keyToWipe := <-sr.wiper:
+			func() {
+				aggregationMutex.Lock()
+				defer aggregationMutex.Unlock()
+				delete(aggregation, keyToWipe)
+			}()
+		case <-sr.wipeAll:
+			func() {
+				aggregationMutex.Lock()
+				defer aggregationMutex.Unlock()
+				aggregation = make(map[string]string)
 			}()
 		case <-sr.ctx.Done():
 			logger.Info("status reporter stopping")
