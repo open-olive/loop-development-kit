@@ -208,10 +208,10 @@ func (loop *Loop) listenToFilesystem() error {
 		return err
 	}
 
-	//err = loop.sidekick.Filesystem().ListenDir(loop.ctx, loop.testData.dirPath, loop.dirHandler())
-	//if err != nil {
-	//	loop.logger.Error("dir listen error", err)
-	//}
+	err = loop.sidekick.Filesystem().ListenDir(loop.ctx, loop.testData.dirPath, loop.dirHandler())
+	if err != nil {
+		loop.logger.Error("dir listen error", err)
+	}
 
 	return err
 }
