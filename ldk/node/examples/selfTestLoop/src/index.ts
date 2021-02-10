@@ -10,9 +10,10 @@ import {
   charScancodeTest,
   charStreamTest,
   clipboardStream,
-  confirmWhisper,
-  cursorPosition,
   clipboardWriteAndQuery,
+  confirmWhisper,
+  createAndDeleteFile,
+  cursorPosition,
   disambiguationWhisper,
   formWhisper,
   hotkeyTest,
@@ -20,6 +21,7 @@ import {
   queryFileDirectory,
   streamCursorPosition,
   streamFileInfo,
+  updateAndReadFile,
 } from './tests';
 
 export interface Element {
@@ -62,6 +64,18 @@ const testConfig: { [key: string]: any } = {
       queryFileDirectory,
       10000,
       'Querying root directory to look for "go.mod"...',
+    ),
+    new LoopTest(
+      'File Service - Create and Delete File',
+      createAndDeleteFile,
+      10000,
+      'Trying to create then delete "test.txt"',
+    ),
+    new LoopTest(
+      'File Service - Update and read a file',
+      updateAndReadFile,
+      15000,
+      'Trying to create, update, then read the text in "test.txt" before deleting',
     ),
     /*
     new LoopTest(

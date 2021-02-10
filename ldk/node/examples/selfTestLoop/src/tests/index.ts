@@ -197,8 +197,84 @@ export const queryFileDirectory = (host: HostServices): Promise<boolean> => {
         }
       })
       .catch((error) => {
-        reject(new Error(error));
+        setTimeout(() => {
+          reject(error);
+        }, 1500);
       });
+  });
+};
+
+// TODO: create file needs to have a promise
+export const createAndDeleteFile = (host: HostServices): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    host.fileSystem.createFile('./test.txt');
+    setTimeout(() => {
+      host.fileSystem
+        .removeFile({ path: './test.txt' })
+        .then((response) => {
+          setTimeout(() => {
+            resolve(true);
+          }, 1500);
+        })
+        .catch((error) => {
+          setTimeout(() => {
+            reject(error);
+          }, 1500);
+        });
+    }, 500);
+  });
+};
+
+// TODO: create file needs to have a promise
+export const updateAndReadFile = (host: HostServices): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+    const testString = 'Im in yr loop, writing to yr clipboard';
+    const encodedMessage = encoder.encode(testString);
+
+    // Create a new file
+    host.fileSystem.createFile('./test.txt');
+
+    // Open a file and encode a test string
+    setTimeout(() => {
+      // TODO: currently, can't write / read to files easily from same handle
+      const fileHandle = host.fileSystem.openFile('./test.txt');
+      let isCorrectContents = false;
+
+      fileHandle
+        .write(encodedMessage)
+        .then((response) => {
+          logger.debug('Write successful');
+          fileHandle.close();
+
+          const fileHandle2 = host.fileSystem.openFile('./test.txt');
+          fileHandle2
+            .read()
+            .then((res) => {
+              logger.debug(decoder.decode(res));
+              if (decoder.decode(res) === testString) {
+                isCorrectContents = true;
+              }
+              fileHandle2.close();
+              return host.fileSystem.removeFile({ path: './test.txt' });
+            })
+            .then((res) => {
+              if (isCorrectContents) {
+                resolve(true);
+              } else {
+                reject(new Error('File contents were incorrect'));
+              }
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        })
+        .catch((error) => {
+          fileHandle.close();
+          reject(error);
+        });
+    }, 1000);
   });
 };
 
@@ -318,7 +394,7 @@ export const networkAndListWhisper = (host: HostServices): Promise<boolean> => {
 
         const list = host.whisper.listWhisper({
           label: 'Latest FDA Food Recall',
-          markdown: 'If this whisper works, it will disappear after 20 seconds',
+          markdown: 'If this whisper works, it will disappear after 10 seconds',
           elements: {
             topMessage: {
               align: WhisperListAlign.LEFT,
@@ -434,7 +510,7 @@ export const disambiguationWhisper = (host: HostServices): Promise<boolean> => {
     const whisper = host.whisper.disambiguationWhisper(
       {
         label: 'Disambiguation Whisper',
-        markdown: 'Click the 3rd link',
+        markdown: 'Click the 3rd option',
         elements: obj,
       },
       (error, response) => {

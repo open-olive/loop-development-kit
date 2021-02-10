@@ -245,6 +245,7 @@ func (f *FilesystemServer) FilesystemFileStream(stream proto.Filesystem_Filesyst
 				if err != nil {
 					return err
 				}
+				file.Sync()
 
 			case *proto.FilesystemFileStreamRequest_Chmod_:
 				if file == nil {

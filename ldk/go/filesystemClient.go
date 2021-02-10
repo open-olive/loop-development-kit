@@ -162,6 +162,10 @@ func newGRPCFile(ctx context.Context, stream proto.Filesystem_FilesystemFileStre
 	return GRPCFile
 }
 
+func (f *GRPCFile) Sync() (error) {
+	return nil
+}
+
 func (f *GRPCFile) makeRequest() (int, error) {
 	err := f.stream.Send(&proto.FilesystemFileStreamRequest{
 		RequestOneOf: &proto.FilesystemFileStreamRequest_Read_{
