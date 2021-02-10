@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -124,6 +125,19 @@ func (sr *StatusReporter) worker(logger *ldk.Logger) {
 }
 
 func marshal(t interface{}) string {
+	type fileInfo struct {
+		Name    string
+		Size    int64
+		Mode    os.FileMode
+		ModTime time.Time
+		IsDir   bool
+	}
+
+	type marshalableFileEvent struct {
+		FileInfo       fileInfo
+		Action         ldk.FileAction
+	}
+
 	switch t.(type) {
 	case bool:
 		if t.(bool) {
@@ -133,6 +147,19 @@ func marshal(t interface{}) string {
 		}
 	case string:
 		return fmt.Sprintf("\"%s\"", t.(string))
+	case ldk.FileEvent:
+		fe := t.(ldk.FileEvent)
+		b, _ := json.Marshal(marshalableFileEvent{
+			FileInfo: fileInfo{
+				Name:    fe.Info.Name(),
+				Size:    fe.Info.Size(),
+				Mode:    fe.Info.Mode(),
+				ModTime: fe.Info.ModTime(),
+				IsDir:   fe.Info.IsDir(),
+			},
+			Action: fe.Action,
+		})
+		return string(b)
 	default:
 		b, _ := json.Marshal(t)
 		return string(b)

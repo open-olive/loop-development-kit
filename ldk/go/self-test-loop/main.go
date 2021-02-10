@@ -758,7 +758,6 @@ func onClickFilesystem(loop *Loop) func(string) {
 
 			switch operation.Value {
 			case "Dir":
-				// todo: no actual file metadata returned here either; though it is aware of files
 				info, err := loop.sidekick.Filesystem().Dir(loop.ctx, target.Value)
 				if err != nil {
 					loop.logger.Error("filesystem dir error", err)
@@ -771,7 +770,6 @@ func onClickFilesystem(loop *Loop) func(string) {
 				}
 				loop.statusReporter.Report("filesystemTestOpen", file)
 			case "Create":
-				// todo: no actual file metadata returned?
 				file, err := loop.sidekick.Filesystem().Create(loop.ctx, target.Value)
 				if err != nil {
 					loop.logger.Error("filesystem create error", err)
