@@ -865,6 +865,7 @@ func onClickWhisper(loop *Loop) func(string) {
 func onClickConfirmWhisper(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
+			// todo: this does not return when the buttons are clicked
 			confirm, err := loop.sidekick.Whisper().Confirm(loop.ctx, &ldk.WhisperContentConfirm{
 				Label:        "Confirmation Whisper",
 				Markdown:     "Please **reject** or **resolve**!",
@@ -1042,20 +1043,19 @@ func onClickListWhisper(loop *Loop) func(string) {
 						Extra:  false,
 						Header: "Message Element Header",
 						Order:  0,
-						// todo: style is not applied
-						Style:  "color: green;",
+						Style: ldk.WhisperContentListElementStyleSuccess,
 					},
 					"DIVIDER": &ldk.WhisperContentListElementDivider{
 						Extra: false,
 						Order: 1,
-						Style: "color: green;",
+						Style: ldk.WhisperContentListElementStyleSuccess,
 					},
 					"PAIR": &ldk.WhisperContentListElementPair{
 						Copyable: true,
 						Extra:    false,
 						Label:    "Pair Element",
 						Order:    2,
-						Style:    "color: green;",
+						Style: ldk.WhisperContentListElementStyleSuccess,
 						Value:    "Pair Element Value",
 					},
 					"LINK": &ldk.WhisperContentListElementLink{
@@ -1063,7 +1063,7 @@ func onClickListWhisper(loop *Loop) func(string) {
 						Extra: true,
 						Href:  "http://oliveai.com",
 						Order: 3,
-						Style: "color: green;",
+						Style: ldk.WhisperContentListElementStyleSuccess,
 						Text:  "Link to Olive AI Website",
 					},
 				},
