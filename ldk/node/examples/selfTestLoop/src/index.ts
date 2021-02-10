@@ -18,7 +18,9 @@ import {
   formWhisper,
   hotkeyTest,
   networkAndListWhisper,
+  processQuery,
   queryFileDirectory,
+  storageWriteRead,
   streamCursorPosition,
   streamFileInfo,
   updateAndReadFile,
@@ -71,13 +73,12 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Trying to create then delete "test.txt"',
     ),
-    new LoopTest(
+    /* new LoopTest(
       'File Service - Update and read a file',
       updateAndReadFile,
       15000,
       'Trying to create, update, then read the text in "test.txt" before deleting',
     ),
-    /*
     new LoopTest(
       'File Service - Stream File Info',
       this.streamFileInfo,
@@ -113,6 +114,28 @@ const testConfig: { [key: string]: any } = {
       'Type the letter "F"',
     ),
     */
+  ]),
+  process: new TestGroup('Process Service', [
+    new LoopTest(
+      'Process Service - Query processes',
+      processQuery,
+      10000,
+      'Querying what processes are running on the computer...',
+    ),
+  ]),
+  storage: new TestGroup('Storage Service', [
+    new LoopTest(
+      'Storage Service - Write / Read from storage',
+      storageWriteRead,
+      10000,
+      'Writing value to storage then reading it back.',
+    ),
+    new LoopTest(
+      'Keyboard Service - Hotkey Test',
+      hotkeyTest,
+      10000,
+      'Press Ctrl+A to test the hotkey functionality.',
+    ),
   ]),
   whispers: new TestGroup('Whisper Service', [
     /*            

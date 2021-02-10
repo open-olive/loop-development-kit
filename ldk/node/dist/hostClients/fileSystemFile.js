@@ -123,7 +123,6 @@ class FileSystemFileImpl {
         this.checkStatus();
         const msg = new filesystem_pb_1.FilesystemFileStreamRequest.Write().setData(contents);
         const request = new filesystem_pb_1.FilesystemFileStreamRequest().setWrite(msg);
-        this.logger.info(JSON.stringify(msg.toObject()));
         return this.generateResponsePromise(request, 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         (response) => response.getWrite(), (input) => input.getNumofbytes());

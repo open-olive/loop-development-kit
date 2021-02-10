@@ -53,6 +53,7 @@ export const clipboardStream = (host: HostServices): Promise<boolean> => {
 };
 
 export const hotkeyTest = (host: HostServices): Promise<boolean> => {
+  logger.info('in hotkey test');
   return new Promise((resolve, reject) => {
     const hotkeys = {
       key: 'a',
@@ -61,9 +62,12 @@ export const hotkeyTest = (host: HostServices): Promise<boolean> => {
       },
     };
 
+    logger.info('in promise');
+
     const hotkeyStream = host.keyboard.streamHotKey(
       hotkeys,
       (error, response) => {
+        logger.info('in stream');
         if (error) {
           reject(error);
         }
@@ -72,6 +76,8 @@ export const hotkeyTest = (host: HostServices): Promise<boolean> => {
         hotkeyStream.stop();
       },
     );
+
+    logger.info('after stream...');
   });
 };
 
@@ -236,6 +242,7 @@ export const updateAndReadFile = (host: HostServices): Promise<boolean> => {
     // Create a new file
     host.fileSystem.createFile('./test.txt');
 
+    // TODO: streamPromise does not work for create file
     // Open a file and encode a test string
     setTimeout(() => {
       // TODO: currently, can't write / read to files easily from same handle
@@ -246,7 +253,8 @@ export const updateAndReadFile = (host: HostServices): Promise<boolean> => {
         .write(encodedMessage)
         .then((response) => {
           logger.debug('Write successful');
-          fileHandle.close();
+          // TODO: Something strange with the close function, hangs thread
+          // fileHandle.close();
 
           const fileHandle2 = host.fileSystem.openFile('./test.txt');
           fileHandle2
@@ -256,7 +264,7 @@ export const updateAndReadFile = (host: HostServices): Promise<boolean> => {
               if (decoder.decode(res) === testString) {
                 isCorrectContents = true;
               }
-              fileHandle2.close();
+              // fileHandle2.close();
               return host.fileSystem.removeFile({ path: './test.txt' });
             })
             .then((res) => {
@@ -300,6 +308,41 @@ export const streamFileInfo = (host: HostServices): Promise<boolean> => {
   });
 };
 
+export const storageWriteRead = (host: HostServices): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    const value = 'Do I exist?';
+    host.storage.storageWrite('testKey', value).then(() => {
+      host.storage
+        .storageExists('testKey')
+        .then((exists) => {
+          logger.debug(`Value exists in storage: ${exists}`);
+          if (!exists) {
+            reject(new Error('Key does not exist in storge'));
+            return null;
+          }
+
+          return host.storage.storageRead('testKey');
+        })
+        .then((storageValue) => {
+          logger.debug(`Value in storage: ${storageValue}`);
+          if (storageValue !== value) {
+            reject(new Error('Stored value does not match initial value'));
+            return null;
+          }
+
+          return host.storage.storageDelete('testKey');
+        })
+        .then(() => {
+          logger.debug(`Value deleted from storage`);
+          resolve(true);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  });
+};
+
 export const confirmWhisper = (host: HostServices): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     host.whisper
@@ -315,6 +358,38 @@ export const confirmWhisper = (host: HostServices): Promise<boolean> => {
       })
       .catch(() => {
         reject(new Error('Button click was not correct'));
+      });
+  });
+};
+
+export const processQuery = (host: HostServices): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    host.process
+      .queryProcesses()
+      .then((processList) => {
+        logger.info(JSON.stringify(processList.processes[0]));
+        setTimeout(() => {
+          resolve(true);
+        }, 1000);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const processStream = (host: HostServices): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    host.process
+      .queryProcesses()
+      .then((processList) => {
+        logger.info(JSON.stringify(processList.processes[0]));
+        setTimeout(() => {
+          resolve(true);
+        }, 1000);
+      })
+      .catch((error) => {
+        reject(error);
       });
   });
 };

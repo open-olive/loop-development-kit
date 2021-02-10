@@ -22,6 +22,7 @@ export default class TestSuite {
     let i = 0;
     for await (const test of this.tests) {
       try {
+        this.logger.info('Before next test');
         await test.runTest(host, this.logger);
         elements[`${i}`] = {
           value: test.getStatus(),

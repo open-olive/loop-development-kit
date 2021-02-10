@@ -37,7 +37,8 @@ export class LoopTest {
 
   public async runTest(host: HostServices, logger: Logger): Promise<Status> {
     try {
-      await this.testWrapper(host);
+      logger.info('Starting test...');
+      await this.testWrapper(host, logger);
       this.status = Status.PASS;
       logger.info(`✅ PASS - ${this.id}`);
 
@@ -54,7 +55,10 @@ export class LoopTest {
     }
   }
 
-  private async testWrapper(host: HostServices): Promise<boolean> {
+  private async testWrapper(
+    host: HostServices,
+    logger: Logger,
+  ): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (typeof host !== 'undefined') {
         try {
@@ -62,22 +66,30 @@ export class LoopTest {
             label: this.id,
             markdown: this.promptMarkdown,
           });
+          logger.info('After emit whisper...');
           this.timeout = setTimeout(() => {
+            logger.info('Timeout');
             prompt.stop();
             reject(new Error('Timeout - Too much time has passed'));
           }, this.timeoutTime);
+          logger.info(this.getId());
+          logger.info('Before method...');
           this.methodToExecute(host)
             .then((response) => {
+              logger.info('Success...');
               clearTimeout(this.timeout);
               prompt.stop();
               resolve(response);
             })
             .catch((error) => {
+              logger.error('An error was caught...');
               clearTimeout(this.timeout);
               prompt.stop();
               reject(error);
             });
+          logger.info('Method to execute called...');
         } catch (e) {
+          logger.error('unknown error...');
           reject(new Error(e));
         }
       } else {
