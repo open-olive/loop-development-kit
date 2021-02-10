@@ -35,7 +35,6 @@ type Loop struct {
 
 	testData       TestData
 	statusReporter *StatusReporter
-
 	playgroundCancel context.CancelFunc
 }
 
@@ -441,7 +440,6 @@ func (loop *Loop) cleanupTestData() error {
 
 func (loop *Loop) emitPlaygroundWhisper(ctx context.Context) {
 	go func() {
-		makeLink := orderedMakeLink(loop)
 		restarted := false
 		for {
 			select {
@@ -454,20 +452,104 @@ func (loop *Loop) emitPlaygroundWhisper(ctx context.Context) {
 					_, err := loop.sidekick.Whisper().Disambiguation(loop.ctx, &ldk.WhisperContentDisambiguation{
 						Label:    "Actions",
 						Elements: map[string]ldk.WhisperContentDisambiguationElement{
-							"CLEAR_ALL":            makeLink("CLEAR ALL", onClickClear),
-							"NETWORK_HTTP_REQUEST": makeLink("Network: HTTPRequest", onClickNetworkHttpRequest),
-							"CLIPBOARD_READ":       makeLink("Clipboard: Read", onClickClipboardRead),
-							"CLIPBOARD_WRITE":      makeLink("Clipboard: Write", onClickClipboardWrite),
-							"STORAGE_READ":         makeLink("Storage: Read", onClickStorageRead),
-							"STORAGE_WRITE":        makeLink("Storage: Write", onClickStorageWrite),
-							"STORAGE_EXISTS":       makeLink("Storage: Exists", onClickStorageExists),
-							"STORAGE_DELETE":       makeLink("Storage: Delete", onClickStorageDelete),
-							"WINDOW_ACTIVE_WINDOW": makeLink("Window: Active Window", onClickActiveWindow),
-							"WINDOW_STATE":         makeLink("Window: State", onClickWindowState),
-							"PROCESS_STATE":        makeLink("Process: State", onClickProcessState),
-							"CURSOR_POSITION":      makeLink("Cursor: Position", onClickCursorPosition),
-							"FILESYSTEM":           makeLink("Filesystem (Opens Form Whisper)", onClickFilesystem),
-							"WHISPER":              makeLink("Whisper (Opens Disambiguation Whisper)", onClickWhisper),
+							"CLEAR_ALL": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "CLEAR ALL",
+								Order:    0,
+								OnChange: onClickClear(loop),
+							},
+							"NETWORK_HEADER": &ldk.WhisperContentDisambiguationElementText{
+								Body:  "Network",
+								Order: 1,
+							},
+							"NETWORK_HTTP_REQUEST": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Network: HTTP Request",
+								Order:    2,
+								OnChange: onClickNetworkHttpRequest(loop),
+							},
+							"CLIPBOARD_HEADER": &ldk.WhisperContentDisambiguationElementText{
+								Body:  "Clipboard",
+								Order: 3,
+							},
+							"CLIPBOARD_READ": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Clipboard: Read",
+								Order:    4,
+								OnChange: onClickClipboardRead(loop),
+							},
+							"CLIPBOARD_WRITE": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Clipboard: Write",
+								Order:    5,
+								OnChange: onClickClipboardWrite(loop),
+							},
+							"STORAGE_HEADER": &ldk.WhisperContentDisambiguationElementText{
+								Body:  "Storage",
+								Order: 6,
+							},
+							"STORAGE_READ": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Storage: Read",
+								Order:    7,
+								OnChange: onClickStorageRead(loop),
+							},
+							"STORAGE_WRITE": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Storage: Write",
+								Order:    8,
+								OnChange: onClickStorageWrite(loop),
+							},
+							"STORAGE_EXISTS": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Storage: Exists",
+								Order:    9,
+								OnChange: onClickStorageExists(loop),
+							},
+							"STORAGE_DELETE": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Storage: Delete",
+								Order:    10,
+								OnChange: onClickStorageDelete(loop),
+							},
+							"WINDOW_HEADER": &ldk.WhisperContentDisambiguationElementText{
+								Body:  "Window",
+								Order: 11,
+							},
+							"WINDOW_ACTIVE_WINDOW": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Window: Active Window",
+								Order:    12,
+								OnChange: onClickActiveWindow(loop),
+							},
+							"WINDOW_STATE": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Window: State",
+								Order:    13,
+								OnChange: onClickWindowState(loop),
+							},
+							"PROCESS_HEADER": &ldk.WhisperContentDisambiguationElementText{
+								Body:  "Process",
+								Order: 14,
+							},
+							"PROCESS_STATE": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Process: State",
+								Order:    15,
+								OnChange: onClickProcessState(loop),
+							},
+							"CURSOR_HEADER": &ldk.WhisperContentDisambiguationElementText{
+								Body:  "Cursor",
+								Order: 16,
+							},
+							"CURSOR_POSITION": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Cursor: Position",
+								Order:    17,
+								OnChange: onClickCursorPosition(loop),
+							},
+							"UTILITIES_HEADER": &ldk.WhisperContentDisambiguationElementText{
+								Body:  "Utilities",
+								Order: 18,
+							},
+							"FILESYSTEM": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Filesystem (Opens Form Whisper)",
+								Order:    19,
+								OnChange: onClickFilesystem(loop),
+							},
+							"WHISPER": &ldk.WhisperContentDisambiguationElementOption{
+								Label:    "Whisper (Opens Disambiguation Whisper)",
+								Order:    20,
+								OnChange: onClickWhisper(loop),
+							},
 						},
 					})
 					if err != nil {
@@ -479,27 +561,13 @@ func (loop *Loop) emitPlaygroundWhisper(ctx context.Context) {
 	}()
 }
 
-type OnChangeFn func(string)
-type MakeLinkFn func(string, func(*Loop) OnChangeFn) ldk.WhisperContentDisambiguationElement
-func orderedMakeLink(loop *Loop) MakeLinkFn {
-	var order uint32 = 0
-	return func(label string, fn func(*Loop) OnChangeFn) ldk.WhisperContentDisambiguationElement {
-		order++
-		return &ldk.WhisperContentDisambiguationElementOption{
-			Label:    label,
-			Order:    order,
-			OnChange: fn(loop),
-		}
-	}
-}
-
-func onClickClear(loop *Loop) OnChangeFn {
+func onClickClear(loop *Loop) func(string) {
 	return func(_ string) {
 		loop.statusReporter.WipeAll()
 	}
 }
 
-func onClickNetworkHttpRequest(loop *Loop) OnChangeFn {
+func onClickNetworkHttpRequest(loop *Loop) func(string) {
 	return func(_ string) {
 		response, err := loop.sidekick.Network().HTTPRequest(loop.ctx, &ldk.HTTPRequest{
 			URL:     "http://oliveai.com",
@@ -520,7 +588,7 @@ func onClickNetworkHttpRequest(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickClipboardRead(loop *Loop) OnChangeFn {
+func onClickClipboardRead(loop *Loop) func(string) {
 	return func(_ string) {
 		text, err := loop.sidekick.Clipboard().Read(loop.ctx)
 		if err != nil {
@@ -530,7 +598,7 @@ func onClickClipboardRead(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickClipboardWrite(loop *Loop) OnChangeFn {
+func onClickClipboardWrite(loop *Loop) func(string) {
 	return func(_ string) {
 		str := "PASTE ME"
 		err := loop.sidekick.Clipboard().Write(loop.ctx, str)
@@ -542,7 +610,7 @@ func onClickClipboardWrite(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickStorageRead(loop *Loop) OnChangeFn {
+func onClickStorageRead(loop *Loop) func(string) {
 	return func(_ string) {
 		value, err := loop.sidekick.Storage().Read(loop.ctx, storageTestKey)
 		if err != nil {
@@ -554,7 +622,7 @@ func onClickStorageRead(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickStorageWrite(loop *Loop) OnChangeFn {
+func onClickStorageWrite(loop *Loop) func(string) {
 	return func(_ string) {
 		err := loop.sidekick.Storage().Write(loop.ctx, storageTestKey, storageTestValue)
 		if err != nil {
@@ -570,7 +638,7 @@ func onClickStorageWrite(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickStorageExists(loop *Loop) OnChangeFn {
+func onClickStorageExists(loop *Loop) func(string) {
 	return func(_ string) {
 		exists, err := loop.sidekick.Storage().Exists(loop.ctx, storageTestKey)
 		if err != nil {
@@ -583,7 +651,7 @@ func onClickStorageExists(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickStorageDelete(loop *Loop) OnChangeFn {
+func onClickStorageDelete(loop *Loop) func(string) {
 	return func(_ string) {
 		err := loop.sidekick.Storage().Delete(loop.ctx, storageTestKey)
 		if err != nil {
@@ -596,7 +664,7 @@ func onClickStorageDelete(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickActiveWindow(loop *Loop) OnChangeFn {
+func onClickActiveWindow(loop *Loop) func(string) {
 	return func(_ string) {
 		info, err := loop.sidekick.Window().ActiveWindow(loop.ctx)
 		if err != nil {
@@ -606,7 +674,7 @@ func onClickActiveWindow(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickWindowState(loop *Loop) OnChangeFn {
+func onClickWindowState(loop *Loop) func(string) {
 	return func(_ string) {
 		info, err := loop.sidekick.Window().State(loop.ctx)
 		if err != nil {
@@ -616,7 +684,7 @@ func onClickWindowState(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickProcessState(loop *Loop) OnChangeFn {
+func onClickProcessState(loop *Loop) func(string) {
 	return func(_ string) {
 		info, err := loop.sidekick.Process().State(loop.ctx)
 		if err != nil {
@@ -626,7 +694,7 @@ func onClickProcessState(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickCursorPosition(loop *Loop) OnChangeFn {
+func onClickCursorPosition(loop *Loop) func(string) {
 	return func(_ string) {
 		position, err := loop.sidekick.Cursor().Position(loop.ctx)
 		if err != nil {
@@ -636,7 +704,7 @@ func onClickCursorPosition(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickFilesystem(loop *Loop) OnChangeFn {
+func onClickFilesystem(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
 			_, output, err := loop.sidekick.Whisper().Form(loop.ctx, &ldk.WhisperContentForm{
@@ -755,18 +823,37 @@ func onClickFilesystem(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickWhisper(loop *Loop) OnChangeFn {
+func onClickWhisper(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
-			makeLink := orderedMakeLink(loop)
 			_, err := loop.sidekick.Whisper().Disambiguation(loop.ctx, &ldk.WhisperContentDisambiguation{
 				Label:    "Whispers",
 				Elements: map[string]ldk.WhisperContentDisambiguationElement{
-					"CONFIRM":        makeLink("Confirm Whisper", onClickConfirmWhisper),
-					"DISAMBIGUATION": makeLink("Disambiguation Whisper", onClickDisambiguationWhisper),
-					"FORM":           makeLink("Form Whisper", onClickFormWhisper),
-					"MARKDOWN":       makeLink("Markdown Whisper", onClickMarkdownWhisper),
-					"LIST":           makeLink("List Whisper", onClickListWhisper),
+					"CONFIRM": &ldk.WhisperContentDisambiguationElementOption{
+						Label:    "Confirm Whisper",
+						Order:    0,
+						OnChange: onClickConfirmWhisper(loop),
+					},
+					"DISAMBIGUATION": &ldk.WhisperContentDisambiguationElementOption{
+						Label:    "Disambiguation Whisper",
+						Order:    1,
+						OnChange: onClickDisambiguationWhisper(loop),
+					},
+					"FORM": &ldk.WhisperContentDisambiguationElementOption{
+						Label:    "Form Whisper",
+						Order:    2,
+						OnChange: onClickFormWhisper(loop),
+					},
+					"MARKDOWN": &ldk.WhisperContentDisambiguationElementOption{
+						Label:    "Markdown Whisper",
+						Order:    3,
+						OnChange: onClickMarkdownWhisper(loop),
+					},
+					"LIST": &ldk.WhisperContentDisambiguationElementOption{
+						Label:    "List Whisper",
+						Order:    4,
+						OnChange: onClickListWhisper(loop),
+					},
 				},
 			})
 
@@ -777,7 +864,7 @@ func onClickWhisper(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickConfirmWhisper(loop *Loop) OnChangeFn {
+func onClickConfirmWhisper(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
 			confirm, err := loop.sidekick.Whisper().Confirm(loop.ctx, &ldk.WhisperContentConfirm{
@@ -794,7 +881,7 @@ func onClickConfirmWhisper(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickDisambiguationWhisper(loop *Loop) OnChangeFn {
+func onClickDisambiguationWhisper(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
 			reportClick := func(_ string) {
@@ -822,7 +909,7 @@ func onClickDisambiguationWhisper(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickFormWhisper(loop *Loop) OnChangeFn {
+func onClickFormWhisper(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
 			submitted, output, err := loop.sidekick.Whisper().Form(loop.ctx, &ldk.WhisperContentForm{
@@ -931,7 +1018,7 @@ func onClickFormWhisper(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickMarkdownWhisper(loop *Loop) OnChangeFn {
+func onClickMarkdownWhisper(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
 			err := loop.sidekick.Whisper().Markdown(loop.ctx, &ldk.WhisperContentMarkdown{
@@ -945,7 +1032,7 @@ func onClickMarkdownWhisper(loop *Loop) OnChangeFn {
 	}
 }
 
-func onClickListWhisper(loop *Loop) OnChangeFn {
+func onClickListWhisper(loop *Loop) func(string) {
 	return func(_ string) {
 		go func() {
 			err := loop.sidekick.Whisper().List(loop.ctx, &ldk.WhisperContentList{
