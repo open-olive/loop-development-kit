@@ -1,0 +1,45 @@
+@import "./global";
+
+.sectionTitle {
+  font-size: $fourXlFontSize;
+  font-weight: $headerFontWeight;
+  color: $primaryThemeColor;
+}
+
+.languageTitle {
+  font-size: $threeXlFontSize;
+  font-weight: $headerFontWeight;
+  color: $primaryThemeColor;
+}
+
+.downloadCollection {
+  display: flex;
+  justify-content: space-between;
+  @include mobile() {
+    flex-direction: column;
+  }
+}
+
+.headerImage {
+  @include desktop() {
+    max-width: 500px;
+  }
+}
+
+.downloadItem {
+  padding: 25px;
+  flex: 1 1 50px;
+  text-align: center;
+}
+
+.downloadLink {
+  font-size: $threeXlFontSize;
+}
+
+.ldkLink {
+  font-size: $twoXlFontSize;
+}
+
+.alternatingSectionBackground {
+  background-color: $lightestAccent;
+}

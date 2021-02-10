@@ -1,0 +1,18 @@
+@import "global.scss";
+
+body {
+  font-family: $primaryFont;
+  font-size: $bodyFontSize;
+  font-weight: $bodyFontWeight;
+  margin: 0;
+}
+
+a {
+  color: $primaryThemeColor;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $hoverColor;
+  text-decoration: underline;
+}

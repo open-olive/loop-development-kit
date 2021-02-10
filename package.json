@@ -1,0 +1,27 @@
+{
+  "name": "loop-development-kit",
+  "version": "1.0.0",
+  "description": "This is the central repository for all the Olive Help LDKs. You'll probably want to look at the individual LDK readmes in the `ldk\\{language}` folder.",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "ldk/node",
+    "docs"
+  ],
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-olive/loop-development-kit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/open-olive/loop-development-kit/issues"
+  },
+  "homepage": "https://github.com/open-olive/loop-development-kit#readme"
+}

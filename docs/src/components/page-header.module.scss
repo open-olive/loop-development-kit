@@ -1,0 +1,35 @@
+@import "../pages/global";
+
+.section {
+  background-color: $headerBackgroundColor;
+  background-image: $headerBackgroundImage;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.content {
+  width: 80%;
+  max-width: 1280px;
+}
+
+.sectionOverlay {
+  background-image: url("./banner-pattern.svg");
+  background-position: calc(100% + 60px) -10px;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  crop: auto;
+}
+
+.title {
+  font-size: $fiveXlFontSize;
+  font-weight: $headerFontWeight;
+  color: white;
+}

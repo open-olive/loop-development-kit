@@ -1,0 +1,40 @@
+{
+  "name": "olive-helps-hub",
+  "private": true,
+  "description": "Open Olive developer hub page",
+  "version": "0.1.0",
+  "license": "no license",
+  "scripts": {
+    "build": "gatsby build",
+    "build:production": "gatsby clean && gatsby build --prefix-paths",
+    "clean": "gatsby clean",
+    "deploy": "npm run build:production && gh-pages -d public",
+    "develop": "gatsby develop",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "serve": "gatsby serve",
+    "start": "npm run develop",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+  },
+  "dependencies": {
+    "gatsby": "^2.24.54",
+    "gatsby-image": "^2.4.19",
+    "gatsby-plugin-sass": "^2.3.13",
+    "gatsby-plugin-sharp": "^2.6.36",
+    "gatsby-source-filesystem": "^2.3.30",
+    "gatsby-transformer-sharp": "^2.5.15",
+    "node-sass": "^4.14.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.1.0",
+    "prettier": "2.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-olive/olive-helps"
+  },
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  }
+}

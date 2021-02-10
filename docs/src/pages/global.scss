@@ -1,0 +1,57 @@
+$primaryThemeColor: #651fff;
+$primaryThemeFade: #833df5;
+$hoverColor: #b388ff;
+$lightestAccent: #faf6ff;
+
+$primaryFont: sofia-pro, sans-serif;
+
+$fiveXlFontSize: 64px;
+$fourXlFontSize: 48px;
+$threeXlFontSize: 36px;
+$twoXlFontSize: 24px;
+
+$headerFontWeight: 700;
+
+$bodyFontSize: 16px;
+$bodyFontWeight: 500;
+
+$headerBackgroundColor: $primaryThemeColor;
+$headerBackgroundImage: linear-gradient($primaryThemeColor, $primaryThemeFade);
+
+
+$breakpoints: (
+        "mobile": (
+                max-width: 767px,
+        ),
+        "desktop": (
+                min-width: 768px,
+        ),
+) !default;
+
+@mixin respond-to($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media #{inspect(map-get($breakpoints, $breakpoint))} {
+      @content;
+    }
+  }
+
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+@mixin mobile() {
+  @include respond-to("mobile") {
+    @content;
+  }
+}
+
+@mixin desktop() {
+  @include respond-to("desktop") {
+    @content;
+  }
+}
