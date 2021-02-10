@@ -1,4 +1,4 @@
-package main
+package util
 
 import (
 	"context"
@@ -35,10 +35,10 @@ func NewStatusReporter(logger *ldk.Logger) *StatusReporter {
 
 	sr := &StatusReporter{
 		aggregator: aggregator,
-		wiper: wiper,
-		wipeAll: wipeAll,
-		ctx: ctx,
-		cancel: cancel,
+		wiper:      wiper,
+		wipeAll:    wipeAll,
+		ctx:        ctx,
+		cancel:     cancel,
 	}
 	go sr.worker(logger)
 	return sr
@@ -63,6 +63,10 @@ func (sr *StatusReporter) WipeAll() {
 	go func() {
 		sr.wipeAll <- 0
 	}()
+}
+
+func (sr *StatusReporter) Stop() {
+	sr.cancel()
 }
 
 func (sr *StatusReporter) worker(logger *ldk.Logger) {
@@ -134,8 +138,8 @@ func marshal(t interface{}) string {
 	}
 
 	type marshalableFileEvent struct {
-		FileInfo       fileInfo
-		Action         ldk.FileAction
+		FileInfo fileInfo
+		Action   ldk.FileAction
 	}
 
 	switch t.(type) {
