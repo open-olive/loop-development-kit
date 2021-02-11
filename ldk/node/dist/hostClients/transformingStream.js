@@ -50,8 +50,10 @@ class TransformingStream {
         this.listener = callback;
     }
     stop() {
-        this.stream.cancel();
-        this.stream.removeAllListeners('data');
+        setImmediate(() => {
+            this.stream.cancel();
+            this.stream.removeAllListeners('data');
+        });
     }
 }
 exports.TransformingStream = TransformingStream;

@@ -73,13 +73,13 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Trying to create then delete "test.txt"',
     ),
-    /* new LoopTest(
+    new LoopTest(
       'File Service - Update and read a file',
       updateAndReadFile,
       15000,
       'Trying to create, update, then read the text in "test.txt" before deleting',
     ),
-    new LoopTest(
+    /* new LoopTest(
       'File Service - Stream File Info',
       this.streamFileInfo,
       10000,
@@ -123,20 +123,20 @@ const testConfig: { [key: string]: any } = {
       'Querying what processes are running on the computer...',
     ),
   ]),
-  /* storage: new TestGroup('Storage Service', [
+  storage: new TestGroup('Storage Service', [
     new LoopTest(
       'Storage Service - Write / Read from storage',
       storageWriteRead,
       10000,
       'Writing value to storage then reading it back.',
     ),
-    new LoopTest(
+    /* new LoopTest(
       'Keyboard Service - Hotkey Test',
       hotkeyTest,
       10000,
       'Press Ctrl+A to test the hotkey functionality.',
-    ),
-  ]), */
+    ), */
+  ]),
   whispers: new TestGroup('Whisper Service', [
     /*            
     new LoopTest(
@@ -174,6 +174,9 @@ class ClipboardLoop implements Loop {
   start(host: HostServices): void {
     this._host = host;
     logger.info('Starting Self Test...');
+    /* this.simplified().then(() => {
+      logger.info('test executed');
+    }); */
     const hotkeys = {
       key: '/',
       modifiers: {

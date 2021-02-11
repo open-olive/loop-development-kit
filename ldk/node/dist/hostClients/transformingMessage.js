@@ -24,7 +24,9 @@ class TransformingMessage {
         return this.callbackPromise;
     }
     stop() {
-        this.call.cancel();
+        setImmediate(() => {
+            this.call.cancel();
+        });
     }
     assignCall(call) {
         if (this._call != null) {

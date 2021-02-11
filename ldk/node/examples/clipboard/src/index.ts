@@ -12,7 +12,7 @@ class ClipboardLoop implements Loop {
     this._host = host;
     logger.info('Requesting Stream');
     try {
-      this.host.clipboard.streamClipboard(async (error, response) => {
+      this.host.clipboard.streamClipboard((error, response) => {
         if (response !== 'fileinfo') {
           return;
         }

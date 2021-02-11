@@ -41,17 +41,19 @@ export class LoopTest {
       await this.testWrapper(host, logger);
       this.status = Status.PASS;
       logger.info(`✅ PASS - ${this.id}`);
+      return Promise.resolve(this.status);
 
-      return new Promise((resolve) => {
+      /* return new Promise((resolve) => {
         resolve(this.status);
-      });
+      }); */
     } catch (error: any) {
       this.status = Status.FAIL;
       logger.error(`💀 FAIL - ${this.id}`);
       logger.error(typeof error === 'string' ? error : error.message);
-      return new Promise((resolve, reject) => {
+      return Promise.reject(error);
+      /* return new Promise((resolve, reject) => {
         reject(error);
-      });
+      }); */
     }
   }
 
@@ -66,35 +68,62 @@ export class LoopTest {
             label: this.id,
             markdown: this.promptMarkdown,
           });
-          logger.info('After emit whisper...');
           this.timeout = setTimeout(() => {
-            logger.info('Timeout');
             prompt.stop();
             reject(new Error('Timeout - Too much time has passed'));
           }, this.timeoutTime);
-          logger.info(this.getId());
-          logger.info('Before method...');
           this.methodToExecute(host)
             .then((response) => {
-              logger.info('Success...');
               clearTimeout(this.timeout);
               prompt.stop();
               resolve(response);
             })
             .catch((error) => {
-              logger.error('An error was caught...');
               clearTimeout(this.timeout);
               prompt.stop();
               reject(error);
             });
-          logger.info('Method to execute called...');
         } catch (e) {
-          logger.error('unknown error...');
           reject(new Error(e));
         }
       } else {
         reject(new Error('Host services are unavailable'));
       }
+    });
+  }
+
+  public async testJustStorage(host: HostServices, logger: Logger) {
+    return new Promise((resolve, reject) => {
+      const value = 'Do I exist?';
+      host.storage.storageWrite('testKey', value).then(() => {
+        host.storage
+          .storageExists('testKey')
+          .then((exists) => {
+            logger.debug(`Value exists in storage: ${exists}`);
+            if (!exists) {
+              reject(new Error('Key does not exist in storge'));
+              return null;
+            }
+
+            return host.storage.storageRead('testKey');
+          })
+          .then((storageValue) => {
+            logger.debug(`Value in storage: ${storageValue}`);
+            if (storageValue !== value) {
+              reject(new Error('Stored value does not match initial value'));
+              return null;
+            }
+
+            return host.storage.storageDelete('testKey');
+          })
+          .then(() => {
+            logger.debug(`Value deleted from storage`);
+            resolve(true);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
     });
   }
 

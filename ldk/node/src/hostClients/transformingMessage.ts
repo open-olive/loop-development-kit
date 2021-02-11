@@ -31,7 +31,9 @@ export class TransformingMessage<TOutput, TResponse>
   }
 
   stop(): void {
-    this.call.cancel();
+    setImmediate(() => {
+      this.call.cancel();
+    });
   }
 
   callback = (error: GRPC.ServiceError | null, response: TResponse): void => {

@@ -48,9 +48,8 @@ export const clipboardStream = (host: HostServices): Promise<boolean> =>
     });
   });
 
-export const hotkeyTest = (host: HostServices): Promise<boolean> => {
-  logger.info('in hotkey test');
-  return new Promise((resolve, reject) => {
+export const hotkeyTest = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const hotkeys = {
       key: 'a',
       modifiers: {
@@ -58,12 +57,9 @@ export const hotkeyTest = (host: HostServices): Promise<boolean> => {
       },
     };
 
-    logger.info('in promise');
-
     const hotkeyStream = host.keyboard.streamHotKey(
       hotkeys,
       (error, response) => {
-        logger.info('in stream');
         if (error) {
           reject(error);
         }
@@ -72,10 +68,7 @@ export const hotkeyTest = (host: HostServices): Promise<boolean> => {
         hotkeyStream.stop();
       },
     );
-
-    logger.info('after stream...');
   });
-};
 
 export const charTest = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -352,7 +345,7 @@ export const processQuery = (host: HostServices): Promise<boolean> =>
     host.process
       .queryProcesses()
       .then((processList) => {
-        logger.info(JSON.stringify(processList.processes[0]));
+        logger.debug(JSON.stringify(processList.processes[0]));
         setTimeout(() => {
           resolve(true);
         }, 1000);
@@ -367,7 +360,7 @@ export const processStream = (host: HostServices): Promise<boolean> =>
     host.process
       .queryProcesses()
       .then((processList) => {
-        logger.info(JSON.stringify(processList.processes[0]));
+        logger.debug(JSON.stringify(processList.processes[0]));
         setTimeout(() => {
           resolve(true);
         }, 1000);

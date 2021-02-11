@@ -82,7 +82,9 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
   };
 
   stop(): void {
-    this.stream.cancel();
-    this.stream.removeAllListeners('data');
+    setImmediate(() => {
+      this.stream.cancel();
+      this.stream.removeAllListeners('data');
+    });
   }
 }
