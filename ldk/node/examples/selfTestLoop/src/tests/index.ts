@@ -15,10 +15,8 @@ export interface Element {
   [key: string]: WhisperDisambiguationElements;
 }
 
-export const clipboardWriteAndQuery = (
-  host: HostServices,
-): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const clipboardWriteAndQuery = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     host.clipboard
       .writeClipboard('Im in yr loop, writing to yr clipboard')
       .then(() => host.clipboard.queryClipboard())
@@ -37,10 +35,9 @@ export const clipboardWriteAndQuery = (
         reject(new Error(error));
       });
   });
-};
 
-export const clipboardStream = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const clipboardStream = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     host.clipboard.streamClipboard((error, response) => {
       if (error) {
         reject(error);
@@ -50,7 +47,6 @@ export const clipboardStream = (host: HostServices): Promise<boolean> => {
       }
     });
   });
-};
 
 export const hotkeyTest = (host: HostServices): Promise<boolean> => {
   logger.info('in hotkey test');
@@ -81,8 +77,8 @@ export const hotkeyTest = (host: HostServices): Promise<boolean> => {
   });
 };
 
-export const charTest = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const charTest = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const characterStream = host.keyboard.streamChar((error, response) => {
       if (error) {
         reject(error);
@@ -98,10 +94,9 @@ export const charTest = (host: HostServices): Promise<boolean> => {
       }
     });
   });
-};
 
-export const charStreamTest = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const charStreamTest = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const characterStream = host.keyboard.streamText((error, response) => {
       if (error) {
         reject(error);
@@ -117,10 +112,9 @@ export const charStreamTest = (host: HostServices): Promise<boolean> => {
       }
     });
   });
-};
 
-export const charScancodeTest = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const charScancodeTest = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const characterStream = host.keyboard.streamScanCode((error, response) => {
       if (error) {
         reject(error);
@@ -141,10 +135,9 @@ export const charScancodeTest = (host: HostServices): Promise<boolean> => {
       }
     });
   });
-};
 
-export const cursorPosition = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const cursorPosition = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     host.cursor
       .queryCursorPosition()
       .then((response) => {
@@ -160,10 +153,9 @@ export const cursorPosition = (host: HostServices): Promise<boolean> => {
         reject(new Error(err));
       });
   });
-};
 
-export const streamCursorPosition = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const streamCursorPosition = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     let i = 0;
     const cursorPoritionStream = host.cursor.streamCursorPosition(
       (error, response) => {
@@ -184,10 +176,9 @@ export const streamCursorPosition = (host: HostServices): Promise<boolean> => {
       },
     );
   });
-};
 
-export const queryFileDirectory = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const queryFileDirectory = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     // Queries the sidekick
     host.fileSystem
       .queryDirectory({
@@ -208,11 +199,10 @@ export const queryFileDirectory = (host: HostServices): Promise<boolean> => {
         }, 1500);
       });
   });
-};
 
 // TODO: create file needs to have a promise
-export const createAndDeleteFile = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const createAndDeleteFile = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     host.fileSystem.createFile('./test.txt');
     setTimeout(() => {
       host.fileSystem
@@ -229,11 +219,10 @@ export const createAndDeleteFile = (host: HostServices): Promise<boolean> => {
         });
     }, 500);
   });
-};
 
 // TODO: create file needs to have a promise
-export const updateAndReadFile = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const updateAndReadFile = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     const testString = 'Im in yr loop, writing to yr clipboard';
@@ -284,10 +273,9 @@ export const updateAndReadFile = (host: HostServices): Promise<boolean> => {
         });
     }, 1000);
   });
-};
 
-export const streamFileInfo = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const streamFileInfo = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     // Queries the sidekick
     logger.info('listening to file changes');
     host.fileSystem.streamFileInfo(
@@ -306,10 +294,9 @@ export const streamFileInfo = (host: HostServices): Promise<boolean> => {
       },
     );
   });
-};
 
-export const storageWriteRead = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const storageWriteRead = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const value = 'Do I exist?';
     host.storage.storageWrite('testKey', value).then(() => {
       host.storage
@@ -341,10 +328,9 @@ export const storageWriteRead = (host: HostServices): Promise<boolean> => {
         });
     });
   });
-};
 
-export const confirmWhisper = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const confirmWhisper = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     host.whisper
       .confirmWhisper({
         rejectButton: "Don't Click me",
@@ -360,10 +346,9 @@ export const confirmWhisper = (host: HostServices): Promise<boolean> => {
         reject(new Error('Button click was not correct'));
       });
   });
-};
 
-export const processQuery = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const processQuery = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     host.process
       .queryProcesses()
       .then((processList) => {
@@ -376,10 +361,9 @@ export const processQuery = (host: HostServices): Promise<boolean> => {
         reject(error);
       });
   });
-};
 
-export const processStream = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const processStream = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     host.process
       .queryProcesses()
       .then((processList) => {
@@ -392,10 +376,9 @@ export const processStream = (host: HostServices): Promise<boolean> => {
         reject(error);
       });
   });
-};
 
-export const formWhisper = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const formWhisper = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const form = host.whisper.formWhisper(
       {
         submitButton: 'Submit',
@@ -441,10 +424,9 @@ export const formWhisper = (host: HostServices): Promise<boolean> => {
       },
     );
   });
-};
 
-export const networkAndListWhisper = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const networkAndListWhisper = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const now = moment();
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
       .subtract(3, 'months')
@@ -569,10 +551,9 @@ export const networkAndListWhisper = (host: HostServices): Promise<boolean> => {
         reject(new Error(err));
       });
   });
-};
 
-export const disambiguationWhisper = (host: HostServices): Promise<boolean> => {
-  return new Promise((resolve, reject) => {
+export const disambiguationWhisper = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
     const obj = {} as Element;
     for (let i = 1; i <= 5; i += 1) {
       const s = `value_${i}`;
@@ -601,4 +582,3 @@ export const disambiguationWhisper = (host: HostServices): Promise<boolean> => {
       },
     );
   });
-};

@@ -123,7 +123,7 @@ const testConfig: { [key: string]: any } = {
       'Querying what processes are running on the computer...',
     ),
   ]),
-  storage: new TestGroup('Storage Service', [
+  /* storage: new TestGroup('Storage Service', [
     new LoopTest(
       'Storage Service - Write / Read from storage',
       storageWriteRead,
@@ -136,7 +136,7 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Press Ctrl+A to test the hotkey functionality.',
     ),
-  ]),
+  ]), */
   whispers: new TestGroup('Whisper Service', [
     /*            
     new LoopTest(

@@ -17,12 +17,18 @@ export default class TestSuite {
     this.logger = logger;
   }
 
+  public async sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   public async start(host: HostServices): Promise<boolean> {
     const elements = {} as Element;
     let i = 0;
     for await (const test of this.tests) {
       try {
         this.logger.info('Before next test');
+        await this.sleep(1000);
+        this.logger.info('after sleep');
         await test.runTest(host, this.logger);
         elements[`${i}`] = {
           value: test.getStatus(),

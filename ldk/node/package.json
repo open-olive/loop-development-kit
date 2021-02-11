@@ -55,7 +55,7 @@
     ]
   },
   "dependencies": {
-    "@grpc/grpc-js": "1.2.2",
+    "@grpc/grpc-js": "1.2.6",
     "@types/google-protobuf": "3.7.4",
     "commander": "6.2.1",
     "google-protobuf": "3.14.0",
