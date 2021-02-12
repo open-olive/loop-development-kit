@@ -12,6 +12,10 @@ using Proto;
 
 namespace OliveHelpsLDK
 {
+    /// <summary>
+    /// The LoopServer is used to start a Loop.
+    /// Loop programs must call <see cref="LoopServer.Start">LoopServer.Start</see> on program start.
+    /// </summary>
     public class LoopServer : Loop.LoopBase
     {
         private readonly BrokerServer _brokerServer = new BrokerServer();
@@ -28,6 +32,23 @@ namespace OliveHelpsLDK
             _logger = logger;
         }
 
+        /// <param name="loop">The Loop you're running.</param>
+        /// <param name="loggerName">The name of the logger.</param>
+        /// <inheritdoc cref="Start(OliveHelpsLDK.ILoop,ILogger)"/>
+        public static void Start(ILoop loop, string loggerName)
+        {
+            var logger = new Logger(loggerName);
+            Start(loop, logger);
+        }
+
+        /// <summary>
+        /// Starts a Loop Server and prepares the process to connect to Olive Helps.
+        /// </summary>
+        /// <remarks>
+        /// Only one Loop can be run per process.
+        /// </remarks>
+        /// <param name="loop">The Loop you're running.</param>
+        /// <param name="logger">The Logger you're using.</param>
         public static void Start(ILoop loop, ILogger logger)
         {
             var loopServer = new LoopServer(loop, logger);
@@ -47,6 +68,12 @@ namespace OliveHelpsLDK
             System.Diagnostics.Process.GetCurrentProcess().WaitForExit();
         }
 
+        /// <summary>
+        /// Receives and responds to LoopStart messages.
+        /// </summary>
+        /// <param name="request">The LoopStartRequest, containing the session data.</param>
+        /// <param name="context">The Call context</param>
+        /// <returns>A Task resolving with the Empty response.</returns>
         public override async Task<Empty> LoopStart(LoopStartRequest request, ServerCallContext context)
         {
             _logger.Debug("Received Loop Start Request");
@@ -64,6 +91,12 @@ namespace OliveHelpsLDK
             return new Empty();
         }
 
+        /// <summary>
+        /// Receives and responds to LoopStop messages.
+        /// </summary>
+        /// <param name="request">The Empty request.</param>
+        /// <param name="context">The call context.</param>
+        /// <returns>A Task resolving with Empty response when the Loop has been stopped.</returns>
         public override async Task<Empty> LoopStop(Empty request, ServerCallContext context)
         {
             _logger.Debug("Received Loop Stop Request");

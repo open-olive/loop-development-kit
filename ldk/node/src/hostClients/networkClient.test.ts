@@ -5,8 +5,8 @@ import * as Messages from '../grpc/network_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { NetworkClient } from './networkClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createWaitHandler,
@@ -20,7 +20,7 @@ jest.mock('../grpc/network_grpc_pb');
 
 const MockClientClass = mocked(Services.NetworkClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('NetworkClient', () => {
   let subject: NetworkClient;

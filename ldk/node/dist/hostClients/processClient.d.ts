@@ -9,4 +9,5 @@ export declare class ProcessClient extends BaseClient<ProcessGRPCClient> impleme
     protected generateClient(): GRPCClientConstructor<ProcessGRPCClient>;
     queryProcesses(): Promise<ProcessListResponse>;
     streamProcesses(listener: StreamListener<ProcessStreamResponse>): StoppableStream<ProcessStreamResponse>;
+    protected serviceName(): string;
 }

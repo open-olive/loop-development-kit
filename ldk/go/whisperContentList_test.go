@@ -61,9 +61,17 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 						Order:  2,
 						Style:  WhisperContentListElementStyleSuccess,
 					},
+					"linkElement": &WhisperContentListElementLink{
+						Align: WhisperContentListElementAlignCenter,
+						Extra: false,
+						Href:  "https://oliveai.com/",
+						Order: 3,
+						Style: WhisperContentListElementStyleNone,
+						Text:  "Click me!",
+					},
 				},
 			},
-			want:    []byte("{\"label\":\"The Label\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"messageElement\":{\"align\":\"center\",\"body\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
+			want:    []byte("{\"label\":\"The Label\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"linkElement\":{\"align\":\"center\",\"extra\":false,\"href\":\"https://oliveai.com/\",\"order\":3,\"style\":\"none\",\"text\":\"Click me!\",\"type\":\"link\"},\"messageElement\":{\"align\":\"center\",\"body\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
 			wantErr: false,
 		},
 	}

@@ -5,8 +5,8 @@ import * as Messages from '../grpc/cursor_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { CursorClient } from './cursorClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createCallbackHandler,
   createStreamingHandler,
@@ -21,7 +21,7 @@ jest.mock('../grpc/cursor_grpc_pb');
 
 const MockClientClass = mocked(Services.CursorClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('CursorClient', () => {
   let subject: CursorClient;

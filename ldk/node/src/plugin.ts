@@ -4,6 +4,9 @@ import { Loop } from './loop';
 import { Logger, prepareLogging } from './logging';
 import LoopServer from './loopServer';
 
+/**
+ * @internal
+ */
 const logger = new Logger('loop-core');
 
 /**

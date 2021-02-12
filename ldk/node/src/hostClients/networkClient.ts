@@ -38,6 +38,9 @@ function addHeadersToMessage(
   return message;
 }
 
+/**
+ * @internal
+ */
 export class NetworkClient
   extends BaseClient<NetworkGRPCClient>
   implements NetworkService {
@@ -68,5 +71,9 @@ export class NetworkClient
         headers: parseHeadersMap(response.getHeadersMap()),
       }),
     );
+  }
+
+  protected serviceName(): string {
+    return 'network';
   }
 }

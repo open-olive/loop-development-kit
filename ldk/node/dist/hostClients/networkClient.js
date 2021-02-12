@@ -50,6 +50,9 @@ function addHeadersToMessage(message, headers) {
     });
     return message;
 }
+/**
+ * @internal
+ */
 class NetworkClient extends baseClient_1.default {
     generateClient() {
         return network_grpc_pb_1.NetworkClient;
@@ -69,6 +72,9 @@ class NetworkClient extends baseClient_1.default {
             data: response.getData(),
             headers: parseHeadersMap(response.getHeadersMap()),
         }));
+    }
+    serviceName() {
+        return 'network';
     }
 }
 exports.NetworkClient = NetworkClient;

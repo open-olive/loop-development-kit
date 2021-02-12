@@ -13,7 +13,10 @@ export declare enum WindowStreamAction {
     Focused = "focused",
     Unfocused = "unfocused",
     Opened = "opened",
-    Closed = "closed"
+    Closed = "closed",
+    TitleChanged = "titleChanged",
+    Moved = "moved",
+    Resized = "resized"
 }
 export interface WindowInfoStreamResponse {
     window: WindowInfoResponse;
@@ -21,6 +24,8 @@ export interface WindowInfoStreamResponse {
 }
 /**
  * The WindowService provides access to the windows opened in the user's session.
+ *
+ * This service is not yet implemented.
  */
 export interface WindowService {
     /**

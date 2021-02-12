@@ -1,6 +1,17 @@
 /** @module logging */
+/**
+ * Logging interface.
+ */
+export interface ILogger {
+    with(...args: any[]): ILogger;
+    trace(msg: string, ...fields: any[]): void;
+    debug(msg: string, ...fields: any[]): void;
+    info(msg: string, ...fields: any[]): void;
+    warn(msg: string, ...fields: any[]): void;
+    error(msg: string, ...fields: any[]): void;
+}
 /** Logger is a supported way to get logs to Olive Helps in the expected format. */
-declare class Logger {
+export declare class Logger implements ILogger {
     private _name;
     private _fields;
     /**
@@ -8,7 +19,7 @@ declare class Logger {
      *
      * @param name - The name of the plugin.
      * @param fields - Additional fields to include with each log.
-     * @example
+     *
      * ```
      * const package = require('./package.json');
      * const logger = new Logger(package.name);
@@ -42,7 +53,7 @@ declare class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.trace('Some message');
      * // {
@@ -60,7 +71,7 @@ declare class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.debug('Some message');
      * // {
@@ -78,7 +89,7 @@ declare class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.info('Some message');
      * // {
@@ -96,7 +107,7 @@ declare class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.warn('Some message');
      * // {
@@ -114,7 +125,7 @@ declare class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.error('Some message');
      * // {
@@ -141,7 +152,7 @@ declare class Logger {
      *
      * @param args - A list of alternating keys/values.
      * @returns An object created by combining the alternating keys/values.
-     * @example
+     *
      * ```
      * _kvArgsWithFields(['key1', 'value1', 'key2', 'value2', 'value3'])
      * // returns { 'key1': 'value1', 'key2': 'value2', 'EXTRA_VALUE_AT_END': 'value3' }
@@ -161,5 +172,4 @@ declare class Logger {
  *
  * @internal
  */
-declare const prepareLogging: () => void;
-export { Logger, prepareLogging };
+export declare const prepareLogging: () => void;

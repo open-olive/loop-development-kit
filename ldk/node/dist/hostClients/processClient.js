@@ -78,5 +78,8 @@ class ProcessClient extends baseClient_1.default {
             };
         }, listener);
     }
+    serviceName() {
+        return 'process';
+    }
 }
 exports.ProcessClient = ProcessClient;

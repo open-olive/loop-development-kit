@@ -42,6 +42,12 @@ function parseWindowAction(action) {
             return windowService_1.WindowStreamAction.Opened;
         case window_pb_1.WindowAction.WINDOW_ACTION_CLOSED:
             return windowService_1.WindowStreamAction.Closed;
+        case window_pb_1.WindowAction.WINDOW_ACTION_TITLE_CHANGED:
+            return windowService_1.WindowStreamAction.TitleChanged;
+        case window_pb_1.WindowAction.WINDOW_ACTION_MOVED:
+            return windowService_1.WindowStreamAction.Moved;
+        case window_pb_1.WindowAction.WINDOW_ACTION_RESIZED:
+            return windowService_1.WindowStreamAction.Resized;
         case window_pb_1.WindowAction.WINDOW_ACTION_UNKNOWN:
         default:
             return windowService_1.WindowStreamAction.Unknown;
@@ -74,6 +80,9 @@ class WindowClient extends baseClient_1.default {
                 action: parseWindowAction(response.getAction()),
             };
         }, listener);
+    }
+    serviceName() {
+        return 'window';
     }
 }
 exports.WindowClient = WindowClient;

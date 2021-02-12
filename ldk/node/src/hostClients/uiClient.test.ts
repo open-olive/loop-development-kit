@@ -5,8 +5,8 @@ import * as Messages from '../grpc/ui_pb';
 import { ConnInfo } from '../grpc/broker_pb';
 import { UIClient } from './uiClient';
 import { Session } from '../grpc/session_pb';
-import { Logger } from '../logging';
 import {
+  buildLogger,
   captureMockArgument,
   createStreamingHandler,
   createWaitHandler,
@@ -19,7 +19,7 @@ jest.mock('../grpc/ui_grpc_pb');
 
 const MockClientClass = mocked(Services.UIClient);
 
-const logger = new Logger('test-logger');
+const logger = buildLogger();
 
 describe('UIClient', () => {
   let subject: UIClient;

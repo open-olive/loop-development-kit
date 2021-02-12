@@ -133,7 +133,7 @@ namespace OliveHelpsLDK
                 if (action.Exception == null) return action.Result;
                 HandleException(action.Exception, logger, token);
                 return action.Result;
-            }, token, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Current);
+            }, token);
         }
         
         /// <summary>
@@ -147,7 +147,7 @@ namespace OliveHelpsLDK
             {
                 if (action.Exception == null) return;
                 HandleException(action.Exception, logger, token);
-            }, token, TaskContinuationOptions.OnlyOnFaulted, TaskScheduler.Current);
+            }, token);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace OliveHelpsLDK
                 aex.Handle(exception =>
                 {
                     logger.Error("Client exception", exception);
-                    return true;
+                    return false;
                 });
         }
 

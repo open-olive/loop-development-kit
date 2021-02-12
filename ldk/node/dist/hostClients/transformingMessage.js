@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransformingMessage = void 0;
+/**
+ * @internal
+ */
 class TransformingMessage {
     constructor(transformer) {
         this.callback = (error, response) => {
@@ -21,7 +24,10 @@ class TransformingMessage {
         return this.callbackPromise;
     }
     stop() {
-        this.call.cancel();
+        // SIDE-1556: Needs to be wrapped this way so that we don't trigger a race condition
+        setImmediate(() => {
+            this.call.cancel();
+        });
     }
     assignCall(call) {
         if (this._call != null) {

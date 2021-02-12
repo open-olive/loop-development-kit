@@ -1,5 +1,7 @@
 /** @module logging */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /**
  * @internal
  */
@@ -18,11 +20,22 @@ enum LogLevels {
   ERROR = 'ERROR',
 }
 
+/**
+ * Logging interface.
+ */
+export interface ILogger {
+  with(...args: any[]): ILogger;
+  trace(msg: string, ...fields: any[]): void;
+  debug(msg: string, ...fields: any[]): void;
+  info(msg: string, ...fields: any[]): void;
+  warn(msg: string, ...fields: any[]): void;
+  error(msg: string, ...fields: any[]): void;
+}
+
 /** Logger is a supported way to get logs to Olive Helps in the expected format. */
-class Logger {
+export class Logger implements ILogger {
   private _name: string;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _fields: { [index: string]: any };
 
   /**
@@ -30,7 +43,7 @@ class Logger {
    *
    * @param name - The name of the plugin.
    * @param fields - Additional fields to include with each log.
-   * @example
+   *
    * ```
    * const package = require('./package.json');
    * const logger = new Logger(package.name);
@@ -66,7 +79,6 @@ class Logger {
    * // }
    * ```
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   with(...args: any[]): Logger {
     const fields = this._kvArgsWithFields(args);
     return new Logger(this._name, fields);
@@ -77,7 +89,7 @@ class Logger {
    *
    * @param msg - The message of the log.
    * @param args - A list of alternating keys/values.
-   * @example
+   *
    * ```
    * logger.trace('Some message');
    * // {
@@ -98,7 +110,7 @@ class Logger {
    *
    * @param msg - The message of the log.
    * @param args - A list of alternating keys/values.
-   * @example
+   *
    * ```
    * logger.debug('Some message');
    * // {
@@ -119,7 +131,7 @@ class Logger {
    *
    * @param msg - The message of the log.
    * @param args - A list of alternating keys/values.
-   * @example
+   *
    * ```
    * logger.info('Some message');
    * // {
@@ -140,7 +152,7 @@ class Logger {
    *
    * @param msg - The message of the log.
    * @param args - A list of alternating keys/values.
-   * @example
+   *
    * ```
    * logger.warn('Some message');
    * // {
@@ -161,7 +173,7 @@ class Logger {
    *
    * @param msg - The message of the log.
    * @param args - A list of alternating keys/values.
-   * @example
+   *
    * ```
    * logger.error('Some message');
    * // {
@@ -223,7 +235,7 @@ class Logger {
    *
    * @param args - A list of alternating keys/values.
    * @returns An object created by combining the alternating keys/values.
-   * @example
+   *
    * ```
    * _kvArgsWithFields(['key1', 'value1', 'key2', 'value2', 'value3'])
    * // returns { 'key1': 'value1', 'key2': 'value2', 'EXTRA_VALUE_AT_END': 'value3' }
@@ -275,7 +287,7 @@ class Logger {
  *
  * @internal
  */
-const prepareLogging = (): void => {
+export const prepareLogging = (): void => {
   const consoleDebug = console.debug.bind(console);
   const consoleError = console.error.bind(console);
   const consoleInfo = console.info.bind(console);
@@ -283,7 +295,6 @@ const prepareLogging = (): void => {
   const consoleTrace = console.trace.bind(console);
   const consoleWarn = console.warn.bind(console);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   // Using any b/c console functions accept any type.
   console.debug = (msg: any, ...args: any[]) => {
     consoleDebug(`[DEBUG] ${msg}`, ...args);
@@ -311,7 +322,5 @@ const prepareLogging = (): void => {
 
   process.stdout.write = (...args: any[]) =>
     (process.stderr.write as any)(...args);
-  /* eslint-any @typescript-eslint/no-explicit-any */
 };
-
-export { Logger, prepareLogging };
+/* eslint-any @typescript-eslint/no-explicit-any */

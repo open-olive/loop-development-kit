@@ -9,4 +9,5 @@ export declare class CursorClient extends BaseClient<CursorGRPCClient> implement
     protected generateClient(): GRPCClientConstructor<CursorGRPCClient>;
     queryCursorPosition(): Promise<CursorResponse>;
     streamCursorPosition(listener: StreamListener<CursorResponse>): StoppableStream<CursorResponse>;
+    protected serviceName(): string;
 }

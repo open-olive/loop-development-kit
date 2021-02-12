@@ -158,3 +158,5 @@ The `.proto` files in `src/shared/proto` are inserted with Git subtrees. To upda
 ### Testing
 
 Tests are written with [`ts-jest`](https://kulshekhar.github.io/ts-jest/).
+
+Set `TEST_LOGGING` environment variable to a non-empty value to get Logger output when running tests.

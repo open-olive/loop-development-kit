@@ -614,7 +614,7 @@ export namespace WhisperFormInput {
 
 
     export enum InputOneofCase {
-        INPUTONEOF_NOT_SET = 0,
+        INPUT_ONEOF_NOT_SET = 0,
     
     CHECKBOX = 1,
 
@@ -944,7 +944,7 @@ export namespace WhisperFormOutput {
 
 
     export enum OutputOneofCase {
-        OUTPUTONEOF_NOT_SET = 0,
+        OUTPUT_ONEOF_NOT_SET = 0,
     
     CHECKBOX = 1,
 
@@ -1062,7 +1062,7 @@ export namespace WhisperFormStreamResponse {
     }
 
     export enum WhisperFormResponseOneofCase {
-        WHISPERFORMRESPONSEONEOF_NOT_SET = 0,
+        WHISPER_FORM_RESPONSE_ONEOF_NOT_SET = 0,
     
     RESULT = 1,
 
@@ -1215,7 +1215,7 @@ export namespace WhisperDisambiguationElement {
 
 
     export enum ElementOneofCase {
-        ELEMENTONEOF_NOT_SET = 0,
+        ELEMENT_ONEOF_NOT_SET = 0,
     
     OPTION = 2,
 
@@ -1309,6 +1309,12 @@ export class WhisperListElement extends jspb.Message {
     setDivider(value?: WhisperListElement.Divider): WhisperListElement;
 
 
+    hasLink(): boolean;
+    clearLink(): void;
+    getLink(): WhisperListElement.Link | undefined;
+    setLink(value?: WhisperListElement.Link): WhisperListElement;
+
+
     getElementOneofCase(): WhisperListElement.ElementOneofCase;
 
     serializeBinary(): Uint8Array;
@@ -1328,6 +1334,7 @@ export namespace WhisperListElement {
         pair?: WhisperListElement.Pair.AsObject,
         message?: WhisperListElement.Message.AsObject,
         divider?: WhisperListElement.Divider.AsObject,
+        link?: WhisperListElement.Link.AsObject,
     }
 
 
@@ -1418,6 +1425,39 @@ export namespace WhisperListElement {
         }
     }
 
+    export class Link extends jspb.Message { 
+        getAlign(): WhisperListElement.Align;
+        setAlign(value: WhisperListElement.Align): Link;
+
+        getHref(): string;
+        setHref(value: string): Link;
+
+        getStyle(): WhisperListElement.Style;
+        setStyle(value: WhisperListElement.Style): Link;
+
+        getText(): string;
+        setText(value: string): Link;
+
+
+        serializeBinary(): Uint8Array;
+        toObject(includeInstance?: boolean): Link.AsObject;
+        static toObject(includeInstance: boolean, msg: Link): Link.AsObject;
+        static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+        static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+        static serializeBinaryToWriter(message: Link, writer: jspb.BinaryWriter): void;
+        static deserializeBinary(bytes: Uint8Array): Link;
+        static deserializeBinaryFromReader(message: Link, reader: jspb.BinaryReader): Link;
+    }
+
+    export namespace Link {
+        export type AsObject = {
+            align: WhisperListElement.Align,
+            href: string,
+            style: WhisperListElement.Style,
+            text: string,
+        }
+    }
+
 
     export enum Style {
     STYLE_NONE = 0,
@@ -1434,13 +1474,15 @@ export namespace WhisperListElement {
 
 
     export enum ElementOneofCase {
-        ELEMENTONEOF_NOT_SET = 0,
+        ELEMENT_ONEOF_NOT_SET = 0,
     
     PAIR = 4,
 
     MESSAGE = 5,
 
     DIVIDER = 6,
+
+    LINK = 7,
 
     }
 

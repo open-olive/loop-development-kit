@@ -7,6 +7,9 @@ using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
+    /// <summary>
+    /// Builds messages for Whisper Forms.
+    /// </summary>
     public class WhisperFormBuilder : IWhisperFormBuilder
     {
         public WhisperFormRequest BuildRequest(WhisperForm formRequest, Proto.Session session)
@@ -131,6 +134,16 @@ namespace OliveHelpsLDK.Whispers
                         Value = listPair.Value,
                     };
                     listElement.Pair = pair;
+                    break;
+                case ListLink listLink:
+                    var link = new WhisperListElement.Types.Link
+                    {
+                        Align = ToProto(listLink.Align),
+                        Href = listLink.Href,
+                        Style = ToProto(listLink.Style),
+                        Text = listLink.Text,
+                    };
+                    listElement.Link = link;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(element));

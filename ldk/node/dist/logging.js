@@ -2,6 +2,7 @@
 /** @module logging */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.prepareLogging = exports.Logger = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * @internal
  */
@@ -26,7 +27,7 @@ class Logger {
      *
      * @param name - The name of the plugin.
      * @param fields - Additional fields to include with each log.
-     * @example
+     *
      * ```
      * const package = require('./package.json');
      * const logger = new Logger(package.name);
@@ -60,7 +61,6 @@ class Logger {
      * // }
      * ```
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     with(...args) {
         const fields = this._kvArgsWithFields(args);
         return new Logger(this._name, fields);
@@ -70,7 +70,7 @@ class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.trace('Some message');
      * // {
@@ -90,7 +90,7 @@ class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.debug('Some message');
      * // {
@@ -110,7 +110,7 @@ class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.info('Some message');
      * // {
@@ -130,7 +130,7 @@ class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.warn('Some message');
      * // {
@@ -150,7 +150,7 @@ class Logger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.error('Some message');
      * // {
@@ -198,7 +198,7 @@ class Logger {
      *
      * @param args - A list of alternating keys/values.
      * @returns An object created by combining the alternating keys/values.
-     * @example
+     *
      * ```
      * _kvArgsWithFields(['key1', 'value1', 'key2', 'value2', 'value3'])
      * // returns { 'key1': 'value1', 'key2': 'value2', 'EXTRA_VALUE_AT_END': 'value3' }
@@ -238,14 +238,13 @@ exports.Logger = Logger;
  *
  * @internal
  */
-const prepareLogging = () => {
+exports.prepareLogging = () => {
     const consoleDebug = console.debug.bind(console);
     const consoleError = console.error.bind(console);
     const consoleInfo = console.info.bind(console);
     const consoleLog = console.log.bind(console);
     const consoleTrace = console.trace.bind(console);
     const consoleWarn = console.warn.bind(console);
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     // Using any b/c console functions accept any type.
     console.debug = (msg, ...args) => {
         consoleDebug(`[DEBUG] ${msg}`, ...args);
@@ -266,6 +265,5 @@ const prepareLogging = () => {
         consoleWarn(`[WARN] ${msg}`, ...args);
     };
     process.stdout.write = (...args) => process.stderr.write(...args);
-    /* eslint-any @typescript-eslint/no-explicit-any */
 };
-exports.prepareLogging = prepareLogging;
+/* eslint-any @typescript-eslint/no-explicit-any */

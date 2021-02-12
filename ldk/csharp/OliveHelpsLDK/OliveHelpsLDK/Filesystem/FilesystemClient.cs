@@ -63,6 +63,66 @@ namespace OliveHelpsLDK.Filesystem
             return new StreamingCall<FilesystemFileInfoStreamResponse, FileEvent>(call, loggedParser);
         }
 
+        public Task MakeDirectory(MakeDirectoryParameters parameters, CancellationToken cancellationToken = default)
+        {
+            var request = new FilesystemMakeDirRequest
+            {
+                Session = CreateSession(),
+                Path = parameters.Path,
+                Perm = parameters.Permissions
+            };
+            return Client.FilesystemMakeDirAsync(request, CreateOptions(cancellationToken)).ResponseAsync;
+        }
+
+        public Task Copy(MoveOrCopyFileParameters parameters, CancellationToken cancellationToken = default)
+        {
+            var request = new FilesystemCopyRequest()
+            {
+                Session = CreateSession(),
+                Source = parameters.Source,
+                Dest = parameters.Destination
+            };
+            return Client.FilesystemCopyAsync(request, CreateOptions(cancellationToken)).ResponseAsync;
+        }
+
+        public Task Move(MoveOrCopyFileParameters parameters, CancellationToken cancellationToken = default)
+        {
+            var request = new FilesystemMoveRequest()
+            {
+                Session = CreateSession(),
+                Source = parameters.Source,
+                Dest = parameters.Destination
+            };
+            return Client.FilesystemMoveAsync(request, CreateOptions(cancellationToken)).ResponseAsync;
+        }
+
+        public Task Remove(RemoveParameters parameters, CancellationToken cancellationToken = default)
+        {
+            var request = new FilesystemRemoveRequest()
+            {
+                Session = CreateSession(),
+                Path = parameters.Path,
+                Recursive = parameters.Recursive
+            };
+            return Client.FilesystemRemoveAsync(request, CreateOptions(cancellationToken)).ResponseAsync;
+        }
+
+        public async Task<IFile> OpenFile(string path, CancellationToken cancellationToken = default)
+        {
+            var stream = Client.FilesystemFileStream(CreateOptions(cancellationToken));
+            var file = new File(stream, Logger, Session);
+            await file.Open(path);
+            return file;
+        }
+
+        public async Task<IFile> CreateFile(string path, CancellationToken cancellationToken = default)
+        {
+            var stream = Client.FilesystemFileStream(CreateOptions(cancellationToken));
+            var file = new File(stream, Logger, Session);
+            await file.Create(path);
+            return file;
+        }
+
         private static IList<FileInfo> ConvertFileList(IEnumerable<Proto.FileInfo> files)
         {
             return files.Select(ConvertProtoFileInfo).ToList();
