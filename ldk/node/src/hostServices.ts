@@ -3,13 +3,13 @@ import { StorageService } from './hostClients/storageService';
 import { KeyboardService } from './hostClients/keyboardService';
 import { ClipboardService } from './hostClients/clipboardService';
 import { CursorService } from './hostClients/cursorService';
-// import { HoverService } from './hostClients/hoverService';
 import { FileSystemService } from './hostClients/fileSystemService';
 import { ProcessService } from './hostClients/processService';
+import { NetworkService } from './hostClients/networkService';
+import { UIService } from './hostClients/uiService';
+// import { HoverService } from './hostClients/hoverService';
 // import { WindowService } from './hostClients/windowService';
 // import { BrowserService } from './hostClients/browserService';
-import { NetworkService } from './hostClients/networkService';
-// import { Network } from '.';
 
 /**
  * The HostServices interface provides access to the sensors and services provided by Olive Helps.
@@ -23,6 +23,7 @@ export interface HostServices {
   fileSystem: FileSystemService;
   process: ProcessService;
   network: NetworkService;
+  ui: UIService;
   // These services are not yet implemented.
   // hover: HoverService;
   // window: WindowService;
