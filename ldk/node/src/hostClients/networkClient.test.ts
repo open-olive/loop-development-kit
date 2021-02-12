@@ -55,10 +55,11 @@ describe('NetworkClient', () => {
         Cookie: ['monster=false'],
       },
     };
+    const encoder = new TextEncoder();
 
     beforeEach(async () => {
       sentResponse = new Messages.HTTPResponseMsg()
-        .setData(new Uint8Array([173, 235, 41, 162, 123, 30, 117, 171, 90]))
+        .setData(encoder.encode('response data'))
         .setResponsecode(200);
 
       sentResponse
