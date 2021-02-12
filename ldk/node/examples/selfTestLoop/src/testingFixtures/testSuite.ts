@@ -22,6 +22,7 @@ export default class TestSuite {
     let i = 0;
     for await (const test of this.tests) {
       try {
+        await test.runTest(host, this.logger);
         elements[`${i}`] = {
           value: test.getStatus(),
           label: test.getId(),
