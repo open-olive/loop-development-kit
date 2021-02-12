@@ -3,7 +3,7 @@ using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
-    public interface IWhisperFormParser
+    internal interface IWhisperFormParser
     {
         IWhisperFormResponse ParseResponse(WhisperFormStreamResponse response);
     }

@@ -29,14 +29,6 @@
           {
             "title": "Logging",
             "source": "./docsExtra/logging.md"
-          },
-          {
-            "title": "Storage",
-            "source": "./docsExtra/storage.md"
-          },
-          {
-            "title": "Terminology",
-            "source": "./docsExtra/terminology.md"
           }
         ]
       }

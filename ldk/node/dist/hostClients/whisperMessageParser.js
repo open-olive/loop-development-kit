@@ -21,6 +21,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.transformResponse = exports.transformDisambiguationResponse = void 0;
 const messages = __importStar(require("../grpc/whisper_pb"));
+/**
+ * @internal
+ */
 const transformOutput = (message) => {
     const messageObj = message.toObject();
     switch (message.getOutputOneofCase()) {
@@ -49,11 +52,17 @@ const transformOutput = (message) => {
             return '';
     }
 };
+/**
+ * @internal
+ */
 const transformUpdate = (message) => ({
     key: message.getKey(),
     value: transformOutput(message.getOutput()),
     type: 'update',
 });
+/**
+ * @internal
+ */
 const transformOutputMap = (map) => {
     const results = {};
     map.forEach((entry, key) => {
@@ -61,12 +70,21 @@ const transformOutputMap = (map) => {
     });
     return results;
 };
+/**
+ * @internal
+ */
 const transformResult = (message) => ({
     submitted: message.getSubmitted(),
     outputs: transformOutputMap(message.getOutputsMap()),
     type: 'submit',
 });
+/**
+ * @internal
+ */
 exports.transformDisambiguationResponse = (response) => ({ key: response.getKey() });
+/**
+ * @internal
+ */
 exports.transformResponse = (response) => {
     const update = response.getUpdate();
     const result = response.getResult();

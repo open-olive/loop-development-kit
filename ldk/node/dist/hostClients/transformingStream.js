@@ -50,9 +50,11 @@ class TransformingStream {
         this.listener = callback;
     }
     stop() {
+        // SIDE-1556: Needs to be wrapped this way so that we don't trigger a race condition
         setImmediate(() => {
             this.stream.cancel();
             this.stream.removeAllListeners('data');
+            this.stream.removeAllListeners('error');
         });
     }
 }

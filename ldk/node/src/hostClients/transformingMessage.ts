@@ -2,6 +2,9 @@ import * as GRPC from '@grpc/grpc-js';
 import { StoppableMessage } from './stoppables';
 import { Logger } from '../logging';
 
+/**
+ * @internal
+ */
 export class TransformingMessage<TOutput, TResponse>
   implements StoppableMessage<TOutput> {
   private callbackPromise: Promise<TOutput>;
@@ -31,6 +34,7 @@ export class TransformingMessage<TOutput, TResponse>
   }
 
   stop(): void {
+    // SIDE-1556: Needs to be wrapped this way so that we don't trigger a race condition
     setImmediate(() => {
       this.call.cancel();
     });

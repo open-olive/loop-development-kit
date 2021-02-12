@@ -82,9 +82,11 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
   };
 
   stop(): void {
+    // SIDE-1556: Needs to be wrapped this way so that we don't trigger a race condition
     setImmediate(() => {
       this.stream.cancel();
       this.stream.removeAllListeners('data');
+      this.stream.removeAllListeners('error');
     });
   }
 }
