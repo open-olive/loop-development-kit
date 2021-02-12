@@ -162,7 +162,7 @@ func newGRPCFile(ctx context.Context, stream proto.Filesystem_FilesystemFileStre
 	return GRPCFile
 }
 
-func (f *GRPCFile) Sync() (error) {
+func (f *GRPCFile) Sync() error {
 	return nil
 }
 
