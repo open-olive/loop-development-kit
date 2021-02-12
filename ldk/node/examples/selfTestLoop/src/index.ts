@@ -29,7 +29,7 @@ import {
 export interface Element {
   [key: string]: WhisperDisambiguationElements;
 }
-const logger = new Logger('olive-helps-node-example-clipboard');
+const logger = new Logger('node-self-test-loop');
 
 const testConfig: { [key: string]: any } = {
   clipboard: new TestGroup('Cliboard Service', [
@@ -43,7 +43,7 @@ const testConfig: { [key: string]: any } = {
       'Clipboard Service - Clipboard Stream',
       clipboardStream,
       10000,
-      'Copying teh value "LDKThxBai" the the clipboard',
+      'Copying the value "LDKThxBai" the the clipboard',
     ),
   ]),
   cursor: new TestGroup('Cursor Service', [
@@ -206,7 +206,7 @@ class ClipboardLoop implements Loop {
     for (let i = 0; i < keys.length; i += 1) {
       const group = testConfig[keys[i]];
       elements[keys[i]] = {
-        label: group.getId(),
+        label: `---${group.getId()}`,
         order: i + 1,
         type: 'option',
       };

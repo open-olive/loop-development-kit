@@ -54,7 +54,6 @@ class TransformingStream {
         setImmediate(() => {
             this.stream.cancel();
             this.stream.removeAllListeners('data');
-            this.stream.removeAllListeners('error');
         });
     }
 }
