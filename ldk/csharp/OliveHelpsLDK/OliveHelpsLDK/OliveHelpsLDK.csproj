@@ -12,6 +12,14 @@
         <PackageTags>olive olivehelps loop loops loop-development-kit ldk sdk</PackageTags>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DocumentationFile>bin\Debug\OliveHelpsLDK.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DocumentationFile>bin\Release\OliveHelpsLDK.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Google.Protobuf" Version="3.13.0"/>
         <PackageReference Include="Grpc" Version="2.34.0"/>

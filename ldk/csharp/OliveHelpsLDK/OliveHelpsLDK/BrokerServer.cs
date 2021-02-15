@@ -5,7 +5,7 @@ using Plugin;
 
 namespace OliveHelpsLDK
 {
-    public struct ConnectionInfo
+    internal struct ConnectionInfo
     {
         public string Network;
 
@@ -15,7 +15,7 @@ namespace OliveHelpsLDK
     }
 
 
-    public class BrokerServer : GRPCBroker.GRPCBrokerBase
+    internal class BrokerServer : GRPCBroker.GRPCBrokerBase
     {
         private TaskCompletionSource<ConnectionInfo> TaskCompletionSource { get; } =
             new TaskCompletionSource<ConnectionInfo>();
