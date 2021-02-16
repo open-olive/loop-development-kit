@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransformingStream = void 0;
+const logging_1 = require("../logging");
 /**
  * The TransformingStream is a wrapper class that abstracts the grpc.ClientReadableStream interface away from the
  * user and transforms the input from the grpc format to Node objects.
@@ -30,6 +31,12 @@ class TransformingStream {
         this.errorWatcher = (error) => {
             if (this.listener) {
                 this.listener(error.details);
+                // Stream was stopped, need to remove the stream here
+                // to handle the "error" from cancelling the stream
+                if (error.code === 1) {
+                    this.logger.debug('Cancelling stream');
+                    this.stream.removeAllListeners('error');
+                }
             }
         };
         this.stream = stream;
@@ -37,14 +44,17 @@ class TransformingStream {
         this.listener = listener;
         this.stream.addListener('data', this.streamWatcher);
         this.stream.addListener('error', this.errorWatcher);
+        this.logger = new logging_1.Logger('loop-core');
     }
     setListener(callback) {
         this.listener = callback;
     }
     stop() {
-        this.stream.cancel();
-        this.stream.removeAllListeners('data');
-        this.stream.removeAllListeners('error');
+        // SIDE-1556: Needs to be wrapped this way so that we don't trigger a race condition
+        setImmediate(() => {
+            this.stream.cancel();
+            this.stream.removeAllListeners('data');
+        });
     }
 }
 exports.TransformingStream = TransformingStream;

@@ -1,6 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
 import { ServiceError } from '@grpc/grpc-js/build/src/call';
 import { StoppableStream, StreamListener } from './stoppables';
+import { Logger } from '../logging';
 
 /**
  * @internal
@@ -32,6 +33,8 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
 
   private listener: StreamListener<TOutput> | undefined;
 
+  private logger: Logger;
+
   /**
    * @param stream - the stream object
    * @param transformer - a transformer function that converts the grpc input to the desired output.
@@ -47,6 +50,7 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
     this.listener = listener;
     this.stream.addListener('data', this.streamWatcher);
     this.stream.addListener('error', this.errorWatcher);
+    this.logger = new Logger('loop-core');
   }
 
   setListener(callback: StreamListener<TOutput>): void {
@@ -67,12 +71,21 @@ export class TransformingStream<TInput extends MessageWithError, TOutput>
   errorWatcher = (error: ServiceError): void => {
     if (this.listener) {
       this.listener(error.details);
+
+      // Stream was stopped, need to remove the stream here
+      // to handle the "error" from cancelling the stream
+      if (error.code === 1) {
+        this.logger.debug('Cancelling stream');
+        this.stream.removeAllListeners('error');
+      }
     }
   };
 
   stop(): void {
-    this.stream.cancel();
-    this.stream.removeAllListeners('data');
-    this.stream.removeAllListeners('error');
+    // SIDE-1556: Needs to be wrapped this way so that we don't trigger a race condition
+    setImmediate(() => {
+      this.stream.cancel();
+      this.stream.removeAllListeners('data');
+    });
   }
 }

@@ -10,4 +10,5 @@ type File interface {
 	Chmod(os.FileMode) error
 	Chown(int, int) error
 	Stat() (os.FileInfo, error)
+	Sync() error
 }

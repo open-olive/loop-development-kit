@@ -14,7 +14,7 @@ interface IGRPCStdioService extends grpc.ServiceDefinition<grpc.UntypedServiceIm
 }
 
 interface IGRPCStdioService_IStreamStdio extends grpc.MethodDefinition<google_protobuf_empty_pb.Empty, stdio_pb.StdioData> {
-    path: string; // "/plugin.GRPCStdio/StreamStdio"
+    path: "/plugin.GRPCStdio/StreamStdio";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;

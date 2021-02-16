@@ -52,3 +52,7 @@ func (m *MockFile) Chmod(mode os.FileMode) error {
 func (m *MockFile) Stat() (os.FileInfo, error) {
 	return m.FileInfo, nil
 }
+
+func (m *MockFile) Sync() error {
+	return nil
+}

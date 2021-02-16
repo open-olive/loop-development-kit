@@ -6,12 +6,21 @@ using System.Text.Json;
 
 namespace OliveHelpsLDK.Logging
 {
+    /// <summary>
+    /// Formats logs for consumption and display by Olive Helps. 
+    /// </summary>
     public class Logger : ILogger
     {
+        /// <summary>
+        /// The name of the Logger.
+        /// </summary>
         public string Name { get; }
 
         private TextWriter Writer { get; }
 
+        /// <summary>
+        /// The default values for this logger.
+        /// </summary>
         public IDictionary<string, object> DefaultFields { get; set; }
 
 
@@ -20,10 +29,21 @@ namespace OliveHelpsLDK.Logging
             WriteIndented = false
         };
 
+        /// <summary>
+        /// Creates a logger with a given writer and name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="writer"></param>
         public Logger(string name, TextWriter writer = null) : this(name, new Dictionary<string, object>(), writer)
         {
         }
 
+        /// <summary>
+        /// Constructs a Logger.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="defaultFields"></param>
+        /// <param name="writer">The <see cref="TextWriter"/> to write to. Defaults to <see cref="Console.Error"/> if not provided.</param>
         public Logger(string name, IDictionary<string, object> defaultFields, TextWriter writer = null)
         {
             Writer = writer ?? Console.Error;
@@ -36,31 +56,37 @@ namespace OliveHelpsLDK.Logging
             Log(LogLevel.Trace, message, fields);
         }
 
+        /// <inheritdoc />
         public void Debug(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Debug, message, fields);
         }
 
+        /// <inheritdoc />
         public void Info(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Info, message, fields);
         }
 
+        /// <inheritdoc />
         public void Warn(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Warn, message, fields);
         }
 
+        /// <inheritdoc />
         public void Error(string message, IDictionary<string, object> fields = null)
         {
             Log(LogLevel.Error, message, fields);
         }
 
+        /// <inheritdoc />
         public void Error(string message, Exception exception)
         {
             Log(LogLevel.Error, message, new Dictionary<string, object>() {{"error", exception.ToString()}});
         }
 
+        /// <inheritdoc />
         public ILogger WithFields(IDictionary<string, object> fields)
         {
             return new Logger(Name, CombineDictionaries(new[] {DefaultFields, fields}));

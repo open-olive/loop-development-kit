@@ -6,6 +6,7 @@ import { CursorService } from './hostClients/cursorService';
 import { FileSystemService } from './hostClients/fileSystemService';
 import { ProcessService } from './hostClients/processService';
 import { NetworkService } from './hostClients/networkService';
+import { UIService } from './hostClients/uiService';
 /**
  * The HostServices interface provides access to the sensors and services provided by Olive Helps.
  */
@@ -18,4 +19,5 @@ export interface HostServices {
     fileSystem: FileSystemService;
     process: ProcessService;
     network: NetworkService;
+    ui: UIService;
 }

@@ -7,6 +7,9 @@ using Proto;
 
 namespace OliveHelpsLDK.Whispers
 {
+    /// <summary>
+    /// Builds messages for Whisper Forms.
+    /// </summary>
     public class WhisperFormBuilder : IWhisperFormBuilder
     {
         public WhisperFormRequest BuildRequest(WhisperForm formRequest, Proto.Session session)

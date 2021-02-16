@@ -19,7 +19,7 @@ export declare class Logger implements ILogger {
      *
      * @param name - The name of the plugin.
      * @param fields - Additional fields to include with each log.
-     * @example
+     *
      * ```
      * const package = require('./package.json');
      * const logger = new Logger(package.name);
@@ -53,7 +53,7 @@ export declare class Logger implements ILogger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.trace('Some message');
      * // {
@@ -71,7 +71,7 @@ export declare class Logger implements ILogger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.debug('Some message');
      * // {
@@ -89,7 +89,7 @@ export declare class Logger implements ILogger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.info('Some message');
      * // {
@@ -107,7 +107,7 @@ export declare class Logger implements ILogger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.warn('Some message');
      * // {
@@ -125,7 +125,7 @@ export declare class Logger implements ILogger {
      *
      * @param msg - The message of the log.
      * @param args - A list of alternating keys/values.
-     * @example
+     *
      * ```
      * logger.error('Some message');
      * // {
@@ -152,7 +152,7 @@ export declare class Logger implements ILogger {
      *
      * @param args - A list of alternating keys/values.
      * @returns An object created by combining the alternating keys/values.
-     * @example
+     *
      * ```
      * _kvArgsWithFields(['key1', 'value1', 'key2', 'value2', 'value3'])
      * // returns { 'key1': 'value1', 'key2': 'value2', 'EXTRA_VALUE_AT_END': 'value3' }

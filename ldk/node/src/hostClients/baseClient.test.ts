@@ -18,7 +18,7 @@ describe('BaseClient', () => {
   const exampleError = {
     name: 'bad',
     message: 'bad',
-    code: 1,
+    code: 2, // Error code 1 is what stop is, which is an "expected" error
     details: '',
     metadata: new Metadata(),
   };
