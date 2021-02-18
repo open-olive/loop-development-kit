@@ -5,7 +5,7 @@ type SidekickServer struct {
 	// This is the real implementation
 	Impl Sidekick
 
-	Metadata             Metadata
+	Metadata Metadata
 }
 
 // The Vault is used to store and retrieve sensitive data

@@ -1,6 +1,6 @@
 package ldk
 
-// SidekickClient is used by Loops to interact with the host computer through Sidekick
+// SidekickClient is used by Loops to interact with the host system through Sidekick
 type SidekickClient struct {
 	clipboard  ClipboardService
 	vault      VaultService
@@ -44,7 +44,7 @@ func (m *SidekickClient) Cursor() CursorService {
 	return m.cursor
 }
 
-// Filesystem is used to interact with the host computer's filesystem
+// Filesystem is used to interact with the host system's filesystem
 func (m *SidekickClient) Filesystem() FilesystemService {
 	return m.filesystem
 }
