@@ -1,4 +1,4 @@
-module github.com/open-olive/loop-development-kit/ldk/go/examples/storage
+module github.com/open-olive/loop-development-kit/ldk/go/examples/vault
 
 go 1.14
 

@@ -1,6 +1,6 @@
-# Sidekick Controller Example Go
+# Sidekick Vault Example - Go
 
-This is a very simple controller to use as a starting point. This controller watches for text events and emits a whisper every time it receives an event.
+This is a very simple Loop that demonstrates interacting with the Vault, which can be used to store credentials and other small pieces of sensitive information.
 
 ## Developers
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/google/go-cmp/cmp"
 	ldk "github.com/open-olive/loop-development-kit/ldk/go"
-	loop "github.com/open-olive/loop-development-kit/ldk/go/examples/storage/loop"
+	loop "github.com/open-olive/loop-development-kit/ldk/go/examples/vault/loop"
 	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
 	"reflect"
 	"sync"
@@ -13,37 +13,37 @@ import (
 )
 
 func TestLoop(t *testing.T) {
-	mockStorageMutex := sync.RWMutex{}
-	mockStorage := make(map[string]string)
+	mockVaultMutex := sync.RWMutex{}
+	mockVault := make(map[string]string)
 
 	sidekick := &ldktest.Sidekick{
-		StorageService: &ldktest.StorageService{
+		VaultService: &ldktest.VaultService{
 			Deletef: func(ctx context.Context, s string) error {
-				mockStorageMutex.Lock()
-				defer mockStorageMutex.Unlock()
+				mockVaultMutex.Lock()
+				defer mockVaultMutex.Unlock()
 
-				delete(mockStorage, s)
+				delete(mockVault, s)
 				return nil
 			},
 			Existsf: func(ctx context.Context, s string) (bool, error) {
-				mockStorageMutex.RLock()
-				defer mockStorageMutex.RUnlock()
+				mockVaultMutex.RLock()
+				defer mockVaultMutex.RUnlock()
 
-				_, exists := mockStorage[s]
+				_, exists := mockVault[s]
 				return exists, nil
 			},
 			Readf: func(ctx context.Context, s string) (string, error) {
-				mockStorageMutex.RLock()
-				defer mockStorageMutex.RUnlock()
+				mockVaultMutex.RLock()
+				defer mockVaultMutex.RUnlock()
 
-				value := mockStorage[s]
+				value := mockVault[s]
 				return value, nil
 			},
 			Writef: func(ctx context.Context, s string, s2 string) error {
-				mockStorageMutex.Lock()
-				defer mockStorageMutex.Unlock()
+				mockVaultMutex.Lock()
+				defer mockVaultMutex.Unlock()
 
-				mockStorage[s] = s2
+				mockVault[s] = s2
 				return nil
 			},
 		},
@@ -64,24 +64,24 @@ func TestLoop(t *testing.T) {
 		}
 	}()
 
-	expectedMockStorage := map[string]string{
+	expectedMockVault := map[string]string{
 		"testStatus":   "true",
 		"myExampleKey": "bananas",
 	}
 
-	// wait for mockStorage to match expected output
+	// wait for mockVault to match expected output
 	timeout := time.NewTimer(time.Second)
 	ticker := time.NewTicker(time.Millisecond * 50)
 loop:
 	for {
 		select {
 		case <-timeout.C:
-			if got := mockStorage; !cmp.Equal(mockStorage, expectedMockStorage) {
-				t.Fatalf("timeout waiting for storage to match:\n%s", cmp.Diff(got, expectedMockStorage))
+			if got := mockVault; !cmp.Equal(mockVault, expectedMockVault) {
+				t.Fatalf("timeout waiting for vault to match:\n%s", cmp.Diff(got, expectedMockVault))
 			}
 			break loop
 		case <-ticker.C:
-			if reflect.DeepEqual(mockStorage, expectedMockStorage) {
+			if reflect.DeepEqual(mockVault, expectedMockVault) {
 				break loop
 			}
 		}

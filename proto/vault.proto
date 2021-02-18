@@ -1,0 +1,49 @@
+syntax = "proto3";
+package proto;
+option go_package = ".;proto";
+
+import "google/protobuf/empty.proto";
+import "session.proto";
+
+service Vault {
+    // Delete the value of a specific key in the vault
+    rpc VaultDelete(VaultDeleteRequest) returns (google.protobuf.Empty);
+
+    // Check in the vault to determine if a key has a value
+    rpc VaultExists(VaultExistsRequest) returns (VaultExistsResponse);
+        
+    // Read the value of a specific vault key
+    rpc VaultRead(VaultReadRequest) returns (VaultReadResponse);
+        
+    // Write the value of a key to the vault
+    rpc VaultWrite(VaultWriteRequest) returns (google.protobuf.Empty);
+}
+
+message VaultExistsRequest {
+    Session session = 1;
+    string key = 2;
+}
+
+message VaultExistsResponse {
+    bool exists = 1;
+}
+
+message VaultReadRequest {
+    Session session = 1;
+    string key = 2;
+}
+
+message VaultReadResponse {
+    string value = 1;
+}
+
+message VaultDeleteRequest {
+    Session session = 1;
+    string key = 2;
+}
+
+message VaultWriteRequest {
+    Session session = 1;
+    string key = 2;
+    string value = 3;
+}

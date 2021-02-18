@@ -93,22 +93,3 @@ Get-Content $env:AppData\Olive Helps\Logs\Olive Helps-2020.08.12-1dcc37a.log -Ta
 ```
 
 Note: File names may differ from the examples above.
-
-### Configuration
-
-#### `storage.json`
-
-Each storage key you access must be specified in the `storage.json` file.
-
-```json
-{
-  "storage-key": {
-    "name": "Storage Key Name",
-    "description": "What you're containing in this key"
-  },
-  "storage-key2": {
-    "name": "Storage Key 2",
-    "description": "What you're containing in this key"
-  }
-}
-```

@@ -6,15 +6,14 @@ type SidekickServer struct {
 	Impl Sidekick
 
 	Metadata             Metadata
-	StorageDocumentation *StorageDocumentation
 }
 
-// Storage is used by controller plugins to send whispers to sidekick
-func (m *SidekickServer) Storage() StorageService {
-	return m.Impl.Storage()
+// The Vault is used to store and retrieve sensitive data
+func (m *SidekickServer) Vault() VaultService {
+	return m.Impl.Vault()
 }
 
-// Whisper is used by controller plugins to send whispers to sidekick
+// Whisper is used to send whispers to Sidekick
 func (m *SidekickServer) Whisper() WhisperService {
 	return m.Impl.Whisper()
 }
