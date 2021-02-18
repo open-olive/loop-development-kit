@@ -4,7 +4,7 @@ using OliveHelpsLDK.Filesystem;
 using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
-using OliveHelpsLDK.Storage;
+using OliveHelpsLDK.Vault;
 using OliveHelpsLDK.UI;
 using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Window;
@@ -63,9 +63,9 @@ namespace OliveHelpsLDK
         IWindowService Window { get; }
 
         /// <summary>
-        /// Provides access to the Storage Sensor.
+        /// Provides access to the Vault Sensor.
         /// </summary>
-        IStorageService Storage { get; }
+        IVaultService Vault { get; }
 
         /// <summary>
         /// Provides access to the UI Sensor.

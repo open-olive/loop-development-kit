@@ -1,12 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OliveHelpsLDK.Storage
+namespace OliveHelpsLDK.Vault
 {
     /// <summary>
-    /// Provides access to the system secure storage (Keychain in OSX, Windows Credential Manager in Windows).
+    /// The Vault provides access to the system's secure storage.
+    /// This is the Keychain in OSX, and the Windows Credential Manager in Windows.
     /// </summary>
-    public interface IStorageService
+    public interface IVaultService
     {
         /// <summary>
         /// Gets whether a key has been set.
@@ -14,10 +15,10 @@ namespace OliveHelpsLDK.Storage
         /// <param name="key">The key to check.</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<bool> HasKey(string key, CancellationToken cancellationToken = default);
+        Task<bool> ContainsKey(string key, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Reads a value from the storage. 
+        /// Reads a value from the vault.
         /// </summary>
         /// <param name="key">The key to read.</param>
         /// <param name="cancellationToken"></param>
@@ -25,7 +26,7 @@ namespace OliveHelpsLDK.Storage
         Task<string> Read(string key, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Deletes a key from the secure storage.
+        /// Deletes a key from the vault.
         /// </summary>
         /// <param name="key">The key to delete.</param>
         /// <param name="cancellationToken"></param>
@@ -33,10 +34,10 @@ namespace OliveHelpsLDK.Storage
         Task Delete(string key, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Writes a value to the secure storage, overwriting any existing values.
+        /// Writes a value to the vault, overwriting any existing values.
         /// </summary>
         /// <param name="key">The key to store the value in.</param>
-        /// <param name="value">The value to write to storage.</param>
+        /// <param name="value">The value to write to the vault.</param>
         /// <param name="cancellationToken"></param>
         /// <returns>A task resolving if the value has been written successfully, failing if the write fails.</returns>
         Task Write(string key, string value, CancellationToken cancellationToken = default);
