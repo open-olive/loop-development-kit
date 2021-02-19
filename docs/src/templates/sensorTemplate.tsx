@@ -1,5 +1,7 @@
 import React from "react"
 import { graphql } from "gatsby"
+import styles from "./sensorTemplate.module.scss"
+import {Sensor, sensors} from "../components/sensors/sensor"
 
 interface TemplateProps {
   data: {
@@ -13,19 +15,37 @@ interface TemplateProps {
   }
 }
 
+function renderSensors(): React.ReactNode {
+  return sensors.map(sensor => {
+    const capabilities = sensor.capabilities.map(capability => {
+      return <li className={styles.sectionSubItem}>{capability.name}</li>
+    })
+    return (
+      <li className={styles.sectionItem}>
+        <h2 className={styles.sectionItemHeader}>{sensor.name}</h2>
+        <ul className={styles.sectionSubItems}>{capabilities}</ul>
+      </li>
+    )
+  })
+}
+
 export default function Template(props: TemplateProps) {
   const { markdownRemark } = props.data // data.markdownRemark holds your post data
   const { frontmatter, html } = markdownRemark
   return (
-    <div className="blog-post-container">
-      <div className="blog-post">
-        <h1>{frontmatter.title}</h1>
-        <div
-          className="blog-post-content"
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
+    <>
+      <div className={styles.layout}>
+        <div className={styles.menu}>
+          <section className={styles.menuSection}>
+            <h1 className={styles.sectionTitle}>Sensors</h1>
+            <ul className={styles.sectionItems}>{renderSensors()}</ul>
+          </section>
+        </div>
+        <div className={styles.content}>
+          <Sensor {...sensors[0]}/>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 export const pageQuery = graphql`
