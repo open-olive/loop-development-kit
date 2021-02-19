@@ -67,6 +67,7 @@ export default class HostClientFacade implements HostServices {
       this.cursor.connect(connInfo, session, this.logger),
       this.fileSystem.connect(connInfo, session, this.logger),
       this.network.connect(connInfo, session, this.logger),
+      this.ui.connect(connInfo, session, this.logger),
     ]);
   }
 }

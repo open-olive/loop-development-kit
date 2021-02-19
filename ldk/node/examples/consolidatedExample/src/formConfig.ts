@@ -52,7 +52,7 @@ const formConfig: WhisperFormConfig = {
     visitReason: {
       type: 'text',
       value: '',
-      label: 'Email',
+      label: 'Visit Reason',
       tooltip: '',
       order: 7,
     },
