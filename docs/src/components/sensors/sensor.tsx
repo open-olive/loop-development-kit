@@ -62,38 +62,36 @@ export const sensors: Sensor[] = [
 
 const Links: React.FunctionComponent<LDKLinkActive> = props => {
   return (
-    <>
+    <ul className={styles.ldkLinks}>
       {["go", "node"].map(language => {
         if (props[language as keyof LDKLinks] == null) {
           return
         }
         return (
-          <li>
+          <li className={styles.ldkLink}>
             <a href={props[language as keyof LDKLinks]} target="_blank">
               {language}
             </a>
           </li>
         )
       })}
-    </>
+    </ul>
   )
 }
 
 export const Sensor: React.FunctionComponent<Sensor> = props => {
   return (
-    <article>
-      <h1>{props.name}</h1>
-      <ul>
-        <Links {...props.links} />
-      </ul>
-      <p>{props.description}</p>
+    <article className={styles.sensor}>
+      <h1 className={styles.sensorName}>{props.name}</h1>
+      <Links {...props.links} />
+      <p className={styles.sensorDescription}>{props.description}</p>
       <div className={styles.capabilities}>
         {props.capabilities.map(capability => {
           return (
             <section className={styles.capability}>
-              <h2>{capability.name}</h2>
+              <h2 className={styles.capabilityName}>{capability.name}</h2>
 
-              <p>{capability.description}</p>
+              <p className={styles.capabilityDescription}>{capability.description}</p>
             </section>
           )
         })}

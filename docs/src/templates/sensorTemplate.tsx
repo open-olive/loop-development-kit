@@ -54,7 +54,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         slug
-        title
+        sensor
       }
     }
   }

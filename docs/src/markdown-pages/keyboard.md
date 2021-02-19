@@ -1,6 +1,6 @@
 ---
-slug: "/app/sensors"
-title: "Sensors"
+slug: "/app/sensors/keyboard"
+sensor: "keyboard"
 ---
 ```toc
 # Contents

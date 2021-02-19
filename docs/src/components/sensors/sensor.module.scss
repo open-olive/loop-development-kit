@@ -1,7 +1,31 @@
-.capabilities {
+.sensor {
+}
 
+.sensorName {
+}
+
+.sensorDescription {
+}
+
+.capabilities {
 }
 
 .capability {
+}
 
+.capabilityName {
+}
+
+.capabilityDescription {
+}
+
+.ldkLinks {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.ldkLink {
+  padding: 0 10px;
+  margin-left: -10px;
 }
