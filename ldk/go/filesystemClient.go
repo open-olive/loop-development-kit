@@ -293,14 +293,10 @@ func (f *GRPCFile) Close() error {
 		},
 	})
 	if err != nil {
+		println("[ERROR] GRPCFile.Close - Received error sending Close", err.Error())
 		return err
 	}
-	select {
-	case <-f.ctx.Done():
-		return nil
-	case <-f.stream.Context().Done():
-		return nil
-	}
+	return nil
 }
 
 // Chown changes owner of file
