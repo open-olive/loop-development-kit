@@ -17,7 +17,7 @@ interface IClipboardService extends grpc.ServiceDefinition<grpc.UntypedServiceIm
 }
 
 interface IClipboardService_IClipboardRead extends grpc.MethodDefinition<clipboard_pb.ClipboardReadRequest, clipboard_pb.ClipboardReadResponse> {
-    path: string; // "/proto.Clipboard/ClipboardRead"
+    path: "/proto.Clipboard/ClipboardRead";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<clipboard_pb.ClipboardReadRequest>;
@@ -26,7 +26,7 @@ interface IClipboardService_IClipboardRead extends grpc.MethodDefinition<clipboa
     responseDeserialize: grpc.deserialize<clipboard_pb.ClipboardReadResponse>;
 }
 interface IClipboardService_IClipboardReadStream extends grpc.MethodDefinition<clipboard_pb.ClipboardReadStreamRequest, clipboard_pb.ClipboardReadStreamResponse> {
-    path: string; // "/proto.Clipboard/ClipboardReadStream"
+    path: "/proto.Clipboard/ClipboardReadStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<clipboard_pb.ClipboardReadStreamRequest>;
@@ -35,7 +35,7 @@ interface IClipboardService_IClipboardReadStream extends grpc.MethodDefinition<c
     responseDeserialize: grpc.deserialize<clipboard_pb.ClipboardReadStreamResponse>;
 }
 interface IClipboardService_IClipboardWrite extends grpc.MethodDefinition<clipboard_pb.ClipboardWriteRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Clipboard/ClipboardWrite"
+    path: "/proto.Clipboard/ClipboardWrite";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<clipboard_pb.ClipboardWriteRequest>;

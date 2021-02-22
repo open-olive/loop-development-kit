@@ -15,7 +15,7 @@ interface IHoverService extends grpc.ServiceDefinition<grpc.UntypedServiceImplem
 }
 
 interface IHoverService_IHoverRead extends grpc.MethodDefinition<hover_pb.HoverReadRequest, hover_pb.HoverReadResponse> {
-    path: string; // "/proto.Hover/HoverRead"
+    path: "/proto.Hover/HoverRead";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<hover_pb.HoverReadRequest>;
@@ -24,7 +24,7 @@ interface IHoverService_IHoverRead extends grpc.MethodDefinition<hover_pb.HoverR
     responseDeserialize: grpc.deserialize<hover_pb.HoverReadResponse>;
 }
 interface IHoverService_IHoverReadStream extends grpc.MethodDefinition<hover_pb.HoverReadStreamRequest, hover_pb.HoverReadStreamResponse> {
-    path: string; // "/proto.Hover/HoverReadStream"
+    path: "/proto.Hover/HoverReadStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<hover_pb.HoverReadStreamRequest>;

@@ -8,6 +8,8 @@
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
 var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
@@ -20,7 +22,7 @@ goog.object.extend(proto, session_pb);
 goog.exportSymbol('proto.proto.WhisperConfirmRequest', null, global);
 goog.exportSymbol('proto.proto.WhisperConfirmResponse', null, global);
 goog.exportSymbol('proto.proto.WhisperDisambiguationElement', null, global);
-goog.exportSymbol('proto.proto.WhisperDisambiguationElement.ElementoneofCase', null, global);
+goog.exportSymbol('proto.proto.WhisperDisambiguationElement.ElementOneofCase', null, global);
 goog.exportSymbol('proto.proto.WhisperDisambiguationElement.Option', null, global);
 goog.exportSymbol('proto.proto.WhisperDisambiguationElement.Text', null, global);
 goog.exportSymbol('proto.proto.WhisperDisambiguationRequest', null, global);
@@ -29,7 +31,7 @@ goog.exportSymbol('proto.proto.WhisperDisambiguationStreamResponse', null, globa
 goog.exportSymbol('proto.proto.WhisperFormInput', null, global);
 goog.exportSymbol('proto.proto.WhisperFormInput.Checkbox', null, global);
 goog.exportSymbol('proto.proto.WhisperFormInput.Email', null, global);
-goog.exportSymbol('proto.proto.WhisperFormInput.InputoneofCase', null, global);
+goog.exportSymbol('proto.proto.WhisperFormInput.InputOneofCase', null, global);
 goog.exportSymbol('proto.proto.WhisperFormInput.Markdown', null, global);
 goog.exportSymbol('proto.proto.WhisperFormInput.Number', null, global);
 goog.exportSymbol('proto.proto.WhisperFormInput.Password', null, global);
@@ -43,7 +45,7 @@ goog.exportSymbol('proto.proto.WhisperFormOutput.Checkbox', null, global);
 goog.exportSymbol('proto.proto.WhisperFormOutput.Email', null, global);
 goog.exportSymbol('proto.proto.WhisperFormOutput.Markdown', null, global);
 goog.exportSymbol('proto.proto.WhisperFormOutput.Number', null, global);
-goog.exportSymbol('proto.proto.WhisperFormOutput.OutputoneofCase', null, global);
+goog.exportSymbol('proto.proto.WhisperFormOutput.OutputOneofCase', null, global);
 goog.exportSymbol('proto.proto.WhisperFormOutput.Password', null, global);
 goog.exportSymbol('proto.proto.WhisperFormOutput.Radio', null, global);
 goog.exportSymbol('proto.proto.WhisperFormOutput.Select', null, global);
@@ -53,12 +55,12 @@ goog.exportSymbol('proto.proto.WhisperFormOutput.Time', null, global);
 goog.exportSymbol('proto.proto.WhisperFormRequest', null, global);
 goog.exportSymbol('proto.proto.WhisperFormResult', null, global);
 goog.exportSymbol('proto.proto.WhisperFormStreamResponse', null, global);
-goog.exportSymbol('proto.proto.WhisperFormStreamResponse.WhisperformresponseoneofCase', null, global);
+goog.exportSymbol('proto.proto.WhisperFormStreamResponse.WhisperFormResponseOneofCase', null, global);
 goog.exportSymbol('proto.proto.WhisperFormUpdate', null, global);
 goog.exportSymbol('proto.proto.WhisperListElement', null, global);
 goog.exportSymbol('proto.proto.WhisperListElement.Align', null, global);
 goog.exportSymbol('proto.proto.WhisperListElement.Divider', null, global);
-goog.exportSymbol('proto.proto.WhisperListElement.ElementoneofCase', null, global);
+goog.exportSymbol('proto.proto.WhisperListElement.ElementOneofCase', null, global);
 goog.exportSymbol('proto.proto.WhisperListElement.Link', null, global);
 goog.exportSymbol('proto.proto.WhisperListElement.Message', null, global);
 goog.exportSymbol('proto.proto.WhisperListElement.Pair', null, global);
@@ -1843,8 +1845,8 @@ proto.proto.WhisperFormInput.oneofGroups_ = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
 /**
  * @enum {number}
  */
-proto.proto.WhisperFormInput.InputoneofCase = {
-    INPUTONEOF_NOT_SET: 0,
+proto.proto.WhisperFormInput.InputOneofCase = {
+    INPUT_ONEOF_NOT_SET: 0,
     CHECKBOX: 1,
     EMAIL: 2,
     MARKDOWN: 3,
@@ -1857,10 +1859,10 @@ proto.proto.WhisperFormInput.InputoneofCase = {
     TIME: 10
 };
 /**
- * @return {proto.proto.WhisperFormInput.InputoneofCase}
+ * @return {proto.proto.WhisperFormInput.InputOneofCase}
  */
-proto.proto.WhisperFormInput.prototype.getInputoneofCase = function () {
-    return /** @type {proto.proto.WhisperFormInput.InputoneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperFormInput.oneofGroups_[0]));
+proto.proto.WhisperFormInput.prototype.getInputOneofCase = function () {
+    return /** @type {proto.proto.WhisperFormInput.InputOneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperFormInput.oneofGroups_[0]));
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -4201,8 +4203,8 @@ proto.proto.WhisperFormOutput.oneofGroups_ = [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
 /**
  * @enum {number}
  */
-proto.proto.WhisperFormOutput.OutputoneofCase = {
-    OUTPUTONEOF_NOT_SET: 0,
+proto.proto.WhisperFormOutput.OutputOneofCase = {
+    OUTPUT_ONEOF_NOT_SET: 0,
     CHECKBOX: 1,
     EMAIL: 2,
     MARKDOWN: 3,
@@ -4215,10 +4217,10 @@ proto.proto.WhisperFormOutput.OutputoneofCase = {
     TIME: 10
 };
 /**
- * @return {proto.proto.WhisperFormOutput.OutputoneofCase}
+ * @return {proto.proto.WhisperFormOutput.OutputOneofCase}
  */
-proto.proto.WhisperFormOutput.prototype.getOutputoneofCase = function () {
-    return /** @type {proto.proto.WhisperFormOutput.OutputoneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperFormOutput.oneofGroups_[0]));
+proto.proto.WhisperFormOutput.prototype.getOutputOneofCase = function () {
+    return /** @type {proto.proto.WhisperFormOutput.OutputOneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperFormOutput.oneofGroups_[0]));
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -6061,16 +6063,16 @@ proto.proto.WhisperFormStreamResponse.oneofGroups_ = [[1, 2]];
 /**
  * @enum {number}
  */
-proto.proto.WhisperFormStreamResponse.WhisperformresponseoneofCase = {
-    WHISPERFORMRESPONSEONEOF_NOT_SET: 0,
+proto.proto.WhisperFormStreamResponse.WhisperFormResponseOneofCase = {
+    WHISPER_FORM_RESPONSE_ONEOF_NOT_SET: 0,
     RESULT: 1,
     UPDATE: 2
 };
 /**
- * @return {proto.proto.WhisperFormStreamResponse.WhisperformresponseoneofCase}
+ * @return {proto.proto.WhisperFormStreamResponse.WhisperFormResponseOneofCase}
  */
-proto.proto.WhisperFormStreamResponse.prototype.getWhisperformresponseoneofCase = function () {
-    return /** @type {proto.proto.WhisperFormStreamResponse.WhisperformresponseoneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperFormStreamResponse.oneofGroups_[0]));
+proto.proto.WhisperFormStreamResponse.prototype.getWhisperFormResponseOneofCase = function () {
+    return /** @type {proto.proto.WhisperFormStreamResponse.WhisperFormResponseOneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperFormStreamResponse.oneofGroups_[0]));
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -6585,16 +6587,16 @@ proto.proto.WhisperDisambiguationElement.oneofGroups_ = [[2, 3]];
 /**
  * @enum {number}
  */
-proto.proto.WhisperDisambiguationElement.ElementoneofCase = {
-    ELEMENTONEOF_NOT_SET: 0,
+proto.proto.WhisperDisambiguationElement.ElementOneofCase = {
+    ELEMENT_ONEOF_NOT_SET: 0,
     OPTION: 2,
     TEXT: 3
 };
 /**
- * @return {proto.proto.WhisperDisambiguationElement.ElementoneofCase}
+ * @return {proto.proto.WhisperDisambiguationElement.ElementOneofCase}
  */
-proto.proto.WhisperDisambiguationElement.prototype.getElementoneofCase = function () {
-    return /** @type {proto.proto.WhisperDisambiguationElement.ElementoneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperDisambiguationElement.oneofGroups_[0]));
+proto.proto.WhisperDisambiguationElement.prototype.getElementOneofCase = function () {
+    return /** @type {proto.proto.WhisperDisambiguationElement.ElementOneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperDisambiguationElement.oneofGroups_[0]));
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**
@@ -7300,18 +7302,18 @@ proto.proto.WhisperListElement.oneofGroups_ = [[4, 5, 6, 7]];
 /**
  * @enum {number}
  */
-proto.proto.WhisperListElement.ElementoneofCase = {
-    ELEMENTONEOF_NOT_SET: 0,
+proto.proto.WhisperListElement.ElementOneofCase = {
+    ELEMENT_ONEOF_NOT_SET: 0,
     PAIR: 4,
     MESSAGE: 5,
     DIVIDER: 6,
     LINK: 7
 };
 /**
- * @return {proto.proto.WhisperListElement.ElementoneofCase}
+ * @return {proto.proto.WhisperListElement.ElementOneofCase}
  */
-proto.proto.WhisperListElement.prototype.getElementoneofCase = function () {
-    return /** @type {proto.proto.WhisperListElement.ElementoneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperListElement.oneofGroups_[0]));
+proto.proto.WhisperListElement.prototype.getElementOneofCase = function () {
+    return /** @type {proto.proto.WhisperListElement.ElementOneofCase} */ (jspb.Message.computeOneofCase(this, proto.proto.WhisperListElement.oneofGroups_[0]));
 };
 if (jspb.Message.GENERATE_TO_OBJECT) {
     /**

@@ -24,6 +24,7 @@ const timestamp_pb_1 = require("google-protobuf/google/protobuf/timestamp_pb");
 const whisperService_1 = require("./whisperService");
 const messages = __importStar(require("../grpc/whisper_pb"));
 /**
+ * @internal
  * @param msg - The message.
  * @param input - The whisper form input.
  */
@@ -36,6 +37,10 @@ input) {
         msg.setOrder(input.order);
     }
 }
+/**
+ * @internal
+ * @param input - Whisper input to build
+ */
 exports.generateWhisperInput = (input) => {
     const WFI = messages.WhisperFormInput;
     const msg = new WFI();
@@ -112,6 +117,7 @@ exports.generateWhisperInput = (input) => {
     return msg;
 };
 /**
+ * @internal
  * @param msg - The message.
  * @param input - The whisper list element.
  */
@@ -125,6 +131,10 @@ input) {
         msg.setOrder(input.order);
     }
 }
+/**
+ * @param style
+ * @internal
+ */
 exports.generateWhisperListStyle = (style) => {
     switch (style) {
         case whisperService_1.WhisperListStyle.NONE: {
@@ -144,6 +154,10 @@ exports.generateWhisperListStyle = (style) => {
         }
     }
 };
+/**
+ * @param align
+ * @internal
+ */
 exports.generateWhisperListAlign = (align) => {
     switch (align) {
         case whisperService_1.WhisperListAlign.LEFT: {
@@ -160,6 +174,10 @@ exports.generateWhisperListAlign = (align) => {
         }
     }
 };
+/**
+ * @internal
+ * @param element - element to build
+ */
 exports.generateWhisperListElement = (element) => {
     const WLE = messages.WhisperListElement;
     const msg = new WLE();
@@ -244,6 +262,10 @@ exports.generateWhisperListElement = (element) => {
     setListMessages(msg, element);
     return msg;
 };
+/**
+ * @param element
+ * @internal
+ */
 exports.generateWhisperDisambiguationElement = (element) => {
     const WDE = messages.WhisperDisambiguationElement;
     const msg = new WDE();
@@ -273,11 +295,19 @@ exports.generateWhisperDisambiguationElement = (element) => {
     }
     return msg;
 };
+/**
+ * @internal
+ * @param whisper - whisper to build
+ */
 exports.generateWhisperMeta = (whisper) => {
     const whisperMsg = new messages.WhisperMeta();
     whisperMsg.setLabel(whisper.label);
     return whisperMsg;
 };
+/**
+ * @internal
+ * @param config - whisper to build
+ */
 exports.generateWhisperDisambiguation = (config) => {
     const meta = exports.generateWhisperMeta(config);
     const request = new messages.WhisperDisambiguationRequest().setMeta(meta);
@@ -289,6 +319,10 @@ exports.generateWhisperDisambiguation = (config) => {
     });
     return request;
 };
+/**
+ * @internal
+ * @param config - whisper to build
+ */
 exports.generateWhisperForm = (config) => {
     const msg = new messages.WhisperFormRequest();
     msg.setMeta(exports.generateWhisperMeta(config));
@@ -303,12 +337,20 @@ exports.generateWhisperForm = (config) => {
     });
     return msg;
 };
+/**
+ * @internal
+ * @param whisper - whisper to build
+ */
 exports.buildWhisperMarkdownRequest = (whisper) => {
     const meta = exports.generateWhisperMeta(whisper);
     const result = new messages.WhisperMarkdownRequest().setMeta(meta);
     result.setMarkdown(whisper.markdown);
     return result;
 };
+/**
+ * @internal
+ * @param config - whisper to build
+ */
 exports.buildWhisperListRequest = (config) => {
     const meta = exports.generateWhisperMeta(config);
     const request = new messages.WhisperListRequest().setMeta(meta);
@@ -320,6 +362,10 @@ exports.buildWhisperListRequest = (config) => {
     });
     return request;
 };
+/**
+ * @internal
+ * @param whisper - whisper to build
+ */
 exports.buildWhisperConfirmMessage = (whisper) => {
     const msg = new messages.WhisperConfirmRequest();
     msg.setRejectlabel(whisper.rejectButton);

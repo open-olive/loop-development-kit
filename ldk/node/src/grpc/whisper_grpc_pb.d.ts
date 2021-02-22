@@ -20,7 +20,7 @@ interface IWhisperService extends grpc.ServiceDefinition<grpc.UntypedServiceImpl
 }
 
 interface IWhisperService_IWhisperMarkdown extends grpc.MethodDefinition<whisper_pb.WhisperMarkdownRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Whisper/WhisperMarkdown"
+    path: "/proto.Whisper/WhisperMarkdown";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<whisper_pb.WhisperMarkdownRequest>;
@@ -29,7 +29,7 @@ interface IWhisperService_IWhisperMarkdown extends grpc.MethodDefinition<whisper
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
 interface IWhisperService_IWhisperConfirm extends grpc.MethodDefinition<whisper_pb.WhisperConfirmRequest, whisper_pb.WhisperConfirmResponse> {
-    path: string; // "/proto.Whisper/WhisperConfirm"
+    path: "/proto.Whisper/WhisperConfirm";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<whisper_pb.WhisperConfirmRequest>;
@@ -38,7 +38,7 @@ interface IWhisperService_IWhisperConfirm extends grpc.MethodDefinition<whisper_
     responseDeserialize: grpc.deserialize<whisper_pb.WhisperConfirmResponse>;
 }
 interface IWhisperService_IWhisperDisambiguation extends grpc.MethodDefinition<whisper_pb.WhisperDisambiguationRequest, whisper_pb.WhisperDisambiguationStreamResponse> {
-    path: string; // "/proto.Whisper/WhisperDisambiguation"
+    path: "/proto.Whisper/WhisperDisambiguation";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<whisper_pb.WhisperDisambiguationRequest>;
@@ -47,7 +47,7 @@ interface IWhisperService_IWhisperDisambiguation extends grpc.MethodDefinition<w
     responseDeserialize: grpc.deserialize<whisper_pb.WhisperDisambiguationStreamResponse>;
 }
 interface IWhisperService_IWhisperForm extends grpc.MethodDefinition<whisper_pb.WhisperFormRequest, whisper_pb.WhisperFormStreamResponse> {
-    path: string; // "/proto.Whisper/WhisperForm"
+    path: "/proto.Whisper/WhisperForm";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<whisper_pb.WhisperFormRequest>;
@@ -56,7 +56,7 @@ interface IWhisperService_IWhisperForm extends grpc.MethodDefinition<whisper_pb.
     responseDeserialize: grpc.deserialize<whisper_pb.WhisperFormStreamResponse>;
 }
 interface IWhisperService_IWhisperList extends grpc.MethodDefinition<whisper_pb.WhisperListRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Whisper/WhisperList"
+    path: "/proto.Whisper/WhisperList";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<whisper_pb.WhisperListRequest>;
