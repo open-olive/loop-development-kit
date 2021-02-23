@@ -332,6 +332,7 @@ export const generateWhisperDisambiguation = (
 ): messages.WhisperDisambiguationRequest => {
   const meta = generateWhisperMeta(config);
   const request = new messages.WhisperDisambiguationRequest().setMeta(meta);
+  request.setMarkdown(config.markdown);
   const elements = request.getElementsMap();
   Object.keys(config.elements).forEach((key) => {
     const value = config.elements[key];
@@ -382,6 +383,7 @@ export const buildWhisperListRequest = (
 ): messages.WhisperListRequest => {
   const meta = generateWhisperMeta(config);
   const request = new messages.WhisperListRequest().setMeta(meta);
+  request.setMarkdown(config.markdown);
   const elements = request.getElementsMap();
   Object.keys(config.elements).forEach((key) => {
     const value = config.elements[key];

@@ -6,7 +6,7 @@ import (
 
 type WhisperContentList struct {
 	Label string `json:"label"`
-
+	Markdown string `json:"markdown"`
 	Elements map[string]WhisperContentListElement `json:"elements"`
 }
 
@@ -29,6 +29,7 @@ func (c *WhisperContentList) ToProto() (*proto.WhisperListRequest, error) {
 		Meta: &proto.WhisperMeta{
 			Label: c.Label,
 		},
+		Markdown: c.Markdown,
 		Elements: elements,
 	}, nil
 }
@@ -45,6 +46,7 @@ func WhisperContentListFromProto(req *proto.WhisperListRequest) (*WhisperContent
 
 	return &WhisperContentList{
 		Label:    req.Meta.Label,
+		Markdown: req.Markdown,
 		Elements: elements,
 	}, nil
 }
