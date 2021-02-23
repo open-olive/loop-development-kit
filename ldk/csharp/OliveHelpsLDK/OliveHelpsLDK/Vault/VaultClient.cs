@@ -59,6 +59,7 @@ namespace OliveHelpsLDK.Vault
             var req = new VaultWriteRequest
             {
                 Key = key,
+                Value = value,
                 Session = CreateSession()
             };
             return Client.VaultWriteAsync(req, CreateOptions(cancellationToken)).ResponseAsync;
