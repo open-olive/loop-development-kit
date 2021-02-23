@@ -1,7 +1,7 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import styles from "./sensorTemplate.module.scss"
-import {Sensor, sensors} from "../components/sensors/sensor"
+import { Sensor, sensors } from "../components/sensors/sensor"
 
 interface TemplateProps {
   data: {
@@ -9,40 +9,43 @@ interface TemplateProps {
       html: string
       frontmatter: {
         slug: string
-        title: string
+        sensor: string
       }
     }
   }
 }
 
-function renderSensors(): React.ReactNode {
-  return sensors.map(sensor => {
+function renderSensors(activeSensorId: string): React.ReactNode {
+  return Object.values(sensors).map(sensor => {
     const capabilities = sensor.capabilities.map(capability => {
-      return <li className={styles.sectionSubItem}>{capability.name}</li>
+      return <li className={styles.sectionSubItem}><Link to={capability.pagePath()}> {capability.name}</Link></li>
     })
+    const to = sensor.pagePath();
     return (
       <li className={styles.sectionItem}>
-        <h2 className={styles.sectionItemHeader}>{sensor.name}</h2>
-        <ul className={styles.sectionSubItems}>{capabilities}</ul>
+        <Link to={to}><h2 className={styles.sectionItemHeader}>{sensor.name}</h2></Link>
+        {activeSensorId === sensor.id && (
+          <ul className={styles.sectionSubItems}>{capabilities}</ul>
+        )}
       </li>
     )
   })
 }
 
 export default function Template(props: TemplateProps) {
-  const { markdownRemark } = props.data // data.markdownRemark holds your post data
-  const { frontmatter, html } = markdownRemark
+  const { markdownRemark } = props.data
+  const sensorId = props.data.markdownRemark.frontmatter.sensor
   return (
     <>
       <div className={styles.layout}>
         <div className={styles.menu}>
           <section className={styles.menuSection}>
             <h1 className={styles.sectionTitle}>Sensors</h1>
-            <ul className={styles.sectionItems}>{renderSensors()}</ul>
+            <ul className={styles.sectionItems}>{renderSensors(sensorId)}</ul>
           </section>
         </div>
         <div className={styles.content}>
-          <Sensor {...sensors[0]}/>
+          <Sensor {...sensors[sensorId]} />
         </div>
       </div>
     </>
