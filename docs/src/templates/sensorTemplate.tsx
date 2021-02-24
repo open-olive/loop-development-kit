@@ -2,6 +2,11 @@ import React from "react"
 import { graphql, Link } from "gatsby"
 import styles from "./sensorTemplate.module.scss"
 import { Sensor, sensors } from "../components/sensors/sensor"
+import {
+  buildCapabilityPath,
+  buildSensorId,
+  buildSensorPath,
+} from "../components/sensors/sensorPaths"
 
 interface TemplateProps {
   data: {
@@ -18,13 +23,22 @@ interface TemplateProps {
 function renderSensors(activeSensorId: string): React.ReactNode {
   return Object.values(sensors).map(sensor => {
     const capabilities = sensor.capabilities.map(capability => {
-      return <li className={styles.sectionSubItem}><Link to={capability.pagePath()}> {capability.name}</Link></li>
+      return (
+        <li className={styles.sectionSubItem}>
+          <Link to={buildCapabilityPath(capability, sensor)}>
+            {" "}
+            {capability.name}
+          </Link>
+        </li>
+      )
     })
-    const to = sensor.pagePath();
+
     return (
       <li className={styles.sectionItem}>
-        <Link to={to}><h2 className={styles.sectionItemHeader}>{sensor.name}</h2></Link>
-        {activeSensorId === sensor.id && (
+        <Link to={buildSensorPath(sensor)}>
+          <h2 className={styles.sectionItemHeader}>{sensor.name}</h2>
+        </Link>
+        {activeSensorId === buildSensorId(sensor) && (
           <ul className={styles.sectionSubItems}>{capabilities}</ul>
         )}
       </li>

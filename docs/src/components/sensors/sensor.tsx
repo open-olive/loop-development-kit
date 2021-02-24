@@ -1,6 +1,7 @@
 import React from "react"
 import { slugify } from "underscore.string"
 import styles from "./sensor.module.scss"
+import { buildCapabilityId, buildCapabilityPath } from "./sensorPaths"
 
 interface LDKLinks {
   node: string
@@ -8,88 +9,22 @@ interface LDKLinks {
   dotnet: string
 }
 
-interface Dictionary<T> {
-  [key: string]: T
-}
-
 type LDKLinkActive = Partial<LDKLinks>
 
-interface ISensorData {
+export interface ISensorData {
   name: string
   description: React.ReactNode
   capabilities: ISensorCapabilityData[]
   links?: LDKLinkActive
 }
 
-interface ISensor {
-  name: string
-  description: React.ReactNode
-  links?: LDKLinkActive
-  capabilities: ISensorCapability[]
-  id: string
-  pagePath(): string
-}
-
-interface ISensorCapabilityData {
+export interface ISensorCapabilityData {
   name: string
   description: React.ReactNode
   links?: LDKLinkActive
 }
 
-interface ISensorCapability extends ISensorCapabilityData {
-  id: string
-  pagePath(): string
-}
-
-class SensorCapability implements ISensorCapability {
-  description: React.ReactNode
-  links: LDKLinkActive | undefined
-  name: string
-  private sensor: SensorData
-
-  constructor(data: ISensorCapabilityData, sensor: SensorData) {
-    this.description = data.description
-    this.links = data.links
-    this.name = data.name
-    this.sensor = sensor
-  }
-
-  get id(): string {
-    return slugify(this.name)
-  }
-
-  pagePath(): string {
-    return `${this.sensor.pagePath()}#${this.id}`
-  }
-}
-
-class SensorData implements ISensor {
-  private data: ISensorData
-  public links: LDKLinkActive | undefined
-  constructor(data: ISensorData) {
-    this.data = data
-    this.capabilities = data.capabilities.map(
-      c => new SensorCapability(c, this)
-    )
-    this.description = data.description
-    this.name = data.name
-    this.links = data.links
-  }
-
-  capabilities: ISensorCapability[]
-  description: React.ReactNode
-  name: string
-
-  get id(): string {
-    return slugify(this.name)
-  }
-
-  pagePath(): string {
-    return `/app/sensors/${this.id}`
-  }
-}
-
-const sensorData: { [sensor: string]: ISensorData } = {
+export const sensors: { [sensor: string]: ISensorData } = {
   keyboard: {
     name: "Keyboard",
     description: "Blah blah blah",
@@ -131,13 +66,6 @@ const sensorData: { [sensor: string]: ISensorData } = {
   },
 }
 
-export const sensors: Dictionary<ISensor> = Object.entries(sensorData).reduce<
-  Dictionary<ISensor>
->((previousValues, currentValue) => {
-  const [currentKey, currentData] = currentValue
-  return { ...previousValues, [currentKey]: new SensorData(currentData) }
-}, {})
-
 const Links: React.FunctionComponent<{ links?: LDKLinkActive }> = props => {
   if (props.links == undefined) {
     return null
@@ -161,19 +89,27 @@ const Links: React.FunctionComponent<{ links?: LDKLinkActive }> = props => {
   )
 }
 
-export const Capability: React.FunctionComponent<ISensorCapability> = props => {
+export const Capability: React.FunctionComponent<{
+  capability: ISensorCapabilityData
+  sensor: ISensorData
+}> = props => {
+  const id = buildCapabilityId(props.capability)
   return (
     <section className={styles.capability}>
-      <h2 className={styles.capabilityName} id={props.id}>
-        {props.name}
+      <h2 className={styles.capabilityName}>
+        <a id={id} href={buildCapabilityPath(props.capability, props.sensor)}>
+          {props.capability.name}
+        </a>
       </h2>
-      <Links links={props.links} />
-      <p className={styles.capabilityDescription}>{props.description}</p>
+      <Links links={props.capability.links} />
+      <p className={styles.capabilityDescription}>
+        {props.capability.description}
+      </p>
     </section>
   )
 }
 
-export const Sensor: React.FunctionComponent<ISensor> = props => {
+export const Sensor: React.FunctionComponent<ISensorData> = props => {
   return (
     <article className={styles.sensor}>
       <h1 className={styles.sensorName}>{props.name}</h1>
@@ -181,7 +117,11 @@ export const Sensor: React.FunctionComponent<ISensor> = props => {
       <p className={styles.sensorDescription}>{props.description}</p>
       <div className={styles.capabilities}>
         {props.capabilities?.map(capability => (
-          <Capability {...capability} key={capability.id} />
+          <Capability
+            capability={capability}
+            key={slugify(capability.name)}
+            sensor={props}
+          />
         ))}
       </div>
     </article>
