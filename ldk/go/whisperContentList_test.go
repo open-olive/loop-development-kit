@@ -21,7 +21,7 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 		{
 			name: "simple example with one element",
 			fields: fields{
-				Label: "The Label",
+				Label:    "The Label",
 				Markdown: "Some Markdown",
 				Elements: map[string]WhisperContentListElement{
 					"favoriteFood": &WhisperContentListElementPair{
@@ -40,7 +40,7 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 		{
 			name: "one of each element type",
 			fields: fields{
-				Label: "The Label",
+				Label:    "The Label",
 				Markdown: "Some Markdown",
 				Elements: map[string]WhisperContentListElement{
 					"pairElement": &WhisperContentListElementPair{

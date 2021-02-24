@@ -4,7 +4,7 @@ import "github.com/open-olive/loop-development-kit/ldk/go/proto"
 
 type WhisperContentDisambiguation struct {
 	Label    string                                         `json:"label"`
-	Markdown string											`json:"markdown"`
+	Markdown string                                         `json:"markdown"`
 	Elements map[string]WhisperContentDisambiguationElement `json:"elements"`
 }
 
@@ -44,7 +44,7 @@ func WhisperContentDisambiguationFromProto(req *proto.WhisperDisambiguationReque
 
 	return &WhisperContentDisambiguation{
 		Label:    req.Meta.Label,
-		Markdown: req.Markdown, 
+		Markdown: req.Markdown,
 		Elements: elements,
 	}, nil
 }

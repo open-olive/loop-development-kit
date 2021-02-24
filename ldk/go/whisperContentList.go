@@ -5,8 +5,8 @@ import (
 )
 
 type WhisperContentList struct {
-	Label string `json:"label"`
-	Markdown string `json:"markdown"`
+	Label    string                               `json:"label"`
+	Markdown string                               `json:"markdown"`
 	Elements map[string]WhisperContentListElement `json:"elements"`
 }
 
