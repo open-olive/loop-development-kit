@@ -124,6 +124,7 @@ namespace OliveHelpsLDK.Whispers.List
         /// The style of the divider.
         /// </summary>
         public Style Style { get; set; }
+    }
 
     /// <summary>
     /// A Link entry.

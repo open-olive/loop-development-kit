@@ -9,6 +9,7 @@ using OliveHelpsLDK.Process;
 using OliveHelpsLDK.Storage;
 using OliveHelpsLDK.UI;
 using OliveHelpsLDK.Whispers;
+using OliveHelpsLDK.Window;
 
 namespace SelfTestLoop
 {
@@ -39,5 +40,7 @@ namespace SelfTestLoop
         public IStorageService Storage => Services.Storage;
 
         public IUIService UI => Services.UI;
+
+        public IWindowService Window => Services.Window;
     }
 }
