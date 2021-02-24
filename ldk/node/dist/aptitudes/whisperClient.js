@@ -21,7 +21,7 @@ class WhisperClient extends baseClient_1.default {
      * @param whisper - An object defining the contents of the Whisper.
      * @returns Promise resolving when the server responds to the command.
      */
-    markdownWhisper(whisper) {
+    markdown(whisper) {
         return this.buildStoppableMessage((message, callback) => this.client.whisperMarkdown(message, callback), () => whisperMessageBuilder_1.buildWhisperMarkdownRequest(whisper), 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
@@ -31,14 +31,14 @@ class WhisperClient extends baseClient_1.default {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
-    confirmWhisper(whisper) {
+    confirm(whisper) {
         return this.buildStoppableMessage((message, callback) => this.client.whisperConfirm(message, callback), () => whisperMessageBuilder_1.buildWhisperConfirmMessage(whisper), (response) => response.getResponse());
     }
-    disambiguationWhisper(whisper, listener) {
+    disambiguation(whisper, listener) {
         const message = whisperMessageBuilder_1.generateWhisperDisambiguation(whisper).setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.whisperDisambiguation(message), (response) => whisperMessageParser_1.transformDisambiguationResponse(response), listener);
     }
-    formWhisper(whisper, listener) {
+    form(whisper, listener) {
         const message = whisperMessageBuilder_1.generateWhisperForm(whisper).setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.whisperForm(message), (response) => whisperMessageParser_1.transformResponse(response), listener);
     }

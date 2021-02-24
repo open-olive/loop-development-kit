@@ -44,7 +44,7 @@ describe('ClipboardClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#queryClipboard', () => {
+  describe('#text', () => {
     let sentResponse: Messages.ClipboardReadResponse;
     let queryResult: Promise<string>;
 
@@ -57,7 +57,7 @@ describe('ClipboardClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryClipboard();
+      queryResult = subject.text();
     });
 
     it('should return a transformed response', async () => {
@@ -80,13 +80,13 @@ describe('ClipboardClient', () => {
     });
   });
 
-  describe('#streamClipboard', () => {
+  describe('#listenText', () => {
     beforeEach(async () => {
       mockGRPCClient.clipboardReadStream.mockImplementation(
         createStreamingHandler(),
       );
 
-      subject.streamClipboard(identityCallback);
+      subject.listenText(identityCallback);
     });
 
     it('should have configured the request correctly', () => {

@@ -15,24 +15,24 @@ export interface Browser {
      *
      * @returns Promise resolving with the active URL as a string;
      */
-    queryActiveURL(): Promise<string>;
+    activeURL(): Promise<string>;
     /**
      * Stream changes to the active URL in the active tab.
      *
      * @param listener - Listener function called whenever the active URL changes.
      * @returns Stream object.
      */
-    streamActiveURL(listener: StreamListener<string>): StoppableStream<string>;
+    listenActiveURL(listener: StreamListener<string>): StoppableStream<string>;
     /**
      * Queries the selected text (if any).
      *
      * @returns Promise resolving with the currently selected text.
      */
-    querySelectedText(): Promise<BrowserSelectedTextResponse>;
+    selectedText(): Promise<BrowserSelectedTextResponse>;
     /**
      * Streams changes to the selected text.
      *
      * @param listener - Listener function called whenever the selected text changes.
      */
-    streamSelectedText(listener: StreamListener<BrowserSelectedTextResponse>): StoppableStream<BrowserSelectedTextResponse>;
+    listenActiveText(listener: StreamListener<BrowserSelectedTextResponse>): StoppableStream<BrowserSelectedTextResponse>;
 }

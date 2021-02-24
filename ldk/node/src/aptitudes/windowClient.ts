@@ -46,7 +46,7 @@ export class WindowClient
     return WindowGRPCClient;
   }
 
-  queryActiveWindow(): Promise<WindowInfoResponse> {
+  activeWindow(): Promise<WindowInfoResponse> {
     return this.buildQuery<
       Messages.WindowActiveWindowRequest,
       Messages.WindowActiveWindowResponse,
@@ -58,7 +58,7 @@ export class WindowClient
     );
   }
 
-  queryWindows(): Promise<WindowInfoResponse[]> {
+  windows(): Promise<WindowInfoResponse[]> {
     return this.buildQuery<
       Messages.WindowStateRequest,
       Messages.WindowStateResponse,
@@ -70,7 +70,7 @@ export class WindowClient
     );
   }
 
-  streamActiveWindow(
+  listenActiveWindow(
     listener: StreamListener<WindowInfoResponse>,
   ): StoppableStream<WindowInfoResponse> {
     return new TransformingStream<
@@ -87,7 +87,7 @@ export class WindowClient
     );
   }
 
-  streamWindows(
+  listenWindows(
     listener: StreamListener<WindowInfoStreamResponse>,
   ): StoppableStream<WindowInfoStreamResponse> {
     return new TransformingStream<

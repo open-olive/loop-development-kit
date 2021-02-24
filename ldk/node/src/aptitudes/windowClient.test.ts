@@ -51,7 +51,7 @@ describe('WindowClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#queryActiveWindow', () => {
+  describe('#activeWindow', () => {
     let sentResponse: Messages.WindowActiveWindowResponse;
     let queryResult: Promise<WindowInfoResponse>;
 
@@ -71,7 +71,7 @@ describe('WindowClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryActiveWindow();
+      queryResult = subject.activeWindow();
     });
 
     it('should return a transformed response', async () => {
@@ -102,7 +102,7 @@ describe('WindowClient', () => {
     });
   });
 
-  describe('#queryWindows', () => {
+  describe('#windows', () => {
     let sentResponse: Messages.WindowStateResponse;
     let queryResult: Promise<WindowInfoResponse[]>;
 
@@ -122,7 +122,7 @@ describe('WindowClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryWindows();
+      queryResult = subject.windows();
     });
 
     it('should return a transformed response', async () => {
@@ -155,13 +155,13 @@ describe('WindowClient', () => {
     });
   });
 
-  describe('#streamActiveWindow', () => {
+  describe('#listenActiveWindow', () => {
     beforeEach(async () => {
       mockGRPCClient.windowActiveWindowStream.mockImplementation(
         createStreamingHandler(),
       );
 
-      subject.streamActiveWindow(identityCallback);
+      subject.listenActiveWindow(identityCallback);
     });
 
     it('should have configured the request correctly', () => {
@@ -173,13 +173,13 @@ describe('WindowClient', () => {
     });
   });
 
-  describe('#streamWindows', () => {
+  describe('#listenWindows', () => {
     beforeEach(async () => {
       mockGRPCClient.windowStateStream.mockImplementation(
         createStreamingHandler(),
       );
 
-      subject.streamWindows(identityCallback);
+      subject.listenWindows(identityCallback);
     });
 
     it('should have configured the request correctly', () => {

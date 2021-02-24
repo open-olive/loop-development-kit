@@ -28,7 +28,7 @@ export class HoverClient
     return HoverGRPCClient;
   }
 
-  queryHover(params: HoverReadRequest): Promise<HoverResponse> {
+  text(params: HoverReadRequest): Promise<HoverResponse> {
     return this.buildQuery<
       messages.HoverReadRequest,
       messages.HoverReadResponse,
@@ -42,7 +42,7 @@ export class HoverClient
     );
   }
 
-  streamHover(
+  listenText(
     params: HoverReadRequest,
     listener: StreamListener<HoverResponse>,
   ): StoppableStream<HoverResponse> {

@@ -10,7 +10,7 @@ export class UIClient extends BaseClient<UIGRPCClient> implements Ui {
     return UIGRPCClient;
   }
 
-  streamSearchbar(listener: StreamListener<string>): StoppableStream<string> {
+  listenSearchbar(listener: StreamListener<string>): StoppableStream<string> {
     return new TransformingStream<Messages.SearchbarStreamResponse, string>(
       this.client.searchbarStream(
         new Messages.SearchbarStreamRequest().setSession(
@@ -22,7 +22,7 @@ export class UIClient extends BaseClient<UIGRPCClient> implements Ui {
     );
   }
 
-  streamGlobalSearch(
+  listenGlobalSearch(
     listener: StreamListener<string>,
   ): StoppableStream<string> {
     return new TransformingStream<Messages.GlobalSearchStreamResponse, string>(

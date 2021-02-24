@@ -6,10 +6,10 @@ import { HotKeyEvent, HotKeyRequest, Keyboard, ScanCodeEvent, TextStream } from 
  * @internal
  */
 export default class KeyboardClient extends BaseClient<KeyboardGRPCClient> implements Keyboard {
-    streamHotKey(hotKeys: HotKeyRequest, listener: StreamListener<HotKeyEvent>): StoppableStream<HotKeyEvent>;
-    streamText(listener: StreamListener<string>): StoppableStream<string>;
-    streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
-    streamScanCode(listener: StreamListener<ScanCodeEvent>): StoppableStream<ScanCodeEvent>;
+    listenHotKey(hotKeys: HotKeyRequest, listener: StreamListener<HotKeyEvent>): StoppableStream<HotKeyEvent>;
+    listenText(listener: StreamListener<string>): StoppableStream<string>;
+    listenChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
+    listenScanCode(listener: StreamListener<ScanCodeEvent>): StoppableStream<ScanCodeEvent>;
     protected generateClient(): GRPCClientConstructor<KeyboardGRPCClient>;
     protected serviceName(): string;
 }

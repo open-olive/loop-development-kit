@@ -43,7 +43,7 @@ const transformScanCodeStream = (message) => ({
 });
 /**
  * @internal
- * @param keyRequest - The key request to generate a stream for.
+ * @param keyRequest - The key request to generate a listenText for.
  */
 function generateHotkeyStreamRequest(keyRequest) {
     const request = new keyboard_pb_1.default.KeyboardHotkey();
@@ -64,17 +64,17 @@ const transformHotKeyEvent = (message) => ({
  * @internal
  */
 class KeyboardClient extends baseClient_1.default {
-    streamHotKey(hotKeys, listener) {
+    listenHotKey(hotKeys, listener) {
         const message = generateHotkeyStreamRequest(hotKeys).setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.keyboardHotkeyStream(message), transformHotKeyEvent, listener);
     }
-    streamText(listener) {
+    listenText(listener) {
         return new transformingStream_1.TransformingStream(this.client.keyboardTextStream(new keyboard_pb_1.default.KeyboardTextStreamRequest().setSession(this.createSessionMessage())), (response) => response.getText(), listener);
     }
-    streamChar(listener) {
+    listenChar(listener) {
         return new transformingStream_1.TransformingStream(this.client.keyboardCharacterStream(new keyboard_pb_1.default.KeyboardCharacterStreamRequest().setSession(this.createSessionMessage())), transformTextStream, listener);
     }
-    streamScanCode(listener) {
+    listenScanCode(listener) {
         return new transformingStream_1.TransformingStream(this.client.keyboardScancodeStream(new keyboard_pb_1.default.KeyboardScancodeStreamRequest().setSession(this.createSessionMessage())), transformScanCodeStream, listener);
     }
     generateClient() {

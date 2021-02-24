@@ -34,7 +34,7 @@ class Plugin {
   }
 
   /**
-   * Starts the GRPC server and write connection information to stdout.
+   * Starts the GRPC server and writeText connection information to stdout.
    *
    * @returns Promise resolving when the server starts.
    */

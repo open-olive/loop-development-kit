@@ -7,7 +7,7 @@ import { StoppableStream, StreamListener } from './stoppables';
  */
 export declare class ProcessClient extends BaseClient<ProcessGRPCClient> implements Process {
     protected generateClient(): GRPCClientConstructor<ProcessGRPCClient>;
-    queryProcesses(): Promise<ProcessListResponse>;
-    streamProcesses(listener: StreamListener<ProcessStreamResponse>): StoppableStream<ProcessStreamResponse>;
+    readProcesses(): Promise<ProcessListResponse>;
+    listenProcesses(listener: StreamListener<ProcessStreamResponse>): StoppableStream<ProcessStreamResponse>;
     protected serviceName(): string;
 }

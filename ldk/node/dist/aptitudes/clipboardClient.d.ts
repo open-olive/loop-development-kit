@@ -7,8 +7,8 @@ import { StoppableStream, StreamListener } from './stoppables';
  */
 export declare class ClipboardClient extends BaseClient<ClipboardGRPCClient> implements Clipboard {
     protected generateClient(): GRPCClientConstructor<ClipboardGRPCClient>;
-    queryClipboard(): Promise<string>;
-    streamClipboard(listener: StreamListener<string>): StoppableStream<string>;
-    writeClipboard(text: string): Promise<void>;
+    text(): Promise<string>;
+    listenText(listener: StreamListener<string>): StoppableStream<string>;
+    writeText(text: string): Promise<void>;
     protected serviceName(): string;
 }

@@ -19,15 +19,15 @@ export interface Cursor {
   /**
    * @returns Promise resolving with the cursor position.
    */
-  queryCursorPosition(): Promise<CursorResponse>;
+  position(): Promise<CursorResponse>;
 
   /**
-   * Establishes a stream calling the listener function whenever the cursor position changes.
+   * Establishes a listenText calling the listener function whenever the cursor position changes.
    *
    * @param listener - The listener function called when the function changes.
    * @returns a StoppableStream object that can be stopped.
    */
-  streamCursorPosition(
+  listenPosition(
     listener: StreamListener<CursorResponse>,
   ): StoppableStream<CursorResponse>;
 }

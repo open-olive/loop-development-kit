@@ -6,28 +6,28 @@ export interface Vault {
    * @param key - Key of the item to delete from vault.
    * @returns Promise that resolves when the deletion completes.
    */
-  vaultDelete(key: string): Promise<void>;
+  delete(key: string): Promise<void>;
 
   /**
    * @param key - Key to check for presence.
    * @returns Promise resolve with whether the vault has the key (true) or not (false).
    */
-  vaultExists(key: string): Promise<boolean>;
+  exists(key: string): Promise<boolean>;
 
   /**
    * Reads the value from vault and returns it in a promise.
    *
-   * @param key - Key to read from vault.
+   * @param key - Key to text from vault.
    * @returns Resolves with the value of the key.
    */
-  vaultRead(key: string): Promise<string>;
+  read(key: string): Promise<string>;
 
   /**
    * Writes a value to vault.
    *
-   * @param key Key to write value to.
+   * @param key Key to writeText value to.
    * @param value The value being written.
-   * @returns Resolves when write is complete.
+   * @returns Resolves when writeText is complete.
    */
-  vaultWrite(key: string, value: string): Promise<void>;
+  write(key: string, value: string): Promise<void>;
 }

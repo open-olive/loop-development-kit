@@ -44,7 +44,7 @@ describe('FileSystemClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#queryDirectory', () => {
+  describe('#directory', () => {
     let sentResponse: Messages.FilesystemDirResponse;
     let queryResult: Promise<FileSystemQueryDirectoryResponse>;
     const directory = '/a-directory';
@@ -59,7 +59,7 @@ describe('FileSystemClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryDirectory({ directory });
+      queryResult = subject.directory({ directory });
     });
 
     it('should return a transformed response', async () => {
@@ -96,7 +96,7 @@ describe('FileSystemClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamFileInfo({ file }, identityCallback);
+      subject.listenFile({ file }, identityCallback);
     });
 
     it('should call grpc client function', async () => {
@@ -115,7 +115,7 @@ describe('FileSystemClient', () => {
     });
   });
 
-  describe('#streamDirectory', () => {
+  describe('#listenDirectory', () => {
     const directory = '/a-directory';
 
     beforeEach(async () => {
@@ -123,7 +123,7 @@ describe('FileSystemClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamDirectory({ directory }, identityCallback);
+      subject.listenDirectory({ directory }, identityCallback);
     });
 
     it('should have configured the request correctly', () => {

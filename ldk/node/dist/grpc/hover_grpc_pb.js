@@ -40,7 +40,7 @@ function deserialize_proto_HoverReadStreamResponse(buffer_arg) {
     return hover_pb.HoverReadStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 var HoverService = exports.HoverService = {
-    // read the text under the cursor
+    // text the text under the cursor
     hoverRead: {
         path: '/proto.Hover/HoverRead',
         requestStream: false,
@@ -52,7 +52,7 @@ var HoverService = exports.HoverService = {
         responseSerialize: serialize_proto_HoverReadResponse,
         responseDeserialize: deserialize_proto_HoverReadResponse,
     },
-    // stream the text under the cursor as it changes
+    // listenText the text under the cursor as it changes
     hoverReadStream: {
         path: '/proto.Hover/HoverReadStream',
         requestStream: false,

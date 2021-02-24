@@ -51,7 +51,7 @@ export class FileSystemClient
     return FilesystemGRPCClient;
   }
 
-  queryDirectory(
+  directory(
     params: FileSystemQueryDirectoryParams,
   ): Promise<FileSystemQueryDirectoryResponse> {
     return this.buildQuery<
@@ -69,7 +69,7 @@ export class FileSystemClient
     );
   }
 
-  streamDirectory(
+  listenDirectory(
     params: FileSystemQueryDirectoryParams,
     listener: StreamListener<FileSystemStreamDirectoryResponse>,
   ): StoppableStream<FileSystemStreamDirectoryResponse> {
@@ -95,7 +95,7 @@ export class FileSystemClient
     );
   }
 
-  streamFileInfo(
+  listenFile(
     params: FileSystemQueryFileParams,
     listener: StreamListener<FileSystemStreamFileInfoResponse>,
   ): StoppableStream<FileSystemStreamFileInfoResponse> {
@@ -121,7 +121,7 @@ export class FileSystemClient
     );
   }
 
-  copyFile(params: FileSystemCopyOrMoveParams): Promise<void> {
+  copy(params: FileSystemCopyOrMoveParams): Promise<void> {
     const message = new messages.FilesystemCopyRequest()
       .setDest(params.destination)
       .setSource(params.source)
@@ -136,7 +136,7 @@ export class FileSystemClient
     );
   }
 
-  moveFile(params: FileSystemCopyOrMoveParams): Promise<void> {
+  move(params: FileSystemCopyOrMoveParams): Promise<void> {
     const message = new messages.FilesystemMoveRequest()
       .setDest(params.destination)
       .setSource(params.source)
@@ -151,7 +151,7 @@ export class FileSystemClient
     );
   }
 
-  makeDirectory(path: FileSystemMakeDirectoryParams): Promise<void> {
+  makeDir(path: FileSystemMakeDirectoryParams): Promise<void> {
     return this.buildQuery<messages.FilesystemMakeDirRequest, Empty, void>(
       (request, callback) => {
         this.client.filesystemMakeDir(request, callback);
@@ -166,7 +166,7 @@ export class FileSystemClient
     );
   }
 
-  openFile(path: string): FileSystemFile {
+  open(path: string): FileSystemFile {
     const impl = new FileSystemFileImpl(
       this.session,
       this.client.filesystemFileStream(),
@@ -176,7 +176,7 @@ export class FileSystemClient
     return impl;
   }
 
-  createFile(path: string): FileSystemFile {
+  create(path: string): FileSystemFile {
     const impl = new FileSystemFileImpl(
       this.session,
       this.client.filesystemFileStream(),
@@ -186,7 +186,7 @@ export class FileSystemClient
     return impl;
   }
 
-  removeFile(params: FileSystemRemoveParams): Promise<void> {
+  remove(params: FileSystemRemoveParams): Promise<void> {
     return this.buildQuery<messages.FilesystemRemoveRequest, Empty, void>(
       (request, callback) => {
         this.client.filesystemRemove(request, callback);

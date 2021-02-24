@@ -7,7 +7,7 @@ import { StoppableStream, StreamListener } from './stoppables';
  */
 export declare class HoverClient extends BaseClient<HoverGRPCClient> implements Hover {
     protected generateClient(): GRPCClientConstructor<HoverGRPCClient>;
-    queryHover(params: HoverReadRequest): Promise<HoverResponse>;
-    streamHover(params: HoverReadRequest, listener: StreamListener<HoverResponse>): StoppableStream<HoverResponse>;
+    text(params: HoverReadRequest): Promise<HoverResponse>;
+    listenText(params: HoverReadRequest, listener: StreamListener<HoverResponse>): StoppableStream<HoverResponse>;
     protected serviceName(): string;
 }

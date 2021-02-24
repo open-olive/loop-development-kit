@@ -11,13 +11,13 @@ class Loop {
   start(aptitudes) {
     this.aptitudes = aptitudes;
     // Listen to the clipboard as it changes.
-    this.clipboardStream = this.aptitudes.clipboard.streamClipboard((error, text) =>  {
+    this.clipboardStream = this.aptitudes.clipboard.listenText((error, text) => {
       // Emit a whisper containing the clipboard's contents.
-      this.aptitudes.whisper.markdownWhisper({
+      this.aptitudes.whisper.markdown({
         markdown: `Clipboard Contents: ${text}`,
         label: 'Clipboard Change!'
       });
-    });  
+    });
   }
 
   stop() {
@@ -61,7 +61,7 @@ The following Sensors are under development and are not yet available:
 
 Sensors are directly accessible from the {@link Aptitudes} object provided to your Loop when it starts.
 
-Sensors let you **query** the current state, and **stream** changes as they happen. Some sensor methods require configuration to listen, others don't. Query methods return a Promise that resolves with the current state. Stream methods require a listener function that's called with updates, and returns a {@link StoppableStream} object.
+Sensors let you **text** the current state, and **listenText** changes as they happen. Some sensor methods require configuration to listenText, others don't. Query methods return a Promise that resolves with the current state. Stream methods require a listener function that's called with updates, and returns a {@link StoppableStream} object.
 
 Here's an example:
 
@@ -70,21 +70,21 @@ class MyLoop {
     start(aptitudes) {
         this.aptitudes = aptitudes;
         // Result generated only once.
-        this.aptitudes.clipboard.queryClipboard().then((clipboardContents) => {
-            this.aptitudes.whisper.markdownWhisper({
+        this.aptitudes.clipboard.text().then((clipboardContents) => {
+            this.aptitudes.whisper.markdown({
                 markdown: `Starting with ${clipboardContents}`,
                 label: 'Starting Contents',
             });
         });
         // Listener function generating whispers.
         const clipboardListener = (errorOrNull, clipboardContents) => {
-          this.aptitudes.whisper.markdownWhisper({
+          this.aptitudes.whisper.markdown({
               markdown: `Contents changed to ${clipboardContents}`,
               label: 'Clipboard Change',
           });
         };   
         // Start listening to clipboard changes.
-        this.clipboardStream = this.aptitudes.clipboard.streamClipboard(clipboardListener);
+        this.clipboardStream = this.aptitudes.clipboard.listenText(clipboardListener);
     }
 
     stop() {
@@ -100,16 +100,16 @@ Whispers are how you present information to users. The {@link Whisper} is access
 
 You can create different types of Whispers:
 
-- {@link Whisper.markdownWhisper | Markdown}: A Whisper presenting content formatted with Markdown.
-- {@link Whisper.confirmWhisper | Confirm}: A Whisper presenting the user with the choice to say Yes (Confirm) or No (Reject) to a prompt.
+- {@link Whisper.markdown | Markdown}: A Whisper presenting content formatted with Markdown.
+- {@link Whisper.confirm | Confirm}: A Whisper presenting the user with the choice to say Yes (Confirm) or No (Reject) to a prompt.
 - {@link Whisper.listWhisper | List}: A Whisper presenting a data list, with the ability to expand the list and show additional data.
-- {@link Whisper.formWhisper | Form}: A Whisper presenting a form that the user can complete, and then submit (or reject).
-- {@link Whisper.disambiguationWhisper | Disambiguation}: A Whisper presenting a list of links that the user can click on and send an event back to the Loop.
+- {@link Whisper.form | Form}: A Whisper presenting a form that the user can complete, and then submit (or reject).
+- {@link Whisper.disambiguation | Disambiguation}: A Whisper presenting a list of links that the user can click on and send an event back to the Loop.
 
 
 ```typescript
 
-const whisperId = await this.aptitudes.whisper.markdownWhisper({
+const whisperId = await this.aptitudes.whisper.markdown({
     markdown: "The Message Contents in Markdown",
     label: "The Title at the Cards Top Left",
 });
@@ -122,6 +122,6 @@ You can store and retrieve user credentials and other sensitive data with the {@
 ```javascript
 
 const key = 'user-id';
-const result = await this.aptitudes.vault.vaultRead(key);
-await this.aptitudes.vault.vaultWrite(key, "abcd");
+const result = await this.aptitudes.vault.read(key);
+await this.aptitudes.vault.write(key, "abcd");
 ```

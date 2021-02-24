@@ -45,7 +45,7 @@ describe('KeyboardClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#streamHotKey', () => {
+  describe('#listenHotKey', () => {
     const key = 'a';
     const modifiers = { ctrlL: true };
     const convertedModifiers = 8;
@@ -55,7 +55,7 @@ describe('KeyboardClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamHotKey({ key, modifiers }, identityCallback);
+      subject.listenHotKey({ key, modifiers }, identityCallback);
     });
 
     it('should have configured the request correctly', () => {
@@ -72,7 +72,7 @@ describe('KeyboardClient', () => {
     });
   });
 
-  describe('#streamText', () => {
+  describe('#listenText', () => {
     let stream: ClientReadableStream<Messages.KeyboardTextStreamResponse>;
     let streamCallback: jest.Mock;
     let sentResponse: Messages.KeyboardTextStreamResponse;
@@ -86,10 +86,10 @@ describe('KeyboardClient', () => {
         createStreamingHandler(stream),
       );
 
-      subject.streamText(streamCallback);
+      subject.listenText(streamCallback);
     });
 
-    it('should stream the text back to the callback', () => {
+    it('should listenText the text back to the callback', () => {
       stream.emit('data', sentResponse);
 
       expect(streamCallback).toHaveBeenCalledWith(null, sentResponse.getText());
@@ -104,7 +104,7 @@ describe('KeyboardClient', () => {
     });
   });
 
-  describe('#streamChar', () => {
+  describe('#listenChar', () => {
     let sentRequest: Messages.KeyboardCharacterStreamRequest;
 
     beforeEach(async () => {
@@ -112,7 +112,7 @@ describe('KeyboardClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamChar(identityCallback);
+      subject.listenChar(identityCallback);
 
       sentRequest = captureMockArgument(mockGRPCClient.keyboardCharacterStream);
     });
@@ -122,7 +122,7 @@ describe('KeyboardClient', () => {
     });
   });
 
-  describe('#streamScanCode', () => {
+  describe('#listenScanCode', () => {
     let sentRequest: Messages.KeyboardScancodeStreamRequest;
 
     beforeEach(async () => {
@@ -130,7 +130,7 @@ describe('KeyboardClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamScanCode(identityCallback);
+      subject.listenScanCode(identityCallback);
 
       sentRequest = captureMockArgument(mockGRPCClient.keyboardScancodeStream);
     });

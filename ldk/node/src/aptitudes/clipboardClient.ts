@@ -26,7 +26,7 @@ export class ClipboardClient
     return ClipboardGRPCClient;
   }
 
-  queryClipboard(): Promise<string> {
+  text(): Promise<string> {
     return this.buildQuery<
       messages.ClipboardReadRequest,
       messages.ClipboardReadResponse,
@@ -38,7 +38,7 @@ export class ClipboardClient
     );
   }
 
-  streamClipboard(listener: StreamListener<string>): StoppableStream<string> {
+  listenText(listener: StreamListener<string>): StoppableStream<string> {
     const request = new messages.ClipboardReadStreamRequest().setSession(
       this.createSessionMessage(),
     );
@@ -54,7 +54,7 @@ export class ClipboardClient
     );
   }
 
-  writeClipboard(text: string): Promise<void> {
+  writeText(text: string): Promise<void> {
     return this.buildQuery<messages.ClipboardWriteRequest, Empty, void>(
       (message, callback) => {
         this.client.clipboardWrite(message, callback);

@@ -30,14 +30,14 @@ export interface Process {
    *
    * @returns a Promise resolving with a list of the current processes.
    */
-  queryProcesses(): Promise<ProcessListResponse>;
+  readProcesses(): Promise<ProcessListResponse>;
 
   /**
    * Starts listening for processes starting and stopping.
    *
    * @param listener - Listener function called every time a process is started or stopped.
    */
-  streamProcesses(
+  listenProcesses(
     listener: StreamListener<ProcessStreamResponse>,
   ): StoppableStream<ProcessStreamResponse>;
 }

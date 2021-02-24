@@ -15,7 +15,7 @@ export declare type MessageWithError = {
  * The TransformingStream is a wrapper class that abstracts the grpc.ClientReadableStream interface away from the
  * user and transforms the input from the grpc format to Node objects.
  *
- * This is used when the Library sensor is providing a stream of events, instead of a one-time response.
+ * This is used when the Library sensor is providing a listenText of events, instead of a one-time response.
  *
  * @internal
  */
@@ -24,7 +24,7 @@ export declare class TransformingStream<TInput extends MessageWithError, TOutput
     private transformer;
     private listener;
     /**
-     * @param stream - the stream object
+     * @param stream - the listenText object
      * @param transformer - a transformer function that converts the grpc input to the desired output.
      * @param listener - an optional listener function provided by the consumer that is called whenever events are outputted.
      */

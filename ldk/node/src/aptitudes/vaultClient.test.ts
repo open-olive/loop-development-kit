@@ -40,12 +40,12 @@ describe('VaultClient', () => {
       subject.connect(connInfo, session, logger),
     ).resolves.toBeUndefined();
   });
-  describe('#vaultDelete', () => {
+  describe('#delete', () => {
     const vaultKey = 'key';
     beforeEach(async () => {
       mockGRPCClient.vaultDelete.mockImplementation(createCallbackHandler());
 
-      await expect(subject.vaultDelete(vaultKey)).resolves.toBe(undefined);
+      await expect(subject.delete(vaultKey)).resolves.toBe(undefined);
     });
     it('should call grpc client function', async () => {
       expect(mockGRPCClient.vaultDelete).toHaveBeenCalledWith(
@@ -60,7 +60,7 @@ describe('VaultClient', () => {
       expect(deleteRequest.getKey()).toBe(vaultKey);
     });
   });
-  describe('#vaultExists', () => {
+  describe('#exists', () => {
     const vaultKey = 'key';
     let mockResponse: Messages.VaultExistsResponse;
 
@@ -72,7 +72,7 @@ describe('VaultClient', () => {
       );
     });
     it('should call grpc client function', async () => {
-      await expect(subject.vaultExists(vaultKey)).resolves.toBe(true);
+      await expect(subject.exists(vaultKey)).resolves.toBe(true);
       expect(mockGRPCClient.vaultExists).toHaveBeenCalledWith(
         expect.any(Messages.VaultExistsRequest),
         expect.any(Function),
@@ -83,7 +83,7 @@ describe('VaultClient', () => {
       expect(existsRequest.getKey()).toBe(vaultKey);
     });
   });
-  describe('#vaultRead', () => {
+  describe('#read', () => {
     let mockResponse: Messages.VaultReadResponse;
     const keyValue = 'value';
     const key = 'key';
@@ -95,7 +95,7 @@ describe('VaultClient', () => {
       );
     });
     it('should call grpc client function', async () => {
-      await expect(subject.vaultRead(key)).resolves.toEqual(keyValue);
+      await expect(subject.read(key)).resolves.toEqual(keyValue);
       expect(mockGRPCClient.vaultRead).toHaveBeenCalledWith(
         expect.any(Messages.VaultReadRequest),
         expect.any(Function),
@@ -106,7 +106,7 @@ describe('VaultClient', () => {
       expect(readRequest.getKey()).toBe(key);
     });
   });
-  describe('#vaultWrite', () => {
+  describe('#write', () => {
     const keyValue = 'value';
     const key = 'key';
     beforeEach(async () => {
@@ -114,7 +114,7 @@ describe('VaultClient', () => {
       await subject.connect(connInfo, session, logger);
     });
     it('should call grpc client function', async () => {
-      await expect(subject.vaultWrite(key, keyValue)).resolves.toEqual(
+      await expect(subject.write(key, keyValue)).resolves.toEqual(
         undefined,
       );
       expect(mockGRPCClient.vaultWrite).toHaveBeenCalledWith(

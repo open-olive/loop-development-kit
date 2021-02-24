@@ -25,12 +25,12 @@ class HoverClient extends baseClient_1.default {
     generateClient() {
         return hover_grpc_pb_1.HoverClient;
     }
-    queryHover(params) {
+    text(params) {
         return this.buildQuery((message, callback) => {
             this.client.hoverRead(message, callback);
         }, () => updateRequest(params, new hover_pb_1.default.HoverReadRequest()), (response) => ({ text: response.getText() }));
     }
-    streamHover(params, listener) {
+    listenText(params, listener) {
         const message = updateRequest(params, new hover_pb_1.default.HoverReadStreamRequest().setSession(this.createSessionMessage()));
         return new transformingStream_1.TransformingStream(this.client.hoverReadStream(message), (response) => ({ text: response.getText() }), listener);
     }

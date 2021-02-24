@@ -26,7 +26,7 @@ const transformSelectedTextResponse: StreamTransformer<
 export class BrowserClient
   extends BaseClient<BrowserGRPCClient>
   implements Browser {
-  queryActiveURL(): Promise<string> {
+  activeURL(): Promise<string> {
     return this.buildQuery<
       Messages.BrowserActiveURLRequest,
       Messages.BrowserActiveURLResponse,
@@ -38,7 +38,7 @@ export class BrowserClient
     );
   }
 
-  querySelectedText(): Promise<BrowserSelectedTextResponse> {
+  selectedText(): Promise<BrowserSelectedTextResponse> {
     return this.buildQuery<
       Messages.BrowserSelectedTextRequest,
       Messages.BrowserSelectedTextResponse,
@@ -50,7 +50,7 @@ export class BrowserClient
     );
   }
 
-  streamActiveURL(listener: StreamListener<string>): StoppableStream<string> {
+  listenActiveURL(listener: StreamListener<string>): StoppableStream<string> {
     return new TransformingStream<
       Messages.BrowserActiveURLStreamResponse,
       string
@@ -65,7 +65,7 @@ export class BrowserClient
     );
   }
 
-  streamSelectedText(
+  listenActiveText(
     listener: StreamListener<BrowserSelectedTextResponse>,
   ): StoppableStream<BrowserSelectedTextResponse> {
     return new TransformingStream<

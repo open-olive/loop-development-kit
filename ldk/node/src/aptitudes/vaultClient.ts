@@ -16,7 +16,7 @@ export default class VaultClient
    * @async
    * @param key - The name of the key in vault.
    */
-  vaultDelete(key: string): Promise<void> {
+  delete(key: string): Promise<void> {
     return this.buildQuery<messages.VaultDeleteRequest, Empty, void>(
       (message, callback) => this.client.vaultDelete(message, callback),
       () => {
@@ -36,7 +36,7 @@ export default class VaultClient
    * @param key - The name of the key in vault.
    * @returns Returns true if the key has a defined value.
    */
-  vaultExists(key: string): Promise<boolean> {
+  exists(key: string): Promise<boolean> {
     return this.buildQuery<
       messages.VaultExistsRequest,
       messages.VaultExistsResponse,
@@ -58,7 +58,7 @@ export default class VaultClient
    * @param key - The name of the key in vault.
    * @returns Promise resolving with the value of the key in vault.
    */
-  vaultRead(key: string): Promise<string> {
+  read(key: string): Promise<string> {
     return this.buildQuery<
       messages.VaultReadRequest,
       messages.VaultReadResponse,
@@ -82,7 +82,7 @@ export default class VaultClient
    * @param key - The name of the key in vault.
    * @param value - The value to assign to the key in vault.
    */
-  vaultWrite(key: string, value: string): Promise<void> {
+  write(key: string, value: string): Promise<void> {
     return this.buildQuery<messages.VaultWriteRequest, Empty, void>(
       (message, callback) => this.client.vaultWrite(message, callback),
       () => {

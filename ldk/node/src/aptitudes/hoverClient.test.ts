@@ -44,7 +44,7 @@ describe('HoverClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#queryHover', () => {
+  describe('#text', () => {
     let sentResponse: Messages.HoverReadResponse;
     let queryResult: Promise<HoverResponse>;
     const xFromCenter = 10;
@@ -59,7 +59,7 @@ describe('HoverClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryHover({ xFromCenter, yFromCenter });
+      queryResult = subject.text({ xFromCenter, yFromCenter });
     });
 
     it('should return a transformed response', async () => {
@@ -86,7 +86,7 @@ describe('HoverClient', () => {
     });
   });
 
-  describe('#streamHover', () => {
+  describe('#listenText', () => {
     const xFromCenter = 10;
     const yFromCenter = 20;
 
@@ -95,7 +95,7 @@ describe('HoverClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamHover({ xFromCenter, yFromCenter }, identityCallback);
+      subject.listenText({ xFromCenter, yFromCenter }, identityCallback);
     });
 
     it('should have configured the request with the right x coordinates', () => {

@@ -12,10 +12,10 @@ class UIClient extends baseClient_1.default {
     generateClient() {
         return ui_grpc_pb_1.UIClient;
     }
-    streamSearchbar(listener) {
+    listenSearchbar(listener) {
         return new transformingStream_1.TransformingStream(this.client.searchbarStream(new ui_pb_1.default.SearchbarStreamRequest().setSession(this.createSessionMessage())), (message) => message.getText(), listener);
     }
-    streamGlobalSearch(listener) {
+    listenGlobalSearch(listener) {
         return new transformingStream_1.TransformingStream(this.client.globalSearchStream(new ui_pb_1.default.GlobalSearchStreamRequest().setSession(this.createSessionMessage())), (message) => message.getText(), listener);
     }
     serviceName() {

@@ -4,7 +4,7 @@ import { Ui } from './ui';
 import { StoppableStream, StreamListener } from './stoppables';
 export declare class UIClient extends BaseClient<UIGRPCClient> implements Ui {
     protected generateClient(): GRPCClientConstructor<UIGRPCClient>;
-    streamSearchbar(listener: StreamListener<string>): StoppableStream<string>;
-    streamGlobalSearch(listener: StreamListener<string>): StoppableStream<string>;
+    listenSearchbar(listener: StreamListener<string>): StoppableStream<string>;
+    listenGlobalSearch(listener: StreamListener<string>): StoppableStream<string>;
     protected serviceName(): string;
 }

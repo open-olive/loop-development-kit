@@ -16,7 +16,7 @@ class VaultClient extends baseClient_1.default {
      * @async
      * @param key - The name of the key in vault.
      */
-    vaultDelete(key) {
+    delete(key) {
         return this.buildQuery((message, callback) => this.client.vaultDelete(message, callback), () => {
             const msg = new vault_pb_1.default.VaultDeleteRequest();
             msg.setKey(key);
@@ -32,7 +32,7 @@ class VaultClient extends baseClient_1.default {
      * @param key - The name of the key in vault.
      * @returns Returns true if the key has a defined value.
      */
-    vaultExists(key) {
+    exists(key) {
         return this.buildQuery((message, callback) => this.client.vaultExists(message, callback), () => {
             const msg = new vault_pb_1.default.VaultExistsRequest();
             msg.setKey(key);
@@ -45,7 +45,7 @@ class VaultClient extends baseClient_1.default {
      * @param key - The name of the key in vault.
      * @returns Promise resolving with the value of the key in vault.
      */
-    vaultRead(key) {
+    read(key) {
         return this.buildQuery((message, callback) => this.client.vaultRead(message, callback), () => {
             const msg = new vault_pb_1.default.VaultReadRequest();
             msg.setKey(key);
@@ -61,7 +61,7 @@ class VaultClient extends baseClient_1.default {
      * @param key - The name of the key in vault.
      * @param value - The value to assign to the key in vault.
      */
-    vaultWrite(key, value) {
+    write(key, value) {
         return this.buildQuery((message, callback) => this.client.vaultWrite(message, callback), () => {
             const msg = new vault_pb_1.default.VaultWriteRequest();
             msg.setKey(key);

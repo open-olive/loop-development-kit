@@ -44,7 +44,7 @@ describe('WhisperHostClient', () => {
       },
     } as any;
   });
-  describe('#markdownWhisper', () => {
+  describe('#markdown', () => {
     beforeEach(() => {
       // New Message implementation necessary to chain messages.
       messageBuilders.buildWhisperMarkdownRequest.mockReturnValue(
@@ -61,7 +61,7 @@ describe('WhisperHostClient', () => {
           createCallbackHandler({ getId: () => WHISPER_ID }),
         );
 
-        await subject.markdownWhisper({
+        await subject.markdown({
           markdown: 'abc',
           label: 'Hey',
         });
@@ -74,14 +74,14 @@ describe('WhisperHostClient', () => {
       });
       it('should return the ID from the whisper', async () => {
         await expect(
-          subject.markdownWhisper({ markdown: 'a', label: 'a' }).promise(),
+          subject.markdown({ markdown: 'a', label: 'a' }).promise(),
         ).resolves.toBe(undefined);
       });
     });
     describe('before connected', () => {
       it('should throw an error', async () => {
         expect(() => {
-          subject.markdownWhisper({ markdown: 'a', label: 'a' });
+          subject.markdown({ markdown: 'a', label: 'a' });
         }).toThrow('Accessing session data before connection');
       });
     });

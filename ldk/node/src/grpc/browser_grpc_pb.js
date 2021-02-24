@@ -107,7 +107,7 @@ browserActiveURL: {
     responseSerialize: serialize_proto_BrowserActiveURLResponse,
     responseDeserialize: deserialize_proto_BrowserActiveURLResponse,
   },
-  // stream active URL every time it changes
+  // listenText active URL every time it changes
 browserActiveURLStream: {
     path: '/proto.Browser/BrowserActiveURLStream',
     requestStream: false,
@@ -131,7 +131,7 @@ browserSelectedText: {
     responseSerialize: serialize_proto_BrowserSelectedTextResponse,
     responseDeserialize: deserialize_proto_BrowserSelectedTextResponse,
   },
-  // stream selected text every time it changes
+  // listenText selected text every time it changes
 browserSelectedTextStream: {
     path: '/proto.Browser/BrowserSelectedTextStream',
     requestStream: false,

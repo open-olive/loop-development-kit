@@ -21,15 +21,15 @@ class ClipboardClient extends baseClient_1.default {
     generateClient() {
         return clipboard_grpc_pb_1.ClipboardClient;
     }
-    queryClipboard() {
+    text() {
         return this.buildQuery((message, callback) => this.client.clipboardRead(message, callback), () => new clipboard_pb_1.default.ClipboardReadRequest(), clipboardTransformer);
     }
-    streamClipboard(listener) {
+    listenText(listener) {
         const request = new clipboard_pb_1.default.ClipboardReadStreamRequest().setSession(this.createSessionMessage());
         this.logger.info('Stream Clipboard Request', 'request', request.getJsPbMessageId() || 'not assigned');
         return new transformingStream_1.TransformingStream(this.client.clipboardReadStream(request), clipboardTransformer, listener);
     }
-    writeClipboard(text) {
+    writeText(text) {
         return this.buildQuery((message, callback) => {
             this.client.clipboardWrite(message, callback);
         }, () => new clipboard_pb_1.default.ClipboardWriteRequest().setText(text), 

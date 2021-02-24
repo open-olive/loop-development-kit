@@ -57,14 +57,14 @@ class FileSystemClient extends baseClient_1.default {
     generateClient() {
         return filesystem_grpc_pb_1.FilesystemClient;
     }
-    queryDirectory(params) {
+    directory(params) {
         return this.buildQuery((message, callback) => {
             this.client.filesystemDir(message, callback);
         }, () => new filesystem_pb_1.default.FilesystemDirRequest().setDirectory(params.directory), (message) => ({
             files: message.getFilesList().map(fileSystemFile_1.parseFileInfo),
         }));
     }
-    streamDirectory(params, listener) {
+    listenDirectory(params, listener) {
         const message = new filesystem_pb_1.default.FilesystemDirStreamRequest()
             .setDirectory(params.directory)
             .setSession(this.createSessionMessage());
@@ -79,7 +79,7 @@ class FileSystemClient extends baseClient_1.default {
             };
         }, listener);
     }
-    streamFileInfo(params, listener) {
+    listenFile(params, listener) {
         const message = new filesystem_pb_1.default.FilesystemFileInfoStreamRequest()
             .setPath(params.file)
             .setSession(this.createSessionMessage());
@@ -94,7 +94,7 @@ class FileSystemClient extends baseClient_1.default {
             };
         }, listener);
     }
-    copyFile(params) {
+    copy(params) {
         const message = new filesystem_pb_1.default.FilesystemCopyRequest()
             .setDest(params.destination)
             .setSource(params.source)
@@ -105,7 +105,7 @@ class FileSystemClient extends baseClient_1.default {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
-    moveFile(params) {
+    move(params) {
         const message = new filesystem_pb_1.default.FilesystemMoveRequest()
             .setDest(params.destination)
             .setSource(params.source)
@@ -116,7 +116,7 @@ class FileSystemClient extends baseClient_1.default {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
-    makeDirectory(path) {
+    makeDir(path) {
         return this.buildQuery((request, callback) => {
             this.client.filesystemMakeDir(request, callback);
         }, () => new filesystem_pb_1.default.FilesystemMakeDirRequest()
@@ -126,17 +126,17 @@ class FileSystemClient extends baseClient_1.default {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
-    openFile(path) {
+    open(path) {
         const impl = new fileSystemFile_1.FileSystemFileImpl(this.session, this.client.filesystemFileStream(), this.logger);
         impl.open(path);
         return impl;
     }
-    createFile(path) {
+    create(path) {
         const impl = new fileSystemFile_1.FileSystemFileImpl(this.session, this.client.filesystemFileStream(), this.logger);
         impl.create(path);
         return impl;
     }
-    removeFile(params) {
+    remove(params) {
         return this.buildQuery((request, callback) => {
             this.client.filesystemRemove(request, callback);
         }, () => new filesystem_pb_1.default.FilesystemRemoveRequest()

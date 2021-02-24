@@ -42,13 +42,13 @@ describe('UIClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#streamSearchbar', () => {
+  describe('#listenSearchbar', () => {
     beforeEach(async () => {
       mockGRPCClient.searchbarStream.mockImplementation(
         createStreamingHandler(),
       );
 
-      subject.streamSearchbar(identityCallback);
+      subject.listenSearchbar(identityCallback);
     });
 
     it('should have configured the request correctly', () => {
@@ -60,13 +60,13 @@ describe('UIClient', () => {
     });
   });
 
-  describe('#streamGlobalSearch', () => {
+  describe('#listenGlobalSearch', () => {
     beforeEach(async () => {
       mockGRPCClient.globalSearchStream.mockImplementation(
         createStreamingHandler(),
       );
 
-      subject.streamGlobalSearch(identityCallback);
+      subject.listenGlobalSearch(identityCallback);
     });
 
     it('should have configured the request correctly', () => {

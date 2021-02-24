@@ -33,23 +33,23 @@ export interface Window {
      *
      * @returns Promise resolving with information about the current active window.
      */
-    queryActiveWindow(): Promise<WindowInfoResponse>;
+    activeWindow(): Promise<WindowInfoResponse>;
     /**
      * Gets all the open windows.
      *
      * @returns Promise resolving with a list of all the current windows.
      */
-    queryWindows(): Promise<WindowInfoResponse[]>;
+    windows(): Promise<WindowInfoResponse[]>;
     /**
      * Streams changes to the active window.
      *
      * @param listener - Listener function called whenever the active window changes.
      */
-    streamActiveWindow(listener: StreamListener<WindowInfoResponse>): StoppableStream<WindowInfoResponse>;
+    listenActiveWindow(listener: StreamListener<WindowInfoResponse>): StoppableStream<WindowInfoResponse>;
     /**
      * Stream changes to all windows.
      *
      * @param listener - Listener function called whenever a window is opened, changed, or closed.
      */
-    streamWindows(listener: StreamListener<WindowInfoStreamResponse>): StoppableStream<WindowInfoStreamResponse>;
+    listenWindows(listener: StreamListener<WindowInfoStreamResponse>): StoppableStream<WindowInfoStreamResponse>;
 }

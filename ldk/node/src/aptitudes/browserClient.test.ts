@@ -45,7 +45,7 @@ describe('BrowserClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#queryActiveURL', () => {
+  describe('#activeURL', () => {
     let sentResponse: Messages.BrowserActiveURLResponse;
     let queryResult: Promise<string>;
 
@@ -58,7 +58,7 @@ describe('BrowserClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryActiveURL();
+      queryResult = subject.activeURL();
     });
 
     it('should return a transformed response', async () => {
@@ -81,7 +81,7 @@ describe('BrowserClient', () => {
     });
   });
 
-  describe('#querySelectedText', () => {
+  describe('#selectedText', () => {
     let sentResponse: Messages.BrowserSelectedTextResponse;
     let queryResult: Promise<BrowserSelectedTextResponse>;
 
@@ -95,7 +95,7 @@ describe('BrowserClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.querySelectedText();
+      queryResult = subject.selectedText();
     });
 
     it('should return a transformed response', async () => {
@@ -124,7 +124,7 @@ describe('BrowserClient', () => {
     });
   });
 
-  describe('#streamActiveURL', () => {
+  describe('#listenActiveURL', () => {
     let sentRequest: Messages.BrowserActiveURLStreamRequest;
 
     beforeEach(async () => {
@@ -132,7 +132,7 @@ describe('BrowserClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamActiveURL(identityCallback);
+      subject.listenActiveURL(identityCallback);
 
       sentRequest = captureMockArgument(mockGRPCClient.browserActiveURLStream);
     });
@@ -142,7 +142,7 @@ describe('BrowserClient', () => {
     });
   });
 
-  describe('#streamSelectedText', () => {
+  describe('#listenActiveText', () => {
     let sentRequest: Messages.BrowserSelectedTextStreamRequest;
 
     beforeEach(async () => {
@@ -150,7 +150,7 @@ describe('BrowserClient', () => {
         createStreamingHandler(),
       );
 
-      subject.streamSelectedText(identityCallback);
+      subject.listenActiveText(identityCallback);
 
       sentRequest = captureMockArgument(
         mockGRPCClient.browserSelectedTextStream,

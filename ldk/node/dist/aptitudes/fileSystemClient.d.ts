@@ -7,14 +7,14 @@ import { StoppableStream, StreamListener } from './stoppables';
  */
 export declare class FileSystemClient extends BaseClient<FilesystemGRPCClient> implements FileSystem {
     protected generateClient(): GRPCClientConstructor<FilesystemGRPCClient>;
-    queryDirectory(params: FileSystemQueryDirectoryParams): Promise<FileSystemQueryDirectoryResponse>;
-    streamDirectory(params: FileSystemQueryDirectoryParams, listener: StreamListener<FileSystemStreamDirectoryResponse>): StoppableStream<FileSystemStreamDirectoryResponse>;
-    streamFileInfo(params: FileSystemQueryFileParams, listener: StreamListener<FileSystemStreamFileInfoResponse>): StoppableStream<FileSystemStreamFileInfoResponse>;
-    copyFile(params: FileSystemCopyOrMoveParams): Promise<void>;
-    moveFile(params: FileSystemCopyOrMoveParams): Promise<void>;
-    makeDirectory(path: FileSystemMakeDirectoryParams): Promise<void>;
-    openFile(path: string): FileSystemFile;
-    createFile(path: string): FileSystemFile;
-    removeFile(params: FileSystemRemoveParams): Promise<void>;
+    directory(params: FileSystemQueryDirectoryParams): Promise<FileSystemQueryDirectoryResponse>;
+    listenDirectory(params: FileSystemQueryDirectoryParams, listener: StreamListener<FileSystemStreamDirectoryResponse>): StoppableStream<FileSystemStreamDirectoryResponse>;
+    listenFile(params: FileSystemQueryFileParams, listener: StreamListener<FileSystemStreamFileInfoResponse>): StoppableStream<FileSystemStreamFileInfoResponse>;
+    copy(params: FileSystemCopyOrMoveParams): Promise<void>;
+    move(params: FileSystemCopyOrMoveParams): Promise<void>;
+    makeDir(path: FileSystemMakeDirectoryParams): Promise<void>;
+    open(path: string): FileSystemFile;
+    create(path: string): FileSystemFile;
+    remove(params: FileSystemRemoveParams): Promise<void>;
     protected serviceName(): string;
 }

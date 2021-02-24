@@ -46,7 +46,7 @@ class WhisperClient
    * @param whisper - An object defining the contents of the Whisper.
    * @returns Promise resolving when the server responds to the command.
    */
-  markdownWhisper(whisper: WhisperConfig): StoppableMessage<void> {
+  markdown(whisper: WhisperConfig): StoppableMessage<void> {
     return this.buildStoppableMessage<
       messages.WhisperMarkdownRequest,
       Empty,
@@ -68,7 +68,7 @@ class WhisperClient
     );
   }
 
-  confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean> {
+  confirm(whisper: WhisperConfirmConfig): StoppableMessage<boolean> {
     return this.buildStoppableMessage<
       messages.WhisperConfirmRequest,
       messages.WhisperConfirmResponse,
@@ -80,7 +80,7 @@ class WhisperClient
     );
   }
 
-  disambiguationWhisper(
+  disambiguation(
     whisper: WhisperDisambiguationConfig,
     listener: StreamListener<WhisperDisambiguationEvent>,
   ): StoppableStream<WhisperDisambiguationEvent> {
@@ -97,7 +97,7 @@ class WhisperClient
     );
   }
 
-  formWhisper(
+  form(
     whisper: WhisperFormConfig,
     listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>,
   ): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent> {

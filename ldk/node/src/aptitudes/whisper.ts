@@ -253,7 +253,7 @@ export interface Whisper {
    * @param whisper - The configuration data.
    * @param listener - A listener function that will receive an update whenever an element is clicked.
    */
-  disambiguationWhisper(
+  disambiguation(
     whisper: WhisperDisambiguationConfig,
     listener: StreamListener<WhisperDisambiguationEvent>,
   ): StoppableStream<WhisperDisambiguationEvent>;
@@ -261,12 +261,12 @@ export interface Whisper {
    * @param whisper - The whisper configuration.
    * @returns - A StoppableMessage object containing a promise resolving when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
-  markdownWhisper(whisper: WhisperConfig): StoppableMessage<void>;
+  markdown(whisper: WhisperConfig): StoppableMessage<void>;
   /**
    * @param whisper - The whisper configuration.
    * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
-  confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
+  confirm(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
   /**
    * @param whisper - The whisper configuration.
    * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
@@ -278,7 +278,7 @@ export interface Whisper {
    * @param whisper - The form Whisper configuration.
    * @param listener - A listener function that receives updates as the form is updated, and then a final update when the form has been submitted, rejected, or dismissed.
    */
-  formWhisper(
+  form(
     whisper: WhisperFormConfig,
     listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>,
   ): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;

@@ -47,7 +47,7 @@ export class ProcessClient
     return ProcessGRPCClient;
   }
 
-  queryProcesses(): Promise<ProcessListResponse> {
+  readProcesses(): Promise<ProcessListResponse> {
     return this.buildQuery<
       Messages.ProcessStateRequest,
       Messages.ProcessStateResponse,
@@ -65,7 +65,7 @@ export class ProcessClient
     );
   }
 
-  streamProcesses(
+  listenProcesses(
     listener: StreamListener<ProcessStreamResponse>,
   ): StoppableStream<ProcessStreamResponse> {
     return new TransformingStream<

@@ -7,7 +7,7 @@ import { StoppableStream, StreamListener } from './stoppables';
  */
 export declare class CursorClient extends BaseClient<CursorGRPCClient> implements Cursor {
     protected generateClient(): GRPCClientConstructor<CursorGRPCClient>;
-    queryCursorPosition(): Promise<CursorResponse>;
-    streamCursorPosition(listener: StreamListener<CursorResponse>): StoppableStream<CursorResponse>;
+    position(): Promise<CursorResponse>;
+    listenPosition(listener: StreamListener<CursorResponse>): StoppableStream<CursorResponse>;
     protected serviceName(): string;
 }

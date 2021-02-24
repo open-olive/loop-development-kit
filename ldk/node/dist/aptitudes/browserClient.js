@@ -22,16 +22,16 @@ const transformSelectedTextResponse = (message) => ({
  * @internal
  */
 class BrowserClient extends baseClient_1.default {
-    queryActiveURL() {
+    activeURL() {
         return this.buildQuery((message, callback) => this.client.browserActiveURL(message, callback), () => new browser_pb_1.default.BrowserActiveURLRequest(), (response) => response.getUrl());
     }
-    querySelectedText() {
+    selectedText() {
         return this.buildQuery((message, callback) => this.client.browserSelectedText(message, callback), () => new browser_pb_1.default.BrowserSelectedTextRequest(), transformSelectedTextResponse);
     }
-    streamActiveURL(listener) {
+    listenActiveURL(listener) {
         return new transformingStream_1.TransformingStream(this.client.browserActiveURLStream(new browser_pb_1.default.BrowserActiveURLRequest().setSession(this.createSessionMessage())), (message) => message.getUrl(), listener);
     }
-    streamSelectedText(listener) {
+    listenActiveText(listener) {
         return new transformingStream_1.TransformingStream(this.client.browserSelectedTextStream(new browser_pb_1.default.BrowserSelectedTextStreamRequest().setSession(this.createSessionMessage())), transformSelectedTextResponse, listener);
     }
     generateClient() {

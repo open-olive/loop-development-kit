@@ -98,7 +98,7 @@ clipboardReadStream: {
     responseSerialize: serialize_proto_ClipboardReadStreamResponse,
     responseDeserialize: deserialize_proto_ClipboardReadStreamResponse,
   },
-  // write to the clipboard
+  // writeText to the clipboard
 clipboardWrite: {
     path: '/proto.Clipboard/ClipboardWrite',
     requestStream: false,

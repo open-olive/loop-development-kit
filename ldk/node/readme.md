@@ -115,7 +115,7 @@ Communication between Olive Helps and the plugin is first initialized over stdio
 
 ### Loops
 
-This LDK can be used to write Loops for Olive Helps. More detail about Loops is available on the {@page Loops} page.
+This LDK can be used to writeText Loops for Olive Helps. More detail about Loops is available on the {@page Loops} page.
 
 - [Basic Loops Example](https://github.com/open-olive/sidekick-controller-examplenode) - Recommend using as a starting point for new Loops.
 

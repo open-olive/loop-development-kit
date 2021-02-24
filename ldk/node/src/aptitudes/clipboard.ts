@@ -7,20 +7,20 @@ export interface Clipboard {
   /**
    * @returns A Promise resolving with the current contents of the clipboard.
    */
-  queryClipboard(): Promise<string>;
+  text(): Promise<string>;
 
   /**
    * Starts listening to changes to the clipboard.
    *
    * @param listener - A function that's called whenever the clipboard's contents change.
-   * @returns A stream object that can be stopped.
+   * @returns A listenText object that can be stopped.
    */
-  streamClipboard(listener: StreamListener<string>): StoppableStream<string>;
+  listenText(listener: StreamListener<string>): StoppableStream<string>;
 
   /**
    * Writes the provided text into the clipboard.
    *
    * @param text
    */
-  writeClipboard(text: string): Promise<void>;
+  writeText(text: string): Promise<void>;
 }

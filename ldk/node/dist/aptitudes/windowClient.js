@@ -60,16 +60,16 @@ class WindowClient extends baseClient_1.default {
     generateClient() {
         return window_grpc_pb_1.WindowClient;
     }
-    queryActiveWindow() {
+    activeWindow() {
         return this.buildQuery((message, callback) => this.client.windowActiveWindow(message, callback), () => new window_pb_1.default.WindowActiveWindowRequest(), (response) => response.toObject().window);
     }
-    queryWindows() {
+    windows() {
         return this.buildQuery((message, callback) => this.client.windowState(message, callback), () => new window_pb_1.default.WindowStateRequest(), (response) => response.toObject().windowList);
     }
-    streamActiveWindow(listener) {
+    listenActiveWindow(listener) {
         return new transformingStream_1.TransformingStream(this.client.windowActiveWindowStream(new window_pb_1.default.WindowActiveWindowStreamRequest().setSession(this.createSessionMessage())), (response) => response.toObject().window, listener);
     }
-    streamWindows(listener) {
+    listenWindows(listener) {
         return new transformingStream_1.TransformingStream(this.client.windowStateStream(new window_pb_1.default.WindowStateStreamRequest().setSession(this.createSessionMessage())), (response) => {
             const window = response.getWindow();
             if (window == null) {

@@ -3419,7 +3419,7 @@ proto.proto.FilesystemFileStreamRequest.prototype.hasOpen = function() {
 
 
 /**
- * optional Read read = 3;
+ * optional Read text = 3;
  * @return {?proto.proto.FilesystemFileStreamRequest.Read}
  */
 proto.proto.FilesystemFileStreamRequest.prototype.getRead = function() {
@@ -3456,7 +3456,7 @@ proto.proto.FilesystemFileStreamRequest.prototype.hasRead = function() {
 
 
 /**
- * optional Write write = 4;
+ * optional Write writeText = 4;
  * @return {?proto.proto.FilesystemFileStreamRequest.Write}
  */
 proto.proto.FilesystemFileStreamRequest.prototype.getWrite = function() {
@@ -4625,7 +4625,7 @@ proto.proto.FilesystemFileStreamResponse.Stat.prototype.setError = function(valu
 
 
 /**
- * optional Read read = 1;
+ * optional Read text = 1;
  * @return {?proto.proto.FilesystemFileStreamResponse.Read}
  */
 proto.proto.FilesystemFileStreamResponse.prototype.getRead = function() {
@@ -4662,7 +4662,7 @@ proto.proto.FilesystemFileStreamResponse.prototype.hasRead = function() {
 
 
 /**
- * optional Write write = 2;
+ * optional Write writeText = 2;
  * @return {?proto.proto.FilesystemFileStreamResponse.Write}
  */
 proto.proto.FilesystemFileStreamResponse.prototype.getWrite = function() {

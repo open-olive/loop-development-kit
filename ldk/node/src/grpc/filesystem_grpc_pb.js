@@ -164,7 +164,7 @@ filesystemDir: {
     responseSerialize: serialize_proto_FilesystemDirResponse,
     responseDeserialize: deserialize_proto_FilesystemDirResponse,
   },
-  // stream any updates to the contents of a directory
+  // listenText any updates to the contents of a directory
 filesystemDirStream: {
     path: '/proto.Filesystem/FilesystemDirStream',
     requestStream: false,
@@ -176,7 +176,7 @@ filesystemDirStream: {
     responseSerialize: serialize_proto_FilesystemDirStreamResponse,
     responseDeserialize: deserialize_proto_FilesystemDirStreamResponse,
   },
-  // stream any updates to a file
+  // listenText any updates to a file
 filesystemFileInfoStream: {
     path: '/proto.Filesystem/FilesystemFileInfoStream',
     requestStream: false,
@@ -188,7 +188,7 @@ filesystemFileInfoStream: {
     responseSerialize: serialize_proto_FilesystemFileInfoStreamResponse,
     responseDeserialize: deserialize_proto_FilesystemFileInfoStreamResponse,
   },
-  // file stream
+  // file listenText
 filesystemFileStream: {
     path: '/proto.Filesystem/FilesystemFileStream',
     requestStream: true,

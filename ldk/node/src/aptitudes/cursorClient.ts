@@ -28,7 +28,7 @@ export class CursorClient
     return CursorGRPCClient;
   }
 
-  queryCursorPosition(): Promise<CursorResponse> {
+  position(): Promise<CursorResponse> {
     return this.buildQuery<
       messages.CursorPositionRequest,
       messages.CursorPositionResponse,
@@ -40,7 +40,7 @@ export class CursorClient
     );
   }
 
-  streamCursorPosition(
+  listenPosition(
     listener: StreamListener<CursorResponse>,
   ): StoppableStream<CursorResponse> {
     return new TransformingStream<

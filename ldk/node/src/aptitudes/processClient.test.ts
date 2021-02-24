@@ -57,7 +57,7 @@ describe('ProcessClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryProcesses();
+      queryResult = subject.readProcesses();
     });
 
     it('should return a transformed response', async () => {
@@ -99,10 +99,10 @@ describe('ProcessClient', () => {
         createStreamingHandler(stream),
       );
 
-      subject.streamProcesses(streamCallback);
+      subject.listenProcesses(streamCallback);
     });
 
-    it('should stream the process info back to the callback', () => {
+    it('should listenText the process info back to the callback', () => {
       stream.emit('data', sentResponse);
 
       const transformedProcessInfo: ProcessStreamResponse = captureMockArgument(

@@ -70,7 +70,7 @@ export interface FileSystemFileChownParams {
     group: number;
 }
 /**
- * The FileSystemFile interfaces provides access to the ability to write files.
+ * The FileSystemFile interfaces provides access to the ability to writeText files.
  */
 export interface FileSystemFile {
     read(): Promise<Uint8Array>;
@@ -80,7 +80,7 @@ export interface FileSystemFile {
     changePermissions(permissions: number): Promise<void>;
     changeOwnership(params: FileSystemFileChownParams): Promise<void>;
     /**
-     * The streamPromise will resolve when the stream is closed properly, or reject if the stream is closed due to an error.
+     * The streamPromise will resolve when the listenText is closed properly, or reject if the listenText is closed due to an error.
      *
      * Trying to open a file that does not exist will return an error.
      */
@@ -93,42 +93,42 @@ export interface FileSystem {
     /**
      * Queries the directory's contents.
      *
-     * @param params - The parameters for the query.
+     * @param params - The parameters for the text.
      */
-    queryDirectory(params: FileSystemQueryDirectoryParams): Promise<FileSystemQueryDirectoryResponse>;
+    directory(params: FileSystemQueryDirectoryParams): Promise<FileSystemQueryDirectoryResponse>;
     /**
      * Stream changes to the contents of this directory.
      *
-     * @param params - The parameters for the stream.
+     * @param params - The parameters for the listenText.
      * @param listener - The listener function that's called when the file changes.
      */
-    streamDirectory(params: FileSystemQueryDirectoryParams, listener: StreamListener<FileSystemStreamDirectoryResponse>): StoppableStream<FileSystemStreamDirectoryResponse>;
+    listenDirectory(params: FileSystemQueryDirectoryParams, listener: StreamListener<FileSystemStreamDirectoryResponse>): StoppableStream<FileSystemStreamDirectoryResponse>;
     /**
      * Streams changes to a specific file.
      *
-     * @param params - The parameters for the stream.
+     * @param params - The parameters for the listenText.
      * @param listener - The listener function called when the file changes.
      */
-    streamFileInfo(params: FileSystemQueryFileParams, listener: StreamListener<FileSystemStreamFileInfoResponse>): StoppableStream<FileSystemStreamFileInfoResponse>;
+    listenFile(params: FileSystemQueryFileParams, listener: StreamListener<FileSystemStreamFileInfoResponse>): StoppableStream<FileSystemStreamFileInfoResponse>;
     /**
      * Creates a File object to work with.
      *
      * @param path - The path of the file to open.
      */
-    openFile(path: string): FileSystemFile;
+    open(path: string): FileSystemFile;
     /**
      * Creates a file and
      *
      * @param path - The path of the file to open.
      */
-    createFile(path: string): FileSystemFile;
+    create(path: string): FileSystemFile;
     /**
      * Creates a directory.
      *
      * @param path - Path of the directory to be created.
      * @returns Promise resolving when the directory has been created.
      */
-    makeDirectory(path: FileSystemMakeDirectoryParams): Promise<void>;
+    makeDir(path: FileSystemMakeDirectoryParams): Promise<void>;
     /**
      * Copies a file.
      *
@@ -136,7 +136,7 @@ export interface FileSystem {
      * @returns Promise resolving when the file has been copied.
      * TODO: Can we copy files only, or directories too?
      */
-    copyFile(params: FileSystemCopyOrMoveParams): Promise<void>;
+    copy(params: FileSystemCopyOrMoveParams): Promise<void>;
     /**
      * Moves a file.
      *
@@ -144,12 +144,12 @@ export interface FileSystem {
      * @returns Promise resolving when the file has been moved.
      * TODO: Can we move files only, or directories too?
      */
-    moveFile(params: FileSystemCopyOrMoveParams): Promise<void>;
+    move(params: FileSystemCopyOrMoveParams): Promise<void>;
     /**
      * Removes a file or directory.
      *
      * @param params - The parameters for the move operation.
      * @returns Promise resolving when the file or directory has been deleted.
      */
-    removeFile(params: FileSystemRemoveParams): Promise<void>;
+    remove(params: FileSystemRemoveParams): Promise<void>;
 }

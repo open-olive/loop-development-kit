@@ -40,7 +40,7 @@ function deserialize_proto_ProcessStateStreamResponse(buffer_arg) {
     return process_pb.ProcessStateStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 var ProcessService = exports.ProcessService = {
-    // stream updates to processes as they happen
+    // listenText updates to processes as they happen
     processStateStream: {
         path: '/proto.Process/ProcessStateStream',
         requestStream: false,

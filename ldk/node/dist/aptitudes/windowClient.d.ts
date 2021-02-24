@@ -7,9 +7,9 @@ import { StoppableStream, StreamListener } from './stoppables';
  */
 export declare class WindowClient extends BaseClient<WindowGRPCClient> implements Window {
     protected generateClient(): GRPCClientConstructor<WindowGRPCClient>;
-    queryActiveWindow(): Promise<WindowInfoResponse>;
-    queryWindows(): Promise<WindowInfoResponse[]>;
-    streamActiveWindow(listener: StreamListener<WindowInfoResponse>): StoppableStream<WindowInfoResponse>;
-    streamWindows(listener: StreamListener<WindowInfoStreamResponse>): StoppableStream<WindowInfoStreamResponse>;
+    activeWindow(): Promise<WindowInfoResponse>;
+    windows(): Promise<WindowInfoResponse[]>;
+    listenActiveWindow(listener: StreamListener<WindowInfoResponse>): StoppableStream<WindowInfoResponse>;
+    listenWindows(listener: StreamListener<WindowInfoStreamResponse>): StoppableStream<WindowInfoStreamResponse>;
     protected serviceName(): string;
 }

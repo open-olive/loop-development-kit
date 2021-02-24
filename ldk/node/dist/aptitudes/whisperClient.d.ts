@@ -15,11 +15,11 @@ declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whi
      * @param whisper - An object defining the contents of the Whisper.
      * @returns Promise resolving when the server responds to the command.
      */
-    markdownWhisper(whisper: WhisperConfig): StoppableMessage<void>;
+    markdown(whisper: WhisperConfig): StoppableMessage<void>;
     listWhisper(whisper: WhisperListConfig): StoppableMessage<void>;
-    confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
-    disambiguationWhisper(whisper: WhisperDisambiguationConfig, listener: StreamListener<WhisperDisambiguationEvent>): StoppableStream<WhisperDisambiguationEvent>;
-    formWhisper(whisper: WhisperFormConfig, listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;
+    confirm(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
+    disambiguation(whisper: WhisperDisambiguationConfig, listener: StreamListener<WhisperDisambiguationEvent>): StoppableStream<WhisperDisambiguationEvent>;
+    form(whisper: WhisperFormConfig, listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent>;
     protected generateClient(): GRPCClientConstructor<WhisperGRPCClient>;
     protected serviceName(): string;
 }

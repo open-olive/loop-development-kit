@@ -24,10 +24,10 @@ class CursorClient extends baseClient_1.default {
     generateClient() {
         return cursor_grpc_pb_1.CursorClient;
     }
-    queryCursorPosition() {
+    position() {
         return this.buildQuery((message, callback) => this.client.cursorPosition(message, callback), () => new cursor_pb_1.default.CursorPositionRequest(), cursorTransformer);
     }
-    streamCursorPosition(listener) {
+    listenPosition(listener) {
         return new transformingStream_1.TransformingStream(this.client.cursorPositionStream(new cursor_pb_1.default.CursorPositionStreamRequest().setSession(this.createSessionMessage())), cursorTransformer, listener);
     }
     serviceName() {

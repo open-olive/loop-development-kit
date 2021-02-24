@@ -43,33 +43,33 @@ export interface Keyboard {
    *
    * @param listener - Listener function called whenever a chunk of text is emitted.
    */
-  streamText(listener: StreamListener<string>): StoppableStream<string>;
+  listenText(listener: StreamListener<string>): StoppableStream<string>;
 
   /**
    * Streams individual key presses as they happen.
    *
    * @param listener - Listener function called whenever an alphanumeric key is pressed.
    */
-  streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
+  listenChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
 
   /**
    * Streams Keyboard Scan Codes as they're entered.
    *
    * @param listener - Listener function called whenever a key is pressed or released.
    */
-  streamScanCode(
+  listenScanCode(
     listener: StreamListener<ScanCodeEvent>,
   ): StoppableStream<ScanCodeEvent>;
 
   /**
    * Streams when the provided hot key combinations are pressed or released.
    *
-   * The listener function only knows that one of the hot keys provided was pressed or released. If you want to listen for different hot keys you'll need to create a different stream for each.
+   * The listener function only knows that one of the hot keys provided was pressed or released. If you want to listenText for different hot keys you'll need to create a different listenText for each.
    *
-   * @param hotKeys - The list of hot keys to listen for.
+   * @param hotKeys - The list of hot keys to listenText for.
    * @param listener - Listener function called whenever any of the provided hot key combinations is pressed or released.
    */
-  streamHotKey(
+  listenHotKey(
     hotKeys: HotKeyRequest,
     listener: StreamListener<HotKeyEvent>,
   ): StoppableStream<HotKeyEvent>;

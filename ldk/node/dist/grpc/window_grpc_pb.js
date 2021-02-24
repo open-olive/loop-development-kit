@@ -88,7 +88,7 @@ var WindowService = exports.WindowService = {
         responseSerialize: serialize_proto_WindowActiveWindowResponse,
         responseDeserialize: deserialize_proto_WindowActiveWindowResponse,
     },
-    // stream information about currently focused window as it changes
+    // listenText information about currently focused window as it changes
     windowActiveWindowStream: {
         path: '/proto.Window/WindowActiveWindowStream',
         requestStream: false,

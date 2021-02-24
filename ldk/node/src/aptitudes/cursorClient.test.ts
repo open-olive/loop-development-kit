@@ -44,7 +44,7 @@ describe('CursorClient', () => {
     ).resolves.toBeUndefined();
   });
 
-  describe('#queryCursorPosition', () => {
+  describe('#position', () => {
     let sentResponse: Messages.CursorPositionResponse;
     let queryResult: Promise<CursorResponse>;
 
@@ -58,7 +58,7 @@ describe('CursorClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.queryCursorPosition();
+      queryResult = subject.position();
     });
 
     it('should return a transformed response', async () => {
@@ -87,13 +87,13 @@ describe('CursorClient', () => {
     });
   });
 
-  describe('#streamCursorPosition', () => {
+  describe('#listenPosition', () => {
     beforeEach(async () => {
       mockGRPCClient.cursorPositionStream.mockImplementation(
         createStreamingHandler(),
       );
 
-      subject.streamCursorPosition(identityCallback);
+      subject.listenPosition(identityCallback);
     });
 
     it('should have configured the request correctly', () => {
