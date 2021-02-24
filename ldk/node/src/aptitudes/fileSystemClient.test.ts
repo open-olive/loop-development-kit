@@ -15,7 +15,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { FileSystemQueryDirectoryResponse } from './fileSystem';
+import { FileInfoList } from './fileSystem';
 
 jest.mock('../grpc/filesystem_grpc_pb');
 
@@ -46,7 +46,7 @@ describe('FileSystemClient', () => {
 
   describe('#directory', () => {
     let sentResponse: Messages.FilesystemDirResponse;
-    let queryResult: Promise<FileSystemQueryDirectoryResponse>;
+    let queryResult: Promise<FileInfoList>;
     const directory = '/a-directory';
     const fileInDirectory = 'file-one.txt';
 
@@ -59,7 +59,7 @@ describe('FileSystemClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.directory({ directory });
+      queryResult = subject.directory({ path: directory });
     });
 
     it('should return a transformed response', async () => {
@@ -96,7 +96,7 @@ describe('FileSystemClient', () => {
         createStreamingHandler(),
       );
 
-      subject.listenFile({ file }, identityCallback);
+      subject.listenFile({ path: file }, identityCallback);
     });
 
     it('should call grpc client function', async () => {
@@ -123,7 +123,7 @@ describe('FileSystemClient', () => {
         createStreamingHandler(),
       );
 
-      subject.listenDirectory({ directory }, identityCallback);
+      subject.listenDirectory({ path: directory }, identityCallback);
     });
 
     it('should have configured the request correctly', () => {

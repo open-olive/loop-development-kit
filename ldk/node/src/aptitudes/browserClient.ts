@@ -1,7 +1,7 @@
 import { BrowserClient as BrowserGRPCClient } from '../grpc/browser_grpc_pb';
 import Messages from '../grpc/browser_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import { BrowserSelectedTextResponse, Browser } from './browser';
+import { SelectedText, Browser } from './browser';
 import { StoppableStream, StreamListener } from './stoppables';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 
@@ -13,7 +13,7 @@ import { StreamTransformer, TransformingStream } from './transformingStream';
 const transformSelectedTextResponse: StreamTransformer<
   | Messages.BrowserSelectedTextResponse
   | Messages.BrowserSelectedTextStreamResponse,
-  BrowserSelectedTextResponse
+  SelectedText
 > = (message) => ({
   url: message.getUrl(),
   text: message.getText(),
@@ -38,11 +38,11 @@ export class BrowserClient
     );
   }
 
-  selectedText(): Promise<BrowserSelectedTextResponse> {
+  selectedText(): Promise<SelectedText> {
     return this.buildQuery<
       Messages.BrowserSelectedTextRequest,
       Messages.BrowserSelectedTextResponse,
-      BrowserSelectedTextResponse
+      SelectedText
     >(
       (message, callback) => this.client.browserSelectedText(message, callback),
       () => new Messages.BrowserSelectedTextRequest(),
@@ -66,11 +66,11 @@ export class BrowserClient
   }
 
   listenActiveText(
-    listener: StreamListener<BrowserSelectedTextResponse>,
-  ): StoppableStream<BrowserSelectedTextResponse> {
+    listener: StreamListener<SelectedText>,
+  ): StoppableStream<SelectedText> {
     return new TransformingStream<
       Messages.BrowserSelectedTextStreamResponse,
-      BrowserSelectedTextResponse
+      SelectedText
     >(
       this.client.browserSelectedTextStream(
         new Messages.BrowserSelectedTextStreamRequest().setSession(

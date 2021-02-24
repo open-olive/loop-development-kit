@@ -36,18 +36,18 @@ const fileSystemFile_1 = require("./fileSystemFile");
 function parseFileAction(action) {
     switch (action) {
         case filesystem_pb_1.FileAction.FILE_ACTION_CREATE:
-            return fileSystem_1.FileSystemStreamAction.Create;
+            return fileSystem_1.FileAction.Create;
         case filesystem_pb_1.FileAction.FILE_ACTION_WRITE:
-            return fileSystem_1.FileSystemStreamAction.Write;
+            return fileSystem_1.FileAction.Write;
         case filesystem_pb_1.FileAction.FILE_ACTION_REMOVE:
-            return fileSystem_1.FileSystemStreamAction.Remove;
+            return fileSystem_1.FileAction.Remove;
         case filesystem_pb_1.FileAction.FILE_ACTION_RENAME:
-            return fileSystem_1.FileSystemStreamAction.Rename;
+            return fileSystem_1.FileAction.Rename;
         case filesystem_pb_1.FileAction.FILE_ACTION_CHMOD:
-            return fileSystem_1.FileSystemStreamAction.Chmod;
+            return fileSystem_1.FileAction.Chmod;
         case filesystem_pb_1.FileAction.FILE_ACTION_UNKNOWN:
         default:
-            return fileSystem_1.FileSystemStreamAction.Unknown;
+            return fileSystem_1.FileAction.Unknown;
     }
 }
 /**
@@ -60,13 +60,13 @@ class FileSystemClient extends baseClient_1.default {
     directory(params) {
         return this.buildQuery((message, callback) => {
             this.client.filesystemDir(message, callback);
-        }, () => new filesystem_pb_1.default.FilesystemDirRequest().setDirectory(params.directory), (message) => ({
+        }, () => new filesystem_pb_1.default.FilesystemDirRequest().setDirectory(params.path), (message) => ({
             files: message.getFilesList().map(fileSystemFile_1.parseFileInfo),
         }));
     }
     listenDirectory(params, listener) {
         const message = new filesystem_pb_1.default.FilesystemDirStreamRequest()
-            .setDirectory(params.directory)
+            .setDirectory(params.path)
             .setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.filesystemDirStream(message), (response) => {
             const fileInfo = response.getFile();
@@ -81,7 +81,7 @@ class FileSystemClient extends baseClient_1.default {
     }
     listenFile(params, listener) {
         const message = new filesystem_pb_1.default.FilesystemFileInfoStreamRequest()
-            .setPath(params.file)
+            .setPath(params.path)
             .setSession(this.createSessionMessage());
         return new transformingStream_1.TransformingStream(this.client.filesystemFileInfoStream(message), (response) => {
             const fileInfo = response.getFile();

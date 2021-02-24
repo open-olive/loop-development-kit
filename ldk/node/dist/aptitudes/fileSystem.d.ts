@@ -25,16 +25,13 @@ export interface FileInfo {
      */
     isDir: boolean;
 }
-export interface FileSystemQueryDirectoryParams {
-    directory: string;
+export interface FileSystemPathParams {
+    path: string;
 }
-export interface FileSystemQueryFileParams {
-    file: string;
-}
-export interface FileSystemQueryDirectoryResponse {
+export interface FileInfoList {
     files: FileInfo[];
 }
-export declare enum FileSystemStreamAction {
+export declare enum FileAction {
     Unknown = "unknown",
     Create = "create",
     Write = "write",
@@ -42,16 +39,13 @@ export declare enum FileSystemStreamAction {
     Rename = "rename",
     Chmod = "chmod"
 }
-export interface FileSystemStreamDirectoryResponse {
+export interface DirectoryEvent {
     files: FileInfo;
-    action: FileSystemStreamAction;
+    action: FileAction;
 }
-export interface FileSystemQueryFileResponse {
-    file: FileInfo | undefined;
-}
-export interface FileSystemStreamFileInfoResponse {
+export interface FileEvent {
     file: FileInfo;
-    action: FileSystemStreamAction;
+    action: FileAction;
 }
 export interface FileSystemCopyOrMoveParams {
     source: string;
@@ -95,21 +89,21 @@ export interface FileSystem {
      *
      * @param params - The parameters for the text.
      */
-    directory(params: FileSystemQueryDirectoryParams): Promise<FileSystemQueryDirectoryResponse>;
+    directory(params: FileSystemPathParams): Promise<FileInfoList>;
     /**
      * Stream changes to the contents of this directory.
      *
      * @param params - The parameters for the listenText.
      * @param listener - The listener function that's called when the file changes.
      */
-    listenDirectory(params: FileSystemQueryDirectoryParams, listener: StreamListener<FileSystemStreamDirectoryResponse>): StoppableStream<FileSystemStreamDirectoryResponse>;
+    listenDirectory(params: FileSystemPathParams, listener: StreamListener<DirectoryEvent>): StoppableStream<DirectoryEvent>;
     /**
      * Streams changes to a specific file.
      *
      * @param params - The parameters for the listenText.
      * @param listener - The listener function called when the file changes.
      */
-    listenFile(params: FileSystemQueryFileParams, listener: StreamListener<FileSystemStreamFileInfoResponse>): StoppableStream<FileSystemStreamFileInfoResponse>;
+    listenFile(params: FileSystemPathParams, listener: StreamListener<FileEvent>): StoppableStream<FileEvent>;
     /**
      * Creates a File object to work with.
      *

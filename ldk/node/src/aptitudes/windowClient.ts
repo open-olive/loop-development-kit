@@ -1,11 +1,11 @@
-import Messages, { WindowAction } from '../grpc/window_pb';
+import Messages, { WindowActionPB } from '../grpc/window_pb';
 import { WindowClient as WindowGRPCClient } from '../grpc/window_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
-  WindowInfoResponse,
-  WindowInfoStreamResponse,
+  WindowInfo,
+  WindowEvent,
   Window,
-  WindowStreamAction,
+  WindowAction,
 } from './window';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
@@ -14,25 +14,25 @@ import { TransformingStream } from './transformingStream';
  * @param action - The action.
  * @internal
  */
-function parseWindowAction(action: Messages.WindowAction): WindowStreamAction {
+function parseWindowAction(action: WindowActionPB): WindowAction {
   switch (action) {
-    case WindowAction.WINDOW_ACTION_FOCUSED:
-      return WindowStreamAction.Focused;
-    case WindowAction.WINDOW_ACTION_UNFOCUSED:
-      return WindowStreamAction.Unfocused;
-    case WindowAction.WINDOW_ACTION_OPENED:
-      return WindowStreamAction.Opened;
-    case WindowAction.WINDOW_ACTION_CLOSED:
-      return WindowStreamAction.Closed;
-    case WindowAction.WINDOW_ACTION_TITLE_CHANGED:
-      return WindowStreamAction.TitleChanged;
-    case WindowAction.WINDOW_ACTION_MOVED:
-      return WindowStreamAction.Moved;
-    case WindowAction.WINDOW_ACTION_RESIZED:
-      return WindowStreamAction.Resized;
-    case WindowAction.WINDOW_ACTION_UNKNOWN:
+    case WindowActionPB.WINDOW_ACTION_FOCUSED:
+      return WindowAction.Focused;
+    case WindowActionPB.WINDOW_ACTION_UNFOCUSED:
+      return WindowAction.Unfocused;
+    case WindowActionPB.WINDOW_ACTION_OPENED:
+      return WindowAction.Opened;
+    case WindowActionPB.WINDOW_ACTION_CLOSED:
+      return WindowAction.Closed;
+    case WindowActionPB.WINDOW_ACTION_TITLE_CHANGED:
+      return WindowAction.TitleChanged;
+    case WindowActionPB.WINDOW_ACTION_MOVED:
+      return WindowAction.Moved;
+    case WindowActionPB.WINDOW_ACTION_RESIZED:
+      return WindowAction.Resized;
+    case WindowActionPB.WINDOW_ACTION_UNKNOWN:
     default:
-      return WindowStreamAction.Unknown;
+      return WindowAction.Unknown;
   }
 }
 
@@ -46,11 +46,11 @@ export class WindowClient
     return WindowGRPCClient;
   }
 
-  activeWindow(): Promise<WindowInfoResponse> {
+  activeWindow(): Promise<WindowInfo> {
     return this.buildQuery<
       Messages.WindowActiveWindowRequest,
       Messages.WindowActiveWindowResponse,
-      WindowInfoResponse
+      WindowInfo
     >(
       (message, callback) => this.client.windowActiveWindow(message, callback),
       () => new Messages.WindowActiveWindowRequest(),
@@ -58,11 +58,11 @@ export class WindowClient
     );
   }
 
-  windows(): Promise<WindowInfoResponse[]> {
+  windows(): Promise<WindowInfo[]> {
     return this.buildQuery<
       Messages.WindowStateRequest,
       Messages.WindowStateResponse,
-      WindowInfoResponse[]
+      WindowInfo[]
     >(
       (message, callback) => this.client.windowState(message, callback),
       () => new Messages.WindowStateRequest(),
@@ -71,11 +71,11 @@ export class WindowClient
   }
 
   listenActiveWindow(
-    listener: StreamListener<WindowInfoResponse>,
-  ): StoppableStream<WindowInfoResponse> {
+    listener: StreamListener<WindowInfo>,
+  ): StoppableStream<WindowInfo> {
     return new TransformingStream<
       Messages.WindowActiveWindowStreamResponse,
-      WindowInfoResponse
+      WindowInfo
     >(
       this.client.windowActiveWindowStream(
         new Messages.WindowActiveWindowStreamRequest().setSession(
@@ -88,11 +88,11 @@ export class WindowClient
   }
 
   listenWindows(
-    listener: StreamListener<WindowInfoStreamResponse>,
-  ): StoppableStream<WindowInfoStreamResponse> {
+    listener: StreamListener<WindowEvent>,
+  ): StoppableStream<WindowEvent> {
     return new TransformingStream<
       Messages.WindowStateStreamResponse,
-      WindowInfoStreamResponse
+      WindowEvent
     >(
       this.client.windowStateStream(
         new Messages.WindowStateStreamRequest().setSession(

@@ -15,7 +15,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { WindowInfoResponse } from './window';
+import { WindowInfo } from './window';
 
 jest.mock('../grpc/window_grpc_pb');
 
@@ -53,7 +53,7 @@ describe('WindowClient', () => {
 
   describe('#activeWindow', () => {
     let sentResponse: Messages.WindowActiveWindowResponse;
-    let queryResult: Promise<WindowInfoResponse>;
+    let queryResult: Promise<WindowInfo>;
 
     beforeEach(async () => {
       sentResponse = new Messages.WindowActiveWindowResponse().setWindow(
@@ -104,7 +104,7 @@ describe('WindowClient', () => {
 
   describe('#windows', () => {
     let sentResponse: Messages.WindowStateResponse;
-    let queryResult: Promise<WindowInfoResponse[]>;
+    let queryResult: Promise<WindowInfo[]>;
 
     beforeEach(async () => {
       sentResponse = new Messages.WindowStateResponse().setWindowList([

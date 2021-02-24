@@ -1,24 +1,24 @@
 import { StoppableStream, StreamListener } from './stoppables';
 
-export enum ProcessStreamAction {
+export enum ProcessAction {
   Unknown = 'unknown',
   Started = 'started',
   Stopped = 'stopped',
 }
 
-export interface ProcessInfoResponse {
+export interface ProcessInfo {
   pid: number;
   command: string;
   arguments: string;
 }
 
-export interface ProcessStreamResponse {
-  process: ProcessInfoResponse;
-  action: ProcessStreamAction;
+export interface ProcessEvent {
+  process: ProcessInfo;
+  action: ProcessAction;
 }
 
-export interface ProcessListResponse {
-  processes: ProcessInfoResponse[];
+export interface ProcessInfoList {
+  processes: ProcessInfo[];
 }
 
 /**
@@ -30,7 +30,7 @@ export interface Process {
    *
    * @returns a Promise resolving with a list of the current processes.
    */
-  readProcesses(): Promise<ProcessListResponse>;
+  processes(): Promise<ProcessInfoList>;
 
   /**
    * Starts listening for processes starting and stopping.
@@ -38,6 +38,6 @@ export interface Process {
    * @param listener - Listener function called every time a process is started or stopped.
    */
   listenProcesses(
-    listener: StreamListener<ProcessStreamResponse>,
-  ): StoppableStream<ProcessStreamResponse>;
+    listener: StreamListener<ProcessEvent>,
+  ): StoppableStream<ProcessEvent>;
 }

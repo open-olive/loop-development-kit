@@ -15,7 +15,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { CursorResponse } from './cursor';
+import { CursorPosition } from './cursor';
 
 jest.mock('../grpc/cursor_grpc_pb');
 
@@ -46,7 +46,7 @@ describe('CursorClient', () => {
 
   describe('#position', () => {
     let sentResponse: Messages.CursorPositionResponse;
-    let queryResult: Promise<CursorResponse>;
+    let queryResult: Promise<CursorPosition>;
 
     beforeEach(async () => {
       sentResponse = new Messages.CursorPositionResponse()

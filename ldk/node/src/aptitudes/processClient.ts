@@ -1,12 +1,12 @@
 import { ProcessClient as ProcessGRPCClient } from '../grpc/process_grpc_pb';
-import Messages, { ProcessAction } from '../grpc/process_pb';
+import Messages, { ProcessAction as ProcessActionPB } from '../grpc/process_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
   Process,
-  ProcessInfoResponse,
-  ProcessListResponse,
-  ProcessStreamAction,
-  ProcessStreamResponse,
+  ProcessInfo,
+  ProcessInfoList,
+  ProcessAction,
+  ProcessEvent,
 } from './process';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
@@ -15,7 +15,7 @@ import { TransformingStream } from './transformingStream';
  * @param info - The process info to parse.
  * @internal
  */
-function parseProcessInfo(info: Messages.ProcessInfo): ProcessInfoResponse {
+function parseProcessInfo(info: Messages.ProcessInfo): ProcessInfo {
   return info.toObject();
 }
 
@@ -24,16 +24,16 @@ function parseProcessInfo(info: Messages.ProcessInfo): ProcessInfoResponse {
  * @internal
  */
 function parseProcessAction(
-  action: Messages.ProcessAction,
-): ProcessStreamAction {
+  action: ProcessActionPB,
+): ProcessAction {
   switch (action) {
-    case ProcessAction.PROCESS_ACTION_STARTED:
-      return ProcessStreamAction.Started;
-    case ProcessAction.PROCESS_ACTION_STOPPED:
-      return ProcessStreamAction.Stopped;
-    case ProcessAction.PROCESS_ACTION_UNKNOWN:
+    case ProcessActionPB.PROCESS_ACTION_STARTED:
+      return ProcessAction.Started;
+    case ProcessActionPB.PROCESS_ACTION_STOPPED:
+      return ProcessAction.Stopped;
+    case ProcessActionPB.PROCESS_ACTION_UNKNOWN:
     default:
-      return ProcessStreamAction.Unknown;
+      return ProcessAction.Unknown;
   }
 }
 
@@ -47,11 +47,11 @@ export class ProcessClient
     return ProcessGRPCClient;
   }
 
-  readProcesses(): Promise<ProcessListResponse> {
+  processes(): Promise<ProcessInfoList> {
     return this.buildQuery<
       Messages.ProcessStateRequest,
       Messages.ProcessStateResponse,
-      ProcessListResponse
+      ProcessInfoList
     >(
       (message, callback) => {
         this.client.processState(message, callback);
@@ -66,11 +66,11 @@ export class ProcessClient
   }
 
   listenProcesses(
-    listener: StreamListener<ProcessStreamResponse>,
-  ): StoppableStream<ProcessStreamResponse> {
+    listener: StreamListener<ProcessEvent>,
+  ): StoppableStream<ProcessEvent> {
     return new TransformingStream<
       Messages.ProcessStateStreamResponse,
-      ProcessStreamResponse
+      ProcessEvent
     >(
       this.client.processStateStream(
         new Messages.ProcessStateStreamRequest().setSession(

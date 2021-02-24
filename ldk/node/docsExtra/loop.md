@@ -11,10 +11,10 @@ class Loop {
   start(aptitudes) {
     this.aptitudes = aptitudes;
     // Listen to the clipboard as it changes.
-    this.clipboardStream = this.aptitudes.clipboard.listenText((error, text) => {
+    this.clipboardStream = this.aptitudes.clipboard.listenText((error, character) => {
       // Emit a whisper containing the clipboard's contents.
       this.aptitudes.whisper.markdown({
-        markdown: `Clipboard Contents: ${text}`,
+        markdown: `Clipboard Contents: ${character}`,
         label: 'Clipboard Change!'
       });
     });

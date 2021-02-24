@@ -15,7 +15,7 @@ var goog = jspb;
 var global = Function('return this')();
 var session_pb = require('./session_pb.js');
 goog.object.extend(proto, session_pb);
-goog.exportSymbol('proto.proto.WindowAction', null, global);
+goog.exportSymbol('proto.proto.WindowActionPB', null, global);
 goog.exportSymbol('proto.proto.WindowActiveWindowRequest', null, global);
 goog.exportSymbol('proto.proto.WindowActiveWindowResponse', null, global);
 goog.exportSymbol('proto.proto.WindowActiveWindowStreamRequest', null, global);
@@ -996,7 +996,7 @@ proto.proto.WindowStateStreamResponse.prototype.hasWindow = function () {
     return jspb.Message.getField(this, 1) != null;
 };
 /**
- * optional WindowAction action = 2;
+ * optional WindowActionPB action = 2;
  * @return {!proto.proto.WindowAction}
  */
 proto.proto.WindowStateStreamResponse.prototype.getAction = function () {

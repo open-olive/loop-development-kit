@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FileSystemStreamAction = void 0;
-var FileSystemStreamAction;
-(function (FileSystemStreamAction) {
-    FileSystemStreamAction["Unknown"] = "unknown";
-    FileSystemStreamAction["Create"] = "create";
-    FileSystemStreamAction["Write"] = "write";
-    FileSystemStreamAction["Remove"] = "remove";
-    FileSystemStreamAction["Rename"] = "rename";
-    FileSystemStreamAction["Chmod"] = "chmod";
-})(FileSystemStreamAction = exports.FileSystemStreamAction || (exports.FileSystemStreamAction = {}));
+exports.FileAction = void 0;
+var FileAction;
+(function (FileAction) {
+    FileAction["Unknown"] = "unknown";
+    FileAction["Create"] = "create";
+    FileAction["Write"] = "write";
+    FileAction["Remove"] = "remove";
+    FileAction["Rename"] = "rename";
+    FileAction["Chmod"] = "chmod";
+})(FileAction = exports.FileAction || (exports.FileAction = {}));

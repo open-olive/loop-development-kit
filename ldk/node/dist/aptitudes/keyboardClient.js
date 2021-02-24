@@ -31,7 +31,7 @@ const generateModifierFlag = (modifiers) =>
  * @param message - The message to transform.
  */
 const transformTextStream = (message) => ({
-    text: message.getText(),
+    character: message.getText(),
 });
 /**
  * @internal

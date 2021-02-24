@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WindowStreamAction = void 0;
-var WindowStreamAction;
-(function (WindowStreamAction) {
-    WindowStreamAction["Unknown"] = "unknown";
-    WindowStreamAction["Focused"] = "focused";
-    WindowStreamAction["Unfocused"] = "unfocused";
-    WindowStreamAction["Opened"] = "opened";
-    WindowStreamAction["Closed"] = "closed";
-    WindowStreamAction["TitleChanged"] = "titleChanged";
-    WindowStreamAction["Moved"] = "moved";
-    WindowStreamAction["Resized"] = "resized";
-})(WindowStreamAction = exports.WindowStreamAction || (exports.WindowStreamAction = {}));
+exports.WindowAction = void 0;
+var WindowAction;
+(function (WindowAction) {
+    WindowAction["Unknown"] = "unknown";
+    WindowAction["Focused"] = "focused";
+    WindowAction["Unfocused"] = "unfocused";
+    WindowAction["Opened"] = "opened";
+    WindowAction["Closed"] = "closed";
+    WindowAction["TitleChanged"] = "titleChanged";
+    WindowAction["Moved"] = "moved";
+    WindowAction["Resized"] = "resized";
+})(WindowAction = exports.WindowAction || (exports.WindowAction = {}));

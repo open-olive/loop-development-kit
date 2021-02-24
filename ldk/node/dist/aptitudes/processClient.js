@@ -42,12 +42,12 @@ function parseProcessInfo(info) {
 function parseProcessAction(action) {
     switch (action) {
         case process_pb_1.ProcessAction.PROCESS_ACTION_STARTED:
-            return process_1.ProcessStreamAction.Started;
+            return process_1.ProcessAction.Started;
         case process_pb_1.ProcessAction.PROCESS_ACTION_STOPPED:
-            return process_1.ProcessStreamAction.Stopped;
+            return process_1.ProcessAction.Stopped;
         case process_pb_1.ProcessAction.PROCESS_ACTION_UNKNOWN:
         default:
-            return process_1.ProcessStreamAction.Unknown;
+            return process_1.ProcessAction.Unknown;
     }
 }
 /**
@@ -57,7 +57,7 @@ class ProcessClient extends baseClient_1.default {
     generateClient() {
         return process_grpc_pb_1.ProcessClient;
     }
-    readProcesses() {
+    processes() {
         return this.buildQuery((message, callback) => {
             this.client.processState(message, callback);
         }, () => new process_pb_1.default.ProcessStateRequest(), (response) => ({

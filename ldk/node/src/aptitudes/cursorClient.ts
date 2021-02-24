@@ -1,7 +1,7 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { CursorClient as CursorGRPCClient } from '../grpc/cursor_grpc_pb';
 import messages from '../grpc/cursor_pb';
-import { Cursor, CursorResponse } from './cursor';
+import { Cursor, CursorPosition } from './cursor';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 import { StoppableStream, StreamListener } from './stoppables';
 
@@ -11,7 +11,7 @@ import { StoppableStream, StreamListener } from './stoppables';
  */
 const cursorTransformer: StreamTransformer<
   messages.CursorPositionStreamResponse | messages.CursorPositionResponse,
-  CursorResponse
+  CursorPosition
 > = (message) => ({
   screen: message.getScreen(),
   x: message.getX(),
@@ -28,11 +28,11 @@ export class CursorClient
     return CursorGRPCClient;
   }
 
-  position(): Promise<CursorResponse> {
+  position(): Promise<CursorPosition> {
     return this.buildQuery<
       messages.CursorPositionRequest,
       messages.CursorPositionResponse,
-      CursorResponse
+      CursorPosition
     >(
       (message, callback) => this.client.cursorPosition(message, callback),
       () => new messages.CursorPositionRequest(),
@@ -41,11 +41,11 @@ export class CursorClient
   }
 
   listenPosition(
-    listener: StreamListener<CursorResponse>,
-  ): StoppableStream<CursorResponse> {
+    listener: StreamListener<CursorPosition>,
+  ): StoppableStream<CursorPosition> {
     return new TransformingStream<
       messages.CursorPositionStreamResponse,
-      CursorResponse
+      CursorPosition
     >(
       this.client.cursorPositionStream(
         new messages.CursorPositionStreamRequest().setSession(

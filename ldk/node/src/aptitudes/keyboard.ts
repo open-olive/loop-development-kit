@@ -15,7 +15,7 @@ export interface KeyboardModifiers {
   shift: boolean;
 }
 
-export interface HotKeyRequest {
+export interface HotKey {
   // Must be one character long.
   key: string;
   modifiers: Partial<KeyboardModifiers>;
@@ -25,8 +25,8 @@ export interface HotKeyEvent {
   direction: 'down' | 'up';
 }
 
-export interface TextStream {
-  text: string;
+export interface CharacterEvent {
+  character: string;
 }
 
 export interface ScanCodeEvent {
@@ -50,7 +50,7 @@ export interface Keyboard {
    *
    * @param listener - Listener function called whenever an alphanumeric key is pressed.
    */
-  listenChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
+  listenChar(listener: StreamListener<CharacterEvent>): StoppableStream<CharacterEvent>;
 
   /**
    * Streams Keyboard Scan Codes as they're entered.
@@ -70,7 +70,7 @@ export interface Keyboard {
    * @param listener - Listener function called whenever any of the provided hot key combinations is pressed or released.
    */
   listenHotKey(
-    hotKeys: HotKeyRequest,
+    hotKeys: HotKey,
     listener: StreamListener<HotKeyEvent>,
   ): StoppableStream<HotKeyEvent>;
 }

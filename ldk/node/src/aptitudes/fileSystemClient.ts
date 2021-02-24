@@ -1,19 +1,17 @@
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import { FilesystemClient as FilesystemGRPCClient } from '../grpc/filesystem_grpc_pb';
-import messages, { FileAction } from '../grpc/filesystem_pb';
+import messages, { FileAction as FileActionPB } from '../grpc/filesystem_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
   FileSystemCopyOrMoveParams,
   FileSystemFile,
   FileSystemMakeDirectoryParams,
-  FileSystemQueryDirectoryParams,
-  FileSystemQueryDirectoryResponse,
-  FileSystemQueryFileParams,
+  FileInfoList,
   FileSystemRemoveParams,
   FileSystem,
-  FileSystemStreamAction,
-  FileSystemStreamDirectoryResponse,
-  FileSystemStreamFileInfoResponse,
+  FileAction,
+  DirectoryEvent,
+  FileEvent, FileSystemPathParams,
 } from './fileSystem';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
@@ -23,21 +21,21 @@ import { FileSystemFileImpl, parseFileInfo } from './fileSystemFile';
  * @param action - The file action.
  * @internal
  */
-function parseFileAction(action: FileAction): FileSystemStreamAction {
+function parseFileAction(action: FileActionPB): FileAction {
   switch (action) {
-    case FileAction.FILE_ACTION_CREATE:
-      return FileSystemStreamAction.Create;
-    case FileAction.FILE_ACTION_WRITE:
-      return FileSystemStreamAction.Write;
-    case FileAction.FILE_ACTION_REMOVE:
-      return FileSystemStreamAction.Remove;
-    case FileAction.FILE_ACTION_RENAME:
-      return FileSystemStreamAction.Rename;
-    case FileAction.FILE_ACTION_CHMOD:
-      return FileSystemStreamAction.Chmod;
-    case FileAction.FILE_ACTION_UNKNOWN:
+    case FileActionPB.FILE_ACTION_CREATE:
+      return FileAction.Create;
+    case FileActionPB.FILE_ACTION_WRITE:
+      return FileAction.Write;
+    case FileActionPB.FILE_ACTION_REMOVE:
+      return FileAction.Remove;
+    case FileActionPB.FILE_ACTION_RENAME:
+      return FileAction.Rename;
+    case FileActionPB.FILE_ACTION_CHMOD:
+      return FileAction.Chmod;
+    case FileActionPB.FILE_ACTION_UNKNOWN:
     default:
-      return FileSystemStreamAction.Unknown;
+      return FileAction.Unknown;
   }
 }
 
@@ -52,17 +50,17 @@ export class FileSystemClient
   }
 
   directory(
-    params: FileSystemQueryDirectoryParams,
-  ): Promise<FileSystemQueryDirectoryResponse> {
+    params: FileSystemPathParams,
+  ): Promise<FileInfoList> {
     return this.buildQuery<
       messages.FilesystemDirRequest,
       messages.FilesystemDirResponse,
-      FileSystemQueryDirectoryResponse
+      FileInfoList
     >(
       (message, callback) => {
         this.client.filesystemDir(message, callback);
       },
-      () => new messages.FilesystemDirRequest().setDirectory(params.directory),
+      () => new messages.FilesystemDirRequest().setDirectory(params.path),
       (message) => ({
         files: message.getFilesList().map(parseFileInfo),
       }),
@@ -70,15 +68,15 @@ export class FileSystemClient
   }
 
   listenDirectory(
-    params: FileSystemQueryDirectoryParams,
-    listener: StreamListener<FileSystemStreamDirectoryResponse>,
-  ): StoppableStream<FileSystemStreamDirectoryResponse> {
+    params: FileSystemPathParams,
+    listener: StreamListener<DirectoryEvent>,
+  ): StoppableStream<DirectoryEvent> {
     const message = new messages.FilesystemDirStreamRequest()
-      .setDirectory(params.directory)
+      .setDirectory(params.path)
       .setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.FilesystemDirStreamResponse,
-      FileSystemStreamDirectoryResponse
+      DirectoryEvent
     >(
       this.client.filesystemDirStream(message),
       (response) => {
@@ -96,15 +94,15 @@ export class FileSystemClient
   }
 
   listenFile(
-    params: FileSystemQueryFileParams,
-    listener: StreamListener<FileSystemStreamFileInfoResponse>,
-  ): StoppableStream<FileSystemStreamFileInfoResponse> {
+    params: FileSystemPathParams,
+    listener: StreamListener<FileEvent>,
+  ): StoppableStream<FileEvent> {
     const message = new messages.FilesystemFileInfoStreamRequest()
-      .setPath(params.file)
+      .setPath(params.path)
       .setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.FilesystemFileInfoStreamResponse,
-      FileSystemStreamFileInfoResponse
+      FileEvent
     >(
       this.client.filesystemFileInfoStream(message),
       (response) => {

@@ -1,6 +1,6 @@
 import { StoppableStream, StreamListener } from './stoppables';
 
-export interface WindowInfoResponse {
+export interface WindowInfo {
   title: string;
   path: string;
   pid: number;
@@ -10,7 +10,7 @@ export interface WindowInfoResponse {
   height: number;
 }
 
-export enum WindowStreamAction {
+export enum WindowAction {
   Unknown = 'unknown',
   Focused = 'focused',
   Unfocused = 'unfocused',
@@ -21,9 +21,9 @@ export enum WindowStreamAction {
   Resized = 'resized',
 }
 
-export interface WindowInfoStreamResponse {
-  window: WindowInfoResponse;
-  action: WindowStreamAction;
+export interface WindowEvent {
+  window: WindowInfo;
+  action: WindowAction;
 }
 
 /**
@@ -37,14 +37,14 @@ export interface Window {
    *
    * @returns Promise resolving with information about the current active window.
    */
-  activeWindow(): Promise<WindowInfoResponse>;
+  activeWindow(): Promise<WindowInfo>;
 
   /**
    * Gets all the open windows.
    *
    * @returns Promise resolving with a list of all the current windows.
    */
-  windows(): Promise<WindowInfoResponse[]>;
+  windows(): Promise<WindowInfo[]>;
 
   /**
    * Streams changes to the active window.
@@ -52,8 +52,8 @@ export interface Window {
    * @param listener - Listener function called whenever the active window changes.
    */
   listenActiveWindow(
-    listener: StreamListener<WindowInfoResponse>,
-  ): StoppableStream<WindowInfoResponse>;
+    listener: StreamListener<WindowInfo>,
+  ): StoppableStream<WindowInfo>;
 
   /**
    * Stream changes to all windows.
@@ -61,6 +61,6 @@ export interface Window {
    * @param listener - Listener function called whenever a window is opened, changed, or closed.
    */
   listenWindows(
-    listener: StreamListener<WindowInfoStreamResponse>,
-  ): StoppableStream<WindowInfoStreamResponse>;
+    listener: StreamListener<WindowEvent>,
+  ): StoppableStream<WindowEvent>;
 }

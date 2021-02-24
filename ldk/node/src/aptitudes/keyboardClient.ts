@@ -5,11 +5,11 @@ import { StreamTransformer, TransformingStream } from './transformingStream';
 import { StoppableStream, StreamListener } from './stoppables';
 import {
   HotKeyEvent,
-  HotKeyRequest,
+  HotKey,
   Keyboard,
   KeyboardModifiers,
   ScanCodeEvent,
-  TextStream,
+  CharacterEvent,
 } from './keyboard';
 
 /**
@@ -38,9 +38,9 @@ const generateModifierFlag = (modifiers: Partial<KeyboardModifiers>): number =>
  */
 const transformTextStream: StreamTransformer<
   messages.KeyboardTextStreamResponse,
-  TextStream
+  CharacterEvent
 > = (message) => ({
-  text: message.getText(),
+  character: message.getText(),
 });
 
 /**
@@ -60,7 +60,7 @@ const transformScanCodeStream: StreamTransformer<
  * @param keyRequest - The key request to generate a listenText for.
  */
 function generateHotkeyStreamRequest(
-  keyRequest: HotKeyRequest,
+  keyRequest: HotKey,
 ): messages.KeyboardHotkeyStreamRequest {
   const request = new messages.KeyboardHotkey();
   request.setKey(keyRequest.key);
@@ -88,7 +88,7 @@ export default class KeyboardClient
   extends BaseClient<KeyboardGRPCClient>
   implements Keyboard {
   listenHotKey(
-    hotKeys: HotKeyRequest,
+    hotKeys: HotKey,
     listener: StreamListener<HotKeyEvent>,
   ): StoppableStream<HotKeyEvent> {
     const message = generateHotkeyStreamRequest(hotKeys).setSession(
@@ -114,8 +114,8 @@ export default class KeyboardClient
   }
 
   listenChar(
-    listener: StreamListener<TextStream>,
-  ): StoppableStream<TextStream> {
+    listener: StreamListener<CharacterEvent>,
+  ): StoppableStream<CharacterEvent> {
     return new TransformingStream(
       this.client.keyboardCharacterStream(
         new messages.KeyboardCharacterStreamRequest().setSession(

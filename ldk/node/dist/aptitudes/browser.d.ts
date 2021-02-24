@@ -1,5 +1,5 @@
 import { StoppableStream, StreamListener } from './stoppables';
-export interface BrowserSelectedTextResponse {
+export interface SelectedText {
     text: string;
     url: string;
     tabTitle: string;
@@ -28,11 +28,11 @@ export interface Browser {
      *
      * @returns Promise resolving with the currently selected text.
      */
-    selectedText(): Promise<BrowserSelectedTextResponse>;
+    selectedText(): Promise<SelectedText>;
     /**
      * Streams changes to the selected text.
      *
      * @param listener - Listener function called whenever the selected text changes.
      */
-    listenActiveText(listener: StreamListener<BrowserSelectedTextResponse>): StoppableStream<BrowserSelectedTextResponse>;
+    listenActiveText(listener: StreamListener<SelectedText>): StoppableStream<SelectedText>;
 }

@@ -17,7 +17,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { ProcessListResponse, ProcessStreamResponse } from './process';
+import { ProcessInfoList, ProcessEvent } from './process';
 
 jest.mock('../grpc/process_grpc_pb');
 
@@ -48,7 +48,7 @@ describe('ProcessClient', () => {
 
   describe('#queryProcess', () => {
     let sentResponse: Messages.ProcessStateResponse;
-    let queryResult: Promise<ProcessListResponse>;
+    let queryResult: Promise<ProcessInfoList>;
 
     beforeEach(async () => {
       sentResponse = new Messages.ProcessStateResponse();
@@ -57,7 +57,7 @@ describe('ProcessClient', () => {
         createCallbackHandler(sentResponse),
       );
 
-      queryResult = subject.readProcesses();
+      queryResult = subject.processes();
     });
 
     it('should return a transformed response', async () => {
@@ -105,7 +105,7 @@ describe('ProcessClient', () => {
     it('should listenText the process info back to the callback', () => {
       stream.emit('data', sentResponse);
 
-      const transformedProcessInfo: ProcessStreamResponse = captureMockArgument(
+      const transformedProcessInfo: ProcessEvent = captureMockArgument(
         streamCallback,
         { position: 1 },
       );

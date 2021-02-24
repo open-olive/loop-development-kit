@@ -16,7 +16,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { BrowserSelectedTextResponse } from './browser';
+import { SelectedText } from './browser';
 
 jest.mock('../grpc/browser_grpc_pb');
 
@@ -83,7 +83,7 @@ describe('BrowserClient', () => {
 
   describe('#selectedText', () => {
     let sentResponse: Messages.BrowserSelectedTextResponse;
-    let queryResult: Promise<BrowserSelectedTextResponse>;
+    let queryResult: Promise<SelectedText>;
 
     beforeEach(async () => {
       sentResponse = new Messages.BrowserSelectedTextResponse()
