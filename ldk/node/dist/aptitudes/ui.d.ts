@@ -1,5 +1,5 @@
 import { StoppableStream, StreamListener } from './stoppables';
-export interface UIService {
+export interface Ui {
     streamSearchbar(listener: StreamListener<string>): StoppableStream<string>;
     streamGlobalSearch(listener: StreamListener<string>): StoppableStream<string>;
 }

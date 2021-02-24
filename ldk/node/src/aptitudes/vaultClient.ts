@@ -2,14 +2,14 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { VaultClient as VaultGRPCClient } from '../grpc/vault_grpc_pb';
 import messages from '../grpc/vault_pb';
-import { VaultService } from './vaultService';
+import { Vault } from './vault';
 
 /**
  * @internal
  */
 export default class VaultClient
   extends BaseClient<VaultGRPCClient>
-  implements VaultService {
+  implements Vault {
   /**
    * Delete a key from vault.
    *

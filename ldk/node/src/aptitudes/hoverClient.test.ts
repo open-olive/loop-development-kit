@@ -15,7 +15,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { HoverResponse } from './hoverService';
+import { HoverResponse } from './hover';
 
 jest.mock('../grpc/hover_grpc_pb');
 

@@ -6,11 +6,11 @@ import { StoppableStream, StreamListener } from './stoppables';
 import {
   HotKeyEvent,
   HotKeyRequest,
-  KeyboardService,
+  Keyboard,
   KeyboardModifiers,
   ScanCodeEvent,
   TextStream,
-} from './keyboardService';
+} from './keyboard';
 
 /**
  * @internal
@@ -86,7 +86,7 @@ const transformHotKeyEvent: StreamTransformer<
  */
 export default class KeyboardClient
   extends BaseClient<KeyboardGRPCClient>
-  implements KeyboardService {
+  implements Keyboard {
   streamHotKey(
     hotKeys: HotKeyRequest,
     listener: StreamListener<HotKeyEvent>,

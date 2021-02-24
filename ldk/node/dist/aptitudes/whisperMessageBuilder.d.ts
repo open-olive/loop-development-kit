@@ -1,4 +1,4 @@
-import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationElements, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlign, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListStyle } from './whisperService';
+import { WhisperConfig, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationElements, WhisperFormConfig, WhisperFormInput, WhisperFormInputs, WhisperListAlign, WhisperListConfig, WhisperListElement, WhisperListElements, WhisperListStyle } from './whisper';
 import * as messages from '../grpc/whisper_pb';
 /**
  * @internal
@@ -29,7 +29,7 @@ export declare const generateWhisperDisambiguationElement: (element: WhisperDisa
  * @internal
  * @param whisper - whisper to build
  */
-export declare const generateWhisperMeta: (whisper: Whisper) => messages.WhisperMeta;
+export declare const generateWhisperMeta: (whisper: WhisperConfig) => messages.WhisperMeta;
 /**
  * @internal
  * @param config - whisper to build
@@ -44,7 +44,7 @@ export declare const generateWhisperForm: (config: WhisperFormConfig) => message
  * @internal
  * @param whisper - whisper to build
  */
-export declare const buildWhisperMarkdownRequest: (whisper: Whisper) => messages.WhisperMarkdownRequest;
+export declare const buildWhisperMarkdownRequest: (whisper: WhisperConfig) => messages.WhisperMarkdownRequest;
 /**
  * @internal
  * @param config - whisper to build

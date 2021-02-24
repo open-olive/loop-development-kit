@@ -21,7 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildWhisperConfirmMessage = exports.buildWhisperListRequest = exports.buildWhisperMarkdownRequest = exports.generateWhisperForm = exports.generateWhisperDisambiguation = exports.generateWhisperMeta = exports.generateWhisperDisambiguationElement = exports.generateWhisperListElement = exports.generateWhisperListAlign = exports.generateWhisperListStyle = exports.generateWhisperInput = void 0;
 const timestamp_pb_1 = require("google-protobuf/google/protobuf/timestamp_pb");
-const whisperService_1 = require("./whisperService");
+const whisper_1 = require("./whisper");
 const messages = __importStar(require("../grpc/whisper_pb"));
 /**
  * @internal
@@ -137,16 +137,16 @@ input) {
  */
 exports.generateWhisperListStyle = (style) => {
     switch (style) {
-        case whisperService_1.WhisperListStyle.NONE: {
+        case whisper_1.WhisperListStyle.NONE: {
             return messages.WhisperListElement.Style.STYLE_NONE;
         }
-        case whisperService_1.WhisperListStyle.SUCCESS: {
+        case whisper_1.WhisperListStyle.SUCCESS: {
             return messages.WhisperListElement.Style.STYLE_SUCCESS;
         }
-        case whisperService_1.WhisperListStyle.WARN: {
+        case whisper_1.WhisperListStyle.WARN: {
             return messages.WhisperListElement.Style.STYLE_WARN;
         }
-        case whisperService_1.WhisperListStyle.ERROR: {
+        case whisper_1.WhisperListStyle.ERROR: {
             return messages.WhisperListElement.Style.STYLE_ERROR;
         }
         default: {
@@ -160,13 +160,13 @@ exports.generateWhisperListStyle = (style) => {
  */
 exports.generateWhisperListAlign = (align) => {
     switch (align) {
-        case whisperService_1.WhisperListAlign.LEFT: {
+        case whisper_1.WhisperListAlign.LEFT: {
             return messages.WhisperListElement.Align.ALIGN_LEFT;
         }
-        case whisperService_1.WhisperListAlign.CENTER: {
+        case whisper_1.WhisperListAlign.CENTER: {
             return messages.WhisperListElement.Align.ALIGN_CENTER;
         }
-        case whisperService_1.WhisperListAlign.RIGHT: {
+        case whisper_1.WhisperListAlign.RIGHT: {
             return messages.WhisperListElement.Align.ALIGN_RIGHT;
         }
         default: {
@@ -192,7 +192,7 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
             }
             else {
-                inputMsg.setStyle(exports.generateWhisperListStyle(whisperService_1.WhisperListStyle.NONE));
+                inputMsg.setStyle(exports.generateWhisperListStyle(whisper_1.WhisperListStyle.NONE));
             }
             inputMsg.setValue(element.value);
             msg.setPair(inputMsg);
@@ -204,7 +204,7 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setAlign(exports.generateWhisperListAlign(element.align));
             }
             else {
-                inputMsg.setAlign(exports.generateWhisperListAlign(whisperService_1.WhisperListAlign.LEFT));
+                inputMsg.setAlign(exports.generateWhisperListAlign(whisper_1.WhisperListAlign.LEFT));
             }
             if (element.body) {
                 inputMsg.setBody(element.body);
@@ -216,7 +216,7 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
             }
             else {
-                inputMsg.setStyle(exports.generateWhisperListStyle(whisperService_1.WhisperListStyle.NONE));
+                inputMsg.setStyle(exports.generateWhisperListStyle(whisper_1.WhisperListStyle.NONE));
             }
             msg.setMessage(inputMsg);
             break;
@@ -227,7 +227,7 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
             }
             else {
-                inputMsg.setStyle(exports.generateWhisperListStyle(whisperService_1.WhisperListStyle.NONE));
+                inputMsg.setStyle(exports.generateWhisperListStyle(whisper_1.WhisperListStyle.NONE));
             }
             msg.setDivider(inputMsg);
             break;
@@ -238,7 +238,7 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setAlign(exports.generateWhisperListAlign(element.align));
             }
             else {
-                inputMsg.setAlign(exports.generateWhisperListAlign(whisperService_1.WhisperListAlign.LEFT));
+                inputMsg.setAlign(exports.generateWhisperListAlign(whisper_1.WhisperListAlign.LEFT));
             }
             if (element.href) {
                 inputMsg.setHref(element.href);
@@ -247,7 +247,7 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
             }
             else {
-                inputMsg.setStyle(exports.generateWhisperListStyle(whisperService_1.WhisperListStyle.NONE));
+                inputMsg.setStyle(exports.generateWhisperListStyle(whisper_1.WhisperListStyle.NONE));
             }
             if (element.text) {
                 inputMsg.setText(element.text);

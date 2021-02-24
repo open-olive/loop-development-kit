@@ -1,5 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
-import { FileInfo, FileSystemFile, FileSystemFileChownParams } from './fileSystemService';
+import { FileInfo, FileSystemFile, FileSystemFileChownParams } from './fileSystem';
 import messages from '../grpc/filesystem_pb';
 import { Session } from '../grpc/session_pb';
 import { ILogger } from '../logging';

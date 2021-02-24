@@ -1,6 +1,6 @@
 import { Timestamp } from 'google-protobuf/google/protobuf/timestamp_pb';
 import {
-  Whisper,
+  WhisperConfig,
   WhisperConfirmConfig,
   WhisperDisambiguationConfig,
   WhisperDisambiguationElements,
@@ -12,7 +12,7 @@ import {
   WhisperListElement,
   WhisperListElements,
   WhisperListStyle,
-} from './whisperService';
+} from './whisper';
 import * as messages from '../grpc/whisper_pb';
 
 type FormMessage<T> = {
@@ -317,7 +317,7 @@ export const generateWhisperDisambiguationElement = (
  * @internal
  * @param whisper - whisper to build
  */
-export const generateWhisperMeta = (whisper: Whisper): messages.WhisperMeta => {
+export const generateWhisperMeta = (whisper: WhisperConfig): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
   return whisperMsg;
@@ -366,7 +366,7 @@ export const generateWhisperForm = (
  * @param whisper - whisper to build
  */
 export const buildWhisperMarkdownRequest = (
-  whisper: Whisper,
+  whisper: WhisperConfig,
 ): messages.WhisperMarkdownRequest => {
   const meta = generateWhisperMeta(whisper);
   const result = new messages.WhisperMarkdownRequest().setMeta(meta);

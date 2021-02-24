@@ -1,5 +1,5 @@
 import { WhisperClient as WhisperGRPCClient } from '../grpc/whisper_grpc_pb';
-import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationEvent, WhisperFormConfig, WhisperFormSubmitEvent, WhisperFormUpdateEvent, WhisperListConfig, WhisperService } from './whisperService';
+import { Whisper, WhisperConfirmConfig, WhisperDisambiguationConfig, WhisperDisambiguationEvent, WhisperFormConfig, WhisperFormSubmitEvent, WhisperFormUpdateEvent, WhisperListConfig, WhisperConfig } from './whisper';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StoppableMessage, StoppableStream, StreamListener } from './stoppables';
 /**
@@ -7,7 +7,7 @@ import { StoppableMessage, StoppableStream, StreamListener } from './stoppables'
  *
  * @internal
  */
-declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements WhisperService {
+declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whisper {
     /**
      * Send a Whisper to the host process.
      *
@@ -15,7 +15,7 @@ declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whi
      * @param whisper - An object defining the contents of the Whisper.
      * @returns Promise resolving when the server responds to the command.
      */
-    markdownWhisper(whisper: Whisper): StoppableMessage<void>;
+    markdownWhisper(whisper: WhisperConfig): StoppableMessage<void>;
     listWhisper(whisper: WhisperListConfig): StoppableMessage<void>;
     confirmWhisper(whisper: WhisperConfirmConfig): StoppableMessage<boolean>;
     disambiguationWhisper(whisper: WhisperDisambiguationConfig, listener: StreamListener<WhisperDisambiguationEvent>): StoppableStream<WhisperDisambiguationEvent>;

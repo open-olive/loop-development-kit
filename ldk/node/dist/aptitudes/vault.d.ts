@@ -1,7 +1,7 @@
 /**
- * The VaultService allows users to save/load data from vault. The Vault values can be modified by the user.
+ * The Vault allows users to save/load data from vault. The Vault values can be modified by the user.
  */
-export interface VaultService {
+export interface Vault {
     /**
      * @param key - Key of the item to delete from vault.
      * @returns Promise that resolves when the deletion completes.

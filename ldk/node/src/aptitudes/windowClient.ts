@@ -4,9 +4,9 @@ import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
   WindowInfoResponse,
   WindowInfoStreamResponse,
-  WindowService,
+  Window,
   WindowStreamAction,
-} from './windowService';
+} from './window';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
@@ -41,7 +41,7 @@ function parseWindowAction(action: Messages.WindowAction): WindowStreamAction {
  */
 export class WindowClient
   extends BaseClient<WindowGRPCClient>
-  implements WindowService {
+  implements Window {
   protected generateClient(): GRPCClientConstructor<WindowGRPCClient> {
     return WindowGRPCClient;
   }

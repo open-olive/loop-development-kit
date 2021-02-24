@@ -3,7 +3,7 @@ import {
   FileInfo,
   FileSystemFile,
   FileSystemFileChownParams,
-} from './fileSystemService';
+} from './fileSystem';
 import messages, { FilesystemFileStreamRequest } from '../grpc/filesystem_pb';
 import { Session } from '../grpc/session_pb';
 import { ILogger } from '../logging';

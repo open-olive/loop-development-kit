@@ -1,11 +1,11 @@
 import { FilesystemClient as FilesystemGRPCClient } from '../grpc/filesystem_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import { FileSystemCopyOrMoveParams, FileSystemFile, FileSystemMakeDirectoryParams, FileSystemQueryDirectoryParams, FileSystemQueryDirectoryResponse, FileSystemQueryFileParams, FileSystemRemoveParams, FileSystemService, FileSystemStreamDirectoryResponse, FileSystemStreamFileInfoResponse } from './fileSystemService';
+import { FileSystemCopyOrMoveParams, FileSystemFile, FileSystemMakeDirectoryParams, FileSystemQueryDirectoryParams, FileSystemQueryDirectoryResponse, FileSystemQueryFileParams, FileSystemRemoveParams, FileSystem, FileSystemStreamDirectoryResponse, FileSystemStreamFileInfoResponse } from './fileSystem';
 import { StoppableStream, StreamListener } from './stoppables';
 /**
  * @internal
  */
-export declare class FileSystemClient extends BaseClient<FilesystemGRPCClient> implements FileSystemService {
+export declare class FileSystemClient extends BaseClient<FilesystemGRPCClient> implements FileSystem {
     protected generateClient(): GRPCClientConstructor<FilesystemGRPCClient>;
     queryDirectory(params: FileSystemQueryDirectoryParams): Promise<FileSystemQueryDirectoryResponse>;
     streamDirectory(params: FileSystemQueryDirectoryParams, listener: StreamListener<FileSystemStreamDirectoryResponse>): StoppableStream<FileSystemStreamDirectoryResponse>;

@@ -6,7 +6,7 @@ import {
   WhisperFormOutputTypes,
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
-} from './whisperService';
+} from './whisper';
 import { StreamTransformer } from './transformingStream';
 
 /**

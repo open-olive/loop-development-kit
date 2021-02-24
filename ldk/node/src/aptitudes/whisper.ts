@@ -14,7 +14,7 @@ import {
  * }
  * ```
  */
-export interface Whisper {
+export interface WhisperConfig {
   /**
    * The content of the Whisper in markdown.
    */
@@ -89,13 +89,13 @@ export type WhisperFormInputs =
   | WhisperFormText
   | WhisperFormTime;
 
-export interface WhisperConfirmConfig extends Whisper {
+export interface WhisperConfirmConfig extends WhisperConfig {
   rejectButton: string;
 
   resolveButton: string;
 }
 
-export interface WhisperFormConfig extends Whisper {
+export interface WhisperFormConfig extends WhisperConfig {
   submitButton: string;
 
   cancelButton: string;
@@ -125,7 +125,7 @@ export type WhisperDisambiguationElements =
   | WhisperDisambiguationOption
   | WhisperDisambiguationText;
 
-export interface WhisperDisambiguationConfig extends Whisper {
+export interface WhisperDisambiguationConfig extends WhisperConfig {
   elements: { [name: string]: WhisperDisambiguationElements };
 }
 
@@ -221,7 +221,7 @@ export type WhisperListElements =
   | WhisperListDivider
   | WhisperListLink;
 
-export interface WhisperListConfig extends Whisper {
+export interface WhisperListConfig extends WhisperConfig {
   elements: { [name: string]: WhisperListElements };
 }
 
@@ -244,9 +244,9 @@ export interface WhisperFormSubmitEvent {
 }
 
 /**
- * The WhisperService lets consumers emit new whispers and update existing whispers.
+ * The Whisper lets consumers emit new whispers and update existing whispers.
  */
-export interface WhisperService {
+export interface Whisper {
   /**
    * Generates a whisper with a list of clickable values that generate a message once clicked.
    *
@@ -261,7 +261,7 @@ export interface WhisperService {
    * @param whisper - The whisper configuration.
    * @returns - A StoppableMessage object containing a promise resolving when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.
    */
-  markdownWhisper(whisper: Whisper): StoppableMessage<void>;
+  markdownWhisper(whisper: WhisperConfig): StoppableMessage<void>;
   /**
    * @param whisper - The whisper configuration.
    * @returns - A StoppableMessage object containing a promise resolving with the answer when the whisper has been closed. Stopping the message with {StoppableMessage.stop} will close the whisper.

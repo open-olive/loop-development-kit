@@ -2,12 +2,12 @@ import { ProcessClient as ProcessGRPCClient } from '../grpc/process_grpc_pb';
 import Messages, { ProcessAction } from '../grpc/process_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
-  ProcessService,
+  Process,
   ProcessInfoResponse,
   ProcessListResponse,
   ProcessStreamAction,
   ProcessStreamResponse,
-} from './processService';
+} from './process';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 
@@ -42,7 +42,7 @@ function parseProcessAction(
  */
 export class ProcessClient
   extends BaseClient<ProcessGRPCClient>
-  implements ProcessService {
+  implements Process {
   protected generateClient(): GRPCClientConstructor<ProcessGRPCClient> {
     return ProcessGRPCClient;
   }

@@ -17,7 +17,7 @@ export interface HttpResponse {
   headers: Record<string, Array<string>>;
 }
 
-export interface NetworkService {
+export interface Network {
   /**
    * Generates a HTTP request with the provided configuration.
    *

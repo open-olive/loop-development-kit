@@ -7,11 +7,11 @@ export interface BrowserSelectedTextResponse {
 }
 
 /**
- * The BrowserService provides access to the active URL and selected text.
+ * The Browser provides access to the active URL and selected text.
  *
  * This service is not yet implemented.
  */
-export interface BrowserService {
+export interface Browser {
   /**
    * Queries for the active URL in the active tab.
    *

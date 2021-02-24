@@ -15,7 +15,7 @@ import {
   defaultSession,
   identityCallback,
 } from '../test.helpers';
-import { CursorResponse } from './cursorService';
+import { CursorResponse } from './cursor';
 
 jest.mock('../grpc/cursor_grpc_pb');
 

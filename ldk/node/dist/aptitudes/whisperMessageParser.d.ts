@@ -1,5 +1,5 @@
 import * as messages from '../grpc/whisper_pb';
-import { WhisperDisambiguationEvent, WhisperFormSubmitEvent, WhisperFormUpdateEvent } from './whisperService';
+import { WhisperDisambiguationEvent, WhisperFormSubmitEvent, WhisperFormUpdateEvent } from './whisper';
 import { StreamTransformer } from './transformingStream';
 /**
  * @internal

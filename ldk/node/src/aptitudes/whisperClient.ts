@@ -10,8 +10,8 @@ import {
   WhisperFormSubmitEvent,
   WhisperFormUpdateEvent,
   WhisperListConfig,
-  WhisperService,
-} from './whisperService';
+  WhisperConfig,
+} from './whisper';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import {
   StoppableMessage,
@@ -38,7 +38,7 @@ import {
  */
 class WhisperClient
   extends BaseClient<WhisperGRPCClient>
-  implements WhisperService {
+  implements Whisper {
   /**
    * Send a Whisper to the host process.
    *
@@ -46,7 +46,7 @@ class WhisperClient
    * @param whisper - An object defining the contents of the Whisper.
    * @returns Promise resolving when the server responds to the command.
    */
-  markdownWhisper(whisper: Whisper): StoppableMessage<void> {
+  markdownWhisper(whisper: WhisperConfig): StoppableMessage<void> {
     return this.buildStoppableMessage<
       messages.WhisperMarkdownRequest,
       Empty,

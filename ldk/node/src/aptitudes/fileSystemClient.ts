@@ -10,11 +10,11 @@ import {
   FileSystemQueryDirectoryResponse,
   FileSystemQueryFileParams,
   FileSystemRemoveParams,
-  FileSystemService,
+  FileSystem,
   FileSystemStreamAction,
   FileSystemStreamDirectoryResponse,
   FileSystemStreamFileInfoResponse,
-} from './fileSystemService';
+} from './fileSystem';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 import { FileSystemFileImpl, parseFileInfo } from './fileSystemFile';
@@ -46,7 +46,7 @@ function parseFileAction(action: FileAction): FileSystemStreamAction {
  */
 export class FileSystemClient
   extends BaseClient<FilesystemGRPCClient>
-  implements FileSystemService {
+  implements FileSystem {
   protected generateClient(): GRPCClientConstructor<FilesystemGRPCClient> {
     return FilesystemGRPCClient;
   }

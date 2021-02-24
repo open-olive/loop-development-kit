@@ -14,7 +14,7 @@ export interface HoverReadRequest {
  *
  * This service is not yet implemented.
  */
-export interface HoverService {
+export interface Hover {
     /**
      * Queries the text currently under the cursor.
      *

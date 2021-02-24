@@ -26,7 +26,7 @@ exports.FileSystemClient = void 0;
 const filesystem_grpc_pb_1 = require("../grpc/filesystem_grpc_pb");
 const filesystem_pb_1 = __importStar(require("../grpc/filesystem_pb"));
 const baseClient_1 = __importDefault(require("./baseClient"));
-const fileSystemService_1 = require("./fileSystemService");
+const fileSystem_1 = require("./fileSystem");
 const transformingStream_1 = require("./transformingStream");
 const fileSystemFile_1 = require("./fileSystemFile");
 /**
@@ -36,18 +36,18 @@ const fileSystemFile_1 = require("./fileSystemFile");
 function parseFileAction(action) {
     switch (action) {
         case filesystem_pb_1.FileAction.FILE_ACTION_CREATE:
-            return fileSystemService_1.FileSystemStreamAction.Create;
+            return fileSystem_1.FileSystemStreamAction.Create;
         case filesystem_pb_1.FileAction.FILE_ACTION_WRITE:
-            return fileSystemService_1.FileSystemStreamAction.Write;
+            return fileSystem_1.FileSystemStreamAction.Write;
         case filesystem_pb_1.FileAction.FILE_ACTION_REMOVE:
-            return fileSystemService_1.FileSystemStreamAction.Remove;
+            return fileSystem_1.FileSystemStreamAction.Remove;
         case filesystem_pb_1.FileAction.FILE_ACTION_RENAME:
-            return fileSystemService_1.FileSystemStreamAction.Rename;
+            return fileSystem_1.FileSystemStreamAction.Rename;
         case filesystem_pb_1.FileAction.FILE_ACTION_CHMOD:
-            return fileSystemService_1.FileSystemStreamAction.Chmod;
+            return fileSystem_1.FileSystemStreamAction.Chmod;
         case filesystem_pb_1.FileAction.FILE_ACTION_UNKNOWN:
         default:
-            return fileSystemService_1.FileSystemStreamAction.Unknown;
+            return fileSystem_1.FileSystemStreamAction.Unknown;
     }
 }
 /**

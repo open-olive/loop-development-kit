@@ -1,9 +1,9 @@
 import { StoppableStream, StreamListener } from './stoppables';
 
 /**
- * The ClipboardService provides access to the OS's clipboard.
+ * The Clipboard provides access to the OS's clipboard.
  */
-export interface ClipboardService {
+export interface Clipboard {
   /**
    * @returns A Promise resolving with the current contents of the clipboard.
    */

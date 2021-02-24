@@ -1,10 +1,10 @@
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { VaultClient as VaultGRPCClient } from '../grpc/vault_grpc_pb';
-import { VaultService } from './vaultService';
+import { Vault } from './vault';
 /**
  * @internal
  */
-export default class VaultClient extends BaseClient<VaultGRPCClient> implements VaultService {
+export default class VaultClient extends BaseClient<VaultGRPCClient> implements Vault {
     /**
      * Delete a key from vault.
      *

@@ -22,9 +22,9 @@ export interface ProcessListResponse {
 }
 
 /**
- * The ProcessService provides access to the list of running processes.
+ * The Process provides access to the list of running processes.
  */
-export interface ProcessService {
+export interface Process {
   /**
    * Gets a list of the current running processes.
    *

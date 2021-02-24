@@ -87,9 +87,9 @@ export interface FileSystemFile {
     streamPromise: Promise<void>;
 }
 /**
- * The FileSystemService provides access to updates made to the file system
+ * The FileSystem provides access to updates made to the file system
  */
-export interface FileSystemService {
+export interface FileSystem {
     /**
      * Queries the directory's contents.
      *
