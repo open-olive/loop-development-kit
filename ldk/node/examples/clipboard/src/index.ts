@@ -1,18 +1,18 @@
-import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
+import { Aptitudes, Logger, Loop, serveLoop } from '../../../dist';
 import { StoppableStream } from '../../../dist/hostClients/stoppables';
 
 const logger = new Logger('olive-helps-node-example-clipboard');
 
 class ClipboardLoop implements Loop {
-  private _host: HostServices | undefined;
+  private _aptitudes: Aptitudes | undefined;
 
   private clipboardStream: StoppableStream<string> | undefined;
 
-  start(host: HostServices): void {
-    this._host = host;
+  start(aptitudes: Aptitudes): void {
+    this._aptitudes = aptitudes;
     logger.info('Requesting Stream');
     try {
-      this.host.clipboard.streamClipboard(async (error, response) => {
+      this.aptitudes.clipboard.streamClipboard(async (error, response) => {
         if (response !== 'fileinfo') {
           return;
         }
@@ -27,11 +27,11 @@ class ClipboardLoop implements Loop {
 
   async workFile(): Promise<void> {
     logger.debug('Opening File');
-    const file = this.host.fileSystem.openFile('/tmp/log.txt');
+    const file = this.aptitudes.fileSystem.openFile('/tmp/log.txt');
     logger.debug('Getting File');
     const fileInfo = await file.info();
     logger.debug('Received File', 'info', JSON.stringify(fileInfo));
-    this.host.whisper.markdownWhisper({
+    this.aptitudes.whisper.markdownWhisper({
       label: 'File Info',
       markdown: JSON.stringify(fileInfo),
     });
@@ -46,15 +46,15 @@ class ClipboardLoop implements Loop {
     logger.info('Stopping');
     this.clipboardStream?.stop();
     this.clipboardStream = undefined;
-    this._host = undefined;
+    this._aptitudes = undefined;
     process.exit(0);
   }
 
-  private get host(): HostServices {
-    if (this._host == null) {
-      throw new Error('Cannot Retrieve Host Before Set');
+  private get aptitudes(): Aptitudes {
+    if (this._aptitudes == null) {
+      throw new Error('Cannot retrieve Aptitudes before connection.');
     }
-    return this._host;
+    return this._aptitudes;
   }
 }
 

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
+import { Aptitudes, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperDisambiguationElements,
   WhisperListStyle,
@@ -20,10 +20,10 @@ export interface Element {
 }
 
 class ExampleLoop implements Loop {
-  private _host: HostServices | undefined;
+  private _aptitudes: Aptitudes | undefined;
 
-  start(host: HostServices): void {
-    this._host = host;
+  start(aptitudes: Aptitudes): void {
+    this._aptitudes = aptitudes;
     const now = moment();
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
       .subtract(3, 'months')
@@ -34,7 +34,7 @@ class ExampleLoop implements Loop {
 
     logger.info('Emitting disambiguation whisper', url);
 
-    this.host.network
+    this.aptitudes.network
       .httpRequest({
         url,
         method: 'GET',
@@ -57,7 +57,7 @@ class ExampleLoop implements Loop {
           results[resultItem.recall_number] = decodeRecall(resultItem);
         });
 
-        this.host.whisper.disambiguationWhisper(
+        this.aptitudes.whisper.disambiguationWhisper(
           {
             label: 'Latest FDA Food Recall',
             markdown: '',
@@ -81,7 +81,7 @@ class ExampleLoop implements Loop {
               );
 
               if (recallItem) {
-                this.host.whisper.listWhisper({
+                this.aptitudes.whisper.listWhisper({
                   label: 'Latest FDA Food Recall',
                   markdown: '',
                   elements: {
@@ -184,15 +184,15 @@ class ExampleLoop implements Loop {
 
   stop(): void {
     logger.info('Stopping');
-    this._host = undefined;
+    this._aptitudes = undefined;
     process.exit(0);
   }
 
-  private get host(): HostServices {
-    if (this._host == null) {
-      throw new Error('Cannot Retrieve Host Before Set');
+  private get aptitudes(): Aptitudes {
+    if (this._aptitudes == null) {
+      throw new Error('Cannot retrieve Aptitudes before connection.');
     }
-    return this._host;
+    return this._aptitudes;
   }
 }
 

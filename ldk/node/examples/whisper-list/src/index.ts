@@ -1,4 +1,4 @@
-import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
+import { Aptitudes, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperListStyle,
   WhisperListAlign,
@@ -7,13 +7,13 @@ import {
 const logger = new Logger('olive-helps-node-example-whisper-list');
 
 class ExampleLoop implements Loop {
-  private _host: HostServices | undefined;
+  private _aptitudes: Aptitudes | undefined;
 
-  start(host: HostServices): void {
-    this._host = host;
+  start(aptitudes: Aptitudes): void {
+    this._aptitudes = aptitudes;
     logger.info('Emitting list whisper');
     try {
-      this.host.whisper.listWhisper({
+      this.aptitudes.whisper.listWhisper({
         label: 'MCMG Location',
         markdown: 'test',
         elements: {
@@ -154,15 +154,15 @@ class ExampleLoop implements Loop {
 
   stop(): void {
     logger.info('Stopping');
-    this._host = undefined;
+    this._aptitudes = undefined;
     process.exit(0);
   }
 
-  private get host(): HostServices {
-    if (this._host == null) {
-      throw new Error('Cannot Retrieve Host Before Set');
+  private get aptitudes(): Aptitudes {
+    if (this._aptitudes == null) {
+      throw new Error('Cannot retrieve Aptitudes before connection.');
     }
-    return this._host;
+    return this._aptitudes;
   }
 }
 

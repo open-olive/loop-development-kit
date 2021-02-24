@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const empty_pb_1 = require("google-protobuf/google/protobuf/empty_pb");
 const loop_grpc_pb_1 = __importDefault(require("./grpc/loop_grpc_pb"));
-const hostClientFacade_1 = __importDefault(require("./hostClientFacade"));
+const aptitudeClients_1 = __importDefault(require("./aptitudeClients"));
 const stdioGrpcServer_1 = require("./stdioGrpcServer");
 /**
  * @internal
@@ -31,10 +31,10 @@ class LoopServer {
         server.addService(stdioGrpcServer_1.StdioService, new stdioGrpcServer_1.StdioGrpcServer());
     }
     /**
-     * Called by the host to start the Loop.
+     * Called by OliveHelps to start the Loop.
      *
-     * @param call - The GRPC call initiating the loop.
-     * @param callback - The callback to respond to once the loop started.
+     * @param call - The GRPC call initiating the Loop.
+     * @param callback - The callback to respond to once the Loop started.
      */
     loopStart(call, callback) {
         var _a;
@@ -47,20 +47,20 @@ class LoopServer {
                 callback(new Error('Invalid Session Information'), response);
                 return;
             }
-            const hostClient = new hostClientFacade_1.default(this.logger);
-            yield hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
+            const aptitudeClients = new aptitudeClients_1.default(this.logger);
+            yield aptitudeClients.connect(connInfo, sessionInfo.toObject()).catch((err) => {
                 this.logger.error('loopServer - Failed to Connect to Facades', 'error', JSON.stringify(err));
                 throw err;
             });
-            yield this.loop.start(hostClient);
+            yield this.loop.start(aptitudeClients);
             callback(null, response);
         });
     }
     /**
-     * Called by the host to stop the Loop.
+     * Called by OliveHelps stop the Loop.
      *
-     * @param call - The GRPC call stopping the loop.
-     * @param callback - The callback to respond to once the loop stopped.
+     * @param call - The GRPC call stopping the Loop.
+     * @param callback - The callback to respond to once the Loop stopped.
      */
     loopStop(call, callback) {
         return __awaiter(this, void 0, void 0, function* () {

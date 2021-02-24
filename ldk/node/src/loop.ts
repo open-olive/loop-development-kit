@@ -1,4 +1,4 @@
-import { HostServices } from './hostServices';
+import { Aptitudes } from './aptitudes';
 
 /**
  * Your Loop must implement this interface.
@@ -12,13 +12,13 @@ import { HostServices } from './hostServices';
  *     this.logger = new Logger('my-loop');
  *   }
  *
- *   start(services) {
- *     this.services = services;
+ *   start(aptitudes) {
+ *     this.aptitudes = aptitudes;
  *     this.logger.info('started');
  *   }
  *
  *   stop() {
- *     this.host = null;
+ *     this.aptitudes = null;
  *     this.logger.info('stopped');
  *   }
  * }
@@ -26,15 +26,15 @@ import { HostServices } from './hostServices';
  */
 export interface Loop {
   /**
-   * Executed when the host starts the plugin.
-   * The plugin should not do anything before this is called.
+   * Executed when OliveHelps starts the Loop.
+   * The Loop should not do anything before this is called.
    *
-   * @param host - The host services. You should assign this as an instance property for use by the Loop.
+   * @param aptitudes - The OliveHelps aptitudes. You should assign this as an instance property for use by the Loop.
    */
-  start(host: HostServices): void;
+  start(aptitudes: Aptitudes): void;
   /**
-   * Executed by the host to stop the plugin.
-   * All plugin activity should stop when this is called.
+   * Executed by OliveHelps to stop the Loop.
+   * All Loop activity should stop when this is called.
    */
   stop(): void;
 }

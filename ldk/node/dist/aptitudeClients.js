@@ -18,7 +18,7 @@ const uiClient_1 = require("./hostClients/uiClient");
 /**
  * @internal
  */
-class HostClientFacade {
+class AptitudeClients {
     // These services are not yet implemented.
     // public hover: HoverClient = new HoverClient();
     // public window: WindowClient = new WindowClient();
@@ -52,4 +52,4 @@ class HostClientFacade {
         ]);
     }
 }
-exports.default = HostClientFacade;
+exports.default = AptitudeClients;

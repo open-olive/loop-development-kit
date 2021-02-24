@@ -1,6 +1,6 @@
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
-import { HostServices } from './hostServices';
+import { Aptitudes } from './aptitudes';
 import WhisperClient from './hostClients/whisperClient';
 import VaultClient from './hostClients/vaultClient';
 import KeyboardClient from './hostClients/keyboardClient';
@@ -14,7 +14,7 @@ import { Logger } from './logging';
 /**
  * @internal
  */
-export default class HostClientFacade implements HostServices {
+export default class AptitudeClients implements Aptitudes {
     private logger;
     whisper: WhisperClient;
     vault: VaultClient;

@@ -8,12 +8,12 @@ Here's a quick example of a {@link Loop} that listens to changes to your clipboa
 
 ```javascript
 class Loop {
-  start(services) {
-    this.services = services;
+  start(aptitudes) {
+    this.aptitudes = aptitudes;
     // Listen to the clipboard as it changes.
-    this.clipboardStream = this.services.clipboard.streamClipboard((error, text) =>  {
+    this.clipboardStream = this.aptitudes.clipboard.streamClipboard((error, text) =>  {
       // Emit a whisper containing the clipboard's contents.
-      this.services.whisper.markdownWhisper({
+      this.aptitudes.whisper.markdownWhisper({
         markdown: `Clipboard Contents: ${text}`,
         label: 'Clipboard Change!'
       });
@@ -26,7 +26,7 @@ class Loop {
 }
 ```
 
-**Start** - The Loop should wait to start operating until this is called. The provided {@link HostServices} should be stored in memory for continued use.
+**Start** - The Loop should wait to start operating until this is called. The provided {@link Aptitudes} should be stored in memory for continued use.
 
 **Stop** - The Loop should stop operating when this is called. You should terminate any timers and other long-running processes.
 
@@ -59,7 +59,7 @@ The following Sensors are under development and are not yet available:
 - {@link WindowService | Windows}: Know what windows are open, which one is active, and when they change.
 - {@link HoverService | Text Hover}: Know what text the user's cursor is hovering over.
 
-Sensors are directly accessible from the {@link HostServices} object provided to your Loop when it starts.
+Sensors are directly accessible from the {@link Aptitudes} object provided to your Loop when it starts.
 
 Sensors let you **query** the current state, and **stream** changes as they happen. Some sensor methods require configuration to listen, others don't. Query methods return a Promise that resolves with the current state. Stream methods require a listener function that's called with updates, and returns a {@link StoppableStream} object.
 
@@ -67,24 +67,24 @@ Here's an example:
 
 ```typescript
 class MyLoop {
-    start(services) {
-        this.services = services;
+    start(aptitudes) {
+        this.aptitudes = aptitudes;
         // Result generated only once.
-        this.services.clipboard.queryClipboard().then((clipboardContents) => {
-            this.services.whisper.markdownWhisper({
+        this.aptitudes.clipboard.queryClipboard().then((clipboardContents) => {
+            this.aptitudes.whisper.markdownWhisper({
                 markdown: `Starting with ${clipboardContents}`,
                 label: 'Starting Contents',
             });
         });
         // Listener function generating whispers.
         const clipboardListener = (errorOrNull, clipboardContents) => {
-          this.services.whisper.markdownWhisper({
+          this.aptitudes.whisper.markdownWhisper({
               markdown: `Contents changed to ${clipboardContents}`,
               label: 'Clipboard Change',
           });
         };   
         // Start listening to clipboard changes.
-        this.clipboardStream = this.services.clipboard.streamClipboard(clipboardListener);
+        this.clipboardStream = this.aptitudes.clipboard.streamClipboard(clipboardListener);
     }
 
     stop() {
@@ -96,7 +96,7 @@ class MyLoop {
 
 ### Whispers
 
-Whispers are how you present information to users. The {@link WhisperService} is accessible on {@link HostServices.whisper}.
+Whispers are how you present information to users. The {@link WhisperService} is accessible on {@link Aptitudes.whisper}.
 
 You can create different types of Whispers:
 
@@ -109,7 +109,7 @@ You can create different types of Whispers:
 
 ```typescript
 
-const whisperId = await this.services.whisper.markdownWhisper({
+const whisperId = await this.aptitudes.whisper.markdownWhisper({
     markdown: "The Message Contents in Markdown",
     label: "The Title at the Cards Top Left",
 });
@@ -117,11 +117,11 @@ const whisperId = await this.services.whisper.markdownWhisper({
 
 ### The Vault
 
-You can store and retrieve user credentials and other sensitive data with the {@link VaultService} accessible from {@link HostServices.vault}.
+You can store and retrieve user credentials and other sensitive data with the {@link VaultService} accessible from {@link Aptitudes.vault}.
 
 ```javascript
 
 const key = 'user-id';
-const result = await this.services.vault.vaultRead(key);
-await this.services.vault.vaultWrite(key, "abcd");
+const result = await this.aptitudes.vault.vaultRead(key);
+await this.aptitudes.vault.vaultWrite(key, "abcd");
 ```

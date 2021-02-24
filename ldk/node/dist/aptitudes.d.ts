@@ -8,9 +8,9 @@ import { ProcessService } from './hostClients/processService';
 import { NetworkService } from './hostClients/networkService';
 import { UIService } from './hostClients/uiService';
 /**
- * The HostServices interface provides access to the sensors and services provided by Olive Helps.
+ * The Aptitudes interface provides access to the aptitudes (sensors, services, etc.) provided by Olive Helps.
  */
-export interface HostServices {
+export interface Aptitudes {
     whisper: WhisperService;
     vault: VaultService;
     keyboard: KeyboardService;

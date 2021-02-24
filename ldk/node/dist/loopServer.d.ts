@@ -14,17 +14,17 @@ export default class LoopServer implements ILoopServer {
     private logger;
     constructor(server: grpc.Server, broker: BrokerGrpcServer, impl: Loop, logger: Logger);
     /**
-     * Called by the host to start the Loop.
+     * Called by OliveHelps to start the Loop.
      *
-     * @param call - The GRPC call initiating the loop.
-     * @param callback - The callback to respond to once the loop started.
+     * @param call - The GRPC call initiating the Loop.
+     * @param callback - The callback to respond to once the Loop started.
      */
     loopStart(call: grpc.ServerUnaryCall<messages.LoopStartRequest, Empty>, callback: grpc.sendUnaryData<Empty>): Promise<void>;
     /**
-     * Called by the host to stop the Loop.
+     * Called by OliveHelps stop the Loop.
      *
-     * @param call - The GRPC call stopping the loop.
-     * @param callback - The callback to respond to once the loop stopped.
+     * @param call - The GRPC call stopping the Loop.
+     * @param callback - The callback to respond to once the Loop stopped.
      */
     loopStop(call: grpc.ServerUnaryCall<Empty, Empty>, callback: grpc.sendUnaryData<Empty>): Promise<void>;
 }

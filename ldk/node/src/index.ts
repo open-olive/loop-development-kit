@@ -5,7 +5,7 @@ import Plugin from './plugin';
 import { Loop } from './loop';
 import { Logger } from './logging';
 import { serveLoop } from './serve';
-import { HostServices } from './hostServices';
+import { Aptitudes } from './aptitudes';
 import * as Browser from './hostClients/browserService';
 import * as Clipboard from './hostClients/clipboardService';
 import * as Cursor from './hostClients/cursorService';
@@ -26,7 +26,7 @@ export {
   Plugin,
   Logger,
   serveLoop,
-  HostServices,
+  Aptitudes,
   Browser,
   Clipboard,
   Cursor,
