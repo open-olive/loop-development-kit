@@ -364,13 +364,14 @@ exports.buildWhisperListRequest = (config) => {
 };
 /**
  * @internal
- * @param whisper - whisper to build
+ * @param config - whisper to build
  */
-exports.buildWhisperConfirmMessage = (whisper) => {
+exports.buildWhisperConfirmMessage = (config) => {
     const msg = new messages.WhisperConfirmRequest();
-    msg.setRejectlabel(whisper.rejectButton);
-    msg.setResolvelabel(whisper.resolveButton);
-    msg.setMarkdown(whisper.markdown);
-    msg.setMeta();
+    const meta = exports.generateWhisperMeta(config);
+    msg.setRejectlabel(config.rejectButton);
+    msg.setResolvelabel(config.resolveButton);
+    msg.setMarkdown(config.markdown);
+    msg.setMeta(meta);
     return msg;
 };
