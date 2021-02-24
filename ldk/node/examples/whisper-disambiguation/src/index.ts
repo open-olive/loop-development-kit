@@ -5,7 +5,7 @@ import {
   WhisperDisambiguationElements,
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/hostClients/whisperService';
+} from '../../../dist/aptitudes/whisperService';
 
 import { decodeRecall, Recall, RecallJSON } from './transform';
 

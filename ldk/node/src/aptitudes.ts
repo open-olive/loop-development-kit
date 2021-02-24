@@ -1,15 +1,15 @@
-import { WhisperService } from './hostClients/whisperService';
-import { VaultService } from './hostClients/vaultService';
-import { KeyboardService } from './hostClients/keyboardService';
-import { ClipboardService } from './hostClients/clipboardService';
-import { CursorService } from './hostClients/cursorService';
-import { FileSystemService } from './hostClients/fileSystemService';
-import { ProcessService } from './hostClients/processService';
-import { NetworkService } from './hostClients/networkService';
-import { UIService } from './hostClients/uiService';
-// import { HoverService } from './hostClients/hoverService';
-// import { WindowService } from './hostClients/windowService';
-// import { BrowserService } from './hostClients/browserService';
+import { WhisperService } from './aptitudes/whisperService';
+import { VaultService } from './aptitudes/vaultService';
+import { KeyboardService } from './aptitudes/keyboardService';
+import { ClipboardService } from './aptitudes/clipboardService';
+import { CursorService } from './aptitudes/cursorService';
+import { FileSystemService } from './aptitudes/fileSystemService';
+import { ProcessService } from './aptitudes/processService';
+import { NetworkService } from './aptitudes/networkService';
+import { UIService } from './aptitudes/uiService';
+// import { HoverService } from './aptitudes/hoverService';
+// import { WindowService } from './aptitudes/windowService';
+// import { BrowserService } from './aptitudes/browserService';
 
 /**
  * The Aptitudes interface provides access to the aptitudes (sensors, services, etc.) provided by Olive Helps.

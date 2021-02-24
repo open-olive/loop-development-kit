@@ -6,17 +6,17 @@ import { Loop } from './loop';
 import { Logger } from './logging';
 import { serveLoop } from './serve';
 import { Aptitudes } from './aptitudes';
-import * as Browser from './hostClients/browserService';
-import * as Clipboard from './hostClients/clipboardService';
-import * as Cursor from './hostClients/cursorService';
-import * as FileSystem from './hostClients/fileSystemService';
-import * as Hover from './hostClients/hoverService';
-import * as Keyboard from './hostClients/keyboardService';
-import * as Process from './hostClients/processService';
-import * as Vault from './hostClients/vaultClient';
-import * as Whisper from './hostClients/whisperService';
-import * as Window from './hostClients/windowService';
-import * as Network from './hostClients/networkService';
+import * as Browser from './aptitudes/browserService';
+import * as Clipboard from './aptitudes/clipboardService';
+import * as Cursor from './aptitudes/cursorService';
+import * as FileSystem from './aptitudes/fileSystemService';
+import * as Hover from './aptitudes/hoverService';
+import * as Keyboard from './aptitudes/keyboardService';
+import * as Process from './aptitudes/processService';
+import * as Vault from './aptitudes/vaultClient';
+import * as Whisper from './aptitudes/whisperService';
+import * as Window from './aptitudes/windowService';
+import * as Network from './aptitudes/networkService';
 
 export {
   access,

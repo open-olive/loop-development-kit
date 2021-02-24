@@ -3,18 +3,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const whisperClient_1 = __importDefault(require("./hostClients/whisperClient"));
-const vaultClient_1 = __importDefault(require("./hostClients/vaultClient"));
-const keyboardClient_1 = __importDefault(require("./hostClients/keyboardClient"));
-const clipboardClient_1 = require("./hostClients/clipboardClient");
-const cursorClient_1 = require("./hostClients/cursorClient");
-// import { HoverClient } from './hostClients/hoverClient';
-const fileSystemClient_1 = require("./hostClients/fileSystemClient");
-const processClient_1 = require("./hostClients/processClient");
-// import { WindowClient } from './hostClients/windowClient';
-// import { BrowserClient } from './hostClients/browserClient';
-const networkClient_1 = require("./hostClients/networkClient");
-const uiClient_1 = require("./hostClients/uiClient");
+const whisperClient_1 = __importDefault(require("./aptitudes/whisperClient"));
+const vaultClient_1 = __importDefault(require("./aptitudes/vaultClient"));
+const keyboardClient_1 = __importDefault(require("./aptitudes/keyboardClient"));
+const clipboardClient_1 = require("./aptitudes/clipboardClient");
+const cursorClient_1 = require("./aptitudes/cursorClient");
+// import { HoverClient } from './aptitudes/hoverClient';
+const fileSystemClient_1 = require("./aptitudes/fileSystemClient");
+const processClient_1 = require("./aptitudes/processClient");
+// import { WindowClient } from './aptitudes/windowClient';
+// import { BrowserClient } from './aptitudes/browserClient';
+const networkClient_1 = require("./aptitudes/networkClient");
+const uiClient_1 = require("./aptitudes/uiClient");
 /**
  * @internal
  */

@@ -1,5 +1,5 @@
 import { Aptitudes, Logger, Loop, serveLoop } from '../../../dist';
-import { StoppableStream } from '../../../dist/hostClients/stoppables';
+import { StoppableStream } from '../../../dist/aptitudes/stoppables';
 
 const logger = new Logger('olive-helps-node-example-clipboard');
 

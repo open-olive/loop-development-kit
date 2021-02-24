@@ -1,15 +1,15 @@
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
 import { Aptitudes } from './aptitudes';
-import WhisperClient from './hostClients/whisperClient';
-import VaultClient from './hostClients/vaultClient';
-import KeyboardClient from './hostClients/keyboardClient';
-import { ClipboardClient } from './hostClients/clipboardClient';
-import { CursorClient } from './hostClients/cursorClient';
-import { FileSystemClient } from './hostClients/fileSystemClient';
-import { ProcessClient } from './hostClients/processClient';
-import { NetworkClient } from './hostClients/networkClient';
-import { UIClient } from './hostClients/uiClient';
+import WhisperClient from './aptitudes/whisperClient';
+import VaultClient from './aptitudes/vaultClient';
+import KeyboardClient from './aptitudes/keyboardClient';
+import { ClipboardClient } from './aptitudes/clipboardClient';
+import { CursorClient } from './aptitudes/cursorClient';
+import { FileSystemClient } from './aptitudes/fileSystemClient';
+import { ProcessClient } from './aptitudes/processClient';
+import { NetworkClient } from './aptitudes/networkClient';
+import { UIClient } from './aptitudes/uiClient';
 import { Logger } from './logging';
 /**
  * @internal
