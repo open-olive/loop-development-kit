@@ -17,7 +17,6 @@ type WhisperServer struct {
 
 // WhisperMarkdown is used by loops to create markdown whispers
 func (m *WhisperServer) WhisperMarkdown(ctx context.Context, req *proto.WhisperMarkdownRequest) (*emptypb.Empty, error) {
-	fmt.Println("Received Markdown Request...")
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
 		return nil, err

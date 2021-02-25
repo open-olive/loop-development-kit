@@ -17,7 +17,6 @@ type KeyboardServer struct {
 
 // KeyboardHotkeyStream registers a hotkey and receive streamed messages when it is pressed
 func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamRequest, stream proto.Keyboard_KeyboardHotkeyStreamServer) error {
-	fmt.Println("received hotkey request...")
 	session, err := NewSessionFromProto(req.Session)
 	if err != nil {
 		return err
