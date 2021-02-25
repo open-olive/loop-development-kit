@@ -1,68 +1,255 @@
 import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
 import { StoppableStream } from '../../../dist/hostClients/stoppables';
 import TestSuite from './testingFixtures/testSuite';
+import TestGroup from './testingFixtures/testGroup';
 import { LoopTest } from './testingFixtures/loopTest';
+import { WhisperDisambiguationElements } from '../../../dist/hostClients/whisperService';
 
-const logger = new Logger('olive-helps-node-example-clipboard');
+import {
+  charTest,
+  charScancodeTest,
+  charStreamTest,
+  clipboardStream,
+  clipboardWriteAndQuery,
+  confirmWhisper,
+  createAndDeleteFile,
+  cursorPosition,
+  disambiguationWhisper,
+  formWhisper,
+  hotkeyTest,
+  networkAndListWhisper,
+  processQuery,
+  queryFileDirectory,
+  storageWriteRead,
+  streamCursorPosition,
+  streamFileInfo,
+  updateAndReadFile,
+} from './tests';
+
+export interface Element {
+  [key: string]: WhisperDisambiguationElements;
+}
+const logger = new Logger('node-self-test-loop');
+
+const testConfig: { [key: string]: any } = {
+  clipboard: new TestGroup('Cliboard Service', [
+    new LoopTest(
+      'Clipboard Service - Write And Query Test',
+      clipboardWriteAndQuery,
+      10000,
+      'Copying value to clipboard and reading it back',
+    ),
+    new LoopTest(
+      'Clipboard Service - Clipboard Stream',
+      clipboardStream,
+      10000,
+      'Copying the value "LDKThxBai" the the clipboard',
+    ),
+  ]),
+  cursor: new TestGroup('Cursor Service', [
+    new LoopTest(
+      'Cursor Service - Position Test',
+      cursorPosition,
+      10000,
+      'Querying cursor position...',
+    ),
+    new LoopTest(
+      'Cursor Service - Stream Position Test',
+      streamCursorPosition,
+      10000,
+      'Move your cursor around...',
+    ),
+  ]),
+  file: new TestGroup('File Service', [
+    new LoopTest(
+      'File Service - Query File Directory',
+      queryFileDirectory,
+      10000,
+      'Querying root directory to look for "go.mod"...',
+    ),
+    new LoopTest(
+      'File Service - Create and Delete File',
+      createAndDeleteFile,
+      10000,
+      'Trying to create then delete "test.txt"',
+    ),
+    new LoopTest(
+      'File Service - Update and read a file',
+      updateAndReadFile,
+      15000,
+      'Trying to create, update, then read the text in "test.txt" before deleting',
+    ),
+    /* new LoopTest(
+      'File Service - Stream File Info',
+      this.streamFileInfo,
+      10000,
+      'Monitoring for file changes...',
+    ),
+    */
+  ]),
+  keyboard: new TestGroup('Keyboard Service', [
+    new LoopTest(
+      'Keyboard Service - Hotkey Test',
+      hotkeyTest,
+      10000,
+      'Press Ctrl+A to test the hotkey functionality.',
+    ),
+    new LoopTest(
+      'Keyboard Service - Char Stream Test',
+      charStreamTest,
+      10000,
+      'Type the word "Olive"',
+    ),
+    new LoopTest(
+      'Keyboard Service - Char Test',
+      charTest,
+      10000,
+      'Type the letter "F" to pay respects...and test the individual character test',
+    ),
+    /*
+    new LoopTest(
+      'Keyboard Service - Char Scancode Test',
+      this.charTest,
+      10000,
+      'Type the letter "F"',
+    ),
+    */
+  ]),
+  process: new TestGroup('Process Service', [
+    new LoopTest(
+      'Process Service - Query processes',
+      processQuery,
+      10000,
+      'Querying what processes are running on the computer...',
+    ),
+  ]),
+  storage: new TestGroup('Storage Service', [
+    new LoopTest(
+      'Storage Service - Write / Read from storage',
+      storageWriteRead,
+      10000,
+      'Writing value to storage then reading it back.',
+    ),
+    /* new LoopTest(
+      'Keyboard Service - Hotkey Test',
+      hotkeyTest,
+      10000,
+      'Press Ctrl+A to test the hotkey functionality.',
+    ), */
+  ]),
+  whispers: new TestGroup('Whisper Service', [
+    /*            
+    new LoopTest(
+      'Whispser Service - Confirm Whisper',
+      this.confirmWhisper,
+      10000,
+      'Click the resolve button',
+    ), */
+    new LoopTest(
+      'Whispser Service - Form Whisper',
+      formWhisper,
+      10000,
+      'Type in "Stonks" and submit',
+    ),
+    new LoopTest(
+      'Whisper Service - List Whisper',
+      networkAndListWhisper,
+      20000,
+      'Opening list whisper. In 10 seconds, this whisper will be dismissed',
+    ),
+    new LoopTest(
+      'Whisper Service - Disambiguation Whisper',
+      disambiguationWhisper,
+      20000,
+      'Click the 3rd link',
+    ),
+  ]),
+};
 
 class ClipboardLoop implements Loop {
   private _host: HostServices | undefined;
 
   private clipboardStream: StoppableStream<string> | undefined;
 
-  private timeout: ReturnType<typeof setTimeout> = setTimeout(() => {
-    // Do nothing
-  }, 600000);
-
   start(host: HostServices): void {
     this._host = host;
     logger.info('Starting Self Test...');
-    clearTimeout(this.timeout);
-    try {
-      const initial = this.host.whisper.markdownWhisper({
-        markdown: 'Copy the word "LDKThxBai" to your clipboard to begin',
-        label: 'Begin Test',
-      });
-      this.host.clipboard.streamClipboard((error, response) => {
-        if (error) {
-          logger.error(error);
-        } else if (
-          typeof response !== 'undefined' &&
-          response.toString() === 'LDKThxBai'
-        ) {
-          initial.stop();
-          const names = [
-            'Clipboard Service - Write And Query Test',
-            // 'Whispser Service - Confirm Whisper',
-            'Whisper Service - Form Whisper',
-            'Keyboard Service - Hotkey Test',
-            'Keyboard Service - Char Stream Test',
-            'Keyboard Service - Char Test',
-            // 'Keyboard Service - Char Scancode Test',
-            'Cursor Service - Position Test',
-            'Cursor Service - Stream Position Test',
-            // 'File Service - Query File Directory',
-            // 'File Service - Stream File Info',
-          ];
-          const functions = [
-            this.clipboardWriteAndQuery,
-            // this.confirmWhisper,
-            this.formWhisper,
-            this.hotkeyTest,
-            this.charStreamTest,
-            this.charTest,
-            // this.charScancodeTest,
-            this.cursorPosition,
-            this.streamCursorPosition,
-            // this.queryFileDirectory,
-            // this.streamFileInfo,
-          ];
-          const loops = [];
-          for (let i = 0; i < names.length; i += 1) {
-            loops.push(new LoopTest(names[i], functions[i]));
-          }
+    /* this.simplified().then(() => {
+      logger.info('test executed');
+    }); */
+    const hotkeys = {
+      key: '/',
+      modifiers: {
+        ctrl: true,
+      },
+    };
 
-          const suite = new TestSuite(loops, logger);
+    try {
+      this.openTestGroups(this.host);
+      this.host.keyboard.streamHotKey(hotkeys, (error, response) => {
+        if (error) {
+          logger.error('Something is wrong with the hotkey sensor');
+          logger.error(error);
+        } else {
+          this.openTestGroups(this.host);
+        }
+      });
+    } catch (e) {
+      logger.error('Error Streaming', 'error', e.toString());
+    }
+  }
+
+  openTestGroups(host: HostServices): void {
+    let allTests = [] as LoopTest[];
+    const elements = {} as Element;
+    const keys = Object.keys(testConfig);
+    for (let i = 0; i < keys.length; i += 1) {
+      const group = testConfig[keys[i]];
+      elements[keys[i]] = {
+        label: `---${group.getId()}`,
+        order: i + 1,
+        type: 'option',
+      };
+      allTests = allTests.concat(testConfig[keys[i]].getTests());
+    }
+
+    elements.all = {
+      label: `Run all tests`,
+      order: keys.length + 1,
+      type: 'option',
+    };
+    const whisper = host.whisper.disambiguationWhisper(
+      {
+        label: 'Self Test Loop groups',
+        markdown: '',
+        elements,
+      },
+      (error, response) => {
+        if (error) {
+          whisper.stop();
+        }
+        if (typeof response !== 'undefined' && response.key !== 'all') {
+          const suite = new TestSuite(
+            testConfig[response.key].getTests(),
+            logger,
+          );
+
+          suite.start(host).then(() => {
+            logger.info('🎉 Group Done!');
+            const prompt = this.host.whisper.markdownWhisper({
+              markdown: `All tests for ${testConfig[
+                response.key
+              ].getId()} have been run`,
+              label: 'Testing Complete',
+            });
+            setTimeout(() => {
+              prompt.stop();
+            }, 5000);
+          });
+
+          whisper.stop();
+        } else if (typeof response !== 'undefined' && response.key === 'all') {
+          const suite = new TestSuite(allTests, logger);
 
           suite.start(host).then(() => {
             logger.info('🎉 Done!');
@@ -74,455 +261,10 @@ class ClipboardLoop implements Loop {
               prompt.stop();
             }, 5000);
           });
+          whisper.stop();
         }
-      });
-    } catch (e) {
-      logger.error('Error Streaming', 'error', e.toString());
-    }
-  }
-
-  clipboardWriteAndQuery(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Testing writeClipboard and queryKeyboard',
-            label: 'Clipboard write and read',
-          });
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-          host.clipboard
-            .writeClipboard('Im in yr loop, writing to yr clipboard')
-            .then(() => host.clipboard.queryClipboard())
-            .then((response) => {
-              logger.debug(`Value in clipboard - ${response}`);
-              if (
-                response.toString() === 'Im in yr loop, writing to yr clipboard'
-              ) {
-                logger.debug('Correct value in clipboard');
-                setTimeout(() => {
-                  prompt.stop();
-                  resolve(true);
-                }, 1000);
-              } else {
-                prompt.stop();
-                reject(new Error('Incorrect value detected'));
-              }
-            })
-            .catch((error) => {
-              reject(new Error(error));
-            });
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  hotkeyTest(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      const hotkeys = {
-        key: 'a',
-        modifiers: {
-          ctrl: true,
-        },
-      };
-
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Press Ctrl+A to test the hotkey functionality.',
-            label: 'Hotkey Test',
-          });
-          const hotkeyStream = host.keyboard.streamHotKey(
-            hotkeys,
-            (error, response) => {
-              if (error) {
-                reject(error);
-              }
-              logger.debug(
-                'Hotkey pressed',
-                'response',
-                JSON.stringify(response),
-              );
-              resolve(true);
-              clearTimeout(this.timeout);
-              prompt.stop();
-              hotkeyStream.stop();
-            },
-          );
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            hotkeyStream.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  charTest(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Type the letter "F"',
-            label: 'Char Test',
-          });
-          const characterStream = host.keyboard.streamChar(
-            (error, response) => {
-              if (error) {
-                reject(error);
-              }
-
-              if (typeof response !== 'undefined') {
-                logger.debug('Character pressed', 'response', response.text);
-
-                if (response.text === 'f' || response.text === 'F') {
-                  resolve(true);
-                  prompt.stop();
-                  characterStream.stop();
-                }
-              }
-            },
-          );
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            characterStream.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  charStreamTest(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Type the word "Olive"',
-            label: 'Char Stream Test',
-          });
-          const characterStream = host.keyboard.streamText(
-            (error, response) => {
-              if (error) {
-                reject(error);
-              }
-
-              if (typeof response !== 'undefined') {
-                logger.debug(
-                  'Characters pressed',
-                  'response',
-                  response.toString(),
-                );
-
-                if (response.toString() === 'Olive') {
-                  resolve(true);
-                  prompt.stop();
-                  characterStream.stop();
-                }
-              }
-            },
-          );
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            characterStream.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  charScancodeTest(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Looking for scancodes... (This one should fail for now)',
-            label: 'Char Scancode Test',
-          });
-          const characterStream = host.keyboard.streamScanCode(
-            (error, response) => {
-              if (error) {
-                reject(error);
-              }
-
-              if (typeof response !== 'undefined') {
-                logger.debug(
-                  'Scancode detected',
-                  'response',
-                  response.scanCode.toString(),
-                );
-
-                /* if (response.toString() === 'Olive') {
-                  resolve(true);
-                  prompt.stop();
-                  characterStream.stop();
-                } */
-              }
-            },
-          );
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            characterStream.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  cursorPosition(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Querying cursor position...',
-            label: 'Cursor position',
-          });
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-          host.cursor
-            .queryCursorPosition()
-            .then((response) => {
-              logger.debug(`Cursor X - ${response.x}`);
-              logger.debug(`Cursor Y - ${response.y}`);
-              // Screen not supported for now
-              // logger.info(`Screen - ${response.screen}`);
-              clearTimeout(this.timeout);
-              setTimeout(() => {
-                prompt.stop();
-                resolve(true);
-              }, 1500);
-            })
-            .catch((err) => {
-              reject(new Error(err));
-            });
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  streamCursorPosition(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          let i = 0;
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Streaming cursor position. Please move cursor',
-            label: 'Stream cursor position',
-          });
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-          const cursorPoritionStream = host.cursor.streamCursorPosition(
-            (error, response) => {
-              if (error) {
-                reject(error);
-              }
-
-              if (typeof response !== 'undefined') {
-                logger.debug(`Cursor Stream X - ${response.x}`);
-                logger.debug(`Cursor Stream Y - ${response.y}`);
-                i += 1;
-
-                if (i >= 5) {
-                  prompt.stop();
-                  cursorPoritionStream.stop();
-                  clearTimeout(this.timeout);
-                  resolve(true);
-                }
-              }
-            },
-          );
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  queryFileDirectory(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Querying root directory to look for "go.mod"...',
-            label: 'Query File',
-          });
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 10000);
-
-          // Queries the sidekick
-          host.fileSystem
-            .queryDirectory({
-              directory: './',
-            })
-            .then((response) => {
-              for (let i = 0; i < response.files.length; i += 1) {
-                if (
-                  response.files[i].name === 'go.mod' &&
-                  !response.files[i].isDir
-                ) {
-                  prompt.stop();
-                  clearTimeout(this.timeout);
-                  resolve(true);
-                }
-              }
-
-              /* prompt.stop();
-              clearTimeout(this.timeout);
-              reject(new Error('Could not find go.mod file')); */
-            })
-            .catch((error) => {
-              reject(new Error(error));
-            });
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  streamFileInfo(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          const prompt = host.whisper.markdownWhisper({
-            markdown: 'Monitoring for file changes...',
-            label: 'Stream File Info',
-          });
-          // TODO: Need to adjust time when this works
-          this.timeout = setTimeout(() => {
-            prompt.stop();
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 5000);
-
-          // Queries the sidekick
-          logger.info('listening to file changes');
-          host.fileSystem.streamFileInfo(
-            {
-              file: './test.txt',
-            },
-            (error, response) => {
-              if (error) {
-                reject(new Error(error));
-              }
-
-              if (response) {
-                logger.info(response.action);
-                logger.info(`${response.file.updated?.toDateString()}`);
-              }
-            },
-          );
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  confirmWhisper(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          host.whisper
-            .confirmWhisper({
-              rejectButton: "Don't Click me",
-              resolveButton: 'Click me',
-              markdown: 'Please click the correct button',
-              label: 'Test accept',
-            })
-            .promise()
-            .then(() => {
-              clearTimeout(this.timeout);
-              resolve(true);
-            })
-            .catch(() => {
-              clearTimeout(this.timeout);
-              reject(new Error('Button click was not correct'));
-            });
-
-          this.timeout = setTimeout(() => {
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 20000);
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
-  }
-
-  formWhisper(host: HostServices): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      if (typeof host !== 'undefined') {
-        try {
-          host.whisper
-            .formWhisper({
-              rejectButton: "Don't Click me",
-              resolveButton: 'Click me',
-              markdown: 'Please click the correct button',
-              label: 'Test accept',
-            })
-            .promise()
-            .then(() => {
-              clearTimeout(this.timeout);
-              resolve(true);
-            })
-            .catch(() => {
-              clearTimeout(this.timeout);
-              reject(new Error('Button click was not correct'));
-            });
-
-          this.timeout = setTimeout(() => {
-            reject(new Error('Timeout - Too much time has passed'));
-          }, 20000);
-        } catch (e) {
-          reject(new Error(e));
-        }
-      } else {
-        reject(new Error('Host services are unavailable'));
-      }
-    });
+      },
+    );
   }
 
   stop(): void {
