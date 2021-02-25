@@ -40,8 +40,6 @@ namespace SelfTestLoop
 
         public IStorageService Storage => Services.Storage;
 
-        public IWindowService Window => Services.Window;
-
         public IUIService UI => Services.UI;
 
         public IWindowService Window => Services.Window;
