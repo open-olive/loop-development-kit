@@ -4,10 +4,10 @@ import styles from "./aptitudeTemplate.module.scss"
 import { Aptitude } from "../components/aptitudes/aptitude"
 import {
   buildCapabilityPath,
-  buildSensorId,
-  buildSensorPath,
+  buildAptitudeId,
+  buildAptitudePath,
 } from "../components/aptitudes/aptitudePaths"
-import { aptitudes } from "../components/aptitudes/aptitudeData"
+import { aptitudes, IAptitudeData } from "../components/aptitudes/aptitudeData"
 
 interface TemplateProps {
   data: {
@@ -21,45 +21,68 @@ interface TemplateProps {
   }
 }
 
-function renderAptitudes(activeSensorId: string): React.ReactNode {
-  return Object.values(aptitudes).map(sensor => {
-    const capabilities = sensor.capabilities.map(capability => {
-      return (
-        <li className={styles.sectionSubItem}>
-          <Link to={buildCapabilityPath(capability, sensor)}>
-            {capability.name}
-          </Link>
-        </li>
-      )
-    })
+interface IMenuProps {
+  aptitudes: IAptitudeData[]
+  currentAptitudeId: string
+}
 
+interface IMenuAptitudeProps {
+  aptitude: IAptitudeData
+  current: boolean
+}
+
+export const MenuAptitude: React.FunctionComponent<IMenuAptitudeProps> = props => {
+  const sensor = props.aptitude
+  const capabilities = sensor.capabilities.map(capability => {
     return (
-      <li className={styles.sectionItem}>
-        <Link to={buildSensorPath(sensor)}>
-          <h2 className={styles.sectionItemHeader}>{sensor.name}</h2>
+      <li className={styles.sectionSubItem}>
+        <Link to={buildCapabilityPath(capability, sensor)}>
+          {capability.name}
         </Link>
-        {activeSensorId === buildSensorId(sensor) && (
-          <ul className={styles.sectionSubItems}>{capabilities}</ul>
-        )}
       </li>
     )
   })
+
+  return (
+    <li className={styles.sectionItem}>
+      <Link to={buildAptitudePath(sensor)}>
+        <h2 className={styles.sectionItemHeader}>{sensor.name}</h2>
+      </Link>
+      {props.current && (
+        <ul className={styles.sectionSubItems}>{capabilities}</ul>
+      )}
+    </li>
+  )
+}
+
+export const Menu: React.FunctionComponent<IMenuProps> = props => {
+  let elements = props.aptitudes.map(aptitude => {
+    const aptitudeId = buildAptitudeId(aptitude)
+    return (
+      <MenuAptitude
+        aptitude={aptitude}
+        key={aptitudeId}
+        current={props.currentAptitudeId == aptitudeId}
+      />
+    )
+  })
+  return (
+    <div className={styles.menu}>
+      <section className={styles.menuSection}>
+        <h1 className={styles.sectionTitle}>Aptitudes</h1>
+        <ul className={styles.sectionItems}>{elements}</ul>
+      </section>
+    </div>
+  )
 }
 
 export default function Template(props: TemplateProps) {
-  const { markdownRemark } = props.data
+  let aptitudeData = Object.values(aptitudes)
   const aptitudeId = props.data.markdownRemark.frontmatter.aptitude
   return (
     <>
       <div className={styles.layout}>
-        <div className={styles.menu}>
-          <section className={styles.menuSection}>
-            <h1 className={styles.sectionTitle}>Aptitudes</h1>
-            <ul className={styles.sectionItems}>
-              {renderAptitudes(aptitudeId)}
-            </ul>
-          </section>
-        </div>
+        <Menu currentAptitudeId={aptitudeId} aptitudes={aptitudeData} />
         <div className={styles.content}>
           <Aptitude {...aptitudes[aptitudeId]} />
         </div>

@@ -1,12 +1,12 @@
 import { slugify } from "underscore.string"
 import { ICapabilityData, IAptitudeData } from "./aptitudeData"
 
-export function buildSensorId(aptitudeData: IAptitudeData): string {
+export function buildAptitudeId(aptitudeData: IAptitudeData): string {
   return slugify(aptitudeData.name)
 }
 
-export function buildSensorPath(aptitudeData: IAptitudeData): string {
-  return `/app/aptitudes/${buildSensorId(aptitudeData)}`
+export function buildAptitudePath(aptitudeData: IAptitudeData): string {
+  return `/app/aptitudes/${buildAptitudeId(aptitudeData)}`
 }
 
 export function buildCapabilityId(capability: ICapabilityData): string {
@@ -17,5 +17,5 @@ export function buildCapabilityPath(
   capability: ICapabilityData,
   aptitudeData: IAptitudeData
 ): string {
-  return `${buildSensorPath(aptitudeData)}#${buildCapabilityId(capability)}`
+  return `${buildAptitudePath(aptitudeData)}#${buildCapabilityId(capability)}`
 }
