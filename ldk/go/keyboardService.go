@@ -1,6 +1,10 @@
 package ldk
 
-import "context"
+import (
+	"fmt"
+	"context"
+	"strconv"
+)
 
 // KeyboardService is an interface that defines what methods plugins can expect from the host
 type KeyboardService interface {
@@ -20,11 +24,12 @@ func (h Hotkey) Match(v Hotkey) bool {
 		return false
 	}
 	// You can't do a direct bitmask as Alt means Altleft or AltRight.  So checking all combinations is the only safe way to actually compare
-	l, r := h.Modifiers, v.Modifiers
-	return (l.AltLeft() == r.AltLeft() || l.Alt() == r.Alt()) && (l.AltRight() == r.AltRight() || l.Alt() == r.Alt()) &&
-		(l.ControlLeft() == r.ControlLeft()) || l.Control() == r.Control() && (l.ControlRight() == r.ControlRight() || l.Control() == r.Control()) &&
-		(l.MetaLeft() == r.MetaLeft() || l.Meta() == r.Meta()) && (l.MetaRight() == r.MetaRight() || l.Meta() == r.Meta()) &&
-		(l.ShiftLeft() == r.ShiftLeft() || l.Shift() == r.Shift()) && (l.ShiftRight() == r.ShiftRight() || l.Shift() == r.Shift())
+	configured, incoming := h.Modifiers, v.Modifiers
+
+	return (configured.AltLeft() == incoming.AltLeft() || configured.Alt() == incoming.Alt()) && (configured.AltRight() == incoming.AltRight() || configured.Alt() == incoming.Alt()) &&
+		(configured.ControlLeft() == incoming.ControlLeft() || configured.Control() == incoming.Control()) && (configured.ControlRight() == incoming.ControlRight() || configured.Control() == incoming.Control()) &&
+		(configured.MetaLeft() == incoming.MetaLeft() || configured.Meta() == incoming.Meta()) && (configured.MetaRight() == incoming.MetaRight() || configured.Meta() == incoming.Meta()) &&
+		(configured.ShiftLeft() == incoming.ShiftLeft() || configured.Shift() == incoming.Shift()) && (configured.ShiftRight() == incoming.ShiftRight() || configured.Shift() == incoming.Shift())
 }
 
 type KeyModifier int
