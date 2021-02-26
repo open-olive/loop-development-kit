@@ -3,6 +3,7 @@ import messages from '../grpc/keyboard_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 import { StoppableStream, StreamListener } from './stoppables';
+import { Logger } from '../logging';
 import {
   HotKeyEvent,
   HotKeyRequest,
@@ -50,10 +51,14 @@ const transformTextStream: StreamTransformer<
 const transformScanCodeStream: StreamTransformer<
   messages.KeyboardScancodeStreamResponse,
   ScanCodeEvent
-> = (message) => ({
-  scanCode: message.getScancode(),
-  direction: message.getPressed() ? 'down' : 'up',
-});
+> = (message) => {
+  const logger = new Logger('loop-core');
+  logger.info(`In transform - ${message.getScancode()}`);
+  return {
+    scanCode: message.getScancode(),
+    direction: message.getPressed() ? 'down' : 'up',
+  };
+};
 
 /**
  * @internal

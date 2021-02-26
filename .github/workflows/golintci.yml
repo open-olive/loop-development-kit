@@ -27,3 +27,5 @@ jobs:
           args: --timeout=10m
           # Only the LDK is checked; does not appear to check examples.
           working-directory: ldk/go
+          skip-pkg-cache: true
+          skip-build-cache: true
