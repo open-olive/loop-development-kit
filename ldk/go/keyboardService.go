@@ -1,10 +1,6 @@
 package ldk
 
-import (
-	"context"
-	"fmt"
-	"strconv"
-)
+import "context"
 
 // KeyboardService is an interface that defines what methods plugins can expect from the host
 type KeyboardService interface {
