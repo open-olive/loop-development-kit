@@ -23,6 +23,7 @@ export declare class TransformingStream<TInput extends MessageWithError, TOutput
     private stream;
     private transformer;
     private listener;
+    private logger;
     /**
      * @param stream - the stream object
      * @param transformer - a transformer function that converts the grpc input to the desired output.

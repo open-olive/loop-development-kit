@@ -1,13 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TransformingMessage = void 0;
+const logging_1 = require("../logging");
 /**
  * @internal
  */
 class TransformingMessage {
     constructor(transformer) {
         this.callback = (error, response) => {
-            if (error) {
+            // Error code = 1 is what happens when we call stop()
+            if (error && error.code !== 1) {
                 this.promiseReject(error);
             }
             else if (response) {
@@ -19,6 +21,7 @@ class TransformingMessage {
             this.promiseReject = reject;
         });
         this.transformer = transformer;
+        this.logger = new logging_1.Logger('loop-core');
     }
     promise() {
         return this.callbackPromise;
