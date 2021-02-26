@@ -1,13 +1,13 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
-import styles from "./sensorTemplate.module.scss"
-import { Sensor } from "../components/sensors/sensor"
+import styles from "./aptitudeTemplate.module.scss"
+import { Aptitude } from "../components/aptitudes/aptitude"
 import {
   buildCapabilityPath,
   buildSensorId,
   buildSensorPath,
-} from "../components/sensors/sensorPaths"
-import { sensors } from "../components/sensors/sensorData"
+} from "../components/aptitudes/aptitudePaths"
+import { aptitudes } from "../components/aptitudes/aptitudeData"
 
 interface TemplateProps {
   data: {
@@ -15,14 +15,14 @@ interface TemplateProps {
       html: string
       frontmatter: {
         slug: string
-        sensor: string
+        aptitude: string
       }
     }
   }
 }
 
-function renderSensors(activeSensorId: string): React.ReactNode {
-  return Object.values(sensors).map(sensor => {
+function renderAptitudes(activeSensorId: string): React.ReactNode {
+  return Object.values(aptitudes).map(sensor => {
     const capabilities = sensor.capabilities.map(capability => {
       return (
         <li className={styles.sectionSubItem}>
@@ -48,18 +48,20 @@ function renderSensors(activeSensorId: string): React.ReactNode {
 
 export default function Template(props: TemplateProps) {
   const { markdownRemark } = props.data
-  const sensorId = props.data.markdownRemark.frontmatter.sensor
+  const aptitudeId = props.data.markdownRemark.frontmatter.aptitude
   return (
     <>
       <div className={styles.layout}>
         <div className={styles.menu}>
           <section className={styles.menuSection}>
-            <h1 className={styles.sectionTitle}>Sensors</h1>
-            <ul className={styles.sectionItems}>{renderSensors(sensorId)}</ul>
+            <h1 className={styles.sectionTitle}>Aptitudes</h1>
+            <ul className={styles.sectionItems}>
+              {renderAptitudes(aptitudeId)}
+            </ul>
           </section>
         </div>
         <div className={styles.content}>
-          <Sensor {...sensors[sensorId]} />
+          <Aptitude {...aptitudes[aptitudeId]} />
         </div>
       </div>
     </>
@@ -71,7 +73,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         slug
-        sensor
+        aptitude
       }
     }
   }

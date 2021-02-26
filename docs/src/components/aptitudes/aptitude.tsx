@@ -1,13 +1,13 @@
 import React from "react"
 import { slugify } from "underscore.string"
-import styles from "./sensor.module.scss"
-import { buildCapabilityId, buildCapabilityPath } from "./sensorPaths"
+import styles from "./aptitude.module.scss"
+import { buildCapabilityId, buildCapabilityPath } from "./aptitudePaths"
 import {
-  ISensorCapabilityData,
-  ISensorData,
+  ICapabilityData,
+  IAptitudeData,
   LDKLinkActive,
   LDKLinks,
-} from "./sensorData"
+} from "./aptitudeData"
 
 const Links: React.FunctionComponent<{ links?: LDKLinkActive }> = props => {
   if (props.links == undefined) {
@@ -33,14 +33,14 @@ const Links: React.FunctionComponent<{ links?: LDKLinkActive }> = props => {
 }
 
 export const Capability: React.FunctionComponent<{
-  capability: ISensorCapabilityData
-  sensor: ISensorData
+  capability: ICapabilityData
+  aptitude: IAptitudeData
 }> = props => {
   const id = buildCapabilityId(props.capability)
   return (
     <section className={styles.capability}>
       <h2 className={styles.capabilityName}>
-        <a id={id} href={buildCapabilityPath(props.capability, props.sensor)}>
+        <a id={id} href={buildCapabilityPath(props.capability, props.aptitude)}>
           {props.capability.name}
         </a>
       </h2>
@@ -52,18 +52,18 @@ export const Capability: React.FunctionComponent<{
   )
 }
 
-export const Sensor: React.FunctionComponent<ISensorData> = props => {
+export const Aptitude: React.FunctionComponent<IAptitudeData> = props => {
   return (
-    <article className={styles.sensor}>
-      <h1 className={styles.sensorName}>{props.name}</h1>
+    <article className={styles.aptitude}>
+      <h1 className={styles.aptitudeName}>{props.name}</h1>
       <Links links={props.links} />
-      <p className={styles.sensorDescription}>{props.description}</p>
+      <p className={styles.aptitudeDescription}>{props.description}</p>
       <div className={styles.capabilities}>
         {props.capabilities?.map(capability => (
           <Capability
             capability={capability}
             key={slugify(capability.name)}
-            sensor={props}
+            aptitude={props}
           />
         ))}
       </div>

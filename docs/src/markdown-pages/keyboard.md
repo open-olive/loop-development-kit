@@ -1,4 +1,4 @@
 ---
-slug: "/app/sensors/keyboard"
-sensor: "keyboard"
+slug: "/app/aptitudes/keyboard"
+aptitude: "keyboard"
 ---

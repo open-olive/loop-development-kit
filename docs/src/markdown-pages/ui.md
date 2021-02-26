@@ -1,4 +1,4 @@
 ---
-slug: "/app/sensors/ui"
-sensor: "ui"
+slug: "/app/aptitudes/ui"
+aptitude: "ui"
 ---

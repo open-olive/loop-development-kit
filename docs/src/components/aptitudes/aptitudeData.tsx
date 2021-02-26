@@ -8,20 +8,20 @@ export interface LDKLinks {
 
 export type LDKLinkActive = Partial<LDKLinks>
 
-export interface ISensorData {
+export interface IAptitudeData {
   name: string
   description: React.ReactNode
-  capabilities: ISensorCapabilityData[]
+  capabilities: ICapabilityData[]
   links?: LDKLinkActive
 }
 
-export interface ISensorCapabilityData {
+export interface ICapabilityData {
   name: string
   description: React.ReactNode
   links?: LDKLinkActive
 }
 
-export const sensors: { [sensor: string]: ISensorData } = {
+export const aptitudes: { [sensor: string]: IAptitudeData } = {
   keyboard: {
     name: "Keyboard",
     description: "Blah blah blah",
