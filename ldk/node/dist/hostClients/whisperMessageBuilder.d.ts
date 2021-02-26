@@ -52,6 +52,6 @@ export declare const buildWhisperMarkdownRequest: (whisper: Whisper) => messages
 export declare const buildWhisperListRequest: (config: WhisperListConfig) => messages.WhisperListRequest;
 /**
  * @internal
- * @param whisper - whisper to build
+ * @param config - whisper to build
  */
-export declare const buildWhisperConfirmMessage: (whisper: WhisperConfirmConfig) => messages.WhisperConfirmRequest;
+export declare const buildWhisperConfirmMessage: (config: WhisperConfirmConfig) => messages.WhisperConfirmRequest;
