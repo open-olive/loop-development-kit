@@ -1,5 +1,5 @@
-import {ISensorCapabilityData, ISensorData} from "./sensor"
 import { slugify } from "underscore.string"
+import {ISensorCapabilityData, ISensorData} from "./sensorData";
 
 export function buildSensorId(sensor: ISensorData): string {
   return slugify(sensor.name)

@@ -1,12 +1,13 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
 import styles from "./sensorTemplate.module.scss"
-import { Sensor, sensors } from "../components/sensors/sensor"
+import { Sensor } from "../components/sensors/sensor"
 import {
   buildCapabilityPath,
   buildSensorId,
   buildSensorPath,
 } from "../components/sensors/sensorPaths"
+import { sensors } from "../components/sensors/sensorData"
 
 interface TemplateProps {
   data: {
@@ -26,7 +27,6 @@ function renderSensors(activeSensorId: string): React.ReactNode {
       return (
         <li className={styles.sectionSubItem}>
           <Link to={buildCapabilityPath(capability, sensor)}>
-            {" "}
             {capability.name}
           </Link>
         </li>
