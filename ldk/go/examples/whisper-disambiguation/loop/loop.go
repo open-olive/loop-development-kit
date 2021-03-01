@@ -187,6 +187,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		go func() {
 			_, err := c.sidekick.Whisper().Disambiguation(c.ctx, &ldk.WhisperContentDisambiguation{
 				Label:    "Latest FDA Food Recalls",
+				Markdown: "The Latest FDA Food Recalls",
 				Elements: elements,
 			})
 			if err != nil {

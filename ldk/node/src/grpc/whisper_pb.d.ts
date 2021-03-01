@@ -1114,6 +1114,9 @@ export class WhisperDisambiguationRequest extends jspb.Message {
     getElementsMap(): jspb.Map<string, WhisperDisambiguationElement>;
     clearElementsMap(): void;
 
+    getMarkdown(): string;
+    setMarkdown(value: string): WhisperDisambiguationRequest;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): WhisperDisambiguationRequest.AsObject;
@@ -1131,6 +1134,7 @@ export namespace WhisperDisambiguationRequest {
         meta?: WhisperMeta.AsObject,
 
         elementsMap: Array<[string, WhisperDisambiguationElement.AsObject]>,
+        markdown: string,
     }
 }
 
@@ -1263,6 +1267,9 @@ export class WhisperListRequest extends jspb.Message {
     getElementsMap(): jspb.Map<string, WhisperListElement>;
     clearElementsMap(): void;
 
+    getMarkdown(): string;
+    setMarkdown(value: string): WhisperListRequest;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): WhisperListRequest.AsObject;
@@ -1280,6 +1287,7 @@ export namespace WhisperListRequest {
         meta?: WhisperMeta.AsObject,
 
         elementsMap: Array<[string, WhisperListElement.AsObject]>,
+        markdown: string,
     }
 }
 
