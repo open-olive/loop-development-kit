@@ -1,0 +1,44 @@
+@import "../../pages/global";
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: $menuBackgroundColor;
+  color: $menuTextColor;
+  overflow-y: auto;
+  padding: 20px;
+  a {
+    color: $menuLinkColor;
+    &:hover {
+      color: $menuLinkColorHover;
+    }
+  }
+}
+
+.menuSection {
+}
+
+.sectionTitle {
+  font-size: $twoXlFontSize;
+}
+
+.sectionItems,
+.sectionSubItems {
+  list-style: none;
+  padding: 0;
+}
+
+.sectionItem {
+  padding: 5px 0;
+}
+
+.sectionItemHeader {
+  font-size: $bodyFontSize;
+}
+
+.sectionSubItem {
+  padding: 5px 0;
+}
