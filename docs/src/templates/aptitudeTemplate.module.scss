@@ -1,8 +1,13 @@
 @import "../pages/global";
 
 .layout {
-  --sidebar-width: 200px;
-  --topbar-height: 50px;
+  @include respond-to("mobile") {
+    --sidebar-width: 0px;
+  }
+  @include respond-to("desktop") {
+    --sidebar-width: 200px;
+  }
+  --topbar-height: 60px;
 }
 
 .topNav {
@@ -14,11 +19,16 @@
 }
 
 .content {
-  position: absolute;
-  top: 0;
-  left: var(--sidebar-width);
-  bottom: 0;
-  right: 0;
-  overflow-y: scroll;
+  @include respond-to("desktop") {
+    position: absolute;
+    top: 0;
+    left: var(--sidebar-width);
+    bottom: 0;
+    right: 0;
+    overflow-y: scroll;
+  }
+  @include respond-to("mobile") {
+    padding-top: var(--topbar-height);
+  }
   padding: 20px;
 }

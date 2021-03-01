@@ -50,13 +50,16 @@ export const MobileMenuSelect: React.FunctionComponent<IMenuProps> = props => {
     <option value={buildAptitudePath(apt)}>{apt.name}</option>
   ))
   return (
-    <select onChange={onChange} value={props.currentPath}>
-      <optgroup label="Aptitudes">{sensorOptions}</optgroup>
-    </select>
+    <div className={styles.mobileMenu}>
+      <select onChange={onChange} value={props.currentPath}>
+        <option value="/">Home</option>
+        <optgroup label="Aptitudes">{sensorOptions}</optgroup>
+      </select>
+    </div>
   )
 }
 
-export const Menu: React.FunctionComponent<IMenuProps> = props => {
+export const DesktopMenu: React.FunctionComponent<IMenuProps> = props => {
   let elements = props.aptitudes.map(aptitude => {
     const aptitudeId = buildAptitudePath(aptitude)
     return (
@@ -68,15 +71,31 @@ export const Menu: React.FunctionComponent<IMenuProps> = props => {
     )
   })
   return (
-    <div className={styles.menu}>
-      <MobileMenuSelect
-        aptitudes={props.aptitudes}
-        currentPath={props.currentPath}
-      />
+    <div className={styles.desktopMenu}>
+      <section className={styles.menuSection}>
+        <h1>
+          <Link to="/">Home</Link>
+        </h1>
+      </section>
       <section className={styles.menuSection}>
         <h1 className={styles.sectionTitle}>Aptitudes</h1>
         <ul className={styles.sectionItems}>{elements}</ul>
       </section>
     </div>
+  )
+}
+
+export const Menu: React.FunctionComponent<IMenuProps> = props => {
+  return (
+    <>
+      <MobileMenuSelect
+        aptitudes={props.aptitudes}
+        currentPath={props.currentPath}
+      />
+      <DesktopMenu
+        aptitudes={props.aptitudes}
+        currentPath={props.currentPath}
+      />
+    </>
   )
 }

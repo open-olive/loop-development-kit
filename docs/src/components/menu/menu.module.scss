@@ -1,14 +1,36 @@
 @import "../../pages/global";
 
-.menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: var(--sidebar-width);
+.desktopMenu {
+  @include respond-to("desktop") {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    overflow-y: auto;
+  }
+  @include respond-to("mobile") {
+    display: none;
+  }
+}
+
+.mobileMenu {
+  @include respond-to("mobile") {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--topbar-height);
+  }
+  @include respond-to("desktop") {
+    display: none;
+  }
+}
+
+.mobileMenu,
+.desktopMenu {
   background-color: $menuBackgroundColor;
   color: $menuTextColor;
-  overflow-y: auto;
   padding: 20px;
   a {
     color: $menuLinkColor;
@@ -19,6 +41,9 @@
 }
 
 .menuSection {
+  @include respond-to("mobile") {
+    display: none;
+  }
 }
 
 .sectionTitle {

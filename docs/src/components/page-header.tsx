@@ -14,11 +14,12 @@ export class PageHeader extends React.Component<
   public render(): JSX.Element {
     return (
       <section className={styles.section}>
+        <div className={styles.sectionOverlay}/>
         <header className={styles.content}>
           <h1 className={styles.title}>{this.props.title}</h1>
           {this.props.children}
         </header>
-        <div className={styles.sectionOverlay}/>
+
       </section>
     )
   }

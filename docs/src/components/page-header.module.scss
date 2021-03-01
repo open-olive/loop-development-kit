@@ -14,6 +14,7 @@
 .content {
   width: 80%;
   max-width: 1280px;
+  z-index: 200;
 }
 
 .sectionOverlay {
@@ -26,6 +27,7 @@
   width: 100%;
   height: 100%;
   crop: auto;
+  z-index: 100;
 }
 
 .title {
