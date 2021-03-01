@@ -22,18 +22,18 @@ export interface ProcessListResponse {
 }
 
 /**
- * The ProcessService provides access to the list of running processes.
+ * The ProcessService provides access to the list of running processes for all users.
  */
 export interface ProcessService {
   /**
-   * Gets a list of the current running processes.
+   * Gets a list of the current running processes for all users.
    *
    * @returns a Promise resolving with a list of the current processes.
    */
   queryProcesses(): Promise<ProcessListResponse>;
 
   /**
-   * Starts listening for processes starting and stopping.
+   * Starts listening for processes starting and stopping for all users.
    *
    * @param listener - Listener function called every time a process is started or stopped.
    */
