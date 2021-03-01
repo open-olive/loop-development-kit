@@ -9,11 +9,11 @@ import { CursorClient } from './aptitudes/cursorClient';
 // import { HoverClient } from './aptitudes/hoverClient';
 import { FileSystemClient } from './aptitudes/fileSystemClient';
 import { ProcessClient } from './aptitudes/processClient';
-// import { WindowClient } from './aptitudes/windowClient';
 // import { BrowserClient } from './aptitudes/browserClient';
 import { NetworkClient } from './aptitudes/networkClient';
 import { UIClient } from './aptitudes/uiClient';
 import { Logger } from './logging';
+import { WindowClient } from './aptitudes/windowClient';
 
 /**
  * @internal
@@ -37,11 +37,10 @@ export default class AptitudeClients implements Aptitudes {
 
   public ui: UIClient = new UIClient();
 
+  public window: WindowClient = new WindowClient();
+
   // These services are not yet implemented.
   // public hover: HoverClient = new HoverClient();
-
-  // public window: WindowClient = new WindowClient();
-
   // public browser: BrowserClient = new BrowserClient();
 
   constructor(logger: Logger) {

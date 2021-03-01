@@ -21,9 +21,7 @@ function updateRequest<
 /**
  * @internal
  */
-export class HoverClient
-  extends BaseClient<HoverGRPCClient>
-  implements Hover {
+export class HoverClient extends BaseClient<HoverGRPCClient> implements Hover {
   protected generateClient(): GRPCClientConstructor<HoverGRPCClient> {
     return HoverGRPCClient;
   }

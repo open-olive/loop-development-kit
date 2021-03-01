@@ -11,7 +11,8 @@ import {
   FileSystem,
   FileAction,
   DirectoryEvent,
-  FileEvent, FileSystemPathParams,
+  FileEvent,
+  FileSystemPathParams,
 } from './fileSystem';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
@@ -49,9 +50,7 @@ export class FileSystemClient
     return FilesystemGRPCClient;
   }
 
-  directory(
-    params: FileSystemPathParams,
-  ): Promise<FileInfoList> {
+  directory(params: FileSystemPathParams): Promise<FileInfoList> {
     return this.buildQuery<
       messages.FilesystemDirRequest,
       messages.FilesystemDirResponse,

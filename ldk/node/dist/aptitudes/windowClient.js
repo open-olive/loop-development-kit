@@ -34,21 +34,21 @@ const transformingStream_1 = require("./transformingStream");
  */
 function parseWindowAction(action) {
     switch (action) {
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_FOCUSED:
+        case window_pb_1.WindowAction.WINDOW_ACTION_FOCUSED:
             return window_1.WindowAction.Focused;
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_UNFOCUSED:
+        case window_pb_1.WindowAction.WINDOW_ACTION_UNFOCUSED:
             return window_1.WindowAction.Unfocused;
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_OPENED:
+        case window_pb_1.WindowAction.WINDOW_ACTION_OPENED:
             return window_1.WindowAction.Opened;
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_CLOSED:
+        case window_pb_1.WindowAction.WINDOW_ACTION_CLOSED:
             return window_1.WindowAction.Closed;
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_TITLE_CHANGED:
+        case window_pb_1.WindowAction.WINDOW_ACTION_TITLE_CHANGED:
             return window_1.WindowAction.TitleChanged;
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_MOVED:
+        case window_pb_1.WindowAction.WINDOW_ACTION_MOVED:
             return window_1.WindowAction.Moved;
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_RESIZED:
+        case window_pb_1.WindowAction.WINDOW_ACTION_RESIZED:
             return window_1.WindowAction.Resized;
-        case window_pb_1.WindowActionPB.WINDOW_ACTION_UNKNOWN:
+        case window_pb_1.WindowAction.WINDOW_ACTION_UNKNOWN:
         default:
             return window_1.WindowAction.Unknown;
     }

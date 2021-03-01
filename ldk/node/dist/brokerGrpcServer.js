@@ -25,7 +25,7 @@ class BrokerGrpcServer {
          * @param connInfo - An object containing host process connection information.
          */
         /**
-         * Start a connection info listenText from the host process.
+         * Start a connection info stream from the host process.
          *
          * @param call - The callback that handles receiving connection info.
          */

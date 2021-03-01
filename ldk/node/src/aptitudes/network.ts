@@ -17,6 +17,9 @@ export interface HttpResponse {
   headers: Record<string, Array<string>>;
 }
 
+/**
+ * The Network Aptitude allows you to make network requests.
+ */
 export interface Network {
   /**
    * Generates a HTTP request with the provided configuration.

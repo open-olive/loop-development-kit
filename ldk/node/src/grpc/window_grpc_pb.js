@@ -107,7 +107,7 @@ windowActiveWindow: {
     responseSerialize: serialize_proto_WindowActiveWindowResponse,
     responseDeserialize: deserialize_proto_WindowActiveWindowResponse,
   },
-  // listenText information about currently focused window as it changes
+  // stream information about currently focused window as it changes
 windowActiveWindowStream: {
     path: '/proto.Window/WindowActiveWindowStream',
     requestStream: false,

@@ -317,7 +317,9 @@ export const generateWhisperDisambiguationElement = (
  * @internal
  * @param whisper - whisper to build
  */
-export const generateWhisperMeta = (whisper: WhisperConfig): messages.WhisperMeta => {
+export const generateWhisperMeta = (
+  whisper: WhisperConfig,
+): messages.WhisperMeta => {
   const whisperMsg = new messages.WhisperMeta();
   whisperMsg.setLabel(whisper.label);
   return whisperMsg;

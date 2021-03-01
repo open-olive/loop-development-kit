@@ -135,7 +135,7 @@ var FilesystemService = exports.FilesystemService = {
         responseSerialize: serialize_proto_FilesystemDirResponse,
         responseDeserialize: deserialize_proto_FilesystemDirResponse,
     },
-    // listenText any updates to the contents of a directory
+    // stream any updates to the contents of a directory
     filesystemDirStream: {
         path: '/proto.Filesystem/FilesystemDirStream',
         requestStream: false,
@@ -147,7 +147,7 @@ var FilesystemService = exports.FilesystemService = {
         responseSerialize: serialize_proto_FilesystemDirStreamResponse,
         responseDeserialize: deserialize_proto_FilesystemDirStreamResponse,
     },
-    // listenText any updates to a file
+    // stream any updates to a file
     filesystemFileInfoStream: {
         path: '/proto.Filesystem/FilesystemFileInfoStream',
         requestStream: false,
@@ -159,7 +159,7 @@ var FilesystemService = exports.FilesystemService = {
         responseSerialize: serialize_proto_FilesystemFileInfoStreamResponse,
         responseDeserialize: deserialize_proto_FilesystemFileInfoStreamResponse,
     },
-    // file listenText
+    // file stream
     filesystemFileStream: {
         path: '/proto.Filesystem/FilesystemFileStream',
         requestStream: true,

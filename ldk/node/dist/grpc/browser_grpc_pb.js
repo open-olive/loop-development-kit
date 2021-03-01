@@ -88,7 +88,7 @@ var BrowserService = exports.BrowserService = {
         responseSerialize: serialize_proto_BrowserActiveURLResponse,
         responseDeserialize: deserialize_proto_BrowserActiveURLResponse,
     },
-    // listenText active URL every time it changes
+    // stream active URL every time it changes
     browserActiveURLStream: {
         path: '/proto.Browser/BrowserActiveURLStream',
         requestStream: false,
@@ -112,7 +112,7 @@ var BrowserService = exports.BrowserService = {
         responseSerialize: serialize_proto_BrowserSelectedTextResponse,
         responseDeserialize: deserialize_proto_BrowserSelectedTextResponse,
     },
-    // listenText selected text every time it changes
+    // stream selected text every time it changes
     browserSelectedTextStream: {
         path: '/proto.Browser/BrowserSelectedTextStream',
         requestStream: false,

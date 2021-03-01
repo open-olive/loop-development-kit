@@ -26,7 +26,7 @@ class WhisperClient extends baseClient_1.default {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });
     }
-    listWhisper(whisper) {
+    list(whisper) {
         return this.buildStoppableMessage((message, callback) => this.client.whisperList(message, callback), () => whisperMessageBuilder_1.buildWhisperListRequest(whisper), 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => { });

@@ -34,7 +34,7 @@ describe('WindowClient', () => {
   const windowY = 75;
   const windowPid = 10;
   const windowPath = '/index.html';
-  const windowTitle = 'OliveHelps';
+  const windowTitle = 'Olive Helps';
 
   beforeEach(async () => {
     jest.resetAllMocks();

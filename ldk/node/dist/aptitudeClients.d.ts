@@ -11,6 +11,7 @@ import { ProcessClient } from './aptitudes/processClient';
 import { NetworkClient } from './aptitudes/networkClient';
 import { UIClient } from './aptitudes/uiClient';
 import { Logger } from './logging';
+import { WindowClient } from './aptitudes/windowClient';
 /**
  * @internal
  */
@@ -24,6 +25,7 @@ export default class AptitudeClients implements Aptitudes {
     fileSystem: FileSystemClient;
     process: ProcessClient;
     ui: UIClient;
+    window: WindowClient;
     constructor(logger: Logger);
     network: NetworkClient;
     connect(connInfo: ConnInfo.AsObject, session: Session.AsObject): Promise<void[]>;

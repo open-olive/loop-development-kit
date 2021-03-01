@@ -11,17 +11,16 @@ const cursorClient_1 = require("./aptitudes/cursorClient");
 // import { HoverClient } from './aptitudes/hoverClient';
 const fileSystemClient_1 = require("./aptitudes/fileSystemClient");
 const processClient_1 = require("./aptitudes/processClient");
-// import { WindowClient } from './aptitudes/windowClient';
 // import { BrowserClient } from './aptitudes/browserClient';
 const networkClient_1 = require("./aptitudes/networkClient");
 const uiClient_1 = require("./aptitudes/uiClient");
+const windowClient_1 = require("./aptitudes/windowClient");
 /**
  * @internal
  */
 class AptitudeClients {
     // These services are not yet implemented.
     // public hover: HoverClient = new HoverClient();
-    // public window: WindowClient = new WindowClient();
     // public browser: BrowserClient = new BrowserClient();
     constructor(logger) {
         this.whisper = new whisperClient_1.default();
@@ -32,6 +31,7 @@ class AptitudeClients {
         this.fileSystem = new fileSystemClient_1.FileSystemClient();
         this.process = new processClient_1.ProcessClient();
         this.ui = new uiClient_1.UIClient();
+        this.window = new windowClient_1.WindowClient();
         this.network = new networkClient_1.NetworkClient();
         this.logger = logger;
     }

@@ -11,7 +11,7 @@ export interface CursorPosition {
     screen: number;
 }
 /**
- * The Cursor provides access to the cursor position.
+ * The Cursor Aptitude allows you to query and listen for the cursor position.
  */
 export interface Cursor {
     /**
@@ -19,9 +19,9 @@ export interface Cursor {
      */
     position(): Promise<CursorPosition>;
     /**
-     * Establishes a listenText calling the listener function whenever the cursor position changes.
+     * Listen for cursor position updates.
      *
-     * @param listener - The listener function called when the function changes.
+     * @param listener - The listener function called when the cursor position changes.
      * @returns a StoppableStream object that can be stopped.
      */
     listenPosition(listener: StreamListener<CursorPosition>): StoppableStream<CursorPosition>;

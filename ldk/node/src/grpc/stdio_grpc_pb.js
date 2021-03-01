@@ -29,10 +29,10 @@ function deserialize_plugin_StdioData(buffer_arg) {
 
 
 // GRPCStdio is a service that is automatically run by the plugin process
-// to listenText any stdout/err data so that it can be mirrored on the plugin
+// to stream any stdout/err data so that it can be mirrored on the plugin
 // host side.
 var GRPCStdioService = exports.GRPCStdioService = {
-  // StreamStdio returns a listenText that contains all the stdout/stderr.
+  // StreamStdio returns a stream that contains all the stdout/stderr.
 // This RPC endpoint must only be called ONCE. Once stdio data is consumed
 // it is not sent again.
 //

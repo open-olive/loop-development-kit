@@ -89,7 +89,7 @@ describe('KeyboardClient', () => {
       subject.listenText(streamCallback);
     });
 
-    it('should listenText the text back to the callback', () => {
+    it('should stream the text back to the callback', () => {
       stream.emit('data', sentResponse);
 
       expect(streamCallback).toHaveBeenCalledWith(null, sentResponse.getText());

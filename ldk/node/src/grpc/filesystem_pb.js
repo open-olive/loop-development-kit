@@ -7,8 +7,6 @@
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
@@ -3419,7 +3417,7 @@ proto.proto.FilesystemFileStreamRequest.prototype.hasOpen = function() {
 
 
 /**
- * optional Read text = 3;
+ * optional Read read = 3;
  * @return {?proto.proto.FilesystemFileStreamRequest.Read}
  */
 proto.proto.FilesystemFileStreamRequest.prototype.getRead = function() {
@@ -3456,7 +3454,7 @@ proto.proto.FilesystemFileStreamRequest.prototype.hasRead = function() {
 
 
 /**
- * optional Write writeText = 4;
+ * optional Write write = 4;
  * @return {?proto.proto.FilesystemFileStreamRequest.Write}
  */
 proto.proto.FilesystemFileStreamRequest.prototype.getWrite = function() {
@@ -4625,7 +4623,7 @@ proto.proto.FilesystemFileStreamResponse.Stat.prototype.setError = function(valu
 
 
 /**
- * optional Read text = 1;
+ * optional Read read = 1;
  * @return {?proto.proto.FilesystemFileStreamResponse.Read}
  */
 proto.proto.FilesystemFileStreamResponse.prototype.getRead = function() {
@@ -4662,7 +4660,7 @@ proto.proto.FilesystemFileStreamResponse.prototype.hasRead = function() {
 
 
 /**
- * optional Write writeText = 2;
+ * optional Write write = 2;
  * @return {?proto.proto.FilesystemFileStreamResponse.Write}
  */
 proto.proto.FilesystemFileStreamResponse.prototype.getWrite = function() {

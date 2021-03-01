@@ -23,9 +23,7 @@ function parseProcessInfo(info: Messages.ProcessInfo): ProcessInfo {
  * @param action - The action to process.
  * @internal
  */
-function parseProcessAction(
-  action: ProcessActionPB,
-): ProcessAction {
+function parseProcessAction(action: ProcessActionPB): ProcessAction {
   switch (action) {
     case ProcessActionPB.PROCESS_ACTION_STARTED:
       return ProcessAction.Started;

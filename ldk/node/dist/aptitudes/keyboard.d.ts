@@ -28,33 +28,33 @@ export interface ScanCodeEvent {
     direction: 'up' | 'down';
 }
 /**
- * The Keyboard allows you to observe key presses and text entry on the keyboard.
+ * The Keyboard Aptitude allows you to observe key presses and text entry on the keyboard.
  */
 export interface Keyboard {
     /**
-     * Streams chunks of text, emitted when the user stops entering text for a moment.
+     * Listens for chunks of text, emitted when the user stops entering text for a moment.
      *
      * @param listener - Listener function called whenever a chunk of text is emitted.
      */
     listenText(listener: StreamListener<string>): StoppableStream<string>;
     /**
-     * Streams individual key presses as they happen.
+     * Listens for individual key presses as they happen.
      *
      * @param listener - Listener function called whenever an alphanumeric key is pressed.
      */
     listenChar(listener: StreamListener<CharacterEvent>): StoppableStream<CharacterEvent>;
     /**
-     * Streams Keyboard Scan Codes as they're entered.
+     * Listens for Keyboard Scan Codes as they're entered.
      *
      * @param listener - Listener function called whenever a key is pressed or released.
      */
     listenScanCode(listener: StreamListener<ScanCodeEvent>): StoppableStream<ScanCodeEvent>;
     /**
-     * Streams when the provided hot key combinations are pressed or released.
+     * Listens for when the provided hot key combinations are pressed or released.
      *
-     * The listener function only knows that one of the hot keys provided was pressed or released. If you want to listenText for different hot keys you'll need to create a different listenText for each.
+     * The listener function only knows that one of the hot keys provided was pressed or released. If you want to listen for different hot keys you'll need to create a different listen for each.
      *
-     * @param hotKeys - The list of hot keys to listenText for.
+     * @param hotKeys - The list of hot keys to listen for.
      * @param listener - Listener function called whenever any of the provided hot key combinations is pressed or released.
      */
     listenHotKey(hotKeys: HotKey, listener: StreamListener<HotKeyEvent>): StoppableStream<HotKeyEvent>;

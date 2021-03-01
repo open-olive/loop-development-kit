@@ -102,7 +102,7 @@ describe('ProcessClient', () => {
       subject.listenProcesses(streamCallback);
     });
 
-    it('should listenText the process info back to the callback', () => {
+    it('should stream the process info back to the callback', () => {
       stream.emit('data', sentResponse);
 
       const transformedProcessInfo: ProcessEvent = captureMockArgument(

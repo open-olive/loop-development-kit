@@ -5,7 +5,7 @@ import {
   WhisperDisambiguationElements,
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/aptitudes/whisperService';
+} from '../../../dist/aptitudes/whisper';
 
 import { decodeRecall, Recall, RecallJSON } from './transform';
 
@@ -57,7 +57,7 @@ class ExampleLoop implements Loop {
           results[resultItem.recall_number] = decodeRecall(resultItem);
         });
 
-        this.aptitudes.whisper.disambiguationWhisper(
+        this.aptitudes.whisper.disambiguation(
           {
             label: 'Latest FDA Food Recall',
             markdown: '',

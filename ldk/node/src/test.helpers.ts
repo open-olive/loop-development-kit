@@ -61,18 +61,18 @@ export function createWaitHandler() {
 }
 
 /**
- * A listenText that is largely a target for later emits
+ * A stream that is largely a target for later emits
  */
-export function createEmptyStream<
+export function createEmptyStream<TResponse>(): ClientReadableStream<
   TResponse
->(): ClientReadableStream<TResponse> {
+> {
   return new ClientReadableStreamImpl<TResponse>(() => ({} as TResponse));
 }
 
 /**
- * A simple streaming handler that passes back the response for every listenText chunk
+ * A simple streaming handler that passes back the response for every stream chunk
  *
- * @param stream - an optional listenText to use, if you don't want this to create it for you
+ * @param stream - an optional stream to use, if you don't want this to create it for you
  */
 export function createStreamingHandler<TResponse>(
   stream?: ClientReadableStream<TResponse>,

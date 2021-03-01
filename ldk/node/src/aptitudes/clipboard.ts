@@ -1,7 +1,7 @@
 import { StoppableStream, StreamListener } from './stoppables';
 
 /**
- * The Clipboard provides access to the OS's clipboard.
+ * The Clipboard Aptitude allows you to read, write and listen to the clipboard.
  */
 export interface Clipboard {
   /**
@@ -13,7 +13,7 @@ export interface Clipboard {
    * Starts listening to changes to the clipboard.
    *
    * @param listener - A function that's called whenever the clipboard's contents change.
-   * @returns A listenText object that can be stopped.
+   * @returns A stream object that can be stopped.
    */
   listenText(listener: StreamListener<string>): StoppableStream<string>;
 

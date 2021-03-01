@@ -23,9 +23,8 @@ export interface WindowEvent {
     action: WindowAction;
 }
 /**
- * The Window provides access to the windows opened in the user's session.
+ * The Window Aptitude allows you to access the windows opened in the user's session.
  *
- * This service is not yet implemented.
  */
 export interface Window {
     /**

@@ -17,7 +17,7 @@ export interface ProcessInfoList {
     processes: ProcessInfo[];
 }
 /**
- * The Process provides access to the list of running processes.
+ * The Process Aptitude allows you to query and listen for OS processes.
  */
 export interface Process {
     /**
@@ -27,7 +27,7 @@ export interface Process {
      */
     processes(): Promise<ProcessInfoList>;
     /**
-     * Starts listening for processes starting and stopping.
+     * Listen for processes starting and stopping.
      *
      * @param listener - Listener function called every time a process is started or stopped.
      */

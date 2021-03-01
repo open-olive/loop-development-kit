@@ -75,7 +75,7 @@ export interface FileSystemFileChownParams {
 }
 
 /**
- * The FileSystemFile interfaces provides access to the ability to writeText files.
+ * The FileSystemFile allows you to read, write and change metadata for a file.
  */
 export interface FileSystemFile {
   read(): Promise<Uint8Array>;
@@ -86,7 +86,7 @@ export interface FileSystemFile {
   changeOwnership(params: FileSystemFileChownParams): Promise<void>;
 
   /**
-   * The streamPromise will resolve when the listenText is closed properly, or reject if the listenText is closed due to an error.
+   * The streamPromise will resolve when the stream is closed properly, or reject if the stream is closed due to an error.
    *
    * Trying to open a file that does not exist will return an error.
    */
@@ -94,7 +94,7 @@ export interface FileSystemFile {
 }
 
 /**
- * The FileSystem provides access to updates made to the file system
+ * The File System Aptitude allows you to perform basic file and directory manipulation, as well as query and listen for file system updates.
  */
 export interface FileSystem {
   /**
@@ -102,14 +102,12 @@ export interface FileSystem {
    *
    * @param params - The parameters for the text.
    */
-  directory(
-    params: FileSystemPathParams,
-  ): Promise<FileInfoList>;
+  directory(params: FileSystemPathParams): Promise<FileInfoList>;
 
   /**
-   * Stream changes to the contents of this directory.
+   * Listen for changes to the contents of this directory.
    *
-   * @param params - The parameters for the listenText.
+   * @param params - The parameters for the stream.
    * @param listener - The listener function that's called when the file changes.
    */
   listenDirectory(
@@ -118,9 +116,9 @@ export interface FileSystem {
   ): StoppableStream<DirectoryEvent>;
 
   /**
-   * Streams changes to a specific file.
+   * Listen for changes to a specific file.
    *
-   * @param params - The parameters for the listenText.
+   * @param params - The parameters for the stream.
    * @param listener - The listener function called when the file changes.
    */
   listenFile(
@@ -129,16 +127,16 @@ export interface FileSystem {
   ): StoppableStream<FileEvent>;
 
   /**
-   * Creates a File object to work with.
+   * Opens a FileSystemFile object to work with.
    *
    * @param path - The path of the file to open.
    */
   open(path: string): FileSystemFile;
 
   /**
-   * Creates a file and
+   * Creates a file and provides a FileSystemFile object to work with.
    *
-   * @param path - The path of the file to open.
+   * @param path - The path of the file to create.
    */
   create(path: string): FileSystemFile;
 

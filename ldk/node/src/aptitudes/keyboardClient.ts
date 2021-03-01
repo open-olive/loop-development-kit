@@ -57,7 +57,7 @@ const transformScanCodeStream: StreamTransformer<
 
 /**
  * @internal
- * @param keyRequest - The key request to generate a listenText for.
+ * @param keyRequest - The key request to generate a stream for.
  */
 function generateHotkeyStreamRequest(
   keyRequest: HotKey,

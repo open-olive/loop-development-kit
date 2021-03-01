@@ -1,13 +1,13 @@
 # Logging
 
-To make it easier to integrate with Sidekick's logger, a `Logger` class is provided to you in this library.
+To make it easier to integrate with Olive Helps' logger, a `Logger` class is provided to you in this library.
 
 Example usage:
 
 ```javascript
-const { Logger } = require('ldk');
+const { Logger } = require('@oliveai/ldk');
 
-const logger = new Logger('my-plugin-name');
+const logger = new Logger('my-loop-name');
 
 // ...
 

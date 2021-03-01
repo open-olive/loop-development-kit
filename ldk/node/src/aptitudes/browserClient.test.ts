@@ -87,7 +87,7 @@ describe('BrowserClient', () => {
 
     beforeEach(async () => {
       sentResponse = new Messages.BrowserSelectedTextResponse()
-        .setTabtitle('OliveHelps')
+        .setTabtitle('Olive Helps')
         .setText('you selected me')
         .setUrl('http://test.example.com');
 

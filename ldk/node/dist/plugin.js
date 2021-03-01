@@ -48,7 +48,7 @@ class Plugin {
         this.loopServer = new loopServer_1.default(this.server, this.broker, impl, logger);
     }
     /**
-     * Starts the GRPC server and writeText connection information to stdout.
+     * Starts the GRPC server and write connection information to stdout.
      *
      * @returns Promise resolving when the server starts.
      */

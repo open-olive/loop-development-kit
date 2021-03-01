@@ -5,9 +5,9 @@ export interface SelectedText {
     tabTitle: string;
 }
 /**
- * The Browser provides access to the active URL and selected text.
+ * The Browser Aptitude allows you to access the active URL and selected text in a browser.
  *
- * This service is not yet implemented.
+ * This Aptitude is not yet implemented.
  */
 export interface Browser {
     /**
@@ -17,7 +17,7 @@ export interface Browser {
      */
     activeURL(): Promise<string>;
     /**
-     * Stream changes to the active URL in the active tab.
+     * Listen for changes to the active URL in the active tab.
      *
      * @param listener - Listener function called whenever the active URL changes.
      * @returns Stream object.
@@ -30,7 +30,7 @@ export interface Browser {
      */
     selectedText(): Promise<SelectedText>;
     /**
-     * Streams changes to the selected text.
+     * Listen for changes to the selected text.
      *
      * @param listener - Listener function called whenever the selected text changes.
      */

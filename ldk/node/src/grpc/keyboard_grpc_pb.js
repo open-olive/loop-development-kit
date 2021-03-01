@@ -107,7 +107,7 @@ keyboardHotkeyStream: {
     responseSerialize: serialize_proto_KeyboardHotkeyStreamResponse,
     responseDeserialize: deserialize_proto_KeyboardHotkeyStreamResponse,
   },
-  // listenText each scancode as it is pressed
+  // stream each scancode as it is pressed
 keyboardScancodeStream: {
     path: '/proto.Keyboard/KeyboardScancodeStream',
     requestStream: false,
@@ -119,7 +119,7 @@ keyboardScancodeStream: {
     responseSerialize: serialize_proto_KeyboardScancodeStreamResponse,
     responseDeserialize: deserialize_proto_KeyboardScancodeStreamResponse,
   },
-  // listenText chunks of text when the user finishes typing them
+  // stream chunks of text when the user finishes typing them
 keyboardTextStream: {
     path: '/proto.Keyboard/KeyboardTextStream',
     requestStream: false,
@@ -131,7 +131,7 @@ keyboardTextStream: {
     responseSerialize: serialize_proto_KeyboardTextStreamResponse,
     responseDeserialize: deserialize_proto_KeyboardTextStreamResponse,
   },
-  // listenText text as it is typed
+  // stream text as it is typed
 keyboardCharacterStream: {
     path: '/proto.Keyboard/KeyboardCharacterStream',
     requestStream: false,

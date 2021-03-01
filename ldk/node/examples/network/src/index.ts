@@ -4,7 +4,7 @@ import { Aptitudes, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/aptitudes/whisperService';
+} from '../../../dist/aptitudes/whisper';
 
 const logger = new Logger('olive-helps-node-example-network');
 

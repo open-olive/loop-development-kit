@@ -16,7 +16,7 @@ interface ILoopService extends grpc.ServiceDefinition<grpc.UntypedServiceImpleme
 }
 
 interface ILoopService_ILoopStart extends grpc.MethodDefinition<loop_pb.LoopStartRequest, google_protobuf_empty_pb.Empty> {
-    path: "/proto.Loop/LoopStart";
+    path: string; // "/proto.Loop/LoopStart"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<loop_pb.LoopStartRequest>;
@@ -25,7 +25,7 @@ interface ILoopService_ILoopStart extends grpc.MethodDefinition<loop_pb.LoopStar
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
 interface ILoopService_ILoopStop extends grpc.MethodDefinition<google_protobuf_empty_pb.Empty, google_protobuf_empty_pb.Empty> {
-    path: "/proto.Loop/LoopStop";
+    path: string; // "/proto.Loop/LoopStop"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<google_protobuf_empty_pb.Empty>;

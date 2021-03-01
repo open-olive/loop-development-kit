@@ -8,8 +8,6 @@
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
-/* eslint-disable */
-// @ts-nocheck
 var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
@@ -2859,7 +2857,7 @@ proto.proto.FilesystemFileStreamRequest.prototype.hasOpen = function () {
     return jspb.Message.getField(this, 2) != null;
 };
 /**
- * optional Read text = 3;
+ * optional Read read = 3;
  * @return {?proto.proto.FilesystemFileStreamRequest.Read}
  */
 proto.proto.FilesystemFileStreamRequest.prototype.getRead = function () {
@@ -2887,7 +2885,7 @@ proto.proto.FilesystemFileStreamRequest.prototype.hasRead = function () {
     return jspb.Message.getField(this, 3) != null;
 };
 /**
- * optional Write writeText = 4;
+ * optional Write write = 4;
  * @return {?proto.proto.FilesystemFileStreamRequest.Write}
  */
 proto.proto.FilesystemFileStreamRequest.prototype.getWrite = function () {
@@ -3824,7 +3822,7 @@ proto.proto.FilesystemFileStreamResponse.Stat.prototype.setError = function (val
     return jspb.Message.setProto3StringField(this, 15, value);
 };
 /**
- * optional Read text = 1;
+ * optional Read read = 1;
  * @return {?proto.proto.FilesystemFileStreamResponse.Read}
  */
 proto.proto.FilesystemFileStreamResponse.prototype.getRead = function () {
@@ -3852,7 +3850,7 @@ proto.proto.FilesystemFileStreamResponse.prototype.hasRead = function () {
     return jspb.Message.getField(this, 1) != null;
 };
 /**
- * optional Write writeText = 2;
+ * optional Write write = 2;
  * @return {?proto.proto.FilesystemFileStreamResponse.Write}
  */
 proto.proto.FilesystemFileStreamResponse.prototype.getWrite = function () {

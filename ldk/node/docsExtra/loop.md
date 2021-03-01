@@ -61,7 +61,7 @@ The following Sensors are under development and are not yet available:
 
 Sensors are directly accessible from the {@link Aptitudes} object provided to your Loop when it starts.
 
-Sensors let you **text** the current state, and **listenText** changes as they happen. Some sensor methods require configuration to listenText, others don't. Query methods return a Promise that resolves with the current state. Stream methods require a listener function that's called with updates, and returns a {@link StoppableStream} object.
+Sensors let you query the current state, and listen for changes as they happen. Some sensor methods require configuration to query, others don't. Query methods return a Promise that resolves with the current state. Listen methods require a listener function that's called with updates, and returns a {@link StoppableStream} object.
 
 Here's an example:
 
@@ -102,7 +102,7 @@ You can create different types of Whispers:
 
 - {@link Whisper.markdown | Markdown}: A Whisper presenting content formatted with Markdown.
 - {@link Whisper.confirm | Confirm}: A Whisper presenting the user with the choice to say Yes (Confirm) or No (Reject) to a prompt.
-- {@link Whisper.listWhisper | List}: A Whisper presenting a data list, with the ability to expand the list and show additional data.
+- {@link Whisper.list | List}: A Whisper presenting a data list, with the ability to expand the list and show additional data.
 - {@link Whisper.form | Form}: A Whisper presenting a form that the user can complete, and then submit (or reject).
 - {@link Whisper.disambiguation | Disambiguation}: A Whisper presenting a list of links that the user can click on and send an event back to the Loop.
 
@@ -117,7 +117,7 @@ const whisperId = await this.aptitudes.whisper.markdown({
 
 ### The Vault
 
-You can store and retrieve user credentials and other sensitive data with the {@link Vault} accessible from {@link Aptitudes.vault}.
+You can store and retrieve user credentials and other sensitive data with the {@link Vault}, accessible from {@link Aptitudes.vault}.
 
 ```javascript
 

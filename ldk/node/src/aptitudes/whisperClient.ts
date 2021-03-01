@@ -36,9 +36,7 @@ import {
  *
  * @internal
  */
-class WhisperClient
-  extends BaseClient<WhisperGRPCClient>
-  implements Whisper {
+class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whisper {
   /**
    * Send a Whisper to the host process.
    *
@@ -59,7 +57,7 @@ class WhisperClient
     );
   }
 
-  listWhisper(whisper: WhisperListConfig): StoppableMessage<void> {
+  list(whisper: WhisperListConfig): StoppableMessage<void> {
     return this.buildStoppableMessage<messages.WhisperListRequest, Empty, void>(
       (message, callback) => this.client.whisperList(message, callback),
       () => buildWhisperListRequest(whisper),

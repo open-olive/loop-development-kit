@@ -1,5 +1,5 @@
 ## Whisper List LDK Usage Example
-This NodeJS module utilizes the OliveHelps NodeJS LDK to demonstrate the different types of formatting and options available in Loop Whispers.
+This NodeJS module utilizes the Olive Helps NodeJS LDK to demonstrate the different types of formatting and options available in Loop Whispers.
 
 ### Modifying
 The Loop itself is defined in `src/index.ts`
@@ -30,4 +30,4 @@ The command will be installed as a Loop. If you need to change the command or it
 
 Otherwise, if you instead want to make changes to the Loop itself, you can:
 - Modify `src/index.ts`
-- Restart OliveHelps
+- Restart Olive Helps

@@ -1,6 +1,6 @@
 import { Loop } from './loop';
 /**
- * Takes a Loop implementation and launches the plugin.
+ * Takes a Loop implementation and launches it as a plugin.
  *
  * @param loop - The Loop implementation.
  */

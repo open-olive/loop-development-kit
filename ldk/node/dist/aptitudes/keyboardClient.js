@@ -43,7 +43,7 @@ const transformScanCodeStream = (message) => ({
 });
 /**
  * @internal
- * @param keyRequest - The key request to generate a listenText for.
+ * @param keyRequest - The key request to generate a stream for.
  */
 function generateHotkeyStreamRequest(keyRequest) {
     const request = new keyboard_pb_1.default.KeyboardHotkey();

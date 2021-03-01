@@ -31,7 +31,7 @@ class LoopServer {
         server.addService(stdioGrpcServer_1.StdioService, new stdioGrpcServer_1.StdioGrpcServer());
     }
     /**
-     * Called by OliveHelps to start the Loop.
+     * Called by Olive Helps to start the Loop.
      *
      * @param call - The GRPC call initiating the Loop.
      * @param callback - The callback to respond to once the Loop started.
@@ -48,7 +48,9 @@ class LoopServer {
                 return;
             }
             const aptitudeClients = new aptitudeClients_1.default(this.logger);
-            yield aptitudeClients.connect(connInfo, sessionInfo.toObject()).catch((err) => {
+            yield aptitudeClients
+                .connect(connInfo, sessionInfo.toObject())
+                .catch((err) => {
                 this.logger.error('loopServer - Failed to Connect to Facades', 'error', JSON.stringify(err));
                 throw err;
             });
@@ -57,7 +59,7 @@ class LoopServer {
         });
     }
     /**
-     * Called by OliveHelps stop the Loop.
+     * Called by Olive Helps stop the Loop.
      *
      * @param call - The GRPC call stopping the Loop.
      * @param callback - The callback to respond to once the Loop stopped.

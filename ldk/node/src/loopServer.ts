@@ -35,7 +35,7 @@ export default class LoopServer implements ILoopServer {
   }
 
   /**
-   * Called by OliveHelps to start the Loop.
+   * Called by Olive Helps to start the Loop.
    *
    * @param call - The GRPC call initiating the Loop.
    * @param callback - The callback to respond to once the Loop started.
@@ -55,20 +55,22 @@ export default class LoopServer implements ILoopServer {
 
     const aptitudeClients = new AptitudeClients(this.logger);
 
-    await aptitudeClients.connect(connInfo, sessionInfo.toObject()).catch((err) => {
-      this.logger.error(
-        'loopServer - Failed to Connect to Facades',
-        'error',
-        JSON.stringify(err),
-      );
-      throw err;
-    });
+    await aptitudeClients
+      .connect(connInfo, sessionInfo.toObject())
+      .catch((err) => {
+        this.logger.error(
+          'loopServer - Failed to Connect to Facades',
+          'error',
+          JSON.stringify(err),
+        );
+        throw err;
+      });
     await this.loop.start(aptitudeClients);
     callback(null, response);
   }
 
   /**
-   * Called by OliveHelps stop the Loop.
+   * Called by Olive Helps stop the Loop.
    *
    * @param call - The GRPC call stopping the Loop.
    * @param callback - The callback to respond to once the Loop stopped.

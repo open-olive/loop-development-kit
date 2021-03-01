@@ -1,12 +1,7 @@
-import Messages, { WindowActionPB } from '../grpc/window_pb';
+import Messages, { WindowAction as WindowActionPB } from '../grpc/window_pb';
 import { WindowClient as WindowGRPCClient } from '../grpc/window_grpc_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import {
-  WindowInfo,
-  WindowEvent,
-  Window,
-  WindowAction,
-} from './window';
+import { WindowInfo, WindowEvent, Window, WindowAction } from './window';
 import { StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
 

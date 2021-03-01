@@ -1,5 +1,5 @@
 /**
- * The Vault allows users to save/load data from vault. The Vault values can be modified by the user.
+ * The Vault Aptitude allows users to save/load sensitive data.
  */
 export interface Vault {
   /**
@@ -25,9 +25,9 @@ export interface Vault {
   /**
    * Writes a value to vault.
    *
-   * @param key Key to writeText value to.
+   * @param key Key to write value to.
    * @param value The value being written.
-   * @returns Resolves when writeText is complete.
+   * @returns Resolves when write is complete.
    */
   write(key: string, value: string): Promise<void>;
 }

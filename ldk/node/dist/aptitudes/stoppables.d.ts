@@ -1,5 +1,5 @@
 /**
- * The StreamListener type is a function provided to start a listenText. It accepts two parameters and returns nothing.
+ * The StreamListener type is a function provided to start a stream. It accepts two parameters and returns nothing.
  *
  * @template T - The type of the messages sent.
  * @param error - Null, unless an error is present.

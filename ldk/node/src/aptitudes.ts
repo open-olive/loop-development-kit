@@ -7,12 +7,12 @@ import { FileSystem } from './aptitudes/fileSystem';
 import { Process } from './aptitudes/process';
 import { Network } from './aptitudes/network';
 import { Ui } from './aptitudes/ui';
-// import { Hover } from './aptitudes/hoverService';
-// import { Window } from './aptitudes/windowService';
-// import { Browser } from './aptitudes/browserService';
+import { Window } from './aptitudes/window';
+// import { Hover } from './aptitudes/hover';
+// import { Browser } from './aptitudes/browser';
 
 /**
- * The Aptitudes interface provides access to the aptitudes (sensors, services, etc.) provided by Olive Helps.
+ * The Aptitudes interface groups Olive Helps' Aptitudes in one place.
  */
 export interface Aptitudes {
   whisper: Whisper;
@@ -24,8 +24,8 @@ export interface Aptitudes {
   process: Process;
   network: Network;
   ui: Ui;
+  window: Window;
   // These services are not yet implemented.
   // hover: Hover;
-  // window: Window;
   // browser: Browser;
 }

@@ -44,20 +44,20 @@ serveLoop(loop);
 
 ### Running Locally
 
-#### Local Plugin Command (Recommended)
+#### Local Loop Command (Recommended)
 
-Olive Helps lets you add a local command as Local Plugins:
+Olive Helps lets you add a local command as a Local Loop:
 
 1. Open Olive Helps.
 2. Open the Loop Library:
     1. Click the Hamburger icon.
     2. Click Loop Library.
-3. Click the Install Local Plugin button:
+3. Click the Install Local Loop button:
 4. Select the working directory for the command.
 5. Enter the command to be executed, including any arguments.
 6. Click Install.
 
-The command will be installed as a plugin. If you need to change the command or its arguments you'll need remove it and then add the new commands.
+The command will be installed as a Loop. If you need to change the command or its arguments you'll need remove it and then add the new commands.
 
 #### Packaged Command
 
@@ -115,7 +115,7 @@ Communication between Olive Helps and the plugin is first initialized over stdio
 
 ### Loops
 
-This LDK can be used to writeText Loops for Olive Helps. More detail about Loops is available on the {@page Loops} page.
+This LDK can be used to write Loops for Olive Helps. More detail about Loops is available on the {@page Loops} page.
 
 - [Basic Loops Example](https://github.com/open-olive/sidekick-controller-examplenode) - Recommend using as a starting point for new Loops.
 

@@ -13,9 +13,10 @@ export interface HoverReadRequest {
 }
 
 /**
- * The HoverServices watches the cursor move and uses OCR to text the text in an area around the cursor position.
+ * The Hover Aptitude allows you to query and listen for text under the cursor.
+ * It watches the cursor move and uses OCR to text the text in an area around the cursor position.
  *
- * This service is not yet implemented.
+ * This Aptitude is not yet implemented.
  */
 export interface Hover {
   /**
@@ -27,7 +28,7 @@ export interface Hover {
   text(params: HoverReadRequest): Promise<HoverResponse>;
 
   /**
-   * Starts streaming the text under the cursor as it changes.
+   * Listens for changes to the text under the cursor.
    *
    * @param params - The size of the window to text around the cursor.
    * @param listener - The listener function called whenever the text under the cursor changes.

@@ -12,7 +12,7 @@ class ClipboardLoop implements Loop {
     this._aptitudes = aptitudes;
     logger.info('Requesting Stream');
     try {
-      this.aptitudes.clipboard.streamClipboard(async (error, response) => {
+      this.aptitudes.clipboard.listenText(async (error, response) => {
         if (response !== 'fileinfo') {
           return;
         }
@@ -27,11 +27,11 @@ class ClipboardLoop implements Loop {
 
   async workFile(): Promise<void> {
     logger.debug('Opening File');
-    const file = this.aptitudes.fileSystem.openFile('/tmp/log.txt');
+    const file = this.aptitudes.fileSystem.open('/tmp/log.txt');
     logger.debug('Getting File');
     const fileInfo = await file.info();
     logger.debug('Received File', 'info', JSON.stringify(fileInfo));
-    this.aptitudes.whisper.markdownWhisper({
+    this.aptitudes.whisper.markdown({
       label: 'File Info',
       markdown: JSON.stringify(fileInfo),
     });

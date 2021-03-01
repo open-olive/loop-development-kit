@@ -134,8 +134,8 @@ export class WindowStateStreamResponse extends jspb.Message {
     getWindow(): WindowInfo | undefined;
     setWindow(value?: WindowInfo): WindowStateStreamResponse;
 
-    getAction(): WindowActionPB;
-    setAction(value: WindowActionPB): WindowStateStreamResponse;
+    getAction(): WindowAction;
+    setAction(value: WindowAction): WindowStateStreamResponse;
 
     getError(): string;
     setError(value: string): WindowStateStreamResponse;
@@ -154,7 +154,7 @@ export class WindowStateStreamResponse extends jspb.Message {
 export namespace WindowStateStreamResponse {
     export type AsObject = {
         window?: WindowInfo.AsObject,
-        action: WindowActionPB,
+        action: WindowAction,
         error: string,
     }
 }
@@ -255,7 +255,7 @@ export namespace WindowStateStreamRequest {
     }
 }
 
-export enum WindowActionPB {
+export enum WindowAction {
     WINDOW_ACTION_UNKNOWN = 0,
     WINDOW_ACTION_FOCUSED = 1,
     WINDOW_ACTION_UNFOCUSED = 2,

@@ -2,7 +2,7 @@ import { Aptitudes, Logger, Loop, serveLoop } from '../../../dist';
 import {
   WhisperListStyle,
   WhisperListAlign,
-} from '../../../dist/aptitudes/whisperService';
+} from '../../../dist/aptitudes/whisper';
 
 const logger = new Logger('olive-helps-node-example-whisper-list');
 
@@ -13,7 +13,7 @@ class ExampleLoop implements Loop {
     this._aptitudes = aptitudes;
     logger.info('Emitting list whisper');
     try {
-      this.aptitudes.whisper.listWhisper({
+      this.aptitudes.whisper.list({
         label: 'MCMG Location',
         markdown: 'test',
         elements: {

@@ -114,9 +114,7 @@ describe('VaultClient', () => {
       await subject.connect(connInfo, session, logger);
     });
     it('should call grpc client function', async () => {
-      await expect(subject.write(key, keyValue)).resolves.toEqual(
-        undefined,
-      );
+      await expect(subject.write(key, keyValue)).resolves.toEqual(undefined);
       expect(mockGRPCClient.vaultWrite).toHaveBeenCalledWith(
         expect.any(Messages.VaultWriteRequest),
         expect.any(Function),
