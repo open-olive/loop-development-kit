@@ -51,7 +51,8 @@ export const MobileMenuSelect: React.FunctionComponent<IMenuProps> = props => {
   ))
   return (
     <div className={styles.mobileMenu}>
-      <select onChange={onChange} value={props.currentPath}>
+      <h1 className={styles.mobileTitleMark}>Olive Helps Developer Hub</h1>
+      <select onChange={onChange} value={props.currentPath} className={styles.mobileNavigation}>
         <option value="/">Home</option>
         <optgroup label="Aptitudes">{sensorOptions}</optgroup>
       </select>

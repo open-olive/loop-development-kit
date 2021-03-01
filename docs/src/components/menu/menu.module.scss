@@ -1,27 +1,24 @@
 @import "../../pages/global";
 
 .desktopMenu {
-  @include respond-to("desktop") {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: var(--sidebar-width);
-    overflow-y: auto;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  overflow-y: auto;
   @include respond-to("mobile") {
     display: none;
   }
 }
 
 .mobileMenu {
-  @include respond-to("mobile") {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--topbar-height);
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--topbar-height);
+  display: flex;
   @include respond-to("desktop") {
     display: none;
   }
@@ -66,4 +63,14 @@
 
 .sectionSubItem {
   padding: 5px 0;
+}
+
+.mobileNavigation {
+  flex: 0 0 100px;
+}
+
+.mobileTitleMark {
+  flex: 1 1 200px;
+  font-size: $bodyFontSize;
+  margin: 0;
 }
