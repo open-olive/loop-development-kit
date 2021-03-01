@@ -82,7 +82,7 @@
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
 					<li><span class="tsd-signature-type">CommonHostClient</span></li>
-					<li><a href="../interfaces/uiservice.html" class="tsd-signature-type">UIService</a></li>
+					<li><a href="../interfaces/ui.html" class="tsd-signature-type">Ui</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -99,6 +99,7 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="uiclient.html#client" class="tsd-kind-icon">client</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="uiclient.html#logger" class="tsd-kind-icon">logger</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="uiclient.html#session" class="tsd-kind-icon">session</a></li>
 							</ul>
 						</section>
@@ -110,8 +111,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="uiclient.html#connect" class="tsd-kind-icon">connect</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="uiclient.html#createsessionmessage" class="tsd-kind-icon">create<wbr>Session<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="uiclient.html#generateclient" class="tsd-kind-icon">generate<wbr>Client</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="uiclient.html#streamglobalsearch" class="tsd-kind-icon">stream<wbr>Global<wbr>Search</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="uiclient.html#streamsearchbar" class="tsd-kind-icon">stream<wbr>Searchbar</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="uiclient.html#listenglobalsearch" class="tsd-kind-icon">listen<wbr>Global<wbr>Search</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="uiclient.html#listensearchbar" class="tsd-kind-icon">listen<wbr>Searchbar</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected"><a href="uiclient.html#servicename" class="tsd-kind-icon">service<wbr>Name</a></li>
 							</ul>
 						</section>
 					</div>
@@ -126,7 +128,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from BaseClient._session</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L40">src/hostClients/baseClient.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L43">src/aptitudes/baseClient.ts:43</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -145,7 +147,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.client</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L142">src/hostClients/baseClient.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L160">src/aptitudes/baseClient.ts:160</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">UIGRPCClient</span></h4>
@@ -154,7 +156,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.client</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L149">src/hostClients/baseClient.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L167">src/aptitudes/baseClient.ts:167</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -164,6 +166,24 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+					<a name="logger" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> logger</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> logger<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ilogger.html" class="tsd-signature-type">ILogger</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from BaseClient.logger</p>
+								<ul>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L182">src/aptitudes/baseClient.ts:182</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ilogger.html" class="tsd-signature-type">ILogger</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -179,7 +199,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.session</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L153">src/hostClients/baseClient.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L171">src/aptitudes/baseClient.ts:171</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Session.AsObject</span></h4>
@@ -188,7 +208,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.session</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L160">src/hostClients/baseClient.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L178">src/aptitudes/baseClient.ts:178</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -215,7 +235,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.buildQuery</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L98">src/hostClients/baseClient.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L109">src/aptitudes/baseClient.ts:109</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -344,7 +364,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.buildStoppableMessage</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L119">src/hostClients/baseClient.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L135">src/aptitudes/baseClient.ts:135</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -451,14 +471,14 @@
 					<a name="connect" class="tsd-anchor"></a>
 					<h3>connect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">connect<span class="tsd-signature-symbol">(</span>connInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ConnInfo.AsObject</span>, session<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Session.AsObject</span>, logger<span class="tsd-signature-symbol">: </span><a href="logger.html" class="tsd-signature-type">Logger</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">connect<span class="tsd-signature-symbol">(</span>connInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ConnInfo.AsObject</span>, session<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Session.AsObject</span>, logger<span class="tsd-signature-symbol">: </span><a href="../interfaces/ilogger.html" class="tsd-signature-type">ILogger</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.connect</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L57">src/hostClients/baseClient.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L60">src/aptitudes/baseClient.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -485,7 +505,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>logger: <a href="logger.html" class="tsd-signature-type">Logger</a></h5>
+									<h5>logger: <a href="../interfaces/ilogger.html" class="tsd-signature-type">ILogger</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>An object containing logging methods.</p>
 									</div>
@@ -506,7 +526,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from BaseClient.createSessionMessage</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/baseClient.ts#L135">src/hostClients/baseClient.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/baseClient.ts#L153">src/aptitudes/baseClient.ts:153</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Session</span></h4>
@@ -524,7 +544,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides BaseClient.generateClient</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/uiClient.ts#L9">src/hostClients/uiClient.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/uiClient.ts#L9">src/aptitudes/uiClient.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">GRPCClientConstructor</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">UIGRPCClient</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -532,17 +552,17 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="streamglobalsearch" class="tsd-anchor"></a>
-					<h3>stream<wbr>Global<wbr>Search</h3>
+					<a name="listenglobalsearch" class="tsd-anchor"></a>
+					<h3>listen<wbr>Global<wbr>Search</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">stream<wbr>Global<wbr>Search<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">listen<wbr>Global<wbr>Search<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/uiservice.html">UIService</a>.<a href="../interfaces/uiservice.html#streamglobalsearch">streamGlobalSearch</a></p>
+								<p>Implementation of <a href="../interfaces/ui.html">Ui</a>.<a href="../interfaces/ui.html#listenglobalsearch">listenGlobalSearch</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/uiClient.ts#L27">src/hostClients/uiClient.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/uiClient.ts#L25">src/aptitudes/uiClient.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -556,17 +576,17 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="streamsearchbar" class="tsd-anchor"></a>
-					<h3>stream<wbr>Searchbar</h3>
+					<a name="listensearchbar" class="tsd-anchor"></a>
+					<h3>listen<wbr>Searchbar</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">stream<wbr>Searchbar<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">listen<wbr>Searchbar<span class="tsd-signature-symbol">(</span>listener<span class="tsd-signature-symbol">: </span><a href="../globals.html#streamlistener" class="tsd-signature-type">StreamListener</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/uiservice.html">UIService</a>.<a href="../interfaces/uiservice.html#streamsearchbar">streamSearchbar</a></p>
+								<p>Implementation of <a href="../interfaces/ui.html">Ui</a>.<a href="../interfaces/ui.html#listensearchbar">listenSearchbar</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/hostClients/uiClient.ts#L13">src/hostClients/uiClient.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/uiClient.ts#L13">src/aptitudes/uiClient.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -576,6 +596,24 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/stoppablestream.html" class="tsd-signature-type">StoppableStream</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+					<a name="servicename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> service<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">service<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides BaseClient.serviceName</p>
+								<ul>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/aptitudes/uiClient.ts#L39">src/aptitudes/uiClient.ts:39</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -592,12 +630,6 @@
 					</li>
 					<li class=" pp-nav pp-page">
 						<a href="../pages/Concepts/logging.html">Logging</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="../pages/Concepts/storage.html">Storage</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="../pages/Concepts/terminology.html">Terminology</a>
 					</li>
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
@@ -616,6 +648,9 @@
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="uiclient.html#client" class="tsd-kind-icon">client</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="uiclient.html#logger" class="tsd-kind-icon">logger</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="uiclient.html#session" class="tsd-kind-icon">session</a>
@@ -636,10 +671,13 @@
 								<a href="uiclient.html#generateclient" class="tsd-kind-icon">generate<wbr>Client</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="uiclient.html#streamglobalsearch" class="tsd-kind-icon">stream<wbr>Global<wbr>Search</a>
+								<a href="uiclient.html#listenglobalsearch" class="tsd-kind-icon">listen<wbr>Global<wbr>Search</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="uiclient.html#streamsearchbar" class="tsd-kind-icon">stream<wbr>Searchbar</a>
+								<a href="uiclient.html#listensearchbar" class="tsd-kind-icon">listen<wbr>Searchbar</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected">
+								<a href="uiclient.html#servicename" class="tsd-kind-icon">service<wbr>Name</a>
 							</li>
 						</ul>
 					</li>
@@ -655,18 +693,20 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 		</div>
 	</div>

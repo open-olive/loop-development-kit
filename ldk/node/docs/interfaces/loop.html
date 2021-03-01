@@ -71,20 +71,20 @@
 						<p>Your Loop must implement this interface.</p>
 					</div>
 					<p>Here&#39;s an example implementation:</p>
-					<pre><code><span class="hljs-keyword">const</span> { Logger } = require(<span class="hljs-string">&#x27;ldk&#x27;</span>);
+					<pre><code><span class="hljs-keyword">const</span> { Logger } = require(<span class="hljs-string">&#x27;@oliveai/ldk&#x27;</span>);
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Loop</span> </span>{
   <span class="hljs-keyword">constructor</span>() {
     <span class="hljs-keyword">this</span>.logger = new Logger(<span class="hljs-string">&#x27;my-loop&#x27;</span>);
   }
 
-  start(services) {
-    <span class="hljs-keyword">this</span>.services = services;
+  start(aptitudes) {
+    <span class="hljs-keyword">this</span>.aptitudes = aptitudes;
     <span class="hljs-keyword">this</span>.logger.info(<span class="hljs-string">&#x27;started&#x27;</span>);
   }
 
   stop() {
-    <span class="hljs-keyword">this</span>.host = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">this</span>.aptitudes = <span class="hljs-literal">null</span>;
     <span class="hljs-keyword">this</span>.logger.info(<span class="hljs-string">&#x27;stopped&#x27;</span>);
   }
 }</code></pre>
@@ -118,27 +118,27 @@
 					<a name="start" class="tsd-anchor"></a>
 					<h3>start</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">(</span>host<span class="tsd-signature-symbol">: </span><a href="hostservices.html" class="tsd-signature-type">HostServices</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">(</span>aptitudes<span class="tsd-signature-symbol">: </span><a href="aptitudes.html" class="tsd-signature-type">Aptitudes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/loop.ts#L34">src/loop.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/loop.ts#L34">src/loop.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Executed when the host starts the plugin.
-									The plugin should not do anything before this is called.</p>
+									<p>Executed when Olive Helps starts the Loop.
+									The Loop should not do anything before this is called.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>host: <a href="hostservices.html" class="tsd-signature-type">HostServices</a></h5>
+									<h5>aptitudes: <a href="aptitudes.html" class="tsd-signature-type">Aptitudes</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The host services. You should assign this as an instance property for use by the Loop.</p>
+										<p>The Olive Helps Aptitudes. You should assign this as an instance property for use by the Loop.</p>
 									</div>
 								</li>
 							</ul>
@@ -156,13 +156,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/5040381/ldk/node/src/loop.ts#L39">src/loop.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/open-olive/loop-development-kit/blob/6ce1a4b/ldk/node/src/loop.ts#L39">src/loop.ts:39</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Executed by the host to stop the plugin.
-									All plugin activity should stop when this is called.</p>
+									<p>Executed by Olive Helps to stop the Loop.
+									All Loop activity should stop when this is called.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -182,12 +182,6 @@
 					</li>
 					<li class=" pp-nav pp-page">
 						<a href="../pages/Concepts/logging.html">Logging</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="../pages/Concepts/storage.html">Storage</a>
-					</li>
-					<li class=" pp-nav pp-page">
-						<a href="../pages/Concepts/terminology.html">Terminology</a>
 					</li>
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
@@ -221,18 +215,20 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
 			</ul>
 		</div>
 	</div>
