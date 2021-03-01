@@ -1,7 +1,10 @@
+@import "../../pages/global";
+
 .aptitude {
 }
 
 .aptitudeName {
+  font-size: $threeXlFontSize;
 }
 
 .aptitudeDescription {
@@ -14,18 +17,8 @@
 }
 
 .capabilityName {
+  font-size: $twoXlFontSize;
 }
 
 .capabilityDescription {
-}
-
-.ldkLinks {
-  list-style: none;
-  padding: 0;
-  display: flex;
-}
-
-.ldkLink {
-  padding: 0 10px;
-  margin-left: -10px;
 }

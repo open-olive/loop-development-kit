@@ -2,35 +2,8 @@ import React from "react"
 import { slugify } from "underscore.string"
 import styles from "./aptitude.module.scss"
 import { buildCapabilityId, buildCapabilityPath } from "./aptitudePaths"
-import {
-  ICapabilityData,
-  IAptitudeData,
-  LDKLinkActive,
-  LDKLinks,
-} from "./aptitudeData"
-
-const Links: React.FunctionComponent<{ links?: LDKLinkActive }> = props => {
-  if (props.links == undefined) {
-    return null
-  }
-  return (
-    <ul className={styles.ldkLinks}>
-      {["go", "node"].map(language => {
-        const link = props.links![language as keyof LDKLinks]
-        if (link == null) {
-          return
-        }
-        return (
-          <li className={styles.ldkLink}>
-            <a href={link} target="_blank">
-              {language}
-            </a>
-          </li>
-        )
-      })}
-    </ul>
-  )
-}
+import { IAptitudeData, ICapabilityData } from "./aptitudeData"
+import { Links } from "./links"
 
 export const Capability: React.FunctionComponent<{
   capability: ICapabilityData
@@ -55,7 +28,7 @@ export const Capability: React.FunctionComponent<{
 export const Aptitude: React.FunctionComponent<IAptitudeData> = props => {
   return (
     <article className={styles.aptitude}>
-      <h1 className={styles.aptitudeName}>{props.name}</h1>
+      <h1 className={styles.aptitudeName}>{props.name} Aptitude</h1>
       <Links links={props.links} />
       <p className={styles.aptitudeDescription}>{props.description}</p>
       <div className={styles.capabilities}>
