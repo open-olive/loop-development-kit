@@ -20,15 +20,16 @@ $headerBackgroundImage: linear-gradient($primaryThemeColor, $primaryThemeFade);
 
 $menuBackgroundColor: #410099;
 $menuTextColor: white;
-
+$menuLinkColor: $menuTextColor;
+$menuLinkColorHover: $hoverColor;
 
 $breakpoints: (
-        "mobile": (
-                max-width: 767px,
-        ),
-        "desktop": (
-                min-width: 768px,
-        ),
+  "mobile": (
+    max-width: 767px,
+  ),
+  "desktop": (
+    min-width: 768px,
+  ),
 ) !default;
 
 @mixin respond-to($breakpoint) {
@@ -40,7 +41,7 @@ $breakpoints: (
     }
   }
 
-    // If the key doesn't exist in the map
+  // If the key doesn't exist in the map
   @else {
     @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
         + "Available breakpoints are: #{map-keys($breakpoints)}.";

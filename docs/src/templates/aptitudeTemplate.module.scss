@@ -14,6 +14,12 @@
   color: $menuTextColor;
   overflow-y: auto;
   padding: 20px;
+  a {
+    color: $menuLinkColor;
+    &:hover {
+      color: $menuLinkColorHover;
+    }
+  }
 }
 
 .menuSection {
@@ -23,13 +29,16 @@
   font-size: $twoXlFontSize;
 }
 
-.sectionItems, .sectionSubItems {
+.sectionItems,
+.sectionSubItems {
   list-style: none;
   padding: 0;
 }
+
 .sectionItem {
   padding: 5px 0;
 }
+
 .sectionItemHeader {
   font-size: $bodyFontSize;
 }
