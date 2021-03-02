@@ -17,7 +17,7 @@ interface IWindowService extends grpc.ServiceDefinition<grpc.UntypedServiceImple
 }
 
 interface IWindowService_IWindowActiveWindow extends grpc.MethodDefinition<window_pb.WindowActiveWindowRequest, window_pb.WindowActiveWindowResponse> {
-    path: "/proto.Window/WindowActiveWindow";
+    path: string; // "/proto.Window/WindowActiveWindow"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<window_pb.WindowActiveWindowRequest>;
@@ -26,7 +26,7 @@ interface IWindowService_IWindowActiveWindow extends grpc.MethodDefinition<windo
     responseDeserialize: grpc.deserialize<window_pb.WindowActiveWindowResponse>;
 }
 interface IWindowService_IWindowActiveWindowStream extends grpc.MethodDefinition<window_pb.WindowActiveWindowStreamRequest, window_pb.WindowActiveWindowStreamResponse> {
-    path: "/proto.Window/WindowActiveWindowStream";
+    path: string; // "/proto.Window/WindowActiveWindowStream"
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<window_pb.WindowActiveWindowStreamRequest>;
@@ -35,7 +35,7 @@ interface IWindowService_IWindowActiveWindowStream extends grpc.MethodDefinition
     responseDeserialize: grpc.deserialize<window_pb.WindowActiveWindowStreamResponse>;
 }
 interface IWindowService_IWindowState extends grpc.MethodDefinition<window_pb.WindowStateRequest, window_pb.WindowStateResponse> {
-    path: "/proto.Window/WindowState";
+    path: string; // "/proto.Window/WindowState"
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<window_pb.WindowStateRequest>;
@@ -44,7 +44,7 @@ interface IWindowService_IWindowState extends grpc.MethodDefinition<window_pb.Wi
     responseDeserialize: grpc.deserialize<window_pb.WindowStateResponse>;
 }
 interface IWindowService_IWindowStateStream extends grpc.MethodDefinition<window_pb.WindowStateStreamRequest, window_pb.WindowStateStreamResponse> {
-    path: "/proto.Window/WindowStateStream";
+    path: string; // "/proto.Window/WindowStateStream"
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<window_pb.WindowStateStreamRequest>;

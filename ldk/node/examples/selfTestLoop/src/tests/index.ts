@@ -288,32 +288,32 @@ export const streamFileInfo = (host: HostServices): Promise<boolean> =>
     );
   });
 
-export const storageWriteRead = (host: HostServices): Promise<boolean> =>
+export const vaultReadWrite = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const value = 'Do I exist?';
-    host.storage.storageWrite('testKey', value).then(() => {
-      host.storage
-        .storageExists('testKey')
+    host.vault.vaultWrite('testKey', value).then(() => {
+      host.vault
+        .vaultExists('testKey')
         .then((exists) => {
-          logger.debug(`Value exists in storage: ${exists}`);
+          logger.debug(`Value exists in vault: ${exists}`);
           if (!exists) {
             reject(new Error('Key does not exist in storge'));
             return null;
           }
 
-          return host.storage.storageRead('testKey');
+          return host.vault.vaultRead('testKey');
         })
-        .then((storageValue) => {
-          logger.debug(`Value in storage: ${storageValue}`);
-          if (storageValue !== value) {
+        .then((vaultValue) => {
+          logger.debug(`Value in vault: ${vaultValue}`);
+          if (vaultValue !== value) {
             reject(new Error('Stored value does not match initial value'));
             return null;
           }
 
-          return host.storage.storageDelete('testKey');
+          return host.vault.vaultDelete('testKey');
         })
         .then(() => {
-          logger.debug(`Value deleted from storage`);
+          logger.debug(`Value deleted from vault`);
           resolve(true);
         })
         .catch((error) => {
