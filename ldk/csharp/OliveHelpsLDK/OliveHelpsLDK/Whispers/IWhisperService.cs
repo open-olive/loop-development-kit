@@ -153,4 +153,25 @@ namespace OliveHelpsLDK.Whispers
         /// </summary>
         public IDictionary<string, List.ListBase> Elements;
     }
+
+        /// <summary>
+    /// Configures a Disambiguation Whisper
+    /// </summary>
+    public struct WhisperDisambiguation
+    {
+        /// <summary>
+        /// Whisper configuration.
+        /// </summary>
+        public WhisperConfig Config;
+
+        /// <summary>
+        /// Markdown formatted string displayed at the top of the form.
+        /// </summary>
+        public string Markdown;
+
+        /// <summary>
+        /// The list elements for this field.
+        /// </summary>
+        public IDictionary<string, Disambiguation.DisambiguationBase> Elements;
+    }
 }

@@ -67,6 +67,18 @@ namespace OliveHelpsLDK.Whispers
             return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call, loggedParser);
         }
 
+        /* 
+        Need to look into the parser
+        public IStreamingCall<IWhisperDisambiguationResponse> DisambiguationAsync(WhisperDisambiguation message,
+            CancellationToken cancellationToken = default)
+        {
+            var request = Builder.BuildRequest(message, CreateSession());
+            var call = Client.WhisperDisambiguation(request, CreateOptions(cancellationToken));
+            var loggedParser = LoggedParser<WhisperDisambiguationStreamResponse, IWhisperDisambiguationResponse>(response =>
+                Parser.ParseResponse(response));
+            return new StreamingCall<WhisperDisambiguationStreamResponse, IWhisperDisambiguationResponse>(call, loggedParser);
+        } */
+
         public Task ListAsync(WhisperList message, CancellationToken cancellationToken = default)
         {
             var request = Builder.BuildRequest(message, CreateSession());
