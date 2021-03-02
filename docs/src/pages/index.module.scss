@@ -1,5 +1,11 @@
 @import "./global";
 
+%sectionItemTitle {
+  font-size: $threeXlFontSize;
+  font-weight: $headerFontWeight;
+  color: $primaryThemeColor;
+}
+
 .sectionTitle {
   font-size: $fourXlFontSize;
   font-weight: $headerFontWeight;
@@ -7,9 +13,7 @@
 }
 
 .languageTitle {
-  font-size: $threeXlFontSize;
-  font-weight: $headerFontWeight;
-  color: $primaryThemeColor;
+  @extend %sectionItemTitle;
 }
 
 .downloadCollection {
@@ -40,6 +44,26 @@
   font-size: $twoXlFontSize;
 }
 
-.alternatingSectionBackground {
-  background-color: $lightestAccent;
+.sectionBackground {
+  &:nth-child(2n) {
+    background-color: $lightestAccent;
+  }
+}
+
+.aptitudeList {
+  display: grid;
+  @include respond-to("desktop") {
+    grid-template-columns: 1fr 1fr;
+  }
+  @include respond-to("mobile") {
+    grid-template-columns: 1fr;
+  }
+  grid-auto-flow: row;
+}
+
+.aptitudeItem {
+}
+
+.aptitudeTitle {
+  @extend %sectionItemTitle;
 }

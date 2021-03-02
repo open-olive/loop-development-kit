@@ -6,6 +6,9 @@ import { PageHeader } from "../components/page-header"
 import OliveHelpsLogo from "../components/olive-helps-logo"
 import { languages, downloadMacUrl, downloadWindowsUrl } from "../references"
 import { Section } from "../components/section"
+import { aptitudes, IAptitudeData } from "../components/aptitudes/aptitudeData"
+import { Link } from "gatsby"
+import { buildAptitudePath } from "../components/aptitudes/aptitudePaths"
 
 interface LanguageBlockProps {
   language: string
@@ -32,7 +35,26 @@ const LanguageBlock: React.FunctionComponent<LanguageBlockProps> = props => (
   </article>
 )
 
+const AptitudeItem: React.FunctionComponent<{
+  aptitude: IAptitudeData
+}> = props => {
+  return (
+    <div className={styles.aptitudeItem}>
+      <h3 className={styles.aptitudeTitle}>
+        <Link to={buildAptitudePath(props.aptitude)}>
+          {props.aptitude.name}
+        </Link>
+      </h3>
+      <p className={styles.aptitudeDescription}>{props.aptitude.description}</p>
+    </div>
+  )
+}
+
 export default function Home() {
+  const aptitudeItems = Object.values(aptitudes).map(aptitude => {
+    return <AptitudeItem aptitude={aptitude} key={aptitude.name} />
+  })
+
   const title = (
     <>
       <OliveHelpsLogo className={styles.headerImage} /> <br />
@@ -42,7 +64,7 @@ export default function Home() {
   return (
     <Layout>
       <PageHeader title={title} />
-      <Section>
+      <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Download</h2>
         <p>Download the Olive Helps app.</p>
         <div className={styles.downloadCollection}>
@@ -58,7 +80,7 @@ export default function Home() {
           </article>
         </div>
       </Section>
-      <Section sectionClassName={styles.alternatingSectionBackground}>
+      <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Get the LDK</h2>
         <p>Get the LDK and start building!</p>
         <div className={styles.downloadCollection}>
@@ -67,7 +89,15 @@ export default function Home() {
           ))}
         </div>
       </Section>
-      <Section>
+      <Section sectionClassName={styles.sectionBackground}>
+        <h2 className={styles.sectionTitle}>See the Aptitudes</h2>
+        <p>
+          Olive Helps offers different aptitudes that enable you to build Loops
+          that help users do their job
+        </p>
+        <div className={styles.aptitudeList}>{aptitudeItems}</div>
+      </Section>
+      <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Getting Help</h2>
         <p>
           Email your Olive Helps developer contact if you need any help! We're
