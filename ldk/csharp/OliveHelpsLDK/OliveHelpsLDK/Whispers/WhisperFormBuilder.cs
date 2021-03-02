@@ -31,6 +31,7 @@ namespace OliveHelpsLDK.Whispers
             var request = new WhisperListRequest
             {
                 Meta = BuildMeta(list.Config),
+                Markdown = list.Markdown,
                 Session = session
             };
             BuildInputs(request.Elements, list.Elements);

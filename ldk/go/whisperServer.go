@@ -98,6 +98,7 @@ func (m *WhisperServer) WhisperDisambiguation(req *proto.WhisperDisambiguationRe
 		context.WithValue(stream.Context(), Session{}, session),
 		&WhisperContentDisambiguation{
 			Label:    req.Meta.Label,
+			Markdown: req.Markdown,
 			Elements: elements,
 		},
 	)

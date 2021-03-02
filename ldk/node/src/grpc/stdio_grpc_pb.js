@@ -35,7 +35,7 @@ var GRPCStdioService = exports.GRPCStdioService = {
   // StreamStdio returns a stream that contains all the stdout/stderr.
 // This RPC endpoint must only be called ONCE. Once stdio data is consumed
 // it is not sent again.
-// 
+//
 // Callers should connect early to prevent blocking on the plugin process.
 streamStdio: {
     path: '/plugin.GRPCStdio/StreamStdio',

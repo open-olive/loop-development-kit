@@ -6416,7 +6416,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
         var f, obj = {
             session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
             meta: (f = msg.getMeta()) && proto.proto.WhisperMeta.toObject(includeInstance, f),
-            elementsMap: (f = msg.getElementsMap()) ? f.toObject(includeInstance, proto.proto.WhisperDisambiguationElement.toObject) : []
+            elementsMap: (f = msg.getElementsMap()) ? f.toObject(includeInstance, proto.proto.WhisperDisambiguationElement.toObject) : [],
+            markdown: jspb.Message.getFieldWithDefault(msg, 4, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -6464,6 +6465,10 @@ proto.proto.WhisperDisambiguationRequest.deserializeBinaryFromReader = function 
                     jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.proto.WhisperDisambiguationElement.deserializeBinaryFromReader, "", new proto.proto.WhisperDisambiguationElement());
                 });
                 break;
+            case 4:
+                var value = /** @type {string} */ (reader.readString());
+                msg.setMarkdown(value);
+                break;
             default:
                 reader.skipField();
                 break;
@@ -6500,6 +6505,10 @@ proto.proto.WhisperDisambiguationRequest.serializeBinaryToWriter = function (mes
     f = message.getElementsMap(true);
     if (f && f.getLength() > 0) {
         f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.proto.WhisperDisambiguationElement.serializeBinaryToWriter);
+    }
+    f = message.getMarkdown();
+    if (f.length > 0) {
+        writer.writeString(4, f);
     }
 };
 /**
@@ -6574,6 +6583,20 @@ proto.proto.WhisperDisambiguationRequest.prototype.getElementsMap = function (op
 proto.proto.WhisperDisambiguationRequest.prototype.clearElementsMap = function () {
     this.getElementsMap().clear();
     return this;
+};
+/**
+ * optional string markdown = 4;
+ * @return {string}
+ */
+proto.proto.WhisperDisambiguationRequest.prototype.getMarkdown = function () {
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+/**
+ * @param {string} value
+ * @return {!proto.proto.WhisperDisambiguationRequest} returns this
+ */
+proto.proto.WhisperDisambiguationRequest.prototype.setMarkdown = function (value) {
+    return jspb.Message.setProto3StringField(this, 4, value);
 };
 /**
  * Oneof group definitions for this message. Each group defines the field
@@ -7131,7 +7154,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
         var f, obj = {
             session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
             meta: (f = msg.getMeta()) && proto.proto.WhisperMeta.toObject(includeInstance, f),
-            elementsMap: (f = msg.getElementsMap()) ? f.toObject(includeInstance, proto.proto.WhisperListElement.toObject) : []
+            elementsMap: (f = msg.getElementsMap()) ? f.toObject(includeInstance, proto.proto.WhisperListElement.toObject) : [],
+            markdown: jspb.Message.getFieldWithDefault(msg, 4, "")
         };
         if (includeInstance) {
             obj.$jspbMessageInstance = msg;
@@ -7179,6 +7203,10 @@ proto.proto.WhisperListRequest.deserializeBinaryFromReader = function (msg, read
                     jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.proto.WhisperListElement.deserializeBinaryFromReader, "", new proto.proto.WhisperListElement());
                 });
                 break;
+            case 4:
+                var value = /** @type {string} */ (reader.readString());
+                msg.setMarkdown(value);
+                break;
             default:
                 reader.skipField();
                 break;
@@ -7215,6 +7243,10 @@ proto.proto.WhisperListRequest.serializeBinaryToWriter = function (message, writ
     f = message.getElementsMap(true);
     if (f && f.getLength() > 0) {
         f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.proto.WhisperListElement.serializeBinaryToWriter);
+    }
+    f = message.getMarkdown();
+    if (f.length > 0) {
+        writer.writeString(4, f);
     }
 };
 /**
@@ -7289,6 +7321,20 @@ proto.proto.WhisperListRequest.prototype.getElementsMap = function (opt_noLazyCr
 proto.proto.WhisperListRequest.prototype.clearElementsMap = function () {
     this.getElementsMap().clear();
     return this;
+};
+/**
+ * optional string markdown = 4;
+ * @return {string}
+ */
+proto.proto.WhisperListRequest.prototype.getMarkdown = function () {
+    return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+/**
+ * @param {string} value
+ * @return {!proto.proto.WhisperListRequest} returns this
+ */
+proto.proto.WhisperListRequest.prototype.setMarkdown = function (value) {
+    return jspb.Message.setProto3StringField(this, 4, value);
 };
 /**
  * Oneof group definitions for this message. Each group defines the field
