@@ -67,7 +67,7 @@ export class NetworkClient
       },
       (response: messages.HTTPResponseMsg) => ({
         statusCode: response.getResponsecode(),
-        data: response.getData(),
+        data: response.getData_asU8(),
         headers: parseHeadersMap(response.getHeadersMap()),
       }),
     );

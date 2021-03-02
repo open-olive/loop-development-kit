@@ -1,5 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import createMockInstance from 'jest-create-mock-instance';
+import { TextEncoder } from 'util';
 import * as Services from '../grpc/network_grpc_pb';
 import * as Messages from '../grpc/network_pb';
 import { ConnInfo } from '../grpc/broker_pb';
@@ -15,6 +16,8 @@ import {
 } from '../test.helpers';
 import { HttpResponse } from './networkService';
 import { HTTPHeader } from '../grpc/network_pb';
+
+global.TextEncoder = TextEncoder;
 
 jest.mock('../grpc/network_grpc_pb');
 
@@ -55,10 +58,11 @@ describe('NetworkClient', () => {
         Cookie: ['monster=false'],
       },
     };
+    const encoder = new TextEncoder();
 
     beforeEach(async () => {
       sentResponse = new Messages.HTTPResponseMsg()
-        .setData('response data')
+        .setData(encoder.encode('response data'))
         .setResponsecode(200);
 
       sentResponse

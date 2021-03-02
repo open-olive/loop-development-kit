@@ -7,6 +7,7 @@ const keyboard_grpc_pb_1 = require("../grpc/keyboard_grpc_pb");
 const keyboard_pb_1 = __importDefault(require("../grpc/keyboard_pb"));
 const baseClient_1 = __importDefault(require("./baseClient"));
 const transformingStream_1 = require("./transformingStream");
+const logging_1 = require("../logging");
 /**
  * @internal
  * @param modifiers - The modifiers to generate flags for.
@@ -37,10 +38,14 @@ const transformTextStream = (message) => ({
  * @internal
  * @param message - The message to transform.
  */
-const transformScanCodeStream = (message) => ({
-    scanCode: message.getScancode(),
-    direction: message.getPressed() ? 'down' : 'up',
-});
+const transformScanCodeStream = (message) => {
+    const logger = new logging_1.Logger('loop-core');
+    logger.info(`In transform - ${message.getScancode()}`);
+    return {
+        scanCode: message.getScancode(),
+        direction: message.getPressed() ? 'down' : 'up',
+    };
+};
 /**
  * @internal
  * @param keyRequest - The key request to generate a stream for.

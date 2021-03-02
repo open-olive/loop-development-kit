@@ -311,6 +311,7 @@ exports.generateWhisperMeta = (whisper) => {
 exports.generateWhisperDisambiguation = (config) => {
     const meta = exports.generateWhisperMeta(config);
     const request = new messages.WhisperDisambiguationRequest().setMeta(meta);
+    request.setMarkdown(config.markdown);
     const elements = request.getElementsMap();
     Object.keys(config.elements).forEach((key) => {
         const value = config.elements[key];
@@ -354,6 +355,7 @@ exports.buildWhisperMarkdownRequest = (whisper) => {
 exports.buildWhisperListRequest = (config) => {
     const meta = exports.generateWhisperMeta(config);
     const request = new messages.WhisperListRequest().setMeta(meta);
+    request.setMarkdown(config.markdown);
     const elements = request.getElementsMap();
     Object.keys(config.elements).forEach((key) => {
         const value = config.elements[key];
@@ -364,13 +366,14 @@ exports.buildWhisperListRequest = (config) => {
 };
 /**
  * @internal
- * @param whisper - whisper to build
+ * @param config - whisper to build
  */
-exports.buildWhisperConfirmMessage = (whisper) => {
+exports.buildWhisperConfirmMessage = (config) => {
     const msg = new messages.WhisperConfirmRequest();
-    msg.setRejectlabel(whisper.rejectButton);
-    msg.setResolvelabel(whisper.resolveButton);
-    msg.setMarkdown(whisper.markdown);
-    msg.setMeta();
+    const meta = exports.generateWhisperMeta(config);
+    msg.setRejectlabel(config.rejectButton);
+    msg.setResolvelabel(config.resolveButton);
+    msg.setMarkdown(config.markdown);
+    msg.setMeta(meta);
     return msg;
 };

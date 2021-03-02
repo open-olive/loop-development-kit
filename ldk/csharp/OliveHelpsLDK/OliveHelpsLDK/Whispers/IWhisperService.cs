@@ -144,6 +144,11 @@ namespace OliveHelpsLDK.Whispers
         public WhisperConfig Config;
 
         /// <summary>
+        /// Markdown formatted string displayed at the top of the form.
+        /// </summary>
+        public string Markdown;
+
+        /// <summary>
         /// The list elements for this field.
         /// </summary>
         public IDictionary<string, List.ListBase> Elements;

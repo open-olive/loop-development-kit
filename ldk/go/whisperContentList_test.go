@@ -9,6 +9,7 @@ import (
 func TestWhisperContentList_MarshalJSON(t *testing.T) {
 	type fields struct {
 		Label    string
+		Markdown string
 		Elements map[string]WhisperContentListElement
 	}
 	tests := []struct {
@@ -20,7 +21,8 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 		{
 			name: "simple example with one element",
 			fields: fields{
-				Label: "The Label",
+				Label:    "The Label",
+				Markdown: "Some Markdown",
 				Elements: map[string]WhisperContentListElement{
 					"favoriteFood": &WhisperContentListElementPair{
 						Copyable: false,
@@ -32,13 +34,14 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want:    []byte("{\"label\":\"The Label\",\"elements\":{\"favoriteFood\":{\"copyable\":false,\"extra\":false,\"label\":\"Favorite Food\",\"order\":0,\"style\":\"\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
+			want:    []byte("{\"label\":\"The Label\",\"markdown\":\"Some Markdown\",\"elements\":{\"favoriteFood\":{\"copyable\":false,\"extra\":false,\"label\":\"Favorite Food\",\"order\":0,\"style\":\"\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
 			wantErr: false,
 		},
 		{
 			name: "one of each element type",
 			fields: fields{
-				Label: "The Label",
+				Label:    "The Label",
+				Markdown: "Some Markdown",
 				Elements: map[string]WhisperContentListElement{
 					"pairElement": &WhisperContentListElementPair{
 						Copyable: false,
@@ -71,7 +74,7 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 					},
 				},
 			},
-			want:    []byte("{\"label\":\"The Label\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"linkElement\":{\"align\":\"center\",\"extra\":false,\"href\":\"https://oliveai.com/\",\"order\":3,\"style\":\"none\",\"text\":\"Click me!\",\"type\":\"link\"},\"messageElement\":{\"align\":\"center\",\"body\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
+			want:    []byte("{\"label\":\"The Label\",\"markdown\":\"Some Markdown\",\"elements\":{\"dividerElement\":{\"extra\":false,\"order\":1,\"style\":\"none\",\"type\":\"divider\"},\"linkElement\":{\"align\":\"center\",\"extra\":false,\"href\":\"https://oliveai.com/\",\"order\":3,\"style\":\"none\",\"text\":\"Click me!\",\"type\":\"link\"},\"messageElement\":{\"align\":\"center\",\"body\":\"Message body.\",\"extra\":false,\"header\":\"Message Header\",\"order\":2,\"style\":\"success\",\"type\":\"message\"},\"pairElement\":{\"copyable\":false,\"extra\":false,\"label\":\"Pair\",\"order\":0,\"style\":\"none\",\"value\":\"Bananas\",\"type\":\"pair\"}}}"),
 			wantErr: false,
 		},
 	}
@@ -81,6 +84,7 @@ func TestWhisperContentList_MarshalJSON(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			c := &WhisperContentList{
 				Label:    tt.fields.Label,
+				Markdown: tt.fields.Markdown,
 				Elements: tt.fields.Elements,
 			}
 

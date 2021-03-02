@@ -41,6 +41,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	go func() {
 		err := c.sidekick.Whisper().List(c.ctx, &ldk.WhisperContentList{
 			Label: "MCMG Location",
+			Markdown: "",
 			Elements: map[string]ldk.WhisperContentListElement{
 				"topMessage": &ldk.WhisperContentListElementMessage{
 					Style:  ldk.WhisperContentListElementStyleNone,

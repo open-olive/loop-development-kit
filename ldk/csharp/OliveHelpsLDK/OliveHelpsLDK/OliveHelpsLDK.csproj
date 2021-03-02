@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>default</LangVersion>
-        <PackageVersion>2.0.0-alpha</PackageVersion>
+        <Version>2.0.0-beta</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Title>Olive Helps LDK</Title>
         <Authors>rseviora-oliveai</Authors>

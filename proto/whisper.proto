@@ -225,6 +225,7 @@ message WhisperDisambiguationRequest {
     Session session = 1;
     WhisperMeta meta = 2;
     map <string, WhisperDisambiguationElement> elements = 3;
+    string markdown = 4;
 }
 
 message WhisperDisambiguationElement {
@@ -252,6 +253,7 @@ message WhisperListRequest {
     Session session = 1;
     WhisperMeta meta = 2;
     map <string, WhisperListElement> elements = 3;
+    string markdown = 4;
 }
 
 message WhisperListElement {

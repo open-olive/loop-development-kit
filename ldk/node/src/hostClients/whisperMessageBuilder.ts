@@ -332,6 +332,7 @@ export const generateWhisperDisambiguation = (
 ): messages.WhisperDisambiguationRequest => {
   const meta = generateWhisperMeta(config);
   const request = new messages.WhisperDisambiguationRequest().setMeta(meta);
+  request.setMarkdown(config.markdown);
   const elements = request.getElementsMap();
   Object.keys(config.elements).forEach((key) => {
     const value = config.elements[key];
@@ -382,6 +383,7 @@ export const buildWhisperListRequest = (
 ): messages.WhisperListRequest => {
   const meta = generateWhisperMeta(config);
   const request = new messages.WhisperListRequest().setMeta(meta);
+  request.setMarkdown(config.markdown);
   const elements = request.getElementsMap();
   Object.keys(config.elements).forEach((key) => {
     const value = config.elements[key];
@@ -393,15 +395,16 @@ export const buildWhisperListRequest = (
 
 /**
  * @internal
- * @param whisper - whisper to build
+ * @param config - whisper to build
  */
 export const buildWhisperConfirmMessage = (
-  whisper: WhisperConfirmConfig,
+  config: WhisperConfirmConfig,
 ): messages.WhisperConfirmRequest => {
   const msg = new messages.WhisperConfirmRequest();
-  msg.setRejectlabel(whisper.rejectButton);
-  msg.setResolvelabel(whisper.resolveButton);
-  msg.setMarkdown(whisper.markdown);
-  msg.setMeta();
+  const meta = generateWhisperMeta(config);
+  msg.setRejectlabel(config.rejectButton);
+  msg.setResolvelabel(config.resolveButton);
+  msg.setMarkdown(config.markdown);
+  msg.setMeta(meta);
   return msg;
 };
