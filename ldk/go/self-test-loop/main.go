@@ -49,12 +49,12 @@ func (loop *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	loop.sidekick = sidekick
 	loop.ctx, loop.cancel = context.WithCancel(context.Background())
 
-	err := loop.testFileWrite()
-	if err != nil {
-		return err
-	}
+	//err := loop.testFileWrite()
+	//if err != nil {
+	//	return err
+	//}
 
-	err = loop.startListeners()
+	err := loop.startListeners()
 	if err != nil {
 		return err
 	}
