@@ -20,7 +20,7 @@ import {
   networkAndListWhisper,
   processQuery,
   queryFileDirectory,
-  storageWriteRead,
+  vaultReadWrite,
   streamCursorPosition,
   streamFileInfo,
   updateAndReadFile,
@@ -123,12 +123,12 @@ const testConfig: { [key: string]: any } = {
       'Querying what processes are running on the computer...',
     ),
   ]),
-  storage: new TestGroup('Storage Service', [
+  vault: new TestGroup('Vault Service', [
     new LoopTest(
-      'Storage Service - Write / Read from storage',
-      storageWriteRead,
+      'Vault Service - Write / Read from vault',
+      vaultReadWrite,
       10000,
-      'Writing value to storage then reading it back.',
+      'Writing value to vault then reading it back.',
     ),
     /* new LoopTest(
       'Keyboard Service - Hotkey Test',
@@ -145,7 +145,7 @@ const testConfig: { [key: string]: any } = {
       'Click the resolve button',
     ),
     new LoopTest(
-      'Whispser Service - Form Whisper',
+      'Whisper Service - Form Whisper',
       formWhisper,
       10000,
       'Type in "Stonks" and submit',

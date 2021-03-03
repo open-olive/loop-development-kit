@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const whisperClient_1 = __importDefault(require("./hostClients/whisperClient"));
-const storageClient_1 = __importDefault(require("./hostClients/storageClient"));
+const vaultClient_1 = __importDefault(require("./hostClients/vaultClient"));
 const keyboardClient_1 = __importDefault(require("./hostClients/keyboardClient"));
 const clipboardClient_1 = require("./hostClients/clipboardClient");
 const cursorClient_1 = require("./hostClients/cursorClient");
@@ -25,7 +25,7 @@ class HostClientFacade {
     // public browser: BrowserClient = new BrowserClient();
     constructor(logger) {
         this.whisper = new whisperClient_1.default();
-        this.storage = new storageClient_1.default();
+        this.vault = new vaultClient_1.default();
         this.keyboard = new keyboardClient_1.default();
         this.clipboard = new clipboardClient_1.ClipboardClient();
         this.cursor = new cursorClient_1.CursorClient();
@@ -42,7 +42,7 @@ class HostClientFacade {
             // this.hover.connect(connInfo, session, this.logger),
             // this.window.connect(connInfo, session, this.logger),
             this.whisper.connect(connInfo, session, this.logger),
-            this.storage.connect(connInfo, session, this.logger),
+            this.vault.connect(connInfo, session, this.logger),
             this.clipboard.connect(connInfo, session, this.logger),
             this.keyboard.connect(connInfo, session, this.logger),
             this.process.connect(connInfo, session, this.logger),

@@ -49,12 +49,12 @@ func (loop *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	loop.sidekick = sidekick
 	loop.ctx, loop.cancel = context.WithCancel(context.Background())
 
-	err := loop.testFileWrite()
-	if err != nil {
-		return err
-	}
+	//err := loop.testFileWrite()
+	//if err != nil {
+	//	return err
+	//}
 
-	err = loop.startListeners()
+	err := loop.startListeners()
 	if err != nil {
 		return err
 	}
@@ -481,29 +481,29 @@ func (loop *Loop) emitPlaygroundWhisper(ctx context.Context) {
 							Order:    5,
 							OnChange: onClickClipboardWrite(loop),
 						},
-						"STORAGE_HEADER": &ldk.WhisperContentDisambiguationElementText{
-							Body:  "Storage",
+						"VAULT_HEADER": &ldk.WhisperContentDisambiguationElementText{
+							Body:  "Vault",
 							Order: 6,
 						},
-						"STORAGE_READ": &ldk.WhisperContentDisambiguationElementOption{
-							Label:    "Storage: Read",
+						"VAULT_READ": &ldk.WhisperContentDisambiguationElementOption{
+							Label:    "Vault: Read",
 							Order:    7,
-							OnChange: onClickStorageRead(loop),
+							OnChange: onClickVaultRead(loop),
 						},
-						"STORAGE_WRITE": &ldk.WhisperContentDisambiguationElementOption{
-							Label:    "Storage: Write",
+						"VAULT_WRITE": &ldk.WhisperContentDisambiguationElementOption{
+							Label:    "Vault: Write",
 							Order:    8,
-							OnChange: onClickStorageWrite(loop),
+							OnChange: onClickVaultWrite(loop),
 						},
-						"STORAGE_EXISTS": &ldk.WhisperContentDisambiguationElementOption{
-							Label:    "Storage: Exists",
+						"VAULT_EXISTS": &ldk.WhisperContentDisambiguationElementOption{
+							Label:    "Vault: Exists",
 							Order:    9,
-							OnChange: onClickStorageExists(loop),
+							OnChange: onClickVaultExists(loop),
 						},
-						"STORAGE_DELETE": &ldk.WhisperContentDisambiguationElementOption{
-							Label:    "Storage: Delete",
+						"VAULT_DELETE": &ldk.WhisperContentDisambiguationElementOption{
+							Label:    "Vault: Delete",
 							Order:    10,
-							OnChange: onClickStorageDelete(loop),
+							OnChange: onClickVaultDelete(loop),
 						},
 						"WINDOW_HEADER": &ldk.WhisperContentDisambiguationElementText{
 							Body:  "Window",
@@ -611,57 +611,57 @@ func onClickClipboardWrite(loop *Loop) func(string) {
 	}
 }
 
-func onClickStorageRead(loop *Loop) func(string) {
+func onClickVaultRead(loop *Loop) func(string) {
 	return func(_ string) {
-		value, err := loop.sidekick.Storage().Read(loop.ctx, storageTestKey)
+		value, err := loop.sidekick.Vault().Read(loop.ctx, storageTestKey)
 		if err != nil {
 			loop.logger.Error("storage read error", err)
 		}
-		loop.statusReporter.Report("onClickStorageRead", map[string]string{
+		loop.statusReporter.Report("onClickVaultRead", map[string]string{
 			storageTestKey: value,
 		})
 	}
 }
 
-func onClickStorageWrite(loop *Loop) func(string) {
+func onClickVaultWrite(loop *Loop) func(string) {
 	return func(_ string) {
-		err := loop.sidekick.Storage().Write(loop.ctx, storageTestKey, storageTestValue)
+		err := loop.sidekick.Vault().Write(loop.ctx, storageTestKey, storageTestValue)
 		if err != nil {
 			loop.logger.Error("storage write error", err)
 		}
 
-		loop.statusReporter.Wipe("onClickStorageDelete")
-		loop.statusReporter.Wipe("onClickStorageExists")
-		loop.statusReporter.Wipe("onClickStorageRead")
-		loop.statusReporter.Report("onClickStorageWrite", map[string]string{
+		loop.statusReporter.Wipe("onClickVaultDelete")
+		loop.statusReporter.Wipe("onClickVaultExists")
+		loop.statusReporter.Wipe("onClickVaultRead")
+		loop.statusReporter.Report("onClickVaultWrite", map[string]string{
 			storageTestKey: storageTestValue,
 		})
 	}
 }
 
-func onClickStorageExists(loop *Loop) func(string) {
+func onClickVaultExists(loop *Loop) func(string) {
 	return func(_ string) {
-		exists, err := loop.sidekick.Storage().Exists(loop.ctx, storageTestKey)
+		exists, err := loop.sidekick.Vault().Exists(loop.ctx, storageTestKey)
 		if err != nil {
 			loop.logger.Error("storage exists error", err)
 		}
-		loop.statusReporter.Wipe("onClickStorageDelete")
-		loop.statusReporter.Wipe("onClickStorageRead")
-		loop.statusReporter.Wipe("onClickStorageWrite")
-		loop.statusReporter.Report("onClickStorageExists", exists)
+		loop.statusReporter.Wipe("onClickVaultDelete")
+		loop.statusReporter.Wipe("onClickVaultRead")
+		loop.statusReporter.Wipe("onClickVaultWrite")
+		loop.statusReporter.Report("onClickVaultExists", exists)
 	}
 }
 
-func onClickStorageDelete(loop *Loop) func(string) {
+func onClickVaultDelete(loop *Loop) func(string) {
 	return func(_ string) {
-		err := loop.sidekick.Storage().Delete(loop.ctx, storageTestKey)
+		err := loop.sidekick.Vault().Delete(loop.ctx, storageTestKey)
 		if err != nil {
 			loop.logger.Error("storage delete error", err)
 		}
-		loop.statusReporter.Wipe("onClickStorageExists")
-		loop.statusReporter.Wipe("onClickStorageRead")
-		loop.statusReporter.Wipe("onClickStorageWrite")
-		loop.statusReporter.Report("onClickStorageDelete", storageTestKey+" deleted")
+		loop.statusReporter.Wipe("onClickVaultExists")
+		loop.statusReporter.Wipe("onClickVaultRead")
+		loop.statusReporter.Wipe("onClickVaultWrite")
+		loop.statusReporter.Report("onClickVaultDelete", storageTestKey+" deleted")
 	}
 }
 

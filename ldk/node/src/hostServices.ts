@@ -1,5 +1,5 @@
 import { WhisperService } from './hostClients/whisperService';
-import { StorageService } from './hostClients/storageService';
+import { VaultService } from './hostClients/vaultService';
 import { KeyboardService } from './hostClients/keyboardService';
 import { ClipboardService } from './hostClients/clipboardService';
 import { CursorService } from './hostClients/cursorService';
@@ -16,7 +16,7 @@ import { UIService } from './hostClients/uiService';
  */
 export interface HostServices {
   whisper: WhisperService;
-  storage: StorageService;
+  vault: VaultService;
   keyboard: KeyboardService;
   clipboard: ClipboardService;
   cursor: CursorService;

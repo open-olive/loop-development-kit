@@ -115,13 +115,13 @@ const whisperId = await this.services.whisper.markdownWhisper({
 });
 ```
 
-### Storage
+### The Vault
 
-You can store and retrieve user credentials and other data with the {@link StorageService} accessible from {@link HostServices.storage}.
+You can store and retrieve user credentials and other sensitive data with the {@link VaultService} accessible from {@link HostServices.vault}.
 
 ```javascript
 
 const key = 'user-id';
-const result = await this.services.storage.storageRead(key);
-await this.services.storage.storageWrite(key, "abcd");
+const result = await this.services.vault.vaultRead(key);
+await this.services.vault.vaultWrite(key, "abcd");
 ```
