@@ -15,10 +15,14 @@ interface TemplateProps {
   }
 }
 
-export default function Template(props: PageProps<TemplateProps>) {
+interface TemplatePageContext {
+  aptitudeId: string;
+}
+
+export default function Template(props: PageProps<TemplateProps, TemplatePageContext>) {
   console.log(props)
   let aptitudeData = Object.values(aptitudes)
-  const aptitudeId = props.data.markdownRemark.frontmatter.aptitude
+  const aptitudeId = props.pageContext.aptitudeId
   return (
     <>
       <div className={styles.layout}>
@@ -30,14 +34,3 @@ export default function Template(props: PageProps<TemplateProps>) {
     </>
   )
 }
-export const pageQuery = graphql`
-  query($slug: String!) {
-    markdownRemark(frontmatter: { slug: { eq: $slug } }) {
-      html
-      frontmatter {
-        slug
-        aptitude
-      }
-    }
-  }
-`

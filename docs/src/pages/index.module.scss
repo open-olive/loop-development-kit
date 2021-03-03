@@ -52,6 +52,8 @@
 
 .aptitudeList {
   display: grid;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
   @include respond-to("desktop") {
     grid-template-columns: 1fr 1fr;
   }
