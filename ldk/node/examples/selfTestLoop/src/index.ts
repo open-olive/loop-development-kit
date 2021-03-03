@@ -138,13 +138,12 @@ const testConfig: { [key: string]: any } = {
     ), */
   ]),
   whispers: new TestGroup('Whisper Service', [
-    /*            
     new LoopTest(
       'Whispser Service - Confirm Whisper',
-      this.confirmWhisper,
+      confirmWhisper,
       10000,
       'Click the resolve button',
-    ), */
+    ),
     new LoopTest(
       'Whispser Service - Form Whisper',
       formWhisper,
