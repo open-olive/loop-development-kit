@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql, PageProps } from "gatsby"
+import { PageProps } from "gatsby"
 import styles from "./aptitudeTemplate.module.scss"
 import { Aptitude } from "../components/aptitudes/aptitude"
 import { aptitudes } from "../components/aptitudes/aptitudeData"
@@ -16,12 +16,13 @@ interface TemplateProps {
 }
 
 interface TemplatePageContext {
-  aptitudeId: string;
+  aptitudeId: string
 }
 
-export default function Template(props: PageProps<TemplateProps, TemplatePageContext>) {
-  console.log(props)
-  let aptitudeData = Object.values(aptitudes)
+export default function Template(
+  props: PageProps<TemplateProps, TemplatePageContext>
+) {
+  const aptitudeData = Object.values(aptitudes)
   const aptitudeId = props.pageContext.aptitudeId
   return (
     <>
