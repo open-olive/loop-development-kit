@@ -19,13 +19,21 @@ func (h Hotkey) Match(v Hotkey) bool {
 	if h.Key != v.Key {
 		return false
 	}
-	// You can't do a direct bitmask as Alt means Altleft or AltRight.  So checking all combinations is the only safe way to actually compare
-	configured, incoming := h.Modifiers, v.Modifiers
+	return h.Modifiers.hasOneMatchingBitInEachMask(v.Modifiers, []KeyModifier{
+		KeyModifierCommandAlt | KeyModifierCommandAltLeft | KeyModifierCommandAltRight,
+		KeyModifierControl | KeyModifierControlLeft | KeyModifierControlRight,
+		KeyModifierMeta | KeyModifierMetaLeft | KeyModifierMetaRight,
+		KeyModifierShift | KeyModifierShiftLeft | KeyModifierShiftRight,
+	})
+}
 
-	return (configured.AltLeft() == incoming.AltLeft() || configured.Alt() == incoming.Alt()) && (configured.AltRight() == incoming.AltRight() || configured.Alt() == incoming.Alt()) &&
-		(configured.ControlLeft() == incoming.ControlLeft() || configured.Control() == incoming.Control()) && (configured.ControlRight() == incoming.ControlRight() || configured.Control() == incoming.Control()) &&
-		(configured.MetaLeft() == incoming.MetaLeft() || configured.Meta() == incoming.Meta()) && (configured.MetaRight() == incoming.MetaRight() || configured.Meta() == incoming.Meta()) &&
-		(configured.ShiftLeft() == incoming.ShiftLeft() || configured.Shift() == incoming.Shift()) && (configured.ShiftRight() == incoming.ShiftRight() || configured.Shift() == incoming.Shift())
+func (k KeyModifier) hasOneMatchingBitInEachMask(v KeyModifier, masks []KeyModifier) bool {
+	result := false
+	for _, mask := range masks {
+		match := k&v&mask != 0
+		result = result || match
+	}
+	return result
 }
 
 type KeyModifier int
