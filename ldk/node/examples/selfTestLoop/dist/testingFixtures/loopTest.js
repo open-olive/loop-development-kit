@@ -23,17 +23,13 @@ class LoopTest {
             await this.testWrapper(host);
             this.status = Status.PASS;
             logger.info(`✅ PASS - ${this.id}`);
-            return new Promise((resolve) => {
-                resolve(this.status);
-            });
+            return Promise.resolve(this.status);
         }
         catch (error) {
             this.status = Status.FAIL;
             logger.error(`💀 FAIL - ${this.id}`);
             logger.error(typeof error === 'string' ? error : error.message);
-            return new Promise((resolve, reject) => {
-                reject(error);
-            });
+            return Promise.reject(error);
         }
     }
     async testWrapper(host) {

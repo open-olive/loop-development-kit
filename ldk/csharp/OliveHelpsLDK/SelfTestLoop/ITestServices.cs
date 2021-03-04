@@ -6,7 +6,7 @@ using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
-using OliveHelpsLDK.Storage;
+using OliveHelpsLDK.Vault;
 using OliveHelpsLDK.UI;
 using OliveHelpsLDK.Window;
 using OliveHelpsLDK.Whispers;
@@ -38,7 +38,7 @@ namespace SelfTestLoop
 
         public IProcessService Process => Services.Process;
 
-        public IStorageService Storage => Services.Storage;
+        public IVaultService Vault => Services.Vault;
 
         public IUIService UI => Services.UI;
 

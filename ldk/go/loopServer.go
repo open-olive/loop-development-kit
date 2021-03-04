@@ -41,8 +41,8 @@ func (m *LoopServer) LoopStart(_ context.Context, req *proto.LoopStartRequest) (
 	}
 
 	sidekickClient := &SidekickClient{
-		storage: &StorageClient{
-			client:  proto.NewStorageClient(eli),
+		vault: &VaultClient{
+			client:  proto.NewVaultClient(eli),
 			session: session,
 		},
 		whisper: &WhisperClient{

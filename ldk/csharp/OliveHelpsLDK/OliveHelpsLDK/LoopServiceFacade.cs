@@ -11,7 +11,7 @@ using OliveHelpsLDK.Keyboard;
 using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Network;
 using OliveHelpsLDK.Process;
-using OliveHelpsLDK.Storage;
+using OliveHelpsLDK.Vault;
 using OliveHelpsLDK.UI;
 using OliveHelpsLDK.Whispers;
 using OliveHelpsLDK.Window;
@@ -41,7 +41,7 @@ namespace OliveHelpsLDK
             Browser = new BrowserClient(interceptedChannel, session, logger);
             Hover = new HoverClient(interceptedChannel, session, logger);
             Window = new WindowClient(interceptedChannel, session, logger);
-            Storage = new StorageClient(interceptedChannel, session, logger);
+            Vault = new VaultClient(interceptedChannel, session, logger);
             UI = new UIClient(interceptedChannel, session, logger);
         }
 
@@ -59,7 +59,7 @@ namespace OliveHelpsLDK
 
         public IProcessService Process { get; private set; }
 
-        public IStorageService Storage { get; private set; }
+        public IVaultService Vault { get; private set; }
 
         public IBrowserService Browser { get; private set; }
 

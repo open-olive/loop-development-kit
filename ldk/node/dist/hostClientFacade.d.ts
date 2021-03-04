@@ -2,7 +2,7 @@ import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
 import { HostServices } from './hostServices';
 import WhisperClient from './hostClients/whisperClient';
-import StorageClient from './hostClients/storageClient';
+import VaultClient from './hostClients/vaultClient';
 import KeyboardClient from './hostClients/keyboardClient';
 import { ClipboardClient } from './hostClients/clipboardClient';
 import { CursorClient } from './hostClients/cursorClient';
@@ -17,7 +17,7 @@ import { Logger } from './logging';
 export default class HostClientFacade implements HostServices {
     private logger;
     whisper: WhisperClient;
-    storage: StorageClient;
+    vault: VaultClient;
     keyboard: KeyboardClient;
     clipboard: ClipboardClient;
     cursor: CursorClient;

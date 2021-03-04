@@ -27,7 +27,7 @@ func (m *LoopClient) LoopStart(ctx context.Context, host Sidekick, session *Sess
 	keyboardHostServer := &KeyboardServer{Impl: host.Keyboard()}
 	networkHostServer := &NetworkServer{Impl: host.Network()}
 	processHostServer := &ProcessServer{Impl: host.Process()}
-	storageHostServer := &StorageServer{Impl: host.Storage()}
+	vaultHostServer := &VaultServer{Impl: host.Vault()}
 	uiHostServer := &UIServer{Impl: host.UI()}
 	whisperHostServer := &WhisperServer{Impl: host.Whisper()}
 	windowHostServer := &WindowServer{Impl: host.Window()}
@@ -44,7 +44,7 @@ func (m *LoopClient) LoopStart(ctx context.Context, host Sidekick, session *Sess
 		proto.RegisterKeyboardServer(m.s, keyboardHostServer)
 		proto.RegisterNetworkServer(m.s, networkHostServer)
 		proto.RegisterProcessServer(m.s, processHostServer)
-		proto.RegisterStorageServer(m.s, storageHostServer)
+		proto.RegisterVaultServer(m.s, vaultHostServer)
 		proto.RegisterUIServer(m.s, uiHostServer)
 		proto.RegisterWhisperServer(m.s, whisperHostServer)
 		proto.RegisterWindowServer(m.s, windowHostServer)

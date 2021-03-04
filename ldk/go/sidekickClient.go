@@ -1,9 +1,9 @@
 package ldk
 
-// SidekickClient is used by the controller plugin to facilitate plugin initiated communication with the host
+// SidekickClient is used by Loops to interact with the host system through Sidekick
 type SidekickClient struct {
 	clipboard  ClipboardService
-	storage    StorageService
+	vault      VaultService
 	whisper    WhisperService
 	keyboard   KeyboardService
 	process    ProcessService
@@ -14,52 +14,52 @@ type SidekickClient struct {
 	network    NetworkService
 }
 
-// Clipboard is used by controller plugins to send whispers to sidekick
+// Clipboard is used interact with the clipboard
 func (m *SidekickClient) Clipboard() ClipboardService {
 	return m.clipboard
 }
 
-// Storage is used by controller plugins to send whispers to sidekick
-func (m *SidekickClient) Storage() StorageService {
-	return m.storage
+// The Vault is used to store and retrieve sensitive data
+func (m *SidekickClient) Vault() VaultService {
+	return m.vault
 }
 
-// Whisper is used by controller plugins to send whispers to sidekick
+// Whisper is used to send whispers to Sidekick
 func (m *SidekickClient) Whisper() WhisperService {
 	return m.whisper
 }
 
-// Keyboard is used by controller plugins to send keyboard events to sidekick
+// Keyboard is used to listen for keyboard events like keystrokes and hot-keys
 func (m *SidekickClient) Keyboard() KeyboardService {
 	return m.keyboard
 }
 
-// Process is used by controller plugins to send process events to sidekick
+// Process is used to list processes and listen for new user processes
 func (m *SidekickClient) Process() ProcessService {
 	return m.process
 }
 
-// Cursor is used by te controller plugin to send cursor events to sidekick
+// Cursor is used to listen for the cursor position and related events
 func (m *SidekickClient) Cursor() CursorService {
 	return m.cursor
 }
 
-// Filesystem is used by controller plugins to send keyboard events to sidekick
+// Filesystem is used to interact with the host system's filesystem
 func (m *SidekickClient) Filesystem() FilesystemService {
 	return m.filesystem
 }
 
-// UI is used by loops
+// UI is used to listen for user interface events occurring in Sidekick, like search bar entry
 func (m *SidekickClient) UI() UIService {
 	return m.ui
 }
 
-// Network is used by loops to send/receive HTTP requests
+// Network is used to send/receive HTTP requests
 func (m *SidekickClient) Network() NetworkService {
 	return m.network
 }
 
-// Window is used by controller plugins to send keyboard events to sidekick
+// Window is used to listen for the active window, and other window related events
 func (m *SidekickClient) Window() WindowService {
 	return m.window
 }

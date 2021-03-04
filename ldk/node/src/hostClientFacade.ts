@@ -2,7 +2,7 @@ import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
 import { HostServices } from './hostServices';
 import WhisperClient from './hostClients/whisperClient';
-import StorageClient from './hostClients/storageClient';
+import VaultClient from './hostClients/vaultClient';
 import KeyboardClient from './hostClients/keyboardClient';
 import { ClipboardClient } from './hostClients/clipboardClient';
 import { CursorClient } from './hostClients/cursorClient';
@@ -23,7 +23,7 @@ export default class HostClientFacade implements HostServices {
 
   public whisper: WhisperClient = new WhisperClient();
 
-  public storage: StorageClient = new StorageClient();
+  public vault: VaultClient = new VaultClient();
 
   public keyboard: KeyboardClient = new KeyboardClient();
 
@@ -60,7 +60,7 @@ export default class HostClientFacade implements HostServices {
       // this.hover.connect(connInfo, session, this.logger),
       // this.window.connect(connInfo, session, this.logger),
       this.whisper.connect(connInfo, session, this.logger),
-      this.storage.connect(connInfo, session, this.logger),
+      this.vault.connect(connInfo, session, this.logger),
       this.clipboard.connect(connInfo, session, this.logger),
       this.keyboard.connect(connInfo, session, this.logger),
       this.process.connect(connInfo, session, this.logger),

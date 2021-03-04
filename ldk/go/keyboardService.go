@@ -19,12 +19,21 @@ func (h Hotkey) Match(v Hotkey) bool {
 	if h.Key != v.Key {
 		return false
 	}
-	// You can't do a direct bitmask as Alt means Altleft or AltRight.  So checking all combinations is the only safe way to actually compare
-	l, r := h.Modifiers, v.Modifiers
-	return (l.AltLeft() == r.AltLeft() || l.Alt() == r.Alt()) && (l.AltRight() == r.AltRight() || l.Alt() == r.Alt()) &&
-		(l.ControlLeft() == r.ControlLeft()) || l.Control() == r.Control() && (l.ControlRight() == r.ControlRight() || l.Control() == r.Control()) &&
-		(l.MetaLeft() == r.MetaLeft() || l.Meta() == r.Meta()) && (l.MetaRight() == r.MetaRight() || l.Meta() == r.Meta()) &&
-		(l.ShiftLeft() == r.ShiftLeft() || l.Shift() == r.Shift()) && (l.ShiftRight() == r.ShiftRight() || l.Shift() == r.Shift())
+	return h.Modifiers.hasOneMatchingBitInEachMask(v.Modifiers, []KeyModifier{
+		KeyModifierCommandAlt | KeyModifierCommandAltLeft | KeyModifierCommandAltRight,
+		KeyModifierControl | KeyModifierControlLeft | KeyModifierControlRight,
+		KeyModifierMeta | KeyModifierMetaLeft | KeyModifierMetaRight,
+		KeyModifierShift | KeyModifierShiftLeft | KeyModifierShiftRight,
+	})
+}
+
+func (k KeyModifier) hasOneMatchingBitInEachMask(v KeyModifier, masks []KeyModifier) bool {
+	result := false
+	for _, mask := range masks {
+		match := k&v&mask != 0
+		result = result || match
+	}
+	return result
 }
 
 type KeyModifier int
