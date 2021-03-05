@@ -45,79 +45,131 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description: "Read the current text contents of the clipboard.",
         links: {
           node: "queryClipboard",
-          go: "Read"
-        }
+          go: "Read",
+        },
       },
       {
         name: "Write",
         description: "Write text content to the clipboard.",
         links: {
           node: "writeClipboard",
-          go: "Write"
-        }
+          go: "Write",
+        },
       },
     ],
   },
   cursor: {
     name: "Cursor",
+    links: {
+      go: "CursorClient",
+      node: "CursorService",
+    },
     description:
       "Allows Loops to get the current cursor position, and receive updates as the user moves the cursor.",
     capabilities: [
       {
         name: "Read",
         description: "Reads the current cursor position on screen.",
+        links: {
+          node: "queryCursorPosition",
+          go: "Position",
+        },
       },
       {
         name: "Stream Changes",
         description:
           "Receive a message whenever the user moves the cursor on screen.",
+        links: {
+          node: "streamCursorPosition",
+          go: "ListenPosition",
+        },
       },
     ],
   },
   filesystem: {
     name: "Filesystem",
+    links: {
+      node: "FileSystemService",
+      go: "FilesystemClient",
+    },
     description:
       "Observe changes within directories and files, and interact with individual files.",
     capabilities: [
       {
         name: "List Directory",
         description: "List the contents of any given directory",
+        links: {
+          go: "Dir",
+          node: "queryDirectory",
+        },
       },
       {
         name: "Stream Directory Changes",
         description:
           "Receive a message whenever any file changes inside a directory",
+        links: {
+          go: "ListenDir",
+          node: "streamDirectory",
+        },
       },
       {
         name: "Create Directory",
         description: "Create a directory at the specified location.",
+        links: {
+          go: "MakeDir",
+          node: "makeDirectory",
+        },
       },
       {
         name: "Copy",
         description: "Copy a file or directory.",
+        links: {
+          go: "Copy",
+          node: "copyFile",
+        },
       },
       {
         name: "Move",
         description: "Move a file or directory.",
+        links: {
+          go: "Move",
+          node: "moveFile",
+        },
       },
       {
         name: "Remove",
         description: "Remove a file or directory",
+        links: {
+          go: "Remove",
+          node: "removeFile",
+        },
       },
       {
         name: "Stream File Changes",
         description:
           "Receive a message whenever any change is made to a specified file.",
+        links: {
+          go: "ListenFile",
+          node: "streamFileInfo",
+        },
       },
       {
         name: "Create File",
         description:
           "Creates a file at the specified path and allows you to write to that file.",
+        links: {
+          go: "Create",
+          node: "createFile",
+        },
       },
       {
         name: "Open File",
         description:
           "Opens a file at the specified path (if it exists) and allows you to write to that file.",
+        links: {
+          go: "Open",
+          node: "openFile",
+        },
       },
     ],
   },
