@@ -59,6 +59,12 @@
 
 .sectionItemHeader {
   font-size: $bodyFontSize;
+  margin: 0;
+}
+
+.sectionSubItems {
+  padding-left: 10px;
+  padding-top: 10px;
 }
 
 .sectionSubItem {

@@ -5,7 +5,7 @@
     --sidebar-width: 0px;
   }
   @include respond-to("desktop") {
-    --sidebar-width: 200px;
+    --sidebar-width: 300px;
   }
   --topbar-height: 60px;
 }
