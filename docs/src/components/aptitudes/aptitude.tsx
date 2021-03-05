@@ -17,7 +17,11 @@ export const Capability: React.FunctionComponent<{
           {props.capability.name}
         </a>
       </h2>
-      <Links links={props.capability.links} />
+      <Links
+        links={props.capability.links}
+        capability={props.capability}
+        aptitude={props.aptitude}
+      />
       <p className={styles.capabilityDescription}>
         {props.capability.description}
       </p>
@@ -29,7 +33,7 @@ export const Aptitude: React.FunctionComponent<IAptitudeData> = props => {
   return (
     <article className={styles.aptitude}>
       <h1 className={styles.aptitudeName}>{props.name} Aptitude</h1>
-      <Links links={props.links} />
+      <Links links={props.links} aptitude={props} />
       <p className={styles.aptitudeDescription}>{props.description}</p>
       <div className={styles.capabilities}>
         {props.capabilities?.map(capability => (
