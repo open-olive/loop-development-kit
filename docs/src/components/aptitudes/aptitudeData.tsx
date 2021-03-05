@@ -176,57 +176,83 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
   keyboard: {
     name: "Keyboard",
     description: "Observe keyboard activity.",
+    links: {
+      node: "KeyboardService",
+      go: "KeyboardClient",
+    },
     capabilities: [
       {
         name: "Stream Text",
         description:
           "Receive a notification whenever the user types text. Notifications are sent whenever the user stops typing for one second and contain all the text entered since the last notification.",
         links: {
-          node:
-            "https://open-olive.github.io/loop-development-kit/ldk/node/interfaces/keyboardservice.html#streamtext",
+          node: "streamText",
+          go: "ListenText",
         },
       },
       {
         name: "Stream Hot Key Combinations",
         description:
           "Allows Loops to observe when a specific hotkey combination (letter/number + modifier keys like Ctrl, Alt, Shift) are pressed or released.",
+        links: {
+          go: "ListenHotkey",
+          node: "streamHotKey",
+        },
       },
       {
         name: "Stream Character Entry",
         description:
           "Receive a notification for every character that is entered. A separate notification is sent for each character entered as it happens.",
+        links: {
+          go: "ListenCharacter",
+          node: "streamChar",
+        },
       },
     ],
-    links: {
-      node:
-        "https://open-olive.github.io/loop-development-kit/ldk/node/interfaces/keyboardservice.html",
-      go:
-        "https://pkg.go.dev/github.com/open-olive/loop-development-kit/ldk/go#KeyboardService",
-    },
   },
   network: {
     name: "Network",
     description: "Allows Loops to make network requests to external services",
+    links: {
+      go: "NetworkClient",
+      node: "NetworkService",
+    },
     capabilities: [
       {
         name: "HTTP Request",
         description:
           "Initiates a HTTPS request to a network address and returns the response body and headers. Only HTTPS addresses are supported.",
+        links: {
+          go: "HTTPRequest",
+          node: "httpRequest",
+        },
       },
     ],
   },
   process: {
     name: "Process",
     description: "Allows Loops to observe processes running on the system.",
+    links: {
+      go: "ProcessClient",
+      node: "ProcessService",
+    },
     capabilities: [
       {
         name: "Read Processes",
         description: "Get all the current processes running on the system.",
+        links: {
+          go: "State",
+          node: "queryProcesses",
+        },
       },
       {
         name: "Stream Processes",
         description:
           "Receive a notification whenever a process starts or stops on the system.",
+        links: {
+          go: "ListenState",
+          node: "streamProcesses",
+        },
       },
     ],
   },
@@ -234,23 +260,43 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     name: "Vault",
     description:
       "Allows Loops to retrieve and store strings in the system's secure storage (Keychain for MacOS, Credential Manager for Windows).",
+    links: {
+      go: "VaultClient",
+      node: "VaultService",
+    },
     capabilities: [
       {
         name: "Delete",
         description: "Deletes a certain key",
+        links: {
+          go: "Delete",
+          node: "vaultDelete",
+        },
       },
       {
         name: "Exists",
         description: "Returns whether the key exists",
+        links: {
+          go: "Exists",
+          node: "vaultExists",
+        },
       },
       {
         name: "Read",
         description: "Reads the value from the given key.",
+        links: {
+          go: "Read",
+          node: "vaultRead",
+        },
       },
       {
         name: "Write",
         description:
           "Writes a value to a given key, overwriting any existing value.",
+        links: {
+          go: "Write",
+          node: "vaultWrite",
+        },
       },
     ],
   },
@@ -258,43 +304,75 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     name: "UI",
     description:
       "Allows Loops to receive a notification whenever the user interacts with UI elements in Olive Helps",
+    links: {
+      go: "UIClient",
+      node: "UIService",
+    },
     capabilities: [
       {
         name: "Searchbar",
         description:
           "Get notified when the user searches for a value in the Sidebar",
+        links: {
+          go: "ListenSearchbar",
+          node: "streamSearchbar",
+        },
       },
       {
         name: "Global Search",
         description:
           "Get notified when the user uses the Olive Helps global search.",
+        links: {
+          go: "ListenGlobalSearch",
+          node: "streamGlobalSearch",
+        },
       },
     ],
-    links: {},
   },
   whisper: {
     name: "Whisper",
     description:
       "Allows Loops to display interactive information in a variety of formats in the Olive Helps Sidebar",
+    links: {
+      go: "WhisperClient",
+      node: "WhisperService",
+    },
+
     capabilities: [
       {
         name: "Markdown",
         description: "Displays a Whisper formatted using the Markdown syntax.",
+        links: {
+          go: "Markdown",
+          node: "markdownWhisper",
+        },
       },
       {
         name: "Confirmation",
         description:
           "Displays a Whisper with a message formatted using Markdown, and two buttons for the user to click on. Clicking on either button will dismiss the Whisper and the Loop will receive whether the user clicked on the Confirm button (true) or Reject button (false).",
+        links: {
+          go: "Confirm",
+          node: "confirmWhisper",
+        },
       },
       {
         name: "Disambiguation",
         description:
           "Displays a Whisper with a list of entries the user can click on. When the user clicks on an entry the Loop receives a notification that an entry has been clicked on, and the entry's ID.",
+        links: {
+          go: "Disambiguation",
+          node: "disambiguationWhisper",
+        },
       },
       {
         name: "Form",
         description:
           "Displays a Whisper with a set of form inputs that can be prepopulated. When the user changes a value in the form the Loop receives an update notification. When the user submits or cancels the form the Loop receives a notification and all the values of the form fields.",
+        links: {
+          go: "Form",
+          node: "formWhisper",
+        },
       },
       {
         name: "List",
@@ -319,6 +397,10 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
             </p>
           </>
         ),
+        links: {
+          go: "List",
+          node: "listWhisper",
+        },
       },
     ],
   },
@@ -326,24 +408,44 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     name: "Window",
     description:
       "Allows Loops to see what application windows are open in the system.",
+    links: {
+      go: "WindowClient",
+      node: "WindowService",
+    },
     capabilities: [
       {
         name: "Get Active Window",
         description: "Get the currently focused window and it's data.",
+        links: {
+          go: "ActiveWindow",
+          node: "queryActiveWindow",
+        },
       },
       {
         name: "Stream Active Window",
         description:
           "Receive notifications whenever the currently focused window changes.",
+        links: {
+          go: "ListenActiveWindow",
+          node: "streamActiveWindow",
+        },
       },
       {
         name: "Get All Windows",
         description: "Get a list of all the windows and their information.",
+        links: {
+          go: "State",
+          node: "queryWindows",
+        },
       },
       {
         name: "Stream Windows",
         description:
           "Receive a notification whenever a window is opened, closed, focused, unfocused, moved, resized, or its title changes. A window that is opened with focus will generate an Opened event and a Focused event.",
+        links: {
+          go: "ListenState",
+          node: "streamWindows",
+        },
       },
     ],
   },
