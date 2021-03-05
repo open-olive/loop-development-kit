@@ -1,5 +1,27 @@
 namespace OliveHelpsLDK.Whispers.Disambiguation
 {
+    /// <summary>
+    /// Base class for Whisper Disambiguation responses.
+    /// </summary>
+    public interface IWhisperDisambiguationResponse
+    {
+    }
+
+    /// <summary>
+    /// Represents a selection of an item
+    /// </summary>
+    public struct DisambiguationResponse : IWhisperDisambiguationResponse
+    {
+        /// <summary>
+        /// The key of the item selected.
+        /// </summary>
+        public string Key { get; set; }
+    }
+
+
+    /// <summary>
+    /// Base class for all Disambiguation elements.
+    /// </summary>
     public abstract class DisambiguationBase
     {
         /// <summary>
