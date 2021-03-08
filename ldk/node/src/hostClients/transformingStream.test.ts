@@ -34,10 +34,7 @@ describe('TransformingStream', () => {
 
       test('on sensor level error, it passes the error to the provided callback', () => {
         const errorMessage = 'but also bad stuff';
-        const messageWithError = new FakeResponseMessage(
-          'good stuff',
-          errorMessage,
-        );
+        const messageWithError = new FakeResponseMessage('good stuff', errorMessage);
 
         stream.emit('data', messageWithError);
 
@@ -75,10 +72,7 @@ describe('TransformingStream', () => {
 
       test('on sensor level error, it does not throw an error', () => {
         const errorMessage = 'but also bad stuff';
-        const messageWithError = new FakeResponseMessage(
-          'good stuff',
-          errorMessage,
-        );
+        const messageWithError = new FakeResponseMessage('good stuff', errorMessage);
 
         expect(stream.emit('data', messageWithError)).toBeTruthy();
       });

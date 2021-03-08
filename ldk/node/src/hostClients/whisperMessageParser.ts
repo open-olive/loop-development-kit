@@ -12,9 +12,7 @@ import { StreamTransformer } from './transformingStream';
 /**
  * @internal
  */
-const transformOutput = (
-  message: messages.WhisperFormOutput,
-): WhisperFormOutputTypes => {
+const transformOutput = (message: messages.WhisperFormOutput): WhisperFormOutputTypes => {
   const messageObj = message.toObject();
   switch (message.getOutputOneofCase()) {
     case messages.WhisperFormOutput.OutputOneofCase.CHECKBOX:
@@ -46,9 +44,7 @@ const transformOutput = (
 /**
  * @internal
  */
-const transformUpdate = (
-  message: messages.WhisperFormUpdate,
-): WhisperFormUpdateEvent => ({
+const transformUpdate = (message: messages.WhisperFormUpdate): WhisperFormUpdateEvent => ({
   key: message.getKey(),
   value: transformOutput(message.getOutput()!),
   type: 'update',
@@ -70,9 +66,7 @@ const transformOutputMap = (
 /**
  * @internal
  */
-const transformResult = (
-  message: messages.WhisperFormResult,
-): WhisperFormSubmitEvent => ({
+const transformResult = (message: messages.WhisperFormResult): WhisperFormSubmitEvent => ({
   submitted: message.getSubmitted(),
   outputs: transformOutputMap(message.getOutputsMap()),
   type: 'submit',

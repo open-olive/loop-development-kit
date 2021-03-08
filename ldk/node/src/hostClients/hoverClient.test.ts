@@ -39,9 +39,7 @@ describe('HoverClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#queryHover', () => {
@@ -51,13 +49,9 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      sentResponse = new Messages.HoverReadResponse().setText(
-        'you hovered on me',
-      );
+      sentResponse = new Messages.HoverReadResponse().setText('you hovered on me');
 
-      mockGRPCClient.hoverRead.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.hoverRead.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryHover({ xFromCenter, yFromCenter });
     });
@@ -76,9 +70,7 @@ describe('HoverClient', () => {
     });
 
     it('should have configured the request correctly', () => {
-      const sentRequest: Messages.HoverReadRequest = captureMockArgument(
-        mockGRPCClient.hoverRead,
-      );
+      const sentRequest: Messages.HoverReadRequest = captureMockArgument(mockGRPCClient.hoverRead);
 
       expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
       expect(sentRequest.getXfromcenter()).toBe(xFromCenter);
@@ -91,9 +83,7 @@ describe('HoverClient', () => {
     const yFromCenter = 20;
 
     beforeEach(async () => {
-      mockGRPCClient.hoverReadStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.hoverReadStream.mockImplementation(createStreamingHandler());
 
       subject.streamHover({ xFromCenter, yFromCenter }, identityCallback);
     });

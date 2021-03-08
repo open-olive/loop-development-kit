@@ -17,9 +17,7 @@ const destDir = path.join(__dirname, '../dist/grpc');
 */
 
 fs.readdirSync(srcDir, { withFileTypes: true })
-  .filter(
-    (dirEnt: fs.Dirent) => dirEnt.isFile() && dirEnt.name.endsWith('_pb.d.ts'),
-  )
+  .filter((dirEnt: fs.Dirent) => dirEnt.isFile() && dirEnt.name.endsWith('_pb.d.ts'))
   .forEach((dirEntry) => {
     // Generate target filename.
     const srcFilePath = path.join(srcDir, dirEntry.name);

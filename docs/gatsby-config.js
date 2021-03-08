@@ -1,4 +1,4 @@
-const Path = require("path")
+const Path = require('path');
 
 /**
  * Configure your Gatsby site with this file.
@@ -9,21 +9,21 @@ const Path = require("path")
 module.exports = {
   /* Your site config here */
   plugins: [
-    "gatsby-plugin-ts-config",
-    "gatsby-plugin-sass",
-    "gatsby-transformer-sharp",
-    "gatsby-plugin-sharp",
+    'gatsby-plugin-ts-config',
+    'gatsby-plugin-sass',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp',
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "images",
-        path: Path.join(__dirname, "src", "assets", "images"),
+        name: 'images',
+        path: Path.join(__dirname, 'src', 'assets', 'images'),
       },
     },
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "markdown-pages",
+        name: 'markdown-pages',
         path: `${__dirname}/src/markdown-pages`,
       },
     },
@@ -34,12 +34,12 @@ module.exports = {
           {
             resolve: `gatsby-remark-table-of-contents`,
             options: {
-              exclude: "Table of Contents",
+              exclude: 'Table of Contents',
               tight: false,
               ordered: false,
               fromHeading: 1,
               toHeading: 6,
-              className: "table-of-contents",
+              className: 'table-of-contents',
             },
           },
           {
@@ -53,5 +53,5 @@ module.exports = {
       },
     },
   ],
-  pathPrefix: "/olive-helps",
-}
+  pathPrefix: '/olive-helps',
+};

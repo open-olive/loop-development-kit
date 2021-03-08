@@ -41,9 +41,7 @@ describe('ProcessClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#queryProcess', () => {
@@ -53,9 +51,7 @@ describe('ProcessClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.ProcessStateResponse();
 
-      mockGRPCClient.processState.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.processState.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryProcesses();
     });
@@ -95,9 +91,7 @@ describe('ProcessClient', () => {
       stream = createEmptyStream();
 
       streamCallback = jest.fn().mockImplementation(identityCallback);
-      mockGRPCClient.processStateStream.mockImplementation(
-        createStreamingHandler(stream),
-      );
+      mockGRPCClient.processStateStream.mockImplementation(createStreamingHandler(stream));
 
       subject.streamProcesses(streamCallback);
     });
@@ -105,10 +99,9 @@ describe('ProcessClient', () => {
     it('should stream the process info back to the callback', () => {
       stream.emit('data', sentResponse);
 
-      const transformedProcessInfo: ProcessStreamResponse = captureMockArgument(
-        streamCallback,
-        { position: 1 },
-      );
+      const transformedProcessInfo: ProcessStreamResponse = captureMockArgument(streamCallback, {
+        position: 1,
+      });
 
       expect(transformedProcessInfo).toMatchObject({
         process: expect.anything(),

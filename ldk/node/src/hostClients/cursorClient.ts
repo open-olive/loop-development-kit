@@ -20,9 +20,7 @@ const cursorTransformer: StreamTransformer<
 /**
  * @internal
  */
-export class CursorClient
-  extends BaseClient<CursorGRPCClient>
-  implements CursorService {
+export class CursorClient extends BaseClient<CursorGRPCClient> implements CursorService {
   protected generateClient(): GRPCClientConstructor<CursorGRPCClient> {
     return CursorGRPCClient;
   }
@@ -39,17 +37,10 @@ export class CursorClient
     );
   }
 
-  streamCursorPosition(
-    listener: StreamListener<CursorResponse>,
-  ): StoppableStream<CursorResponse> {
-    return new TransformingStream<
-      messages.CursorPositionStreamResponse,
-      CursorResponse
-    >(
+  streamCursorPosition(listener: StreamListener<CursorResponse>): StoppableStream<CursorResponse> {
+    return new TransformingStream<messages.CursorPositionStreamResponse, CursorResponse>(
       this.client.cursorPositionStream(
-        new messages.CursorPositionStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new messages.CursorPositionStreamRequest().setSession(this.createSessionMessage()),
       ),
       cursorTransformer,
       listener,

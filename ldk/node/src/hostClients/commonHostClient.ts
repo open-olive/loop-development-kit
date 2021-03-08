@@ -6,9 +6,5 @@ import { Logger } from '../logging';
  * @internal
  */
 export interface CommonHostClient {
-  connect(
-    conn: ConnInfo.AsObject,
-    session: Session.AsObject,
-    logger: Logger,
-  ): Promise<void>;
+  connect(conn: ConnInfo.AsObject, session: Session.AsObject, logger: Logger): Promise<void>;
 }

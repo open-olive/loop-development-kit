@@ -13,16 +13,9 @@ import {
   WhisperService,
 } from './whisperService';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
-import {
-  StoppableMessage,
-  StoppableStream,
-  StreamListener,
-} from './stoppables';
+import { StoppableMessage, StoppableStream, StreamListener } from './stoppables';
 import { TransformingStream } from './transformingStream';
-import {
-  transformDisambiguationResponse,
-  transformResponse,
-} from './whisperMessageParser';
+import { transformDisambiguationResponse, transformResponse } from './whisperMessageParser';
 import {
   buildWhisperConfirmMessage,
   buildWhisperListRequest,
@@ -36,9 +29,7 @@ import {
  *
  * @internal
  */
-export class WhisperClient
-  extends BaseClient<WhisperGRPCClient>
-  implements WhisperService {
+export class WhisperClient extends BaseClient<WhisperGRPCClient> implements WhisperService {
   /**
    * Send a Whisper to the host process.
    *
@@ -47,11 +38,7 @@ export class WhisperClient
    * @returns Promise resolving when the server responds to the command.
    */
   markdownWhisper(whisper: Whisper): StoppableMessage<void> {
-    return this.buildStoppableMessage<
-      messages.WhisperMarkdownRequest,
-      Empty,
-      void
-    >(
+    return this.buildStoppableMessage<messages.WhisperMarkdownRequest, Empty, void>(
       (message, callback) => this.client.whisperMarkdown(message, callback),
       () => buildWhisperMarkdownRequest(whisper),
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -84,9 +71,7 @@ export class WhisperClient
     whisper: WhisperDisambiguationConfig,
     listener: StreamListener<WhisperDisambiguationEvent>,
   ): StoppableStream<WhisperDisambiguationEvent> {
-    const message = generateWhisperDisambiguation(whisper).setSession(
-      this.createSessionMessage(),
-    );
+    const message = generateWhisperDisambiguation(whisper).setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.WhisperDisambiguationStreamResponse,
       WhisperDisambiguationEvent
@@ -101,17 +86,11 @@ export class WhisperClient
     whisper: WhisperFormConfig,
     listener: StreamListener<WhisperFormUpdateEvent | WhisperFormSubmitEvent>,
   ): StoppableStream<WhisperFormUpdateEvent | WhisperFormSubmitEvent> {
-    const message = generateWhisperForm(whisper).setSession(
-      this.createSessionMessage(),
-    );
+    const message = generateWhisperForm(whisper).setSession(this.createSessionMessage());
     return new TransformingStream<
       messages.WhisperFormStreamResponse,
       WhisperFormSubmitEvent | WhisperFormUpdateEvent
-    >(
-      this.client.whisperForm(message),
-      (response) => transformResponse(response),
-      listener,
-    );
+    >(this.client.whisperForm(message), (response) => transformResponse(response), listener);
   }
 
   protected generateClient(): GRPCClientConstructor<WhisperGRPCClient> {

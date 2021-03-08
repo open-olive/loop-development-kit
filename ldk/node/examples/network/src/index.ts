@@ -1,10 +1,7 @@
 import moment from 'moment';
 
 import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
-import {
-  WhisperListStyle,
-  WhisperListAlign,
-} from '../../../dist/hostClients/whisperService';
+import { WhisperListStyle, WhisperListAlign } from '../../../dist/hostClients/whisperService';
 
 const logger = new Logger('olive-helps-node-example-network');
 
@@ -17,9 +14,7 @@ class ExampleLoop implements Loop {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
       .subtract(3, 'months')
       .startOf('month')
-      .format('YYYYMMDD')}+TO+${now
-      .endOf('month')
-      .format('YYYYMMDD')}]&limit=1`;
+      .format('YYYYMMDD')}+TO+${now.endOf('month').format('YYYYMMDD')}]&limit=1`;
 
     logger.info('Emitting list whisper', url);
 
@@ -31,9 +26,7 @@ class ExampleLoop implements Loop {
           body: '',
         })
         .then((response) => {
-          const { results } = JSON.parse(
-            Buffer.from(response.data).toString('utf8'),
-          );
+          const { results } = JSON.parse(Buffer.from(response.data).toString('utf8'));
           const [recallItem] = results;
 
           this.host.whisper.listWhisper({

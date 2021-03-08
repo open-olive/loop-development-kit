@@ -1,21 +1,21 @@
-import { slugify } from "underscore.string"
-import { ICapabilityData, IAptitudeData } from "./aptitudeData"
+import { slugify } from 'underscore.string';
+import { ICapabilityData, IAptitudeData } from './aptitudeData';
 
 export function buildAptitudeId(aptitudeData: IAptitudeData): string {
-  return slugify(aptitudeData.name)
+  return slugify(aptitudeData.name);
 }
 
 export function buildAptitudePath(aptitudeData: IAptitudeData): string {
-  return `/app/aptitudes/${buildAptitudeId(aptitudeData)}`
+  return `/app/aptitudes/${buildAptitudeId(aptitudeData)}`;
 }
 
 export function buildCapabilityId(capability: ICapabilityData): string {
-  return slugify(capability.name)
+  return slugify(capability.name);
 }
 
 export function buildCapabilityPath(
   capability: ICapabilityData,
-  aptitudeData: IAptitudeData
+  aptitudeData: IAptitudeData,
 ): string {
-  return `${buildAptitudePath(aptitudeData)}#${buildCapabilityId(capability)}`
+  return `${buildAptitudePath(aptitudeData)}#${buildCapabilityId(capability)}`;
 }

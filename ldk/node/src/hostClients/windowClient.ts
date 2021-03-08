@@ -39,9 +39,7 @@ function parseWindowAction(action: Messages.WindowAction): WindowStreamAction {
 /**
  * @internal
  */
-export class WindowClient
-  extends BaseClient<WindowGRPCClient>
-  implements WindowService {
+export class WindowClient extends BaseClient<WindowGRPCClient> implements WindowService {
   protected generateClient(): GRPCClientConstructor<WindowGRPCClient> {
     return WindowGRPCClient;
   }
@@ -73,14 +71,9 @@ export class WindowClient
   streamActiveWindow(
     listener: StreamListener<WindowInfoResponse>,
   ): StoppableStream<WindowInfoResponse> {
-    return new TransformingStream<
-      Messages.WindowActiveWindowStreamResponse,
-      WindowInfoResponse
-    >(
+    return new TransformingStream<Messages.WindowActiveWindowStreamResponse, WindowInfoResponse>(
       this.client.windowActiveWindowStream(
-        new Messages.WindowActiveWindowStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new Messages.WindowActiveWindowStreamRequest().setSession(this.createSessionMessage()),
       ),
       (response) => response.toObject().window,
       listener,
@@ -90,14 +83,9 @@ export class WindowClient
   streamWindows(
     listener: StreamListener<WindowInfoStreamResponse>,
   ): StoppableStream<WindowInfoStreamResponse> {
-    return new TransformingStream<
-      Messages.WindowStateStreamResponse,
-      WindowInfoStreamResponse
-    >(
+    return new TransformingStream<Messages.WindowStateStreamResponse, WindowInfoStreamResponse>(
       this.client.windowStateStream(
-        new Messages.WindowStateStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new Messages.WindowStateStreamRequest().setSession(this.createSessionMessage()),
       ),
       (response) => {
         const window = response.getWindow();

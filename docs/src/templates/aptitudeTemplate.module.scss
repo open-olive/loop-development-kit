@@ -1,10 +1,10 @@
-@import "../pages/global";
+@import '../pages/global';
 
 .layout {
-  @include respond-to("mobile") {
+  @include respond-to('mobile') {
     --sidebar-width: 0px;
   }
-  @include respond-to("desktop") {
+  @include respond-to('desktop') {
     --sidebar-width: 300px;
   }
   --topbar-height: 60px;
@@ -19,7 +19,7 @@
 }
 
 .content {
-  @include respond-to("desktop") {
+  @include respond-to('desktop') {
     position: absolute;
     top: 0;
     left: var(--sidebar-width);
@@ -27,7 +27,7 @@
     right: 0;
     overflow-y: scroll;
   }
-  @include respond-to("mobile") {
+  @include respond-to('mobile') {
     padding-top: var(--topbar-height);
   }
   padding: 20px;

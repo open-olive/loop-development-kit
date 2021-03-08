@@ -6,9 +6,7 @@ import { Logger } from '../logging';
 /**
  * @internal
  */
-export type StreamTransformer<TInput, TOutput> = (
-  input: TInput,
-) => TOutput | undefined;
+export type StreamTransformer<TInput, TOutput> = (input: TInput) => TOutput | undefined;
 
 /**
  * @internal

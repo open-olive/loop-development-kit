@@ -24,10 +24,10 @@ $menuLinkColor: $menuTextColor;
 $menuLinkColorHover: $hoverColor;
 
 $breakpoints: (
-  "mobile": (
+  'mobile': (
     max-width: 767px,
   ),
-  "desktop": (
+  'desktop': (
     min-width: 768px,
   ),
 ) !default;
@@ -49,13 +49,13 @@ $breakpoints: (
 }
 
 @mixin mobile() {
-  @include respond-to("mobile") {
+  @include respond-to('mobile') {
     @content;
   }
 }
 
 @mixin desktop() {
-  @include respond-to("desktop") {
+  @include respond-to('desktop') {
     @content;
   }
 }

@@ -1,8 +1,5 @@
 import { HostServices, Logger, Loop, serveLoop } from '../../../dist';
-import {
-  WhisperListStyle,
-  WhisperListAlign,
-} from '../../../dist/hostClients/whisperService';
+import { WhisperListStyle, WhisperListAlign } from '../../../dist/hostClients/whisperService';
 
 const logger = new Logger('olive-helps-node-example-whisper-list');
 
@@ -19,8 +16,7 @@ class ExampleLoop implements Loop {
         elements: {
           topMessage: {
             align: WhisperListAlign.LEFT,
-            body:
-              'This is what body copy looks like. Just a bit, don’t overdo it!',
+            body: 'This is what body copy looks like. Just a bit, don’t overdo it!',
             header: 'Hello World, I am a subitle',
             order: 0,
             style: WhisperListStyle.NONE,

@@ -23,10 +23,7 @@ export function buildLogger(): ILogger {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-export type CallbackFunc<TResponse = any> = (
-  err: ServiceError | null,
-  response: TResponse,
-) => void;
+export type CallbackFunc<TResponse = any> = (err: ServiceError | null, response: TResponse) => void;
 /**
  * A simple callback handler that passes back the response when the callback gets invoked
  *
@@ -63,9 +60,7 @@ export function createWaitHandler() {
 /**
  * A stream that is largely a target for later emits
  */
-export function createEmptyStream<
-  TResponse
->(): ClientReadableStream<TResponse> {
+export function createEmptyStream<TResponse>(): ClientReadableStream<TResponse> {
   return new ClientReadableStreamImpl<TResponse>(() => ({} as TResponse));
 }
 
@@ -74,9 +69,7 @@ export function createEmptyStream<
  *
  * @param stream - an optional stream to use, if you don't want this to create it for you
  */
-export function createStreamingHandler<TResponse>(
-  stream?: ClientReadableStream<TResponse>,
-) {
+export function createStreamingHandler<TResponse>(stream?: ClientReadableStream<TResponse>) {
   return (): ClientReadableStream<TResponse> => {
     if (stream) {
       return stream;

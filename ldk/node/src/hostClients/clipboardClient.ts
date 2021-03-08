@@ -19,19 +19,13 @@ const clipboardTransformer: StreamTransformer<
 /**
  * @internal
  */
-export class ClipboardClient
-  extends BaseClient<ClipboardGRPCClient>
-  implements ClipboardService {
+export class ClipboardClient extends BaseClient<ClipboardGRPCClient> implements ClipboardService {
   protected generateClient(): GRPCClientConstructor<ClipboardGRPCClient> {
     return ClipboardGRPCClient;
   }
 
   queryClipboard(): Promise<string> {
-    return this.buildQuery<
-      messages.ClipboardReadRequest,
-      messages.ClipboardReadResponse,
-      string
-    >(
+    return this.buildQuery<messages.ClipboardReadRequest, messages.ClipboardReadResponse, string>(
       (message, callback) => this.client.clipboardRead(message, callback),
       () => new messages.ClipboardReadRequest(),
       clipboardTransformer,

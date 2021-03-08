@@ -23,9 +23,7 @@ function parseProcessInfo(info: Messages.ProcessInfo): ProcessInfoResponse {
  * @param action - The action to process.
  * @internal
  */
-function parseProcessAction(
-  action: Messages.ProcessAction,
-): ProcessStreamAction {
+function parseProcessAction(action: Messages.ProcessAction): ProcessStreamAction {
   switch (action) {
     case ProcessAction.PROCESS_ACTION_STARTED:
       return ProcessStreamAction.Started;
@@ -40,9 +38,7 @@ function parseProcessAction(
 /**
  * @internal
  */
-export class ProcessClient
-  extends BaseClient<ProcessGRPCClient>
-  implements ProcessService {
+export class ProcessClient extends BaseClient<ProcessGRPCClient> implements ProcessService {
   protected generateClient(): GRPCClientConstructor<ProcessGRPCClient> {
     return ProcessGRPCClient;
   }
@@ -58,9 +54,7 @@ export class ProcessClient
       },
       () => new Messages.ProcessStateRequest(),
       (response) => ({
-        processes: response
-          .getProcessesList()
-          .map((processInfo) => parseProcessInfo(processInfo)),
+        processes: response.getProcessesList().map((processInfo) => parseProcessInfo(processInfo)),
       }),
     );
   }
@@ -68,14 +62,9 @@ export class ProcessClient
   streamProcesses(
     listener: StreamListener<ProcessStreamResponse>,
   ): StoppableStream<ProcessStreamResponse> {
-    return new TransformingStream<
-      Messages.ProcessStateStreamResponse,
-      ProcessStreamResponse
-    >(
+    return new TransformingStream<Messages.ProcessStateStreamResponse, ProcessStreamResponse>(
       this.client.processStateStream(
-        new Messages.ProcessStateStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new Messages.ProcessStateStreamRequest().setSession(this.createSessionMessage()),
       ),
       (message) => {
         const processRaw = message.getProcess();

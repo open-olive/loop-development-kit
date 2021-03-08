@@ -7,9 +7,7 @@ import { VaultService } from './vaultService';
 /**
  * @internal
  */
-export class VaultClient
-  extends BaseClient<VaultGRPCClient>
-  implements VaultService {
+export class VaultClient extends BaseClient<VaultGRPCClient> implements VaultService {
   /**
    * Delete a key from vault.
    *
@@ -37,11 +35,7 @@ export class VaultClient
    * @returns Returns true if the key has a defined value.
    */
   vaultExists(key: string): Promise<boolean> {
-    return this.buildQuery<
-      messages.VaultExistsRequest,
-      messages.VaultExistsResponse,
-      boolean
-    >(
+    return this.buildQuery<messages.VaultExistsRequest, messages.VaultExistsResponse, boolean>(
       (message, callback) => this.client.vaultExists(message, callback),
       () => {
         const msg = new messages.VaultExistsRequest();
@@ -59,11 +53,7 @@ export class VaultClient
    * @returns Promise resolving with the value of the key in vault.
    */
   vaultRead(key: string): Promise<string> {
-    return this.buildQuery<
-      messages.VaultReadRequest,
-      messages.VaultReadResponse,
-      string
-    >(
+    return this.buildQuery<messages.VaultReadRequest, messages.VaultReadResponse, string>(
       (message, callback) => this.client.vaultRead(message, callback),
       () => {
         const msg = new messages.VaultReadRequest();

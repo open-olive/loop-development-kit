@@ -241,9 +241,7 @@ export class Logger implements ILogger {
    * // returns { 'key1': 'value1', 'key2': 'value2', 'EXTRA_VALUE_AT_END': 'value3' }
    * ```
    */
-  private _kvArgsWithFields(
-    args = [] as string[],
-  ): { [index: string]: string } {
+  private _kvArgsWithFields(args = [] as string[]): { [index: string]: string } {
     const argsEven = args.slice(0);
 
     if (argsEven.length % 2 !== 0) {
@@ -251,16 +249,13 @@ export class Logger implements ILogger {
       argsEven.push('EXTRA_VALUE_AT_END', extra as string);
     }
 
-    const fields = argsEven.reduce(
-      (acc: { [index: string]: string }, cur, idx, array) => {
-        if (idx % 2 === 0) {
-          const next = array[idx + 1];
-          acc[cur] = next;
-        }
-        return acc;
-      },
-      {},
-    );
+    const fields = argsEven.reduce((acc: { [index: string]: string }, cur, idx, array) => {
+      if (idx % 2 === 0) {
+        const next = array[idx + 1];
+        acc[cur] = next;
+      }
+      return acc;
+    }, {});
 
     return {
       ...this._fields,
@@ -275,9 +270,7 @@ export class Logger implements ILogger {
    */
   private _getTimestamp(): string {
     // toISOString() is close, but the seconds value needs to have 6 decimal places.
-    return new Date()
-      .toISOString()
-      .replace(/\.(\d+)Z$/, (_, p1) => `.${p1.padEnd(6, '0')}Z`);
+    return new Date().toISOString().replace(/\.(\d+)Z$/, (_, p1) => `.${p1.padEnd(6, '0')}Z`);
   }
 }
 
@@ -320,7 +313,6 @@ export const prepareLogging = (): void => {
     consoleWarn(`[WARN] ${msg}`, ...args);
   };
 
-  process.stdout.write = (...args: any[]) =>
-    (process.stderr.write as any)(...args);
+  process.stdout.write = (...args: any[]) => (process.stderr.write as any)(...args);
 };
 /* eslint-any @typescript-eslint/no-explicit-any */

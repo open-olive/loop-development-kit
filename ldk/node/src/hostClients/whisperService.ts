@@ -1,8 +1,4 @@
-import {
-  StoppableMessage,
-  StoppableStream,
-  StreamListener,
-} from './stoppables';
+import { StoppableMessage, StoppableStream, StreamListener } from './stoppables';
 
 /**
  *
@@ -44,10 +40,7 @@ export interface WhisperFormInputWithValue<T, TType extends string>
 
 export type WhisperFormEmail = WhisperFormInputWithValue<string, 'email'>;
 
-export type WhisperFormCheckbox = WhisperFormInputWithValue<
-  boolean,
-  'checkbox'
->;
+export type WhisperFormCheckbox = WhisperFormInputWithValue<boolean, 'checkbox'>;
 
 export type WhisperFormMarkdown = WhisperFormInputWithValue<string, 'markdown'>;
 
@@ -66,10 +59,7 @@ export type WhisperFormSelect = WhisperFormInput<'select'> & {
   options: string[];
 };
 
-export type WhisperFormTelephoneNumber = WhisperFormInputWithValue<
-  string,
-  'telephone'
-> & {
+export type WhisperFormTelephoneNumber = WhisperFormInputWithValue<string, 'telephone'> & {
   pattern: string;
 };
 
@@ -121,9 +111,7 @@ export type WhisperDisambiguationText = WhisperDisambiguationElement<'text'> & {
   body?: string;
 };
 
-export type WhisperDisambiguationElements =
-  | WhisperDisambiguationOption
-  | WhisperDisambiguationText;
+export type WhisperDisambiguationElements = WhisperDisambiguationOption | WhisperDisambiguationText;
 
 export interface WhisperDisambiguationConfig extends Whisper {
   elements: { [name: string]: WhisperDisambiguationElements };

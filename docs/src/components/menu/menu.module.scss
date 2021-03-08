@@ -1,4 +1,4 @@
-@import "../../pages/global";
+@import '../../pages/global';
 
 .desktopMenu {
   position: fixed;
@@ -7,7 +7,7 @@
   bottom: 0;
   width: var(--sidebar-width);
   overflow-y: auto;
-  @include respond-to("mobile") {
+  @include respond-to('mobile') {
     display: none;
   }
 }
@@ -19,7 +19,7 @@
   right: 0;
   height: var(--topbar-height);
   display: flex;
-  @include respond-to("desktop") {
+  @include respond-to('desktop') {
     display: none;
   }
 }
@@ -38,7 +38,7 @@
 }
 
 .menuSection {
-  @include respond-to("mobile") {
+  @include respond-to('mobile') {
     display: none;
   }
 }

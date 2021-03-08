@@ -8,9 +8,7 @@ import messages, { HTTPHeader } from '../grpc/network_pb';
  * @param headersMap - A map of headers
  * @internal
  */
-function parseHeadersMap(
-  headersMap: jspb.Map<string, HTTPHeader>,
-): Record<string, Array<string>> {
+function parseHeadersMap(headersMap: jspb.Map<string, HTTPHeader>): Record<string, Array<string>> {
   const record: Record<string, Array<string>> = {};
 
   headersMap.forEach((values, key) => {
@@ -41,19 +39,13 @@ function addHeadersToMessage(
 /**
  * @internal
  */
-export class NetworkClient
-  extends BaseClient<NetworkGRPCClient>
-  implements NetworkService {
+export class NetworkClient extends BaseClient<NetworkGRPCClient> implements NetworkService {
   protected generateClient(): GRPCClientConstructor<NetworkGRPCClient> {
     return NetworkGRPCClient;
   }
 
   httpRequest(req: HttpRequest): Promise<HttpResponse> {
-    return this.buildQuery<
-      messages.HTTPRequestMsg,
-      messages.HTTPResponseMsg,
-      HttpResponse
-    >(
+    return this.buildQuery<messages.HTTPRequestMsg, messages.HTTPResponseMsg, HttpResponse>(
       (message, callback) => this.client.hTTPRequest(message, callback),
       () => {
         const msg = new messages.HTTPRequestMsg();

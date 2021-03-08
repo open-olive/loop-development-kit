@@ -46,9 +46,7 @@ describe('WindowClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#queryActiveWindow', () => {
@@ -67,9 +65,7 @@ describe('WindowClient', () => {
           .setTitle(windowTitle),
       );
 
-      mockGRPCClient.windowActiveWindow.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.windowActiveWindow.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryActiveWindow();
     });
@@ -118,9 +114,7 @@ describe('WindowClient', () => {
           .setTitle(windowTitle),
       ]);
 
-      mockGRPCClient.windowState.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.windowState.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryWindows();
     });
@@ -157,9 +151,7 @@ describe('WindowClient', () => {
 
   describe('#streamActiveWindow', () => {
     beforeEach(async () => {
-      mockGRPCClient.windowActiveWindowStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.windowActiveWindowStream.mockImplementation(createStreamingHandler());
 
       subject.streamActiveWindow(identityCallback);
     });
@@ -175,9 +167,7 @@ describe('WindowClient', () => {
 
   describe('#streamWindows', () => {
     beforeEach(async () => {
-      mockGRPCClient.windowStateStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.windowStateStream.mockImplementation(createStreamingHandler());
 
       subject.streamWindows(identityCallback);
     });

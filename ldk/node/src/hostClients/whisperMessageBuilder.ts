@@ -42,9 +42,7 @@ function setFormMessages<T>(
  * @internal
  * @param input - Whisper input to build
  */
-export const generateWhisperInput = (
-  input: WhisperFormInputs,
-): messages.WhisperFormInput => {
+export const generateWhisperInput = (input: WhisperFormInputs): messages.WhisperFormInput => {
   const WFI = messages.WhisperFormInput;
   const msg = new WFI();
   let inputMsg;
@@ -346,9 +344,7 @@ export const generateWhisperDisambiguation = (
  * @internal
  * @param config - whisper to build
  */
-export const generateWhisperForm = (
-  config: WhisperFormConfig,
-): messages.WhisperFormRequest => {
+export const generateWhisperForm = (config: WhisperFormConfig): messages.WhisperFormRequest => {
   const msg = new messages.WhisperFormRequest();
   msg.setMeta(generateWhisperMeta(config));
   msg.setMarkdown(config.markdown);
@@ -366,9 +362,7 @@ export const generateWhisperForm = (
  * @internal
  * @param whisper - whisper to build
  */
-export const buildWhisperMarkdownRequest = (
-  whisper: Whisper,
-): messages.WhisperMarkdownRequest => {
+export const buildWhisperMarkdownRequest = (whisper: Whisper): messages.WhisperMarkdownRequest => {
   const meta = generateWhisperMeta(whisper);
   const result = new messages.WhisperMarkdownRequest().setMeta(meta);
   result.setMarkdown(whisper.markdown);
@@ -378,9 +372,7 @@ export const buildWhisperMarkdownRequest = (
  * @internal
  * @param config - whisper to build
  */
-export const buildWhisperListRequest = (
-  config: WhisperListConfig,
-): messages.WhisperListRequest => {
+export const buildWhisperListRequest = (config: WhisperListConfig): messages.WhisperListRequest => {
   const meta = generateWhisperMeta(config);
   const request = new messages.WhisperListRequest().setMeta(meta);
   request.setMarkdown(config.markdown);

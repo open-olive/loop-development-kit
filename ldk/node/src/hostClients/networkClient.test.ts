@@ -41,9 +41,7 @@ describe('NetworkClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#httpRequest', () => {
@@ -69,9 +67,7 @@ describe('NetworkClient', () => {
         .getHeadersMap()
         .set('Set-Cookie', new HTTPHeader().setValuesList(['monster=true']));
 
-      mockGRPCClient.hTTPRequest.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.hTTPRequest.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.httpRequest(request);
     });
@@ -92,9 +88,7 @@ describe('NetworkClient', () => {
     });
 
     it('should have configured the request correctly', () => {
-      const sentRequest: Messages.HTTPRequestMsg = captureMockArgument(
-        mockGRPCClient.hTTPRequest,
-      );
+      const sentRequest: Messages.HTTPRequestMsg = captureMockArgument(mockGRPCClient.hTTPRequest);
 
       expect(sentRequest.getUrl()).toBe(request.url);
       expect(sentRequest.getMethod()).toBe(request.method);

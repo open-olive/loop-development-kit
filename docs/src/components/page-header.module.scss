@@ -1,4 +1,4 @@
-@import "../pages/global";
+@import '../pages/global';
 
 .section {
   background-color: $headerBackgroundColor;
@@ -18,7 +18,7 @@
 }
 
 .sectionOverlay {
-  background-image: url("./banner-pattern.svg");
+  background-image: url('./banner-pattern.svg');
   background-position: calc(100% + 60px) -10px;
   background-repeat: no-repeat;
   position: absolute;

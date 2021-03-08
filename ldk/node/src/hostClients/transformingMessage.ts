@@ -5,8 +5,7 @@ import { Logger } from '../logging';
 /**
  * @internal
  */
-export class TransformingMessage<TOutput, TResponse>
-  implements StoppableMessage<TOutput> {
+export class TransformingMessage<TOutput, TResponse> implements StoppableMessage<TOutput> {
   private callbackPromise: Promise<TOutput>;
 
   private promiseResolve!: (result: TOutput) => void;

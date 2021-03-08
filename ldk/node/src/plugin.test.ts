@@ -33,11 +33,9 @@ describe('Plugin', () => {
     it('calls server#start', async () => {
       plugin = new Plugin({} as any);
       const mockServer = mockedServices.mock.instances[0];
-      mocked(mockServer.bindAsync).mockImplementation(
-        (port, credentials, callback) => {
-          callback(null, 123);
-        },
-      );
+      mocked(mockServer.bindAsync).mockImplementation((port, credentials, callback) => {
+        callback(null, 123);
+      });
       await plugin.serve();
       expect(mockServer.start).toHaveBeenCalledTimes(1);
       expect(prepareLogging).toHaveBeenCalled();

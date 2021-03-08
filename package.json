@@ -12,12 +12,12 @@
     "doc": "docs"
   },
   "scripts": {
-    "pre-commit:node": "cd ldk/node && npm run build && git add dist",
-    "prettier-all": "prettier --write '**/*.{js,jsx,ts,tsx,json,scss}'"
+    "precommit:node": "cd ldk/node && npm run build && git add dist",
+    "prettier:all": "prettier --write '**/*.{js,jsx,ts,tsx,json,scss}'"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run pre-commit:node"
+      "pre-commit": "npm run precommit:node"
     }
   },
   "devDependencies": {

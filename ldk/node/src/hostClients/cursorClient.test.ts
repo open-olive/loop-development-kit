@@ -39,9 +39,7 @@ describe('CursorClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#queryCursorPosition', () => {
@@ -51,9 +49,7 @@ describe('CursorClient', () => {
     beforeEach(async () => {
       sentResponse = new Messages.CursorPositionResponse().setX(100).setY(200);
 
-      mockGRPCClient.cursorPosition.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.cursorPosition.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryCursorPosition();
     });
@@ -85,9 +81,7 @@ describe('CursorClient', () => {
 
   describe('#streamCursorPosition', () => {
     beforeEach(async () => {
-      mockGRPCClient.cursorPositionStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.cursorPositionStream.mockImplementation(createStreamingHandler());
 
       subject.streamCursorPosition(identityCallback);
     });

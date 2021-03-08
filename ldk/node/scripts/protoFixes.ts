@@ -18,9 +18,7 @@ const protoDir = path.join(__dirname, '../src/grpc');
 // Apply the appropriate update for each file type.
 
 fs.readdirSync(protoDir, { withFileTypes: true })
-  .filter(
-    (dirEnt: fs.Dirent) => dirEnt.isFile() && dirEnt.name.endsWith('.proto'),
-  )
+  .filter((dirEnt: fs.Dirent) => dirEnt.isFile() && dirEnt.name.endsWith('.proto'))
   .forEach((protoFileName) => {
     const serviceName = path.basename(protoFileName.name, '.proto');
     const jsFileName = `${serviceName}_grpc_pb.js`;

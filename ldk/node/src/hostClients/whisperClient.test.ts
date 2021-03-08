@@ -47,15 +47,11 @@ describe('WhisperHostClient', () => {
   describe('#markdownWhisper', () => {
     beforeEach(() => {
       // New Message implementation necessary to chain messages.
-      messageBuilders.buildWhisperMarkdownRequest.mockReturnValue(
-        newMessageObj as any,
-      );
+      messageBuilders.buildWhisperMarkdownRequest.mockReturnValue(newMessageObj as any);
     });
     describe('when initialized', () => {
       beforeEach(async () => {
-        await expect(
-          subject.connect(connInfo, session, testLogger),
-        ).resolves.toBeUndefined();
+        await expect(subject.connect(connInfo, session, testLogger)).resolves.toBeUndefined();
 
         mockGRPCClient.whisperMarkdown.mockImplementation(
           createCallbackHandler({ getId: () => WHISPER_ID }),
