@@ -33,7 +33,7 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     capabilities: [
       {
         name: 'Stream Changes',
-        description: 'Receive a message whenever the clipboard contents change.',
+        description: 'Receive messages whenever the clipboard contents change.',
         links: {
           go: 'Listen',
           node: 'streamClipboard',

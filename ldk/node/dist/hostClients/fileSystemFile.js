@@ -73,9 +73,7 @@ class FileSystemFileImpl {
     }
     changeOwnership(params) {
         this.checkStatus();
-        const msg = new filesystem_pb_1.FilesystemFileStreamRequest.Chown()
-            .setUid(params.owner)
-            .setGid(params.group);
+        const msg = new filesystem_pb_1.FilesystemFileStreamRequest.Chown().setUid(params.owner).setGid(params.group);
         const request = new filesystem_pb_1.FilesystemFileStreamRequest().setChown(msg);
         return this.generateResponsePromise(request, 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
