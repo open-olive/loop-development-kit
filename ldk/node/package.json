@@ -40,20 +40,6 @@
     "test-coverage": "jest --collectCoverage",
     "test-watch": "jest --watchAll"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && npm run build && git add dist"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.json": [
-      "prettier --write"
-    ]
-  },
   "dependencies": {
     "@grpc/grpc-js": "1.2.6",
     "@types/google-protobuf": "3.7.4",
