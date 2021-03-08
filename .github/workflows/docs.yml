@@ -1,8 +1,5 @@
 name: Build and Deploy Documents
 
-defaults:
-  run:
-    working-directory: ldk/node
 
 on:
   push:
@@ -10,14 +7,37 @@ on:
       - main
 
 jobs:
-  build:
+  deploy-developer-hub:
+    defaults:
+      run:
+        working-directory: docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: npm ci
+      - run: npm run build:production
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/public
+          force_orphan: true
+          external_repository: open-olive/olive-helps
+  deploy-node:
+    defaults:
+      run:
+        working-directory: ldk/node
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 14.x
       - run: npm ci
       - run: npm run build
       - run: npm run doc
