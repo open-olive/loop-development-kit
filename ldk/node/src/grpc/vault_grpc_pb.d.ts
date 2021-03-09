@@ -18,7 +18,7 @@ interface IVaultService extends grpc.ServiceDefinition<grpc.UntypedServiceImplem
 }
 
 interface IVaultService_IVaultDelete extends grpc.MethodDefinition<vault_pb.VaultDeleteRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Vault/VaultDelete"
+    path: "/proto.Vault/VaultDelete";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<vault_pb.VaultDeleteRequest>;
@@ -27,7 +27,7 @@ interface IVaultService_IVaultDelete extends grpc.MethodDefinition<vault_pb.Vaul
     responseDeserialize: grpc.deserialize<google_protobuf_empty_pb.Empty>;
 }
 interface IVaultService_IVaultExists extends grpc.MethodDefinition<vault_pb.VaultExistsRequest, vault_pb.VaultExistsResponse> {
-    path: string; // "/proto.Vault/VaultExists"
+    path: "/proto.Vault/VaultExists";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<vault_pb.VaultExistsRequest>;
@@ -36,7 +36,7 @@ interface IVaultService_IVaultExists extends grpc.MethodDefinition<vault_pb.Vaul
     responseDeserialize: grpc.deserialize<vault_pb.VaultExistsResponse>;
 }
 interface IVaultService_IVaultRead extends grpc.MethodDefinition<vault_pb.VaultReadRequest, vault_pb.VaultReadResponse> {
-    path: string; // "/proto.Vault/VaultRead"
+    path: "/proto.Vault/VaultRead";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<vault_pb.VaultReadRequest>;
@@ -45,7 +45,7 @@ interface IVaultService_IVaultRead extends grpc.MethodDefinition<vault_pb.VaultR
     responseDeserialize: grpc.deserialize<vault_pb.VaultReadResponse>;
 }
 interface IVaultService_IVaultWrite extends grpc.MethodDefinition<vault_pb.VaultWriteRequest, google_protobuf_empty_pb.Empty> {
-    path: string; // "/proto.Vault/VaultWrite"
+    path: "/proto.Vault/VaultWrite";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<vault_pb.VaultWriteRequest>;

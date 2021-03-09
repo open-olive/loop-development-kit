@@ -11,7 +11,6 @@ type CursorService interface {
 type CursorPosition struct {
 	X      int
 	Y      int
-	Screen int
 }
 
 type ListenPositionHandler func(CursorPosition, error)
