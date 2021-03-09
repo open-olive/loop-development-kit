@@ -23,7 +23,7 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.HELPS_DOCS_DEPLOY_KEY }}
           publish_branch: gh-pages
           publish_dir: ./docs/public
           force_orphan: true
