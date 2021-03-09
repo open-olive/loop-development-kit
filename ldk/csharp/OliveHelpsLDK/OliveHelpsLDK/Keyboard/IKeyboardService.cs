@@ -18,13 +18,6 @@ namespace OliveHelpsLDK.Keyboard
         IStreamingCall<bool> StreamHotKey(HotKey hotkey, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Creates a stream that receives updates when specific scan codes are pressed and released.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        IStreamingCall<ScanCodeEvent> StreamScancode(CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Creates a stream that receives updates when blocks of text are entered.
         /// </summary>
         /// <remarks>

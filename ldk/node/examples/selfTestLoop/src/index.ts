@@ -7,7 +7,6 @@ import { WhisperDisambiguationElements } from '../../../dist/hostClients/whisper
 
 import {
   charTest,
-  charScancodeTest,
   charStreamTest,
   clipboardStream,
   clipboardWriteAndQuery,
@@ -106,14 +105,6 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Type the letter "F" to pay respects...and test the individual character test',
     ),
-    /*
-    new LoopTest(
-      'Keyboard Service - Char Scancode Test',
-      this.charTest,
-      10000,
-      'Type the letter "F"',
-    ),
-    */
   ]),
   process: new TestGroup('Process Service', [
     new LoopTest(

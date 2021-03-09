@@ -29,11 +29,6 @@ export interface TextStream {
   text: string;
 }
 
-export interface ScanCodeEvent {
-  scanCode: number;
-  direction: 'up' | 'down';
-}
-
 /**
  * The KeyboardService allows you to observe key presses and text entry on the keyboard.
  */
@@ -51,15 +46,6 @@ export interface KeyboardService {
    * @param listener - Listener function called whenever an alphanumeric key is pressed.
    */
   streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
-
-  /**
-   * Streams Keyboard Scan Codes as they're entered.
-   *
-   * @param listener - Listener function called whenever a key is pressed or released.
-   */
-  streamScanCode(
-    listener: StreamListener<ScanCodeEvent>,
-  ): StoppableStream<ScanCodeEvent>;
 
   /**
    * Streams when the provided hot key combinations are pressed or released.
