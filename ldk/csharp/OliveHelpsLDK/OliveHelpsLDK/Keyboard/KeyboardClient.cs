@@ -59,14 +59,5 @@ namespace OliveHelpsLDK.Keyboard
                 Modifiers = hotKey.Modifiers()
             };
         }
-
-        private static ScanCodeEvent FromProto(KeyboardScancodeStreamResponse response)
-        {
-            return new ScanCodeEvent
-            {
-                Scancode = response.Scancode,
-                Pressed = response.Pressed,
-            };
-        }
     }
 }

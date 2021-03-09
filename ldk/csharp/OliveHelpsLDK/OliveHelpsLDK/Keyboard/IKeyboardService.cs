@@ -111,20 +111,4 @@ namespace OliveHelpsLDK.Keyboard
             return values.Sum();
         }
     }
-
-    /// <summary>
-    /// The ScanCodeEvent struct contains the scancode and whether the key was pressed or released.
-    /// </summary>
-    public struct ScanCodeEvent
-    {
-        /// <summary>
-        /// The scancode value.
-        /// </summary>
-        public int Scancode;
-
-        /// <summary>
-        /// <code>True</code> if pressed, <code>false</code> if released.
-        /// </summary>
-        public bool Pressed;
-    }
 }
