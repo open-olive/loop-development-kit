@@ -149,12 +149,7 @@ func (loop *Loop) listenToKeyboard() error {
 		return err
 	}
 
-	err = loop.sidekick.Keyboard().ListenScancode(loop.ctx, loop.keyboardScancodeHandler())
-	if err != nil {
-		loop.logger.Error("keyboard scancode listen error", err)
-	}
-
-	return err
+return err
 }
 
 func (loop *Loop) listenToCursor() error {
@@ -258,17 +253,6 @@ func (loop *Loop) keyboardHotkeyHandler() ldk.ListenHotkeyHandler {
 		}
 
 		loop.statusReporter.Report("keyboardHotkey", scanned)
-	}
-}
-
-func (loop *Loop) keyboardScancodeHandler() ldk.ListenScancodeHandler {
-	return func(event ldk.ScancodeEvent, err error) {
-		if err != nil {
-			loop.logger.Error("keyboard scancode callback error", err)
-			return
-		}
-
-		loop.statusReporter.Report("keyboardScancode", event)
 	}
 }
 

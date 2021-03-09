@@ -61,35 +61,6 @@ func (k *KeyboardServer) KeyboardHotkeyStream(req *proto.KeyboardHotkeyStreamReq
 	return nil
 }
 
-// KeyboardScancodeStream streams each scancode as it is pressed
-func (k *KeyboardServer) KeyboardScancodeStream(req *proto.KeyboardScancodeStreamRequest, stream proto.Keyboard_KeyboardScancodeStreamServer) error {
-	session, err := NewSessionFromProto(req.Session)
-	if err != nil {
-		return err
-	}
-
-	handler := func(event ScancodeEvent, err error) {
-		var errText string
-		if err != nil {
-			errText = err.Error()
-		}
-
-		if err := stream.Send(&proto.KeyboardScancodeStreamResponse{
-			Scancode: int32(event.Scancode),
-			Pressed:  event.Pressed,
-			Error:    errText,
-		}); err != nil {
-			// TODO: Fix this when we refactor to sidekick
-			fmt.Println("error => ", err.Error())
-		}
-	}
-
-	return k.Impl.ListenScancode(
-		context.WithValue(stream.Context(), Session{}, session),
-		handler,
-	)
-}
-
 // KeyboardTextStream streams chunks of text when the user finishes typing them
 func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest, stream proto.Keyboard_KeyboardTextStreamServer) error {
 	session, err := NewSessionFromProto(req.Session)
