@@ -74,7 +74,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		Method: "GET",
 		Body:   nil,
 		Headers: map[string][]string{
-			"A-Header-Name": []string{"a header value", "another header value"},
+			"A-Header-Name": {"a header value", "another header value"},
 		},
 	})
 	if err != nil {

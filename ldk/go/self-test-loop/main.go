@@ -149,7 +149,7 @@ func (loop *Loop) listenToKeyboard() error {
 		return err
 	}
 
-return err
+	return err
 }
 
 func (loop *Loop) listenToCursor() error {

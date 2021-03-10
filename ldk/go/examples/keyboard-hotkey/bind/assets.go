@@ -193,9 +193,9 @@ type bintree struct {
 }
 
 var _bintree = &bintree{nil, map[string]*bintree{
-	"assets": &bintree{nil, map[string]*bintree{
-		"templates": &bintree{nil, map[string]*bintree{
-			"whisper.md": &bintree{assetsTemplatesWhisperMd, map[string]*bintree{}},
+	"assets": {nil, map[string]*bintree{
+		"templates": {nil, map[string]*bintree{
+			"whisper.md": {assetsTemplatesWhisperMd, map[string]*bintree{}},
 		}},
 	}},
 }}
