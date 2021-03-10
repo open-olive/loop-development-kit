@@ -22,8 +22,8 @@ func (c *CursorClient) Position(ctx context.Context) (CursorPosition, error) {
 		return CursorPosition{}, err
 	}
 	return CursorPosition{
-		X:      int(resp.X),
-		Y:      int(resp.Y),
+		X: int(resp.X),
+		Y: int(resp.Y),
 	}, nil
 }
 
@@ -47,8 +47,8 @@ func (c *CursorClient) ListenPosition(ctx context.Context, handler ListenPositio
 			err = errors.New(resp.GetError())
 		}
 		handler(CursorPosition{
-			X:      int(resp.X),
-			Y:      int(resp.Y),
+			X: int(resp.X),
+			Y: int(resp.Y),
 		}, err)
 	}
 

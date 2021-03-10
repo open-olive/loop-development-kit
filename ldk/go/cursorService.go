@@ -9,8 +9,8 @@ type CursorService interface {
 }
 
 type CursorPosition struct {
-	X      int
-	Y      int
+	X int
+	Y int
 }
 
 type ListenPositionHandler func(CursorPosition, error)

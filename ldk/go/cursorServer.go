@@ -24,8 +24,8 @@ func (c *CursorServer) CursorPosition(ctx context.Context, req *proto.CursorPosi
 		return nil, err
 	}
 	return &proto.CursorPositionResponse{
-		X:      int32(value.X),
-		Y:      int32(value.Y),
+		X: int32(value.X),
+		Y: int32(value.Y),
 	}, nil
 }
 
@@ -41,9 +41,9 @@ func (c *CursorServer) CursorPositionStream(req *proto.CursorPositionStreamReque
 			errText = err.Error()
 		}
 		if e := stream.Send(&proto.CursorPositionStreamResponse{
-			X:      int32(msg.X),
-			Y:      int32(msg.Y),
-			Error:  errText,
+			X:     int32(msg.X),
+			Y:     int32(msg.Y),
+			Error: errText,
 		}); e != nil {
 			fmt.Println("error: ldk.CursorServer.CursorPositionStream -> stream.Send:", e)
 		}
