@@ -57,7 +57,7 @@ export default class TestSuite {
       label: 'Self Test - Results',
       markdown: 'Press "Ctrl + /" to bring back up the original whisper',
     });
-    const keyboard = host.keyboard.streamHotKey(hotkeys, (error, response) => {
+    const keyboard = host.keyboard.streamHotKey(hotkeys, (error) => {
       if (error) {
         // Do nothing
       } else {

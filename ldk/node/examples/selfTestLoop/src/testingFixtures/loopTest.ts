@@ -41,7 +41,7 @@ export class LoopTest {
       this.status = Status.PASS;
       logger.info(`✅ PASS - ${this.id}`);
       return Promise.resolve(this.status);
-    } catch (error: any) {
+    } catch (error) {
       this.status = Status.FAIL;
       logger.error(`💀 FAIL - ${this.id}`);
       logger.error(typeof error === 'string' ? error : error.message);
