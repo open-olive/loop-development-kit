@@ -72,18 +72,65 @@ namespace OliveHelpsLDK.Keyboard
         /// A single character string containing the letter to be observed.
         /// </summary>
         public string Key;
-
+        
+        /// <summary>
+        /// Left Alt Key
+        /// </summary>
         public bool AltL;
+        
+        /// <summary>
+        /// Right Alt Key
+        /// </summary>
         public bool AltR;
+        
+        /// <summary>
+        /// Alt Key
+        /// </summary>
         public bool Alt;
+        
+        /// <summary>
+        /// Left Ctrl Key
+        /// </summary>
         public bool CtrlL;
+        
+        /// <summary>
+        /// Right Ctrl Key
+        /// </summary>
         public bool CtrlR;
+        
+        /// <summary>
+        /// Ctrl Key
+        /// </summary>
         public bool Ctrl;
+        
+        /// <summary>
+        /// Left Option / Meta Key
+        /// </summary>
         public bool MetaL;
+        
+        /// <summary>
+        /// Right Option / Meta Key
+        /// </summary>
         public bool MetaR;
+        
+        /// <summary>
+        /// Option / Meta Key
+        /// </summary>
         public bool Meta;
+        
+        /// <summary>
+        /// Left Shift Key
+        /// </summary>
         public bool ShiftL;
+        
+        /// <summary>
+        /// Right Shift Key
+        /// </summary>
         public bool ShiftR;
+        
+        /// <summary>
+        /// Shift Key
+        /// </summary>
         public bool Shift;
 
         // bit 0  = altL
