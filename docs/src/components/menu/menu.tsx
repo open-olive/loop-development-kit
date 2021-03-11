@@ -6,12 +6,15 @@ import {
 } from '../aptitudes/aptitudePaths';
 import styles from './menu.module.scss';
 import { Link, navigate } from 'gatsby';
-import { IAptitudeData } from '../aptitudes/aptitudeData';
+import { aptitudes, IAptitudeData } from "../aptitudes/aptitudeData";
 import { OliveHelpsLogoSmall } from "../olive-helps-logo-small";
 
 interface IMenuProps {
-  aptitudes: IAptitudeData[];
   currentPath: string;
+}
+
+interface IMenuDetailProps extends IMenuProps {
+  aptitudes: IAptitudeData[];
 }
 
 interface IMenuAptitudeProps {
@@ -39,7 +42,7 @@ export const MenuAptitude: React.FunctionComponent<IMenuAptitudeProps> = (props)
   );
 };
 
-export const MobileMenuSelect: React.FunctionComponent<IMenuProps> = (props) => {
+export const MobileMenuSelect: React.FunctionComponent<IMenuDetailProps> = (props) => {
   const onChange = (newValue: ChangeEvent<HTMLSelectElement>) => {
     navigate(newValue.target.value);
   };
@@ -57,7 +60,7 @@ export const MobileMenuSelect: React.FunctionComponent<IMenuProps> = (props) => 
   );
 };
 
-export const DesktopMenu: React.FunctionComponent<IMenuProps> = (props) => {
+export const DesktopMenu: React.FunctionComponent<IMenuDetailProps> = (props) => {
   let elements = props.aptitudes.map((aptitude) => {
     const aptitudeId = buildAptitudePath(aptitude);
     return (
@@ -84,10 +87,11 @@ export const DesktopMenu: React.FunctionComponent<IMenuProps> = (props) => {
 };
 
 export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
+  const aptitudeData = Object.values(aptitudes);
   return (
     <>
-      <MobileMenuSelect aptitudes={props.aptitudes} currentPath={props.currentPath} />
-      <DesktopMenu aptitudes={props.aptitudes} currentPath={props.currentPath} />
+      <MobileMenuSelect aptitudes={aptitudeData} currentPath={props.currentPath} />
+      <DesktopMenu aptitudes={aptitudeData} currentPath={props.currentPath} />
     </>
   );
 };
