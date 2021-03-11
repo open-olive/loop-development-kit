@@ -4,6 +4,7 @@ import styles from './aptitude.module.scss';
 import { buildCapabilityId, buildCapabilityPath } from './aptitudePaths';
 import { IAptitudeData, ICapabilityData } from './aptitudeData';
 import { Links } from './links';
+import { Link } from 'gatsby';
 
 export const Capability: React.FunctionComponent<{
   capability: ICapabilityData;
@@ -13,9 +14,9 @@ export const Capability: React.FunctionComponent<{
   return (
     <section className={styles.capability}>
       <h2 className={styles.capabilityName}>
-        <a id={id} href={buildCapabilityPath(props.capability, props.aptitude)}>
+        <Link to={buildCapabilityPath(props.capability, props.aptitude)} id={id}>
           {props.capability.name}
-        </a>
+        </Link>
       </h2>
       <Links
         links={props.capability.links}
