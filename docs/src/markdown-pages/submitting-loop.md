@@ -1,5 +1,5 @@
 ---
-slug: "guides/getting-started"
+slug: "guides/submitting-loop"
 title: "Submitting Your Loop"
 ---
 

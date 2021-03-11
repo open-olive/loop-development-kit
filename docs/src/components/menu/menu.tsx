@@ -5,22 +5,33 @@ import {
   buildCapabilityPath,
 } from '../aptitudes/aptitudePaths';
 import styles from './menu.module.scss';
-import { Link, navigate } from 'gatsby';
-import { aptitudes, IAptitudeData } from "../aptitudes/aptitudeData";
-import { OliveHelpsLogoSmall } from "../olive-helps-logo-small";
+import { graphql, Link, navigate, StaticQuery } from 'gatsby';
+import { aptitudes, IAptitudeData } from '../aptitudes/aptitudeData';
+import { OliveHelpsLogoSmall } from '../olive-helps-logo-small';
+import { IGuideFrontMatter, IMarkdownRemarkQuery } from '../../../gatsby-node';
 
 interface IMenuProps {
   currentPath: string;
 }
 
+type IGuideQuery = IMarkdownRemarkQuery<IGuideFrontMatter>;
+
 interface IMenuDetailProps extends IMenuProps {
   aptitudes: IAptitudeData[];
+  guideList: IGuideQuery;
 }
 
 interface IMenuAptitudeProps {
   aptitude: IAptitudeData;
   current: boolean;
 }
+
+export const getPages = (queryResults: IGuideQuery): IGuideFrontMatter[] => {
+  return queryResults.allMarkdownRemark.edges.map((edge) => ({
+    slug: '/' + edge.node.frontmatter.slug,
+    title: edge.node.frontmatter.title,
+  }));
+};
 
 export const MenuAptitude: React.FunctionComponent<IMenuAptitudeProps> = (props) => {
   const sensor = props.aptitude;
@@ -49,19 +60,23 @@ export const MobileMenuSelect: React.FunctionComponent<IMenuDetailProps> = (prop
   const sensorOptions = props.aptitudes.map((apt) => (
     <option value={buildAptitudePath(apt)}>{apt.name}</option>
   ));
+  const guides = getPages(props.guideList).map((guide) => (
+    <option value={guide.slug}>{guide.title}</option>
+  ));
   return (
     <div className={styles.mobileMenu}>
       <h1 className={styles.mobileTitleMark}>Olive Helps Developer Hub</h1>
       <select onChange={onChange} value={props.currentPath} className={styles.mobileNavigation}>
         <option value="/">Home</option>
         <optgroup label="Aptitudes">{sensorOptions}</optgroup>
+        <optgroup label="Guides">{guides}</optgroup>
       </select>
     </div>
   );
 };
 
 export const DesktopMenu: React.FunctionComponent<IMenuDetailProps> = (props) => {
-  let elements = props.aptitudes.map((aptitude) => {
+  const aptitudes = props.aptitudes.map((aptitude) => {
     const aptitudeId = buildAptitudePath(aptitude);
     return (
       <MenuAptitude
@@ -71,16 +86,30 @@ export const DesktopMenu: React.FunctionComponent<IMenuDetailProps> = (props) =>
       />
     );
   });
+  const guides = getPages(props.guideList).map((guide) => (
+    <li className={styles.sectionItem}>
+      <Link to={guide.slug}>
+        <h2 className={styles.sectionItemHeader}>{guide.title}</h2>
+      </Link>
+    </li>
+  ));
   return (
     <div className={styles.desktopMenu}>
       <section className={styles.menuSection}>
         <h1 className={styles.menuTitle}>
-          <Link to="/"><OliveHelpsLogoSmall className={styles.menuLogo}/>Developer Hub</Link>
+          <Link to="/">
+            <OliveHelpsLogoSmall className={styles.menuLogo} />
+            Developer Hub
+          </Link>
         </h1>
       </section>
       <section className={styles.menuSection}>
         <h1 className={styles.sectionTitle}>Aptitudes</h1>
-        <ul className={styles.sectionItems}>{elements}</ul>
+        <ul className={styles.sectionItems}>{aptitudes}</ul>
+      </section>
+      <section className={styles.menuSection}>
+        <h1 className={styles.sectionTitle}>Guides</h1>
+        <ul className={styles.sectionItems}>{guides}</ul>
       </section>
     </div>
   );
@@ -88,10 +117,33 @@ export const DesktopMenu: React.FunctionComponent<IMenuDetailProps> = (props) =>
 
 export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
   const aptitudeData = Object.values(aptitudes);
+  const guideQuery = graphql`
+    query {
+      allMarkdownRemark {
+        edges {
+          node {
+            frontmatter {
+              slug
+              title
+            }
+          }
+        }
+      }
+    }
+  `;
   return (
-    <>
-      <MobileMenuSelect aptitudes={aptitudeData} currentPath={props.currentPath} />
-      <DesktopMenu aptitudes={aptitudeData} currentPath={props.currentPath} />
-    </>
+    <StaticQuery
+      query={guideQuery}
+      render={(data) => (
+        <>
+          <MobileMenuSelect
+            aptitudes={aptitudeData}
+            currentPath={props.currentPath}
+            guideList={data}
+          />
+          <DesktopMenu aptitudes={aptitudeData} currentPath={props.currentPath} guideList={data} />
+        </>
+      )}
+    />
   );
 };

@@ -15,7 +15,7 @@ const buildAptitudePages = (args: CreatePagesArgs) => {
   });
 };
 
-interface IMarkdownRemarkQuery<T> {
+export interface IMarkdownRemarkQuery<T> {
   allMarkdownRemark: {
     edges: {
       node: {
@@ -25,7 +25,7 @@ interface IMarkdownRemarkQuery<T> {
   };
 }
 
-interface IGuideFrontMatter {
+export interface IGuideFrontMatter {
   slug: string;
   title: string;
 }
@@ -58,7 +58,7 @@ export const createPages = async (args: CreatePagesArgs) => {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     return;
   }
-  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+  result.data!.allMarkdownRemark.edges.forEach(({ node }) => {
     createPage({
       path: node.frontmatter.slug,
       component: guideTemplate,
