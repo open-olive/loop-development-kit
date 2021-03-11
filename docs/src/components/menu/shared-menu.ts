@@ -1,5 +1,10 @@
-import { IGuideFrontMatter, IMarkdownRemarkQuery } from '../../../gatsby-node';
 import { IAptitudeData } from '../aptitudes/aptitudeData';
+import {
+  IGuideFrontMatter,
+  IMarkdownEdgeQuery,
+  IMarkdownRemarkQuery,
+  QueryEdge,
+} from '../../queries';
 
 export interface IMenuProps {
   currentPath: string;
@@ -17,9 +22,17 @@ export interface IMenuAptitudeProps {
   current: boolean;
 }
 
-export const getPages = (queryResults: IGuideQuery): IGuideFrontMatter[] => {
-  return queryResults.allMarkdownRemark.edges.map((edge) => ({
+export const mapRemarkEdges: <T>(
+  queryResults: IMarkdownRemarkQuery<T>,
+  mapFn: (edge: QueryEdge<T>) => T,
+) => T[] = (queryResults, mapFn) => {
+  return queryResults.allMarkdownRemark.edges.map(mapFn);
+};
+
+export const mapGuidePages = (queryResults: IGuideQuery): IGuideFrontMatter[] => {
+  return mapRemarkEdges(queryResults, (edge) => ({
     slug: '/' + edge.node.frontmatter.slug,
     title: edge.node.frontmatter.title,
+    description: edge.node.frontmatter.description,
   }));
 };

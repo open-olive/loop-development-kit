@@ -1,9 +1,5 @@
 import React from 'react';
 import { graphql, PageProps } from 'gatsby';
-import styles from './aptitudeTemplate.module.scss';
-import { Aptitude } from '../components/aptitudes/aptitude';
-import { aptitudes } from '../components/aptitudes/aptitudeData';
-import { Menu } from '../components/menu/menu';
 import { StandardLayout } from './standard-layout';
 
 interface TemplateProps {
@@ -36,6 +32,7 @@ export const pageQuery = graphql`
       frontmatter {
         slug
         title
+        description
       }
     }
   }

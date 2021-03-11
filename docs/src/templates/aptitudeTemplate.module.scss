@@ -18,17 +18,23 @@
   height: 50px;
 }
 
-.content {
+.contentContainer {
   @include respond-to('desktop') {
     position: absolute;
     top: 0;
     left: var(--sidebar-width);
     bottom: 0;
     right: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   @include respond-to('mobile') {
     padding-top: var(--topbar-height);
   }
   padding: 20px;
+}
+
+.contentWrapper {
+  @include respond-to('desktop') {
+    max-width: 1024px;
+  }
 }

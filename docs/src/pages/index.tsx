@@ -7,8 +7,10 @@ import OliveHelpsLogo from '../components/olive-helps-logo';
 import { languages, downloadMacUrl, downloadWindowsUrl } from '../references';
 import { Section } from '../components/section';
 import { aptitudes, IAptitudeData } from '../components/aptitudes/aptitudeData';
-import { Link } from 'gatsby';
+import { graphql, Link, PageProps } from 'gatsby';
 import { buildAptitudePath } from '../components/aptitudes/aptitudePaths';
+import { mapGuidePages } from '../components/menu/shared-menu';
+import { IMarkdownRemarkQuery } from '../queries';
 
 interface LanguageBlockProps {
   language: string;
@@ -46,11 +48,22 @@ const AptitudeItem: React.FunctionComponent<{
   );
 };
 
-export default function Home() {
+const GuideItem: React.FunctionComponent<IFrontmatterProps> = (props) => {
+  return (
+    <div className={styles.aptitudeItem}>
+      <h3 className={styles.aptitudeTitle}>
+        <Link to={props.slug}>{props.title}</Link>
+      </h3>
+      <p className={styles.aptitudeDescription}>{props.description}</p>
+    </div>
+  );
+};
+
+export default function Home(props: PageProps<IMarkdownRemarkQuery<IFrontmatterProps>>) {
   const aptitudeItems = Object.values(aptitudes).map((aptitude) => {
     return <AptitudeItem aptitude={aptitude} key={aptitude.name} />;
   });
-
+  const guideItems = mapGuidePages(props.data).map((guide) => <GuideItem {...guide} />);
   const title = (
     <>
       <OliveHelpsLogo className={styles.headerImage} /> <br />
@@ -94,6 +107,11 @@ export default function Home() {
         <div className={styles.aptitudeList}>{aptitudeItems}</div>
       </Section>
       <Section sectionClassName={styles.sectionBackground}>
+        <h2 className={styles.sectionTitle}>Read the Guides</h2>
+        <p>We have guides available to help you at various steps.</p>
+        <div className={styles.aptitudeList}>{guideItems}</div>
+      </Section>
+      <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Getting Help</h2>
         <p>
           Email your Olive Helps developer contact if you need any help! We're here to help you
@@ -104,8 +122,24 @@ export default function Home() {
   );
 }
 
-/**
- * LDK Links
- * LDK Documentation Links
- * Download Links
- */
+export interface IFrontmatterProps {
+  slug: string;
+  title: string;
+  description: string;
+}
+
+export const pageQuery = graphql`
+  query {
+    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___title] }, limit: 1000) {
+      edges {
+        node {
+          frontmatter {
+            slug
+            title
+            description
+          }
+        }
+      }
+    }
+  }
+`;

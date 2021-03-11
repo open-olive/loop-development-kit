@@ -25,7 +25,7 @@ export default function Template(props: PageProps<TemplateProps, TemplatePageCon
   return (
     <>
       <div className={styles.layout}>
-        <Menu currentPath={props.path} aptitudes={aptitudeData} />
+        <Menu currentPath={props.path}  />
         <div className={styles.content}>
           <Aptitude {...aptitudes[aptitudeId]} />
         </div>

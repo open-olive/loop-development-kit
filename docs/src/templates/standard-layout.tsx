@@ -14,7 +14,9 @@ export const StandardLayout: React.FunctionComponent<StandardLayoutProps> = (pro
     <>
       <div className={styles.layout}>
         <Menu currentPath={props.path} />
-        <div className={styles.content}>{props.children}</div>
+        <div className={styles.contentContainer}>
+          <div className={styles.contentWrapper}>{props.children}</div>
+        </div>
       </div>
     </>
   );

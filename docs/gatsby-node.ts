@@ -1,6 +1,7 @@
 import { buildAptitudeId, buildAptitudePath } from './src/components/aptitudes/aptitudePaths';
 import { aptitudes } from './src/components/aptitudes/aptitudeData';
 import { CreatePagesArgs } from 'gatsby';
+import { IGuideFrontMatter, IMarkdownRemarkQuery } from './src/queries';
 
 const buildAptitudePages = (args: CreatePagesArgs) => {
   const blogPostTemplate = require.resolve(`./src/templates/aptitudeTemplate.tsx`);
@@ -14,21 +15,6 @@ const buildAptitudePages = (args: CreatePagesArgs) => {
     });
   });
 };
-
-export interface IMarkdownRemarkQuery<T> {
-  allMarkdownRemark: {
-    edges: {
-      node: {
-        frontmatter: T;
-      };
-    }[];
-  };
-}
-
-export interface IGuideFrontMatter {
-  slug: string;
-  title: string;
-}
 
 export const createPages = async (args: CreatePagesArgs) => {
   const {

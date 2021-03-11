@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPages, IMenuAptitudeProps, IMenuDetailProps } from './shared-menu';
+import { mapRemarkEdges, IMenuAptitudeProps, IMenuDetailProps, mapGuidePages } from './shared-menu';
 import { buildAptitudePath, buildCapabilityPath } from '../aptitudes/aptitudePaths';
 import styles from './menu.module.scss';
 import { Link } from 'gatsby';
@@ -35,7 +35,7 @@ export const DesktopMenu: React.FunctionComponent<IMenuDetailProps> = (props) =>
       />
     );
   });
-  const guides = getPages(props.guideList).map((guide) => (
+  const guides = mapGuidePages(props.guideList).map((guide) => (
     <li className={styles.sectionItem}>
       <Link to={guide.slug}>
         <h2 className={styles.sectionItemHeader}>{guide.title}</h2>

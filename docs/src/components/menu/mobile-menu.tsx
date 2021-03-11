@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react';
-import { getPages, IMenuDetailProps } from './shared-menu';
+import { IMenuDetailProps, mapGuidePages } from './shared-menu';
 import { navigate } from 'gatsby';
 import { buildAptitudePath } from '../aptitudes/aptitudePaths';
 import styles from './menu.module.scss';
@@ -12,7 +12,7 @@ export const MobileMenu: React.FunctionComponent<IMenuDetailProps> = (props) => 
   const sensorOptions = props.aptitudes.map((apt) => (
     <option value={buildAptitudePath(apt)}>{apt.name}</option>
   ));
-  const guides = getPages(props.guideList).map((guide) => (
+  const guides = mapGuidePages(props.guideList).map((guide) => (
     <option value={guide.slug}>{guide.title}</option>
   ));
   return (

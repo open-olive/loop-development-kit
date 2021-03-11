@@ -1,6 +1,7 @@
 ---
-slug: "guides/submitting-loop"
-title: "Submitting Your Loop"
+slug: 'guides/submitting-loop'
+title: 'Submitting Your Loop'
+description: 'Submit your Loop for review and approval by the Olive Helps team.'
 ---
 
 # Submit Your Loop
