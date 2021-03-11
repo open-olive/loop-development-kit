@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - SIDE-1196
 
 jobs:
   deploy-developer-hub:
