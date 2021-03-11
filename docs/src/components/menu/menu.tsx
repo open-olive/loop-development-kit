@@ -7,6 +7,7 @@ import {
 import styles from './menu.module.scss';
 import { Link, navigate } from 'gatsby';
 import { IAptitudeData } from '../aptitudes/aptitudeData';
+import { OliveHelpsLogoSmall } from "../olive-helps-logo-small";
 
 interface IMenuProps {
   aptitudes: IAptitudeData[];
@@ -70,8 +71,8 @@ export const DesktopMenu: React.FunctionComponent<IMenuProps> = (props) => {
   return (
     <div className={styles.desktopMenu}>
       <section className={styles.menuSection}>
-        <h1>
-          <Link to="/">Home</Link>
+        <h1 className={styles.menuTitle}>
+          <Link to="/"><OliveHelpsLogoSmall className={styles.menuLogo}/>Developer Hub</Link>
         </h1>
       </section>
       <section className={styles.menuSection}>
