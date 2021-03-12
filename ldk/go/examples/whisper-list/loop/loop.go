@@ -40,7 +40,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 	go func() {
 		err := c.sidekick.Whisper().List(c.ctx, &ldk.WhisperContentList{
-			Label: "MCMG Location",
+			Label:    "MCMG Location",
 			Markdown: "",
 			Elements: map[string]ldk.WhisperContentListElement{
 				"topMessage": &ldk.WhisperContentListElementMessage{
@@ -151,14 +151,14 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 					Order:  17,
 					Style:  ldk.WhisperContentListElementStyleError,
 				},
-				"link": &ldk.WhisperContentListElementLink {
-					Align:  ldk.WhisperContentListElementAlignCenter,
-					Extra: 	true,
-					Href: 	"https://isitchristmas.com/",
-					Order: 	18,
-					Style:  ldk.WhisperContentListElementStyleNone,
-					Text:	"IsItChristmas.com",
-				},	
+				"link": &ldk.WhisperContentListElementLink{
+					Align: ldk.WhisperContentListElementAlignCenter,
+					Extra: true,
+					Href:  "https://isitchristmas.com/",
+					Order: 18,
+					Style: ldk.WhisperContentListElementStyleNone,
+					Text:  "IsItChristmas.com",
+				},
 			},
 		})
 		if err != nil {

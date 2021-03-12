@@ -5,7 +5,6 @@ import "context"
 // KeyboardService is an interface that defines what methods plugins can expect from the host
 type KeyboardService interface {
 	ListenHotkey(context.Context, Hotkey, ListenHotkeyHandler) error
-	ListenScancode(context.Context, ListenScancodeHandler) error
 	ListenText(context.Context, ListenTextHandler) error
 	ListenCharacter(context.Context, ListenCharacterHandler) error
 }
@@ -76,13 +75,7 @@ const (
 	KeyModifierShift           = 1 << 11 //  00000000000000000000100000000000 -> 2048
 )
 
-type ScancodeEvent struct {
-	Scancode int
-	Pressed  bool
-}
-
 // ListenHotkeyHandler will return `true` if the hotkey/combination was pressed
 type ListenHotkeyHandler func(scanned bool, err error)
-type ListenScancodeHandler func(ScancodeEvent, error)
 type ListenTextHandler func(string, error)
 type ListenCharacterHandler func(rune, error)

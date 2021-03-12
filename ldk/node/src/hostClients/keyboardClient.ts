@@ -9,7 +9,6 @@ import {
   HotKeyRequest,
   KeyboardService,
   KeyboardModifiers,
-  ScanCodeEvent,
   TextStream,
 } from './keyboardService';
 
@@ -43,22 +42,6 @@ const transformTextStream: StreamTransformer<
 > = (message) => ({
   text: message.getText(),
 });
-
-/**
- * @internal
- * @param message - The message to transform.
- */
-const transformScanCodeStream: StreamTransformer<
-  messages.KeyboardScancodeStreamResponse,
-  ScanCodeEvent
-> = (message) => {
-  const logger = new Logger('loop-core');
-  logger.info(`In transform - ${message.getScancode()}`);
-  return {
-    scanCode: message.getScancode(),
-    direction: message.getPressed() ? 'down' : 'up',
-  };
-};
 
 /**
  * @internal
@@ -128,20 +111,6 @@ export default class KeyboardClient
         ),
       ),
       transformTextStream,
-      listener,
-    );
-  }
-
-  streamScanCode(
-    listener: StreamListener<ScanCodeEvent>,
-  ): StoppableStream<ScanCodeEvent> {
-    return new TransformingStream(
-      this.client.keyboardScancodeStream(
-        new messages.KeyboardScancodeStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
-      ),
-      transformScanCodeStream,
       listener,
     );
   }

@@ -8,9 +8,6 @@ service Keyboard {
     // register a hotkey and receive streamed messages when it is pressed
     rpc KeyboardHotkeyStream (KeyboardHotkeyStreamRequest) returns (stream KeyboardHotkeyStreamResponse);
 
-    // stream each scancode as it is pressed
-    rpc KeyboardScancodeStream (KeyboardScancodeStreamRequest) returns (stream KeyboardScancodeStreamResponse);
-
     // stream chunks of text when the user finishes typing them
     rpc KeyboardTextStream (KeyboardTextStreamRequest) returns (stream KeyboardTextStreamResponse);
 
@@ -43,16 +40,6 @@ message KeyboardHotkeyStreamRequest {
 
 message KeyboardHotkeyStreamResponse {
     bool scanned = 1;
-    string error = 15;
-}
-
-message KeyboardScancodeStreamRequest {
-    Session session = 1;
-}
-
-message KeyboardScancodeStreamResponse {
-    int32 scancode = 1;
-    bool pressed = 2;
     string error = 15;
 }
 

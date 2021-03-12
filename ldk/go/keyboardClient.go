@@ -47,36 +47,6 @@ func (k *KeyboardClient) ListenHotkey(ctx context.Context, hotkey Hotkey, handle
 	return nil
 }
 
-// ListenScancode will call the handler for any key pressed up or down
-func (k *KeyboardClient) ListenScancode(ctx context.Context, handler ListenScancodeHandler) error {
-	stream, err := k.client.KeyboardScancodeStream(ctx, &proto.KeyboardScancodeStreamRequest{
-		Session: k.session.ToProto(),
-	})
-	if err != nil {
-		return err
-	}
-
-	go func() {
-		for {
-			resp, err := stream.Recv()
-			if err == io.EOF {
-				break
-			}
-			if err != nil {
-				handler(ScancodeEvent{}, err)
-				return
-			}
-
-			if resp.GetError() != "" {
-				err = errors.New(resp.GetError())
-			}
-			handler(ScancodeEvent{Scancode: int(resp.GetScancode()), Pressed: resp.GetPressed()}, err)
-		}
-	}()
-
-	return nil
-}
-
 // ListenText will call the handler when a chunk of text has been captured from the keyboard
 func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandler) error {
 	stream, err := k.client.KeyboardTextStream(ctx, &proto.KeyboardTextStreamRequest{
