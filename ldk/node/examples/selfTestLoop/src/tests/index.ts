@@ -106,29 +106,6 @@ export const charStreamTest = (host: HostServices): Promise<boolean> =>
     });
   });
 
-export const charScancodeTest = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const characterStream = host.keyboard.streamScanCode((error, response) => {
-      if (error) {
-        reject(error);
-      }
-
-      if (typeof response !== 'undefined') {
-        logger.debug(
-          'Scancode detected',
-          'response',
-          response.scanCode.toString(),
-        );
-
-        /* if (response.toString() === 'Olive') {
-                  resolve(true);
-                  prompt.stop();
-                  characterStream.stop();
-                } */
-      }
-    });
-  });
-
 export const cursorPosition = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     host.cursor
