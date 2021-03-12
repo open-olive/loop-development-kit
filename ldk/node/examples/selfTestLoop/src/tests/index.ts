@@ -113,8 +113,6 @@ export const cursorPosition = (host: HostServices): Promise<boolean> =>
       .then((response) => {
         logger.debug(`Cursor X - ${response.x}`);
         logger.debug(`Cursor Y - ${response.y}`);
-        // Screen not supported for now
-        // logger.info(`Screen - ${response.screen}`);
         setTimeout(() => {
           resolve(true);
         }, 1500);

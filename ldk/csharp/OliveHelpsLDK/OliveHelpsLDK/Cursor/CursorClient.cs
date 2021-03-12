@@ -47,7 +47,6 @@ namespace OliveHelpsLDK.Cursor
             var response = task.Result;
             return new CursorPosition
             {
-                Screen = checked((int) response.Screen),
                 X = response.X,
                 Y = response.Y
             };
@@ -57,7 +56,6 @@ namespace OliveHelpsLDK.Cursor
         {
             return new CursorPosition
             {
-                Screen = checked((int) response.Screen),
                 X = response.X,
                 Y = response.Y
             };
