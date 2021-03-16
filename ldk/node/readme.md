@@ -68,12 +68,11 @@ Instructions to come! We're always working on improving the LDK developer experi
 Olive Helps logs are available in the following directories for your OS:
 
 ```shell
-~/Library/Logs/Sidekick # MacOS
-/var/log/Sidekick       # Linux
+~/Library/Logs/Olive Helps # MacOS
 %AppData%/Logs          # Windows
 ```
 
-`tail -f` the log file (usually `Sidekick-X.Y.Z.log`) to watch things happen!
+`tail -f` the log file (usually `Olive Helps-X.Y.Z.log`) to watch things happen!
 
 ## Deploying
 
