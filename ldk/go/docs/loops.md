@@ -54,7 +54,6 @@ Loops do not need to emit whispers in a 1:1 relationship with events. Loops may 
 	- Window
 	- UI
 	- Network
-}
 
 ## Lifecycle
 
@@ -166,7 +165,7 @@ func (loop *Loop) windowStateHandler() ldk.ListenWindowStateHandler {
 			return
 		}
 
-	// window state changed, do activities here...
+		// window state changed, do activities here...
 		loop.logger.Info("windowState" + event.Window.Title)
 	}
 }
