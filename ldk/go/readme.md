@@ -78,7 +78,7 @@ Loops do not need to emit whispers in a 1:1 relationship with events. Loops may 
 1. Olive Helps executes plugin process.
 1. Olive Helps calls `LoopStart`, sending the `Sidekick` reference to the plugin.
 1. The loop subscribes to one or more sensors in `LoopStart`.
-1. When the loop is notified of an sensor event, it processes it and calls the `Whisper` method on the `Sidekick` reference to emit a whisper.
+1. When the loop is notified of a sensor event, it processes it and calls the `Whisper` method on the `Sidekick` reference to emit a whisper.
 1. On user disabling the loop, Olive Helps calls `LoopStop` then sends `sigterm` to the process.
 1. On Olive Helps shutdown, Olive Helps calls `LoopStop` then sends `sigterm` to the process.
 
