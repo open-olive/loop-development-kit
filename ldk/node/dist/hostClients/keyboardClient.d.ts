@@ -5,7 +5,7 @@ import { HotKeyEvent, HotKeyRequest, KeyboardService, TextStream } from './keybo
 /**
  * @internal
  */
-export default class KeyboardClient extends BaseClient<KeyboardGRPCClient> implements KeyboardService {
+export declare class KeyboardClient extends BaseClient<KeyboardGRPCClient> implements KeyboardService {
     streamHotKey(hotKeys: HotKeyRequest, listener: StreamListener<HotKeyEvent>): StoppableStream<HotKeyEvent>;
     streamText(listener: StreamListener<string>): StoppableStream<string>;
     streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;

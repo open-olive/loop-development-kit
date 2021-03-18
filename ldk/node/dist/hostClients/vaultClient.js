@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VaultClient = void 0;
 const baseClient_1 = __importDefault(require("./baseClient"));
 const vault_grpc_pb_1 = require("../grpc/vault_grpc_pb");
 const vault_pb_1 = __importDefault(require("../grpc/vault_pb"));
@@ -78,4 +79,4 @@ class VaultClient extends baseClient_1.default {
         return 'vault';
     }
 }
-exports.default = VaultClient;
+exports.VaultClient = VaultClient;
