@@ -9,6 +9,7 @@ import {
   charTest,
   charStreamTest,
   clipboardStream,
+  windowTest,
   clipboardWriteAndQuery,
   confirmWhisper,
   createAndDeleteFile,
@@ -57,6 +58,14 @@ const testConfig: { [key: string]: any } = {
       streamCursorPosition,
       10000,
       'Move your cursor around...',
+    ),
+  ]),
+  window: new TestGroup('Window Service', [
+    new LoopTest(
+      'Window Service - Active Window Test',
+      windowTest,
+      10000,
+      'Make window active...',
     ),
   ]),
   file: new TestGroup('File Service', [

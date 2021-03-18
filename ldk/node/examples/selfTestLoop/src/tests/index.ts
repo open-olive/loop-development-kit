@@ -48,6 +48,20 @@ export const clipboardStream = (host: HostServices): Promise<boolean> =>
     });
   });
 
+export const windowTest = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    host.window.streamActiveWindow((error, response) => {
+      if (error) {
+        reject(error);
+      }
+      if(response) {
+        logger.debug('Window become active', 'response', response.title);
+        resolve(true);
+      }
+    });
+  });
+
+
 export const hotkeyTest = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const hotkeys = {
