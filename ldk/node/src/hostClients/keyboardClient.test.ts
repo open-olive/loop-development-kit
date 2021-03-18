@@ -4,7 +4,7 @@ import { ClientReadableStream } from '@grpc/grpc-js/build/src/call';
 import * as Services from '../grpc/keyboard_grpc_pb';
 import * as Messages from '../grpc/keyboard_pb';
 import { ConnInfo } from '../grpc/broker_pb';
-import KeyboardClient from './keyboardClient';
+import { KeyboardClient } from './keyboardClient';
 import { Session } from '../grpc/session_pb';
 import {
   buildLogger,

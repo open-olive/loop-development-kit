@@ -1,7 +1,7 @@
 import { mocked } from 'ts-jest/utils';
 import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/whisper_grpc_pb';
-import WhisperClient from './whisperClient';
+import { WhisperClient } from './whisperClient';
 import { ConnInfo } from '../grpc/broker_pb';
 import { Session } from '../grpc/session_pb';
 import * as Builders from './whisperMessageBuilder';
