@@ -83,7 +83,8 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# pre-commit requires /dist
+#dist
 
 # Gatsby files
 .cache/
@@ -156,7 +157,8 @@ bower_components
 Thumbs.db
 
 # Ignore built ts files
-dist/**/*
+@pre-commit requires /dest
+#dist/**/*
 
 # ignore yarn.lock
 yarn.lock
