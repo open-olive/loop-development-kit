@@ -30,13 +30,13 @@ type Loop struct {
 }
 
 // LoopStart will be called by ldk when loop starts
-func (loop *Loop) LoopStart(sidekick ldk.Sidekick) error {
+func (l *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	// store sidekick in memory to provide event handlers
-	loop.sidekick = sidekick
-	loop.ctx, loop.cancel = context.WithCancel(context.Background())
+	l.sidekick = sidekick
+	l.ctx, l.cancel = context.WithCancel(context.Background())
 
 	// starting event listeners
-	err := loop.startListeners()
+	err := l.startListeners()
 	if err != nil {
 		return err
 	}

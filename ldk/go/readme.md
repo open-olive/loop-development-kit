@@ -25,11 +25,21 @@ type Loop interface {
 	LoopStart(Sidekick) error
 	LoopStop() error
 }
+```
 
+```go
 func main() {
-	...
+	// Instantiating Logger
+	logger := ldk.NewLogger("demo-loop-go")
+	
+	// Instantiating Loop
+	var loop ldk.Loop
+	loop = &Loop{
+		logger:         logger
+	}
+
 	ldk.ServeLoopPlugin(logger, loop) // ServeLoopPlugin, gives an ability to provide your own logger
-}	
+}
 ```
 
 **LoopStart** - The Loop should wait to start operating until this is called. The provided `Sidekick` reference should be stored in memory for continued use.
@@ -58,20 +68,24 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 }
 ```
 
-Loops do not need to emit whispers in a 1:1 relationship with events. Loops may not use events at all. Loops may only use some events. Loops may keep a history of events and only emit whispers when several conditions are met.
+Loops do not need to emit whispers in a 1:1 relationship with events, and may not use events at all. They could use some events, keep a history of events, or emit whispers only when several conditions are met.
 
 #### List of possible Sensors to subscribe to
 
-	- Clipboard
-	- Vault
-	- Whisper
-	- Keyboard
-	- Process
-	- Cursor
-	- Filesystem
-	- Window
-	- UI
-	- Network
+```go
+type Sidekick interface {
+	Clipboard() ClipboardService
+	Vault() VaultService
+	Whisper() WhisperService
+	Keyboard() KeyboardService
+	Process() ProcessService
+	Cursor() CursorService
+	Filesystem() FilesystemService
+	Window() WindowService
+	UI() UIService
+	Network() NetworkService
+}
+```
 
 #### Lifecycle
 
