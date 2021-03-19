@@ -4,7 +4,7 @@ import { VaultService } from './vaultService';
 /**
  * @internal
  */
-export default class VaultClient extends BaseClient<VaultGRPCClient> implements VaultService {
+export declare class VaultClient extends BaseClient<VaultGRPCClient> implements VaultService {
     /**
      * Delete a key from vault.
      *

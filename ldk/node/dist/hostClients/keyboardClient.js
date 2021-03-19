@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.KeyboardClient = void 0;
 const keyboard_grpc_pb_1 = require("../grpc/keyboard_grpc_pb");
 const keyboard_pb_1 = __importDefault(require("../grpc/keyboard_pb"));
 const baseClient_1 = __importDefault(require("./baseClient"));
@@ -73,4 +74,4 @@ class KeyboardClient extends baseClient_1.default {
         return 'keyboard';
     }
 }
-exports.default = KeyboardClient;
+exports.KeyboardClient = KeyboardClient;

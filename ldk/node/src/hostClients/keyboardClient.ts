@@ -3,7 +3,7 @@ import messages from '../grpc/keyboard_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 import { StoppableStream, StreamListener } from './stoppables';
-import { Logger } from '../logging';
+
 import {
   HotKeyEvent,
   HotKeyRequest,
@@ -72,7 +72,7 @@ const transformHotKeyEvent: StreamTransformer<
 /**
  * @internal
  */
-export default class KeyboardClient
+export class KeyboardClient
   extends BaseClient<KeyboardGRPCClient>
   implements KeyboardService {
   streamHotKey(

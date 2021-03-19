@@ -18,6 +18,9 @@ const testConfig = {
         new loopTest_1.LoopTest('Cursor Service - Position Test', tests_1.cursorPosition, 10000, 'Querying cursor position...'),
         new loopTest_1.LoopTest('Cursor Service - Stream Position Test', tests_1.streamCursorPosition, 10000, 'Move your cursor around...'),
     ]),
+    window: new testGroup_1.default('Window Service', [
+        new loopTest_1.LoopTest('Window Service - Active Window Test', tests_1.windowTest, 10000, 'Make window active...'),
+    ]),
     file: new testGroup_1.default('File Service', [
         new loopTest_1.LoopTest('File Service - Query File Directory', tests_1.queryFileDirectory, 10000, 'Querying root directory to look for "go.mod"...'),
         new loopTest_1.LoopTest('File Service - Create and Delete File', tests_1.createAndDeleteFile, 10000, 'Trying to create then delete "test.txt"'),
@@ -35,13 +38,7 @@ const testConfig = {
         new loopTest_1.LoopTest('Vault Service - Write / Read from vault', tests_1.vaultReadWrite, 10000, 'Writing value to vault then reading it back.'),
     ]),
     whispers: new testGroup_1.default('Whisper Service', [
-        /*
-        new LoopTest(
-          'Whispser Service - Confirm Whisper',
-          this.confirmWhisper,
-          10000,
-          'Click the resolve button',
-        ), */
+        new loopTest_1.LoopTest('Whispser Service - Confirm Whisper', tests_1.confirmWhisper, 10000, 'Click the resolve button'),
         new loopTest_1.LoopTest('Whisper Service - Form Whisper', tests_1.formWhisper, 10000, 'Type in "Stonks" and submit'),
         new loopTest_1.LoopTest('Whisper Service - List Whisper', tests_1.networkAndListWhisper, 20000, 'Opening list whisper. In 10 seconds, this whisper will be dismissed'),
         new loopTest_1.LoopTest('Whisper Service - Disambiguation Whisper', tests_1.disambiguationWhisper, 20000, 'Click the 3rd link'),

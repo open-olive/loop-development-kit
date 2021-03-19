@@ -7,7 +7,7 @@ import { VaultService } from './vaultService';
 /**
  * @internal
  */
-export default class VaultClient
+export class VaultClient
   extends BaseClient<VaultGRPCClient>
   implements VaultService {
   /**

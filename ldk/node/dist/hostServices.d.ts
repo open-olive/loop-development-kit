@@ -7,17 +7,19 @@ import { FileSystemService } from './hostClients/fileSystemService';
 import { ProcessService } from './hostClients/processService';
 import { NetworkService } from './hostClients/networkService';
 import { UIService } from './hostClients/uiService';
+import { WindowService } from './hostClients/windowService';
 /**
  * The HostServices interface provides access to the sensors and services provided by Olive Helps.
  */
 export interface HostServices {
-    whisper: WhisperService;
-    vault: VaultService;
-    keyboard: KeyboardService;
     clipboard: ClipboardService;
     cursor: CursorService;
     fileSystem: FileSystemService;
-    process: ProcessService;
+    keyboard: KeyboardService;
     network: NetworkService;
+    process: ProcessService;
     ui: UIService;
+    vault: VaultService;
+    whisper: WhisperService;
+    window: WindowService;
 }

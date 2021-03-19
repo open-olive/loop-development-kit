@@ -7,7 +7,7 @@ import { StoppableMessage, StoppableStream, StreamListener } from './stoppables'
  *
  * @internal
  */
-declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements WhisperService {
+export declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements WhisperService {
     /**
      * Send a Whisper to the host process.
      *
@@ -23,4 +23,3 @@ declare class WhisperClient extends BaseClient<WhisperGRPCClient> implements Whi
     protected generateClient(): GRPCClientConstructor<WhisperGRPCClient>;
     protected serviceName(): string;
 }
-export default WhisperClient;
