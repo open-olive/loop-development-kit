@@ -46,16 +46,16 @@ func main() {
 
 **LoopStop** - The Loop should stop operating when this is called.
 
-#### Subscribing to Sensors
+#### Subscribing to Aptitudes
 
-Inside `LoopStart`, you can subscribe to various sensors. Here's an example of subscribing to a couple:
+Inside `LoopStart`, you can subscribe to various aptitudes. Here's an example of subscribing to a couple:
 
 ```go
 func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	// ...
 
 	handler := func (text string, err error) {
-		// Respond to sensor event here...
+		// Respond to aptitude event here...
 	}
 
 	if err := sidekick.Clipboard().Listen(l.ctx, handler); err != nil {
@@ -70,7 +70,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 Loops do not need to emit whispers in a 1:1 relationship with events, and may not use events at all. They could use some events, keep a history of events, or emit whispers only when several conditions are met.
 
-#### List of possible Sensors to subscribe to
+#### List of possible Aptitudes to subscribe to
 
 ```go
 type Sidekick interface {
@@ -91,8 +91,8 @@ type Sidekick interface {
 
 1. Olive Helps executes plugin process.
 1. Olive Helps calls `LoopStart`, sending the `Sidekick` reference to the plugin.
-1. The loop subscribes to one or more sensors in `LoopStart`.
-1. When the loop is notified of a sensor event, it processes it and calls the `Whisper` method on the `Sidekick` reference to emit a whisper.
+1. The loop subscribes to one or more aptitudes in `LoopStart`.
+1. When the loop is notified of an aptitudes event, it processes it and calls the `Whisper` method on the `Sidekick` reference to emit a whisper.
 1. On user disabling the loop, Olive Helps calls `LoopStop` then sends `sigterm` to the process.
 1. On Olive Helps shutdown, Olive Helps calls `LoopStop` then sends `sigterm` to the process.
 
