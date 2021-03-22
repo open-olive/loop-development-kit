@@ -71,9 +71,7 @@ const transformHotKeyEvent: StreamTransformer<
 /**
  * @internal
  */
-export class KeyboardClient
-  extends BaseClient<KeyboardGRPCClient>
-  implements KeyboardService {
+export class KeyboardClient extends BaseClient<KeyboardGRPCClient> implements KeyboardService {
   streamHotKey(
     hotKeys: HotKeyRequest,
     listener: StreamListener<HotKeyEvent>,
@@ -102,16 +100,6 @@ export class KeyboardClient
         new messages.KeyboardCharacterStreamRequest().setSession(this.createSessionMessage()),
       ),
       transformTextStream,
-      listener,
-    );
-  }
-
-  streamScanCode(listener: StreamListener<ScanCodeEvent>): StoppableStream<ScanCodeEvent> {
-    return new TransformingStream(
-      this.client.keyboardScancodeStream(
-        new messages.KeyboardScancodeStreamRequest().setSession(this.createSessionMessage()),
-      ),
-      transformScanCodeStream,
       listener,
     );
   }

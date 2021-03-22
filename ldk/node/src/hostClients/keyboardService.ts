@@ -48,13 +48,6 @@ export interface KeyboardService {
   streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream>;
 
   /**
-   * Streams Keyboard Scan Codes as they're entered.
-   *
-   * @param listener - Listener function called whenever a key is pressed or released.
-   */
-  streamScanCode(listener: StreamListener<ScanCodeEvent>): StoppableStream<ScanCodeEvent>;
-
-  /**
    * Streams when the provided hot key combinations are pressed or released.
    *
    * The listener function only knows that one of the hot keys provided was pressed or released. If you want to listen for different hot keys you'll need to create a different stream for each.

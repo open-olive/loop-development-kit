@@ -15,7 +15,7 @@ interface IUIService extends grpc.ServiceDefinition<grpc.UntypedServiceImplement
 }
 
 interface IUIService_IGlobalSearchStream extends grpc.MethodDefinition<ui_pb.GlobalSearchStreamRequest, ui_pb.GlobalSearchStreamResponse> {
-    path: string; // "/proto.UI/GlobalSearchStream"
+    path: "/proto.UI/GlobalSearchStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<ui_pb.GlobalSearchStreamRequest>;
@@ -24,7 +24,7 @@ interface IUIService_IGlobalSearchStream extends grpc.MethodDefinition<ui_pb.Glo
     responseDeserialize: grpc.deserialize<ui_pb.GlobalSearchStreamResponse>;
 }
 interface IUIService_ISearchbarStream extends grpc.MethodDefinition<ui_pb.SearchbarStreamRequest, ui_pb.SearchbarStreamResponse> {
-    path: string; // "/proto.UI/SearchbarStream"
+    path: "/proto.UI/SearchbarStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<ui_pb.SearchbarStreamRequest>;
