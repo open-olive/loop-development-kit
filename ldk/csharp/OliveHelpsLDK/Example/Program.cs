@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 using OliveHelpsLDK;
 using OliveHelpsLDK.Logging;
 using OliveHelpsLDK.Whispers;
+using OliveHelpsLDK.Whispers.Disambiguation;
 using OliveHelpsLDK.Whispers.Forms;
 using OliveHelpsLDK.Whispers.Forms.Outputs;
 using OliveHelpsLDK.Window;
 using Checkbox = OliveHelpsLDK.Whispers.Forms.Inputs.Checkbox;
+using DisambiguationBase = OliveHelpsLDK.Whispers.Disambiguation.Base;
+using DisambiguationOption = OliveHelpsLDK.Whispers.Disambiguation.Option;
+using DisambiguationText = OliveHelpsLDK.Whispers.Disambiguation.Text;
+using DisambiguationResponse = OliveHelpsLDK.Whispers.Disambiguation.Response;
 using Email = OliveHelpsLDK.Whispers.Forms.Inputs.Email;
 using IBase = OliveHelpsLDK.Whispers.Forms.Inputs.IBase;
 using ICheckbox = OliveHelpsLDK.Whispers.Forms.Outputs.ICheckbox;
@@ -114,6 +119,9 @@ namespace Example
                                 break;
                             case "windowtest":
                                 WindowStream();
+                                break;
+                            case "disambiguationtest":
+                                DisambiguationStream();
                                 break;
                             case "listtest":
                                 EmitListWhisper();
@@ -276,6 +284,39 @@ namespace Example
                             Logger.Info(r.IsSubmitted ? "Form Submitted" : "Form Rejected",
                                 r.Outputs as IDictionary<string, object>);
 
+                            break;
+                    }
+                }
+
+                Logger.Info("Form Ended");
+            });
+        }
+
+        private void DisambiguationStream() 
+        {
+            var disambiguationWhisper = new WhisperDisambiguation
+            {
+                Config = new WhisperConfig
+                {
+                    Label = "C# Disambiguation Whisper"
+                },
+                Markdown = "",
+                Elements =  new Dictionary<string, DisambiguationBase>
+                {
+                    ["Option1"] = new DisambiguationOption {Label="Option 1", Order=1},
+                    ["Option2"] = new DisambiguationOption {Label="Option 2", Order=2}
+                },
+            };
+
+            var stream = _services.Whisper.DisambiguationAsync(disambiguationWhisper);
+            Task.Run(async () =>
+            {
+                while (await stream.MoveNext())
+                {
+                    switch (stream.Current())
+                    {
+                        case DisambiguationResponse u:
+                            Logger.Info(u.Key);
                             break;
                     }
                 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using OliveHelpsLDK.Whispers.Disambiguation;
 using OliveHelpsLDK.Whispers.Forms;
 using OliveHelpsLDK.Whispers.Forms.Inputs;
 
@@ -47,6 +48,14 @@ namespace OliveHelpsLDK.Whispers
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task ListAsync(WhisperList message, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Generates a Disambiguation Whisper.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        IStreamingCall<IWhisperDisambiguationResponse> DisambiguationAsync(WhisperDisambiguation message, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
@@ -152,5 +161,26 @@ namespace OliveHelpsLDK.Whispers
         /// The list elements for this field.
         /// </summary>
         public IDictionary<string, List.ListBase> Elements;
+    }
+
+    /// <summary>
+    /// Configures a Disambiguation Whisper
+    /// </summary>
+    public struct WhisperDisambiguation
+    {
+        /// <summary>
+        /// Whisper configuration.
+        /// </summary>
+        public WhisperConfig Config;
+
+        /// <summary>
+        /// Markdown formatted string displayed at the top of the form.
+        /// </summary>
+        public string Markdown;
+
+        /// <summary>
+        /// The list elements for this field.
+        /// </summary>
+        public IDictionary<string, Disambiguation.Base> Elements;
     }
 }

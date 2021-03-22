@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OliveHelpsLDK.Whispers.Disambiguation;
 using OliveHelpsLDK.Whispers.Forms;
 using OliveHelpsLDK.Whispers.Forms.Outputs;
 using Proto;
@@ -18,6 +19,14 @@ namespace OliveHelpsLDK.Whispers
                 WhisperFormStreamResponse.WhisperFormResponseOneofOneofCase.Update => ParseUpdate(response.Update),
                 _ => throw new ArgumentOutOfRangeException(nameof(response), response.WhisperFormResponseOneofCase,
                     "Unsupported One Of Result")
+            };
+        }
+
+        public IWhisperDisambiguationResponse ParseResponse(WhisperDisambiguationStreamResponse response)
+        {
+            return new Disambiguation.Response 
+            {
+                Key = response.Key
             };
         }
 
@@ -125,9 +134,9 @@ namespace OliveHelpsLDK.Whispers
             };
         }
 
-        private Text FromProto(WhisperFormOutput.Types.Text output)
+        private Forms.Outputs.Text FromProto(WhisperFormOutput.Types.Text output)
         {
-            return new Text
+            return new Forms.Outputs.Text
             {
                 Value = output.Value
             };

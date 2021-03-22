@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using OliveHelpsLDK.Logging;
+using OliveHelpsLDK.Whispers.Disambiguation;
 using OliveHelpsLDK.Whispers.Forms;
 using Proto;
 
@@ -65,6 +66,15 @@ namespace OliveHelpsLDK.Whispers
             var loggedParser = LoggedParser<WhisperFormStreamResponse, IWhisperFormResponse>(response =>
                 Parser.ParseResponse(response));
             return new StreamingCall<WhisperFormStreamResponse, IWhisperFormResponse>(call, loggedParser);
+        }
+
+        public IStreamingCall<IWhisperDisambiguationResponse> DisambiguationAsync(WhisperDisambiguation message, CancellationToken cancellationToken = default)
+        {
+            var request = Builder.BuildRequest(message, CreateSession());
+            var call = Client.WhisperDisambiguation(request, new CallOptions(cancellationToken: cancellationToken));
+            var loggedParser = LoggedParser<Proto.WhisperDisambiguationStreamResponse, IWhisperDisambiguationResponse>(response =>
+                Parser.ParseResponse(response)); 
+            return new StreamingCall<WhisperDisambiguationStreamResponse, IWhisperDisambiguationResponse>(call, loggedParser);
         }
 
         public Task ListAsync(WhisperList message, CancellationToken cancellationToken = default)

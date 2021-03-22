@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OliveHelpsLDK.Whispers.Forms.Inputs;
 using OliveHelpsLDK.Whispers.List;
+using OliveHelpsLDK.Whispers.Disambiguation;
 using Proto;
 
 namespace OliveHelpsLDK.Whispers
@@ -35,6 +36,18 @@ namespace OliveHelpsLDK.Whispers
                 Session = session
             };
             BuildInputs(request.Elements, list.Elements);
+            return request;
+        }
+
+        public WhisperDisambiguationRequest BuildRequest(WhisperDisambiguation disambiguation, Proto.Session session)
+        {
+            var request = new WhisperDisambiguationRequest
+            {
+                Meta = BuildMeta(disambiguation.Config),
+                Markdown = disambiguation.Markdown,
+                Session = session
+            };
+            BuildInputs(request.Elements, disambiguation.Elements);
             return request;
         }
 
@@ -81,7 +94,7 @@ namespace OliveHelpsLDK.Whispers
                 case Telephone telephone:
                     formInput.Tel = telephone.ToProto();
                     break;
-                case Text text:
+                case Forms.Inputs.Text text:
                     formInput.Text = text.ToProto();
                     break;
                 case Time time:
@@ -93,6 +106,8 @@ namespace OliveHelpsLDK.Whispers
 
             return formInput;
         }
+
+        
 
         private void BuildInputs(IDictionary<string, WhisperListElement> messageElements,
             IDictionary<string, ListBase> items)
@@ -174,6 +189,41 @@ namespace OliveHelpsLDK.Whispers
                 Align.Right => WhisperListElement.Types.Align.Right,
                 _ => throw new ArgumentOutOfRangeException(nameof(align), align, null)
             };
+        }
+
+        private void BuildInputs(IDictionary<string, WhisperDisambiguationElement> messageElements,
+            IDictionary<string, Disambiguation.Base> items)
+        {
+            items.ToList().ForEach(input => messageElements.Add(input.Key, BuildInput(input.Value)));
+        }
+
+        private WhisperDisambiguationElement BuildInput(Disambiguation.Base element)
+        {
+            var disambiguationElement = new WhisperDisambiguationElement
+            {
+                Order = element.Order,
+            };
+            switch (element)
+            {
+                case Disambiguation.Option disambiguationOption:
+                    var option = new WhisperDisambiguationElement.Types.Option
+                    {
+                        Label = disambiguationOption.Label
+                    };
+                    disambiguationElement.Option = option;
+                    break;
+                case Disambiguation.Text disambiguationText:
+                    var text = new WhisperDisambiguationElement.Types.Text
+                    {
+                        Body = disambiguationText.Body,
+                    };
+                    disambiguationElement.Text = text;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(element));
+            }
+
+            return disambiguationElement;
         }
     }
 }

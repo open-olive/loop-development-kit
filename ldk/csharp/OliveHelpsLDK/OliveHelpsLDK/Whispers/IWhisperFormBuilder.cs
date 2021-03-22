@@ -8,5 +8,7 @@ namespace OliveHelpsLDK.Whispers
         WhisperMeta BuildMeta(WhisperConfig config);
 
         WhisperListRequest BuildRequest(WhisperList list, Proto.Session session);
+
+        WhisperDisambiguationRequest BuildRequest(WhisperDisambiguation disambiguation, Proto.Session session);
     }
 }
