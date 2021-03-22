@@ -14,6 +14,7 @@ using Checkbox = OliveHelpsLDK.Whispers.Forms.Inputs.Checkbox;
 using DisambiguationBase = OliveHelpsLDK.Whispers.Disambiguation.Base;
 using DisambiguationOption = OliveHelpsLDK.Whispers.Disambiguation.Option;
 using DisambiguationText = OliveHelpsLDK.Whispers.Disambiguation.Text;
+using DisambiguationResponse = OliveHelpsLDK.Whispers.Disambiguation.Response;
 using Email = OliveHelpsLDK.Whispers.Forms.Inputs.Email;
 using IBase = OliveHelpsLDK.Whispers.Forms.Inputs.IBase;
 using ICheckbox = OliveHelpsLDK.Whispers.Forms.Outputs.ICheckbox;
