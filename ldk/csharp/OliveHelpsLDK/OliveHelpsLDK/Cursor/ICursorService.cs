@@ -37,10 +37,5 @@ namespace OliveHelpsLDK.Cursor
         /// Pixels from top.
         /// </summary>
         public int Y;
-
-        /// <summary>
-        /// The current screen number.
-        /// </summary>
-        public int Screen;
     }
 }

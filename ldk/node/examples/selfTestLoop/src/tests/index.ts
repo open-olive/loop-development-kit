@@ -48,6 +48,20 @@ export const clipboardStream = (host: HostServices): Promise<boolean> =>
     });
   });
 
+export const windowTest = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    host.window.streamActiveWindow((error, response) => {
+      if (error) {
+        reject(error);
+      }
+      if(response) {
+        logger.debug('Window become active', 'response', response.title);
+        resolve(true);
+      }
+    });
+  });
+
+
 export const hotkeyTest = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const hotkeys = {
@@ -106,29 +120,6 @@ export const charStreamTest = (host: HostServices): Promise<boolean> =>
     });
   });
 
-export const charScancodeTest = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const characterStream = host.keyboard.streamScanCode((error, response) => {
-      if (error) {
-        reject(error);
-      }
-
-      if (typeof response !== 'undefined') {
-        logger.debug(
-          'Scancode detected',
-          'response',
-          response.scanCode.toString(),
-        );
-
-        /* if (response.toString() === 'Olive') {
-                  resolve(true);
-                  prompt.stop();
-                  characterStream.stop();
-                } */
-      }
-    });
-  });
-
 export const cursorPosition = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     host.cursor
@@ -136,8 +127,6 @@ export const cursorPosition = (host: HostServices): Promise<boolean> =>
       .then((response) => {
         logger.debug(`Cursor X - ${response.x}`);
         logger.debug(`Cursor Y - ${response.y}`);
-        // Screen not supported for now
-        // logger.info(`Screen - ${response.screen}`);
         setTimeout(() => {
           resolve(true);
         }, 1500);

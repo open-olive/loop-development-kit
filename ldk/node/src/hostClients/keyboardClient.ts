@@ -3,13 +3,12 @@ import messages from '../grpc/keyboard_pb';
 import BaseClient, { GRPCClientConstructor } from './baseClient';
 import { StreamTransformer, TransformingStream } from './transformingStream';
 import { StoppableStream, StreamListener } from './stoppables';
-import { Logger } from '../logging';
+
 import {
   HotKeyEvent,
   HotKeyRequest,
   KeyboardService,
   KeyboardModifiers,
-  ScanCodeEvent,
   TextStream,
 } from './keyboardService';
 
@@ -46,22 +45,6 @@ const transformTextStream: StreamTransformer<
 
 /**
  * @internal
- * @param message - The message to transform.
- */
-const transformScanCodeStream: StreamTransformer<
-  messages.KeyboardScancodeStreamResponse,
-  ScanCodeEvent
-> = (message) => {
-  const logger = new Logger('loop-core');
-  logger.info(`In transform - ${message.getScancode()}`);
-  return {
-    scanCode: message.getScancode(),
-    direction: message.getPressed() ? 'down' : 'up',
-  };
-};
-
-/**
- * @internal
  * @param keyRequest - The key request to generate a stream for.
  */
 function generateHotkeyStreamRequest(
@@ -89,7 +72,7 @@ const transformHotKeyEvent: StreamTransformer<
 /**
  * @internal
  */
-export default class KeyboardClient
+export class KeyboardClient
   extends BaseClient<KeyboardGRPCClient>
   implements KeyboardService {
   streamHotKey(
@@ -128,20 +111,6 @@ export default class KeyboardClient
         ),
       ),
       transformTextStream,
-      listener,
-    );
-  }
-
-  streamScanCode(
-    listener: StreamListener<ScanCodeEvent>,
-  ): StoppableStream<ScanCodeEvent> {
-    return new TransformingStream(
-      this.client.keyboardScancodeStream(
-        new messages.KeyboardScancodeStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
-      ),
-      transformScanCodeStream,
       listener,
     );
   }

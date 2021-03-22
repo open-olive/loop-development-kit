@@ -5,7 +5,6 @@ import "context"
 // KeyboardService is an interface that defines what methods plugins can expect from the host
 type KeyboardService interface {
 	ListenHotkey(context.Context, Hotkey, ListenHotkeyHandler) error
-	ListenScancode(context.Context, ListenScancodeHandler) error
 	ListenText(context.Context, ListenTextHandler) error
 	ListenCharacter(context.Context, ListenCharacterHandler) error
 }
@@ -19,21 +18,13 @@ func (h Hotkey) Match(v Hotkey) bool {
 	if h.Key != v.Key {
 		return false
 	}
-	return h.Modifiers.hasOneMatchingBitInEachMask(v.Modifiers, []KeyModifier{
-		KeyModifierCommandAlt | KeyModifierCommandAltLeft | KeyModifierCommandAltRight,
-		KeyModifierControl | KeyModifierControlLeft | KeyModifierControlRight,
-		KeyModifierMeta | KeyModifierMetaLeft | KeyModifierMetaRight,
-		KeyModifierShift | KeyModifierShiftLeft | KeyModifierShiftRight,
-	})
-}
+	// You can't do a direct bitmask as Alt means Altleft or AltRight.  So checking all combinations is the only safe way to actually compare
+	configured, incoming := h.Modifiers, v.Modifiers
 
-func (k KeyModifier) hasOneMatchingBitInEachMask(v KeyModifier, masks []KeyModifier) bool {
-	result := false
-	for _, mask := range masks {
-		match := k&v&mask != 0
-		result = result || match
-	}
-	return result
+	return (configured.AltLeft() == incoming.AltLeft() || configured.Alt() == incoming.Alt()) && (configured.AltRight() == incoming.AltRight() || configured.Alt() == incoming.Alt()) &&
+		(configured.ControlLeft() == incoming.ControlLeft() || configured.Control() == incoming.Control()) && (configured.ControlRight() == incoming.ControlRight() || configured.Control() == incoming.Control()) &&
+		(configured.MetaLeft() == incoming.MetaLeft() || configured.Meta() == incoming.Meta()) && (configured.MetaRight() == incoming.MetaRight() || configured.Meta() == incoming.Meta()) &&
+		(configured.ShiftLeft() == incoming.ShiftLeft() || configured.Shift() == incoming.Shift()) && (configured.ShiftRight() == incoming.ShiftRight() || configured.Shift() == incoming.Shift())
 }
 
 type KeyModifier int
@@ -76,13 +67,7 @@ const (
 	KeyModifierShift           = 1 << 11 //  00000000000000000000100000000000 -> 2048
 )
 
-type ScancodeEvent struct {
-	Scancode int
-	Pressed  bool
-}
-
 // ListenHotkeyHandler will return `true` if the hotkey/combination was pressed
 type ListenHotkeyHandler func(scanned bool, err error)
-type ListenScancodeHandler func(ScancodeEvent, error)
 type ListenTextHandler func(string, error)
 type ListenCharacterHandler func(rune, error)

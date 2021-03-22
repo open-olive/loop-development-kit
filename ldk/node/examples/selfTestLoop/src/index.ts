@@ -7,9 +7,9 @@ import { WhisperDisambiguationElements } from '../../../dist/hostClients/whisper
 
 import {
   charTest,
-  charScancodeTest,
   charStreamTest,
   clipboardStream,
+  windowTest,
   clipboardWriteAndQuery,
   confirmWhisper,
   createAndDeleteFile,
@@ -60,6 +60,14 @@ const testConfig: { [key: string]: any } = {
       'Move your cursor around...',
     ),
   ]),
+  window: new TestGroup('Window Service', [
+    new LoopTest(
+      'Window Service - Active Window Test',
+      windowTest,
+      10000,
+      'Make window active...',
+    ),
+  ]),
   file: new TestGroup('File Service', [
     new LoopTest(
       'File Service - Query File Directory',
@@ -106,14 +114,6 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Type the letter "F" to pay respects...and test the individual character test',
     ),
-    /*
-    new LoopTest(
-      'Keyboard Service - Char Scancode Test',
-      this.charTest,
-      10000,
-      'Type the letter "F"',
-    ),
-    */
   ]),
   process: new TestGroup('Process Service', [
     new LoopTest(

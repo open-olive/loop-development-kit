@@ -19,7 +19,6 @@ message CursorPositionRequest {
 message CursorPositionResponse {
     int32 x = 1;
     int32 y = 2;
-    uint32 screen = 3;
 }
 
 message CursorPositionStreamRequest {
@@ -29,6 +28,5 @@ message CursorPositionStreamRequest {
 message CursorPositionStreamResponse {
     int32 x = 1;
     int32 y = 2;
-    uint32 screen = 3;
     string error = 15;
 }

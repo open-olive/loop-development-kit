@@ -49,10 +49,7 @@ describe('CursorClient', () => {
     let queryResult: Promise<CursorResponse>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.CursorPositionResponse()
-        .setX(100)
-        .setY(200)
-        .setScreen(0);
+      sentResponse = new Messages.CursorPositionResponse().setX(100).setY(200);
 
       mockGRPCClient.cursorPosition.mockImplementation(
         createCallbackHandler(sentResponse),
@@ -65,7 +62,6 @@ describe('CursorClient', () => {
       const cursorResponse = {
         x: sentResponse.getX(),
         y: sentResponse.getY(),
-        screen: sentResponse.getScreen(),
       };
 
       await expect(queryResult).resolves.toStrictEqual(cursorResponse);

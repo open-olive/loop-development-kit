@@ -15,7 +15,7 @@ interface ICursorService extends grpc.ServiceDefinition<grpc.UntypedServiceImple
 }
 
 interface ICursorService_ICursorPosition extends grpc.MethodDefinition<cursor_pb.CursorPositionRequest, cursor_pb.CursorPositionResponse> {
-    path: string; // "/proto.Cursor/CursorPosition"
+    path: "/proto.Cursor/CursorPosition";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<cursor_pb.CursorPositionRequest>;
@@ -24,7 +24,7 @@ interface ICursorService_ICursorPosition extends grpc.MethodDefinition<cursor_pb
     responseDeserialize: grpc.deserialize<cursor_pb.CursorPositionResponse>;
 }
 interface ICursorService_ICursorPositionStream extends grpc.MethodDefinition<cursor_pb.CursorPositionStreamRequest, cursor_pb.CursorPositionStreamResponse> {
-    path: string; // "/proto.Cursor/CursorPositionStream"
+    path: "/proto.Cursor/CursorPositionStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<cursor_pb.CursorPositionStreamRequest>;

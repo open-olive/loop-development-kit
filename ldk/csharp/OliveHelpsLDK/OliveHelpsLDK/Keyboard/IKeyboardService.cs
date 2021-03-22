@@ -18,13 +18,6 @@ namespace OliveHelpsLDK.Keyboard
         IStreamingCall<bool> StreamHotKey(HotKey hotkey, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Creates a stream that receives updates when specific scan codes are pressed and released.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        IStreamingCall<ScanCodeEvent> StreamScancode(CancellationToken cancellationToken = default);
-
-        /// <summary>
         /// Creates a stream that receives updates when blocks of text are entered.
         /// </summary>
         /// <remarks>
@@ -117,21 +110,5 @@ namespace OliveHelpsLDK.Keyboard
             };
             return values.Sum();
         }
-    }
-
-    /// <summary>
-    /// The ScanCodeEvent struct contains the scancode and whether the key was pressed or released.
-    /// </summary>
-    public struct ScanCodeEvent
-    {
-        /// <summary>
-        /// The scancode value.
-        /// </summary>
-        public int Scancode;
-
-        /// <summary>
-        /// <code>True</code> if pressed, <code>false</code> if released.
-        /// </summary>
-        public bool Pressed;
     }
 }

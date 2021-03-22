@@ -13,7 +13,6 @@ const cursorTransformer: StreamTransformer<
   messages.CursorPositionStreamResponse | messages.CursorPositionResponse,
   CursorResponse
 > = (message) => ({
-  screen: message.getScreen(),
   x: message.getX(),
   y: message.getY(),
 });

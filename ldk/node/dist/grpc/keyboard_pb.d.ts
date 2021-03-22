@@ -88,59 +88,6 @@ export namespace KeyboardHotkeyStreamResponse {
     }
 }
 
-export class KeyboardScancodeStreamRequest extends jspb.Message { 
-
-    hasSession(): boolean;
-    clearSession(): void;
-    getSession(): session_pb.Session | undefined;
-    setSession(value?: session_pb.Session): KeyboardScancodeStreamRequest;
-
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): KeyboardScancodeStreamRequest.AsObject;
-    static toObject(includeInstance: boolean, msg: KeyboardScancodeStreamRequest): KeyboardScancodeStreamRequest.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: KeyboardScancodeStreamRequest, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): KeyboardScancodeStreamRequest;
-    static deserializeBinaryFromReader(message: KeyboardScancodeStreamRequest, reader: jspb.BinaryReader): KeyboardScancodeStreamRequest;
-}
-
-export namespace KeyboardScancodeStreamRequest {
-    export type AsObject = {
-        session?: session_pb.Session.AsObject,
-    }
-}
-
-export class KeyboardScancodeStreamResponse extends jspb.Message { 
-    getScancode(): number;
-    setScancode(value: number): KeyboardScancodeStreamResponse;
-
-    getPressed(): boolean;
-    setPressed(value: boolean): KeyboardScancodeStreamResponse;
-
-    getError(): string;
-    setError(value: string): KeyboardScancodeStreamResponse;
-
-
-    serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): KeyboardScancodeStreamResponse.AsObject;
-    static toObject(includeInstance: boolean, msg: KeyboardScancodeStreamResponse): KeyboardScancodeStreamResponse.AsObject;
-    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: KeyboardScancodeStreamResponse, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): KeyboardScancodeStreamResponse;
-    static deserializeBinaryFromReader(message: KeyboardScancodeStreamResponse, reader: jspb.BinaryReader): KeyboardScancodeStreamResponse;
-}
-
-export namespace KeyboardScancodeStreamResponse {
-    export type AsObject = {
-        scancode: number,
-        pressed: boolean,
-        error: string,
-    }
-}
-
 export class KeyboardTextStreamRequest extends jspb.Message { 
 
     hasSession(): boolean;

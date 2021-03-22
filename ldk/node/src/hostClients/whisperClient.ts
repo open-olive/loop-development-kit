@@ -36,7 +36,7 @@ import {
  *
  * @internal
  */
-class WhisperClient
+export class WhisperClient
   extends BaseClient<WhisperGRPCClient>
   implements WhisperService {
   /**
@@ -122,5 +122,3 @@ class WhisperClient
     return 'whisper';
   }
 }
-
-export default WhisperClient;

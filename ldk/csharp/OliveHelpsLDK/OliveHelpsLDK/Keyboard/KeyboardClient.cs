@@ -29,17 +29,6 @@ namespace OliveHelpsLDK.Keyboard
             return new StreamingCall<KeyboardHotkeyStreamResponse, bool>(call, loggedParser);
         }
 
-        public IStreamingCall<ScanCodeEvent> StreamScancode(CancellationToken cancellationToken = default)
-        {
-            var req = new KeyboardScancodeStreamRequest
-            {
-                Session = CreateSession()
-            };
-            var call = Client.KeyboardScancodeStream(req, CreateOptions(cancellationToken));
-            var loggedParser = LoggedParser<KeyboardScancodeStreamResponse, ScanCodeEvent>(FromProto);
-            return new StreamingCall<KeyboardScancodeStreamResponse, ScanCodeEvent>(call, loggedParser);
-        }
-
         public IStreamingCall<string> StreamText(CancellationToken cancellationToken = default)
         {
             var req = new KeyboardTextStreamRequest
@@ -68,15 +57,6 @@ namespace OliveHelpsLDK.Keyboard
             {
                 Key = hotKey.Key,
                 Modifiers = hotKey.Modifiers()
-            };
-        }
-
-        private static ScanCodeEvent FromProto(KeyboardScancodeStreamResponse response)
-        {
-            return new ScanCodeEvent
-            {
-                Scancode = response.Scancode,
-                Pressed = response.Pressed,
             };
         }
     }

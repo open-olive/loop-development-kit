@@ -38,9 +38,6 @@ export class CursorPositionResponse extends jspb.Message {
     getY(): number;
     setY(value: number): CursorPositionResponse;
 
-    getScreen(): number;
-    setScreen(value: number): CursorPositionResponse;
-
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): CursorPositionResponse.AsObject;
@@ -56,7 +53,6 @@ export namespace CursorPositionResponse {
     export type AsObject = {
         x: number,
         y: number,
-        screen: number,
     }
 }
 
@@ -91,9 +87,6 @@ export class CursorPositionStreamResponse extends jspb.Message {
     getY(): number;
     setY(value: number): CursorPositionStreamResponse;
 
-    getScreen(): number;
-    setScreen(value: number): CursorPositionStreamResponse;
-
     getError(): string;
     setError(value: string): CursorPositionStreamResponse;
 
@@ -112,7 +105,6 @@ export namespace CursorPositionStreamResponse {
     export type AsObject = {
         x: number,
         y: number,
-        screen: number,
         error: string,
     }
 }

@@ -1,19 +1,18 @@
 import { ConnInfo } from './grpc/broker_pb';
 import { Session } from './grpc/session_pb';
 import { HostServices } from './hostServices';
-import WhisperClient from './hostClients/whisperClient';
-import VaultClient from './hostClients/vaultClient';
-import KeyboardClient from './hostClients/keyboardClient';
+import { Logger } from './logging';
+
 import { ClipboardClient } from './hostClients/clipboardClient';
 import { CursorClient } from './hostClients/cursorClient';
-// import { HoverClient } from './hostClients/hoverClient';
 import { FileSystemClient } from './hostClients/fileSystemClient';
-import { ProcessClient } from './hostClients/processClient';
-// import { WindowClient } from './hostClients/windowClient';
-// import { BrowserClient } from './hostClients/browserClient';
+import { KeyboardClient } from './hostClients/keyboardClient';
 import { NetworkClient } from './hostClients/networkClient';
+import { ProcessClient } from './hostClients/processClient';
 import { UIClient } from './hostClients/uiClient';
-import { Logger } from './logging';
+import { VaultClient } from './hostClients/vaultClient';
+import { WhisperClient } from './hostClients/whisperClient';
+import { WindowClient } from './hostClients/windowClient';
 
 /**
  * @internal
@@ -21,52 +20,45 @@ import { Logger } from './logging';
 export default class HostClientFacade implements HostServices {
   private logger: Logger;
 
-  public whisper: WhisperClient = new WhisperClient();
-
-  public vault: VaultClient = new VaultClient();
-
-  public keyboard: KeyboardClient = new KeyboardClient();
-
   public clipboard: ClipboardClient = new ClipboardClient();
 
   public cursor: CursorClient = new CursorClient();
 
   public fileSystem: FileSystemClient = new FileSystemClient();
 
+  public keyboard: KeyboardClient = new KeyboardClient();
+
+  public network: NetworkClient = new NetworkClient();
+
   public process: ProcessClient = new ProcessClient();
 
   public ui: UIClient = new UIClient();
 
-  // These services are not yet implemented.
-  // public hover: HoverClient = new HoverClient();
+  public vault: VaultClient = new VaultClient();
 
-  // public window: WindowClient = new WindowClient();
+  public whisper: WhisperClient = new WhisperClient();
 
-  // public browser: BrowserClient = new BrowserClient();
+  public window: WindowClient = new WindowClient();
 
   constructor(logger: Logger) {
     this.logger = logger;
   }
-
-  public network: NetworkClient = new NetworkClient();
 
   public connect(
     connInfo: ConnInfo.AsObject,
     session: Session.AsObject,
   ): Promise<void[]> {
     return Promise.all([
-      // These services are not yet implemented.
-      // this.browser.connect(connInfo, session, this.logger),
-      // this.hover.connect(connInfo, session, this.logger),
-      // this.window.connect(connInfo, session, this.logger),
-      this.whisper.connect(connInfo, session, this.logger),
-      this.vault.connect(connInfo, session, this.logger),
       this.clipboard.connect(connInfo, session, this.logger),
-      this.keyboard.connect(connInfo, session, this.logger),
-      this.process.connect(connInfo, session, this.logger),
       this.cursor.connect(connInfo, session, this.logger),
       this.fileSystem.connect(connInfo, session, this.logger),
+      this.keyboard.connect(connInfo, session, this.logger),
       this.network.connect(connInfo, session, this.logger),
+      this.process.connect(connInfo, session, this.logger),
+      this.ui.connect(connInfo, session, this.logger),
+      this.vault.connect(connInfo, session, this.logger),
+      this.whisper.connect(connInfo, session, this.logger),
+      this.window.connect(connInfo, session, this.logger),
     ]);
   }
 }

@@ -7,6 +7,8 @@
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
+/* eslint-disable */
+// @ts-nocheck
 
 var jspb = require('google-protobuf');
 var goog = jspb;
@@ -286,8 +288,7 @@ proto.proto.CursorPositionResponse.prototype.toObject = function(opt_includeInst
 proto.proto.CursorPositionResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     x: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    y: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    screen: jspb.Message.getFieldWithDefault(msg, 3, 0)
+    y: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -332,10 +333,6 @@ proto.proto.CursorPositionResponse.deserializeBinaryFromReader = function(msg, r
       var value = /** @type {number} */ (reader.readInt32());
       msg.setY(value);
       break;
-    case 3:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setScreen(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -379,13 +376,6 @@ proto.proto.CursorPositionResponse.serializeBinaryToWriter = function(message, w
       f
     );
   }
-  f = message.getScreen();
-  if (f !== 0) {
-    writer.writeUint32(
-      3,
-      f
-    );
-  }
 };
 
 
@@ -422,24 +412,6 @@ proto.proto.CursorPositionResponse.prototype.getY = function() {
  */
 proto.proto.CursorPositionResponse.prototype.setY = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
-};
-
-
-/**
- * optional uint32 screen = 3;
- * @return {number}
- */
-proto.proto.CursorPositionResponse.prototype.getScreen = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.proto.CursorPositionResponse} returns this
- */
-proto.proto.CursorPositionResponse.prototype.setScreen = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 
@@ -628,7 +600,6 @@ proto.proto.CursorPositionStreamResponse.toObject = function(includeInstance, ms
   var f, obj = {
     x: jspb.Message.getFieldWithDefault(msg, 1, 0),
     y: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    screen: jspb.Message.getFieldWithDefault(msg, 3, 0),
     error: jspb.Message.getFieldWithDefault(msg, 15, "")
   };
 
@@ -673,10 +644,6 @@ proto.proto.CursorPositionStreamResponse.deserializeBinaryFromReader = function(
     case 2:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setY(value);
-      break;
-    case 3:
-      var value = /** @type {number} */ (reader.readUint32());
-      msg.setScreen(value);
       break;
     case 15:
       var value = /** @type {string} */ (reader.readString());
@@ -725,13 +692,6 @@ proto.proto.CursorPositionStreamResponse.serializeBinaryToWriter = function(mess
       f
     );
   }
-  f = message.getScreen();
-  if (f !== 0) {
-    writer.writeUint32(
-      3,
-      f
-    );
-  }
   f = message.getError();
   if (f.length > 0) {
     writer.writeString(
@@ -775,24 +735,6 @@ proto.proto.CursorPositionStreamResponse.prototype.getY = function() {
  */
 proto.proto.CursorPositionStreamResponse.prototype.setY = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
-};
-
-
-/**
- * optional uint32 screen = 3;
- * @return {number}
- */
-proto.proto.CursorPositionStreamResponse.prototype.getScreen = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.proto.CursorPositionStreamResponse} returns this
- */
-proto.proto.CursorPositionStreamResponse.prototype.setScreen = function(value) {
-  return jspb.Message.setProto3IntField(this, 3, value);
 };
 
 

@@ -15,7 +15,7 @@ interface IProcessService extends grpc.ServiceDefinition<grpc.UntypedServiceImpl
 }
 
 interface IProcessService_IProcessStateStream extends grpc.MethodDefinition<process_pb.ProcessStateStreamRequest, process_pb.ProcessStateStreamResponse> {
-    path: string; // "/proto.Process/ProcessStateStream"
+    path: "/proto.Process/ProcessStateStream";
     requestStream: false;
     responseStream: true;
     requestSerialize: grpc.serialize<process_pb.ProcessStateStreamRequest>;
@@ -24,7 +24,7 @@ interface IProcessService_IProcessStateStream extends grpc.MethodDefinition<proc
     responseDeserialize: grpc.deserialize<process_pb.ProcessStateStreamResponse>;
 }
 interface IProcessService_IProcessState extends grpc.MethodDefinition<process_pb.ProcessStateRequest, process_pb.ProcessStateResponse> {
-    path: string; // "/proto.Process/ProcessState"
+    path: "/proto.Process/ProcessState";
     requestStream: false;
     responseStream: false;
     requestSerialize: grpc.serialize<process_pb.ProcessStateRequest>;

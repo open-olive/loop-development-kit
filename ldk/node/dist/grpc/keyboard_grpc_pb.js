@@ -39,24 +39,6 @@ function serialize_proto_KeyboardHotkeyStreamResponse(arg) {
 function deserialize_proto_KeyboardHotkeyStreamResponse(buffer_arg) {
     return keyboard_pb.KeyboardHotkeyStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
-function serialize_proto_KeyboardScancodeStreamRequest(arg) {
-    if (!(arg instanceof keyboard_pb.KeyboardScancodeStreamRequest)) {
-        throw new Error('Expected argument of type proto.KeyboardScancodeStreamRequest');
-    }
-    return Buffer.from(arg.serializeBinary());
-}
-function deserialize_proto_KeyboardScancodeStreamRequest(buffer_arg) {
-    return keyboard_pb.KeyboardScancodeStreamRequest.deserializeBinary(new Uint8Array(buffer_arg));
-}
-function serialize_proto_KeyboardScancodeStreamResponse(arg) {
-    if (!(arg instanceof keyboard_pb.KeyboardScancodeStreamResponse)) {
-        throw new Error('Expected argument of type proto.KeyboardScancodeStreamResponse');
-    }
-    return Buffer.from(arg.serializeBinary());
-}
-function deserialize_proto_KeyboardScancodeStreamResponse(buffer_arg) {
-    return keyboard_pb.KeyboardScancodeStreamResponse.deserializeBinary(new Uint8Array(buffer_arg));
-}
 function serialize_proto_KeyboardTextStreamRequest(arg) {
     if (!(arg instanceof keyboard_pb.KeyboardTextStreamRequest)) {
         throw new Error('Expected argument of type proto.KeyboardTextStreamRequest');
@@ -87,18 +69,6 @@ var KeyboardService = exports.KeyboardService = {
         requestDeserialize: deserialize_proto_KeyboardHotkeyStreamRequest,
         responseSerialize: serialize_proto_KeyboardHotkeyStreamResponse,
         responseDeserialize: deserialize_proto_KeyboardHotkeyStreamResponse,
-    },
-    // stream each scancode as it is pressed
-    keyboardScancodeStream: {
-        path: '/proto.Keyboard/KeyboardScancodeStream',
-        requestStream: false,
-        responseStream: true,
-        requestType: keyboard_pb.KeyboardScancodeStreamRequest,
-        responseType: keyboard_pb.KeyboardScancodeStreamResponse,
-        requestSerialize: serialize_proto_KeyboardScancodeStreamRequest,
-        requestDeserialize: deserialize_proto_KeyboardScancodeStreamRequest,
-        responseSerialize: serialize_proto_KeyboardScancodeStreamResponse,
-        responseDeserialize: deserialize_proto_KeyboardScancodeStreamResponse,
     },
     // stream chunks of text when the user finishes typing them
     keyboardTextStream: {

@@ -4,7 +4,7 @@ import { ClientReadableStream } from '@grpc/grpc-js/build/src/call';
 import * as Services from '../grpc/keyboard_grpc_pb';
 import * as Messages from '../grpc/keyboard_pb';
 import { ConnInfo } from '../grpc/broker_pb';
-import KeyboardClient from './keyboardClient';
+import { KeyboardClient } from './keyboardClient';
 import { Session } from '../grpc/session_pb';
 import {
   buildLogger,
@@ -115,24 +115,6 @@ describe('KeyboardClient', () => {
       subject.streamChar(identityCallback);
 
       sentRequest = captureMockArgument(mockGRPCClient.keyboardCharacterStream);
-    });
-
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()).toBeDefined();
-    });
-  });
-
-  describe('#streamScanCode', () => {
-    let sentRequest: Messages.KeyboardScancodeStreamRequest;
-
-    beforeEach(async () => {
-      mockGRPCClient.keyboardScancodeStream.mockImplementation(
-        createStreamingHandler(),
-      );
-
-      subject.streamScanCode(identityCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.keyboardScancodeStream);
     });
 
     it('should have attached the initial connection session to the request', () => {

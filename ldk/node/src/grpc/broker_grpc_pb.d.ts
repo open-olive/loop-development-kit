@@ -13,7 +13,7 @@ interface IGRPCBrokerService extends grpc.ServiceDefinition<grpc.UntypedServiceI
 }
 
 interface IGRPCBrokerService_IStartStream extends grpc.MethodDefinition<broker_pb.ConnInfo, broker_pb.ConnInfo> {
-    path: string; // "/plugin.GRPCBroker/StartStream"
+    path: "/plugin.GRPCBroker/StartStream";
     requestStream: true;
     responseStream: true;
     requestSerialize: grpc.serialize<broker_pb.ConnInfo>;

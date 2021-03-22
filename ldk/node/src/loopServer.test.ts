@@ -3,7 +3,7 @@ import * as Services from '@grpc/grpc-js';
 import BrokerGrpcServer from './brokerGrpcServer';
 import { Loop } from './loop';
 import { ConnInfo } from './grpc/broker_pb';
-import WhisperClient from './hostClients/whisperClient';
+import { WhisperClient } from './hostClients/whisperClient';
 import LoopServer from './loopServer';
 import { Logger } from './logging';
 

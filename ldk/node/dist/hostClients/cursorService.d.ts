@@ -5,10 +5,6 @@ import { StoppableStream, StreamListener } from './stoppables';
 export interface CursorResponse {
     x: number;
     y: number;
-    /**
-     * The screen identifier.
-     */
-    screen: number;
 }
 /**
  * The CursorService provides access to the cursor position.

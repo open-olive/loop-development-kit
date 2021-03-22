@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.KeyboardClient = void 0;
 const keyboard_grpc_pb_1 = require("../grpc/keyboard_grpc_pb");
 const keyboard_pb_1 = __importDefault(require("../grpc/keyboard_pb"));
 const baseClient_1 = __importDefault(require("./baseClient"));
 const transformingStream_1 = require("./transformingStream");
-const logging_1 = require("../logging");
 /**
  * @internal
  * @param modifiers - The modifiers to generate flags for.
@@ -34,18 +34,6 @@ const generateModifierFlag = (modifiers) =>
 const transformTextStream = (message) => ({
     text: message.getText(),
 });
-/**
- * @internal
- * @param message - The message to transform.
- */
-const transformScanCodeStream = (message) => {
-    const logger = new logging_1.Logger('loop-core');
-    logger.info(`In transform - ${message.getScancode()}`);
-    return {
-        scanCode: message.getScancode(),
-        direction: message.getPressed() ? 'down' : 'up',
-    };
-};
 /**
  * @internal
  * @param keyRequest - The key request to generate a stream for.
@@ -79,9 +67,6 @@ class KeyboardClient extends baseClient_1.default {
     streamChar(listener) {
         return new transformingStream_1.TransformingStream(this.client.keyboardCharacterStream(new keyboard_pb_1.default.KeyboardCharacterStreamRequest().setSession(this.createSessionMessage())), transformTextStream, listener);
     }
-    streamScanCode(listener) {
-        return new transformingStream_1.TransformingStream(this.client.keyboardScancodeStream(new keyboard_pb_1.default.KeyboardScancodeStreamRequest().setSession(this.createSessionMessage())), transformScanCodeStream, listener);
-    }
     generateClient() {
         return keyboard_grpc_pb_1.KeyboardClient;
     }
@@ -89,4 +74,4 @@ class KeyboardClient extends baseClient_1.default {
         return 'keyboard';
     }
 }
-exports.default = KeyboardClient;
+exports.KeyboardClient = KeyboardClient;

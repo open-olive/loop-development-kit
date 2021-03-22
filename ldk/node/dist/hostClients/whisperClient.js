@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WhisperClient = void 0;
 const whisper_grpc_pb_1 = require("../grpc/whisper_grpc_pb");
 const baseClient_1 = __importDefault(require("./baseClient"));
 const transformingStream_1 = require("./transformingStream");
@@ -49,4 +50,4 @@ class WhisperClient extends baseClient_1.default {
         return 'whisper';
     }
 }
-exports.default = WhisperClient;
+exports.WhisperClient = WhisperClient;

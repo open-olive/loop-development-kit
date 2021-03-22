@@ -3,7 +3,7 @@ import createMockInstance from 'jest-create-mock-instance';
 import * as Services from '../grpc/vault_grpc_pb';
 import * as Messages from '../grpc/vault_pb';
 import { ConnInfo } from '../grpc/broker_pb';
-import VaultClient from './vaultClient';
+import { VaultClient } from './vaultClient';
 import { Session } from '../grpc/session_pb';
 import {
   buildLogger,
