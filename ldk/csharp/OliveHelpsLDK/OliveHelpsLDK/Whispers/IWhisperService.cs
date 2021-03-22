@@ -181,6 +181,6 @@ namespace OliveHelpsLDK.Whispers
         /// <summary>
         /// The list elements for this field.
         /// </summary>
-        public IDictionary<string, Disambiguation.DisambiguationBase> Elements;
+        public IDictionary<string, Disambiguation.Base> Elements;
     }
 }

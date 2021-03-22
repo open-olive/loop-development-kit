@@ -94,7 +94,7 @@ namespace OliveHelpsLDK.Whispers
                 case Telephone telephone:
                     formInput.Tel = telephone.ToProto();
                     break;
-                case Text text:
+                case Forms.Inputs.Text text:
                     formInput.Text = text.ToProto();
                     break;
                 case Time time:
@@ -192,12 +192,12 @@ namespace OliveHelpsLDK.Whispers
         }
 
         private void BuildInputs(IDictionary<string, WhisperDisambiguationElement> messageElements,
-            IDictionary<string, DisambiguationBase> items)
+            IDictionary<string, Disambiguation.Base> items)
         {
             items.ToList().ForEach(input => messageElements.Add(input.Key, BuildInput(input.Value)));
         }
 
-        private WhisperDisambiguationElement BuildInput(DisambiguationBase element)
+        private WhisperDisambiguationElement BuildInput(Disambiguation.Base element)
         {
             var disambiguationElement = new WhisperDisambiguationElement
             {
@@ -205,14 +205,14 @@ namespace OliveHelpsLDK.Whispers
             };
             switch (element)
             {
-                case DisambiguationOption disambiguationOption:
+                case Disambiguation.Option disambiguationOption:
                     var option = new WhisperDisambiguationElement.Types.Option
                     {
                         Label = disambiguationOption.Label
                     };
                     disambiguationElement.Option = option;
                     break;
-                case DisambiguationText disambiguationText:
+                case Disambiguation.Text disambiguationText:
                     var text = new WhisperDisambiguationElement.Types.Text
                     {
                         Body = disambiguationText.Body,

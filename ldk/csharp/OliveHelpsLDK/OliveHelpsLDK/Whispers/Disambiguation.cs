@@ -10,7 +10,7 @@ namespace OliveHelpsLDK.Whispers.Disambiguation
     /// <summary>
     /// Represents a selection of an item
     /// </summary>
-    public struct DisambiguationResponse : IWhisperDisambiguationResponse
+    public struct Response : IWhisperDisambiguationResponse
     {
         /// <summary>
         /// The key of the item selected.
@@ -22,7 +22,7 @@ namespace OliveHelpsLDK.Whispers.Disambiguation
     /// <summary>
     /// Base class for all Disambiguation elements.
     /// </summary>
-    public abstract class DisambiguationBase
+    public abstract class Base
     {
         /// <summary>
         /// The field order. Must be at least zero. List entries are ordered by order, then by key. 
@@ -33,7 +33,7 @@ namespace OliveHelpsLDK.Whispers.Disambiguation
     /// <summary>
     /// Defines a clickable option in the whisper
     /// </summary>
-    public class DisambiguationOption : DisambiguationBase
+    public class Option : Base
     {
         /// <summary>
         /// The label presented.
@@ -44,7 +44,7 @@ namespace OliveHelpsLDK.Whispers.Disambiguation
     /// <summary>
     /// Defines non clickable text in the whisper
     /// </summary>
-    public class DisambiguationText : DisambiguationBase
+    public class Text : Base
     {
         /// <summary>
         /// The text presented.

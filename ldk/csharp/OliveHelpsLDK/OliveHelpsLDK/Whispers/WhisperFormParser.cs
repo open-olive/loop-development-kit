@@ -24,7 +24,7 @@ namespace OliveHelpsLDK.Whispers
 
         public IWhisperDisambiguationResponse ParseResponse(WhisperDisambiguationStreamResponse response)
         {
-            return new DisambiguationResponse 
+            return new Disambiguation.Response 
             {
                 Key = response.Key
             };
@@ -134,9 +134,9 @@ namespace OliveHelpsLDK.Whispers
             };
         }
 
-        private Text FromProto(WhisperFormOutput.Types.Text output)
+        private Forms.Outputs.Text FromProto(WhisperFormOutput.Types.Text output)
         {
-            return new Text
+            return new Forms.Outputs.Text
             {
                 Value = output.Value
             };

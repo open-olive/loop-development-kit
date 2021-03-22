@@ -9,6 +9,6 @@ namespace OliveHelpsLDK.Whispers
 
         WhisperListRequest BuildRequest(WhisperList list, Proto.Session session);
 
-        WhisperDisambiguationRequest BuildRequest(WhisperDisambiguation list, Proto.Session session);
+        WhisperDisambiguationRequest BuildRequest(WhisperDisambiguation disambiguation, Proto.Session session);
     }
 }
