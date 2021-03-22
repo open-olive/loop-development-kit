@@ -11,9 +11,90 @@ go get -u github.com/open-olive/loop-development-kit/ldk/go
 Full documentation available on [pkg.go.dev](https://pkg.go.dev/github.com/open-olive/loop-development-kit/ldk/go).
 
 ### Loops
-This LDK can be used to write loops for Olive Helps. More detail about loops is available [here](docs/loops.md).
+Loops receive events and use them to generate relevant whispers. Loops choose which events they want to use and which they want to ignore.
 
-Example loops are available in the examples folder.
+This LDK can be used to write loops for Olive Helps. An example of the loop implementation is available [here](docs/loops.md).
+
+
+#### Interface
+
+Writing a loop boils down to writing an implementation for the `Loop` interface and serving it via `ldk.ServeLoopPlugin`.
+
+```go
+type Loop interface {
+	LoopStart(Sidekick) error
+	LoopStop() error
+}
+```
+
+```go
+func main() {
+	// Instantiating Logger
+	logger := ldk.NewLogger("demo-loop-go")
+	
+	// Instantiating Loop
+	var loop ldk.Loop
+	loop = &Loop{
+		logger:         logger
+	}
+
+	ldk.ServeLoopPlugin(logger, loop) // ServeLoopPlugin, gives an ability to provide your own logger
+}
+```
+
+**LoopStart** - The Loop should wait to start operating until this is called. The provided `Sidekick` reference should be stored in memory for continued use.
+
+**LoopStop** - The Loop should stop operating when this is called.
+
+#### Subscribing to Aptitudes
+
+Inside `LoopStart`, you can subscribe to various aptitudes. Here's an example of subscribing to a couple:
+
+```go
+func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
+	// ...
+
+	handler := func (text string, err error) {
+		// Respond to aptitude event here...
+	}
+
+	if err := sidekick.Clipboard().Listen(l.ctx, handler); err != nil {
+		return err
+	}
+
+	if err := sidekick.UI().ListenSearchbar(l.ctx, handler); err != nil {
+		return err
+	}
+}
+```
+
+Loops do not need to emit whispers in a 1:1 relationship with events, and may not use events at all. They could use some events, keep a history of events, or emit whispers only when several conditions are met.
+
+#### List of possible Aptitudes to subscribe to
+
+```go
+type Sidekick interface {
+	Clipboard() ClipboardService
+	Vault() VaultService
+	Whisper() WhisperService
+	Keyboard() KeyboardService
+	Process() ProcessService
+	Cursor() CursorService
+	Filesystem() FilesystemService
+	Window() WindowService
+	UI() UIService
+	Network() NetworkService
+}
+```
+
+#### Lifecycle
+
+1. Olive Helps executes plugin process.
+1. Olive Helps calls `LoopStart`, sending the `Sidekick` reference to the plugin.
+1. The loop subscribes to one or more aptitudes in `LoopStart`.
+1. When the loop is notified of an aptitudes event, it processes it and calls the `Whisper` method on the `Sidekick` reference to emit a whisper.
+1. On user disabling the loop, Olive Helps calls `LoopStop` then sends `sigterm` to the process.
+1. On Olive Helps shutdown, Olive Helps calls `LoopStop` then sends `sigterm` to the process.
 
 ### Running Locally
 
