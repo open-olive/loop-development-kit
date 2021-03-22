@@ -17,6 +17,7 @@ type WhisperClient struct {
 }
 
 // Markdown is used by loops to create markdown whispers
+// This method is blocking until the Whisper is closed, or the context provided is cancelled.
 func (m *WhisperClient) Markdown(ctx context.Context, content *WhisperContentMarkdown) error {
 	_, err := m.client.WhisperMarkdown(ctx, &proto.WhisperMarkdownRequest{
 		Meta: &proto.WhisperMeta{
@@ -29,6 +30,7 @@ func (m *WhisperClient) Markdown(ctx context.Context, content *WhisperContentMar
 }
 
 // Confirm is used by loops to create confirm whispers
+// This method is blocking until the Whisper is closed, or the context provided is cancelled.
 func (m *WhisperClient) Confirm(ctx context.Context, content *WhisperContentConfirm) (bool, error) {
 	response, err := m.client.WhisperConfirm(ctx, &proto.WhisperConfirmRequest{
 		Meta: &proto.WhisperMeta{
@@ -51,6 +53,7 @@ func (m *WhisperClient) Confirm(ctx context.Context, content *WhisperContentConf
 }
 
 // Disambiguation is used by loops to create disambiguation whispers
+// This method is blocking until the Whisper is closed, or the context provided is cancelled.
 func (m *WhisperClient) Disambiguation(ctx context.Context, content *WhisperContentDisambiguation) (bool, error) {
 	req, err := content.ToProto()
 	if err != nil {
@@ -83,6 +86,7 @@ func (m *WhisperClient) Disambiguation(ctx context.Context, content *WhisperCont
 }
 
 // Form is used by loops to create form whispers
+// This method is blocking until the Whisper is closed, or the context provided is cancelled.
 func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (bool, map[string]WhisperContentFormOutput, error) {
 	inputs := make(map[string]*proto.WhisperFormInput, len(content.Inputs))
 	for key, input := range content.Inputs {
@@ -187,6 +191,7 @@ func (m *WhisperClient) Form(ctx context.Context, content *WhisperContentForm) (
 }
 
 // List is used by loops to create list whispers
+// This method is blocking until the Whisper is closed, or the context provided is cancelled.
 func (m *WhisperClient) List(ctx context.Context, content *WhisperContentList) error {
 	req, err := content.ToProto()
 	if err != nil {
