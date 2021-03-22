@@ -111,20 +111,4 @@ describe('KeyboardClient', () => {
       expect(sentRequest.getSession()).toBeDefined();
     });
   });
-
-  describe('#streamScanCode', () => {
-    let sentRequest: Messages.KeyboardScancodeStreamRequest;
-
-    beforeEach(async () => {
-      mockGRPCClient.keyboardScancodeStream.mockImplementation(createStreamingHandler());
-
-      subject.streamScanCode(identityCallback);
-
-      sentRequest = captureMockArgument(mockGRPCClient.keyboardScancodeStream);
-    });
-
-    it('should have attached the initial connection session to the request', () => {
-      expect(sentRequest.getSession()).toBeDefined();
-    });
-  });
 });
