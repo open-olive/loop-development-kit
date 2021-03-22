@@ -36,10 +36,9 @@ const generateModifierFlag = (modifiers: Partial<KeyboardModifiers>): number =>
  * @internal
  * @param message - The message to transform.
  */
-const transformTextStream: StreamTransformer<
-  messages.KeyboardTextStreamResponse,
-  TextStream
-> = (message) => ({
+const transformTextStream: StreamTransformer<messages.KeyboardTextStreamResponse, TextStream> = (
+  message,
+) => ({
   text: message.getText(),
 });
 
@@ -72,16 +71,12 @@ const transformHotKeyEvent: StreamTransformer<
 /**
  * @internal
  */
-export class KeyboardClient
-  extends BaseClient<KeyboardGRPCClient>
-  implements KeyboardService {
+export class KeyboardClient extends BaseClient<KeyboardGRPCClient> implements KeyboardService {
   streamHotKey(
     hotKeys: HotKeyRequest,
     listener: StreamListener<HotKeyEvent>,
   ): StoppableStream<HotKeyEvent> {
-    const message = generateHotkeyStreamRequest(hotKeys).setSession(
-      this.createSessionMessage(),
-    );
+    const message = generateHotkeyStreamRequest(hotKeys).setSession(this.createSessionMessage());
     return new TransformingStream(
       this.client.keyboardHotkeyStream(message),
       transformHotKeyEvent,
@@ -92,23 +87,17 @@ export class KeyboardClient
   streamText(listener: StreamListener<string>): StoppableStream<string> {
     return new TransformingStream(
       this.client.keyboardTextStream(
-        new messages.KeyboardTextStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new messages.KeyboardTextStreamRequest().setSession(this.createSessionMessage()),
       ),
       (response) => response.getText(),
       listener,
     );
   }
 
-  streamChar(
-    listener: StreamListener<TextStream>,
-  ): StoppableStream<TextStream> {
+  streamChar(listener: StreamListener<TextStream>): StoppableStream<TextStream> {
     return new TransformingStream(
       this.client.keyboardCharacterStream(
-        new messages.KeyboardCharacterStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new messages.KeyboardCharacterStreamRequest().setSession(this.createSessionMessage()),
       ),
       transformTextStream,
       listener,

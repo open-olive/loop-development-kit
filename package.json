@@ -1,0 +1,50 @@
+{
+  "name": "loop-development-kit",
+  "version": "1.0.0",
+  "description": "This is the central repository for all the Olive Help LDKs. You'll probably want to look at the individual LDK readmes in the `ldk\\{language}` folder.",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "ldk/node",
+    "docs"
+  ],
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "precommit:node": "cd ldk/node && npm run build && git add dist",
+    "prettier:all": "prettier --write '**/*.{js,jsx,ts,tsx,json,scss}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit:node"
+    }
+  },
+  "devDependencies": {
+    "husky": "4.3.6",
+    "lint-staged": "10.5.3",
+    "prettier": "2.2.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.scss": [
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/open-olive/loop-development-kit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/open-olive/loop-development-kit/issues"
+  },
+  "homepage": "https://github.com/open-olive/loop-development-kit#readme"
+}

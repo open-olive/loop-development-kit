@@ -23,7 +23,5 @@ export interface CursorService {
    * @param listener - The listener function called when the function changes.
    * @returns a StoppableStream object that can be stopped.
    */
-  streamCursorPosition(
-    listener: StreamListener<CursorResponse>,
-  ): StoppableStream<CursorResponse>;
+  streamCursorPosition(listener: StreamListener<CursorResponse>): StoppableStream<CursorResponse>;
 }

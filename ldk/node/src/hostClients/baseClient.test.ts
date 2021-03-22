@@ -61,11 +61,7 @@ describe('BaseClient', () => {
     test('on success it resolves the data', async () => {
       const confirmation = 'good';
 
-      const query = subject.buildQuery<
-        FakeRequestMessage,
-        FakeResponseMessage,
-        string
-      >(
+      const query = subject.buildQuery<FakeRequestMessage, FakeResponseMessage, string>(
         createCallbackHandler(new FakeResponseMessage(confirmation)),
         () => new FakeRequestMessage(),
         (response) => response.getMessage(),
@@ -75,11 +71,7 @@ describe('BaseClient', () => {
     });
 
     test('on failure it rejects the data', async () => {
-      const query = subject.buildQuery<
-        FakeRequestMessage,
-        FakeResponseMessage,
-        string
-      >(
+      const query = subject.buildQuery<FakeRequestMessage, FakeResponseMessage, string>(
         createCallbackHandler(new FakeResponseMessage('good'), exampleError),
         () => new FakeRequestMessage(),
         (response) => response.getMessage(),

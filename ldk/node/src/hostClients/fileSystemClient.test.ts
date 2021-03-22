@@ -39,9 +39,7 @@ describe('FileSystemClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#queryDirectory', () => {
@@ -55,18 +53,14 @@ describe('FileSystemClient', () => {
         new Messages.FileInfo().setName(fileInDirectory),
       ]);
 
-      mockGRPCClient.filesystemDir.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.filesystemDir.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryDirectory({ directory });
     });
 
     it('should return a transformed response', async () => {
       const directoryInfo = {
-        files: sentResponse
-          .getFilesList()
-          .map((info) => ({ name: info.getName() })),
+        files: sentResponse.getFilesList().map((info) => ({ name: info.getName() })),
       };
       await expect(queryResult).resolves.toMatchObject(directoryInfo);
     });
@@ -92,9 +86,7 @@ describe('FileSystemClient', () => {
     const file = '/a-directory/a-file';
 
     beforeEach(async () => {
-      mockGRPCClient.filesystemFileInfoStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.filesystemFileInfoStream.mockImplementation(createStreamingHandler());
 
       subject.streamFileInfo({ file }, identityCallback);
     });
@@ -119,9 +111,7 @@ describe('FileSystemClient', () => {
     const directory = '/a-directory';
 
     beforeEach(async () => {
-      mockGRPCClient.filesystemDirStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.filesystemDirStream.mockImplementation(createStreamingHandler());
 
       subject.streamDirectory({ directory }, identityCallback);
     });

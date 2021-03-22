@@ -11,8 +11,7 @@ import { StreamTransformer, TransformingStream } from './transformingStream';
  * @param message - The message to transform.
  */
 const transformSelectedTextResponse: StreamTransformer<
-  | Messages.BrowserSelectedTextResponse
-  | Messages.BrowserSelectedTextStreamResponse,
+  Messages.BrowserSelectedTextResponse | Messages.BrowserSelectedTextStreamResponse,
   BrowserSelectedTextResponse
 > = (message) => ({
   url: message.getUrl(),
@@ -23,9 +22,7 @@ const transformSelectedTextResponse: StreamTransformer<
 /**
  * @internal
  */
-export class BrowserClient
-  extends BaseClient<BrowserGRPCClient>
-  implements BrowserService {
+export class BrowserClient extends BaseClient<BrowserGRPCClient> implements BrowserService {
   queryActiveURL(): Promise<string> {
     return this.buildQuery<
       Messages.BrowserActiveURLRequest,
@@ -51,14 +48,9 @@ export class BrowserClient
   }
 
   streamActiveURL(listener: StreamListener<string>): StoppableStream<string> {
-    return new TransformingStream<
-      Messages.BrowserActiveURLStreamResponse,
-      string
-    >(
+    return new TransformingStream<Messages.BrowserActiveURLStreamResponse, string>(
       this.client.browserActiveURLStream(
-        new Messages.BrowserActiveURLRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new Messages.BrowserActiveURLRequest().setSession(this.createSessionMessage()),
       ),
       (message) => message.getUrl(),
       listener,
@@ -73,9 +65,7 @@ export class BrowserClient
       BrowserSelectedTextResponse
     >(
       this.client.browserSelectedTextStream(
-        new Messages.BrowserSelectedTextStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new Messages.BrowserSelectedTextStreamRequest().setSession(this.createSessionMessage()),
       ),
       transformSelectedTextResponse,
       listener,

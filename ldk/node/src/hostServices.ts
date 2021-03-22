@@ -10,7 +10,7 @@ import { UIService } from './hostClients/uiService';
 import { WindowService } from './hostClients/windowService';
 
 /**
- * The HostServices interface provides access to the sensors and services provided by Olive Helps.
+ * The HostServices interface provides access to the aptitudes and services provided by Olive Helps.
  */
 export interface HostServices {
   clipboard: ClipboardService;

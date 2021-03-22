@@ -1,0 +1,22 @@
+@import 'global.scss';
+
+body {
+  font-family: $primaryFont;
+  font-size: $bodyFontSize;
+  font-weight: $bodyFontWeight;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: $primaryThemeColor;
+  text-decoration: none;
+}
+
+a:hover {
+  color: $hoverColor;
+  text-decoration: underline;
+}

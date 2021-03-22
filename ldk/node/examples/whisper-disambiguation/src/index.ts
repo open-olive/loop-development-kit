@@ -28,9 +28,7 @@ class ExampleLoop implements Loop {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
       .subtract(3, 'months')
       .startOf('month')
-      .format('YYYYMMDD')}+TO+${now
-      .endOf('month')
-      .format('YYYYMMDD')}]&limit=10`;
+      .format('YYYYMMDD')}+TO+${now.endOf('month').format('YYYYMMDD')}]&limit=10`;
 
     logger.info('Emitting disambiguation whisper', url);
 
@@ -41,9 +39,7 @@ class ExampleLoop implements Loop {
         body: '',
       })
       .then((response) => {
-        const { results: jsonResults } = JSON.parse(
-          Buffer.from(response.data).toString('utf8'),
-        );
+        const { results: jsonResults } = JSON.parse(Buffer.from(response.data).toString('utf8'));
         const itemList = {} as Element;
         const results = {} as RecallMap;
 
@@ -161,9 +157,9 @@ class ExampleLoop implements Loop {
                       extra: true,
                       value: `${recallItem.Address1} ${
                         recallItem.Address2 ? `${recallItem.Address2} ` : ''
-                      }${recallItem.City}, ${recallItem.State} ${
-                        recallItem.Zip
-                      } ${recallItem.Country}`,
+                      }${recallItem.City}, ${recallItem.State} ${recallItem.Zip} ${
+                        recallItem.Country
+                      }`,
                       label: 'Company address',
                       order: 11,
                       type: 'pair',

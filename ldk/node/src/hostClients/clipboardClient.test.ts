@@ -39,9 +39,7 @@ describe('ClipboardClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#queryClipboard', () => {
@@ -49,13 +47,9 @@ describe('ClipboardClient', () => {
     let queryResult: Promise<string>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.ClipboardReadResponse().setText(
-        'clipboard text',
-      );
+      sentResponse = new Messages.ClipboardReadResponse().setText('clipboard text');
 
-      mockGRPCClient.clipboardRead.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.clipboardRead.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryClipboard();
     });
@@ -82,9 +76,7 @@ describe('ClipboardClient', () => {
 
   describe('#streamClipboard', () => {
     beforeEach(async () => {
-      mockGRPCClient.clipboardReadStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.clipboardReadStream.mockImplementation(createStreamingHandler());
 
       subject.streamClipboard(identityCallback);
     });

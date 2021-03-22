@@ -34,10 +34,7 @@ export default (logger: ILogger): Interceptor => (
 ) => {
   const listener = new ListenerBuilder()
     .withOnReceiveStatus((status, next) => {
-      if (
-        status.code !== grpc.status.OK &&
-        status.code !== grpc.status.CANCELLED
-      ) {
+      if (status.code !== grpc.status.OK && status.code !== grpc.status.CANCELLED) {
         const { service, method } = extractContext(options);
         logger.error(
           'Client exception',

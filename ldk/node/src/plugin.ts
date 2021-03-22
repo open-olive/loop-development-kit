@@ -40,19 +40,15 @@ class Plugin {
    */
   serve(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.server.bindAsync(
-        '127.0.0.1:0',
-        grpc.ServerCredentials.createInsecure(),
-        (err, port) => {
-          if (err) {
-            reject(err);
-          }
-          this.server.start();
-          process.stdout.write(`1|1|tcp|127.0.0.1:${port}|grpc\n`);
-          prepareLogging();
-          resolve();
-        },
-      );
+      this.server.bindAsync('127.0.0.1:0', grpc.ServerCredentials.createInsecure(), (err, port) => {
+        if (err) {
+          reject(err);
+        }
+        this.server.start();
+        process.stdout.write(`1|1|tcp|127.0.0.1:${port}|grpc\n`);
+        prepareLogging();
+        resolve();
+      });
     });
   }
 }

@@ -1,9 +1,5 @@
 import * as grpc from '@grpc/grpc-js';
-import {
-  FileInfo,
-  FileSystemFile,
-  FileSystemFileChownParams,
-} from './fileSystemService';
+import { FileInfo, FileSystemFile, FileSystemFileChownParams } from './fileSystemService';
 import messages, { FilesystemFileStreamRequest } from '../grpc/filesystem_pb';
 import { Session } from '../grpc/session_pb';
 import { ILogger } from '../logging';
@@ -103,9 +99,7 @@ export class FileSystemFileImpl implements FileSystemFile {
 
   changeOwnership(params: FileSystemFileChownParams): Promise<void> {
     this.checkStatus();
-    const msg = new FilesystemFileStreamRequest.Chown()
-      .setUid(params.owner)
-      .setGid(params.group);
+    const msg = new FilesystemFileStreamRequest.Chown().setUid(params.owner).setGid(params.group);
     const request = new FilesystemFileStreamRequest().setChown(msg);
     return this.generateResponsePromise(
       request,
@@ -177,9 +171,7 @@ export class FileSystemFileImpl implements FileSystemFile {
 
   private generateResponsePromise<TResponse, TOutput>(
     message: messages.FilesystemFileStreamRequest,
-    responseReader: (
-      response: messages.FilesystemFileStreamResponse,
-    ) => TResponse,
+    responseReader: (response: messages.FilesystemFileStreamResponse) => TResponse,
     transformer: (input: TResponse) => TOutput,
   ): Promise<TOutput> {
     return new Promise<TOutput>((resolve, reject) => {
@@ -193,11 +185,7 @@ export class FileSystemFileImpl implements FileSystemFile {
           this.logger.trace('Duplex Response - Resolving');
           resolve(transformed);
         } catch (e) {
-          this.logger.error(
-            'Duplex Response - Rejecting, Error Thrown',
-            'error',
-            e.message,
-          );
+          this.logger.error('Duplex Response - Rejecting, Error Thrown', 'error', e.message);
           reject(e);
         }
       });
@@ -218,11 +206,7 @@ export class FileSystemFileImpl implements FileSystemFile {
   }
 
   private setError(error: any): void {
-    this.logger.error(
-      'Stream Closed - Error Received',
-      'error',
-      JSON.stringify(error),
-    );
+    this.logger.error('Stream Closed - Error Received', 'error', JSON.stringify(error));
     this.status = FilesystemFileStatus.Errored;
   }
 

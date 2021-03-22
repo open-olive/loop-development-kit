@@ -14,9 +14,7 @@ const transformingStream_1 = require("./transformingStream");
  * @internal
  */
 function updateRequest(request, message) {
-    return message
-        .setXfromcenter(request.xFromCenter)
-        .setYfromcenter(request.yFromCenter);
+    return message.setXfromcenter(request.xFromCenter).setYfromcenter(request.yFromCenter);
 }
 /**
  * @internal

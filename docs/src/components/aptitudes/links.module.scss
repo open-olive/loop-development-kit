@@ -1,0 +1,21 @@
+.ldkLinks {
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+
+.ldkLink {
+  padding: 0 10px;
+  margin-left: -10px;
+}
+
+.linkLogo {
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+}
+
+.ldkLinkInternal {
+  display: flex;
+  align-items: center;
+}

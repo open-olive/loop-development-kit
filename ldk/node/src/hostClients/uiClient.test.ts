@@ -37,16 +37,12 @@ describe('UIClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#streamSearchbar', () => {
     beforeEach(async () => {
-      mockGRPCClient.searchbarStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.searchbarStream.mockImplementation(createStreamingHandler());
 
       subject.streamSearchbar(identityCallback);
     });
@@ -62,9 +58,7 @@ describe('UIClient', () => {
 
   describe('#streamGlobalSearch', () => {
     beforeEach(async () => {
-      mockGRPCClient.globalSearchStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.globalSearchStream.mockImplementation(createStreamingHandler());
 
       subject.streamGlobalSearch(identityCallback);
     });

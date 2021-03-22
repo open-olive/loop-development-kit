@@ -40,9 +40,7 @@ describe('KeyboardClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#streamHotKey', () => {
@@ -51,9 +49,7 @@ describe('KeyboardClient', () => {
     const convertedModifiers = 8;
 
     beforeEach(async () => {
-      mockGRPCClient.keyboardHotkeyStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.keyboardHotkeyStream.mockImplementation(createStreamingHandler());
 
       subject.streamHotKey({ key, modifiers }, identityCallback);
     });
@@ -63,9 +59,7 @@ describe('KeyboardClient', () => {
         mockGRPCClient.keyboardHotkeyStream,
       );
 
-      const hotKey = new KeyboardHotkey()
-        .setKey(key)
-        .setModifiers(convertedModifiers);
+      const hotKey = new KeyboardHotkey().setKey(key).setModifiers(convertedModifiers);
 
       expect(sentRequest.getHotkey()).toStrictEqual(hotKey);
       expect(sentRequest.getSession()).toBeDefined();
@@ -82,9 +76,7 @@ describe('KeyboardClient', () => {
       stream = createEmptyStream();
 
       streamCallback = jest.fn().mockImplementation(identityCallback);
-      mockGRPCClient.keyboardTextStream.mockImplementation(
-        createStreamingHandler(stream),
-      );
+      mockGRPCClient.keyboardTextStream.mockImplementation(createStreamingHandler(stream));
 
       subject.streamText(streamCallback);
     });
@@ -108,9 +100,7 @@ describe('KeyboardClient', () => {
     let sentRequest: Messages.KeyboardCharacterStreamRequest;
 
     beforeEach(async () => {
-      mockGRPCClient.keyboardCharacterStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.keyboardCharacterStream.mockImplementation(createStreamingHandler());
 
       subject.streamChar(identityCallback);
 

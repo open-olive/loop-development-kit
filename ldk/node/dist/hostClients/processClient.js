@@ -61,9 +61,7 @@ class ProcessClient extends baseClient_1.default {
         return this.buildQuery((message, callback) => {
             this.client.processState(message, callback);
         }, () => new process_pb_1.default.ProcessStateRequest(), (response) => ({
-            processes: response
-                .getProcessesList()
-                .map((processInfo) => parseProcessInfo(processInfo)),
+            processes: response.getProcessesList().map((processInfo) => parseProcessInfo(processInfo)),
         }));
     }
     streamProcesses(listener) {

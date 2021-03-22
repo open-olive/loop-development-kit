@@ -228,17 +228,12 @@ class ClipboardLoop implements Loop {
           whisper.stop();
         }
         if (typeof response !== 'undefined' && response.key !== 'all') {
-          const suite = new TestSuite(
-            testConfig[response.key].getTests(),
-            logger,
-          );
+          const suite = new TestSuite(testConfig[response.key].getTests(), logger);
 
           suite.start(host).then(() => {
             logger.info('🎉 Group Done!');
             const prompt = this.host.whisper.markdownWhisper({
-              markdown: `All tests for ${testConfig[
-                response.key
-              ].getId()} have been run`,
+              markdown: `All tests for ${testConfig[response.key].getId()} have been run`,
               label: 'Testing Complete',
             });
             setTimeout(() => {

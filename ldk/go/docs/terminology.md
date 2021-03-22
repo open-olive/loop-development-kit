@@ -1,7 +1,7 @@
 # Terminology
 
 ## Loop
-A plugin to Olive Helps that listens to one more more sensors and emits whispers to provide useful information to the user.
+A plugin to Olive Helps that listens to one more more aptitudes and emits whispers to provide useful information to the user.
 
 ## Sensor
 An internal Olive Helps mechanism that emits events. For example, the clipboard sensor emits an event every time the clipboard contents change.

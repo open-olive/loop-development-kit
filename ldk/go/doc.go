@@ -64,7 +64,7 @@
 //
 // Stop() - The Sensor should stop operating when this is called.
 //
-// OnEvent() - The sensor can use this to handle events from the Sidekick UI. Many sensors will not care about UI events, and in that case the function should just return `nil`.
+// OnEvent() - The sensor can use this to handle events from the Sidekick UI. Many aptitudes will not care about UI events, and in that case the function should just return `nil`.
 //
 // Sensor Lifecycle
 //

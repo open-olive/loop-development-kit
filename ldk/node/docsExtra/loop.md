@@ -37,8 +37,8 @@ class Loop {
 
 A Loop:
  
-- **Listens** to the sensors it cares about.
-- **Decides** what to do with the information it gets from the sensors.
+- **Listens** to the aptitudes it cares about.
+- **Decides** what to do with the information it gets from the aptitudes.
 - **Whispers** to the user with context-relevant information.
 
 ### Using Sensors

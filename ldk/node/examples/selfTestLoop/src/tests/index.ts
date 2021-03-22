@@ -71,17 +71,14 @@ export const hotkeyTest = (host: HostServices): Promise<boolean> =>
       },
     };
 
-    const hotkeyStream = host.keyboard.streamHotKey(
-      hotkeys,
-      (error, response) => {
-        if (error) {
-          reject(error);
-        }
-        logger.debug('Hotkey pressed', 'response', JSON.stringify(response));
-        resolve(true);
-        hotkeyStream.stop();
-      },
-    );
+    const hotkeyStream = host.keyboard.streamHotKey(hotkeys, (error, response) => {
+      if (error) {
+        reject(error);
+      }
+      logger.debug('Hotkey pressed', 'response', JSON.stringify(response));
+      resolve(true);
+      hotkeyStream.stop();
+    });
   });
 
 export const charTest = (host: HostServices): Promise<boolean> =>
@@ -120,6 +117,25 @@ export const charStreamTest = (host: HostServices): Promise<boolean> =>
     });
   });
 
+export const charScancodeTest = (host: HostServices): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const characterStream = host.keyboard.streamScanCode((error, response) => {
+      if (error) {
+        reject(error);
+      }
+
+      if (typeof response !== 'undefined') {
+        logger.debug('Scancode detected', 'response', response.scanCode.toString());
+
+        /* if (response.toString() === 'Olive') {
+                  resolve(true);
+                  prompt.stop();
+                  characterStream.stop();
+                } */
+      }
+    });
+  });
+
 export const cursorPosition = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     host.cursor
@@ -139,24 +155,22 @@ export const cursorPosition = (host: HostServices): Promise<boolean> =>
 export const streamCursorPosition = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     let i = 0;
-    const cursorPoritionStream = host.cursor.streamCursorPosition(
-      (error, response) => {
-        if (error) {
-          reject(error);
-        }
+    const cursorPoritionStream = host.cursor.streamCursorPosition((error, response) => {
+      if (error) {
+        reject(error);
+      }
 
-        if (typeof response !== 'undefined') {
-          logger.debug(`Cursor Stream X - ${response.x}`);
-          logger.debug(`Cursor Stream Y - ${response.y}`);
-          i += 1;
+      if (typeof response !== 'undefined') {
+        logger.debug(`Cursor Stream X - ${response.x}`);
+        logger.debug(`Cursor Stream Y - ${response.y}`);
+        i += 1;
 
-          if (i >= 5) {
-            cursorPoritionStream.stop();
-            resolve(true);
-          }
+        if (i >= 5) {
+          cursorPoritionStream.stop();
+          resolve(true);
         }
-      },
-    );
+      }
+    });
   });
 
 export const queryFileDirectory = (host: HostServices): Promise<boolean> =>
@@ -413,9 +427,7 @@ export const networkAndListWhisper = (host: HostServices): Promise<boolean> =>
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
       .subtract(3, 'months')
       .startOf('month')
-      .format('YYYYMMDD')}+TO+${now
-      .endOf('month')
-      .format('YYYYMMDD')}]&limit=1`;
+      .format('YYYYMMDD')}+TO+${now.endOf('month').format('YYYYMMDD')}]&limit=1`;
 
     logger.debug('Network call succeeded, emmitting list whisper', url);
 
@@ -426,9 +438,7 @@ export const networkAndListWhisper = (host: HostServices): Promise<boolean> =>
         body: '',
       })
       .then((response) => {
-        const { results } = JSON.parse(
-          Buffer.from(response.data).toString('utf8'),
-        );
+        const { results } = JSON.parse(Buffer.from(response.data).toString('utf8'));
         const [recallItem] = results;
 
         const list = host.whisper.listWhisper({

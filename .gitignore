@@ -151,3 +151,7 @@ ldk/csharp/**/.builds
 ldk/csharp/**/*.pidb
 ldk/csharp/**/*.svclog
 ldk/csharp/**/*.scc
+
+docs/public
+docs/.cache
+docs/node_modules

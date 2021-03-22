@@ -226,9 +226,7 @@ class Logger {
      */
     _getTimestamp() {
         // toISOString() is close, but the seconds value needs to have 6 decimal places.
-        return new Date()
-            .toISOString()
-            .replace(/\.(\d+)Z$/, (_, p1) => `.${p1.padEnd(6, '0')}Z`);
+        return new Date().toISOString().replace(/\.(\d+)Z$/, (_, p1) => `.${p1.padEnd(6, '0')}Z`);
     }
 }
 exports.Logger = Logger;

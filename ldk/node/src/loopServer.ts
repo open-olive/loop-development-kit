@@ -18,12 +18,7 @@ export default class LoopServer implements ILoopServer {
 
   private logger: Logger;
 
-  constructor(
-    server: grpc.Server,
-    broker: BrokerGrpcServer,
-    impl: Loop,
-    logger: Logger,
-  ) {
+  constructor(server: grpc.Server, broker: BrokerGrpcServer, impl: Loop, logger: Logger) {
     this.broker = broker;
     this.loop = impl;
     this.logger = logger;
@@ -56,11 +51,7 @@ export default class LoopServer implements ILoopServer {
     const hostClient = new HostClientFacade(this.logger);
 
     await hostClient.connect(connInfo, sessionInfo.toObject()).catch((err) => {
-      this.logger.error(
-        'loopServer - Failed to Connect to Facades',
-        'error',
-        JSON.stringify(err),
-      );
+      this.logger.error('loopServer - Failed to Connect to Facades', 'error', JSON.stringify(err));
       throw err;
     });
     await this.loop.start(hostClient);

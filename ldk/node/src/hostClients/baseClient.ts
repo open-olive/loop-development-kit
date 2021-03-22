@@ -57,11 +57,7 @@ export default abstract class BaseClient<THost extends CommonHostServer>
    * @param session - An object containing the loop Session information.
    * @param logger - An object containing logging methods.
    */
-  connect(
-    connInfo: ConnInfo.AsObject,
-    session: Session.AsObject,
-    logger: ILogger,
-  ): Promise<void> {
+  connect(connInfo: ConnInfo.AsObject, session: Session.AsObject, logger: ILogger): Promise<void> {
     this._logger = logger.with('service', this.serviceName());
     return new Promise((resolve, reject) => {
       let address: string;
@@ -75,13 +71,9 @@ export default abstract class BaseClient<THost extends CommonHostServer>
 
       const interceptor = buildLoggingInterceptor(logger);
 
-      this.client = new ClientConstructor(
-        address,
-        grpc.credentials.createInsecure(),
-        {
-          interceptors: [interceptor],
-        },
-      );
+      this.client = new ClientConstructor(address, grpc.credentials.createInsecure(), {
+        interceptors: [interceptor],
+      });
 
       // set a 5 second deadline
       const deadline = new Date();

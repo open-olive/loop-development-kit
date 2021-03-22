@@ -40,9 +40,7 @@ describe('BrowserClient', () => {
     mockGRPCClient.waitForReady.mockImplementation(createWaitHandler());
     MockClientClass.mockImplementation(() => mockGRPCClient as any);
 
-    await expect(
-      subject.connect(connInfo, session, logger),
-    ).resolves.toBeUndefined();
+    await expect(subject.connect(connInfo, session, logger)).resolves.toBeUndefined();
   });
 
   describe('#queryActiveURL', () => {
@@ -50,13 +48,9 @@ describe('BrowserClient', () => {
     let queryResult: Promise<string>;
 
     beforeEach(async () => {
-      sentResponse = new Messages.BrowserActiveURLResponse().setUrl(
-        'http://test.example.com',
-      );
+      sentResponse = new Messages.BrowserActiveURLResponse().setUrl('http://test.example.com');
 
-      mockGRPCClient.browserActiveURL.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.browserActiveURL.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.queryActiveURL();
     });
@@ -91,9 +85,7 @@ describe('BrowserClient', () => {
         .setText('you selected me')
         .setUrl('http://test.example.com');
 
-      mockGRPCClient.browserSelectedText.mockImplementation(
-        createCallbackHandler(sentResponse),
-      );
+      mockGRPCClient.browserSelectedText.mockImplementation(createCallbackHandler(sentResponse));
 
       queryResult = subject.querySelectedText();
     });
@@ -128,9 +120,7 @@ describe('BrowserClient', () => {
     let sentRequest: Messages.BrowserActiveURLStreamRequest;
 
     beforeEach(async () => {
-      mockGRPCClient.browserActiveURLStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.browserActiveURLStream.mockImplementation(createStreamingHandler());
 
       subject.streamActiveURL(identityCallback);
 
@@ -146,15 +136,11 @@ describe('BrowserClient', () => {
     let sentRequest: Messages.BrowserSelectedTextStreamRequest;
 
     beforeEach(async () => {
-      mockGRPCClient.browserSelectedTextStream.mockImplementation(
-        createStreamingHandler(),
-      );
+      mockGRPCClient.browserSelectedTextStream.mockImplementation(createStreamingHandler());
 
       subject.streamSelectedText(identityCallback);
 
-      sentRequest = captureMockArgument(
-        mockGRPCClient.browserSelectedTextStream,
-      );
+      sentRequest = captureMockArgument(mockGRPCClient.browserSelectedTextStream);
     });
 
     it('should have attached the initial connection session to the request', () => {

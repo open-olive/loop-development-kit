@@ -110,9 +110,7 @@ export interface FileSystemService {
    *
    * @param params - The parameters for the query.
    */
-  queryDirectory(
-    params: FileSystemQueryDirectoryParams,
-  ): Promise<FileSystemQueryDirectoryResponse>;
+  queryDirectory(params: FileSystemQueryDirectoryParams): Promise<FileSystemQueryDirectoryResponse>;
 
   /**
    * Stream changes to the contents of this directory.

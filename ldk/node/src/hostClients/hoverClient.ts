@@ -10,30 +10,23 @@ import { TransformingStream } from './transformingStream';
  * @param message - The message.
  * @internal
  */
-function updateRequest<
-  T extends messages.HoverReadRequest | messages.HoverReadStreamRequest
->(request: HoverReadRequest, message: T): T {
-  return message
-    .setXfromcenter(request.xFromCenter)
-    .setYfromcenter(request.yFromCenter) as T;
+function updateRequest<T extends messages.HoverReadRequest | messages.HoverReadStreamRequest>(
+  request: HoverReadRequest,
+  message: T,
+): T {
+  return message.setXfromcenter(request.xFromCenter).setYfromcenter(request.yFromCenter) as T;
 }
 
 /**
  * @internal
  */
-export class HoverClient
-  extends BaseClient<HoverGRPCClient>
-  implements HoverService {
+export class HoverClient extends BaseClient<HoverGRPCClient> implements HoverService {
   protected generateClient(): GRPCClientConstructor<HoverGRPCClient> {
     return HoverGRPCClient;
   }
 
   queryHover(params: HoverReadRequest): Promise<HoverResponse> {
-    return this.buildQuery<
-      messages.HoverReadRequest,
-      messages.HoverReadResponse,
-      HoverResponse
-    >(
+    return this.buildQuery<messages.HoverReadRequest, messages.HoverReadResponse, HoverResponse>(
       (message, callback) => {
         this.client.hoverRead(message, callback);
       },
@@ -48,9 +41,7 @@ export class HoverClient
   ): StoppableStream<HoverResponse> {
     const message = updateRequest(
       params,
-      new messages.HoverReadStreamRequest().setSession(
-        this.createSessionMessage(),
-      ),
+      new messages.HoverReadStreamRequest().setSession(this.createSessionMessage()),
     );
     return new TransformingStream(
       this.client.hoverReadStream(message),

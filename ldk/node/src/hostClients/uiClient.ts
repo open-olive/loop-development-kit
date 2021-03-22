@@ -13,23 +13,17 @@ export class UIClient extends BaseClient<UIGRPCClient> implements UIService {
   streamSearchbar(listener: StreamListener<string>): StoppableStream<string> {
     return new TransformingStream<Messages.SearchbarStreamResponse, string>(
       this.client.searchbarStream(
-        new Messages.SearchbarStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new Messages.SearchbarStreamRequest().setSession(this.createSessionMessage()),
       ),
       (message) => message.getText(),
       listener,
     );
   }
 
-  streamGlobalSearch(
-    listener: StreamListener<string>,
-  ): StoppableStream<string> {
+  streamGlobalSearch(listener: StreamListener<string>): StoppableStream<string> {
     return new TransformingStream<Messages.GlobalSearchStreamResponse, string>(
       this.client.globalSearchStream(
-        new Messages.GlobalSearchStreamRequest().setSession(
-          this.createSessionMessage(),
-        ),
+        new Messages.GlobalSearchStreamRequest().setSession(this.createSessionMessage()),
       ),
       (message) => message.getText(),
       listener,
