@@ -60,6 +60,9 @@ export class ClipboardReadStreamRequest extends jspb.Message {
     getSession(): session_pb.Session | undefined;
     setSession(value?: session_pb.Session): ClipboardReadStreamRequest;
 
+    getIncludeolivehelptraffic(): boolean;
+    setIncludeolivehelptraffic(value: boolean): ClipboardReadStreamRequest;
+
 
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): ClipboardReadStreamRequest.AsObject;
@@ -74,6 +77,7 @@ export class ClipboardReadStreamRequest extends jspb.Message {
 export namespace ClipboardReadStreamRequest {
     export type AsObject = {
         session?: session_pb.Session.AsObject,
+        includeolivehelptraffic: boolean,
     }
 }
 

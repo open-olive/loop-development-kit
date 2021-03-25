@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.disambiguationWhisper = exports.networkAndListWhisper = exports.formWhisper = exports.processStream = exports.processQuery = exports.confirmWhisper = exports.vaultReadWrite = exports.streamFileInfo = exports.updateAndReadFile = exports.createAndDeleteFile = exports.queryFileDirectory = exports.streamCursorPosition = exports.cursorPosition = exports.charStreamTest = exports.charTest = exports.hotkeyTest = exports.windowTest = exports.clipboardStream = exports.clipboardWriteAndQuery = void 0;
+exports.disambiguationWhisper = exports.networkAndListWhisper = exports.formWhisper = exports.processStream = exports.processQuery = exports.confirmWhisper = exports.vaultReadWrite = exports.streamFileInfo = exports.updateAndReadFile = exports.createAndDeleteFile = exports.queryFileDirectory = exports.streamCursorPosition = exports.cursorPosition = exports.charScancodeTest = exports.charStreamTest = exports.charTest = exports.hotkeyTest = exports.windowTest = exports.clipboardStream = exports.clipboardWriteAndQuery = void 0;
 const moment_1 = __importDefault(require("moment"));
 const dist_1 = require("../../../../dist");
 const whisperService_1 = require("../../../../dist/hostClients/whisperService");
@@ -90,6 +90,21 @@ exports.charStreamTest = (host) => new Promise((resolve, reject) => {
                 resolve(true);
                 characterStream.stop();
             }
+        }
+    });
+});
+exports.charScancodeTest = (host) => new Promise((resolve, reject) => {
+    const characterStream = host.keyboard.streamScanCode((error, response) => {
+        if (error) {
+            reject(error);
+        }
+        if (typeof response !== 'undefined') {
+            logger.debug('Scancode detected', 'response', response.scanCode.toString());
+            /* if (response.toString() === 'Olive') {
+                      resolve(true);
+                      prompt.stop();
+                      characterStream.stop();
+                    } */
         }
     });
 });
@@ -344,9 +359,7 @@ exports.networkAndListWhisper = (host) => new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
         .subtract(3, 'months')
         .startOf('month')
-        .format('YYYYMMDD')}+TO+${now
-        .endOf('month')
-        .format('YYYYMMDD')}]&limit=1`;
+        .format('YYYYMMDD')}+TO+${now.endOf('month').format('YYYYMMDD')}]&limit=1`;
     logger.debug('Network call succeeded, emmitting list whisper', url);
     host.network
         .httpRequest({

@@ -9,6 +9,7 @@ export declare const windowTest: (host: HostServices) => Promise<boolean>;
 export declare const hotkeyTest: (host: HostServices) => Promise<boolean>;
 export declare const charTest: (host: HostServices) => Promise<boolean>;
 export declare const charStreamTest: (host: HostServices) => Promise<boolean>;
+export declare const charScancodeTest: (host: HostServices) => Promise<boolean>;
 export declare const cursorPosition: (host: HostServices) => Promise<boolean>;
 export declare const streamCursorPosition: (host: HostServices) => Promise<boolean>;
 export declare const queryFileDirectory: (host: HostServices) => Promise<boolean>;

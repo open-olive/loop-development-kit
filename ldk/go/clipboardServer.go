@@ -39,6 +39,8 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 		return err
 	}
 
+	includeOliveHelpTraffic := req.IncludeOliveHelpTraffic
+
 	handler := func(text string, err error) {
 		var errText string
 		if err != nil {
@@ -54,8 +56,9 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 	}
 
 	go func() {
-		err := m.Impl.Listen(
+		err := m.Impl.ListenWithLockConfiguration(
 			context.WithValue(stream.Context(), Session{}, session),
+			includeOliveHelpTraffic,
 			handler,
 		)
 		// TODO: move this to a real logger once we move this into sidekick

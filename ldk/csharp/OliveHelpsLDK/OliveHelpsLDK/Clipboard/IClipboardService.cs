@@ -26,8 +26,9 @@ namespace OliveHelpsLDK.Clipboard
         /// <summary>
         /// Creates a stream receiving updates when the clipboard's contents change.
         /// </summary>
+        /// <param name="includeOliveHelpTraffic">Configuration if returning clipboard event text captured from internal olive help windows needs to be returned as part of the stream</param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        IStreamingCall<string> Stream(CancellationToken cancellationToken = default);
+        /// <returns>A clipboard strings stream</returns>
+        IStreamingCall<string> Stream(bool includeOliveHelpTraffic = false, CancellationToken cancellationToken = default);
     }
 }
