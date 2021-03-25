@@ -27,7 +27,7 @@ func (c *ClipboardClient) Read(ctx context.Context) (string, error) {
 }
 
 // Listen is used by the loop to establish a stream for handling clipboard changes
-func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler) error {
+func (c *ClipboardClient) Listen(ctx context.Context, configurableHandler ConfigurableReadListenHandler) error {
 	stream, err := c.client.ClipboardReadStream(ctx, &proto.ClipboardReadStreamRequest{
 		Session: c.session.ToProto(),
 	})
@@ -42,45 +42,14 @@ func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler)
 				break
 			}
 			if err != nil {
-				handler("", err)
+				configurableHandler.Handler("", err)
 				return
 			}
 
 			if resp.GetError() != "" {
 				err = errors.New(resp.GetError())
 			}
-			handler(resp.GetText(), err)
-		}
-	}()
-
-	return nil
-}
-
-// TODO: RG - why do we have 2 implementation of Listen? Another one is in the Sidekick (grpcService.go)!
-func (c *ClipboardClient) ListenWithLockConfiguration(ctx context.Context, includeOliveHelpTraffic bool, handler ReadListenHandler) error {
-	stream, err := c.client.ClipboardReadStream(ctx, &proto.ClipboardReadStreamRequest{
-		Session: c.session.ToProto(),
-	})
-	if err != nil {
-		return err
-	}
-
-	go func() {
-		for {
-			resp, err := stream.Recv()
-			if err == io.EOF {
-				break
-			}
-			if err != nil {
-				handler("", err)
-				return
-			}
-
-			if resp.GetError() != "" {
-				err = errors.New(resp.GetError())
-			}
-			handler(resp.GetText(), err)
-			// handler(&ListenerConfigurration{text: resp.GetText()}, err)
+			configurableHandler.Handler(resp.GetText(), err)
 		}
 	}()
 
