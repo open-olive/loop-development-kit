@@ -80,6 +80,7 @@ func (c *ClipboardClient) ListenWithLockConfiguration(ctx context.Context, inclu
 				err = errors.New(resp.GetError())
 			}
 			handler(resp.GetText(), err)
+			// handler(&ListenerConfigurration{text: resp.GetText()}, err)
 		}
 	}()
 

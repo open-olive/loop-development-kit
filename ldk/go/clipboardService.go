@@ -12,3 +12,11 @@ type ClipboardService interface {
 
 // ReadListenHandler is the signature for a handler than handles changes to the clipboard text
 type ReadListenHandler func(string, error)
+
+// TODO: RG - perhaps we could use configuration as a generic argument for ReadListenHandler
+// type ListenerConfigurration struct {
+// 	text string
+// 	includeOliveHelpTraffic bool
+// }
+
+// type ReadListenHandler func(*ListenerConfigurration, error)

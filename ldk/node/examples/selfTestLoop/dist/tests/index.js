@@ -93,6 +93,7 @@ exports.charStreamTest = (host) => new Promise((resolve, reject) => {
         }
     });
 });
+<<<<<<< Updated upstream
 exports.charScancodeTest = (host) => new Promise((resolve, reject) => {
     const characterStream = host.keyboard.streamScanCode((error, response) => {
         if (error) {
@@ -108,6 +109,24 @@ exports.charScancodeTest = (host) => new Promise((resolve, reject) => {
         }
     });
 });
+=======
+// export const charScancodeTest = (host: HostServices): Promise<boolean> =>
+//   new Promise((resolve, reject) => {
+//     const characterStream = host.keyboard.streamScanCode((error, response) => {
+//       if (error) {
+//         reject(error);
+//       }
+//       if (typeof response !== 'undefined') {
+//         logger.debug('Scancode detected', 'response', response.scanCode.toString());
+//         /* if (response.toString() === 'Olive') {
+//                   resolve(true);
+//                   prompt.stop();
+//                   characterStream.stop();
+//                 } */
+//       }
+//     });
+//   });
+>>>>>>> Stashed changes
 exports.cursorPosition = (host) => new Promise((resolve, reject) => {
     host.cursor
         .queryCursorPosition()
