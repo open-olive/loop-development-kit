@@ -3,7 +3,7 @@ package ldk
 import (
 	"encoding/json"
 
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 )
 
 // WhisperContentFormInputText defines a text field in a form

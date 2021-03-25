@@ -3,7 +3,7 @@ package ldk
 import (
 	"context"
 
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 )
 
 // NetworkClient is the client used by the NetworkService

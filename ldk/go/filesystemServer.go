@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/golang/protobuf/ptypes"
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 )
 
 // UIClient is used to hook into UI events such as listening to search controls.

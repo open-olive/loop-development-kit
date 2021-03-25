@@ -3,12 +3,12 @@
 ## Installation
 
 ```shell
-go get -u github.com/open-olive/loop-development-kit/ldk/go
+go get -u github.com/open-olive/loop-development-kit/ldk/go/v2
 ```
 
 ## Usage
 
-Full documentation available on [pkg.go.dev](https://pkg.go.dev/github.com/open-olive/loop-development-kit/ldk/go).
+Full documentation available on [pkg.go.dev](https://pkg.go.dev/github.com/open-olive/loop-development-kit/ldk/go/v2).
 
 ### Loops
 Loops receive events and use them to generate relevant whispers. Loops choose which events they want to use and which they want to ignore.
