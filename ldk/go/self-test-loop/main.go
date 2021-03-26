@@ -212,7 +212,7 @@ func (loop *Loop) listenToFilesystem() error {
 	return err
 }
 
-func (loop *Loop) clipboardHandler() ldk.ConfigurableReadListenHandler {
+func (loop *Loop) clipboardHandler() ldk.ClipboardListenConfiguration {
 	handler := func(text string, err error) {
 		if err != nil {
 			loop.logger.Error("clipboard callback error", err)
@@ -222,7 +222,7 @@ func (loop *Loop) clipboardHandler() ldk.ConfigurableReadListenHandler {
 		loop.statusReporter.Report("clipboard", text)
 	}
 
-	return ldk.ConfigurableReadListenHandler{Handler: handler}
+	return ldk.ClipboardListenConfiguration{Handler: handler}
 }
 
 func (loop *Loop) keyboardTextHandler() ldk.ListenTextHandler {

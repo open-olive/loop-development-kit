@@ -58,7 +58,7 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 	go func() {
 		err := m.Impl.Listen(
 			context.WithValue(stream.Context(), Session{}, session),
-			ConfigurableReadListenHandler{Handler: handler, IncludeOliveHelpTraffic: includeOliveHelpTraffic},
+			ClipboardListenConfiguration{Handler: handler, IncludeOliveHelpTraffic: includeOliveHelpTraffic},
 		)
 		// TODO: move this to a real logger once we move this into sidekick
 		if err != nil {
