@@ -114,8 +114,16 @@ export default function Home(props: PageProps<IMarkdownRemarkQuery<IFrontmatterP
       <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Getting Help</h2>
         <p>
-          Email your Olive Helps developer contact if you need any help! We're here to help you
-          succeed!
+          Our Olive Helps developers are here to help you succeed! Visit{' '}
+          <a
+            href="https://github.com/open-olive/loop-development-kit/issues"
+            target="_blank"
+            rel="noopener"
+          >
+            this page
+          </a>{' '}
+          to submit an issue or request, or email your Olive Helps developer contact if you need any
+          additional help.
         </p>
       </Section>
     </Layout>
