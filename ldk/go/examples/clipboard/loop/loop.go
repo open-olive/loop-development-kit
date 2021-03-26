@@ -40,7 +40,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 
 	c.sidekick = sidekick
 
-	return sidekick.Clipboard().Listen(c.ctx, func(text string, err error) {
+	return sidekick.Clipboard().Listen(c.ctx, ldk.ClipboardListenConfiguration{Handler: func(text string, err error) {
 		ctx, _ := context.WithTimeout(c.ctx, 5*time.Second)
 		c.logger.Info("controller loop callback called")
 		if err != nil {
@@ -57,7 +57,7 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 				c.logger.Error("failed to emit whisper", "error", err)
 			}
 		}()
-	})
+	}})
 }
 
 // LoopStop is called by the host when the plugin is stopped

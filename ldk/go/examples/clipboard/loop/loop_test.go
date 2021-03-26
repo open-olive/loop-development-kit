@@ -13,8 +13,8 @@ import (
 func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
 		ClipboardService: &ldktest.ClipboardService{
-			Listenf: func(ctx context.Context, cb ldk.ReadListenHandler) error {
-				cb("This is a test event", nil)
+			Listenf: func(ctx context.Context, cb ldk.ClipboardListenConfiguration) error {
+				cb.Handler("This is a test event", nil)
 
 				return nil
 			},

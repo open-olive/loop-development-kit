@@ -8,7 +8,7 @@ import (
 
 type ClipboardService struct {
 	Readf   func(context.Context) (string, error)
-	Listenf func(context.Context, ldk.ReadListenHandler) error
+	Listenf func(context.Context, ldk.ClipboardListenConfiguration) error
 	Writef  func(context.Context, string) error
 }
 
@@ -16,7 +16,7 @@ func (c *ClipboardService) Read(ctx context.Context) (string, error) {
 	return c.Readf(ctx)
 }
 
-func (c *ClipboardService) Listen(ctx context.Context, cb ldk.ReadListenHandler) error {
+func (c *ClipboardService) Listen(ctx context.Context, cb ldk.ClipboardListenConfiguration) error {
 	return c.Listenf(ctx, cb)
 }
 
