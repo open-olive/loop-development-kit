@@ -54,13 +54,12 @@ export const windowTest = (host: HostServices): Promise<boolean> =>
       if (error) {
         reject(error);
       }
-      if(response) {
+      if (response) {
         logger.debug('Window become active', 'response', response.title);
         resolve(true);
       }
     });
   });
-
 
 export const hotkeyTest = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -113,25 +112,6 @@ export const charStreamTest = (host: HostServices): Promise<boolean> =>
           resolve(true);
           characterStream.stop();
         }
-      }
-    });
-  });
-
-export const charScancodeTest = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const characterStream = host.keyboard.streamScanCode((error, response) => {
-      if (error) {
-        reject(error);
-      }
-
-      if (typeof response !== 'undefined') {
-        logger.debug('Scancode detected', 'response', response.scanCode.toString());
-
-        /* if (response.toString() === 'Olive') {
-                  resolve(true);
-                  prompt.stop();
-                  characterStream.stop();
-                } */
       }
     });
   });
