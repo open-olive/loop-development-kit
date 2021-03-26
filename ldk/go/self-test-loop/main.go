@@ -5,7 +5,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	"github.com/open-olive/loop-development-kit/ldk/go/self-test-loop/util"
 	"os"
 	"path/filepath"

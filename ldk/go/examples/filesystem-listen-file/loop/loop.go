@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-listen-file/bind"
 )
 

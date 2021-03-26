@@ -6,7 +6,7 @@ package main
 import (
 	"context"
 
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 )
 
 // main function to serve the loop

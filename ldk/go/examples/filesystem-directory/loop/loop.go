@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
-	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-directory/bind"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/examples/filesystem-directory/bind"
 )
 
 func Serve() error {

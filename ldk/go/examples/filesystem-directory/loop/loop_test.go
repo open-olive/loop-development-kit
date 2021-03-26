@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
-	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-directory/loop"
-	ldktest "github.com/open-olive/loop-development-kit/ldk/go/ldk-test"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/examples/filesystem-directory/loop"
+	ldktest "github.com/open-olive/loop-development-kit/ldk/go/v2/ldk-test"
 )
 
 func TestController(t *testing.T) {
