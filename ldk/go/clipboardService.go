@@ -13,6 +13,6 @@ type ClipboardService interface {
 type ReadListenHandler func(string, error)
 
 type ClipboardListenConfiguration struct {
-	Handler ReadListenHandler
+	Handler                 ReadListenHandler
 	IncludeOliveHelpTraffic bool
 }
