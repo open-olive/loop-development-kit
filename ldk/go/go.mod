@@ -1,4 +1,4 @@
-module github.com/open-olive/loop-development-kit/ldk/go
+module github.com/open-olive/loop-development-kit/ldk/go/v2
 
 go 1.14
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	"os"
 	"sort"
 	"strings"
