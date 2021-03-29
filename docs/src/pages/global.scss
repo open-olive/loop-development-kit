@@ -1,6 +1,32 @@
-$primaryThemeColor: #7C00ED;
+$olivePurple: #7c00ed;
+$oliveDarkPurple: #1f003e;
+$oliveSecondary1: #e5d0ff;
+$oliveSecondary2: #6b00c4;
+$oliveSecondary3: #46007e;
+$oliveNeutral1: #f8f8f8;
+$oliveNeutral2: #d7d7d7;
+
+$oliveAccentGreen: #c4ff00;
+$oliveAccentBlue: #3ecdff;
+$oliveAccentPurple: #9e28b5;
+$oliveAccentMagenta: #ea098b;
+$oliveAccentOrange: #ffa000;
+$oliveAccentYellow: #ffff00;
+
+$primaryThemeColor: $olivePurple;
+
+$mediumGradientStart: $olivePurple;
+$mediumGradientEnd: $oliveSecondary2;
+
+$darkGradientStart: $oliveSecondary2;
+$darkGradientEnd: $oliveSecondary3;
+
+$lightGradientStart: $oliveNeutral1;
+$lightGradientEnd: $oliveNeutral2;
+
 $primaryThemeFade: #833df5;
-$hoverColor: #B388FF;
+$hoverColor: #b388ff;
+$codeBorderColor: #e8dbff;
 $lightestAccent: #faf6ff;
 
 $primaryFont: sofia-pro, sans-serif;
@@ -16,7 +42,9 @@ $bodyFontSize: 16px;
 $bodyFontWeight: 500;
 
 $headerBackgroundColor: $primaryThemeColor;
-$headerBackgroundImage: linear-gradient($primaryThemeColor, $primaryThemeFade);
+$headerBackgroundImage: linear-gradient($mediumGradientStart, $mediumGradientEnd);
+
+$menuBackgroundImage: linear-gradient(to bottom left, $darkGradientStart, $darkGradientEnd);
 
 $menuBackgroundColor: $primaryThemeColor;
 $menuTextColor: white;
