@@ -3,7 +3,7 @@ package ldktest
 import (
 	"context"
 
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 )
 
 type CursorService struct {

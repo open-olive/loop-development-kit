@@ -1,6 +1,6 @@
 package ldk
 
-import "github.com/open-olive/loop-development-kit/ldk/go/proto"
+import "github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 
 type WhisperContentFormOutputPassword struct {
 	Value string `json:"value"`

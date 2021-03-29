@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
-	ldk "github.com/open-olive/loop-development-kit/ldk/go"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 )
 
 func Serve() error {

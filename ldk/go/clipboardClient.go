@@ -5,7 +5,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 )
 
 // ClipboardClient is used by loops to facilitate communication with the clipboard service

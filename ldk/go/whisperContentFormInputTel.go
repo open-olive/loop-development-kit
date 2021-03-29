@@ -3,7 +3,7 @@ package ldk
 import (
 	"encoding/json"
 
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 )
 
 // WhisperContentFormInputTel defines a telephone field in a form

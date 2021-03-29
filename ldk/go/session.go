@@ -3,7 +3,7 @@ package ldk
 import (
 	"errors"
 
-	"github.com/open-olive/loop-development-kit/ldk/go/proto"
+	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
 )
 
 type Session struct {
