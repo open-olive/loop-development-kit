@@ -16,7 +16,7 @@ export const MenuAptitude: React.FunctionComponent<IMenuAptitudeProps> = (props)
   });
 
   return (
-    <li className={styles.sectionItem}>
+    <li className={props.current ? styles.sectionItemCurrent : styles.sectionItem}>
       <Link to={buildAptitudePath(sensor)}>
         <h2 className={styles.sectionItemHeader}>{sensor.name}</h2>
       </Link>
@@ -35,13 +35,16 @@ export const DesktopMenu: React.FunctionComponent<IMenuDetailProps> = (props) =>
       />
     );
   });
-  const guides = mapGuidePages(props.guideList).map((guide) => (
-    <li className={styles.sectionItem}>
-      <Link to={guide.slug}>
-        <h2 className={styles.sectionItemHeader}>{guide.title}</h2>
-      </Link>
-    </li>
-  ));
+  const guides = mapGuidePages(props.guideList).map((guide) => {
+    const current = props.currentPath == guide.slug;
+    return (
+      <li className={current ? styles.sectionItemCurrent : styles.sectionItem}>
+        <Link to={guide.slug}>
+          <h2 className={styles.sectionItemHeader}>{guide.title}</h2>
+        </Link>
+      </li>
+    );
+  });
   return (
     <div className={styles.desktopMenu}>
       <section className={styles.menuSection}>

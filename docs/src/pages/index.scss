@@ -20,3 +20,39 @@ a:hover {
   color: $hoverColor;
   text-decoration: underline;
 }
+
+code {
+  border: 1px solid $codeBorderColor;
+  margin: 0 2px;
+  padding: 0 5px;
+}
+
+pre {
+  border: 1px solid $hoverColor;
+  padding: 4px 8px;
+}
+
+code,
+pre {
+  color: $oliveSecondary3;
+  font-family: monospace;
+  background-color: $lightestAccent;
+  border-radius: 3px;
+}
+
+pre > code {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+ol > li {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+blockquote {
+  margin: 1rem 0;
+  border-left: 5px solid $oliveNeutral2;
+  padding-left: .6rem;
+}
