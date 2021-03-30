@@ -27,7 +27,7 @@ func (c *ClipboardClient) Read(ctx context.Context) (string, error) {
 }
 
 // Listen is used by the loop to establish a stream for handling clipboard changes
-func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler) error {
+func (c *ClipboardClient) Listen(ctx context.Context, clipboardListenConfigurations ClipboardListenConfiguration) error {
 	stream, err := c.client.ClipboardReadStream(ctx, &proto.ClipboardReadStreamRequest{
 		Session: c.session.ToProto(),
 	})
@@ -42,14 +42,14 @@ func (c *ClipboardClient) Listen(ctx context.Context, handler ReadListenHandler)
 				break
 			}
 			if err != nil {
-				handler("", err)
+				clipboardListenConfigurations.Handler("", err)
 				return
 			}
 
 			if resp.GetError() != "" {
 				err = errors.New(resp.GetError())
 			}
-			handler(resp.GetText(), err)
+			clipboardListenConfigurations.Handler(resp.GetText(), err)
 		}
 	}()
 

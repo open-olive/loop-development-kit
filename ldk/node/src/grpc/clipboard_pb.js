@@ -441,7 +441,8 @@ proto.proto.ClipboardReadStreamRequest.prototype.toObject = function(opt_include
  */
 proto.proto.ClipboardReadStreamRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f)
+    session: (f = msg.getSession()) && session_pb.Session.toObject(includeInstance, f),
+    includeolivehelptraffic: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
   };
 
   if (includeInstance) {
@@ -483,6 +484,10 @@ proto.proto.ClipboardReadStreamRequest.deserializeBinaryFromReader = function(ms
       reader.readMessage(value,session_pb.Session.deserializeBinaryFromReader);
       msg.setSession(value);
       break;
+    case 2:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIncludeolivehelptraffic(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -518,6 +523,13 @@ proto.proto.ClipboardReadStreamRequest.serializeBinaryToWriter = function(messag
       1,
       f,
       session_pb.Session.serializeBinaryToWriter
+    );
+  }
+  f = message.getIncludeolivehelptraffic();
+  if (f) {
+    writer.writeBool(
+      2,
+      f
     );
   }
 };
@@ -557,6 +569,24 @@ proto.proto.ClipboardReadStreamRequest.prototype.clearSession = function() {
  */
 proto.proto.ClipboardReadStreamRequest.prototype.hasSession = function() {
   return jspb.Message.getField(this, 1) != null;
+};
+
+
+/**
+ * optional bool includeOliveHelpTraffic = 2;
+ * @return {boolean}
+ */
+proto.proto.ClipboardReadStreamRequest.prototype.getIncludeolivehelptraffic = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 2, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.proto.ClipboardReadStreamRequest} returns this
+ */
+proto.proto.ClipboardReadStreamRequest.prototype.setIncludeolivehelptraffic = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 2, value);
 };
 
 

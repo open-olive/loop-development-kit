@@ -26,6 +26,7 @@ message ClipboardReadResponse {
 
 message ClipboardReadStreamRequest {
     Session session = 1;
+    bool IncludeOliveHelpTraffic = 2;
 }
 
 message ClipboardReadStreamResponse {

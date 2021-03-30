@@ -39,6 +39,8 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 		return err
 	}
 
+	includeOliveHelpTraffic := req.IncludeOliveHelpTraffic
+
 	handler := func(text string, err error) {
 		var errText string
 		if err != nil {
@@ -49,14 +51,14 @@ func (m *ClipboardServer) ClipboardReadStream(req *proto.ClipboardReadStreamRequ
 			Text:  text,
 		}); e != nil {
 			// This should only happen if the context was cancelled for some reason and the stream shuts down.
-			fmt.Println("error: ldk.ClipboardServer.ClipbardReadStream -> stream.Send:", e)
+			fmt.Println("error: ldk.ClipboardServer.ClipboardReadStream -> stream.Send:", e)
 		}
 	}
 
 	go func() {
 		err := m.Impl.Listen(
 			context.WithValue(stream.Context(), Session{}, session),
-			handler,
+			ClipboardListenConfiguration{Handler: handler, IncludeOliveHelpTraffic: includeOliveHelpTraffic},
 		)
 		// TODO: move this to a real logger once we move this into sidekick
 		if err != nil {

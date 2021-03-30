@@ -344,9 +344,7 @@ exports.networkAndListWhisper = (host) => new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
         .subtract(3, 'months')
         .startOf('month')
-        .format('YYYYMMDD')}+TO+${now
-        .endOf('month')
-        .format('YYYYMMDD')}]&limit=1`;
+        .format('YYYYMMDD')}+TO+${now.endOf('month').format('YYYYMMDD')}]&limit=1`;
     logger.debug('Network call succeeded, emmitting list whisper', url);
     host.network
         .httpRequest({

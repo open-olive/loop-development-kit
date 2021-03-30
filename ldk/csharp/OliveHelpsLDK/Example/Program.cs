@@ -78,7 +78,7 @@ namespace Example
 
         private void ClipboardStream()
         {
-            _clipboardStream = _services.Clipboard.Stream();
+            _clipboardStream = _services.Clipboard.Stream(true);
             Logger.Info("Started Streaming Clipboard");
             Task.Run(async () =>
             {

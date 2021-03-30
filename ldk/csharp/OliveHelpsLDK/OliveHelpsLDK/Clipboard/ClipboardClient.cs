@@ -42,11 +42,12 @@ namespace OliveHelpsLDK.Clipboard
                 .ResponseAsync;
         }
 
-        public IStreamingCall<string> Stream(CancellationToken cancellationToken = default)
+        public IStreamingCall<string> Stream(bool includeOliveHelpTraffic = false, CancellationToken cancellationToken = default)
         {
             var request = new ClipboardReadStreamRequest
             {
                 Session = CreateSession(),
+                IncludeOliveHelpTraffic = includeOliveHelpTraffic
             };
             var call = Client.ClipboardReadStream(request, new CallOptions(cancellationToken: cancellationToken));
             var loggedParser = LoggedParser<ClipboardReadStreamResponse, string>(response => response.Text);
