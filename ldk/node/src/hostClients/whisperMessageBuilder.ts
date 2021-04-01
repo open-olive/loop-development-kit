@@ -226,7 +226,7 @@ export const generateWhisperListElement = (
         inputMsg.setBody(element.body);
       }
       if (element.header) {
-        inputMsg.setBody(element.header);
+        inputMsg.setHeader(element.header);
       }
       if (element.style) {
         inputMsg.setStyle(generateWhisperListStyle(element.style));
@@ -377,6 +377,7 @@ export const buildWhisperListRequest = (config: WhisperListConfig): messages.Whi
   const request = new messages.WhisperListRequest().setMeta(meta);
   request.setMarkdown(config.markdown);
   const elements = request.getElementsMap();
+
   Object.keys(config.elements).forEach((key) => {
     const value = config.elements[key];
     const input = generateWhisperListElement(value);

@@ -210,7 +210,7 @@ exports.generateWhisperListElement = (element) => {
                 inputMsg.setBody(element.body);
             }
             if (element.header) {
-                inputMsg.setBody(element.header);
+                inputMsg.setHeader(element.header);
             }
             if (element.style) {
                 inputMsg.setStyle(exports.generateWhisperListStyle(element.style));
