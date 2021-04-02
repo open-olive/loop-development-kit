@@ -17,3 +17,16 @@ export interface IGuideFrontMatter {
   title: string;
   description: string;
 }
+
+export interface IAllFileQuery<T> {
+  allFile: {
+    edges: {
+      node: {
+        id: string;
+        childMarkdownRemark: {
+          frontmatter: T;
+        };
+      };
+    }[];
+  };
+}
