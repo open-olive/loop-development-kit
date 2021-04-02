@@ -1,7 +1,7 @@
 import { buildAptitudeId, buildAptitudePath } from './src/components/aptitudes/aptitudePaths';
 import { aptitudes } from './src/components/aptitudes/aptitudeData';
 import { CreatePagesArgs } from 'gatsby';
-import { IGuideFrontMatter, IMarkdownRemarkQuery } from './src/queries';
+import { IAllFileQuery, IGuideFrontMatter} from "./src/queries";
 
 const buildAptitudePages = (args: CreatePagesArgs) => {
   const blogPostTemplate = require.resolve(`./src/templates/aptitudeTemplate.tsx`);
@@ -16,23 +16,25 @@ const buildAptitudePages = (args: CreatePagesArgs) => {
   });
 };
 
-export const createPages = async (args: CreatePagesArgs) => {
+const buildGuidePages = async (args: CreatePagesArgs) => {
   const {
     actions: { createPage },
     graphql,
     reporter,
   } = args;
-  buildAptitudePages(args);
-
   const guideTemplate = require.resolve(`./src/templates/guideTemplate.tsx`);
-
-  const result = await graphql<IMarkdownRemarkQuery<IGuideFrontMatter>>(`
+  const result = await graphql<IAllFileQuery<IGuideFrontMatter>>(`
     {
-      allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___title] }, limit: 1000) {
+      allFile(filter: { relativeDirectory: { eq: "guides" } }) {
         edges {
           node {
-            frontmatter {
-              slug
+            id
+            childMarkdownRemark {
+              frontmatter {
+                description
+                slug
+                title
+              }
             }
           }
         }
@@ -44,14 +46,23 @@ export const createPages = async (args: CreatePagesArgs) => {
     reporter.panicOnBuild(`Error while running GraphQL query.`);
     return;
   }
-  result.data!.allMarkdownRemark.edges.forEach(({ node }) => {
+  result.data!.allFile.edges.forEach(({ node }) => {
+    const frontMatter = node.childMarkdownRemark?.frontmatter;
+    if (frontMatter?.slug == null) {
+      return;
+    }
     createPage({
-      path: node.frontmatter.slug,
+      path: frontMatter.slug,
       component: guideTemplate,
       context: {
         // additional data can be passed via context
-        slug: node.frontmatter.slug,
+        slug: frontMatter.slug,
       },
     });
   });
+};
+
+export const createPages = async (args: CreatePagesArgs) => {
+  buildAptitudePages(args);
+  await buildGuidePages(args);
 };
