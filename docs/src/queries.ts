@@ -26,6 +26,7 @@ export interface IAllFileQuery<T> {
         childMarkdownRemark: {
           frontmatter: T;
         };
+        name: string;
       };
     }[];
   };
