@@ -32,3 +32,14 @@ export interface IAllFileQuery<T> {
     }[];
   };
 }
+
+export interface IAllAptitudeQuery {
+  allAptitude: {
+    edges: {
+      node: {
+        id: string;
+        internalName: string;
+      }
+    }
+  }
+}

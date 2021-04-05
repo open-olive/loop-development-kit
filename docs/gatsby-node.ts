@@ -101,13 +101,43 @@ const buildAptitudeNodes = async (args: CreatePagesArgs) => {
 
 const buildAptitudePages = async (args: CreatePagesArgs) => {
   const blogPostTemplate = require.resolve(`./src/templates/aptitudeTemplate.tsx`);
-
   Object.values(aptitudes).forEach((aptitude) => {
     args.actions.createPage({
       path: buildAptitudePath(aptitude),
       component: blogPostTemplate,
       context: {
         aptitudeId: buildAptitudeId(aptitude),
+      },
+    });
+  });
+};
+
+const buildAptitudePagesWithQuery = async (args: CreatePagesArgs) => {
+  const template = require.resolve('./src/templates/aptitudeTemplateWithQuery.tsx');
+  const result = await args.graphql(`
+    {
+      allAptitude {
+        edges {
+          node {
+            internalName
+          }
+        }
+      }
+    }
+  `);
+  // Handle errors
+  if (result.errors) {
+    args.reporter.panicOnBuild(`Error while running GraphQL query.`);
+    return;
+  }
+  (result.data as any).allAptitude.edges.forEach(({ node }) => {
+    const path = `/app/aptitudes/${node.internalName}`;
+    args.actions.createPage({
+      path: path,
+      component: template,
+      context: {
+        // additional data can be passed via context
+        slug: node.internalName,
       },
     });
   });
@@ -163,6 +193,7 @@ const buildGuidePages = async (args: CreatePagesArgs) => {
 export const createPages = async (args: CreatePagesArgs) => {
   await buildAptitudeNodes(args);
   await buildAptitudePages(args);
+  await buildAptitudePagesWithQuery(args);
   await buildGuidePages(args);
 };
 
