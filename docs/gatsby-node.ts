@@ -11,14 +11,17 @@ const buildAptitudeTypes = (args: CreateSchemaCustomizationArgs) => {
   Aptitude Node
   """
   type Aptitude implements Node @infer {
-    capabilities: [Capability!]!
+    capabilities: [Capability] @link(by: "aptitudeInternalName", from: "internalName")
     markdown: MarkdownRemark @link(from: "markdownNodeId")
     markdownNodeId: String
+    internalName: String
   }
   
   type Capability implements Node @infer {
     markdown: MarkdownRemark @link(from: "markdownNodeId")
     markdownNodeId: String
+    aptitudeInternalName: String
+    aptitude: Aptitude @link(from: "aptitudeInternalName", by: "internalName")
   }
   
   `;
@@ -52,17 +55,12 @@ const buildAptitudeNodes = async (args: CreatePagesArgs) => {
     const markdownNodeId = node.childMarkdownRemark.id;
     if (node.name.includes('.')) {
       // Link to Capability
+      const aptitudeName = node.name.split('.')[0];
       const fieldData = {
         id: createNodeId(`${node.name}`, 'capability'),
-        markdown___NODE: markdownNodeId,
+        aptitudeInternalName: aptitudeName,
         markdownNodeId: markdownNodeId,
       };
-      console.log(
-        'Building Capability with ID',
-        fieldData.id,
-        'and markdown node ID',
-        fieldData.markdown___NODE,
-      );
       args.actions.createNode(
         {
           ...fieldData,
@@ -80,15 +78,9 @@ const buildAptitudeNodes = async (args: CreatePagesArgs) => {
     } else {
       const fieldData = {
         id: createNodeId(`${node.name}`, 'aptitude'),
-        markdown___NODE: markdownNodeId,
+        internalName: node.name,
         markdownNodeId: markdownNodeId,
       };
-      console.log(
-        'Building Aptitude with ID',
-        fieldData.id,
-        'and markdown node ID',
-        fieldData.markdown___NODE,
-      );
       args.actions.createNode(
         {
           ...fieldData,
