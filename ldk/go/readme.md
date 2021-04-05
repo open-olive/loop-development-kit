@@ -58,7 +58,12 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 		// Respond to aptitude event here...
 	}
 
-	if err := sidekick.Clipboard().Listen(l.ctx, handler); err != nil {
+	// Indicates if clipboard activities received from internal Olive Help windows will be propagated to the handler
+	includeOliveHelpTraffic := true
+	// Clipboard Configuration which takes handler and Clipboard traffic trigger
+	clipboardListenConfiguration := ClipboardListenConfiguration{Handler: handler, IncludeOliveHelpTraffic: includeOliveHelpTraffic}
+
+	if err := sidekick.Clipboard().Listen(l.ctx, clipboardListenConfiguration); err != nil {
 		return err
 	}
 
