@@ -3,6 +3,7 @@ import { buildAptitudeId, buildAptitudePath } from './src/components/aptitudes/a
 import { aptitudes } from './src/components/aptitudes/aptitudeData';
 import { CreatePagesArgs, CreateSchemaCustomizationArgs, SourceNodesArgs } from 'gatsby';
 import { IAllFileQuery, IGuideFrontMatter } from './src/queries';
+import { createNodeId } from 'gatsby/dist/utils/create-node-id';
 
 const buildAptitudeTypes = (args: CreateSchemaCustomizationArgs) => {
   const typeDefs = `
@@ -10,16 +11,18 @@ const buildAptitudeTypes = (args: CreateSchemaCustomizationArgs) => {
   Aptitude Node
   """
   type Aptitude implements Node @infer {
-    markdown: MarkdownRemark!
     capabilities: [Capability!]!
+    markdown: MarkdownRemark @link(from: "markdownNodeId")
+    markdownNodeId: String
   }
   
-  type Capability implements Node {
-    markdown: MarkdownRemark!
+  type Capability implements Node @infer {
+    markdown: MarkdownRemark @link(from: "markdownNodeId")
+    markdownNodeId: String
   }
   
   `;
-  args.actions.createTypes(typeDefs, {name: 'default-site-plugin'});
+  args.actions.createTypes(typeDefs);
 };
 
 const buildAptitudeNodes = async (args: CreatePagesArgs) => {
@@ -30,6 +33,7 @@ const buildAptitudeNodes = async (args: CreatePagesArgs) => {
       node {
         id
         childMarkdownRemark {
+          id
           frontmatter {
             name
             links_go
@@ -45,25 +49,60 @@ const buildAptitudeNodes = async (args: CreatePagesArgs) => {
   `);
   result.data.allFile.edges.forEach((file) => {
     const node = file.node;
+    const markdownNodeId = node.childMarkdownRemark.id;
     if (node.name.includes('.')) {
-      // Build Capability
+      // Link to Capability
       const fieldData = {
-        id: `aptitude-${node.name}`,
-        markdown__NODE: node.id,
+        id: createNodeId(`${node.name}`, 'capability'),
+        markdown___NODE: markdownNodeId,
+        markdownNodeId: markdownNodeId,
       };
-      args.actions.createNode({
-        ...fieldData,
-        parent: null,
-        children: [],
-        internal: {
-          type: 'Aptitude',
-          contentDigest: crypto.createHash('md5').update(JSON.stringify(fieldData)).digest('hex'),
+      console.log(
+        'Building Capability with ID',
+        fieldData.id,
+        'and markdown node ID',
+        fieldData.markdown___NODE,
+      );
+      args.actions.createNode(
+        {
+          ...fieldData,
+          parent: null,
+          children: [],
+          internal: {
+            type: 'Capability',
+            contentDigest: crypto.createHash('md5').update(JSON.stringify(fieldData)).digest('hex'),
+          },
         },
-      }, {
-        name: 'gatsby-plugin-ts-config'
-      });
+        {
+          name: 'gatsby-plugin-ts-config',
+        },
+      );
     } else {
-      // Build Aptitude
+      const fieldData = {
+        id: createNodeId(`${node.name}`, 'aptitude'),
+        markdown___NODE: markdownNodeId,
+        markdownNodeId: markdownNodeId,
+      };
+      console.log(
+        'Building Aptitude with ID',
+        fieldData.id,
+        'and markdown node ID',
+        fieldData.markdown___NODE,
+      );
+      args.actions.createNode(
+        {
+          ...fieldData,
+          parent: null,
+          children: [],
+          internal: {
+            type: 'Aptitude',
+            contentDigest: crypto.createHash('md5').update(JSON.stringify(fieldData)).digest('hex'),
+          },
+        },
+        {
+          name: 'gatsby-plugin-ts-config',
+        },
+      );
     }
   });
 };
@@ -137,5 +176,4 @@ export const createPages = async (args: CreatePagesArgs) => {
 
 export const createSchemaCustomization = (args: CreateSchemaCustomizationArgs) => {
   buildAptitudeTypes(args);
-
 };
