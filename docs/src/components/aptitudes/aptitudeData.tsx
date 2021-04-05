@@ -22,41 +22,6 @@ export interface ICapabilityData {
 }
 
 export const aptitudes: { [sensor: string]: IAptitudeData } = {
-  clipboard: {
-    name: 'Clipboard',
-    links: {
-      go: 'ClipboardClient',
-      node: 'ClipboardService',
-    },
-    description:
-      'Allows Loops to read clipboard contents, be notified when clipboard contents change, and write to it.',
-    capabilities: [
-      {
-        name: 'Stream Changes',
-        description: 'Receive messages whenever the clipboard contents change.',
-        links: {
-          go: 'Listen',
-          node: 'streamClipboard',
-        },
-      },
-      {
-        name: 'Read',
-        description: 'Read the current text contents of the clipboard.',
-        links: {
-          node: 'queryClipboard',
-          go: 'Read',
-        },
-      },
-      {
-        name: 'Write',
-        description: 'Write text content to the clipboard.',
-        links: {
-          node: 'writeClipboard',
-          go: 'Write',
-        },
-      },
-    ],
-  },
   cursor: {
     name: 'Cursor',
     links: {
