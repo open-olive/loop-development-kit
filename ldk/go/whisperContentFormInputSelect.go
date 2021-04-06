@@ -12,6 +12,7 @@ type WhisperContentFormInputSelect struct {
 	Tooltip  string       `json:"tooltip"`
 	Options  []string     `json:"options"`
 	OnChange func(string) `json:"-"`
+	Value    string       `json:"value"`
 	Order    uint32       `json:"order"`
 }
 
@@ -29,6 +30,7 @@ func (fc *WhisperContentFormInputSelect) ToProto() (*proto.WhisperFormInput, err
 				Tooltip: fc.Tooltip,
 				Options: fc.Options,
 				Order:   fc.Order,
+				Value:   fc.Value,
 			},
 		},
 	}, nil

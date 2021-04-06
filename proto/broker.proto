@@ -1,6 +1,6 @@
 syntax = "proto3";
 package plugin;
-option go_package = ".;proto";
+option go_package = "./;proto";
 
 message ConnInfo {
     uint32 service_id = 1;
