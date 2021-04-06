@@ -1,6 +1,9 @@
 export type QueryEdge<T> = {
   node: {
-    frontmatter: T;
+    childMarkdownRemark: {
+      frontmatter: T;
+      id: string;
+    }
   };
 };
 

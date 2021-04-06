@@ -9,13 +9,28 @@ export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
   const aptitudeData = Object.values(aptitudes);
   const guideQuery = graphql`
     query {
-      allMarkdownRemark {
+      allAptitude {
         edges {
           node {
-            frontmatter {
-              slug
-              title
+            internalName
+            markdown {
+              frontmatter {
+                name
+              }
             }
+          }
+        }
+      }
+      allFile(filter: { relativeDirectory: { eq: "guides" } }) {
+        edges {
+          node {
+            childMarkdownRemark {
+              frontmatter {
+                slug
+                title
+              }
+            }
+            relativeDirectory
           }
         }
       }
