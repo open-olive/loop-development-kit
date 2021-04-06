@@ -10,7 +10,7 @@ import { aptitudes, IAptitudeData } from '../components/aptitudes/aptitudeData';
 import { graphql, Link, PageProps } from 'gatsby';
 import { buildAptitudePath } from '../components/aptitudes/aptitudePaths';
 import { mapGuidePages } from '../components/menu/shared-menu';
-import { IMarkdownRemarkQuery } from '../queries';
+import { IAllFileQuery } from '../queries';
 
 interface LanguageBlockProps {
   language: string;
@@ -59,7 +59,7 @@ const GuideItem: React.FunctionComponent<IFrontmatterProps> = (props) => {
   );
 };
 
-export default function Home(props: PageProps<IMarkdownRemarkQuery<IFrontmatterProps>>) {
+export default function Home(props: PageProps<IAllFileQuery<IFrontmatterProps>>) {
   const aptitudeItems = Object.values(aptitudes).map((aptitude) => {
     return <AptitudeItem aptitude={aptitude} key={aptitude.name} />;
   });
@@ -138,14 +138,17 @@ export interface IFrontmatterProps {
 
 export const pageQuery = graphql`
   query {
-    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___title] }, limit: 1000) {
+    allFile(filter: { relativeDirectory: { eq: "guides" } }) {
       edges {
         node {
-          frontmatter {
-            slug
-            title
-            description
+          childMarkdownRemark {
+            frontmatter {
+              slug
+              title
+              description
+            }
           }
+          relativeDirectory
         }
       }
     }
