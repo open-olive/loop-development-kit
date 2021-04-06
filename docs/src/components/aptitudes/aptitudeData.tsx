@@ -8,14 +8,14 @@ export type LDKLinkActive = Partial<LDKLinks>;
 
 export interface IAptitudeData {
   name: string;
-  description: React.ReactNode;
+  description: string;
   capabilities: ICapabilityData[];
   links?: LDKLinkActive;
 }
 
 export interface ICapabilityData {
   name: string;
-  description: React.ReactNode;
+  description: string;
   links?: LDKLinkActive;
 }
 
@@ -345,7 +345,7 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
               </ul>
             </p>
           </>
-        ),
+        ) as any,
         links: {
           node: 'listWhisper',
         },
