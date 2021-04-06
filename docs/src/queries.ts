@@ -1,9 +1,11 @@
+import { IAptitudeData } from './components/aptitudes/aptitudeData';
+
 export type QueryEdge<T> = {
   node: {
     childMarkdownRemark: {
       frontmatter: T;
       id: string;
-    }
+    };
   };
 };
 
@@ -42,7 +44,53 @@ export interface IAllAptitudeQuery {
       node: {
         id: string;
         internalName: string;
+        markdown: {
+          frontmatter: {
+            name: string;
+          }
+        }
       }
     }
   }
+}
+
+export interface AptitudeMarkdown {
+  html: string;
+  frontmatter: {
+    name: string;
+    links_go: string | undefined;
+    links_node: string | undefined;
+  };
+}
+
+export interface AptitudeQueryResult {
+  internalName: string;
+  markdown: AptitudeMarkdown;
+  capabilities: {
+    markdown: AptitudeMarkdown;
+  }[];
+}
+
+export interface TemplateProps {
+  aptitude: AptitudeQueryResult;
+}
+
+export function getAptitudeDataFromQuery(queryResult: AptitudeQueryResult): IAptitudeData {
+  const aptitudeFrontMatter = queryResult.markdown.frontmatter;
+  return {
+    name: aptitudeFrontMatter.name,
+    description: queryResult.markdown.html,
+    links: {
+      node: aptitudeFrontMatter.links_node,
+      go: aptitudeFrontMatter.links_go,
+    },
+    capabilities: queryResult.capabilities.map((capability) => ({
+      name: capability.markdown.frontmatter.name,
+      description: capability.markdown.html,
+      links: {
+        node: capability.markdown.frontmatter.links_node,
+        go: capability.markdown.frontmatter.links_go,
+      },
+    })),
+  };
 }

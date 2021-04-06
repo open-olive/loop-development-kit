@@ -4,6 +4,7 @@ import { aptitudes } from '../aptitudes/aptitudeData';
 import { IMenuProps } from './shared-menu';
 import { DesktopMenu } from './desktop-menu';
 import { MobileMenu } from './mobile-menu';
+import { getAptitudeDataFromQuery } from '../../queries';
 
 export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
   const aptitudeData = Object.values(aptitudes);
@@ -13,6 +14,16 @@ export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
         edges {
           node {
             internalName
+            capabilities {
+              markdown {
+                html
+                frontmatter {
+                  name
+                  links_go
+                  links_node
+                }
+              }
+            }
             markdown {
               frontmatter {
                 name
@@ -39,12 +50,22 @@ export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
   return (
     <StaticQuery
       query={guideQuery}
-      render={(data) => (
-        <>
-          <MobileMenu aptitudes={aptitudeData} currentPath={props.currentPath} guideList={data} />
-          <DesktopMenu aptitudes={aptitudeData} currentPath={props.currentPath} guideList={data} />
-        </>
-      )}
+      render={(data) => {
+        const combinedData = [
+          ...aptitudeData,
+          ...data.allAptitude.edges.map((aptitude: any) => getAptitudeDataFromQuery(aptitude.node)),
+        ];
+        return (
+          <>
+            <MobileMenu aptitudes={combinedData} currentPath={props.currentPath} guideList={data} />
+            <DesktopMenu
+              aptitudes={combinedData}
+              currentPath={props.currentPath}
+              guideList={data}
+            />
+          </>
+        );
+      }}
     />
   );
 };
