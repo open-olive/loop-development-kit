@@ -50,7 +50,7 @@ export interface IAllAptitudeQuery {
           }
         }
       }
-    }
+    }[]
   }
 }
 
