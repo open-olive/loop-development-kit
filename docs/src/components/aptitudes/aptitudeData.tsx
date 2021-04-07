@@ -22,33 +22,6 @@ export interface ICapabilityData {
 }
 
 export const aptitudes: { [sensor: string]: IAptitudeData } = {
-  cursor: {
-    name: 'Cursor',
-    links: {
-      go: 'CursorClient',
-      node: 'CursorService',
-    },
-    description:
-      'Allows Loops to get the current cursor position, and receive updates as the user moves the cursor.',
-    capabilities: [
-      {
-        name: 'Read',
-        description: 'Reads the current cursor position on screen.',
-        links: {
-          node: 'queryCursorPosition',
-          go: 'Position',
-        },
-      },
-      {
-        name: 'Stream Changes',
-        description: 'Receive a message whenever the user moves the cursor on screen.',
-        links: {
-          node: 'streamCursorPosition',
-          go: 'ListenPosition',
-        },
-      },
-    ],
-  },
   filesystem: {
     name: 'Filesystem',
     links: {
@@ -58,30 +31,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     description:
       'Observe changes within directories and files, and interact with individual files.',
     capabilities: [
-      {
-        name: 'List Directory',
-        description: 'List the contents of any given directory',
-        links: {
-          go: 'Dir',
-          node: 'queryDirectory',
-        },
-      },
-      {
-        name: 'Stream Directory Changes',
-        description: 'Receive a message whenever any file changes inside a directory',
-        links: {
-          go: 'ListenDir',
-          node: 'streamDirectory',
-        },
-      },
-      {
-        name: 'Create Directory',
-        description: 'Create a directory at the specified location.',
-        links: {
-          go: 'MakeDir',
-          node: 'makeDirectory',
-        },
-      },
       {
         name: 'Copy',
         description: 'Copy a file or directory.',
