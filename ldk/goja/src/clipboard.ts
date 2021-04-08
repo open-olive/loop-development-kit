@@ -6,6 +6,7 @@ export interface Clipboard {
 
 export class ClipboardImpl implements Clipboard {
     listen(cb: (val: string) => void): void {
+        return oliveHelps.clipboard.listen(cb);
     }
 
     read(): Promise<string> {
@@ -21,7 +22,12 @@ export class ClipboardImpl implements Clipboard {
     
 
     write(val: string): Promise<void> {
-        return Promise.resolve(undefined);
-    }
-    
+        return new Promise<void>((resolve, reject) => {
+            try {
+                oliveHelps.clipboard.write(val, () => resolve());
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }    
 }
