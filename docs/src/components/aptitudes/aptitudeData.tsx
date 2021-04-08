@@ -18,7 +18,3 @@ export interface ICapabilityData {
   description: string;
   links?: LDKLinkActive;
 }
-
-export const aptitudes: { [sensor: string]: IAptitudeData } = {
-
-};
