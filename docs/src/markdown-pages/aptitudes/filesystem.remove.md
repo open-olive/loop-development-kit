@@ -1,6 +1,6 @@
 ---
-name: "Clipboard"
-links_go: "ClipboardClient"
-links_node: "ClipboardService"
+name: "Remove"
+links_go: "Remove"
+links_node: "removeFile"
 ---
-Allows Loops to read clipboard contents, be notified when clipboard contents change, and write to it.
+Remove a file or directory
