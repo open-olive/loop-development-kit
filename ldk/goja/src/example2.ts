@@ -1,5 +1,4 @@
-export class Example2 {
-    getString(): string {
+
+    export let getString = () => {
         return "You got this from example 2!";
     }
-}
