@@ -1,20 +1,35 @@
 import { ClipboardImpl } from './clipboard';
+import { mocked } from 'ts-jest/utils';
 
 describe("Clipboard", () => {
-    const subject = new ClipboardImpl()
+    let subject: ClipboardImpl;
     
-   describe("read", () => {
+    beforeEach(() => {
+        oliveHelps.clipboard = {
+            read: jest.fn(),
+            write: jest.fn(),
+            listen: jest.fn()
+        };
+        subject = new ClipboardImpl();
+    });
+    
+    describe("read", () => {
        it("returns a promise result with expected clipboard value", () => {
            const expected = "expected string";
-           oliveHelps.clipboard = {
-               read: jest.fn(() => expected),
-               write: jest.fn(),
-               listen: jest.fn()
-           };
+           mocked(oliveHelps.clipboard.read).mockImplementation((cb) => cb(expected));
            
            let actual = subject.read();
            
-           expect(actual).resolves.toBe(expected)
+           return expect(actual).resolves.toBe(expected);
        });
+
+        it("returns a rejected promise", () => {
+            const exception = "Exception";
+            mocked(oliveHelps.clipboard.read).mockImplementation(() => { throw exception });
+
+            let actual = subject.read();
+
+            return expect(actual).rejects.toBe(exception);
+        });
    }); 
 });
