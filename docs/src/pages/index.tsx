@@ -6,7 +6,7 @@ import { PageHeader } from '../components/page-header';
 import OliveHelpsLogo from '../components/olive-helps-logo';
 import { languages, downloadMacUrl, downloadWindowsUrl } from '../references';
 import { Section } from '../components/section';
-import { aptitudes, IAptitudeData } from '../components/aptitudes/aptitudeData';
+import { IAptitudeData } from '../components/aptitudes/aptitudeData';
 import { graphql, Link, PageProps } from 'gatsby';
 import { buildAptitudePath } from '../components/aptitudes/aptitudePaths';
 import { mapGuidePages } from '../components/menu/shared-menu';
@@ -65,11 +65,9 @@ const GuideItem: React.FunctionComponent<IFrontmatterProps> = (props) => {
 export default function Home(
   props: PageProps<IAllFileQuery<IFrontmatterProps> & IAllAptitudeQuery>,
 ) {
-  const aptitudeData = Object.values(aptitudes);
-  const combinedData = [
-    ...aptitudeData,
-    ...props.data.allAptitude.edges.map((aptitude: any) => getAptitudeDataFromQuery(aptitude.node)),
-  ];
+  const combinedData = props.data.allAptitude.edges.map((aptitude: any) =>
+    getAptitudeDataFromQuery(aptitude.node),
+  );
   const aptitudeItems = combinedData.map((aptitude) => {
     return <AptitudeItem aptitude={aptitude} key={aptitude.name} />;
   });
