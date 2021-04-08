@@ -8,14 +8,7 @@
     "esModuleInterop": true,
     "rootDir": "src",
     "declaration": true,
-    "strict": true,
+    "strict": true
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "docs",
-    "scripts",
-    "jest.config.js",
-    "coverage",
-  ]
+  "exclude": ["node_modules", "dist", "docs", "scripts", "jest.config.js", "coverage"]
 }

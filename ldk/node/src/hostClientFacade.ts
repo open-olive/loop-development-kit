@@ -44,10 +44,7 @@ export default class HostClientFacade implements HostServices {
     this.logger = logger;
   }
 
-  public connect(
-    connInfo: ConnInfo.AsObject,
-    session: Session.AsObject,
-  ): Promise<void[]> {
+  public connect(connInfo: ConnInfo.AsObject, session: Session.AsObject): Promise<void[]> {
     return Promise.all([
       this.clipboard.connect(connInfo, session, this.logger),
       this.cursor.connect(connInfo, session, this.logger),
