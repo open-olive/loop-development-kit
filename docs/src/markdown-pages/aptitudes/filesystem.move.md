@@ -1,6 +1,6 @@
 ---
-name: "Clipboard"
-links_go: "ClipboardClient"
-links_node: "ClipboardService"
+name: "Move"
+links_go: "Move"
+links_node: "moveFile"
 ---
-Allows Loops to read clipboard contents, be notified when clipboard contents change, and write to it.
+Move a file or directory.

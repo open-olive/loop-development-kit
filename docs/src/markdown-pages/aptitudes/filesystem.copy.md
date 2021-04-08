@@ -1,6 +1,6 @@
 ---
-name: "Clipboard"
-links_go: "ClipboardClient"
-links_node: "ClipboardService"
+name: "Copy"
+links_go: "Copy"
+links_node: "copyFile"
 ---
-Allows Loops to read clipboard contents, be notified when clipboard contents change, and write to it.
+Copy a file or directory.
