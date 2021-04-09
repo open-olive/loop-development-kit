@@ -1,4 +1,4 @@
-import { ClipboardImpl } from './clipboard';
+import { ClipboardImpl } from '.';
 import { mocked } from 'ts-jest/utils';
 import any = jasmine.any;
 import anything = jasmine.anything;
