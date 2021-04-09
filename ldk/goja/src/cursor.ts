@@ -1,4 +1,12 @@
 /**
+ * Response object containing the cursor position, where 0,0 is the top-left of the screen.
+ */
+export interface Position {
+  x: number;
+  y: number;
+}
+
+/**
  * The CursorService provides access to the cursor position.
  */
 export interface Cursor {
@@ -31,13 +39,4 @@ export class CursorImpl implements Cursor {
   listenPosition(callback: (position: Position) => void): void {
     oliveHelps.cursor.listenPosition(callback);
   }
-}
-
-
-/**
- * Response object containing the cursor position, where 0,0 is the top-left of the screen.
- */
-export interface Position {
-  x: number;
-  y: number;
 }
