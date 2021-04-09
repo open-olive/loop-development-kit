@@ -488,7 +488,7 @@ proto.proto.ClipboardReadStreamRequest.prototype.hasSession = function () {
     return jspb.Message.getField(this, 1) != null;
 };
 /**
- * optional bool includeOliveHelpTraffic = 2;
+ * optional bool IncludeOliveHelpTraffic = 2;
  * @return {boolean}
  */
 proto.proto.ClipboardReadStreamRequest.prototype.getIncludeolivehelptraffic = function () {
