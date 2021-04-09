@@ -1,5 +1,5 @@
-import { ClipboardImpl } from './clipboard';
 import { mocked } from 'ts-jest/utils';
+import { ClipboardImpl } from './clipboard';
 
 describe('Clipboard', () => {
   let subject: ClipboardImpl;
@@ -18,7 +18,7 @@ describe('Clipboard', () => {
       const expected = 'expected string';
       mocked(oliveHelps.clipboard.read).mockImplementation((cb) => cb(expected));
 
-      let actual = subject.read();
+      const actual = subject.read();
 
       return expect(actual).resolves.toBe(expected);
     });
@@ -29,7 +29,7 @@ describe('Clipboard', () => {
         throw exception;
       });
 
-      let actual = subject.read();
+      const actual = subject.read();
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -61,7 +61,7 @@ describe('Clipboard', () => {
         cb();
       });
 
-      let actual = subject.write(expectedText);
+      const actual = subject.write(expectedText);
 
       expect(oliveHelps.clipboard.write).toHaveBeenCalledWith(expectedText, expect.any(Function));
       return expect(actual).resolves.toBeUndefined();
@@ -73,7 +73,7 @@ describe('Clipboard', () => {
         throw exception;
       });
 
-      let actual = subject.write('text');
+      const actual = subject.write('text');
 
       return expect(actual).rejects.toBe(exception);
     });

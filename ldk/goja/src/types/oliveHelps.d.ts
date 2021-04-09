@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
