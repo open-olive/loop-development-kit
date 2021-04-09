@@ -92,6 +92,13 @@ export default function Home(props: PageProps<IMarkdownRemarkQuery<IFrontmatterP
       <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Get the LDK</h2>
         <p>Get the LDK and start building!</p>
+        <p>
+          <strong>PLEASE NOTE</strong>: In order to provide a highly controlled and secure
+          environment for our Loops, we will be transitioning to a JavaScript-only model and
+          removing support for the C# and Go LDKs. This will also enable us to build additional
+          features and Aptitudes more quickly. Please feel free to reach out to your Olive Helps
+          developer contact if you have any questions.
+        </p>
         <div className={styles.downloadCollection}>
           {languages.map((language) => (
             <LanguageBlock {...language} key={language.language} />
