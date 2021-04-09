@@ -81,12 +81,14 @@ export const generateWhisperInput = (input: WhisperFormInputs): messages.Whisper
     case 'radio': {
       inputMsg = new WFI.Radio();
       inputMsg.setOptionsList(input.options);
+      inputMsg.setValue(input.value);
       msg.setRadio(inputMsg);
       break;
     }
     case 'select': {
       inputMsg = new WFI.Select();
       inputMsg.setOptionsList(input.options);
+      inputMsg.setValue(input.value);
       msg.setSelect(inputMsg);
       break;
     }
