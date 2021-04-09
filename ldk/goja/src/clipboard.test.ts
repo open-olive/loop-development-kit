@@ -1,7 +1,5 @@
 import { ClipboardImpl } from './clipboard';
 import { mocked } from 'ts-jest/utils';
-import any = jasmine.any;
-import anything = jasmine.anything;
 
 describe('Clipboard', () => {
   let subject: ClipboardImpl;
