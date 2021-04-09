@@ -1,8 +1,8 @@
 import { mocked } from 'ts-jest/utils';
-import { ClipboardImpl } from './clipboard';
+import { Clipboard, ClipboardImpl } from './clipboard';
 
 describe('Clipboard', () => {
-  let subject: ClipboardImpl;
+  let subject: Clipboard;
 
   beforeEach(() => {
     oliveHelps.clipboard = {
@@ -16,7 +16,7 @@ describe('Clipboard', () => {
   describe('read', () => {
     it('returns a promise result with expected clipboard value', () => {
       const expected = 'expected string';
-      mocked(oliveHelps.clipboard.read).mockImplementation((cb) => cb(expected));
+      mocked(oliveHelps.clipboard.read).mockImplementation((callback) => callback(expected));
 
       const actual = subject.read();
 
@@ -56,14 +56,14 @@ describe('Clipboard', () => {
 
   describe('write', () => {
     it('writes text to an olive helps clipboard', () => {
-      const expectedText = 'text';
-      mocked(oliveHelps.clipboard.write).mockImplementation((text, cb) => {
-        cb();
+      const expected = 'text';
+      mocked(oliveHelps.clipboard.write).mockImplementation((text, callback) => {
+        callback();
       });
 
-      const actual = subject.write(expectedText);
+      const actual = subject.write(expected);
 
-      expect(oliveHelps.clipboard.write).toHaveBeenCalledWith(expectedText, expect.any(Function));
+      expect(oliveHelps.clipboard.write).toHaveBeenCalledWith(expected, expect.any(Function));
       return expect(actual).resolves.toBeUndefined();
     });
 
