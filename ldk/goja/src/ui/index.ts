@@ -9,6 +9,6 @@ export class UIImpl implements UI {
   }
 
   listenGlobalSearch(cb: (val: string) => void): void {
-    return oliveHelps.ui.listenSearchbar(cb);
+    return oliveHelps.ui.listenGlobalSearch(cb);
   }
 }
