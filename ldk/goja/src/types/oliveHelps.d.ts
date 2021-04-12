@@ -62,12 +62,6 @@ declare namespace OliveHelps {
   }
 
   //-- Process
-  interface Process {
-    all(cb: (processInfo: ProcessInfo[]) => void): void;
-
-    listenAll(cb: (event: ProcessEvent) => void): void;
-  }
-
   enum ProcessAction {
     Unknown = 0,
     Started = 1,
@@ -83,6 +77,12 @@ declare namespace OliveHelps {
     arguments: string;
     command: string;
     pid: number;
+  }
+  
+  interface Process {
+    all(cb: (processInfo: ProcessInfo[]) => void): void;
+
+    listenAll(cb: (event: ProcessEvent) => void): void;
   }
 
   //-- Network

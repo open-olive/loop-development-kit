@@ -4,11 +4,10 @@ export interface ProcessInfo {
   pid: number
 }
 
-
 export enum ProcessAction {
-  Unknown = 0,
   Started = 1,
-  Stopped = 2,
+  Unknown = 0,
+  Stopped = 2
 }
 
 export interface ProcessEvent {
