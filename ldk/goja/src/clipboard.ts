@@ -32,8 +32,8 @@ function read(): Promise<string> {
     try {
       oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
     } catch (e) {
+      console.log('error running dodgycommand:', e);
       reject(e);
-      // TODO: add console log
     }
   });
 }
@@ -43,6 +43,7 @@ function write(text: string): Promise<void> {
     try {
       oliveHelps.clipboard.write(text, () => resolve());
     } catch (e) {
+      console.log('error running dodgycommand:', e);
       reject(e);
     }
   });

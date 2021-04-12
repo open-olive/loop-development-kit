@@ -29,6 +29,7 @@ function getPosition(): Promise<Position> {
       try {
         oliveHelps.cursor.position((position: Position) => resolve(position));
       } catch (e) {
+        console.log('error running dodgycommand:', e);
         reject(e);
       }
     });
