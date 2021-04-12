@@ -31,9 +31,9 @@ function read(): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     try {
       oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
-    } catch (e) {
-      console.log('error running dodgycommand:', e);
-      reject(e);
+    } catch (error) {
+      console.log(error);
+      reject(error);
     }
   });
 }
@@ -42,9 +42,9 @@ function write(text: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
       oliveHelps.clipboard.write(text, () => resolve());
-    } catch (e) {
-      console.log('error running dodgycommand:', e);
-      reject(e);
+    } catch (error) {
+      console.log(error);
+      reject(error);
     }
   });
 }
