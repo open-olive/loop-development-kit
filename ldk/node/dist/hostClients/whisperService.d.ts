@@ -43,9 +43,11 @@ export declare type WhisperFormNumber = WhisperFormInputWithValue<number, 'numbe
 export declare type WhisperFormPassword = WhisperFormInput<'password'>;
 export declare type WhisperFormRadio = WhisperFormInput<'radio'> & {
     options: string[];
+    value: string;
 };
 export declare type WhisperFormSelect = WhisperFormInput<'select'> & {
     options: string[];
+    value: string;
 };
 export declare type WhisperFormTelephoneNumber = WhisperFormInputWithValue<string, 'telephone'> & {
     pattern: string;

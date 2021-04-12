@@ -23,30 +23,33 @@ export interface Clipboard {
   listen(callback: (clipboardText: string) => void): void;
 }
 
-export class ClipboardImpl implements Clipboard {
-
-  listen(callback: (clipboardText: string) => void): void {
-    return oliveHelps.clipboard.listen(callback);
-  }
-
-  read(): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      try {
-        oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
-      } catch (e) {
-        reject(e);
-        // TODO: add console log
-      }
-    });
-  }
-
-  write(text: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        oliveHelps.clipboard.write(text, () => resolve());
-      } catch (e) {
-        reject(e);
-      }
-    });
-  }
+function listen(callback: (clipboardText: string) => void): void {
+  return oliveHelps.clipboard.listen(callback);
 }
+
+function read(): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    try {
+      oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
+    } catch (e) {
+      reject(e);
+      // TODO: add console log
+    }
+  });
+}
+
+function write(text: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      oliveHelps.clipboard.write(text, () => resolve());
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+export const clipboard: Clipboard = {
+  read,
+  write,
+  listen
+};

@@ -355,7 +355,7 @@ export const processStream = (host: HostServices): Promise<boolean> =>
 
 export const formWhisper = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const form = host.whisper.formWhisper(
+    host.whisper.formWhisper(
       {
         submitButton: 'Submit',
         cancelButton: 'Cancel',
@@ -364,10 +364,26 @@ export const formWhisper = (host: HostServices): Promise<boolean> =>
         inputs: {
           topic: {
             type: 'text',
-            value: '',
+            value: 'Blah',
             label: 'What can you not explain?',
             tooltip: '',
             order: 1,
+          },
+          radioButton: {
+            type: 'radio',
+            value: 'red',
+            label: 'Please select color',
+            options: ["green", "red", "blue"],
+            tooltip: '',
+            order: 2,
+          },
+          selectDropDown: {
+            type: 'select',
+            value: 'red',
+            label: 'Please select color',
+            options: ["green", "red", "blue"],
+            tooltip: '',
+            order: 3,
           },
         },
       },

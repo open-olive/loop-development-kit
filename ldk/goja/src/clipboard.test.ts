@@ -1,16 +1,13 @@
 import { mocked } from 'ts-jest/utils';
-import { Clipboard, ClipboardImpl } from './clipboard';
+import { clipboard } from './clipboard';
 
 describe('Clipboard', () => {
-  let subject: Clipboard;
-
   beforeEach(() => {
     oliveHelps.clipboard = {
       read: jest.fn(),
       write: jest.fn(),
       listen: jest.fn(),
     };
-    subject = new ClipboardImpl();
   });
 
   describe('read', () => {
@@ -18,7 +15,7 @@ describe('Clipboard', () => {
       const expected = 'expected string';
       mocked(oliveHelps.clipboard.read).mockImplementation((callback) => callback(expected));
 
-      const actual = subject.read();
+      const actual = clipboard.read();
 
       return expect(actual).resolves.toBe(expected);
     });
@@ -29,7 +26,7 @@ describe('Clipboard', () => {
         throw exception;
       });
 
-      const actual = subject.read();
+      const actual = clipboard.read();
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -38,7 +35,7 @@ describe('Clipboard', () => {
   describe('listen', () => {
     it('passed in listen function to olive helps', () => {
       const callback = jest.fn();
-      subject.listen(callback);
+      clipboard.listen(callback);
 
       expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback);
     });
@@ -50,20 +47,20 @@ describe('Clipboard', () => {
       });
 
       const callback = jest.fn();
-      expect(() => subject.listen(callback)).toThrow(exception);
+      expect(() => clipboard.listen(callback)).toThrow(exception);
     });
   });
 
   describe('write', () => {
     it('writes text to an olive helps clipboard', () => {
-      const expected = 'text';
+      const expectedText = 'text';
       mocked(oliveHelps.clipboard.write).mockImplementation((text, callback) => {
         callback();
       });
 
-      const actual = subject.write(expected);
+      const actual = clipboard.write(expectedText);
 
-      expect(oliveHelps.clipboard.write).toHaveBeenCalledWith(expected, expect.any(Function));
+      expect(oliveHelps.clipboard.write).toHaveBeenCalledWith(expectedText, expect.any(Function));
       return expect(actual).resolves.toBeUndefined();
     });
 
@@ -73,7 +70,7 @@ describe('Clipboard', () => {
         throw exception;
       });
 
-      const actual = subject.write('text');
+      const actual = clipboard.write('text');
 
       return expect(actual).rejects.toBe(exception);
     });
