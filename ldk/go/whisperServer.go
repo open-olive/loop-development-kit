@@ -259,6 +259,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Radio.Label,
 				Tooltip: inputContainer.Radio.Tooltip,
 				Options: inputContainer.Radio.Options,
+				Value:   inputContainer.Radio.Value,
 				Order:   inputContainer.Radio.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{
@@ -286,6 +287,7 @@ func (m *WhisperServer) WhisperForm(req *proto.WhisperFormRequest, stream proto.
 				Label:   inputContainer.Select.Label,
 				Tooltip: inputContainer.Select.Tooltip,
 				Options: inputContainer.Select.Options,
+				Value:   inputContainer.Select.Value,
 				Order:   inputContainer.Select.Order,
 				OnChange: func(value string) {
 					err := stream.Send(&proto.WhisperFormStreamResponse{

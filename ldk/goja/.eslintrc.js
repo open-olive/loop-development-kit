@@ -20,6 +20,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'import/prefer-default-export': 'off', // Default exports are bad.
+    'no-console': 'off',
   },
   overrides: [
     {

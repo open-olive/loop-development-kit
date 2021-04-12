@@ -573,7 +573,7 @@ proto.proto.ClipboardReadStreamRequest.prototype.hasSession = function() {
 
 
 /**
- * optional bool includeOliveHelpTraffic = 2;
+ * optional bool IncludeOliveHelpTraffic = 2;
  * @return {boolean}
  */
 proto.proto.ClipboardReadStreamRequest.prototype.getIncludeolivehelptraffic = function() {

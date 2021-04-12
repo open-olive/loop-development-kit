@@ -53,10 +53,12 @@ export type WhisperFormPassword = WhisperFormInput<'password'>;
 
 export type WhisperFormRadio = WhisperFormInput<'radio'> & {
   options: string[];
+  value: string;
 };
 
 export type WhisperFormSelect = WhisperFormInput<'select'> & {
   options: string[];
+  value: string;
 };
 
 export type WhisperFormTelephoneNumber = WhisperFormInputWithValue<string, 'telephone'> & {

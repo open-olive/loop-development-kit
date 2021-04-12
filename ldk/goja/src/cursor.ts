@@ -21,22 +21,25 @@ export interface Cursor {
    *
    * @param callback - The callback function called when the function changes.
    */
-  listenPosition(callback: (position: Position) => void): void
+  listenPosition(callback: (pos: Position) => void): void
 }
 
-export class CursorImpl implements Cursor {
-
-  position(): Promise<Position> {
+function position(): Promise<Position> {
     return new Promise<Position>((resolve, reject) => {
       try {
-        oliveHelps.cursor.position((position: Position) => resolve(position));
-      } catch (e) {
-        reject(e);
+        oliveHelps.cursor.position((pos: Position) => resolve(pos));
+      } catch (error) {
+        console.log(error.getMessage(), error);
+        reject(error);
       }
     });
   }
  
-  listenPosition(callback: (position: Position) => void): void {
+function listenPosition(callback: (pos: Position) => void): void {
     oliveHelps.cursor.listenPosition(callback);
-  }
+}
+
+export const cursor: Cursor = {
+  position,
+  listenPosition
 }
