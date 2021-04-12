@@ -17,7 +17,7 @@ describe('Cursor', () => {
       };
       mocked(oliveHelps.cursor.position).mockImplementation((callback) => callback(expected));
 
-      const actual = cursor.getPosition();
+      const actual = cursor.position();
 
       return expect(actual).resolves.toBe(expected);
     });
@@ -28,7 +28,7 @@ describe('Cursor', () => {
         throw exception;
       });
 
-      const actual = cursor.getPosition();
+      const actual = cursor.position();
 
       return expect(actual).rejects.toBe(exception);
     });

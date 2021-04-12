@@ -11,7 +11,7 @@ export interface Clipboard {
     /**
    * Writes the provided text into the clipboard.
    *
-   * @param text
+   * @param text A string to write to clipboard
    */
   write(text: string): Promise<void>;
   
@@ -32,7 +32,7 @@ function read(): Promise<string> {
     try {
       oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
     } catch (error) {
-      console.log(error.getError(), error);
+      console.log(error);
       reject(error);
     }
   });
@@ -43,7 +43,7 @@ function write(text: string): Promise<void> {
     try {
       oliveHelps.clipboard.write(text, () => resolve());
     } catch (error) {
-      console.log(error.getError(), error);
+      console.log(error);
       reject(error);
     }
   });
@@ -53,4 +53,4 @@ export const clipboard: Clipboard = {
   read,
   write,
   listen
-};
+}
