@@ -39,13 +39,15 @@ export interface Keyboard {
 }
 
 export class KeyboardImpl implements Keyboard {
-    listenHotkey(hotkey: any, callback: (pressed: boolean) => void): void {
+    listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): void {
         oliveHelps.keyboard.listenHotkey(hotkey, callback);
     }
+
     listenText(callback: (text: string) => void): void {
-        throw new Error("Method not implemented.");
+        oliveHelps.keyboard.listenText(callback);
     }
+
     listenCharacter(callback: (char: string) => void): void {
-        throw new Error("Method not implemented.");
+        oliveHelps.keyboard.listenCharacter(callback);
     }
 }
