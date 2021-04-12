@@ -32,7 +32,7 @@ function read(): Promise<string> {
     try {
       oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
     } catch (error) {
-      console.log(error);
+      console.log(error.getError(), error);
       reject(error);
     }
   });
@@ -43,7 +43,7 @@ function write(text: string): Promise<void> {
     try {
       oliveHelps.clipboard.write(text, () => resolve());
     } catch (error) {
-      console.log(error);
+      console.log(error.getError(), error);
       reject(error);
     }
   });
