@@ -4,11 +4,11 @@ export interface Clipboard {
   listen(cb: (val: string) => void): void;
 }
 
-export function listen(cb: (val: string) => void): void {
+function listen(cb: (val: string) => void): void {
   return oliveHelps.clipboard.listen(cb);
 }
 
-export function read(): Promise<string> {
+function read(): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     try {
       oliveHelps.clipboard.read((val: string) => resolve(val));
@@ -19,7 +19,7 @@ export function read(): Promise<string> {
   });
 }
 
-export function write(val: string): Promise<void> {
+function write(val: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
       oliveHelps.clipboard.write(val, () => resolve());
@@ -28,3 +28,9 @@ export function write(val: string): Promise<void> {
     }
   });
 }
+
+export const clipboard: Clipboard = {
+  read,
+  write,
+  listen
+};
