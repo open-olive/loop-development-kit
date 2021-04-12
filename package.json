@@ -6,7 +6,8 @@
   "private": true,
   "workspaces": [
     "ldk/node",
-    "docs"
+    "docs",
+    "ldk/goja"
   ],
   "directories": {
     "doc": "docs"

@@ -61,12 +61,7 @@ const testConfig: { [key: string]: any } = {
     ),
   ]),
   window: new TestGroup('Window Service', [
-    new LoopTest(
-      'Window Service - Active Window Test',
-      windowTest,
-      10000,
-      'Make window active...',
-    ),
+    new LoopTest('Window Service - Active Window Test', windowTest, 10000, 'Make window active...'),
   ]),
   file: new TestGroup('File Service', [
     new LoopTest(

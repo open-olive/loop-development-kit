@@ -26,11 +26,7 @@ export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
       query={guideQuery}
       render={(data) => (
         <>
-          <MobileMenu
-            aptitudes={aptitudeData}
-            currentPath={props.currentPath}
-            guideList={data}
-          />
+          <MobileMenu aptitudes={aptitudeData} currentPath={props.currentPath} guideList={data} />
           <DesktopMenu aptitudes={aptitudeData} currentPath={props.currentPath} guideList={data} />
         </>
       )}
