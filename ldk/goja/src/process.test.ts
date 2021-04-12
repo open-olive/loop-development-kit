@@ -1,16 +1,12 @@
 import { mocked } from 'ts-jest/utils';
-import { Process, ProcessImpl, ProcessInfo } from './process';
+import { process, ProcessInfo } from './process';
 
 describe('Process', () => {
-  let subject: Process;
-
   beforeEach(() => {
     oliveHelps.process = {
       all: jest.fn(),
       listenAll: jest.fn(),
     };
-
-    subject = new ProcessImpl();
   });
 
   describe('all', () => {
@@ -22,7 +18,7 @@ describe('Process', () => {
       }];
       mocked(oliveHelps.process.all).mockImplementation((callback) => callback(expected));
 
-      const actual = subject.all();
+      const actual = process.all();
 
       return expect(actual).resolves.toBe(expected);
     });
@@ -33,7 +29,7 @@ describe('Process', () => {
         throw exception;
       });
 
-      const actual = subject.all();
+      const actual = process.all();
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -42,7 +38,7 @@ describe('Process', () => {
   describe('listenAll', () => {
     it('passed in listen all callback to olive helps', () => {
       const callback = jest.fn();
-      subject.listenAll(callback);
+      process.listenAll(callback);
 
       expect(oliveHelps.process.listenAll).toHaveBeenCalledWith(callback);
     });
@@ -54,7 +50,7 @@ describe('Process', () => {
       });
 
       const callback = jest.fn();
-      expect(() => subject.listenAll(callback)).toThrow(exception);
+      expect(() => process.listenAll(callback)).toThrow(exception);
     });
   });
 });
