@@ -1,16 +1,13 @@
 import { mocked } from 'ts-jest/utils';
-import { ClipboardImpl } from './clipboard';
+import * as clipboard from './clipboard';
 
 describe('Clipboard', () => {
-  let subject: ClipboardImpl;
-
   beforeEach(() => {
     oliveHelps.clipboard = {
       read: jest.fn(),
       write: jest.fn(),
       listen: jest.fn(),
     };
-    subject = new ClipboardImpl();
   });
 
   describe('read', () => {
@@ -18,7 +15,7 @@ describe('Clipboard', () => {
       const expected = 'expected string';
       mocked(oliveHelps.clipboard.read).mockImplementation((cb) => cb(expected));
 
-      const actual = subject.read();
+      const actual = clipboard.read();
 
       return expect(actual).resolves.toBe(expected);
     });
@@ -29,7 +26,7 @@ describe('Clipboard', () => {
         throw exception;
       });
 
-      const actual = subject.read();
+      const actual = clipboard.read();
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -38,7 +35,7 @@ describe('Clipboard', () => {
   describe('listen', () => {
     it('passed in listen function to olive helps', () => {
       const callback = jest.fn();
-      subject.listen(callback);
+      clipboard.listen(callback);
 
       expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback);
     });
@@ -50,7 +47,7 @@ describe('Clipboard', () => {
       });
 
       const callback = jest.fn();
-      expect(() => subject.listen(callback)).toThrow(exception);
+      expect(() => clipboard.listen(callback)).toThrow(exception);
     });
   });
 
@@ -61,7 +58,7 @@ describe('Clipboard', () => {
         cb();
       });
 
-      const actual = subject.write(expectedText);
+      const actual = clipboard.write(expectedText);
 
       expect(oliveHelps.clipboard.write).toHaveBeenCalledWith(expectedText, expect.any(Function));
       return expect(actual).resolves.toBeUndefined();
@@ -73,7 +70,7 @@ describe('Clipboard', () => {
         throw exception;
       });
 
-      const actual = subject.write('text');
+      const actual = clipboard.write('text');
 
       return expect(actual).rejects.toBe(exception);
     });
