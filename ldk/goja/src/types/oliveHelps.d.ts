@@ -68,9 +68,15 @@ declare namespace OliveHelps {
     listenAll(cb: (event: ProcessEvent) => void): void;
   }
 
+  enum ProcessAction {
+    Unknown = 0,
+    Started = 1,
+    Stopped = 2
+  }
+
   interface ProcessEvent {
-    process: ProcessInfo;
-    action: number;
+    processInfo: ProcessInfo;
+    processAction: ProcessAction;
   }
 
   interface ProcessInfo {
