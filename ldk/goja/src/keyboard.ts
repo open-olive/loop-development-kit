@@ -38,14 +38,20 @@ export interface Keyboard {
     listenCharacter(callback: (char: string) => void): void
 }
 
-export class KeyboardImpl implements Keyboard {
-    listenHotkey(hotkey: any, callback: (pressed: boolean) => void): void {
-        oliveHelps.keyboard.listenHotkey(hotkey, callback);
-    }
-    listenText(callback: (text: string) => void): void {
-        throw new Error("Method not implemented.");
-    }
-    listenCharacter(callback: (char: string) => void): void {
-        throw new Error("Method not implemented.");
-    }
+function listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): void {
+    oliveHelps.keyboard.listenHotkey(hotkey, callback);
 }
+
+function listenText(callback: (text: string) => void): void {
+    oliveHelps.keyboard.listenText(callback);
+}
+
+function listenCharacter(callback: (char: string) => void): void {
+    oliveHelps.keyboard.listenCharacter(callback);
+}
+
+export const keyboard: Keyboard = {
+    listenHotkey,
+    listenText,
+    listenCharacter
+};

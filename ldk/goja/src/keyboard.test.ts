@@ -1,8 +1,7 @@
 import { mocked } from 'ts-jest/utils';
-import { KeyboardImpl } from './keyboard'
+import { Hotkey, keyboard } from './keyboard'
 
 describe('Keyboard', () => {
-    let subject: KeyboardImpl;
 
     beforeEach(() => {
         oliveHelps.keyboard = {
@@ -10,15 +9,16 @@ describe('Keyboard', () => {
             listenText: jest.fn(),
             listenCharacter: jest.fn()
         };
-        subject = new KeyboardImpl();
     });
 
     describe('listenHotkey', () => {
         it('calls olive helps with given hotkey and callback function', () => {
-            const hotkey = 'q';
             const callback = jest.fn();
+            const hotkey: Hotkey = {
+                key: 'q'
+            };
 
-            subject.listenHotkey(hotkey, callback);
+            keyboard.listenHotkey(hotkey, callback);
             expect(oliveHelps.keyboard.listenHotkey).toHaveBeenCalledWith(hotkey, callback);
         });
 
@@ -28,7 +28,43 @@ describe('Keyboard', () => {
               throw exception;
             });
       
-            expect(subject.listenHotkey).toThrow(exception);
-          });
+            expect(keyboard.listenHotkey).toThrow(exception);
+        });
+    });
+
+    describe('listenText', () => {
+        it('calls olive helps with given callback function', () => {
+            const callback = jest.fn();
+
+            keyboard.listenText(callback);
+            expect(oliveHelps.keyboard.listenText).toHaveBeenCalledWith(callback);
+        });
+
+        it('throws exception when olive helps call fails', () => {
+            const exception = 'Exception';
+            mocked(oliveHelps.keyboard.listenText).mockImplementation(() => {
+              throw exception;
+            });
+      
+            expect(keyboard.listenText).toThrow(exception);
+        });
+    });
+
+    describe('listenCharacter', () => {
+        it('calls olive helps with given callback function', () => {
+            const callback = jest.fn();
+
+            keyboard.listenCharacter(callback);
+            expect(oliveHelps.keyboard.listenCharacter).toHaveBeenCalledWith(callback);
+        });
+
+        it('throws exception when olive helps call fails', () => {
+            const exception = 'Exception';
+            mocked(oliveHelps.keyboard.listenCharacter).mockImplementation(() => {
+              throw exception;
+            });
+      
+            expect(keyboard.listenCharacter).toThrow(exception);
+        });
     });
 });
