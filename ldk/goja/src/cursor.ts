@@ -14,7 +14,7 @@ export interface Cursor {
   /**
    * @returns Promise resolving with the cursor position.
    */
-  position(): Promise<Position>
+  getPosition(): Promise<Position>
 
    /**
    * Starts listening to changes to the clipboard.
@@ -24,7 +24,7 @@ export interface Cursor {
   listenPosition(callback: (position: Position) => void): void
 }
 
-function position(): Promise<Position> {
+function getPosition(): Promise<Position> {
     return new Promise<Position>((resolve, reject) => {
       try {
         oliveHelps.cursor.position((position: Position) => resolve(position));
@@ -39,6 +39,6 @@ function listenPosition(callback: (position: Position) => void): void {
 }
 
 export const cursor: Cursor = {
-  position,
+  getPosition: getPosition,
   listenPosition
 }
