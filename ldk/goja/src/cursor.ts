@@ -29,7 +29,7 @@ function position(): Promise<Position> {
       try {
         oliveHelps.cursor.position((pos: Position) => resolve(pos));
       } catch (error) {
-        console.log(error.getMessage(), error);
+        console.log(error);
         reject(error);
       }
     });
@@ -41,5 +41,5 @@ function listenPosition(callback: (pos: Position) => void): void {
 
 export const cursor: Cursor = {
   position,
-  listenPosition
+  listenPosition,
 }
