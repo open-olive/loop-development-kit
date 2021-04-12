@@ -24,9 +24,7 @@ export interface Cursor {
   listenPosition(callback: (position: Position) => void): void
 }
 
-export class CursorImpl implements Cursor {
-
-  position(): Promise<Position> {
+function position(): Promise<Position> {
     return new Promise<Position>((resolve, reject) => {
       try {
         oliveHelps.cursor.position((position: Position) => resolve(position));
@@ -36,7 +34,11 @@ export class CursorImpl implements Cursor {
     });
   }
  
-  listenPosition(callback: (position: Position) => void): void {
+function listenPosition(callback: (position: Position) => void): void {
     oliveHelps.cursor.listenPosition(callback);
-  }
+}
+
+export const cursor: Cursor = {
+  position,
+  listenPosition
 }

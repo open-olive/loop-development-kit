@@ -1,16 +1,12 @@
 import { mocked } from 'ts-jest/utils';
-import { Cursor, CursorImpl, Position } from './cursor';
+import { cursor, Position } from './cursor';
 
 describe('Cursor', () => {
-  let subject: Cursor;
-
   beforeEach(() => {
     oliveHelps.cursor = {
       position: jest.fn(),
       listenPosition: jest.fn(),
     };
-
-    subject = new CursorImpl();
   });
 
   describe('position', () => {
@@ -21,7 +17,7 @@ describe('Cursor', () => {
       };
       mocked(oliveHelps.cursor.position).mockImplementation((callback) => callback(expected));
 
-      const actual = subject.position();
+      const actual = cursor.position();
 
       return expect(actual).resolves.toBe(expected);
     });
@@ -32,7 +28,7 @@ describe('Cursor', () => {
         throw exception;
       });
 
-      const actual = subject.position();
+      const actual = cursor.position();
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -41,7 +37,7 @@ describe('Cursor', () => {
   describe('listenPosition', () => {
     it('passed in listen position callback to olive helps', () => {
       const callback = jest.fn();
-      subject.listenPosition(callback);
+      cursor.listenPosition(callback);
 
       expect(oliveHelps.cursor.listenPosition).toHaveBeenCalledWith(callback);
     });
@@ -53,7 +49,7 @@ describe('Cursor', () => {
       });
 
       const callback = jest.fn();
-      expect(() => subject.listenPosition(callback)).toThrow(exception);
+      expect(() => cursor.listenPosition(callback)).toThrow(exception);
     });
   });
 });
