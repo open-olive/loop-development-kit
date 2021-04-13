@@ -1,7 +1,5 @@
-import { ui } from '.';
 import { mocked } from 'ts-jest/utils';
-import any = jasmine.any;
-import anything = jasmine.anything;
+import { ui } from '.';
 
 describe('UI', () => {
   beforeEach(() => {
