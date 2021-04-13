@@ -33,9 +33,13 @@ export class ClipboardClient extends BaseClient<ClipboardGRPCClient> implements 
   }
 
   streamClipboard(listener: StreamListener<string>): StoppableStream<string> {
-    const request = new messages.ClipboardReadStreamRequest().setSession(
-      this.createSessionMessage(),
-    );
+    return this.streamClipboardConfigurable(listener, false);
+  }
+
+  streamClipboardConfigurable(listener: StreamListener<string>, includeOliveHelpsTraffic: boolean): StoppableStream<string> {
+    const request = new messages.ClipboardReadStreamRequest()
+    .setSession(this.createSessionMessage())
+    .setIncludeolivehelptraffic(includeOliveHelpsTraffic);
     this.logger.info(
       'Stream Clipboard Request',
       'request',

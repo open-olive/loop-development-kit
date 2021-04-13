@@ -9,6 +9,7 @@ export declare class ClipboardClient extends BaseClient<ClipboardGRPCClient> imp
     protected generateClient(): GRPCClientConstructor<ClipboardGRPCClient>;
     queryClipboard(): Promise<string>;
     streamClipboard(listener: StreamListener<string>): StoppableStream<string>;
+    streamClipboardConfigurable(listener: StreamListener<string>, includeOliveHelpsTraffic: boolean): StoppableStream<string>;
     writeClipboard(text: string): Promise<void>;
     protected serviceName(): string;
 }
