@@ -1,7 +1,7 @@
 import * as webpack from 'webpack';
 
 const config: webpack.Configuration = {
-  entry: ['core-js/fn/promise', './src/index.js'],
+  entry: ['core-js/fn/promise'],
   target: ['web', 'es5'],
   mode: 'production',
   module: {
