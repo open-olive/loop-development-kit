@@ -1,5 +1,5 @@
-import { network, HTTPRequest, HTTPResponse } from './';
 import { mocked } from 'ts-jest/utils';
+import { network, HTTPRequest, HTTPResponse } from '.';
 
 describe('Network', () => {
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('Network', () => {
         data: new Uint8Array(),
         headers: { x: ['x'] },
       };
-      mocked(oliveHelps.network.httpRequest).mockImplementation((request, callback) => {
+      mocked(oliveHelps.network.httpRequest).mockImplementation((requesting, callback) => {
         callback(response);
       });
 
@@ -38,7 +38,7 @@ describe('Network', () => {
         method: 'GET',
         url: 'some url',
       };
-      mocked(oliveHelps.network.httpRequest).mockImplementation((request, callback) => {
+      mocked(oliveHelps.network.httpRequest).mockImplementation((requesting, callback) => {
         throw exception;
       });
 
