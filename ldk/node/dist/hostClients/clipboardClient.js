@@ -24,10 +24,7 @@ class ClipboardClient extends baseClient_1.default {
     queryClipboard() {
         return this.buildQuery((message, callback) => this.client.clipboardRead(message, callback), () => new clipboard_pb_1.default.ClipboardReadRequest(), clipboardTransformer);
     }
-    streamClipboard(listener) {
-        return this.streamClipboardConfigurable(listener, false);
-    }
-    streamClipboardConfigurable(listener, includeOliveHelpsTraffic) {
+    streamClipboard(listener, includeOliveHelpsTraffic = false) {
         const request = new clipboard_pb_1.default.ClipboardReadStreamRequest()
             .setSession(this.createSessionMessage())
             .setIncludeolivehelptraffic(includeOliveHelpsTraffic);
