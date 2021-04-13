@@ -301,7 +301,7 @@ exports.processStream = (host) => new Promise((resolve, reject) => {
     });
 });
 exports.formWhisper = (host) => new Promise((resolve, reject) => {
-    const form = host.whisper.formWhisper({
+    host.whisper.formWhisper({
         submitButton: 'Submit',
         cancelButton: 'Cancel',
         label: 'Form Whisper Test',
@@ -309,10 +309,26 @@ exports.formWhisper = (host) => new Promise((resolve, reject) => {
         inputs: {
             topic: {
                 type: 'text',
-                value: '',
+                value: 'Blah',
                 label: 'What can you not explain?',
                 tooltip: '',
                 order: 1,
+            },
+            radioButton: {
+                type: 'radio',
+                value: 'red',
+                label: 'Please select color',
+                options: ["green", "red", "blue"],
+                tooltip: '',
+                order: 2,
+            },
+            selectDropDown: {
+                type: 'select',
+                value: 'red',
+                label: 'Please select color',
+                options: ["green", "red", "blue"],
+                tooltip: '',
+                order: 3,
             },
         },
     }, (e, response) => {

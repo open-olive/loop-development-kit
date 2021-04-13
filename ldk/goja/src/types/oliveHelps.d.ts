@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
@@ -60,21 +62,27 @@ declare namespace OliveHelps {
   }
 
   //-- Process
-  interface Process {
-    all(cb: (processInfo: ProcessInfo[]) => void): void;
-
-    listenAll(cb: (event: ProcessEvent) => void): void;
+  enum ProcessAction {
+    Unknown = 0,
+    Started = 1,
+    Stopped = 2
   }
 
   interface ProcessEvent {
-    process: ProcessInfo;
-    action: number;
+    processInfo: ProcessInfo;
+    processAction: ProcessAction;
   }
 
   interface ProcessInfo {
     arguments: string;
     command: string;
     pid: number;
+  }
+  
+  interface Process {
+    all(cb: (processInfo: ProcessInfo[]) => void): void;
+
+    listenAll(cb: (event: ProcessEvent) => void): void;
   }
 
   //-- Network

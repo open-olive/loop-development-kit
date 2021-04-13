@@ -255,10 +255,12 @@ namespace Example
                         {Label = "number", Tooltip = "number tooltip", Value = 5, Max = 10, Min = 0},
                     ["Password"] = new Password {Label = "password", Tooltip = "password tooltip"},
                     ["Radio"] = new Radio
-                        {Label = "radio", Tooltip = "radio tooltip", Options = new[] {"Radio1", "Radio2"}},
+                    {
+                        Label = "radio", Tooltip = "radio tooltip", Options = new[] {"Radio1", "Radio2", "Radio3"}, Value = "Radio2"
+                    },
                     ["Select"] = new Select
                     {
-                        Label = "select", Tooltip = "select tooltip", Options = new[] {"Select1", "Select2"}
+                        Label = "select", Tooltip = "select tooltip", Options = new[] {"Select1", "Select2", "Select3"}, Value = "Select2"
                     },
                     ["Telephone"] = new Telephone
                     {

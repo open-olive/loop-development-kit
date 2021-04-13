@@ -84,6 +84,20 @@ func (c *Loop) run() {
 					}
 				},
 			},
+			"radio": &ldk.WhisperContentFormInputRadio{
+				Label:   "Are you older than 60",
+				Tooltip: "Age verification",
+				Options: []string{"Yes", "No"},
+				Value:   "No",
+				Order:   3,
+			},
+			"select": &ldk.WhisperContentFormInputSelect{
+				Label:   "Country of residence",
+				Tooltip: "Your Country",
+				Options: []string{"United States", "Russia", "Romania", "Canada"},
+				Value:   "Romania",
+				Order:   4,
+			},
 		},
 	})
 	if err != nil {

@@ -172,6 +172,7 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
                 Label = Label,
                 Order = checked((uint) Order),
                 Tooltip = Tooltip,
+                Value = Value,
             };
             foreach (var option in Options)
             {
@@ -185,6 +186,11 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         /// An array of strings to be presented as the radio button choices.
         /// </summary>
         public string[] Options { get; set; }
+        
+        /// <summary>
+        /// Value of the default radio selection
+        /// </summary>
+        public string Value { get; set; }
     }
 
     /// <summary>
@@ -199,6 +205,7 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
                 Label = Label,
                 Order = checked((uint) Order),
                 Tooltip = Tooltip,
+                Value = Value,
             };
             foreach (var option in Options)
             {
@@ -212,6 +219,11 @@ namespace OliveHelpsLDK.Whispers.Forms.Inputs
         /// The list of options the user can choose from.
         /// </summary>
         public string[] Options { get; set; }
+        
+        /// <summary>
+        /// Value of the default select selection
+        /// </summary>
+        public string Value { get; set; }
     }
 
     /// <summary>

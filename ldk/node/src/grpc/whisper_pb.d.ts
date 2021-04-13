@@ -448,6 +448,9 @@ export namespace WhisperFormInput {
         setOptionsList(value: Array<string>): Radio;
         addOptions(value: string, index?: number): string;
 
+        getValue(): string;
+        setValue(value: string): Radio;
+
         getOrder(): number;
         setOrder(value: number): Radio;
 
@@ -467,6 +470,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             optionsList: Array<string>,
+            value: string,
             order: number,
         }
     }
@@ -482,6 +486,9 @@ export namespace WhisperFormInput {
         getOptionsList(): Array<string>;
         setOptionsList(value: Array<string>): Select;
         addOptions(value: string, index?: number): string;
+
+        getValue(): string;
+        setValue(value: string): Select;
 
         getOrder(): number;
         setOrder(value: number): Select;
@@ -502,6 +509,7 @@ export namespace WhisperFormInput {
             label: string,
             tooltip: string,
             optionsList: Array<string>,
+            value: string,
             order: number,
         }
     }
