@@ -1,7 +1,5 @@
-import { network } from './';
+import { network, HTTPRequest, HTTPResponse } from './';
 import { mocked } from 'ts-jest/utils';
-import any = jasmine.any;
-import anything = jasmine.anything;
 
 describe('Network', () => {
   beforeEach(() => {
@@ -12,13 +10,13 @@ describe('Network', () => {
 
   describe('httpRequest', () => {
     it('returns a promise result with expected clipboard value', () => {
-      const request: OliveHelps.HTTPRequest = {
+      const request: HTTPRequest = {
         body: new Uint8Array(),
         headers: { x: ['x'] },
         method: 'GET',
         url: 'some url',
       };
-      const response: OliveHelps.HTTPResponse = {
+      const response: HTTPResponse = {
         statusCode: 200,
         data: new Uint8Array(),
         headers: { x: ['x'] },
@@ -34,7 +32,7 @@ describe('Network', () => {
 
     it('returns a rejected promise', () => {
       const exception = 'Exception';
-      const request: OliveHelps.HTTPRequest = {
+      const request: HTTPRequest = {
         body: new Uint8Array(),
         headers: { x: ['x'] },
         method: 'GET',

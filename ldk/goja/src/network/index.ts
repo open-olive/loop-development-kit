@@ -11,10 +11,37 @@ export interface Network {
   httpRequest(req: OliveHelps.HTTPRequest): Promise<OliveHelps.HTTPResponse>;
 }
 
+/**
+ * The HTTP Request configuration.
+ */
+export interface HTTPRequest {
+  body: Uint8Array;
+  headers: Record<string, string[]>;
+  method: string;
+  url: string;
+}
+
+/**
+ * The HTTP Response data.
+ */
+export interface HTTPResponse {
+  statusCode: number;
+  /**
+   * The HTTP response as a byte array. To decode into a UTF-8 string you can:
+   * ```
+   * import * as util from 'util';
+   * ...
+   * var string = new TextDecoder("utf-8").decode(uint8array);
+   * ```
+   */
+  data: Uint8Array;
+  headers: Record<string, string[]>;
+}
+
 function httpRequest(req: OliveHelps.HTTPRequest): Promise<OliveHelps.HTTPResponse> {
-  return new Promise<OliveHelps.HTTPResponse>((resolve, reject) => {
+  return new Promise<HTTPResponse>((resolve, reject) => {
     try {
-      oliveHelps.network.httpRequest(req, (val: OliveHelps.HTTPResponse) => {
+      oliveHelps.network.httpRequest(req, (val: HTTPResponse) => {
         resolve(val);
       });
     } catch (e) {
