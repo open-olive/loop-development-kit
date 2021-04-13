@@ -1,4 +1,4 @@
-export type SupportedLanguage = 'go' | 'node' | 'dotnet';
+export type SupportedLanguage = 'node';
 
 interface LDKLanguage {
   language: string;
