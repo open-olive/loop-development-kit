@@ -31,6 +31,7 @@ module.exports = {
       rules: {
         'import/no-unresolved': ['off'],
         'import/extensions': ['off'],
+        'no-console': 'off',
       },
       files: ['**/*.ts'],
     }

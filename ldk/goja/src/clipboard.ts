@@ -11,7 +11,7 @@ export interface Clipboard {
     /**
    * Writes the provided text into the clipboard.
    *
-   * @param text
+   * @param text A string to write to clipboard
    */
   write(text: string): Promise<void>;
   
