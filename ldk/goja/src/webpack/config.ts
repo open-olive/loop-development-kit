@@ -1,12 +1,7 @@
 import * as webpack from 'webpack';
-import * as path from 'path';
 
 const config: webpack.Configuration = {
   entry: ['core-js/fn/promise', './src/index.js'],
-  output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
   target: ['web', 'es5'],
   mode: 'production',
   module: {
