@@ -1,4 +1,6 @@
-# Loop Development Kit (LDK) for NodeJS
+# Loop Development Kit (LDK) for C#
+
+> **PLEASE NOTE**: In order to provide a highly controlled and secure environment for our Loops, we will be transitioning to a JavaScript-only model and removing support for the C# and Go LDKs. This will also enable us to build additional features and Aptitudes more quickly. Please feel free to reach out to your Olive Helps developer contact if you have any questions.
 
 ## Developing
 
@@ -7,7 +9,7 @@
 You should have the following installed:
 
 - .Net
-- The Visual Studio editor of your choice. 
+- The Visual Studio editor of your choice.
 - Olive Helps
 
 ### Setup
@@ -20,10 +22,10 @@ Olive Helps expects your library to start its Loop server when launched. The LDK
 - Create a Console application Project.
 - Download and reference the Olive Helps .Net LDK (TODO: Confirm package name) from NuGet in Console project.
 - Create your Main method in your program:
-    - Create a new instance of `Logger` from `OliveHelpsLDK.Logging`.
-    - Create a class that implements `OliveHelpsLDK.ILoop`.
-    - Implement the `ILoop` methods.
-    - Call `OliveHelpsLDK.LoopServer.Start` with an instance of your Loop, and the `Logger` object. 
+  - Create a new instance of `Logger` from `OliveHelpsLDK.Logging`.
+  - Create a class that implements `OliveHelpsLDK.ILoop`.
+  - Implement the `ILoop` methods.
+  - Call `OliveHelpsLDK.LoopServer.Start` with an instance of your Loop, and the `Logger` object.
 
 ##### Example Loop
 
@@ -49,7 +51,7 @@ namespace Console {
 
     class Loop : ILoop {
         public ILogger Logger { get; set; };
-        private IStreamingCall<string> Stream { get; set; }; 
+        private IStreamingCall<string> Stream { get; set; };
 
         public Task Start(ILoopServices services) {
             Stream = services.Clipboard.Stream();
@@ -77,8 +79,8 @@ Olive Helps lets you add a local command as Local Plugins:
 1. Run your application and copy the command executed to start the program.
 2. Open Olive Helps.
 3. Open the Loop Library:
-    1. Click the Hamburger icon.
-    2. Click Loop Library.
+   1. Click the Hamburger icon.
+   2. Click Loop Library.
 4. Click the Install Local Plugin button:
 5. Select the working directory for the command.
 6. Paste the command from Step 1.
