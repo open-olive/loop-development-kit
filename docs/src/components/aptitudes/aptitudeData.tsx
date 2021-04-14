@@ -2,8 +2,6 @@ import React from 'react';
 
 export interface LDKLinks {
   node: string;
-  go: string;
-  dotnet: string;
 }
 
 export type LDKLinkActive = Partial<LDKLinks>;
@@ -25,7 +23,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
   clipboard: {
     name: 'Clipboard',
     links: {
-      go: 'ClipboardClient',
       node: 'ClipboardService',
     },
     description:
@@ -35,7 +32,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Stream Changes',
         description: 'Receive messages whenever the clipboard contents change.',
         links: {
-          go: 'Listen',
           node: 'streamClipboard',
         },
       },
@@ -44,7 +40,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description: 'Read the current text contents of the clipboard.',
         links: {
           node: 'queryClipboard',
-          go: 'Read',
         },
       },
       {
@@ -52,7 +47,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description: 'Write text content to the clipboard.',
         links: {
           node: 'writeClipboard',
-          go: 'Write',
         },
       },
     ],
@@ -60,7 +54,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
   cursor: {
     name: 'Cursor',
     links: {
-      go: 'CursorClient',
       node: 'CursorService',
     },
     description:
@@ -71,7 +64,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description: 'Reads the current cursor position on screen.',
         links: {
           node: 'queryCursorPosition',
-          go: 'Position',
         },
       },
       {
@@ -79,7 +71,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description: 'Receive a message whenever the user moves the cursor on screen.',
         links: {
           node: 'streamCursorPosition',
-          go: 'ListenPosition',
         },
       },
     ],
@@ -88,7 +79,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     name: 'Filesystem',
     links: {
       node: 'FileSystemService',
-      go: 'FilesystemClient',
     },
     description:
       'Observe changes within directories and files, and interact with individual files.',
@@ -97,7 +87,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'List Directory',
         description: 'List the contents of any given directory',
         links: {
-          go: 'Dir',
           node: 'queryDirectory',
         },
       },
@@ -105,7 +94,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Stream Directory Changes',
         description: 'Receive a message whenever any file changes inside a directory',
         links: {
-          go: 'ListenDir',
           node: 'streamDirectory',
         },
       },
@@ -113,7 +101,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Create Directory',
         description: 'Create a directory at the specified location.',
         links: {
-          go: 'MakeDir',
           node: 'makeDirectory',
         },
       },
@@ -121,7 +108,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Copy',
         description: 'Copy a file or directory.',
         links: {
-          go: 'Copy',
           node: 'copyFile',
         },
       },
@@ -129,7 +115,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Move',
         description: 'Move a file or directory.',
         links: {
-          go: 'Move',
           node: 'moveFile',
         },
       },
@@ -137,7 +122,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Remove',
         description: 'Remove a file or directory',
         links: {
-          go: 'Remove',
           node: 'removeFile',
         },
       },
@@ -145,7 +129,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Stream File Changes',
         description: 'Receive a message whenever any change is made to a specified file.',
         links: {
-          go: 'ListenFile',
           node: 'streamFileInfo',
         },
       },
@@ -153,7 +136,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Create File',
         description: 'Creates a file at the specified path and allows you to write to that file.',
         links: {
-          go: 'Create',
           node: 'createFile',
         },
       },
@@ -162,7 +144,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           'Opens a file at the specified path (if it exists) and allows you to write to that file.',
         links: {
-          go: 'Open',
           node: 'openFile',
         },
       },
@@ -173,7 +154,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     description: 'Observe keyboard activity.',
     links: {
       node: 'KeyboardService',
-      go: 'KeyboardClient',
     },
     capabilities: [
       {
@@ -182,7 +162,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
           'Receive a notification whenever the user types text. Notifications are sent whenever the user stops typing for one second and contain all the text entered since the last notification.',
         links: {
           node: 'streamText',
-          go: 'ListenText',
         },
       },
       {
@@ -190,7 +169,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           'Allows Loops to observe when a specific hotkey combination (letter/number + modifier keys like Ctrl, Alt, Shift) are pressed or released.',
         links: {
-          go: 'ListenHotkey',
           node: 'streamHotKey',
         },
       },
@@ -199,7 +177,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           'Receive a notification for every character that is entered. A separate notification is sent for each character entered as it happens.',
         links: {
-          go: 'ListenCharacter',
           node: 'streamChar',
         },
       },
@@ -209,7 +186,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     name: 'Network',
     description: 'Allows Loops to make network requests to external services',
     links: {
-      go: 'NetworkClient',
       node: 'NetworkService',
     },
     capabilities: [
@@ -218,7 +194,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           'Initiates a HTTPS request to a network address and returns the response body and headers. Only HTTPS addresses are supported.',
         links: {
-          go: 'HTTPRequest',
           node: 'httpRequest',
         },
       },
@@ -228,7 +203,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     name: 'Process',
     description: 'Allows Loops to observe processes running on the system.',
     links: {
-      go: 'ProcessClient',
       node: 'ProcessService',
     },
     capabilities: [
@@ -236,7 +210,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Read Processes',
         description: 'Get all the current processes running on the system.',
         links: {
-          go: 'State',
           node: 'queryProcesses',
         },
       },
@@ -244,7 +217,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Stream Processes',
         description: 'Receive a notification whenever a process starts or stops on the system.',
         links: {
-          go: 'ListenState',
           node: 'streamProcesses',
         },
       },
@@ -255,7 +227,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     description:
       "Allows Loops to retrieve and store strings in the system's secure storage (Keychain for MacOS, Credential Manager for Windows).",
     links: {
-      go: 'VaultClient',
       node: 'VaultService',
     },
     capabilities: [
@@ -263,7 +234,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Delete',
         description: 'Deletes a certain key',
         links: {
-          go: 'Delete',
           node: 'vaultDelete',
         },
       },
@@ -271,7 +241,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Exists',
         description: 'Returns whether the key exists',
         links: {
-          go: 'Exists',
           node: 'vaultExists',
         },
       },
@@ -279,7 +248,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Read',
         description: 'Reads the value from the given key.',
         links: {
-          go: 'Read',
           node: 'vaultRead',
         },
       },
@@ -287,7 +255,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Write',
         description: 'Writes a value to a given key, overwriting any existing value.',
         links: {
-          go: 'Write',
           node: 'vaultWrite',
         },
       },
@@ -298,7 +265,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     description:
       'Allows Loops to receive a notification whenever the user interacts with UI elements in Olive Helps',
     links: {
-      go: 'UIClient',
       node: 'UIService',
     },
     capabilities: [
@@ -306,7 +272,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Searchbar',
         description: 'Get notified when the user searches for a value in the Sidebar',
         links: {
-          go: 'ListenSearchbar',
           node: 'streamSearchbar',
         },
       },
@@ -314,7 +279,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Global Search',
         description: 'Get notified when the user uses the Olive Helps global search.',
         links: {
-          go: 'ListenGlobalSearch',
           node: 'streamGlobalSearch',
         },
       },
@@ -325,7 +289,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     description:
       'Allows Loops to display interactive information in a variety of formats in the Olive Helps Sidebar',
     links: {
-      go: 'WhisperClient',
       node: 'WhisperService',
     },
 
@@ -334,7 +297,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Markdown',
         description: 'Displays a Whisper formatted using the Markdown syntax.',
         links: {
-          go: 'Markdown',
           node: 'markdownWhisper',
         },
       },
@@ -343,7 +305,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           'Displays a Whisper with a message formatted using Markdown, and two buttons for the user to click on. Clicking on either button will dismiss the Whisper and the Loop will receive whether the user clicked on the Confirm button (true) or Reject button (false).',
         links: {
-          go: 'Confirm',
           node: 'confirmWhisper',
         },
       },
@@ -352,7 +313,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           "Displays a Whisper with a list of entries the user can click on. When the user clicks on an entry the Loop receives a notification that an entry has been clicked on, and the entry's ID.",
         links: {
-          go: 'Disambiguation',
           node: 'disambiguationWhisper',
         },
       },
@@ -361,7 +321,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           'Displays a Whisper with a set of form inputs that can be prepopulated. When the user changes a value in the form the Loop receives an update notification. When the user submits or cancels the form the Loop receives a notification and all the values of the form fields.',
         links: {
-          go: 'Form',
           node: 'formWhisper',
         },
       },
@@ -388,7 +347,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
           </>
         ),
         links: {
-          go: 'List',
           node: 'listWhisper',
         },
       },
@@ -398,7 +356,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
     name: 'Window',
     description: 'Allows Loops to see what application windows are open in the system.',
     links: {
-      go: 'WindowClient',
       node: 'WindowService',
     },
     capabilities: [
@@ -406,7 +363,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Get Active Window',
         description: "Get the currently focused window and it's data.",
         links: {
-          go: 'ActiveWindow',
           node: 'queryActiveWindow',
         },
       },
@@ -414,7 +370,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Stream Active Window',
         description: 'Receive notifications whenever the currently focused window changes.',
         links: {
-          go: 'ListenActiveWindow',
           node: 'streamActiveWindow',
         },
       },
@@ -422,7 +377,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         name: 'Get All Windows',
         description: 'Get a list of all the windows and their information.',
         links: {
-          go: 'State',
           node: 'queryWindows',
         },
       },
@@ -431,7 +385,6 @@ export const aptitudes: { [sensor: string]: IAptitudeData } = {
         description:
           'Receive a notification whenever a window is opened, closed, focused, unfocused, moved, resized, or its title changes. A window that is opened with focus will generate an Opened event and a Focused event.',
         links: {
-          go: 'ListenState',
           node: 'streamWindows',
         },
       },

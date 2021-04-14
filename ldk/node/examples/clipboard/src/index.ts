@@ -13,13 +13,14 @@ class ClipboardLoop implements Loop {
     logger.info('Requesting Stream');
     try {
       this.host.clipboard.streamClipboard((error, response) => {
+        logger.debug('Received clipboard text:', 'info', JSON.stringify(response));
         if (response !== 'fileinfo') {
           return;
         }
         this.workFile().catch((e) => {
           logger.error('Received Error', 'error', e);
         });
-      });
+      }, true);
     } catch (e) {
       logger.error('Error Streaming', 'error', e.toString());
     }

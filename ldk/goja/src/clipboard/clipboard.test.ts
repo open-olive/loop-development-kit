@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { clipboard } from './clipboard';
+import { clipboard } from '.';
 
 describe('Clipboard', () => {
   beforeEach(() => {
@@ -13,7 +13,7 @@ describe('Clipboard', () => {
   describe('read', () => {
     it('returns a promise result with expected clipboard value', () => {
       const expected = 'expected string';
-      mocked(oliveHelps.clipboard.read).mockImplementation((cb) => cb(expected));
+      mocked(oliveHelps.clipboard.read).mockImplementation((callback) => callback(expected));
 
       const actual = clipboard.read();
 
@@ -53,8 +53,8 @@ describe('Clipboard', () => {
   describe('write', () => {
     it('writes text to an olive helps clipboard', () => {
       const expectedText = 'text';
-      mocked(oliveHelps.clipboard.write).mockImplementation((text, cb) => {
-        cb();
+      mocked(oliveHelps.clipboard.write).mockImplementation((text, callback) => {
+        callback();
       });
 
       const actual = clipboard.write(expectedText);
