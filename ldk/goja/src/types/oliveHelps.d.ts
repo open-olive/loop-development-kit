@@ -15,6 +15,11 @@ declare namespace OliveHelps {
     ui: UI;
     vault: Vault;
     window: Window;
+    config: Config;
+  }
+
+  interface Config {
+    includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   //-- Window
