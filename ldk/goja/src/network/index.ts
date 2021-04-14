@@ -1,17 +1,4 @@
 /**
- * The Network Aptitude provides access to network calls through Olive Helps
- */
-export interface Network {
-  /**
-   * Generates a HTTP request with the provided configuration.
-   *
-   * @param request - The HTTP request to make.
-   * @returns A Promise resolving with the response.
-   */
-  httpRequest(req: OliveHelps.HTTPRequest): Promise<OliveHelps.HTTPResponse>;
-}
-
-/**
  * The HTTP Request configuration.
  */
 export interface HTTPRequest {
@@ -38,7 +25,20 @@ export interface HTTPResponse {
   headers: Record<string, string[]>;
 }
 
-function httpRequest(req: OliveHelps.HTTPRequest): Promise<OliveHelps.HTTPResponse> {
+/**
+ * The Network Aptitude provides access to network calls through Olive Helps
+ */
+export interface Network {
+  /**
+   * Generates a HTTP request with the provided configuration.
+   *
+   * @param request - The HTTP request to make.
+   * @returns A Promise resolving with the response.
+   */
+  httpRequest(req: HTTPRequest): Promise<HTTPResponse>;
+}
+
+function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
   return new Promise<HTTPResponse>((resolve, reject) => {
     try {
       oliveHelps.network.httpRequest(req, (val: HTTPResponse) => {
