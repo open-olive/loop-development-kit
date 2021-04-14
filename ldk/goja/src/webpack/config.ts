@@ -1,9 +1,30 @@
 import * as webpack from 'webpack';
+import Terser from 'terser-webpack-plugin';
+import { generateBanner } from './generate-banner';
 
 const config: webpack.Configuration = {
   entry: ['core-js/fn/promise'],
   target: ['web', 'es5'],
   mode: 'production',
+  plugins: [
+    new webpack.BannerPlugin({
+      banner: generateBanner(),
+      raw: true
+    }),
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new Terser({
+        terserOptions: {
+          format: {
+            comments: /---BEGIN-LOOP-JSON-BASE64---/i,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
+  },
   module: {
     rules: [
       {
