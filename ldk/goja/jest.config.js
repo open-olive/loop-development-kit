@@ -4,5 +4,5 @@ module.exports = {
   globals: {
     oliveHelps: {},
   },
-  setupFilesAfterEnv: ["<rootDir>/jestGlobalSetup.js"]
+  setupFilesAfterEnv: ["<rootDir>/src/jestGlobalSetup.js"]
 };
