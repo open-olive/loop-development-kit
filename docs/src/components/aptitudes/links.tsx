@@ -2,27 +2,16 @@ import React from 'react';
 import { IAptitudeData, ICapabilityData, LDKLinkActive } from './aptitudeData';
 import styles from './links.module.scss';
 import { SupportedLanguage } from '../../references';
-import { GolangLogo } from './golang-logo';
 import { NodeLogo } from './node-logo';
-import { DotNetLogo } from './dot-net-logo';
 
-export const languages: SupportedLanguage[] = ['go', 'node', 'dotnet'];
+export const languages: SupportedLanguage[] = ['node'];
 
 function languageLogo(language: SupportedLanguage): React.ReactNode {
   const color = '#000000';
   switch (language) {
-    case 'go':
-      return <GolangLogo fillColor={color} />;
     case 'node':
       return <NodeLogo fillColor={color} />;
-    case 'dotnet':
-      return <DotNetLogo fillColor={color} />;
   }
-}
-
-function buildGoLink(interfaceName: string, methodName?: string): string {
-  const renderedMethodName = methodName ? `.${methodName}` : '';
-  return `https://pkg.go.dev/github.com/open-olive/loop-development-kit/ldk/go#${interfaceName}${renderedMethodName}`;
 }
 
 function buildNodeLink(interfaceName: string, methodName?: string): string {
@@ -46,12 +35,8 @@ function linkBuilder(
   }
   const capabilityLink = capability?.links?.[language];
   switch (language) {
-    case 'go':
-      return buildGoLink(aptitudeLink, capabilityLink);
     case 'node':
       return buildNodeLink(aptitudeLink, capabilityLink);
-    case 'dotnet':
-      return undefined;
   }
 }
 
