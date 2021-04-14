@@ -5,4 +5,4 @@ import * as network from './network';
 import * as process from './process';
 import * as ui from './ui';
 
-export { clipboard, cursor, keyboard, network, process };
+export { clipboard, cursor, keyboard, network, process, ui };
