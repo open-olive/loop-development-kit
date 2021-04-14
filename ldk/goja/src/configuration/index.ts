@@ -4,9 +4,9 @@
 export interface Configuration {
 
   /**
-   * Enables/disables process of OliveHelps events
+   * Enables/disables process of OliveHelps traffic
    *
-   * @param enabled - If enabled all events will be triggering aptitudes while olive helps window is in focus, by default it is disabled.
+   * @param enabled - If enabled then all events will be triggering aptitudes while olive helps window is in focus, by default it is disabled.
    */
   includeOliveHelpsEvents(enabled: boolean): void;
 }

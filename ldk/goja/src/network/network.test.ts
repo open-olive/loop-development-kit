@@ -21,7 +21,7 @@ describe('Network', () => {
         data: new Uint8Array(),
         headers: { x: ['x'] },
       };
-      mocked(oliveHelps.network.httpRequest).mockImplementation((_requesting, callback) => {
+      mocked(oliveHelps.network.httpRequest).mockImplementation((_request, callback) => {
         callback(response);
       });
 
