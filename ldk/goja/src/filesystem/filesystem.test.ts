@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { FileInfo, filesystem } from '.';
+import { FileInfo, WriteOperation, WriteMode, filesystem } from '.';
 
 describe('Filesystem', () => {
   beforeEach(() => {
@@ -169,6 +169,146 @@ describe('Filesystem', () => {
       });
 
       const actual = filesystem.makeDir('destination', 45);
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('move', () => {
+    it('returns a promise result when file is moved', () => {
+      const source = 'source';
+      const destination = 'destination';
+      mocked(oliveHelps.filesystem.move).mockImplementation((_source, _destination, callback) =>
+        callback(),
+      );
+
+      filesystem.move(source, destination);
+
+      expect(oliveHelps.filesystem.move).toHaveBeenCalledWith(
+        source,
+        destination,
+        expect.any(Function),
+      );
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.filesystem.move).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = filesystem.move('source', 'destination');
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('readFile', () => {
+    it('returns a promise result with expected array', () => {
+      const path = 'path';
+      const expected = new Uint8Array([84]);
+      mocked(oliveHelps.filesystem.readFile).mockImplementation((_path, callback) =>
+        callback(expected),
+      );
+
+      const actual = filesystem.readFile(path);
+
+      return expect(actual).resolves.toBe(expected);
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.filesystem.readFile).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = filesystem.readFile('path');
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('remove', () => {
+    it('returns a promise result when file is removed', () => {
+      const source = 'source';
+      mocked(oliveHelps.filesystem.remove).mockImplementation((_source, callback) => callback());
+
+      filesystem.remove(source);
+
+      expect(oliveHelps.filesystem.remove).toHaveBeenCalledWith(source, expect.any(Function));
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.filesystem.remove).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = filesystem.remove('source');
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('stat', () => {
+    it('returns a promise result with expected file information', () => {
+      const path = 'path';
+      const expected: FileInfo = {
+        name: 'name',
+        size: 2345,
+        mode: 'mode',
+        modTime: 'modTime',
+        isDir: true,
+      };
+      mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
+        callback(expected),
+      );
+
+      const actual = filesystem.stat(path);
+
+      return expect(actual).resolves.toBe(expected);
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.filesystem.stat).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = filesystem.stat('path');
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('writeFile', () => {
+    it('returns a promise result when file is written', () => {
+      const path = 'path';
+      const data = new Uint8Array([84]);
+      const writeOperation: WriteOperation = 1;
+      const writeMode: WriteMode = 54;
+      mocked(
+        oliveHelps.filesystem.writeFile,
+      ).mockImplementation((_path, _data, _writeOperation, _writeMode, callback) => callback());
+
+      filesystem.writeFile(path, data, writeOperation, writeMode);
+
+      expect(oliveHelps.filesystem.writeFile).toHaveBeenCalledWith(
+        path,
+        data,
+        writeOperation,
+        writeMode,
+        expect.any(Function),
+      );
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.filesystem.writeFile).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = filesystem.writeFile('path', new Uint8Array([84]), 1, 54);
 
       return expect(actual).rejects.toBe(exception);
     });

@@ -79,45 +79,49 @@ export interface Filesystem {
 
   /**
    * Makes a directory at the specified location.
-   * @param destination 
-   * @param writeMode 
+   * @param destination
+   * @param writeMode
    */
   makeDir(destination: string, writeMode: WriteMode): Promise<void>;
 
   /**
    * Moves a file from one location to another.
-   * @param source 
-   * @param destination 
+   * @param source
+   * @param destination
    */
   move(source: string, destination: string): Promise<void>;
 
   /**
    * Returns the contents of the specified file.
-   * @param path 
-   * @param encoding 
+   * @param path
    */
-  readFile(path: string): Promise<string | Uint8Array>;
+  readFile(path: string): Promise<Uint8Array>;
 
   /**
    * Removes a file/directory at the specified path.
-   * @param source 
+   * @param source
    */
   remove(source: string): Promise<void>;
 
   /**
    * Returns info about a specified file/directory.
-   * @param path 
+   * @param path
    */
   stat(path: string): Promise<FileInfo>;
-  
+
   /**
    * Writes (overwrites or appends) data to the specified file with specific permissions.
-   * @param path 
-   * @param data 
-   * @param writeOperation 
-   * @param writeMode 
+   * @param path
+   * @param data
+   * @param writeOperation
+   * @param writeMode
    */
-  writeFile(path: string, data: string | Uint8Array, writeOperation: WriteOperation, writeMode: WriteMode): Promise<void>;
+  writeFile(
+    path: string,
+    data: Uint8Array,
+    writeOperation: WriteOperation,
+    writeMode: WriteMode,
+  ): Promise<void>;
 }
 
 export function copy(source: string, destination: string): Promise<void> {
@@ -183,13 +187,10 @@ export function move(source: string, destination: string): Promise<void> {
   });
 }
 
-export function readFile(path: string, encoding?: string): Promise<string | Uint8Array> {
-  return new Promise<string | Uint8Array>((resolve, reject) => {
+export function readFile(path: string): Promise<Uint8Array> {
+  return new Promise<Uint8Array>((resolve, reject) => {
     try {
-      const decoder = new TextDecoder();
-      oliveHelps.filesystem.readFile(path, (data: Uint8Array) => {
-        resolve(encoding ? decoder.decode(data) : data);
-      });
+      oliveHelps.filesystem.readFile(path, (data: Uint8Array) => resolve(data));
     } catch (error) {
       console.log(error);
       reject(error);
@@ -219,18 +220,15 @@ export function stat(path: string): Promise<FileInfo> {
   });
 }
 
-export async function writeFile(
+export function writeFile(
   path: string,
-  data: string | Uint8Array,
-  op: WriteOperation,
-  mode: WriteMode,
+  data: Uint8Array,
+  writeOperation: WriteOperation,
+  writeMode: WriteMode,
 ): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
-      const encoder = new TextEncoder();
-      const fileBuffer: Uint8Array =
-        typeof data === 'string' ? encoder.encode(data) : (data as Uint8Array);
-      oliveHelps.filesystem.writeFile(path, fileBuffer, op, mode, () => resolve());
+      oliveHelps.filesystem.writeFile(path, data, writeOperation, writeMode, () => resolve());
     } catch (error) {
       console.log(error);
       reject(error);
