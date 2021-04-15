@@ -202,7 +202,7 @@ declare namespace OliveHelps {
 
     dir(path: string, cb: (fileInfos: FileInfo[]) => void): void;
 
-    makeDir(path: string, permissions: number, cb: () => void): void;
+    makeDir(path: string, writeMode: WriteMode, cb: () => void): void;
 
     listenDir(path: string, cb: (fileEvent: FileEvent) => void): void;
 

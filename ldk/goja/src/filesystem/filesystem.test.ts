@@ -147,17 +147,17 @@ describe('Filesystem', () => {
 
   describe('makeDir', () => {
     it('returns a promise result when directory is created', () => {
-      const permissions = 5;
+      const writeMode: WriteMode = 5;
       const destination = 'destination';
       mocked(
         oliveHelps.filesystem.makeDir,
-      ).mockImplementation((_destination, _permissions, callback) => callback());
+      ).mockImplementation((_destination, _writeMode, callback) => callback());
 
-      filesystem.makeDir(destination, permissions);
+      filesystem.makeDir(destination, writeMode);
 
       expect(oliveHelps.filesystem.makeDir).toHaveBeenCalledWith(
         destination,
-        permissions,
+        writeMode,
         expect.any(Function),
       );
     });

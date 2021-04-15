@@ -36,16 +36,14 @@ export enum WriteOperation {
 
 export type WriteMode = number;
 
-// TODO: finish comments documentation
-
 /**
  * The FileSystem interfaces provides access to the ability to read, write, delete files.
  */
 export interface Filesystem {
   /**
    * Copies a file from one location to another.
-   * @param source
-   * @param destination
+   * @param source - path to the file to copy from
+   * @param destination - path to the file to copy to
    */
   copy(source: string, destination: string): Promise<void>;
 
@@ -57,7 +55,7 @@ export interface Filesystem {
 
   /**
    * Return true if a file or directory exists at the specified location.
-   * @param path
+   * @param path - path to the specified file or directory
    */
   exists(path: string): Promise<boolean>;
 
@@ -65,7 +63,7 @@ export interface Filesystem {
    * Listen changes to the contents of the directory.
    *
    * @param path - path of directory to listen.
-   * @param callback - The callback function that's called when a file in the directory changes.
+   * @param callback - the callback function that's called when a file in the directory changes.
    */
   listenDir(path: string, callback: (fileEvent: FileEvent) => void): void;
 
@@ -73,48 +71,48 @@ export interface Filesystem {
    * Listen changes to a specific file.
    *
    * @param Path - path of file to listen.
-   * @param callback - The callback function called when the file changes.
+   * @param callback - the callback function called when the file changes.
    */
   listenFile(path: string, callback: (fileEvent: FileEvent) => void): void;
 
   /**
    * Makes a directory at the specified location.
-   * @param destination
-   * @param writeMode
+   * @param destination - destination of where directory needs to be created at
+   * @param writeMode - indicates a conflict resolution mode
    */
   makeDir(destination: string, writeMode: WriteMode): Promise<void>;
 
   /**
    * Moves a file from one location to another.
-   * @param source
-   * @param destination
+   * @param source - path of where to move the file from
+   * @param destination - path of where to move the file to
    */
   move(source: string, destination: string): Promise<void>;
 
   /**
    * Returns the contents of the specified file.
-   * @param path
+   * @param path - path of the specified file
    */
   readFile(path: string): Promise<Uint8Array>;
 
   /**
    * Removes a file/directory at the specified path.
-   * @param source
+   * @param source - path of the file or directory to remove
    */
   remove(source: string): Promise<void>;
 
   /**
    * Returns info about a specified file/directory.
-   * @param path
+   * @param path - path to the specified file or directory
    */
   stat(path: string): Promise<FileInfo>;
 
   /**
    * Writes (overwrites or appends) data to the specified file with specific permissions.
-   * @param path
-   * @param data
-   * @param writeOperation
-   * @param writeMode
+   * @param path - path to the file location to be written
+   * @param data - byte array data
+   * @param writeOperation - indicates if file shold be ovewritten or append
+   * @param writeMode - indicates a conflict resolution mode
    */
   writeFile(
     path: string,
@@ -165,10 +163,10 @@ export function listenFile(path: string, callback: (fileEvent: FileEvent) => voi
   return oliveHelps.filesystem.listenFile(path, callback);
 }
 
-export function makeDir(destination: string, permissions: number): Promise<void> {
+export function makeDir(destination: string, writeMode: WriteMode): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
-      oliveHelps.filesystem.makeDir(destination, permissions, () => resolve());
+      oliveHelps.filesystem.makeDir(destination, writeMode, () => resolve());
     } catch (error) {
       console.log(error);
       reject(error);
