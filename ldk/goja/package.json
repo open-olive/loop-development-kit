@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "test": "jest --silent",
+    "test": "jest",
     "test-coverage": "jest --collectCoverage",
     "test-watch": "jest --watchAll",
     "lint": "./node_modules/.bin/eslint . --ext .js,.ts"
