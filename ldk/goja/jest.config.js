@@ -4,4 +4,7 @@ module.exports = {
   globals: {
     oliveHelps: {},
   },
+  testMatch: [
+    '**/*.test.(ts)'
+  ],
 };

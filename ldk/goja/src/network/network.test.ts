@@ -21,7 +21,7 @@ describe('Network', () => {
         data: new Uint8Array(),
         headers: { x: ['x'] },
       };
-      mocked(oliveHelps.network.httpRequest).mockImplementation((requesting, callback) => {
+      mocked(oliveHelps.network.httpRequest).mockImplementation((_requesting, callback) => {
         callback(response);
       });
 
@@ -38,7 +38,7 @@ describe('Network', () => {
         method: 'GET',
         url: 'some url',
       };
-      mocked(oliveHelps.network.httpRequest).mockImplementation((requesting, callback) => {
+      mocked(oliveHelps.network.httpRequest).mockImplementation(() => {
         throw exception;
       });
 

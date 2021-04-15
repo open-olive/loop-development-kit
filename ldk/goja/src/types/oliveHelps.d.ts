@@ -192,7 +192,7 @@ declare namespace OliveHelps {
 
     listenFile(path: string, cb: (fileEvent: FileEvent) => void): void;
 
-    remove(path: string, recursive: boolean, cb: () => void): void;
+    remove(path: string, cb: () => void): void;
 
     stat(path: string, cb: (fi: FileInfo) => void): void;
 
@@ -205,6 +205,8 @@ declare namespace OliveHelps {
     makeDir(path: string, mode: number, cb: () => void): void;
 
     listenDir(path: string, cb: (fileEvent: FileEvent) => void): void;
+
+    exists(path:string, cb: (exists: boolean) => void): void;
   }
 
   interface FileInfo {
