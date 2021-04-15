@@ -158,7 +158,7 @@ export function listenDir(path: string, callback: (fileEvent: FileEvent) => void
 }
 
 export function listenFile(path: string, callback: (fileEvent: FileEvent) => void): void {
-  return oliveHelps.filesystem.listenDir(path, callback);
+  return oliveHelps.filesystem.listenFile(path, callback);
 }
 
 export function makeDir(destination: string, permissions: number): Promise<void> {
