@@ -34,7 +34,7 @@ describe('Clipboard', () => {
   });
 
   describe('listen', () => {
-    it('setting clipboard olive helps configuration', () => {
+    it('sets clipboard olive helps configuration', () => {
       const includeOliveHelpsEvents = true;
       const callback = jest.fn();
       clipboard.listen(includeOliveHelpsEvents, callback);
