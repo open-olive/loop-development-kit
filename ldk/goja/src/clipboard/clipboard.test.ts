@@ -40,14 +40,13 @@ describe('Clipboard', () => {
       expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback);
     });
 
-    it('throws exception when passing in Listen function', () => {
+    it('throws exception when passing in listen function', () => {
       const exception = 'Exception';
       mocked(oliveHelps.clipboard.listen).mockImplementation(() => {
         throw exception;
       });
 
-      const callback = jest.fn();
-      expect(() => clipboard.listen(callback)).toThrow(exception);
+      expect(() => clipboard.listen(jest.fn())).toThrow(exception);
     });
   });
 
