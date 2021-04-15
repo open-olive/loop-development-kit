@@ -4,6 +4,7 @@ import { clipboard } from '.';
 describe('Clipboard', () => {
   beforeEach(() => {
     oliveHelps.clipboard = {
+      includeOliveHelpsEvents: jest.fn(),
       read: jest.fn(),
       write: jest.fn(),
       listen: jest.fn(),
@@ -33,9 +34,17 @@ describe('Clipboard', () => {
   });
 
   describe('listen', () => {
+    it('setting clipboard olive helps configuration', () => {
+      const includeOliveHelpsEvents = true;
+      const callback = jest.fn();
+      clipboard.listen(includeOliveHelpsEvents, callback);
+
+      expect(oliveHelps.clipboard.includeOliveHelpsEvents).toHaveBeenCalledWith(includeOliveHelpsEvents);
+    });
+
     it('passed in listen function to olive helps', () => {
       const callback = jest.fn();
-      clipboard.listen(callback);
+      clipboard.listen(true, callback);
 
       expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback);
     });
@@ -47,7 +56,7 @@ describe('Clipboard', () => {
       });
 
       const callback = jest.fn();
-      expect(() => clipboard.listen(callback)).toThrow(exception);
+      expect(() => clipboard.listen(false, callback)).toThrow(exception);
     });
   });
 
