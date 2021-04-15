@@ -24,16 +24,25 @@ export interface FileInfo {
   isDir: boolean;
 }
 
+/**
+ * An object representing an action and the file details which action were applied to.
+ */
 export interface FileEvent {
   action: string;
   info: FileInfo;
 }
 
+/**
+ * An object representing the action to execute while writing to the file system
+ */
 export enum WriteOperation {
   overwrite = 1,
   append = 2,
 }
 
+/**
+ * Represents what write mode is selected in case of conflict
+ */
 export type WriteMode = number;
 
 /**
