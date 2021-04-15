@@ -25,8 +25,16 @@ const config: webpack.Configuration = {
       }),
     ],
   },
+  resolve: {
+    extensions: ['.ts', '.ts', '.js'],
+  },
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.m?js$/,
         // exclude: /(node_modules|bower_components)/,
