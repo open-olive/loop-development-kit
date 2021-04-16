@@ -1,6 +1,5 @@
 ---
 name: "List"
-links_go: "List"
 links_node: "listWhisper"
 ---
 Displays a list of values with corresponding labels. Each entry can have styles

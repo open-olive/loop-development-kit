@@ -47,18 +47,17 @@ export interface IAllAptitudeQuery {
         markdown: {
           frontmatter: {
             name: string;
-          }
-        }
-      }
-    }[]
-  }
+          };
+        };
+      };
+    }[];
+  };
 }
 
 export interface AptitudeMarkdown {
   html: string;
   frontmatter: {
     name: string;
-    links_go: string | undefined;
     links_node: string | undefined;
   };
 }
@@ -82,14 +81,12 @@ export function getAptitudeDataFromQuery(queryResult: AptitudeQueryResult): IApt
     description: queryResult.markdown.html,
     links: {
       node: aptitudeFrontMatter.links_node,
-      go: aptitudeFrontMatter.links_go,
     },
     capabilities: queryResult.capabilities.map((capability) => ({
       name: capability.markdown.frontmatter.name,
       description: capability.markdown.html,
       links: {
         node: capability.markdown.frontmatter.links_node,
-        go: capability.markdown.frontmatter.links_go,
       },
     })),
   };
