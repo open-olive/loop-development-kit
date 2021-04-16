@@ -52,13 +52,12 @@
     "@babel/plugin-transform-destructuring": "^7.13.0",
     "@babel/plugin-transform-runtime": "^7.13.10",
     "@babel/preset-env": "^7.13.12",
+    "@babel/runtime": "^7.13.10",
     "@babel/runtime-corejs2": "^7.13.10",
     "babel-loader": "^8.2.2",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.28.0",
     "webpack-cli": "^4.5.0",
-    "webpack-merge": "^5.7.3",
-    "@babel/runtime": "^7.13.10",
-    "@babel/runtime-corejs2": "^7.13.10"
+    "webpack-merge": "^5.7.3"
   }
 }
