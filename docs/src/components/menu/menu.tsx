@@ -17,7 +17,6 @@ export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
                 html
                 frontmatter {
                   name
-                  links_go
                   links_node
                 }
               }

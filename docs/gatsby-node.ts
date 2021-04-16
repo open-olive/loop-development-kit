@@ -37,7 +37,6 @@ const buildAptitudeNodes = async (args: CreatePagesArgs) => {
           id
           frontmatter {
             name
-            links_go
             links_node
           }
           html

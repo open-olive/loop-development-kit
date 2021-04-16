@@ -162,7 +162,6 @@ export const pageQuery = graphql`
               html
               frontmatter {
                 name
-                links_go
                 links_node
               }
             }
