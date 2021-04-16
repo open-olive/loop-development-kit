@@ -23,7 +23,7 @@ export const Capability: React.FunctionComponent<{
         capability={props.capability}
         aptitude={props.aptitude}
       />
-      <p className={styles.capabilityDescription}>{props.capability.description}</p>
+      <p className={styles.capabilityDescription} dangerouslySetInnerHTML={{__html: props.capability.description}}/>
     </section>
   );
 };
@@ -33,7 +33,7 @@ export const Aptitude: React.FunctionComponent<IAptitudeData> = (props) => {
     <article className={styles.aptitude}>
       <h1 className={styles.aptitudeName}>{props.name} Aptitude</h1>
       <Links links={props.links} aptitude={props} />
-      <p className={styles.aptitudeDescription}>{props.description}</p>
+      <p className={styles.aptitudeDescription} dangerouslySetInnerHTML={{__html: props.description}}/>
       <div className={styles.capabilities}>
         {props.capabilities?.map((capability) => (
           <Capability capability={capability} key={slugify(capability.name)} aptitude={props} />

@@ -6,11 +6,11 @@ import { PageHeader } from '../components/page-header';
 import OliveHelpsLogo from '../components/olive-helps-logo';
 import { languages, downloadMacUrl, downloadWindowsUrl } from '../references';
 import { Section } from '../components/section';
-import { aptitudes, IAptitudeData } from '../components/aptitudes/aptitudeData';
+import { IAptitudeData } from '../components/aptitudes/aptitudeData';
 import { graphql, Link, PageProps } from 'gatsby';
 import { buildAptitudePath } from '../components/aptitudes/aptitudePaths';
 import { mapGuidePages } from '../components/menu/shared-menu';
-import { IMarkdownRemarkQuery } from '../queries';
+import { getAptitudeDataFromQuery, IAllAptitudeQuery, IAllFileQuery } from '../queries';
 
 interface LanguageBlockProps {
   language: string;
@@ -43,7 +43,10 @@ const AptitudeItem: React.FunctionComponent<{
       <h3 className={styles.aptitudeTitle}>
         <Link to={buildAptitudePath(props.aptitude)}>{props.aptitude.name}</Link>
       </h3>
-      <p className={styles.aptitudeDescription}>{props.aptitude.description}</p>
+      <p
+        className={styles.aptitudeDescription}
+        dangerouslySetInnerHTML={{ __html: props.aptitude.description }}
+      />
     </div>
   );
 };
@@ -59,8 +62,13 @@ const GuideItem: React.FunctionComponent<IFrontmatterProps> = (props) => {
   );
 };
 
-export default function Home(props: PageProps<IMarkdownRemarkQuery<IFrontmatterProps>>) {
-  const aptitudeItems = Object.values(aptitudes).map((aptitude) => {
+export default function Home(
+  props: PageProps<IAllFileQuery<IFrontmatterProps> & IAllAptitudeQuery>,
+) {
+  const combinedData = props.data.allAptitude.edges.map((aptitude: any) =>
+    getAptitudeDataFromQuery(aptitude.node),
+  );
+  const aptitudeItems = combinedData.map((aptitude) => {
     return <AptitudeItem aptitude={aptitude} key={aptitude.name} />;
   });
   const guideItems = mapGuidePages(props.data).map((guide) => <GuideItem {...guide} />);
@@ -145,14 +153,39 @@ export interface IFrontmatterProps {
 
 export const pageQuery = graphql`
   query {
-    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___title] }, limit: 1000) {
+    allAptitude {
       edges {
         node {
-          frontmatter {
-            slug
-            title
-            description
+          internalName
+          capabilities {
+            markdown {
+              html
+              frontmatter {
+                name
+                links_node
+              }
+            }
           }
+          markdown {
+            html
+            frontmatter {
+              name
+            }
+          }
+        }
+      }
+    }
+    allFile(filter: { relativeDirectory: { eq: "guides" } }) {
+      edges {
+        node {
+          childMarkdownRemark {
+            frontmatter {
+              slug
+              title
+              description
+            }
+          }
+          relativeDirectory
         }
       }
     }
