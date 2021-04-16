@@ -21,7 +21,7 @@
     "test": "jest",
     "test-coverage": "jest --collectCoverage",
     "test-watch": "jest --watchAll",
-    "lint": "./node_modules/.bin/eslint . --ext .js,.ts"
+    "lint": "./node_modules/.bin/eslint . --max-warnings 0 --ext .js,.ts"
   },
   "repository": {
     "type": "git",
