@@ -1,10 +1,15 @@
 import * as webpack from 'webpack';
+import * as path from 'path';
 import Terser from 'terser-webpack-plugin';
 import { generateBanner } from './generate-banner';
 
 const config: webpack.Configuration = {
   entry: ['core-js/fn/promise'],
   target: ['web', 'es5'],
+  output: {
+    path: path.join(process.cwd(), 'dist'),
+    filename: 'loop.js'
+  },
   mode: 'production',
   plugins: [
     new webpack.BannerPlugin({
