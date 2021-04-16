@@ -207,6 +207,8 @@ declare namespace OliveHelps {
     listenDir(path: string, cb: (fileEvent: FileEvent) => void): void;
 
     exists(path:string, cb: (exists: boolean) => void): void;
+
+    join(segments: [string], cb: (path: string) => void): void;
   }
 
   interface FileInfo {

@@ -15,6 +15,7 @@ describe('Filesystem', () => {
       remove: jest.fn(),
       stat: jest.fn(),
       writeFile: jest.fn(),
+      join: jest.fn(),
     };
   });
 
@@ -309,6 +310,30 @@ describe('Filesystem', () => {
       });
 
       const actual = filesystem.writeFile('path', new Uint8Array([84]), 1, 54);
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('join', () => {
+    it('returns a promise result with given joined path', () => {
+      const segments = ["first", "second", "third"];
+      const expected = "first/second/third";
+
+      mocked(oliveHelps.filesystem.join).mockImplementation((_segments, callback) => callback(expected));
+
+      const actual = filesystem.join(segments);
+
+      return expect(actual).resolves.toBe(expected);
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.filesystem.join).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = filesystem.join(['a','b']);
 
       return expect(actual).rejects.toBe(exception);
     });

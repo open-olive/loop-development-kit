@@ -129,6 +129,16 @@ export interface Filesystem {
     writeOperation: WriteOperation,
     writeMode: WriteMode,
   ): Promise<void>;
+
+  /**
+   * Join joins an array of path elements into a single path, separating them with an OS specific Separator. 
+   * Empty elements are ignored. The result is Cleaned. However, if the argument list is empty or all its elements are empty, 
+   * Join returns an empty string. On Windows, the result will only be a UNC path if the first non-empty element is a UNC path.
+   * 
+   * @param segments - an array of path segments to join
+   * @returns - a single path seperated with an OS specific Separator
+   */
+  join(segments: string[]): Promise<string>;
 }
 
 export function copy(source: string, destination: string): Promise<void> {
@@ -243,6 +253,17 @@ export function writeFile(
   });
 }
 
+export function join(segments: [string]): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    try {
+      oliveHelps.filesystem.join(segments, (path: string) => resolve(path));
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
+}
+
 export const filesystem: Filesystem = {
   copy,
   dir,
@@ -255,4 +276,5 @@ export const filesystem: Filesystem = {
   remove,
   stat,
   writeFile,
+  join,
 };
