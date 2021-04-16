@@ -31,7 +31,7 @@ const config: webpack.Configuration = {
     ],
   },
   resolve: {
-    extensions: ['.ts', '.ts', '.js'],
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
