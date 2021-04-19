@@ -147,6 +147,8 @@ declare namespace OliveHelps {
     write(value: string, cb: () => void): void;
 
     listen(cb: (val: string) => void): void;
+
+    includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   //-- Whisper

@@ -1,5 +1,7 @@
 # Loop Development Kit (LDK) for NodeJS
 
+> ⚠ **Please note:** In order to provide a highly controlled and secure environment for our Loops, Olive Helps will be making a major version update to the LDK. This will result in some modifications to the API functionality and compilation process. Once the transition is complete, this documentation will be updated.
+
 ## Developing
 
 ### Prerequisites
