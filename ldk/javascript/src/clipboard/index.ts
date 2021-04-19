@@ -1,3 +1,7 @@
+export interface Cancellable {
+  cancel(): void;
+}
+
 /**
  * The ClipboardService provides access to the OS's clipboard.
  */
@@ -20,11 +24,13 @@ export interface Clipboard {
    * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus
    * @param callback - A function that's called whenever the clipboard's contents change.
    */
-  listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void;
+  listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): Cancellable;
 }
 
-function listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void {
-  oliveHelps.clipboard.includeOliveHelpsEvents(includeOliveHelpsEvents);
+function listen(
+  includeOliveHelpsEvents: boolean,
+  callback: (clipboardText: string) => void,
+): Cancellable {
   return oliveHelps.clipboard.listen(callback);
 }
 

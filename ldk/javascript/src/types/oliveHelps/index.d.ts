@@ -156,13 +156,17 @@ declare namespace OliveHelps {
     y: number;
   }
 
+  interface Cancellable {
+    cancel(): void;
+  }
+
   //-- Clipboard
   interface Clipboard {
     read(cb: (val: string) => void): void;
 
     write(value: string, cb: () => void): void;
 
-    listen(cb: (val: string) => void): void;
+    listen(cb: (val: string) => void): Cancellable;
 
     includeOliveHelpsEvents(enabled: boolean): void;
   }
