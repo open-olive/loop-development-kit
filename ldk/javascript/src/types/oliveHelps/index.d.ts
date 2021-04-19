@@ -98,7 +98,7 @@ declare namespace OliveHelps {
   interface Process {
     all(cb: (processInfo: ProcessInfo[]) => void): void;
 
-    listenAll(cb: (event: ProcessEvent) => void): void;
+    listenAll(cb: (event: ProcessEvent) => void): Cancellable;
   }
 
   //-- Network

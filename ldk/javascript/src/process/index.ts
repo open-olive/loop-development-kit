@@ -1,18 +1,20 @@
+import { Cancellable } from '../cancellable';
+
 export interface ProcessInfo {
-  arguments: string
-  command: string
-  pid: number
+  arguments: string;
+  command: string;
+  pid: number;
 }
 
 export enum ProcessAction {
   Started = 1,
   Unknown = 0,
-  Stopped = 2
+  Stopped = 2,
 }
 
 export interface ProcessEvent {
-  processInfo: ProcessInfo
-  processAction: ProcessAction
+  processInfo: ProcessInfo;
+  processAction: ProcessAction;
 }
 
 /**
@@ -24,14 +26,14 @@ export interface Process {
    *
    * @returns a Promise resolving with a list of the current processes.
    */
-  all(): Promise<ProcessInfo[]>
+  all(): Promise<ProcessInfo[]>;
 
-   /**
+  /**
    * Starts listening for processes starting and stopping for all users.
    *
    * @param callback - callback function called every time a process is started or stopped.
    */
-  listenAll(callback: (event: ProcessEvent) => void): void
+  listenAll(callback: (event: ProcessEvent) => void): Cancellable;
 }
 
 function all(): Promise<ProcessInfo[]> {
@@ -42,14 +44,14 @@ function all(): Promise<ProcessInfo[]> {
       console.log(error);
       reject(error);
     }
-  })
+  });
 }
-  
-function listenAll(callback: (processEvent: ProcessEvent) => void): void {
-  oliveHelps.process.listenAll(callback);
+
+function listenAll(callback: (processEvent: ProcessEvent) => void): Cancellable {
+  return oliveHelps.process.listenAll(callback);
 }
 
 export const process = {
   all,
-  listenAll
-}
+  listenAll,
+};
