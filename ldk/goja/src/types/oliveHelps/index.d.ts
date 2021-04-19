@@ -1,7 +1,4 @@
 /* eslint-disable */
-
-import { StringLiteral } from 'typescript';
-
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
@@ -178,7 +175,7 @@ declare namespace OliveHelps {
   }
 
   interface Link extends Component {
-    href?: boolean;
+    href?: string;
     style?: string;
     onClick?(): Promise<string>;
     text: string;
@@ -188,7 +185,7 @@ declare namespace OliveHelps {
   interface ListPair extends Component {
     copyable: boolean;
     label: string;
-    style: StringLiteral;
+    style?: string;
     value?: string;
   }
 
@@ -268,13 +265,10 @@ declare namespace OliveHelps {
   }
 
   interface Box extends Component {
-    alignment?: string;
+    alignment: string;
     children: Array<
-      | Box
       | Button
       | Checkbox
-      | CollapseBox
-      | Link
       | ListPair
       | Markdown
       | Message
@@ -285,7 +279,7 @@ declare namespace OliveHelps {
       | Telephone
       | TextInput
     >;
-    direction?: string;
+    direction: string;
   }
 
   interface NewWhisper {
@@ -294,8 +288,6 @@ declare namespace OliveHelps {
       | Box
       | Button
       | Checkbox
-      | CollapseBox
-      | Link
       | ListPair
       | Markdown
       | Message
@@ -315,9 +307,6 @@ declare namespace OliveHelps {
       | Box
       | Button
       | Checkbox
-      | CollapseBox
-      | Link
-      | ListPair
       | Markdown
       | Message
       | NumberInput
