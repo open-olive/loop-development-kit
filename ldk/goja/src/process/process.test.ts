@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { process, ProcessInfo } from './process';
+import { process, ProcessInfo } from '.';
 
 describe('Process', () => {
   beforeEach(() => {

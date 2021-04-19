@@ -1,0 +1,21 @@
+{
+  "name": "ldk-goja-wp-default",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --entry core-js/fn/promise --entry ./index.ts --config ./node_modules/@oliveai/ldk/dist/webpack/config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@oliveai/ldk": "file:../..",
+    "webpack": "^5.32.0",
+    "webpack-cli": "^4.6.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4"
+  }
+}

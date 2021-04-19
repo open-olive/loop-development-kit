@@ -65,7 +65,7 @@ declare namespace OliveHelps {
   enum ProcessAction {
     Unknown = 0,
     Started = 1,
-    Stopped = 2
+    Stopped = 2,
   }
 
   interface ProcessEvent {
@@ -78,7 +78,7 @@ declare namespace OliveHelps {
     command: string;
     pid: number;
   }
-  
+
   interface Process {
     all(cb: (processInfo: ProcessInfo[]) => void): void;
 
@@ -147,6 +147,8 @@ declare namespace OliveHelps {
     write(value: string, cb: () => void): void;
 
     listen(cb: (val: string) => void): void;
+
+    includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   //-- Whisper
