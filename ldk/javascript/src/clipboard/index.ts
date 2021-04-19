@@ -1,10 +1,8 @@
-export interface Cancellable {
-  cancel(): void;
-}
-
 /**
  * The ClipboardService provides access to the OS's clipboard.
  */
+import { Cancellable } from '../cancellable';
+
 export interface Clipboard {
   /**
    * @returns A Promise resolving with the current contents of the clipboard.

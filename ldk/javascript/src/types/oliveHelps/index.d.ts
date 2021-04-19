@@ -148,7 +148,7 @@ declare namespace OliveHelps {
   interface Cursor {
     position(cb: (pos: Position) => void): void;
 
-    listenPosition(cb: (pos: Position) => void): void;
+    listenPosition(cb: (pos: Position) => void): Cancellable;
   }
 
   interface Position {
