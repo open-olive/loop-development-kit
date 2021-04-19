@@ -121,11 +121,11 @@ declare namespace OliveHelps {
 
   //--Keyboard
   interface Keyboard {
-    listenHotkey(hotkey: Hotkey, cb: (pressed: boolean) => void): void;
+    listenHotkey(hotkey: Hotkey, cb: (pressed: boolean) => void): Cancellable;
 
-    listenText(cb: (text: string) => void): void;
+    listenText(cb: (text: string) => void): Cancellable;
 
-    listenCharacter(cb: (char: string) => void): void;
+    listenCharacter(cb: (char: string) => void): Cancellable;
   }
 
   interface Hotkey {
