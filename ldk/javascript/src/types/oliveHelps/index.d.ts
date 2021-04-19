@@ -4,6 +4,18 @@ declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
+  interface Cancellable {
+    cancel(): void;
+  }
+
+  type Readable<T> = (callback: (a: T) => void) => void;
+
+  type ReadableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
+
+  type Listenable<T> = (callback: (a: T) => void) => Cancellable;
+
+  type ListenableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
+
   interface Aptitudes {
     clipboard: Clipboard;
     whisper: WhisperService;
@@ -19,13 +31,13 @@ declare namespace OliveHelps {
 
   //-- Window
   interface Window {
-    activeWindow(cb: (windowInfo: WindowInfo) => void): void;
+    activeWindow: Readable<WindowInfo>;
 
-    listenActiveWindow(cb: (windowInfo: WindowInfo) => void): Cancellable;
+    listenActiveWindow: Listenable<WindowInfo>;
 
-    all(cb: (windowInfos: WindowInfo[]) => void): void;
+    all: Readable<WindowInfo[]>;
 
-    listenAll(cb: (windowEvent: WindowEvent) => void): Cancellable;
+    listenAll: Listenable<WindowEvent>;
   }
 
   interface WindowEvent {
@@ -61,20 +73,20 @@ declare namespace OliveHelps {
 
   //-- Vault
   interface Vault {
-    remove(key: string, cb: () => void): void;
+    remove: ReadableWithParam<string, void>;
 
-    exists(key: string, cb: (exists: boolean) => void): void;
+    exists: ReadableWithParam<string, boolean>;
 
-    read(key: string, cb: (value: string) => void): void;
+    read: ReadableWithParam<string, string>;
 
-    write(key: string, value: string, cb: () => void): void;
+    write: ReadableWithParam<string, string>;
   }
 
   //-- UI
   interface UI {
-    listenSearchbar(cb: (text: string) => void): Cancellable;
+    listenSearchbar: Listenable<string>;
 
-    listenGlobalSearch(cb: (text: string) => void): Cancellable;
+    listenGlobalSearch: Listenable<string>;
   }
 
   //-- Process
@@ -96,14 +108,14 @@ declare namespace OliveHelps {
   }
 
   interface Process {
-    all(cb: (processInfo: ProcessInfo[]) => void): void;
+    all: Readable<ProcessInfo[]>;
 
-    listenAll(cb: (event: ProcessEvent) => void): Cancellable;
+    listenAll: Listenable<ProcessEvent>;
   }
 
   //-- Network
   interface Network {
-    httpRequest(req: HTTPRequest, cb: (res: HTTPResponse) => void): void;
+    httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
   }
 
   interface HTTPRequest {
@@ -121,11 +133,11 @@ declare namespace OliveHelps {
 
   //--Keyboard
   interface Keyboard {
-    listenHotkey(hotkey: Hotkey, cb: (pressed: boolean) => void): Cancellable;
+    listenHotkey: ListenableWithParam<Hotkey, boolean>;
 
-    listenText(cb: (text: string) => void): Cancellable;
+    listenText: Listenable<string>;
 
-    listenCharacter(cb: (char: string) => void): Cancellable;
+    listenCharacter: Listenable<string>;
   }
 
   interface Hotkey {
@@ -146,9 +158,9 @@ declare namespace OliveHelps {
 
   //-- Cursor
   interface Cursor {
-    position(cb: (pos: Position) => void): void;
+    position: Readable<Position>;
 
-    listenPosition(cb: (pos: Position) => void): Cancellable;
+    listenPosition: Listenable<Position>;
   }
 
   interface Position {
@@ -156,26 +168,22 @@ declare namespace OliveHelps {
     y: number;
   }
 
-  interface Cancellable {
-    cancel(): void;
-  }
-
   //-- Clipboard
   interface Clipboard {
-    read(cb: (val: string) => void): void;
+    read: Readable<string>;
 
-    write(value: string, cb: () => void): void;
+    write: ReadableWithParam<string, void>;
 
-    listen(cb: (val: string) => void): Cancellable;
+    listen: Listenable<string>;
 
     includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   //-- Whisper
   interface WhisperService {
-    create(whisper: NewWhisper, cb: (whisper: Whisper) => void): void;
+    create: ReadableWithParam<NewWhisper, Whisper>;
 
-    all(cb: (whispers: Whisper[]) => void): void;
+    all: Readable<Whisper[]>;
   }
 
   enum WhisperComponentType {
