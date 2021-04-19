@@ -178,7 +178,7 @@ export function listenDir(path: string, callback: (fileEvent: FileEvent) => void
 export function listenFile(path: string, callback: (fileEvent: FileEvent) => void): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
-      return oliveHelps.filesystem.listenFile(path, callback);
+      oliveHelps.filesystem.listenFile(path, callback);
     } catch (error) {
       console.log(error);
       reject(error);
