@@ -72,9 +72,9 @@ declare namespace OliveHelps {
 
   //-- UI
   interface UI {
-    listenSearchbar(cb: (text: string) => void): void;
+    listenSearchbar(cb: (text: string) => void): Cancellable;
 
-    listenGlobalSearch(cb: (text: string) => void): void;
+    listenGlobalSearch(cb: (text: string) => void): Cancellable;
   }
 
   //-- Process
