@@ -154,6 +154,8 @@ export interface Box extends WhisperComponent {
   children: Array<
     | Button
     | Checkbox
+    | CollapseBox
+    | Link
     | ListPair
     | Markdown
     | Message
@@ -175,6 +177,8 @@ export interface NewWhisper {
     | Box
     | Button
     | Checkbox
+    | CollapseBox
+    | Link
     | ListPair
     | Markdown
     | Message
@@ -193,6 +197,8 @@ export interface Whisper {
     | Box
     | Button
     | Checkbox
+    | CollapseBox
+    | Link
     | ListPair
     | Markdown
     | Message
@@ -203,19 +209,26 @@ export interface Whisper {
     | Telephone
     | TextInput
   >;
-  close(cb: () => void): void;
+  close(callback: () => void): void;
   id: string;
   label: string;
-  onChange(cb: (whisper: Whisper) => void): void;
+  onChange(callback: (whisper: Whisper) => void): void;
 }
 
 export interface WhisperAptitude {
-  all(cb: (whispers: Whisper[]) => void): void;
-  create(whisper: Whisper, cb: (whisper: Whisper) => void): void;
+  all(): Promise<Whisper[]>;
+  create(whisper: NewWhisper, cb: (whisper: Whisper) => void): void;
 }
 
-function all(cb: (whispers: Whisper[]) => void): void {
-  return oliveHelps.whisper.all(cb);
+function all(): Promise<Whisper[]> {
+  return new Promise<Whisper[]>((resolve, reject) => {
+    try {
+      oliveHelps.whisper.all((whispers: Whisper[]) => resolve(whispers));
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
 }
 
 function create(whisper: NewWhisper, cb: (whisper: Whisper) => void): void {
@@ -226,21 +239,3 @@ export const whisper: WhisperAptitude = {
   all,
   create,
 };
-
-/* Argument of type '(whispers: import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Whisper[]) => void' is not assignable to parameter of type '(whispers: OliveHelps.Whisper[]) => void'.
-  Types of parameters 'whispers' and 'whispers' are incompatible.
-    Type 'OliveHelps.Whisper[]' is not assignable to type 'import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Whisper[]'.
-      Type 'OliveHelps.Whisper' is not assignable to type 'import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Whisper'.
-        Types of property 'components' are incompatible.
-          Type '(OliveHelps.Button | OliveHelps.Checkbox | OliveHelps.Markdown | OliveHelps.Message | OliveHelps.NumberInput | ... 5 more ... | OliveHelps.Box)[]' is not assignable to type '(import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Button | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Checkbox | ... 8 more ... | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Box)[]'.
-            Type 'OliveHelps.Button | OliveHelps.Checkbox | OliveHelps.Markdown | OliveHelps.Message | OliveHelps.NumberInput | ... 5 more ... | OliveHelps.Box' is not assignable to type 'import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Button | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Checkbox | ... 8 more ... | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Box'.
-              Type 'Box' is not assignable to type 'Button | Checkbox | Markdown | Message | NumberInput | Password | RadioGroup | Select | Telephone | TextInput | Box'.
-                Type 'OliveHelps.Box' is not assignable to type 'import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Box'.
-                  Types of property 'children' are incompatible.
-                    Type '(OliveHelps.Button | OliveHelps.Checkbox | OliveHelps.Link | OliveHelps.ListPair | OliveHelps.Markdown | OliveHelps.Message | ... 5 more ... | OliveHelps.TextInput)[]' is not assignable to type '(import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Button | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Checkbox | ... 9 more ... | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").TextInput)[]'.
-                      Type 'OliveHelps.Button | OliveHelps.Checkbox | OliveHelps.Link | OliveHelps.ListPair | OliveHelps.Markdown | OliveHelps.Message | ... 5 more ... | OliveHelps.TextInput' is not assignable to type 'import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Button | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Checkbox | ... 9 more ... | import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").TextInput'.
-                        Type 'Link' is not assignable to type 'Button | Checkbox | Link | ListPair | Markdown | Message | NumberInput | Password | RadioGroup | Select | Telephone | TextInput'.
-                          Type 'OliveHelps.Link' is not assignable to type 'import("/Users/brettmugglin/Projects/loop-development-kit/ldk/goja/src/whisper/index").Link'.
-                            Types of property 'style' are incompatible.
-                              Type 'string | undefined' is not assignable to type 'Urgency | undefined'.
-                                Type 'string' is not assignable to type 'Urgency | undefined'. */

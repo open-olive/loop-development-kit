@@ -268,7 +268,9 @@ declare namespace OliveHelps {
     alignment: string;
     children: Array<
       | Button
+      | CollapseBox
       | Checkbox
+      | Link
       | ListPair
       | Markdown
       | Message
@@ -288,6 +290,8 @@ declare namespace OliveHelps {
       | Box
       | Button
       | Checkbox
+      | CollapseBox
+      | Link
       | ListPair
       | Markdown
       | Message
@@ -307,6 +311,9 @@ declare namespace OliveHelps {
       | Box
       | Button
       | Checkbox
+      | CollapseBox
+      | Link
+      | ListPair
       | Markdown
       | Message
       | NumberInput
