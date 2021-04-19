@@ -41,7 +41,7 @@ export enum WriteOperation {
 }
 
 /**
- * Represents what write mode is selected in case of conflict
+ * Represents file mode and permission bits
  */
 export type WriteMode = number;
 
@@ -87,7 +87,7 @@ export interface Filesystem {
   /**
    * Makes a directory at the specified location.
    * @param destination - destination of where directory needs to be created at
-   * @param writeMode - indicates a conflict resolution mode
+   * @param writeMode - file mode and permission bits
    */
   makeDir(destination: string, writeMode: WriteMode): Promise<void>;
 
@@ -117,11 +117,11 @@ export interface Filesystem {
   stat(path: string): Promise<FileInfo>;
 
   /**
-   * Writes (overwrites or appends) data to the specified file with specific permissions.
+   * Writes (overwrites or appends) data to the specified file with specific permissions. New file will be created if file not exist
    * @param path - path to the file location to be written
    * @param data - byte array data
-   * @param writeOperation - indicates if file shold be ovewritten or append
-   * @param writeMode - indicates a conflict resolution mode
+   * @param writeOperation - indicates if file shold be ovewritten or appended with the provided data
+   * @param writeMode - file mode and permission bits
    */
   writeFile(
     path: string,
@@ -164,12 +164,26 @@ export function exists(path: string): Promise<boolean> {
   });
 }
 
-export function listenDir(path: string, callback: (fileEvent: FileEvent) => void): void {
-  return oliveHelps.filesystem.listenDir(path, callback);
+export function listenDir(path: string, callback: (fileEvent: FileEvent) => void): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      oliveHelps.filesystem.listenDir(path, callback);
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });  
 }
 
-export function listenFile(path: string, callback: (fileEvent: FileEvent) => void): void {
-  return oliveHelps.filesystem.listenFile(path, callback);
+export function listenFile(path: string, callback: (fileEvent: FileEvent) => void): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      return oliveHelps.filesystem.listenFile(path, callback);
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
 }
 
 export function makeDir(destination: string, writeMode: WriteMode): Promise<void> {
