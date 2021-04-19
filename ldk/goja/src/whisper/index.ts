@@ -47,12 +47,6 @@ export interface WhisperComponent {
   type: string;
 }
 
-export interface Box extends WhisperComponent {
-  alignment?: Alignment;
-  children: WhisperComponent[];
-  direction?: Direction;
-}
-
 export interface Button extends WhisperComponent {
   label: string;
   onClick(): Promise<void>;
@@ -63,12 +57,6 @@ export interface Checkbox extends WhisperComponent {
   label: string;
   tooltip?: string;
   value?: boolean;
-}
-
-export interface CollapseBox extends WhisperComponent {
-  children: WhisperComponent[];
-  label?: string;
-  open: boolean;
 }
 
 export interface Link extends WhisperComponent {
@@ -97,7 +85,7 @@ export interface Message extends WhisperComponent {
   textAlign?: TextAlign;
 }
 
-export interface Number extends WhisperComponent {
+export interface NumberInput extends WhisperComponent {
   label: string;
   max?: number;
   min?: number;
@@ -142,16 +130,86 @@ export interface TextInput extends WhisperComponent {
   value?: string;
 }
 
+export interface CollapseBox extends WhisperComponent {
+  children: Array<
+    | Button
+    | Checkbox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
+  label?: string;
+  open: boolean;
+}
+
+export interface Box extends WhisperComponent {
+  alignment?: Alignment;
+  children: Array<
+    | Box
+    | Button
+    | Checkbox
+    | CollapseBox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
+  direction?: Direction;
+}
+
 /**
  * The HTTP Request configuration.
  */
 export interface NewWhisper {
-  components: WhisperComponent[];
+  components: Array<
+    | Box
+    | Button
+    | Checkbox
+    | CollapseBox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
   label: string;
 }
 
 export interface Whisper {
-  components: WhisperComponent[];
+  components: Array<
+    | Box
+    | Button
+    | Checkbox
+    | CollapseBox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
   close(cb: () => void): void;
   id: string;
   label: string;
