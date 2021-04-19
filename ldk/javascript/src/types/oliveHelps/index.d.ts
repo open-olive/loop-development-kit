@@ -1,5 +1,5 @@
-
 /* eslint-disable */
+
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
@@ -21,11 +21,11 @@ declare namespace OliveHelps {
   interface Window {
     activeWindow(cb: (windowInfo: WindowInfo) => void): void;
 
-    listenActiveWindow(cb: (windowInfo: WindowInfo) => void): void;
+    listenActiveWindow(cb: (windowInfo: WindowInfo) => void): Cancellable;
 
     all(cb: (windowInfos: WindowInfo[]) => void): void;
 
-    listenAll(cb: (windowEvent: WindowEvent) => void): void;
+    listenAll(cb: (windowEvent: WindowEvent) => void): Cancellable;
   }
 
   interface WindowEvent {
