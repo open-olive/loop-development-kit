@@ -169,9 +169,6 @@ export interface Box extends WhisperComponent {
   direction: string;
 }
 
-/**
- * The HTTP Request configuration.
- */
 export interface NewWhisper {
   components: Array<
     | Box
@@ -216,8 +213,18 @@ export interface Whisper {
 }
 
 export interface WhisperAptitude {
+  /**
+   * Returns a promise which provides a list of all of the current whispers in Olive Helps
+   */
   all(): Promise<Whisper[]>;
-  create(whisper: NewWhisper, cb: (whisper: Whisper) => void): void;
+
+  /**
+   * Adds a new whisper to Olive Helps based on the configuration provided. The callback is called after the whisper is added
+   *
+   * @param whisper The configuration for the whisper being created
+   * @param callback A function called after teh whisper is added
+   */
+  create(whisper: NewWhisper, callback: (whisper: Whisper) => void): void;
 }
 
 function all(): Promise<Whisper[]> {
