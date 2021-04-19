@@ -9,4 +9,5 @@ import * as vault from './vault';
 import * as window from './window';
 import * as whisper from './whisper';
 
-export { clipboard, cursor, filesystem, keyboard, network, process, ui, vault, window, whisper };
+export { clipboard, cursor, filesystem,keyboard, network, process, ui, vault, window ,
+    whisper };
