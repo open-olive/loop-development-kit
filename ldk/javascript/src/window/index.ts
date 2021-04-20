@@ -1,4 +1,5 @@
 import { Cancellable } from '../cancellable';
+import { promisify } from '../promisify';
 
 export interface WindowInfo {
   title: string;
@@ -63,14 +64,7 @@ export interface Window {
 }
 
 function activeWindow(): Promise<WindowInfo> {
-  return new Promise<WindowInfo>((resolve, reject) => {
-    try {
-      oliveHelps.window.activeWindow((windowInfo: WindowInfo) => resolve(windowInfo));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisify(oliveHelps.window.activeWindow);
 }
 
 function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Cancellable {
@@ -78,14 +72,7 @@ function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Cancell
 }
 
 function all(): Promise<WindowInfo[]> {
-  return new Promise<WindowInfo[]>((resolve, reject) => {
-    try {
-      oliveHelps.window.all((windowInfos: WindowInfo[]) => resolve(windowInfos));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisify(oliveHelps.window.all);
 }
 
 function listenAll(callback: (windowEvent: WindowEvent) => void): Cancellable {

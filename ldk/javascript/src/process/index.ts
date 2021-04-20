@@ -1,4 +1,5 @@
 import { Cancellable } from '../cancellable';
+import { promisify } from "../promisify";
 
 export interface ProcessInfo {
   arguments: string;
@@ -37,14 +38,7 @@ export interface Process {
 }
 
 function all(): Promise<ProcessInfo[]> {
-  return new Promise<ProcessInfo[]>((resolve, reject) => {
-    try {
-      oliveHelps.process.all((processInfo: ProcessInfo[]) => resolve(processInfo));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisify(oliveHelps.process.all);
 }
 
 function listenAll(callback: (processEvent: ProcessEvent) => void): Cancellable {

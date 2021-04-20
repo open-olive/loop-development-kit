@@ -2,6 +2,7 @@
  * Response object containing the cursor position, where 0,0 is the top-left of the screen.
  */
 import { Cancellable } from '../cancellable';
+import { promisify } from '../promisify';
 
 export interface Position {
   x: number;
@@ -26,14 +27,7 @@ export interface Cursor {
 }
 
 function position(): Promise<Position> {
-  return new Promise<Position>((resolve, reject) => {
-    try {
-      oliveHelps.cursor.position((pos: Position) => resolve(pos));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisify(oliveHelps.cursor.position);
 }
 
 function listenPosition(callback: (pos: Position) => void): Cancellable {

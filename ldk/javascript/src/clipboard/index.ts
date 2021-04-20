@@ -2,6 +2,7 @@
  * The ClipboardService provides access to the OS's clipboard.
  */
 import { Cancellable } from '../cancellable';
+import { promisify, promisifyWithParam } from '../promisify';
 
 export interface Clipboard {
   /**
@@ -33,25 +34,11 @@ function listen(
 }
 
 function read(): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    try {
-      oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisify(oliveHelps.clipboard.read);
 }
 
 function write(text: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.clipboard.write(text, () => resolve());
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(text, oliveHelps.clipboard.write);
 }
 
 export const clipboard: Clipboard = {

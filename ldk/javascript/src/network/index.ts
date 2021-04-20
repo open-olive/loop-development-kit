@@ -1,6 +1,8 @@
 /**
  * The HTTP Request configuration.
  */
+import { promisifyWithParam } from '../promisify';
+
 export interface HTTPRequest {
   body: Uint8Array;
   headers: Record<string, string[]>;
@@ -39,16 +41,7 @@ export interface Network {
 }
 
 function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
-  return new Promise<HTTPResponse>((resolve, reject) => {
-    try {
-      oliveHelps.network.httpRequest(req, (val: HTTPResponse) => {
-        resolve(val);
-      });
-    } catch (e) {
-      console.log(e);
-      reject(e);
-    }
-  });
+  return promisifyWithParam(req, oliveHelps.network.httpRequest);
 }
 
 export const network: Network = {

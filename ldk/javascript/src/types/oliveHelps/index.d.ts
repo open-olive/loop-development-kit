@@ -12,9 +12,11 @@ declare namespace OliveHelps {
 
   type ReadableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
 
+  type ReadableWithTwoParams<TParam1, TParam2, TOut> = (param: TParam1, param2: TParam2, callback: (a: TOut) => void) => void;
+
   type Listenable<T> = (callback: (a: T) => void) => Cancellable;
 
-  type ListenableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
+  type ListenableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => Cancellable;
 
   interface Aptitudes {
     clipboard: Clipboard;
@@ -79,7 +81,7 @@ declare namespace OliveHelps {
 
     read: ReadableWithParam<string, string>;
 
-    write: ReadableWithParam<string, string>;
+    write: ReadableWithTwoParams<string, string, void>;
   }
 
   //-- UI
