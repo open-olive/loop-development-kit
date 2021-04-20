@@ -43,7 +43,7 @@ export enum Urgency {
 }
 
 export interface WhisperComponent {
-  id: string;
+  id?: string;
   type: string;
 }
 
@@ -55,7 +55,7 @@ export interface Box extends WhisperComponent {
 
 export interface Button extends WhisperComponent {
   label: string;
-  onClick(): Promise<void>;
+  onClick: () => void
   submit?: boolean;
 }
 
@@ -63,6 +63,7 @@ export interface Checkbox extends WhisperComponent {
   label: string;
   tooltip?: string;
   value?: boolean;
+  onChange: (value: boolean) => void;
 }
 
 export interface CollapseBox extends WhisperComponent {
@@ -74,7 +75,7 @@ export interface CollapseBox extends WhisperComponent {
 export interface Link extends WhisperComponent {
   href?: boolean;
   style?: Urgency;
-  onClick?(): Promise<string>;
+  onClick?: (value: string) => void;
   text: string;
   textAlign?: TextAlign;
 }
@@ -101,7 +102,7 @@ export interface Number extends WhisperComponent {
   label: string;
   max?: number;
   min?: number;
-  onChange?(): Promise<number>;
+  onChange?: (value: string) => void;
   step?: number;
   tooltip?: string;
   value?: number;
@@ -109,7 +110,7 @@ export interface Number extends WhisperComponent {
 
 export interface Password extends WhisperComponent {
   label: string;
-  onChange?(): Promise<string>;
+  onChange?: (value: string) => void;
   tooltip?: string;
   value?: string;
 }
@@ -122,14 +123,14 @@ export interface RadioGroup extends WhisperComponent {
 
 export interface Select extends WhisperComponent {
   label: string;
-  onChange?(): Promise<any>;
+  onChange(): (value: number) => void;
   tooltip?: string;
   options: Record<string, any>;
 }
 
 export interface Telephone extends WhisperComponent {
   label: string;
-  onChange?(): Promise<string>;
+  onChange?: (value: string) => void;
   pattern?: RegExp;
   tooltip?: string;
   value?: string;
@@ -137,7 +138,7 @@ export interface Telephone extends WhisperComponent {
 
 export interface TextInput extends WhisperComponent {
   label: string;
-  onChange?(): Promise<string>;
+  onChange?: (value: string) => void;
   tooltip?: string;
   value?: string;
 }
@@ -148,6 +149,7 @@ export interface TextInput extends WhisperComponent {
 export interface NewWhisper {
   components: WhisperComponent[];
   label: string;
+  onClose(): void;
 }
 
 export interface Whisper {
@@ -160,15 +162,21 @@ export interface Whisper {
 
 export interface WhisperAptitude {
   all(cb: (whispers: Whisper[]) => void): void;
-  create(whisper: Whisper, cb: (whisper: Whisper) => void): void;
+  create(whisper: NewWhisper): Promise<Whisper>;
 }
 
 function all(cb: (whispers: Whisper[]) => void): void {
   return oliveHelps.whisper.all(cb);
 }
 
-function create(whisper: NewWhisper, cb: (whisper: Whisper) => void): void {
-  return oliveHelps.whisper.create(whisper, cb);
+function create(newWhisper: NewWhisper): Promise<Whisper> {
+  return new Promise<Whisper>((resolve, reject) => {
+    try {
+      oliveHelps.whisper.create(newWhisper, (w: Whisper) => resolve(w))
+    } catch (e) {
+      reject(e)
+    }
+  });
 }
 
 export const whisper: WhisperAptitude = {

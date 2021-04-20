@@ -6,6 +6,7 @@ import * as process from './process';
 import * as ui from './ui';
 import * as vault from './vault';
 import * as window from './window';
+import * as whisper from './whisper';
 
 export { 
     clipboard, 
@@ -15,5 +16,6 @@ export {
     process,
     ui,
     vault,
-    window 
+    window,
+    whisper
 };

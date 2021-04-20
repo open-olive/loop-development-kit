@@ -175,7 +175,7 @@ declare namespace OliveHelps {
 
   interface Component {
     type: string;
-    id: string;
+    id?: string;
   }
 
   interface MarkdownComponent extends Component {
