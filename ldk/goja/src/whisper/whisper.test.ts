@@ -50,9 +50,6 @@ describe('Whisper', () => {
 
   describe('create', () => {
     it('Creates a whisper', () => {
-      const whisperCallback = (theWhisper: Whisper) => {
-        return whisperCallback;
-      };
       const newWhisper: NewWhisper = {
         components: [
           {
@@ -62,11 +59,31 @@ describe('Whisper', () => {
           },
         ],
         label: 'Test',
-        onClose: () => {}
+        onClose: () => { }
       };
 
-      whisper.create(newWhisper);
-      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(newWhisper);
+      const expected: Whisper = {
+          components: [
+            {
+              body: 'Test',
+              id: '1',
+              type: WhisperComponentType.MARKDOWN,
+            },
+          ],
+          close: () => {
+            console.log();
+          },
+          id: '1',
+          label: 'Test',
+        }
+      
+
+      mocked(oliveHelps.whisper.create).mockImplementation((whisper, callback) => callback(expected));
+
+      const actual = whisper.create(newWhisper)
+      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(newWhisper, expect.any(Function));
+      return expect(actual).resolves.toBe(expected);
+      
     });
   });
 });
