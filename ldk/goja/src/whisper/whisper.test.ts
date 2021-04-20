@@ -17,7 +17,7 @@ describe('Whisper', () => {
             {
               body: 'Test',
               id: '1',
-              type: WhisperComponentType.MARKDOWN,
+              type: WhisperComponentType.Markdown,
             },
           ],
           close: () => {
@@ -54,35 +54,35 @@ describe('Whisper', () => {
           {
             body: 'Test',
             id: '1',
-            type: WhisperComponentType.MARKDOWN,
+            type: WhisperComponentType.Markdown,
           },
         ],
         label: 'Test',
-        onClose: jest.fn()
+        onClose: jest.fn(),
       };
 
       const expected: Whisper = {
-          components: [
-            {
-              body: 'Test',
-              id: '1',
-              type: WhisperComponentType.MARKDOWN,
-            },
-          ],
-          close: () => {
-            console.log();
+        components: [
+          {
+            body: 'Test',
+            id: '1',
+            type: WhisperComponentType.Markdown,
           },
-          id: '1',
-          label: 'Test',
-        }
-      
+        ],
+        close: () => {
+          console.log();
+        },
+        id: '1',
+        label: 'Test',
+      };
 
-      mocked(oliveHelps.whisper.create).mockImplementation((_whisper, callback) => callback(expected));
+      mocked(oliveHelps.whisper.create).mockImplementation((_whisper, callback) =>
+        callback(expected),
+      );
 
-      const actual = whisper.create(newWhisper)
+      const actual = whisper.create(newWhisper);
       expect(oliveHelps.whisper.create).toHaveBeenCalledWith(newWhisper, expect.any(Function));
       return expect(actual).resolves.toBe(expected);
-      
     });
   });
 });
