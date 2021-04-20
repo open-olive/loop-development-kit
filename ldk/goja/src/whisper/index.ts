@@ -1,62 +1,19 @@
-export enum WhisperComponentType {
-  /**
-   * A container component for formatting other components.
-   */
+enum WhisperComponentType {
   Box = 'box',
   Button = 'button',
   Checkbox = 'checkbox',
-  /**
-   * A container component to allow content to be opened and closed with a button click.
-   */
   CollapseBox = 'collapseBox',
-  /**
-   * This component shows a horizontal divider to separate different kinds on content in a whisper. This component has no options.
-   */
   Divider = 'divider',
-  /**
-   * The text input field allows the user to provide an email address.
-   */
   Email = 'email',
-  /**
-   * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
-   */
   Link = 'link',
-  /**
-   * This component shows a two column view of information typically used for lists of information.
-   */
   ListPair = 'listPair',
   Markdown = 'markdown',
-  /**
-   * This component shows a banner in the whisper that functions as a call to action to the user.
-   */
   Message = 'message',
-  /**
-   * The text input field allows the user to provide a number within the parameters provided.
-   */
   Number = 'number',
-  /**
-   * The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
-   */
   Password = 'password',
-  /**
-   * The radio group allows a loop to provide the user with a collection of options in which they select a single result. The result is selected by clicking one of the radio elements in the radio group.
-   *
-   * A selected value of -1 indicates that nothing is selected.
-   */
   RadioGroup = 'radioGroup',
-  /**
-   * A selected value of -1 indicates that nothing is selected.
-   */
   Select = 'select',
-  /**
-   * The text input field allows the user to provide an email address.
-   */
   Telephone = 'telephone',
-  /**
-   * The text input field allows the user to provide text information.
-   *
-   * The text can be pre-populated by the loop.
-   */
   TextInput = 'textInput',
 }
 
@@ -94,37 +51,35 @@ export interface WhisperComponent {
 export interface Button extends WhisperComponent {
   label: string;
   onClick: () => void;
-  submit?: boolean;
 }
 
 export interface Checkbox extends WhisperComponent {
   label: string;
   tooltip?: string;
-  value?: boolean;
+  value: boolean;
   onChange: (value: boolean) => void;
 }
 
 export interface Email extends WhisperComponent {
   label: string;
-  onChange?: (value: string) => void;
-  pattern?: RegExp;
+  onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
 }
 
 export interface Link extends WhisperComponent {
   href?: string;
-  style?: Urgency;
-  onClick?: (value: string) => void;
   text: string;
+  onClick?: () => void;
+  style?: Urgency;
   textAlign?: TextAlign;
 }
 
 export interface ListPair extends WhisperComponent {
   copyable: boolean;
   label: string;
-  style?: Urgency;
-  value?: string;
+  value: string;
+  style: Urgency;
 }
 
 export interface Markdown extends WhisperComponent {
@@ -132,25 +87,25 @@ export interface Markdown extends WhisperComponent {
 }
 
 export interface Message extends WhisperComponent {
-  body: string;
-  header: string;
+  body?: string;
+  header?: string;
   style?: Urgency;
   textAlign?: TextAlign;
 }
 
 export interface NumberInput extends WhisperComponent {
   label: string;
+  onChange: (value: number) => void;
+  value?: number;
   max?: number;
   min?: number;
-  onChange?: (value: string) => void;
   step?: number;
   tooltip?: string;
-  value?: number;
 }
 
 export interface Password extends WhisperComponent {
   label: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
 }
@@ -163,29 +118,34 @@ export interface RadioGroup extends WhisperComponent {
 
 export interface Select extends WhisperComponent {
   label: string;
-  onSelect: (value: number) => void;
-  tooltip?: string;
   options: string[];
+  onSelect: (value: number) => void;
+  selected?: number;
+  tooltip?: string;
 }
 
 export interface Telephone extends WhisperComponent {
   label: string;
-  onChange?: (value: string) => void;
-  pattern?: RegExp;
+  onChange: (value: string) => void;
+  // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
 }
 
 export interface TextInput extends WhisperComponent {
   label: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
 }
 
-export type ChildElement =
+export type Divider = WhisperComponent;
+
+export type Components =
   | Button
   | Checkbox
+  | Divider
+  | Email
   | Link
   | ListPair
   | Markdown
@@ -195,23 +155,22 @@ export type ChildElement =
   | RadioGroup
   | Select
   | Telephone
-  | TextInput
-  | WhisperComponent;
+  | TextInput;
 
 export interface CollapseBox extends WhisperComponent {
-  children: Array<ChildElement>;
+  children: Array<Components>;
   label?: string;
   open: boolean;
 }
 
 export interface Box extends WhisperComponent {
   alignment: Alignment;
-  children: Array<ChildElement | CollapseBox>;
-  direction: string;
+  children: Array<Components>;
+  direction: Direction;
 }
 
 export interface NewWhisper {
-  components: Array<Box | ChildElement | CollapseBox>;
+  components: Array<Box | Components | CollapseBox>;
   label: string;
   onClose: () => void;
 }
@@ -219,7 +178,7 @@ export interface NewWhisper {
 export interface Whisper {
   id: string;
   label: string;
-  components: Array<Box | ChildElement | CollapseBox>;
+  components: Array<Box | Components | CollapseBox>;
   close(callback: () => void): void;
 }
 

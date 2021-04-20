@@ -210,19 +210,18 @@ declare namespace OliveHelps {
   interface Button extends Component {
     label: string;
     onClick: () => void;
-    submit?: boolean;
   }
 
   interface Checkbox extends Component {
     label: string;
     tooltip?: string;
-    value?: boolean;
+    value: boolean;
     onChange: (value: boolean) => void;
   }
 
   interface Email extends Component {
     label: string;
-    onChange?: (value: string) => void;
+    onChange: (value: string) => void;
     pattern?: RegExp;
     tooltip?: string;
     value?: string;
@@ -230,9 +229,9 @@ declare namespace OliveHelps {
 
   interface Link extends Component {
     href?: string;
-    style?: Urgency;
-    onClick?: (value: string) => void;
+    onClick?: () => void;
     text: string;
+    style?: Urgency;
     textAlign?: TextAlign;
   }
 
@@ -248,27 +247,27 @@ declare namespace OliveHelps {
   }
 
   interface Message extends Component {
-    body: string;
-    header: string;
+    body?: string;
+    header?: string;
     style?: Urgency;
     textAlign?: TextAlign;
   }
 
   interface NumberInput extends Component {
     label: string;
+    onChange: (value: number) => void;
+    value?: number;
     max?: number;
     min?: number;
-    onChange?: (value: string) => void;
     step?: number;
     tooltip?: string;
-    value?: number;
   }
 
   interface Password extends Component {
     label: string;
-    onChange?: (value: string) => void;
-    tooltip?: string;
+    onChange: (value: string) => void;
     value?: string;
+    tooltip?: string;
   }
 
   interface RadioGroup extends Component {
@@ -280,29 +279,32 @@ declare namespace OliveHelps {
   interface Select extends Component {
     label: string;
     onSelect: (value: number) => void;
+    selected?: number;
     tooltip?: string;
     options: string[];
   }
 
   interface Telephone extends Component {
     label: string;
-    onChange?: (value: string) => void;
-    pattern?: RegExp;
+    onChange: (value: string) => void;
+    // pattern?: RegExp; TODO: implement this
     tooltip?: string;
     value?: string;
   }
 
   interface TextInput extends Component {
     label: string;
-    onChange?: (value: string) => void;
+    onChange: (value: string) => void;
     tooltip?: string;
     value?: string;
   }
 
-  type ChildElement =
+  type Divider = Component;
+
+  type Components =
     | Button
     | Checkbox
-    | Component
+    | Divider
     | Email
     | Link
     | ListPair
@@ -316,27 +318,27 @@ declare namespace OliveHelps {
     | TextInput;
 
   interface CollapseBox extends Component {
-    children: Array<ChildElement>;
+    children: Array<Components>;
     label?: string;
     open: boolean;
   }
 
   interface Box extends Component {
     alignment: Alignment;
-    children: Array<ChildElement | CollapseBox>;
-    direction: string;
+    children: Array<Components>;
+    direction: Direction;
   }
 
   interface NewWhisper {
     label: string;
-    components: Array<Box | ChildElement | CollapseBox>;
+    components: Array<Box | Components | CollapseBox>;
     onClose: () => void;
   }
 
   interface Whisper {
     id: string;
     label: string;
-    components: Array<Box | ChildElement | CollapseBox>;
+    components: Array<Box | Components | CollapseBox>;
     close(cb: () => void): void;
   }
 
