@@ -12,8 +12,9 @@ export enum WhisperComponentType {
   PASSWORD = 'password',
   RADIO_GROUP = 'radioGroup',
   SELECT = 'select',
-  TELEPHONE = 'telephone',
+  TELEPHONE = 'tel',
   TEXT_INPUT = 'textInput',
+  EMAIL = 'email',
 }
 
 export enum Alignment {
@@ -50,29 +51,28 @@ export interface WhisperComponent {
 export interface Button extends WhisperComponent {
   label: string;
   onClick: () => void
-  submit?: boolean;
 }
 
 export interface Checkbox extends WhisperComponent {
   label: string;
   tooltip?: string;
-  value?: boolean;
+  value: boolean;
   onChange: (value: boolean) => void;
 }
 
 export interface Link extends WhisperComponent {
   href?: string;
-  style?: Urgency;
-  onClick?: (value: string) => void;
   text: string;
-  textAlign?: string;
+  onClick?: () => void;
+  style?: Urgency;
+  textAlign?: TextAlign;
 }
 
 export interface ListPair extends WhisperComponent {
   copyable: boolean;
   label: string;
-  style?: Urgency;
-  value?: string;
+  value: string;
+  style: Urgency;
 }
 
 export interface Markdown extends WhisperComponent {
@@ -80,25 +80,32 @@ export interface Markdown extends WhisperComponent {
 }
 
 export interface Message extends WhisperComponent {
-  body: string;
-  header: string;
+  body?: string;
+  header?: string;
   style?: Urgency;
   textAlign?: TextAlign;
 }
 
 export interface NumberInput extends WhisperComponent {
   label: string;
+  onChange: (value: number) => void;
+  value?: number;
   max?: number;
   min?: number;
-  onChange?: (value: string) => void;
   step?: number;
   tooltip?: string;
-  value?: number;
 }
 
 export interface Password extends WhisperComponent {
   label: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
+  tooltip?: string;
+  value?: string;
+}
+
+export interface Email extends WhisperComponent {
+  label: string;
+  onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
 }
@@ -111,28 +118,30 @@ export interface RadioGroup extends WhisperComponent {
 
 export interface Select extends WhisperComponent {
   label: string;
-  onSelect: (value: number) => void;
-  tooltip?: string;
   options: string[];
+  onSelect: (value: number) => void;
+  selected?: number,
+  tooltip?: string;
 }
 
 export interface Telephone extends WhisperComponent {
   label: string;
-  onChange?: (value: string) => void;
-  pattern?: RegExp;
+  onChange: (value: string) => void;
+  // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
 }
 
 export interface TextInput extends WhisperComponent {
   label: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
 }
 
-export interface CollapseBox extends WhisperComponent {
-  children: Array<
+export type Divider = WhisperComponent
+
+export type Components = 
     | Button
     | Checkbox
     | Link
@@ -145,48 +154,23 @@ export interface CollapseBox extends WhisperComponent {
     | Select
     | Telephone
     | TextInput
-  >;
+    | Divider
+    | Email
+
+export interface CollapseBox extends WhisperComponent {
+  children: Array<Components>;
   label?: string;
   open: boolean;
 }
 
 export interface Box extends WhisperComponent {
-  alignment: string;
-  children: Array<
-    | Button
-    | Checkbox
-    | CollapseBox
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput
-  >;
-  direction: string;
+  alignment: Alignment;
+  children: Array<Components>;
+  direction: Direction;
 }
 
 export interface NewWhisper {
-  components: Array<
-    | Box
-    | Button
-    | Checkbox
-    | CollapseBox
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput
-  >;
+  components: Array<Components>;
   label: string;
   onClose: () => void;
 }
@@ -194,22 +178,7 @@ export interface NewWhisper {
 export interface Whisper {
   id: string;
   label: string;
-  components: Array<
-    | Box
-    | Button
-    | Checkbox
-    | CollapseBox
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput
-  >;
+  components: Array<Components>;
   close(callback: () => void): void;
 }
 
