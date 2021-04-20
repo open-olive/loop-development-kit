@@ -47,12 +47,6 @@ export interface WhisperComponent {
   type: string;
 }
 
-export interface Box extends WhisperComponent {
-  alignment?: Alignment;
-  children: WhisperComponent[];
-  direction?: Direction;
-}
-
 export interface Button extends WhisperComponent {
   label: string;
   onClick: () => void
@@ -66,24 +60,18 @@ export interface Checkbox extends WhisperComponent {
   onChange: (value: boolean) => void;
 }
 
-export interface CollapseBox extends WhisperComponent {
-  children: WhisperComponent[];
-  label?: string;
-  open: boolean;
-}
-
 export interface Link extends WhisperComponent {
-  href?: boolean;
+  href?: string;
   style?: Urgency;
   onClick?: (value: string) => void;
   text: string;
-  textAlign?: TextAlign;
+  textAlign?: string;
 }
 
 export interface ListPair extends WhisperComponent {
   copyable: boolean;
   label: string;
-  style: Urgency;
+  style?: Urgency;
   value?: string;
 }
 
@@ -98,7 +86,7 @@ export interface Message extends WhisperComponent {
   textAlign?: TextAlign;
 }
 
-export interface Number extends WhisperComponent {
+export interface NumberInput extends WhisperComponent {
   label: string;
   max?: number;
   min?: number;
@@ -116,16 +104,16 @@ export interface Password extends WhisperComponent {
 }
 
 export interface RadioGroup extends WhisperComponent {
-  onSelect(): Promise<any>;
-  options: Record<string, any>;
+  onSelect: (value: number) => void;
+  options: string[];
   selected?: any;
 }
 
 export interface Select extends WhisperComponent {
   label: string;
-  onChange(): (value: number) => void;
+  onSelect: (value: number) => void;
   tooltip?: string;
-  options: Record<string, any>;
+  options: string[];
 }
 
 export interface Telephone extends WhisperComponent {
@@ -143,36 +131,119 @@ export interface TextInput extends WhisperComponent {
   value?: string;
 }
 
-/**
- * The HTTP Request configuration.
- */
+export interface CollapseBox extends WhisperComponent {
+  children: Array<
+    | Button
+    | Checkbox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
+  label?: string;
+  open: boolean;
+}
+
+export interface Box extends WhisperComponent {
+  alignment: string;
+  children: Array<
+    | Button
+    | Checkbox
+    | CollapseBox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
+  direction: string;
+}
+
 export interface NewWhisper {
-  components: WhisperComponent[];
+  components: Array<
+    | Box
+    | Button
+    | Checkbox
+    | CollapseBox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
   label: string;
-  onClose(): void;
+  onClose: () => void;
 }
 
 export interface Whisper {
-  components: WhisperComponent[];
-  close(cb: () => void): void;
   id: string;
   label: string;
-  onChange(cb: (whisper: Whisper) => void): void;
+  components: Array<
+    | Box
+    | Button
+    | Checkbox
+    | CollapseBox
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+  >;
+  close(callback: () => void): void;
 }
 
 export interface WhisperAptitude {
-  all(cb: (whispers: Whisper[]) => void): void;
+  create(whisper: NewWhisper): Promise<Whisper>;
+  /**
+   * Returns a promise which provides a list of all of the current whispers in Olive Helps
+   */
+  all(): Promise<Whisper[]>;
+
+  /**
+   * Adds a new whisper to Olive Helps based on the configuration provided.
+   * Returns a promise which provides a reference to the newly created whisper 
+   *
+   * @param whisper The configuration for the whisper being created
+   */
   create(whisper: NewWhisper): Promise<Whisper>;
 }
 
-function all(cb: (whispers: Whisper[]) => void): void {
-  return oliveHelps.whisper.all(cb);
+function all(): Promise<Whisper[]> {
+  return new Promise<Whisper[]>((resolve, reject) => {
+    try {
+      oliveHelps.whisper.all((whispers: Whisper[]) => resolve(whispers));
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
 }
 
-function create(newWhisper: NewWhisper): Promise<Whisper> {
+function create(whisper: NewWhisper): Promise<Whisper> {
   return new Promise<Whisper>((resolve, reject) => {
     try {
-      oliveHelps.whisper.create(newWhisper, (w: Whisper) => resolve(w))
+      oliveHelps.whisper.create(whisper, (w: Whisper) => resolve(w))
     } catch (e) {
       reject(e)
     }

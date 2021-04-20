@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
@@ -158,19 +157,11 @@ declare namespace OliveHelps {
     all(cb: (whispers: Whisper[]) => void): void;
   }
 
-  interface NewWhisper {
-    label: string;
-    components: Component[];
-  }
-
-  interface Whisper {
-    id: string;
-    label: string;
-    components: Component[];
-
-    onChange(cb: (whisper: Whisper) => void): void;
-
-    close(cb: () => void): void;
+  enum Urgency {
+    ERROR = 'error',
+    NONE = 'none',
+    SUCCESS = 'success',
+    WARNING = 'warning',
   }
 
   interface Component {
@@ -178,12 +169,170 @@ declare namespace OliveHelps {
     id?: string;
   }
 
-  interface MarkdownComponent extends Component {
+  interface Button extends Component {
+    label: string;
+    onClick: () => void;
+    submit?: boolean;
+  }
+
+  interface Checkbox extends Component {
+    label: string;
+    tooltip?: string;
+    value?: boolean;
+    onChange: (value: boolean) => void;
+  }
+
+  interface Link extends Component {
+    href?: string;
+    style?: Urgency;
+    onClick?: (value: string) => void;
+    text: string;
+    textAlign?: string;
+  }
+
+  interface ListPair extends Component {
+    copyable: boolean;
+    label: string;
+    style?: string;
+    value?: string;
+  }
+
+  interface Markdown extends Component {
     body: string;
   }
 
-  interface ButtonComponent extends Component {
+  interface Message extends Component {
     body: string;
+    header: string;
+    style?: string;
+    textAlign?: string;
+  }
+
+  interface NumberInput extends Component {
+    label: string;
+    max?: number;
+    min?: number;
+    onChange?: (value: string) => void;
+    step?: number;
+    tooltip?: string;
+    value?: number;
+  }
+
+  interface Password extends Component {
+    label: string;
+    onChange?: (value: string) => void;
+    tooltip?: string;
+    value?: string;
+  }
+
+  interface RadioGroup extends Component {
+    onSelect: (value: number) => void; 
+    options: string[];
+    selected?: any;
+  }
+
+  interface Select extends Component {
+    label: string;
+    onSelect: (value: number) => void;
+    tooltip?: string;
+    options: string[];
+  }
+
+  interface Telephone extends Component {
+    label: string;
+    onChange?: (value: string) => void;
+    pattern?: RegExp;
+    tooltip?: string;
+    value?: string;
+  }
+
+  interface TextInput extends Component {
+    label: string;
+    onChange?: (value: string) => void;
+    tooltip?: string;
+    value?: string;
+  }
+
+  interface CollapseBox extends Component {
+    children: Array<
+      | Button
+      | Checkbox
+      | Link
+      | ListPair
+      | Markdown
+      | Message
+      | NumberInput
+      | Password
+      | RadioGroup
+      | Select
+      | Telephone
+      | TextInput
+    >;
+    label?: string;
+    open: boolean;
+  }
+
+  interface Box extends Component {
+    alignment: string;
+    children: Array<
+      | Button
+      | CollapseBox
+      | Checkbox
+      | Link
+      | ListPair
+      | Markdown
+      | Message
+      | NumberInput
+      | Password
+      | RadioGroup
+      | Select
+      | Telephone
+      | TextInput
+    >;
+    direction: string;
+  }
+
+  interface NewWhisper {
+    label: string;
+    components: Array<
+      | Box
+      | Button
+      | Checkbox
+      | CollapseBox
+      | Link
+      | ListPair
+      | Markdown
+      | Message
+      | NumberInput
+      | Password
+      | RadioGroup
+      | Select
+      | Telephone
+      | TextInput
+    >;
+    onClose: () => void
+  }
+
+  interface Whisper {
+    id: string;
+    label: string;
+    components: Array<
+      | Box
+      | Button
+      | Checkbox
+      | CollapseBox
+      | Link
+      | ListPair
+      | Markdown
+      | Message
+      | NumberInput
+      | Password
+      | RadioGroup
+      | Select
+      | Telephone
+      | TextInput
+    >;
+    close(cb: () => void): void;
   }
 
   //-- Filesystem
