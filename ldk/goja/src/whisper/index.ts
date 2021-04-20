@@ -106,7 +106,7 @@ export interface Password extends WhisperComponent {
 export interface RadioGroup extends WhisperComponent {
   onSelect: (value: number) => void;
   options: string[];
-  selected?: any;
+  selected?: number;
 }
 
 export interface Select extends WhisperComponent {
@@ -214,7 +214,6 @@ export interface Whisper {
 }
 
 export interface WhisperAptitude {
-  create(whisper: NewWhisper): Promise<Whisper>;
   /**
    * Returns a promise which provides a list of all of the current whispers in Olive Helps
    */

@@ -228,7 +228,7 @@ declare namespace OliveHelps {
   interface RadioGroup extends Component {
     onSelect: (value: number) => void; 
     options: string[];
-    selected?: any;
+    selected?: number;
   }
 
   interface Select extends Component {

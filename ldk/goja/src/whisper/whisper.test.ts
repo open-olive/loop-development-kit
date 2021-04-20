@@ -11,7 +11,6 @@ describe('Whisper', () => {
 
   describe('all', () => {
     it('Returns an array of all current whispers', () => {
-      const whisperCallback = jest.fn();
       const expected: Whisper[] = [
         {
           components: [
@@ -59,7 +58,7 @@ describe('Whisper', () => {
           },
         ],
         label: 'Test',
-        onClose: () => { }
+        onClose: jest.fn()
       };
 
       const expected: Whisper = {
@@ -78,7 +77,7 @@ describe('Whisper', () => {
         }
       
 
-      mocked(oliveHelps.whisper.create).mockImplementation((whisper, callback) => callback(expected));
+      mocked(oliveHelps.whisper.create).mockImplementation((_whisper, callback) => callback(expected));
 
       const actual = whisper.create(newWhisper)
       expect(oliveHelps.whisper.create).toHaveBeenCalledWith(newWhisper, expect.any(Function));
