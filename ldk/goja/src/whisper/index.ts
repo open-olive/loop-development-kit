@@ -1,55 +1,99 @@
 export enum WhisperComponentType {
-  BOX = 'box',
-  BUTTON = 'button',
-  CHECKBOX = 'checkbox',
-  COLLAPSE_BOX = 'collapseBox',
-  DIVIDER = 'divider',
-  LINK = 'link',
-  LIST_PAIR = 'listPair',
-  MARKDOWN = 'markdown',
-  MESSAGE = 'message',
-  NUMBER = 'number',
-  PASSWORD = 'password',
-  RADIO_GROUP = 'radioGroup',
-  SELECT = 'select',
-  TELEPHONE = 'telephone',
-  TEXT_INPUT = 'textInput',
+  /**
+   * A container component for formatting other components.
+   */
+  Box = 'box',
+  Button = 'button',
+  Checkbox = 'checkbox',
+  /**
+   * A container component to allow content to be opened and closed with a button click.
+   */
+  CollapseBox = 'collapseBox',
+  /**
+   * This component shows a horizontal divider to separate different kinds on content in a whisper. This component has no options.
+   */
+  Divider = 'divider',
+  /**
+   * The text input field allows the user to provide an email address.
+   */
+  Email = 'email',
+  /**
+   * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
+   */
+  Link = 'link',
+  /**
+   * This component shows a two column view of information typically used for lists of information.
+   */
+  ListPair = 'listPair',
+  Markdown = 'markdown',
+  /**
+   * This component shows a banner in the whisper that functions as a call to action to the user.
+   */
+  Message = 'message',
+  /**
+   * The text input field allows the user to provide a number within the parameters provided.
+   */
+  Number = 'number',
+  /**
+   * The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
+   */
+  Password = 'password',
+  /**
+   * The radio group allows a loop to provide the user with a collection of options in which they select a single result. The result is selected by clicking one of the radio elements in the radio group.
+   *
+   * A selected value of -1 indicates that nothing is selected.
+   */
+  RadioGroup = 'radioGroup',
+  /**
+   * A selected value of -1 indicates that nothing is selected.
+   */
+  Select = 'select',
+  /**
+   * The text input field allows the user to provide an email address.
+   */
+  Telephone = 'telephone',
+  /**
+   * The text input field allows the user to provide text information.
+   *
+   * The text can be pre-populated by the loop.
+   */
+  TextInput = 'textInput',
 }
 
 export enum Alignment {
-  CENTER = 'center',
-  LEFT = 'left',
-  RIGHT = 'right',
-  SPACE_AROUND = 'space_around',
-  SPACE_EVENLY = 'space_evenly',
+  Center = 'center',
+  Left = 'left',
+  Right = 'right',
+  SpaceAround = 'space_around',
+  SpaceEvenly = 'space_evenly',
 }
 
 export enum Direction {
-  HORIZONTAL = 'horizontal',
-  VERTICAL = 'vertical',
+  Horizontal = 'horizontal',
+  Vertical = 'vertical',
 }
 
 export enum TextAlign {
-  CENTER = 'center',
-  LEFT = 'left',
-  RIGHT = 'right',
+  Center = 'center',
+  Left = 'left',
+  Right = 'right',
 }
 
 export enum Urgency {
-  ERROR = 'error',
-  NONE = 'none',
-  SUCCESS = 'success',
-  WARNING = 'warning',
+  Error = 'error',
+  None = 'none',
+  Success = 'success',
+  Warning = 'warning',
 }
 
 export interface WhisperComponent {
   id?: string;
-  type: string;
+  type: WhisperComponentType;
 }
 
 export interface Button extends WhisperComponent {
   label: string;
-  onClick: () => void
+  onClick: () => void;
   submit?: boolean;
 }
 
@@ -60,12 +104,20 @@ export interface Checkbox extends WhisperComponent {
   onChange: (value: boolean) => void;
 }
 
+export interface Email extends WhisperComponent {
+  label: string;
+  onChange?: (value: string) => void;
+  pattern?: RegExp;
+  tooltip?: string;
+  value?: string;
+}
+
 export interface Link extends WhisperComponent {
   href?: string;
   style?: Urgency;
   onClick?: (value: string) => void;
   text: string;
-  textAlign?: string;
+  textAlign?: TextAlign;
 }
 
 export interface ListPair extends WhisperComponent {
@@ -131,62 +183,35 @@ export interface TextInput extends WhisperComponent {
   value?: string;
 }
 
+export type ChildElement =
+  | Button
+  | Checkbox
+  | Link
+  | ListPair
+  | Markdown
+  | Message
+  | NumberInput
+  | Password
+  | RadioGroup
+  | Select
+  | Telephone
+  | TextInput
+  | WhisperComponent;
+
 export interface CollapseBox extends WhisperComponent {
-  children: Array<
-    | Button
-    | Checkbox
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput
-  >;
+  children: Array<ChildElement>;
   label?: string;
   open: boolean;
 }
 
 export interface Box extends WhisperComponent {
-  alignment: string;
-  children: Array<
-    | Button
-    | Checkbox
-    | CollapseBox
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput
-  >;
+  alignment: Alignment;
+  children: Array<ChildElement | CollapseBox>;
   direction: string;
 }
 
 export interface NewWhisper {
-  components: Array<
-    | Box
-    | Button
-    | Checkbox
-    | CollapseBox
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput
-  >;
+  components: Array<Box | ChildElement | CollapseBox>;
   label: string;
   onClose: () => void;
 }
@@ -194,22 +219,7 @@ export interface NewWhisper {
 export interface Whisper {
   id: string;
   label: string;
-  components: Array<
-    | Box
-    | Button
-    | Checkbox
-    | CollapseBox
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput
-  >;
+  components: Array<Box | ChildElement | CollapseBox>;
   close(callback: () => void): void;
 }
 
@@ -221,7 +231,7 @@ export interface WhisperAptitude {
 
   /**
    * Adds a new whisper to Olive Helps based on the configuration provided.
-   * Returns a promise which provides a reference to the newly created whisper 
+   * Returns a promise which provides a reference to the newly created whisper
    *
    * @param whisper The configuration for the whisper being created
    */
@@ -242,9 +252,9 @@ function all(): Promise<Whisper[]> {
 function create(whisper: NewWhisper): Promise<Whisper> {
   return new Promise<Whisper>((resolve, reject) => {
     try {
-      oliveHelps.whisper.create(whisper, (w: Whisper) => resolve(w))
+      oliveHelps.whisper.create(whisper, (w: Whisper) => resolve(w));
     } catch (e) {
-      reject(e)
+      reject(e);
     }
   });
 }

@@ -157,15 +157,53 @@ declare namespace OliveHelps {
     all(cb: (whispers: Whisper[]) => void): void;
   }
 
+  enum WhisperComponentType {
+    Box = 'box',
+    Button = 'button',
+    Checkbox = 'checkbox',
+    CollapseBox = 'collapseBox',
+    Divider = 'divider',
+    Email = 'email',
+    Link = 'link',
+    ListPair = 'listPair',
+    Markdown = 'markdown',
+    Message = 'message',
+    Number = 'number',
+    Password = 'password',
+    RadioGroup = 'radioGroup',
+    Select = 'select',
+    Telephone = 'telephone',
+    TextInput = 'textInput',
+  }
+
   enum Urgency {
-    ERROR = 'error',
-    NONE = 'none',
-    SUCCESS = 'success',
-    WARNING = 'warning',
+    Error = 'error',
+    None = 'none',
+    Success = 'success',
+    Warning = 'warning',
+  }
+
+  enum Alignment {
+    Center = 'center',
+    Left = 'left',
+    Right = 'right',
+    SpaceAround = 'space_around',
+    SpaceEvenly = 'space_evenly',
+  }
+
+  enum Direction {
+    Horizontal = 'horizontal',
+    Vertical = 'vertical',
+  }
+
+  enum TextAlign {
+    Center = 'center',
+    Left = 'left',
+    Right = 'right',
   }
 
   interface Component {
-    type: string;
+    type: WhisperComponentType;
     id?: string;
   }
 
@@ -182,18 +220,26 @@ declare namespace OliveHelps {
     onChange: (value: boolean) => void;
   }
 
+  interface Email extends Component {
+    label: string;
+    onChange?: (value: string) => void;
+    pattern?: RegExp;
+    tooltip?: string;
+    value?: string;
+  }
+
   interface Link extends Component {
     href?: string;
     style?: Urgency;
     onClick?: (value: string) => void;
     text: string;
-    textAlign?: string;
+    textAlign?: TextAlign;
   }
 
   interface ListPair extends Component {
     copyable: boolean;
     label: string;
-    style?: string;
+    style?: Urgency;
     value?: string;
   }
 
@@ -204,8 +250,8 @@ declare namespace OliveHelps {
   interface Message extends Component {
     body: string;
     header: string;
-    style?: string;
-    textAlign?: string;
+    style?: Urgency;
+    textAlign?: TextAlign;
   }
 
   interface NumberInput extends Component {
@@ -226,7 +272,7 @@ declare namespace OliveHelps {
   }
 
   interface RadioGroup extends Component {
-    onSelect: (value: number) => void; 
+    onSelect: (value: number) => void;
     options: string[];
     selected?: number;
   }
@@ -253,85 +299,44 @@ declare namespace OliveHelps {
     value?: string;
   }
 
+  type ChildElement =
+    | Button
+    | Checkbox
+    | Component
+    | Email
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput;
+
   interface CollapseBox extends Component {
-    children: Array<
-      | Button
-      | Checkbox
-      | Link
-      | ListPair
-      | Markdown
-      | Message
-      | NumberInput
-      | Password
-      | RadioGroup
-      | Select
-      | Telephone
-      | TextInput
-    >;
+    children: Array<ChildElement>;
     label?: string;
     open: boolean;
   }
 
   interface Box extends Component {
-    alignment: string;
-    children: Array<
-      | Button
-      | CollapseBox
-      | Checkbox
-      | Link
-      | ListPair
-      | Markdown
-      | Message
-      | NumberInput
-      | Password
-      | RadioGroup
-      | Select
-      | Telephone
-      | TextInput
-    >;
+    alignment: Alignment;
+    children: Array<ChildElement | CollapseBox>;
     direction: string;
   }
 
   interface NewWhisper {
     label: string;
-    components: Array<
-      | Box
-      | Button
-      | Checkbox
-      | CollapseBox
-      | Link
-      | ListPair
-      | Markdown
-      | Message
-      | NumberInput
-      | Password
-      | RadioGroup
-      | Select
-      | Telephone
-      | TextInput
-    >;
-    onClose: () => void
+    components: Array<Box | ChildElement | CollapseBox>;
+    onClose: () => void;
   }
 
   interface Whisper {
     id: string;
     label: string;
-    components: Array<
-      | Box
-      | Button
-      | Checkbox
-      | CollapseBox
-      | Link
-      | ListPair
-      | Markdown
-      | Message
-      | NumberInput
-      | Password
-      | RadioGroup
-      | Select
-      | Telephone
-      | TextInput
-    >;
+    components: Array<Box | ChildElement | CollapseBox>;
     close(cb: () => void): void;
   }
 
