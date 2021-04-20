@@ -1,19 +1,62 @@
-enum WhisperComponentType {
+export enum WhisperComponentType {
+  /**
+   * A container component for formatting other components.
+   */
   Box = 'box',
   Button = 'button',
   Checkbox = 'checkbox',
+  /**
+   * A container component to allow content to be opened and closed with a button click.
+   */
   CollapseBox = 'collapseBox',
+  /**
+   * This component shows a horizontal divider to separate different kinds on content in a whisper. This component has no options.
+   */
   Divider = 'divider',
+  /**
+   * The text input field allows the user to provide an email address.
+   */
   Email = 'email',
+  /**
+   * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
+   */
   Link = 'link',
+  /**
+   * This component shows a two column view of information typically used for lists of information.
+   */
   ListPair = 'listPair',
   Markdown = 'markdown',
+  /**
+   * This component shows a banner in the whisper that functions as a call to action to the user.
+   */
   Message = 'message',
+  /**
+   * The text input field allows the user to provide a number within the parameters provided.
+   */
   Number = 'number',
+  /**
+   * The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
+   */
   Password = 'password',
+  /**
+   * The radio group allows a loop to provide the user with a collection of options in which they select a single result. The result is selected by clicking one of the radio elements in the radio group.
+   *
+   * A selected value of -1 indicates that nothing is selected.
+   */
   RadioGroup = 'radioGroup',
+  /**
+   * A selected value of -1 indicates that nothing is selected.
+   */
   Select = 'select',
+  /**
+   * The text input field allows the user to provide an email address.
+   */
   Telephone = 'telephone',
+  /**
+   * The text input field allows the user to provide text information.
+   *
+   * The text can be pre-populated by the loop.
+   */
   TextInput = 'textInput',
 }
 
