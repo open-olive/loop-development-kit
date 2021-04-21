@@ -1,3 +1,4 @@
+
 /* eslint-disable */
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
@@ -24,13 +25,29 @@ declare namespace OliveHelps {
 
     all(cb: (windowInfos: WindowInfo[]) => void): void;
 
-    listenAll(cb: (windowInfo: WindowInfo) => void): void;
+    listenAll(cb: (windowEvent: WindowEvent) => void): void;
   }
 
   interface WindowEvent {
     info: WindowInfo;
-    action: number;
+    action: WindowAction;
   }
+  type WindowActionFocused = "focus"
+  type WindowActionUnfocused = "unfocused"
+  type WindowActionOpened = "open"
+  type WindowActionClosed = "close"
+  type WindowActionMoved = "move"
+  type WindowActionResized = "resized"
+  type WindowActionTitleChanged = "titleChange"
+
+  type WindowAction =
+    WindowActionFocused
+    | WindowActionUnfocused
+    | WindowActionOpened
+    | WindowActionClosed
+    | WindowActionMoved
+    | WindowActionResized
+    | WindowActionTitleChanged
 
   interface WindowInfo {
     title: string;
