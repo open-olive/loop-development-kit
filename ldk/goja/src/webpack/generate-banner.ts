@@ -1,6 +1,6 @@
 export function generateMetadata(): string {
   const json = JSON.stringify({
-    ldkVersion: 'PLACEHOLDER',
+    ldkVersion: process.env.npm_package_dependencies__oliveai_ldk,
   });
   return Buffer.from(json).toString('base64');
 }
