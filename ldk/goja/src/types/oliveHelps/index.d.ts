@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
@@ -158,32 +157,190 @@ declare namespace OliveHelps {
     all(cb: (whispers: Whisper[]) => void): void;
   }
 
+  enum WhisperComponentType {
+    Box = 'box',
+    Button = 'button',
+    Checkbox = 'checkbox',
+    CollapseBox = 'collapseBox',
+    Divider = 'divider',
+    Email = 'email',
+    Link = 'link',
+    ListPair = 'listPair',
+    Markdown = 'markdown',
+    Message = 'message',
+    Number = 'number',
+    Password = 'password',
+    RadioGroup = 'radioGroup',
+    Select = 'select',
+    Telephone = 'telephone',
+    TextInput = 'textInput',
+  }
+
+  enum Urgency {
+    Error = 'error',
+    None = 'none',
+    Success = 'success',
+    Warning = 'warning',
+  }
+
+  enum Alignment {
+    Center = 'center',
+    Left = 'left',
+    Right = 'right',
+    SpaceAround = 'space_around',
+    SpaceEvenly = 'space_evenly',
+  }
+
+  enum Direction {
+    Horizontal = 'horizontal',
+    Vertical = 'vertical',
+  }
+
+  enum TextAlign {
+    Center = 'center',
+    Left = 'left',
+    Right = 'right',
+  }
+
+  interface Component<T extends WhisperComponentType> {
+    id?: string;
+    type: T;
+  }
+
+  type Button = Component<WhisperComponentType.Button> & {
+    label: string;
+    onClick: () => void;
+  };
+
+  type Checkbox = Component<WhisperComponentType.Checkbox> & {
+    label: string;
+    tooltip?: string;
+    value: boolean;
+    onChange: (value: boolean) => void;
+  };
+
+  type Email = Component<WhisperComponentType.Email> & {
+    label: string;
+    onChange: (value: string) => void;
+    tooltip?: string;
+    value?: string;
+  };
+
+  type Link = Component<WhisperComponentType.Link> & {
+    href?: string;
+    text: string;
+    onClick?: () => void;
+    style?: Urgency;
+    textAlign?: TextAlign;
+  };
+
+  type ListPair = Component<WhisperComponentType.ListPair> & {
+    copyable: boolean;
+    label: string;
+    value: string;
+    style: Urgency;
+  };
+
+  type Markdown = Component<WhisperComponentType.Markdown> & {
+    body: string;
+  };
+
+  type Message = Component<WhisperComponentType.Message> & {
+    body?: string;
+    header?: string;
+    style?: Urgency;
+    textAlign?: TextAlign;
+  };
+
+  type NumberInput = Component<WhisperComponentType.Number> & {
+    label: string;
+    onChange: (value: number) => void;
+    value?: number;
+    max?: number;
+    min?: number;
+    step?: number;
+    tooltip?: string;
+  };
+
+  type Password = Component<WhisperComponentType.Password> & {
+    label: string;
+    onChange: (value: string) => void;
+    tooltip?: string;
+    value?: string;
+  };
+
+  type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
+    onSelect: (value: number) => void;
+    options: string[];
+    selected?: number;
+  };
+
+  type Select = Component<WhisperComponentType.Select> & {
+    label: string;
+    options: string[];
+    onSelect: (value: number) => void;
+    selected?: number;
+    tooltip?: string;
+  };
+
+  type Telephone = Component<WhisperComponentType.Telephone> & {
+    label: string;
+    onChange: (value: string) => void;
+    // pattern?: RegExp; TODO: Implement this
+    tooltip?: string;
+    value?: string;
+  };
+
+  type TextInput = Component<WhisperComponentType.TextInput> & {
+    label: string;
+    onChange: (value: string) => void;
+    tooltip?: string;
+    value?: string;
+  };
+
+  type Divider = Component<WhisperComponentType.Divider>;
+
+  type CollapseBox = Component<WhisperComponentType.CollapseBox> & {
+    children: Array<ChildComponents>;
+    label?: string;
+    open: boolean;
+  };
+
+  type Box = Component<WhisperComponentType.Box> & {
+    alignment: Alignment;
+    children: Array<ChildComponents>;
+    direction: Direction;
+  };
+
+  type ChildComponents =
+    | Button
+    | Checkbox
+    | Divider
+    | Email
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput;
+
+  type Components = Box | ChildComponents | CollapseBox;
+
   interface NewWhisper {
     label: string;
-    components: Component[];
+    components: Array<Components>;
+    onClose: () => void;
   }
 
   interface Whisper {
     id: string;
     label: string;
-    components: Component[];
-
-    onChange(cb: (whisper: Whisper) => void): void;
-
+    components: Array<Components>;
     close(cb: () => void): void;
-  }
-
-  interface Component {
-    type: string;
-    id: string;
-  }
-
-  interface MarkdownComponent extends Component {
-    body: string;
-  }
-
-  interface ButtonComponent extends Component {
-    body: string;
   }
 
   interface FileInfo {
