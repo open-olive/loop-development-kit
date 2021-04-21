@@ -8,11 +8,6 @@ export interface WindowInfo {
     height: number;
 }
 
-export interface WindowEvent {
-    info: WindowInfo;
-    action: WindowAction;
-}
-
 export type WindowActionFocused = "focus"
 export type WindowActionUnfocused = "unfocused"
 export type WindowActionOpened = "open"
@@ -29,6 +24,11 @@ export type WindowAction =
     | WindowActionMoved
     | WindowActionResized
     | WindowActionTitleChanged
+
+export interface WindowEvent {
+    info: WindowInfo;
+    action: WindowAction;
+}
 
 export interface Window {
     /**
