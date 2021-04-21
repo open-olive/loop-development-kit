@@ -1,0 +1,25 @@
+{
+    "out": "docs",
+    "includeDeclarations": true,
+    "excludeExternals": true,
+    "excludePrivate": true,
+    "mode": "file",
+    "toc": [],
+    "exclude": [
+      "coverage/**/*",
+      "jest.config.js",
+      "**/*.test.ts"
+    ],
+    "listInvalidSymbolLinks": true,
+    "inputFiles": ["src/index.ts"],
+    "stripInternal": true,
+    "theme": "pages-plugin",
+    "name": "Secure Loop Development Kit for Node.js",
+    "pages": {
+        "groups": [
+          
+        ],
+        "theme": "pages-plugin"
+      }
+  }
+  
