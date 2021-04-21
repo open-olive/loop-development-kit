@@ -120,8 +120,9 @@ describe('Filesystem', () => {
         throw exception;
       });
 
-      const callback = jest.fn();
-      expect(() => filesystem.listenDir('path', callback)).toThrow(exception);
+      const actual = filesystem.listenDir('path', jest.fn());
+
+      return expect(actual).rejects.toBe(exception);
     });
   });
 
@@ -141,8 +142,9 @@ describe('Filesystem', () => {
         throw exception;
       });
 
-      const callback = jest.fn();
-      expect(() => filesystem.listenFile('path', callback)).toThrow(exception);
+      const actual = filesystem.listenFile('path', jest.fn());
+
+      return expect(actual).rejects.toBe(exception);
     });
   });
 

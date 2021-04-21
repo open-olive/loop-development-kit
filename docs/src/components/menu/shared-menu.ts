@@ -1,16 +1,11 @@
 import { IAptitudeData } from '../aptitudes/aptitudeData';
-import {
-  IGuideFrontMatter,
-  IMarkdownEdgeQuery,
-  IMarkdownRemarkQuery,
-  QueryEdge,
-} from '../../queries';
+import { IAllFileQuery, IGuideFrontMatter, QueryEdge } from '../../queries';
 
 export interface IMenuProps {
   currentPath: string;
 }
 
-export type IGuideQuery = IMarkdownRemarkQuery<IGuideFrontMatter>;
+export type IGuideQuery = IAllFileQuery<IGuideFrontMatter>;
 
 export interface IMenuDetailProps extends IMenuProps {
   aptitudes: IAptitudeData[];
@@ -23,16 +18,16 @@ export interface IMenuAptitudeProps {
 }
 
 export const mapRemarkEdges: <T>(
-  queryResults: IMarkdownRemarkQuery<T>,
+  queryResults: IAllFileQuery<T>,
   mapFn: (edge: QueryEdge<T>) => T,
 ) => T[] = (queryResults, mapFn) => {
-  return queryResults.allMarkdownRemark.edges.map(mapFn);
+  return queryResults.allFile.edges.map(mapFn);
 };
 
 export const mapGuidePages = (queryResults: IGuideQuery): IGuideFrontMatter[] => {
   return mapRemarkEdges(queryResults, (edge) => ({
-    slug: '/' + edge.node.frontmatter.slug,
-    title: edge.node.frontmatter.title,
-    description: edge.node.frontmatter.description,
+    slug: '/' + edge.node.childMarkdownRemark.frontmatter.slug,
+    title: edge.node.childMarkdownRemark.frontmatter.title,
+    description: edge.node.childMarkdownRemark.frontmatter.description,
   }));
 };

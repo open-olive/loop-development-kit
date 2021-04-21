@@ -1,6 +1,11 @@
+import { IAptitudeData } from './components/aptitudes/aptitudeData';
+
 export type QueryEdge<T> = {
   node: {
-    frontmatter: T;
+    childMarkdownRemark: {
+      frontmatter: T;
+      id: string;
+    };
   };
 };
 
@@ -16,4 +21,73 @@ export interface IGuideFrontMatter {
   slug: string;
   title: string;
   description: string;
+}
+
+export interface IAllFileQuery<T> {
+  allFile: {
+    edges: {
+      node: {
+        id: string;
+        childMarkdownRemark: {
+          frontmatter: T;
+          id: string;
+        };
+        name: string;
+      };
+    }[];
+  };
+}
+
+export interface IAllAptitudeQuery {
+  allAptitude: {
+    edges: {
+      node: {
+        id: string;
+        internalName: string;
+        markdown: {
+          frontmatter: {
+            name: string;
+          };
+        };
+      };
+    }[];
+  };
+}
+
+export interface AptitudeMarkdown {
+  html: string;
+  frontmatter: {
+    name: string;
+    links_node: string | undefined;
+  };
+}
+
+export interface AptitudeQueryResult {
+  internalName: string;
+  markdown: AptitudeMarkdown;
+  capabilities: {
+    markdown: AptitudeMarkdown;
+  }[];
+}
+
+export interface TemplateProps {
+  aptitude: AptitudeQueryResult;
+}
+
+export function getAptitudeDataFromQuery(queryResult: AptitudeQueryResult): IAptitudeData {
+  const aptitudeFrontMatter = queryResult.markdown.frontmatter;
+  return {
+    name: aptitudeFrontMatter.name,
+    description: queryResult.markdown.html,
+    links: {
+      node: aptitudeFrontMatter.links_node,
+    },
+    capabilities: queryResult.capabilities.map((capability) => ({
+      name: capability.markdown.frontmatter.name,
+      description: capability.markdown.html,
+      links: {
+        node: capability.markdown.frontmatter.links_node,
+      },
+    })),
+  };
 }

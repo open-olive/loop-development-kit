@@ -65,7 +65,7 @@ declare namespace OliveHelps {
   enum ProcessAction {
     Unknown = 0,
     Started = 1,
-    Stopped = 2
+    Stopped = 2,
   }
 
   interface ProcessEvent {
@@ -78,7 +78,7 @@ declare namespace OliveHelps {
     command: string;
     pid: number;
   }
-  
+
   interface Process {
     all(cb: (processInfo: ProcessInfo[]) => void): void;
 
@@ -147,6 +147,8 @@ declare namespace OliveHelps {
     write(value: string, cb: () => void): void;
 
     listen(cb: (val: string) => void): void;
+
+    includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   //-- Whisper
@@ -184,33 +186,6 @@ declare namespace OliveHelps {
     body: string;
   }
 
-  //-- Filesystem
-  interface Filesystem {
-    writeFile(path: string, data: Uint8Array, op: number, mode: WriteMode, cb: () => void): void;
-
-    readFile(path: string, cb: (data: Uint8Array) => void): void;
-
-    listenFile(path: string, cb: (fileEvent: FileEvent) => void): void;
-
-    remove(path: string, cb: () => void): void;
-
-    stat(path: string, cb: (fi: FileInfo) => void): void;
-
-    copy(src: string, dest: string, cb: () => void): void;
-
-    move(src: string, dest: string, cb: () => void): void;
-
-    dir(path: string, cb: (fileInfos: FileInfo[]) => void): void;
-
-    makeDir(path: string, writeMode: WriteMode, cb: () => void): void;
-
-    listenDir(path: string, cb: (fileEvent: FileEvent) => void): void;
-
-    exists(path:string, cb: (exists: boolean) => void): void;
-
-    join(segments: [string], cb: (path: string) => void): void;
-  }
-
   interface FileInfo {
     name: string;
     size: number;
@@ -225,4 +200,42 @@ declare namespace OliveHelps {
   }
 
   type WriteMode = number;
+
+  enum WriteOperation {
+    overwrite = 1,
+    append = 2,
+  }
+
+  //-- Filesystem
+  interface Filesystem {
+    copy(source: string, destination: string, callback: () => void): void;
+
+    dir(path: string, callback: (fileInfos: FileInfo[]) => void): void;
+
+    exists(path: string, callback: (exists: boolean) => void): void;
+
+    listenDir(path: string, callback: (fileEvent: FileEvent) => void): void;
+
+    listenFile(path: string, callback: (fileEvent: FileEvent) => void): void;
+
+    makeDir(path: string, writeMode: WriteMode, callback: () => void): void;
+
+    move(source: string, destination: string, callback: () => void): void;
+
+    readFile(path: string, callback: (data: Uint8Array) => void): void;
+
+    remove(path: string, callback: () => void): void;
+
+    stat(path: string, callback: (fileInfo: FileInfo) => void): void;
+
+    writeFile(
+      path: string,
+      data: Uint8Array,
+      writeOperation: WriteOperation,
+      writeMode: WriteMode,
+      callback: () => void,
+    ): void;
+
+    join(segments: [string], cb: (path: string) => void): void;
+  }
 }
