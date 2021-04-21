@@ -212,23 +212,7 @@ export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
   direction: Direction;
 };
 
-type Components =
-  | Box
-  | Button
-  | Checkbox
-  | CollapseBox
-  | Divider
-  | Email
-  | Link
-  | ListPair
-  | Markdown
-  | Message
-  | NumberInput
-  | Password
-  | RadioGroup
-  | Select
-  | Telephone
-  | TextInput;
+type Components = Box | ChildComponents | CollapseBox;
 
 export interface NewWhisper {
   components: Array<Components>;

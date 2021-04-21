@@ -328,23 +328,7 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput;
 
-  type Components =
-    | Box
-    | Button
-    | Checkbox
-    | CollapseBox
-    | Divider
-    | Email
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput;
+  type Components = Box | ChildComponents | CollapseBox;
 
   interface NewWhisper {
     label: string;
