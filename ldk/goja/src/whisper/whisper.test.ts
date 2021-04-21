@@ -1,5 +1,5 @@
+import * as whisper from '.';
 import { mocked } from 'ts-jest/utils';
-import { NewWhisper, whisper, Whisper, WhisperComponentType } from '.';
 
 describe('Whisper', () => {
   beforeEach(() => {
@@ -11,13 +11,13 @@ describe('Whisper', () => {
 
   describe('all', () => {
     it('Returns an array of all current whispers', () => {
-      const expected: Whisper[] = [
+      const expected: whisper.Whisper[] = [
         {
           components: [
             {
               body: 'Test',
               id: '1',
-              type: WhisperComponentType.Markdown,
+              type: whisper.WhisperComponentType.Markdown,
             },
           ],
           close: () => {
@@ -49,24 +49,24 @@ describe('Whisper', () => {
 
   describe('create', () => {
     it('Creates a whisper', () => {
-      const newWhisper: NewWhisper = {
+      const newWhisper: whisper.NewWhisper = {
         components: [
           {
             body: 'Test',
             id: '1',
-            type: WhisperComponentType.Markdown,
+            type: whisper.WhisperComponentType.Markdown,
           },
         ],
         label: 'Test',
         onClose: jest.fn(),
       };
 
-      const expected: Whisper = {
+      const expected: whisper.Whisper = {
         components: [
           {
             body: 'Test',
             id: '1',
-            type: WhisperComponentType.Markdown,
+            type: whisper.WhisperComponentType.Markdown,
           },
         ],
         close: () => {
