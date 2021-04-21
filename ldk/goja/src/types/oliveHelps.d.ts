@@ -235,5 +235,7 @@ declare namespace OliveHelps {
       writeMode: WriteMode,
       callback: () => void,
     ): void;
+
+    join(segments: [string], cb: (path: string) => void): void;
   }
 }
