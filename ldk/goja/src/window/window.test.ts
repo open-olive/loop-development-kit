@@ -1,5 +1,5 @@
+import * as window from '.';
 import { mocked } from 'ts-jest/utils';
-import { window } from '.';
 
 describe('Window', () => {
     beforeEach(() => {
@@ -63,7 +63,7 @@ describe('Window', () => {
 
     describe('all', () => {
         it('returns a promise containing all window info', () => {
-            const expectedWindowInfo = [
+            const expectedWindowInfo: window.WindowInfo[] = [
                 {
                     title: 'Chrome',
                     path: 'path/to/my/window',

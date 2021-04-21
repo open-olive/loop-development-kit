@@ -1,5 +1,5 @@
+import * as filesystem from '.';
 import { mocked } from 'ts-jest/utils';
-import { FileInfo, WriteOperation, WriteMode, filesystem } from '.';
 
 describe('Filesystem', () => {
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe('Filesystem', () => {
   describe('dir', () => {
     it('returns a promise result with expected FileInfos', () => {
       const path = 'path';
-      const expected: FileInfo[] = [
+      const expected: filesystem.FileInfo[] = [
         {
           name: 'name',
           size: 2345,
@@ -150,7 +150,7 @@ describe('Filesystem', () => {
 
   describe('makeDir', () => {
     it('returns a promise result when directory is created', () => {
-      const writeMode: WriteMode = 5;
+      const writeMode: filesystem.WriteMode = 5;
       const destination = 'destination';
       mocked(
         oliveHelps.filesystem.makeDir,
@@ -256,7 +256,7 @@ describe('Filesystem', () => {
   describe('stat', () => {
     it('returns a promise result with expected file information', () => {
       const path = 'path';
-      const expected: FileInfo = {
+      const expected: filesystem.FileInfo = {
         name: 'name',
         size: 2345,
         mode: 'mode',
@@ -288,8 +288,8 @@ describe('Filesystem', () => {
     it('returns a promise result when file is written', () => {
       const path = 'path';
       const data = new Uint8Array([84]);
-      const writeOperation: WriteOperation = 1;
-      const writeMode: WriteMode = 54;
+      const writeOperation: filesystem.WriteOperation = 1;
+      const writeMode: filesystem.WriteMode = 54;
       mocked(
         oliveHelps.filesystem.writeFile,
       ).mockImplementation((_path, _data, _writeOperation, _writeMode, callback) => callback());
@@ -335,7 +335,7 @@ describe('Filesystem', () => {
         throw exception;
       });
 
-      const actual = filesystem.join(['a','b']);
+      const actual = filesystem.join(['a','b','c']);
 
       return expect(actual).rejects.toBe(exception);
     });

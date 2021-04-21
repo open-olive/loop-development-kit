@@ -1,5 +1,5 @@
+import * as network from '.'
 import { mocked } from 'ts-jest/utils';
-import { network, HTTPRequest, HTTPResponse } from '.';
 
 describe('Network', () => {
   beforeEach(() => {
@@ -10,13 +10,13 @@ describe('Network', () => {
 
   describe('httpRequest', () => {
     it('returns a promise result with expected clipboard value', () => {
-      const request: HTTPRequest = {
+      const request: network.HTTPRequest = {
         body: new Uint8Array(),
         headers: { x: ['x'] },
         method: 'GET',
         url: 'some url',
       };
-      const response: HTTPResponse = {
+      const response: network.HTTPResponse = {
         statusCode: 200,
         data: new Uint8Array(),
         headers: { x: ['x'] },
@@ -32,7 +32,7 @@ describe('Network', () => {
 
     it('returns a rejected promise', () => {
       const exception = 'Exception';
-      const request: HTTPRequest = {
+      const request: network.HTTPRequest = {
         body: new Uint8Array(),
         headers: { x: ['x'] },
         method: 'GET',

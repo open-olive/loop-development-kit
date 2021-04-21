@@ -1,5 +1,6 @@
+import * as keyboard from '.';
 import { mocked } from 'ts-jest/utils';
-import { Hotkey, keyboard } from '.'
+import { Hotkey } from '.';
 
 describe('Keyboard', () => {
 

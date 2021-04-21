@@ -1,7 +1,7 @@
 /**
  * Response object containing the cursor position, where 0,0 is the top-left of the screen.
  */
-export interface Position {
+ export interface Position {
   x: number;
   y: number;
 }
@@ -24,7 +24,7 @@ export interface Cursor {
   listenPosition(callback: (pos: Position) => void): void
 }
 
-function position(): Promise<Position> {
+export function position(): Promise<Position> {
     return new Promise<Position>((resolve, reject) => {
       try {
         oliveHelps.cursor.position((pos: Position) => resolve(pos));
@@ -35,11 +35,6 @@ function position(): Promise<Position> {
     });
   }
  
-function listenPosition(callback: (pos: Position) => void): void {
+export function listenPosition(callback: (pos: Position) => void): void {
     oliveHelps.cursor.listenPosition(callback);
-}
-
-export const cursor: Cursor = {
-  position,
-  listenPosition,
 }

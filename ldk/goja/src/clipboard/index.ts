@@ -23,12 +23,12 @@ export interface Clipboard {
   listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void;
 }
 
-function listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void {
+export function listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void {
   oliveHelps.clipboard.includeOliveHelpsEvents(includeOliveHelpsEvents);
   return oliveHelps.clipboard.listen(callback);
 }
 
-function read(): Promise<string> {
+export function read(): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     try {
       oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
@@ -39,7 +39,7 @@ function read(): Promise<string> {
   });
 }
 
-function write(text: string): Promise<void> {
+export function write(text: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     try {
       oliveHelps.clipboard.write(text, () => resolve());
@@ -49,9 +49,3 @@ function write(text: string): Promise<void> {
     }
   });
 }
-
-export const clipboard: Clipboard = {
-  read,
-  write,
-  listen,
-};

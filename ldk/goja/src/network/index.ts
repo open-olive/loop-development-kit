@@ -38,7 +38,7 @@ export interface Network {
   httpRequest(req: HTTPRequest): Promise<HTTPResponse>;
 }
 
-function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
+export function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
   return new Promise<HTTPResponse>((resolve, reject) => {
     try {
       oliveHelps.network.httpRequest(req, (val: HTTPResponse) => {
@@ -50,7 +50,3 @@ function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
     }
   });
 }
-
-export const network: Network = {
-  httpRequest,
-};

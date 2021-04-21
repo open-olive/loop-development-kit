@@ -1,5 +1,5 @@
+import * as cursor from '.';
 import { mocked } from 'ts-jest/utils';
-import { cursor, Position } from '.';
 
 describe('Cursor', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Cursor', () => {
 
   describe('position', () => {
     it('returns a promise result with expected cursor position', () => {
-      const expected: Position = {
+      const expected: cursor.Position = {
         x: 2345,
         y: 6789
       };

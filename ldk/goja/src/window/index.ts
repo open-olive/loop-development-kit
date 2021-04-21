@@ -43,7 +43,7 @@ export interface Window {
     listenAll(callback: (windowInfo: WindowInfo) => void): void;
 }
 
-function activeWindow(): Promise<WindowInfo> {
+export function activeWindow(): Promise<WindowInfo> {
     return new Promise<WindowInfo>((resolve, reject) => {
         try {
             oliveHelps.window.activeWindow((windowInfo: WindowInfo) => resolve(windowInfo));
@@ -54,11 +54,11 @@ function activeWindow(): Promise<WindowInfo> {
     });
 }
 
-function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): void {
+export function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): void {
     oliveHelps.window.listenActiveWindow(callback);
 }
 
-function all(): Promise<WindowInfo[]> {
+export function all(): Promise<WindowInfo[]> {
     return new Promise<WindowInfo[]>((resolve, reject) => {
         try {
             oliveHelps.window.all((windowInfos: WindowInfo[]) => resolve(windowInfos));
@@ -69,13 +69,6 @@ function all(): Promise<WindowInfo[]> {
     });
 }
 
-function listenAll(callback: (windowInfo: WindowInfo) => void): void {
+export function listenAll(callback: (windowInfo: WindowInfo) => void): void {
     oliveHelps.window.listenAll(callback);
-}
-
-export const window: Window = {
-    activeWindow,
-    listenActiveWindow,
-    all,
-    listenAll
 }
