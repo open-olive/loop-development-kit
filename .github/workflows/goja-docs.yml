@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - SIDE-2043-documentation
 
 jobs:
   deploy-node:
