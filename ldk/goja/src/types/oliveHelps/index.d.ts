@@ -202,58 +202,57 @@ declare namespace OliveHelps {
     Right = 'right',
   }
 
-  interface Component {
-    type: WhisperComponentType;
+  interface Component<T extends WhisperComponentType> {
     id?: string;
+    type: T;
   }
 
-  interface Button extends Component {
+  type Button = Component<WhisperComponentType.Button> & {
     label: string;
     onClick: () => void;
-  }
+  };
 
-  interface Checkbox extends Component {
+  type Checkbox = Component<WhisperComponentType.Checkbox> & {
     label: string;
     tooltip?: string;
     value: boolean;
     onChange: (value: boolean) => void;
-  }
+  };
 
-  interface Email extends Component {
+  type Email = Component<WhisperComponentType.Email> & {
     label: string;
     onChange: (value: string) => void;
-    pattern?: RegExp;
     tooltip?: string;
     value?: string;
-  }
+  };
 
-  interface Link extends Component {
+  type Link = Component<WhisperComponentType.Link> & {
     href?: string;
-    onClick?: () => void;
     text: string;
+    onClick?: () => void;
     style?: Urgency;
     textAlign?: TextAlign;
-  }
+  };
 
-  interface ListPair extends Component {
+  type ListPair = Component<WhisperComponentType.ListPair> & {
     copyable: boolean;
     label: string;
-    style?: Urgency;
-    value?: string;
-  }
+    value: string;
+    style: Urgency;
+  };
 
-  interface Markdown extends Component {
+  type Markdown = Component<WhisperComponentType.Markdown> & {
     body: string;
-  }
+  };
 
-  interface Message extends Component {
+  type Message = Component<WhisperComponentType.Message> & {
     body?: string;
     header?: string;
     style?: Urgency;
     textAlign?: TextAlign;
-  }
+  };
 
-  interface NumberInput extends Component {
+  type NumberInput = Component<WhisperComponentType.Number> & {
     label: string;
     onChange: (value: number) => void;
     value?: number;
@@ -261,47 +260,59 @@ declare namespace OliveHelps {
     min?: number;
     step?: number;
     tooltip?: string;
-  }
+  };
 
-  interface Password extends Component {
+  type Password = Component<WhisperComponentType.Password> & {
     label: string;
     onChange: (value: string) => void;
-    value?: string;
     tooltip?: string;
-  }
+    value?: string;
+  };
 
-  interface RadioGroup extends Component {
+  type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
     onSelect: (value: number) => void;
     options: string[];
     selected?: number;
-  }
+  };
 
-  interface Select extends Component {
+  type Select = Component<WhisperComponentType.Select> & {
     label: string;
+    options: string[];
     onSelect: (value: number) => void;
     selected?: number;
     tooltip?: string;
-    options: string[];
-  }
+  };
 
-  interface Telephone extends Component {
+  type Telephone = Component<WhisperComponentType.Telephone> & {
     label: string;
     onChange: (value: string) => void;
-    // pattern?: RegExp; TODO: implement this
+    // pattern?: RegExp; TODO: Implement this
     tooltip?: string;
     value?: string;
-  }
+  };
 
-  interface TextInput extends Component {
+  type TextInput = Component<WhisperComponentType.TextInput> & {
     label: string;
     onChange: (value: string) => void;
     tooltip?: string;
     value?: string;
-  }
+  };
 
-  type Divider = Component;
+  type Divider = Component<WhisperComponentType.Divider>;
 
-  type Components =
+  type CollapseBox = Component<WhisperComponentType.CollapseBox> & {
+    children: Array<ChildComponents>;
+    label?: string;
+    open: boolean;
+  };
+
+  type Box = Component<WhisperComponentType.Box> & {
+    alignment: Alignment;
+    children: Array<ChildComponents>;
+    direction: Direction;
+  };
+
+  type ChildComponents =
     | Button
     | Checkbox
     | Divider
@@ -317,28 +328,34 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput;
 
-  interface CollapseBox extends Component {
-    children: Array<Components>;
-    label?: string;
-    open: boolean;
-  }
-
-  interface Box extends Component {
-    alignment: Alignment;
-    children: Array<Components>;
-    direction: Direction;
-  }
+  type Components =
+    | Box
+    | Button
+    | Checkbox
+    | CollapseBox
+    | Divider
+    | Email
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput;
 
   interface NewWhisper {
     label: string;
-    components: Array<Box | Components | CollapseBox>;
+    components: Array<Components>;
     onClose: () => void;
   }
 
   interface Whisper {
     id: string;
     label: string;
-    components: Array<Box | Components | CollapseBox>;
+    components: Array<Components>;
     close(cb: () => void): void;
   }
 

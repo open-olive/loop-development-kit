@@ -86,57 +86,57 @@ export enum Urgency {
   Warning = 'warning',
 }
 
-export interface WhisperComponent {
+export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
-  type: WhisperComponentType;
+  type: T;
 }
 
-export interface Button extends WhisperComponent {
+export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
   label: string;
   onClick: () => void;
-}
+};
 
-export interface Checkbox extends WhisperComponent {
+export declare type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> & {
   label: string;
   tooltip?: string;
   value: boolean;
   onChange: (value: boolean) => void;
-}
+};
 
-export interface Email extends WhisperComponent {
+export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
   label: string;
   onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
-}
+};
 
-export interface Link extends WhisperComponent {
+export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
   href?: string;
   text: string;
   onClick?: () => void;
   style?: Urgency;
   textAlign?: TextAlign;
-}
+};
 
-export interface ListPair extends WhisperComponent {
+export declare type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
   label: string;
   value: string;
   style: Urgency;
-}
+};
 
-export interface Markdown extends WhisperComponent {
+export declare type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   body: string;
-}
+};
 
-export interface Message extends WhisperComponent {
+export declare type Message = WhisperComponent<WhisperComponentType.Message> & {
   body?: string;
   header?: string;
   style?: Urgency;
   textAlign?: TextAlign;
-}
+};
 
-export interface NumberInput extends WhisperComponent {
+export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
   label: string;
   onChange: (value: number) => void;
   value?: number;
@@ -144,47 +144,47 @@ export interface NumberInput extends WhisperComponent {
   min?: number;
   step?: number;
   tooltip?: string;
-}
+};
 
-export interface Password extends WhisperComponent {
+export declare type Password = WhisperComponent<WhisperComponentType.Password> & {
   label: string;
   onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
-}
+};
 
-export interface RadioGroup extends WhisperComponent {
+export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
   onSelect: (value: number) => void;
   options: string[];
   selected?: number;
-}
+};
 
-export interface Select extends WhisperComponent {
+export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
   label: string;
   options: string[];
   onSelect: (value: number) => void;
   selected?: number;
   tooltip?: string;
-}
+};
 
-export interface Telephone extends WhisperComponent {
+export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
   label: string;
   onChange: (value: string) => void;
   // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
-}
+};
 
-export interface TextInput extends WhisperComponent {
+export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
   label: string;
   onChange: (value: string) => void;
   tooltip?: string;
   value?: string;
-}
+};
 
-export type Divider = WhisperComponent;
+export declare type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
-export type Components =
+type ChildComponents =
   | Button
   | Checkbox
   | Divider
@@ -200,20 +200,38 @@ export type Components =
   | Telephone
   | TextInput;
 
-export interface CollapseBox extends WhisperComponent {
-  children: Array<Components>;
+export declare type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
+  children: Array<ChildComponents>;
   label?: string;
   open: boolean;
-}
+};
 
-export interface Box extends WhisperComponent {
+export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignment: Alignment;
-  children: Array<Components>;
+  children: Array<ChildComponents>;
   direction: Direction;
-}
+};
+
+type Components =
+  | Box
+  | Button
+  | Checkbox
+  | CollapseBox
+  | Divider
+  | Email
+  | Link
+  | ListPair
+  | Markdown
+  | Message
+  | NumberInput
+  | Password
+  | RadioGroup
+  | Select
+  | Telephone
+  | TextInput;
 
 export interface NewWhisper {
-  components: Array<Box | Components | CollapseBox>;
+  components: Array<Components>;
   label: string;
   onClose: () => void;
 }
@@ -221,7 +239,7 @@ export interface NewWhisper {
 export interface Whisper {
   id: string;
   label: string;
-  components: Array<Box | Components | CollapseBox>;
+  components: Array<Components>;
   close(callback: () => void): void;
 }
 
