@@ -2,7 +2,7 @@
  * Response object containing the cursor position, where 0,0 is the top-left of the screen.
  */
 import { Cancellable } from '../cancellable';
-import { promisify } from '../promisify';
+import { promisify, promisifyListenable } from '../promisify';
 
 export interface Position {
   x: number;
@@ -23,15 +23,15 @@ export interface Cursor {
    *
    * @param callback - The callback function called when the function changes.
    */
-  listenPosition(callback: (pos: Position) => void): void;
+  listenPosition(callback: (pos: Position) => void): Promise<Cancellable>;
 }
 
 function position(): Promise<Position> {
   return promisify(oliveHelps.cursor.position);
 }
 
-function listenPosition(callback: (pos: Position) => void): Cancellable {
-  return oliveHelps.cursor.listenPosition(callback);
+function listenPosition(callback: (pos: Position) => void): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.cursor.listenPosition);
 }
 
 export const cursor: Cursor = {

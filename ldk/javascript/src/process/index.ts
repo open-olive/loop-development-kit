@@ -1,5 +1,5 @@
 import { Cancellable } from '../cancellable';
-import { promisify } from "../promisify";
+import { promisify, promisifyListenable } from '../promisify';
 
 export interface ProcessInfo {
   arguments: string;
@@ -34,15 +34,15 @@ export interface Process {
    *
    * @param callback - callback function called every time a process is started or stopped.
    */
-  listenAll(callback: (event: ProcessEvent) => void): Cancellable;
+  listenAll(callback: (event: ProcessEvent) => void): Promise<Cancellable>;
 }
 
 function all(): Promise<ProcessInfo[]> {
   return promisify(oliveHelps.process.all);
 }
 
-function listenAll(callback: (processEvent: ProcessEvent) => void): Cancellable {
-  return oliveHelps.process.listenAll(callback);
+function listenAll(callback: (processEvent: ProcessEvent) => void): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.process.listenAll);
 }
 
 export const process = {

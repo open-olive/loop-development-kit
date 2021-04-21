@@ -1,4 +1,5 @@
 import { Cancellable } from '../cancellable';
+import { promisifyListenable, promisifyListenableWithParam } from '../promisify';
 
 export interface Hotkey {
   key: string;
@@ -23,33 +24,33 @@ export interface Keyboard {
    * @param hotkey - The hotkey to monitor to initiate callback.
    * @param callback - The callback function called when the specified hotkey is pressed or released.
    */
-  listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): Cancellable;
+  listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): Promise<Cancellable>;
 
   /**
    * Calls callback function when text is detected from the clipboard.
    *
    * @param callback - The callback function called when text is detected from the clipboard.
    */
-  listenText(callback: (text: string) => void): Cancellable;
+  listenText(callback: (text: string) => void): Promise<Cancellable>;
 
   /**
    * Calls callback function when a character is detected from the clipboard.
    *
    * @param callback - The callback function called when a character is detected from the clipboard.
    */
-  listenCharacter(callback: (char: string) => void): Cancellable;
+  listenCharacter(callback: (char: string) => void): Promise<Cancellable>;
 }
 
-function listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): Cancellable {
-  return oliveHelps.keyboard.listenHotkey(hotkey, callback);
+function listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): Promise<Cancellable> {
+  return promisifyListenableWithParam(hotkey, callback, oliveHelps.keyboard.listenHotkey);
 }
 
-function listenText(callback: (text: string) => void): Cancellable {
-  return oliveHelps.keyboard.listenText(callback);
+function listenText(callback: (text: string) => void): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.keyboard.listenText);
 }
 
-function listenCharacter(callback: (char: string) => void): Cancellable {
-  return oliveHelps.keyboard.listenCharacter(callback);
+function listenCharacter(callback: (char: string) => void): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.keyboard.listenCharacter);
 }
 
 export const keyboard: Keyboard = {

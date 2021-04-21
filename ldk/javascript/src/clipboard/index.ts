@@ -2,7 +2,7 @@
  * The ClipboardService provides access to the OS's clipboard.
  */
 import { Cancellable } from '../cancellable';
-import { promisify, promisifyWithParam } from '../promisify';
+import { promisify, promisifyListenable, promisifyWithParam } from '../promisify';
 
 export interface Clipboard {
   /**
@@ -23,14 +23,18 @@ export interface Clipboard {
    * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus
    * @param callback - A function that's called whenever the clipboard's contents change.
    */
-  listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): Cancellable;
+  listen(
+    includeOliveHelpsEvents: boolean,
+    callback: (clipboardText: string) => void,
+  ): Promise<Cancellable>;
 }
 
 function listen(
   includeOliveHelpsEvents: boolean,
   callback: (clipboardText: string) => void,
-): Cancellable {
-  return oliveHelps.clipboard.listen(callback);
+): Promise<Cancellable> {
+  oliveHelps.clipboard.includeOliveHelpsEvents(includeOliveHelpsEvents);
+  return promisifyListenable(callback, oliveHelps.clipboard.listen);
 }
 
 function read(): Promise<string> {

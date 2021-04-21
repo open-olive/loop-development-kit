@@ -14,9 +14,9 @@ declare namespace OliveHelps {
 
   type ReadableWithTwoParams<TParam1, TParam2, TOut> = (param: TParam1, param2: TParam2, callback: (a: TOut) => void) => void;
 
-  type Listenable<T> = (callback: (a: T) => void) => Cancellable;
+  type Listenable<T> = (callback: (a: T) => void, returnCb: (obj: Cancellable) => void) => void;
 
-  type ListenableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => Cancellable;
+  type ListenableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void, returnCb: (obj: Cancellable) => void) => void;
 
   interface Aptitudes {
     clipboard: Clipboard;

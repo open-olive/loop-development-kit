@@ -1,5 +1,5 @@
 import { Cancellable } from '../cancellable';
-import { promisify } from '../promisify';
+import { promisify, promisifyListenable } from '../promisify';
 
 export interface WindowInfo {
   title: string;
@@ -46,7 +46,7 @@ export interface Window {
    *
    * @param callback A function called when active window changes.
    */
-  listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Cancellable;
+  listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Promise<Cancellable>;
 
   /**
    * Get a list of all the windows and their information.
@@ -60,23 +60,23 @@ export interface Window {
    *
    * @param callback A function called when any window changes.
    */
-  listenAll(callback: (windowEvent: WindowEvent) => void): Cancellable;
+  listenAll(callback: (windowEvent: WindowEvent) => void): Promise<Cancellable>;
 }
 
 function activeWindow(): Promise<WindowInfo> {
   return promisify(oliveHelps.window.activeWindow);
 }
 
-function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Cancellable {
-  return oliveHelps.window.listenActiveWindow(callback);
+function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.window.listenActiveWindow);
 }
 
 function all(): Promise<WindowInfo[]> {
   return promisify(oliveHelps.window.all);
 }
 
-function listenAll(callback: (windowEvent: WindowEvent) => void): Cancellable {
-  return oliveHelps.window.listenAll(callback);
+function listenAll(callback: (windowEvent: WindowEvent) => void): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.window.listenAll);
 }
 
 export const window: Window = {

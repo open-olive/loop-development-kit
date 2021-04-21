@@ -1,3 +1,5 @@
+import { Cancellable } from './cancellable';
+
 export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     try {
@@ -33,6 +35,39 @@ export function promisifyWithTwoParams<TParam1, TParam2, TOut>(
       arg(param, param2, (cb: TOut) => resolve(cb));
     } catch (e) {
       console.log(e);
+      reject(e);
+    }
+  });
+}
+
+export function promisifyListenable<T>(
+  cb: (v: T) => void,
+  arg: OliveHelps.Listenable<T>,
+): Promise<Cancellable> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(cb, (obj) => {
+        resolve(obj);
+      });
+    } catch (e) {
+      console.error('Received error making request', e);
+      reject(e);
+    }
+  });
+}
+
+export function promisifyListenableWithParam<TParam, TOut>(
+  param: TParam,
+  cb: (v: TOut) => void,
+  arg: OliveHelps.ListenableWithParam<TParam, TOut>,
+): Promise<Cancellable> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param, cb, (obj) => {
+        resolve(obj);
+      });
+    } catch (e) {
+      console.error('Received error making request', e);
       reject(e);
     }
   });
