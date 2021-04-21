@@ -1,5 +1,5 @@
-import * as window from '.';
 import { mocked } from 'ts-jest/utils';
+import * as window from '.';
 
 describe('Window', () => {
     beforeEach(() => {

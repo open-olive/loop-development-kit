@@ -1,5 +1,5 @@
-import * as whisper from '.';
 import { mocked } from 'ts-jest/utils';
+import * as whisper from '.';
 
 describe('Whisper', () => {
   beforeEach(() => {

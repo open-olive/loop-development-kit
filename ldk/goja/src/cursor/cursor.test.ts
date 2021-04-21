@@ -1,5 +1,5 @@
-import * as cursor from '.';
 import { mocked } from 'ts-jest/utils';
+import * as cursor from '.';
 
 describe('Cursor', () => {
   beforeEach(() => {

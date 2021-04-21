@@ -1,5 +1,5 @@
-import * as clipboard from '.';
 import { mocked } from 'ts-jest/utils';
+import * as clipboard from '.';
 
 describe('Clipboard', () => {
   beforeEach(() => {

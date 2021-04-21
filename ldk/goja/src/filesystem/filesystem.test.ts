@@ -1,5 +1,5 @@
-import * as filesystem from '.';
 import { mocked } from 'ts-jest/utils';
+import * as filesystem from '.';
 
 describe('Filesystem', () => {
   beforeEach(() => {

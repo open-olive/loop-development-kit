@@ -1,5 +1,5 @@
-import * as process from '.';
 import { mocked } from 'ts-jest/utils';
+import * as process from '.';
 
 describe('Process', () => {
   beforeEach(() => {
