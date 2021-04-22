@@ -32,5 +32,5 @@ jobs:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             publish_branch: gh-pages
             publish_dir: ./ldk/${{ matrix.project }}/docs
-            destination_dir: ldk/${{ matrix.project }}
+            destination_dir: ldk/docs
             force_orphan: true
