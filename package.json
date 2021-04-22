@@ -7,7 +7,7 @@
   "workspaces": [
     "ldk/node",
     "docs",
-    "ldk/goja"
+    "ldk/javascript"
   ],
   "directories": {
     "doc": "docs"

@@ -1,5 +1,5 @@
 {
-  "name": "ldk-goja-wp-default",
+  "name": "ldk-javascript-wp-default",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
