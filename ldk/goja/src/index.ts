@@ -9,7 +9,7 @@ import * as vault from './vault';
 import * as whisper from './whisper';
 import * as window from './window';
 
-/*eslint-disable */ // These are provided to validate that the aptitude object meets the interface contract.
+/* eslint-disable */ // These are provided to validate that the aptitude object meets the interface contract.
 const _clipboard: clipboard.Clipboard = clipboard;
 const _cursor: cursor.Cursor = cursor;
 const _keyboard: keyboard.Keyboard = keyboard;
@@ -20,7 +20,7 @@ const _ui: ui.UI = ui;
 const _vault: vault.Vault = vault;
 const _whisper: whisper.WhisperAptitude = whisper;
 const _window: window.Window = window;
-/*eslint-disable */
+/* eslint-enable */
 
 export {
     clipboard,
