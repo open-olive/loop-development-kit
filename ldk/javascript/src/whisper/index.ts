@@ -1,3 +1,5 @@
+import { promisify, promisifyWithParam } from '../promisify';
+
 export enum WhisperComponentType {
   /**
    * A container component for formatting other components.
@@ -243,24 +245,11 @@ export interface WhisperAptitude {
 }
 
 function all(): Promise<Whisper[]> {
-  return new Promise<Whisper[]>((resolve, reject) => {
-    try {
-      oliveHelps.whisper.all((whispers: Whisper[]) => resolve(whispers));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisify(oliveHelps.whisper.all);
 }
 
 function create(whisper: NewWhisper): Promise<Whisper> {
-  return new Promise<Whisper>((resolve, reject) => {
-    try {
-      oliveHelps.whisper.create(whisper, (w: Whisper) => resolve(w));
-    } catch (e) {
-      reject(e);
-    }
-  });
+  return promisifyWithParam(whisper, oliveHelps.whisper.create);
 }
 
 export const whisper: WhisperAptitude = {
