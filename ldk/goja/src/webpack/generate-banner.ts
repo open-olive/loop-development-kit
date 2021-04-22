@@ -1,9 +1,9 @@
+
+const version = "@LDK_VERSION@";
+
 export function generateMetadata(): string {
   const json = JSON.stringify({
-    /**
-     * referencing the ldk dependency version from loop package file, so it could be included as metadata of the minimized loop
-     */
-    ldkVersion: process.env.npm_package_dependencies__oliveai_ldk,
+    ldkVersion: version,
   });
   return Buffer.from(json).toString('base64');
 }
