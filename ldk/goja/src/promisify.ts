@@ -5,7 +5,7 @@ export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
     try {
       arg((cb: T) => resolve(cb));
     } catch (e) {
-      console.log(e);
+      console.error(e);
       reject(e);
     }
   });
@@ -19,7 +19,7 @@ export function promisifyWithParam<TParam, TOut>(
     try {
       arg(param, (cb: TOut) => resolve(cb));
     } catch (e) {
-      console.log(e);
+      console.error(e);
       reject(e);
     }
   });
@@ -34,7 +34,24 @@ export function promisifyWithTwoParams<TParam1, TParam2, TOut>(
     try {
       arg(param, param2, (cb: TOut) => resolve(cb));
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      reject(e);
+    }
+  });
+}
+
+export function promisifyWithFourParams<TP1, TP2, TP3, TP4, TOut>(
+  p1: TP1,
+  p2: TP2,
+  p3: TP3,
+  p4: TP4,
+  arg: OliveHelps.ReadableWithFourParams<TP1, TP2, TP3, TP4, TOut>,
+): Promise<TOut> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(p1, p2, p3, p4, (cb: TOut) => resolve(cb));
+    } catch (e) {
+      console.error(e);
       reject(e);
     }
   });

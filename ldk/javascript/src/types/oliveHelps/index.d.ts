@@ -12,11 +12,27 @@ declare namespace OliveHelps {
 
   type ReadableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
 
-  type ReadableWithTwoParams<TParam1, TParam2, TOut> = (param: TParam1, param2: TParam2, callback: (a: TOut) => void) => void;
+  type ReadableWithTwoParams<TParam1, TParam2, TOut> = (
+    param: TParam1,
+    param2: TParam2,
+    callback: (a: TOut) => void,
+  ) => void;
+
+  type ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut> = (
+    param: TParam1,
+    param2: TParam2,
+    param3: TParam3,
+    param4: TParam4,
+    callback: (a: TOut) => void,
+  ) => void;
 
   type Listenable<T> = (callback: (a: T) => void, returnCb: (obj: Cancellable) => void) => void;
 
-  type ListenableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void, returnCb: (obj: Cancellable) => void) => void;
+  type ListenableWithParam<TParam, TOut> = (
+    param: TParam,
+    callback: (a: TOut) => void,
+    returnCb: (obj: Cancellable) => void,
+  ) => void;
 
   interface Aptitudes {
     clipboard: Clipboard;
@@ -46,22 +62,22 @@ declare namespace OliveHelps {
     info: WindowInfo;
     action: WindowAction;
   }
-  type WindowActionFocused = "focus"
-  type WindowActionUnfocused = "unfocused"
-  type WindowActionOpened = "open"
-  type WindowActionClosed = "close"
-  type WindowActionMoved = "move"
-  type WindowActionResized = "resized"
-  type WindowActionTitleChanged = "titleChange"
+  type WindowActionFocused = 'focus';
+  type WindowActionUnfocused = 'unfocused';
+  type WindowActionOpened = 'open';
+  type WindowActionClosed = 'close';
+  type WindowActionMoved = 'move';
+  type WindowActionResized = 'resized';
+  type WindowActionTitleChanged = 'titleChange';
 
   type WindowAction =
-    WindowActionFocused
+    | WindowActionFocused
     | WindowActionUnfocused
     | WindowActionOpened
     | WindowActionClosed
     | WindowActionMoved
     | WindowActionResized
-    | WindowActionTitleChanged
+    | WindowActionTitleChanged;
 
   interface WindowInfo {
     title: string;
@@ -396,34 +412,28 @@ declare namespace OliveHelps {
 
   //-- Filesystem
   interface Filesystem {
-    copy(source: string, destination: string, callback: () => void): void;
+    copy: ReadableWithTwoParams<string, string, void>
 
-    dir(path: string, callback: (fileInfos: FileInfo[]) => void): void;
+    dir: ReadableWithParam<string, FileInfo[]>
 
-    exists(path: string, callback: (exists: boolean) => void): void;
+    exists: ReadableWithParam<string, boolean>
 
-    listenDir(path: string, callback: (fileEvent: FileEvent) => void): void;
+    listenDir: ListenableWithParam<string, FileEvent>
 
-    listenFile(path: string, callback: (fileEvent: FileEvent) => void): void;
+    listenFile: ListenableWithParam<string, FileEvent>
 
-    makeDir(path: string, writeMode: WriteMode, callback: () => void): void;
+    makeDir: ReadableWithTwoParams<string, WriteMode, void>
 
-    move(source: string, destination: string, callback: () => void): void;
+    move: ReadableWithTwoParams<string, string, void>
 
-    readFile(path: string, callback: (data: Uint8Array) => void): void;
+    readFile: ReadableWithParam<string, Uint8Array>;
 
-    remove(path: string, callback: () => void): void;
+    remove: ReadableWithParam<string, void>
 
-    stat(path: string, callback: (fileInfo: FileInfo) => void): void;
+    stat: ReadableWithParam<string, FileInfo>
 
-    writeFile(
-      path: string,
-      data: Uint8Array,
-      writeOperation: WriteOperation,
-      writeMode: WriteMode,
-      callback: () => void,
-    ): void;
+    writeFile: ReadableWithFourParams<string, Uint8Array, WriteOperation, WriteMode, void>
 
-    join(segments: [string], cb: (path: string) => void): void;
+    join: ReadableWithParam<string[], string>
   }
 }
