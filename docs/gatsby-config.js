@@ -63,5 +63,5 @@ module.exports = {
       },
     },
   ],
-  pathPrefix: '/olive-helps',
+  pathPrefix: '/',
 };
