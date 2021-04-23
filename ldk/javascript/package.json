@@ -27,7 +27,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/open-olive/loop-development-kit.git",
-    "directory": "ldk/goja"
+    "directory": "ldk/javascript"
   },
   "bugs": {
     "url": "https://github.com/open-olive/loop-development-kit/issues"

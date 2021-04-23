@@ -9,7 +9,7 @@ jobs:
   deploy-node:
       defaults:
         run:
-          working-directory: ldk/goja
+          working-directory: ldk/javascript
       runs-on: ubuntu-latest
 
       steps:
@@ -25,6 +25,6 @@ jobs:
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
             publish_branch: gh-pages
-            publish_dir: ./ldk/goja/docs
-            destination_dir: ldk/goja
+            publish_dir: ./ldk/javascript/docs
+            destination_dir: ldk/javascript
             force_orphan: true
