@@ -29,8 +29,7 @@ export interface Clipboard {
   ): Promise<Cancellable>;
 }
 
-export function listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void {
-function listen(
+export function listen(
   includeOliveHelpsEvents: boolean,
   callback: (clipboardText: string) => void,
 ): Promise<Cancellable> {
@@ -38,10 +37,10 @@ function listen(
   return promisifyListenable(callback, oliveHelps.clipboard.listen);
 }
 
-function read(): Promise<string> {
+export function read(): Promise<string> {
   return promisify(oliveHelps.clipboard.read);
 }
 
-function write(text: string): Promise<void> {
+export function write(text: string): Promise<void> {
   return promisifyWithParam(text, oliveHelps.clipboard.write);
 }
