@@ -38,6 +38,8 @@ jobs:
           node-version: 14.x
 
       - run: cd ./ldk/node
+      - run: pwd
+      - run: ls -a
       - run: npm ci
       - run: npm run build
       - run: npm run doc
