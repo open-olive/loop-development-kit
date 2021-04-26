@@ -29,6 +29,7 @@ export interface Clipboard {
   ): Promise<Cancellable>;
 }
 
+export function listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void {
 function listen(
   includeOliveHelpsEvents: boolean,
   callback: (clipboardText: string) => void,
@@ -44,9 +45,3 @@ function read(): Promise<string> {
 function write(text: string): Promise<void> {
   return promisifyWithParam(text, oliveHelps.clipboard.write);
 }
-
-export const clipboard: Clipboard = {
-  read,
-  write,
-  listen,
-};

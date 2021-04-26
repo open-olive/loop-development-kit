@@ -186,7 +186,7 @@ export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput>
 
 export declare type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
-type ChildComponents =
+export type ChildComponents =
   | Button
   | Checkbox
   | Divider
@@ -214,7 +214,7 @@ export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
   direction: Direction;
 };
 
-type Components = Box | ChildComponents | CollapseBox;
+export type Components = Box | ChildComponents | CollapseBox;
 
 export interface NewWhisper {
   components: Array<Components>;
@@ -244,15 +244,10 @@ export interface WhisperAptitude {
   create(whisper: NewWhisper): Promise<Whisper>;
 }
 
-function all(): Promise<Whisper[]> {
+export function all(): Promise<Whisper[]> {
   return promisify(oliveHelps.whisper.all);
 }
 
-function create(whisper: NewWhisper): Promise<Whisper> {
+export function create(whisper: NewWhisper): Promise<Whisper> {
   return promisifyWithParam(whisper, oliveHelps.whisper.create);
 }
-
-export const whisper: WhisperAptitude = {
-  all,
-  create,
-};

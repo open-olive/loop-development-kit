@@ -41,15 +41,15 @@ export interface Keyboard {
   listenCharacter(callback: (char: string) => void): Promise<Cancellable>;
 }
 
-function listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): Promise<Cancellable> {
+export function listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): Promise<Cancellable> {
   return promisifyListenableWithParam(hotkey, callback, oliveHelps.keyboard.listenHotkey);
 }
 
-function listenText(callback: (text: string) => void): Promise<Cancellable> {
+export function listenText(callback: (text: string) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.keyboard.listenText);
 }
 
-function listenCharacter(callback: (char: string) => void): Promise<Cancellable> {
+export function listenCharacter(callback: (char: string) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.keyboard.listenCharacter);
 }
 

@@ -40,10 +40,6 @@ export interface Network {
   httpRequest(req: HTTPRequest): Promise<HTTPResponse>;
 }
 
-function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
+export function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
   return promisifyWithParam(req, oliveHelps.network.httpRequest);
 }
-
-export const network: Network = {
-  httpRequest,
-};

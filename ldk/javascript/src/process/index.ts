@@ -37,15 +37,10 @@ export interface Process {
   listenAll(callback: (event: ProcessEvent) => void): Promise<Cancellable>;
 }
 
-function all(): Promise<ProcessInfo[]> {
+export function all(): Promise<ProcessInfo[]> {
   return promisify(oliveHelps.process.all);
 }
 
-function listenAll(callback: (processEvent: ProcessEvent) => void): Promise<Cancellable> {
+export function listenAll(callback: (processEvent: ProcessEvent) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.process.listenAll);
 }
-
-export const process = {
-  all,
-  listenAll,
-};

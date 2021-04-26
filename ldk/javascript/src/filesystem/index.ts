@@ -1,7 +1,7 @@
 /**
  * An object containing file data.
  */
-import {
+ import {
   promisifyListenableWithParam,
   promisifyWithFourParams,
   promisifyWithParam,
@@ -223,18 +223,3 @@ export function writeFile({
 export function join(segments: string[]): Promise<string> {
   return promisifyWithParam(segments, oliveHelps.filesystem.join);
 }
-
-export const filesystem: Filesystem = {
-  copy,
-  dir,
-  exists,
-  listenDir,
-  listenFile,
-  makeDir,
-  move,
-  readFile,
-  remove,
-  stat,
-  writeFile,
-  join,
-};

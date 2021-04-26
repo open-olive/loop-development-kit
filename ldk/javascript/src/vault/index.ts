@@ -38,25 +38,18 @@ export interface Vault {
   write(key: string, value: string): Promise<void>;
 }
 
-function remove(key: string): Promise<void> {
+export function remove(key: string): Promise<void> {
   return promisifyWithParam(key, oliveHelps.vault.remove);
 }
 
-function exists(key: string): Promise<boolean> {
+export function exists(key: string): Promise<boolean> {
   return promisifyWithParam(key, oliveHelps.vault.exists);
 }
 
-function read(key: string): Promise<string> {
+export function read(key: string): Promise<string> {
   return promisifyWithParam(key, oliveHelps.vault.read);
 }
 
-function write(key: string, value: string): Promise<void> {
+export function write(key: string, value: string): Promise<void> {
   return promisifyWithTwoParams(key, value, oliveHelps.vault.write);
 }
-
-export const vault: Vault = {
-  remove,
-  exists,
-  read,
-  write,
-};

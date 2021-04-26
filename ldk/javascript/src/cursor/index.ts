@@ -26,15 +26,10 @@ export interface Cursor {
   listenPosition(callback: (pos: Position) => void): Promise<Cancellable>;
 }
 
-function position(): Promise<Position> {
+export function position(): Promise<Position> {
   return promisify(oliveHelps.cursor.position);
 }
 
-function listenPosition(callback: (pos: Position) => void): Promise<Cancellable> {
+export function listenPosition(callback: (pos: Position) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.cursor.listenPosition);
 }
-
-export const cursor: Cursor = {
-  position,
-  listenPosition,
-};

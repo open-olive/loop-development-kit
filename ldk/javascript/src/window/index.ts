@@ -63,25 +63,18 @@ export interface Window {
   listenAll(callback: (windowEvent: WindowEvent) => void): Promise<Cancellable>;
 }
 
-function activeWindow(): Promise<WindowInfo> {
+export function activeWindow(): Promise<WindowInfo> {
   return promisify(oliveHelps.window.activeWindow);
 }
 
-function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Promise<Cancellable> {
+export function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.window.listenActiveWindow);
 }
 
-function all(): Promise<WindowInfo[]> {
+export function all(): Promise<WindowInfo[]> {
   return promisify(oliveHelps.window.all);
 }
 
-function listenAll(callback: (windowEvent: WindowEvent) => void): Promise<Cancellable> {
+export function listenAll(callback: (windowEvent: WindowEvent) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.window.listenAll);
 }
-
-export const window: Window = {
-  activeWindow,
-  listenActiveWindow,
-  all,
-  listenAll,
-};

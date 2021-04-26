@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { ui } from '.';
+import * as ui from '.';
 
 describe('UI', () => {
   beforeEach(() => {

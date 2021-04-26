@@ -20,15 +20,11 @@ export interface UI {
   listenGlobalSearch(cb: (val: string) => void): Promise<Cancellable>;
 }
 
-function listenSearchbar(callback: (val: string) => void): Promise<Cancellable> {
+export function listenSearchbar(callback: (val: string) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.ui.listenSearchbar);
 }
 
-function listenGlobalSearch(callback: (val: string) => void): Promise<Cancellable> {
+export function listenGlobalSearch(callback: (val: string) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.ui.listenGlobalSearch);
 }
 
-export const ui: UI = {
-  listenSearchbar,
-  listenGlobalSearch,
-};
