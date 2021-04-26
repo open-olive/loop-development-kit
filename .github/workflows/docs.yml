@@ -54,8 +54,8 @@ jobs:
       - run: |
           cd ./ldk
           mkdir typedoc-tmp
-          cp -r ./ldk/node/docs typedoc-tmp/node
-          cp -r ./ldk/javascript/docs typedoc-tmp/javascript
+          cp -r ./node/docs typedoc-tmp/node
+          cp -r ./javascript/docs typedoc-tmp/javascript
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
