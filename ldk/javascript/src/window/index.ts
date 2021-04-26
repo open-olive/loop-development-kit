@@ -11,22 +11,22 @@ export interface WindowInfo {
   height: number;
 }
 
-export type WindowActionFocused = "focus"
-export type WindowActionUnfocused = "unfocused"
-export type WindowActionOpened = "open"
-export type WindowActionClosed = "close"
-export type WindowActionMoved = "move"
-export type WindowActionResized = "resized"
-export type WindowActionTitleChanged = "titleChange"
+export type WindowActionFocused = 'focus';
+export type WindowActionUnfocused = 'unfocused';
+export type WindowActionOpened = 'open';
+export type WindowActionClosed = 'close';
+export type WindowActionMoved = 'move';
+export type WindowActionResized = 'resized';
+export type WindowActionTitleChanged = 'titleChange';
 
 export type WindowAction =
-      WindowActionFocused
-    | WindowActionUnfocused
-    | WindowActionOpened
-    | WindowActionClosed
-    | WindowActionMoved
-    | WindowActionResized
-    | WindowActionTitleChanged
+  | WindowActionFocused
+  | WindowActionUnfocused
+  | WindowActionOpened
+  | WindowActionClosed
+  | WindowActionMoved
+  | WindowActionResized
+  | WindowActionTitleChanged;
 
 export interface WindowEvent {
   info: WindowInfo;
@@ -67,7 +67,9 @@ export function activeWindow(): Promise<WindowInfo> {
   return promisify(oliveHelps.window.activeWindow);
 }
 
-export function listenActiveWindow(callback: (windowInfo: WindowInfo) => void): Promise<Cancellable> {
+export function listenActiveWindow(
+  callback: (windowInfo: WindowInfo) => void,
+): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.window.listenActiveWindow);
 }
 

@@ -13,7 +13,7 @@ describe('Cursor', () => {
     it('returns a promise result with expected cursor position', () => {
       const expected: cursor.Position = {
         x: 2345,
-        y: 6789
+        y: 6789,
       };
       mocked(oliveHelps.cursor.position).mockImplementation((callback) => callback(expected));
 
@@ -39,7 +39,7 @@ describe('Cursor', () => {
       const callback = jest.fn();
       cursor.listenPosition(callback);
 
-      expect(oliveHelps.cursor.listenPosition).toHaveBeenCalledWith(callback,expect.any(Function));
+      expect(oliveHelps.cursor.listenPosition).toHaveBeenCalledWith(callback, expect.any(Function));
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

@@ -39,14 +39,16 @@ describe('Clipboard', () => {
       const callback = jest.fn();
       clipboard.listen(includeOliveHelpsEvents, callback);
 
-      expect(oliveHelps.clipboard.includeOliveHelpsEvents).toHaveBeenCalledWith(includeOliveHelpsEvents);
+      expect(oliveHelps.clipboard.includeOliveHelpsEvents).toHaveBeenCalledWith(
+        includeOliveHelpsEvents,
+      );
     });
 
     it('passed in listen function to olive helps', () => {
       const callback = jest.fn();
       clipboard.listen(true, callback);
 
-      expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback,expect.any(Function));
+      expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback, expect.any(Function));
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

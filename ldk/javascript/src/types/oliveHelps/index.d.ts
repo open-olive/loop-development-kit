@@ -412,28 +412,28 @@ declare namespace OliveHelps {
 
   //-- Filesystem
   interface Filesystem {
-    copy: ReadableWithTwoParams<string, string, void>
+    copy: ReadableWithTwoParams<string, string, void>;
 
-    dir: ReadableWithParam<string, FileInfo[]>
+    dir: ReadableWithParam<string, FileInfo[]>;
 
-    exists: ReadableWithParam<string, boolean>
+    exists: ReadableWithParam<string, boolean>;
 
-    listenDir: ListenableWithParam<string, FileEvent>
+    listenDir: ListenableWithParam<string, FileEvent>;
 
-    listenFile: ListenableWithParam<string, FileEvent>
+    listenFile: ListenableWithParam<string, FileEvent>;
 
-    makeDir: ReadableWithTwoParams<string, WriteMode, void>
+    makeDir: ReadableWithTwoParams<string, WriteMode, void>;
 
-    move: ReadableWithTwoParams<string, string, void>
+    move: ReadableWithTwoParams<string, string, void>;
 
     readFile: ReadableWithParam<string, Uint8Array>;
 
-    remove: ReadableWithParam<string, void>
+    remove: ReadableWithParam<string, void>;
 
-    stat: ReadableWithParam<string, FileInfo>
+    stat: ReadableWithParam<string, FileInfo>;
 
-    writeFile: ReadableWithFourParams<string, Uint8Array, WriteOperation, WriteMode, void>
+    writeFile: ReadableWithFourParams<string, Uint8Array, WriteOperation, WriteMode, void>;
 
-    join: ReadableWithParam<string[], string>
+    join: ReadableWithParam<string[], string>;
   }
 }

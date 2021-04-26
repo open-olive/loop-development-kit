@@ -1,7 +1,7 @@
 /**
  * An object containing file data.
  */
- import {
+import {
   promisifyListenableWithParam,
   promisifyWithFourParams,
   promisifyWithParam,

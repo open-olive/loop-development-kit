@@ -27,4 +27,3 @@ export function listenSearchbar(callback: (val: string) => void): Promise<Cancel
 export function listenGlobalSearch(callback: (val: string) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.ui.listenGlobalSearch);
 }
-

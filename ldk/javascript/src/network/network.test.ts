@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import * as network from '.'
+import * as network from '.';
 
 describe('Network', () => {
   beforeEach(() => {

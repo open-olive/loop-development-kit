@@ -14,7 +14,7 @@ describe('UI', () => {
       const callback = jest.fn();
       ui.listenSearchbar(callback);
 
-      expect(oliveHelps.ui.listenSearchbar).toHaveBeenCalledWith(callback,expect.any(Function));
+      expect(oliveHelps.ui.listenSearchbar).toHaveBeenCalledWith(callback, expect.any(Function));
     });
 
     it('rejects with the error when the underlying call throws an error', () => {
@@ -33,7 +33,7 @@ describe('UI', () => {
       const callback = jest.fn();
       ui.listenGlobalSearch(callback);
 
-      expect(oliveHelps.ui.listenGlobalSearch).toHaveBeenCalledWith(callback,expect.any(Function));
+      expect(oliveHelps.ui.listenGlobalSearch).toHaveBeenCalledWith(callback, expect.any(Function));
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

@@ -11,11 +11,13 @@ describe('Process', () => {
 
   describe('all', () => {
     it('returns a promise result with expected proces infos', () => {
-      const expected: process.ProcessInfo[] = [{
-        arguments: "arguments",
-        command: "command",
-        pid: 456
-      }];
+      const expected: process.ProcessInfo[] = [
+        {
+          arguments: 'arguments',
+          command: 'command',
+          pid: 456,
+        },
+      ];
       mocked(oliveHelps.process.all).mockImplementation((callback) => callback(expected));
 
       const actual = process.all();
@@ -40,7 +42,7 @@ describe('Process', () => {
       const callback = jest.fn();
       process.listenAll(callback);
 
-      expect(oliveHelps.process.listenAll).toHaveBeenCalledWith(callback,expect.any(Function));
+      expect(oliveHelps.process.listenAll).toHaveBeenCalledWith(callback, expect.any(Function));
     });
 
     it('rejects with the error when the underlying call throws an error', () => {
