@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { vault } from '.';
+import * as vault from '.';
 
 describe('Vault', () => {
     beforeEach(() => {

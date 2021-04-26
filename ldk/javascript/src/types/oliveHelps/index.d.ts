@@ -410,6 +410,6 @@ declare namespace OliveHelps {
       callback: () => void,
     ): void;
 
-    join(segments: [string], cb: (path: string) => void): void;
+    join(segments: string[], cb: (path: string) => void): void;
   }
 }

@@ -34,7 +34,7 @@ export interface Process {
   listenAll(callback: (event: ProcessEvent) => void): void
 }
 
-function all(): Promise<ProcessInfo[]> {
+export function all(): Promise<ProcessInfo[]> {
   return new Promise<ProcessInfo[]>((resolve, reject) => {
     try {
       oliveHelps.process.all((processInfo: ProcessInfo[]) => resolve(processInfo));
@@ -45,11 +45,6 @@ function all(): Promise<ProcessInfo[]> {
   })
 }
   
-function listenAll(callback: (processEvent: ProcessEvent) => void): void {
+export function listenAll(callback: (processEvent: ProcessEvent) => void): void {
   oliveHelps.process.listenAll(callback);
-}
-
-export const process = {
-  all,
-  listenAll
 }
