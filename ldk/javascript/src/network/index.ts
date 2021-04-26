@@ -43,7 +43,6 @@ export interface Network {
    * Encoding provided text
    * 
    * @param text - Specified text to encode
-   * @param encoding - Encoding type ex. "utf-8"
    * @returns A promise resolving with the encoded Uint8Array
    */
   encode(text: string, encoding: string): Promise<Uint8Array>;
@@ -52,7 +51,6 @@ export interface Network {
    * Decoding provided value
    * 
    * @param encodedValue - Specified encoded value to decode
-   * @param encoding - Encoding type ex. "utf-8"
    * @returns A promise resolving with the decoded text
    */
   decode(encodedValue: Uint8Array, encoding: string): Promise<string>;
@@ -71,10 +69,10 @@ export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
   });
 }
 
-export function encode(text: string, encoding: string): Promise<Uint8Array> {
+export function encode(text: string): Promise<Uint8Array> {
   return new Promise<Uint8Array>((resolve, reject) => {
     try {
-      resolve(new TextEncoder(encoding).encode(text));
+      resolve(new TextEncoder().encode(text));
     } catch (e) {
       console.log(e);
       reject(e);
@@ -82,10 +80,10 @@ export function encode(text: string, encoding: string): Promise<Uint8Array> {
   });
 }
 
-export function decode(encodedValue: Uint8Array, encoding: string): Promise<string> {
+export function decode(encodedValue: Uint8Array): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     try {
-      resolve(new TextDecoder(encoding).decode(encodedValue));
+      resolve(new TextDecoder().decode(encodedValue));
     } catch (e) {
       console.log(e);
       reject(e);

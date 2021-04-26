@@ -56,13 +56,11 @@ describe('Network', () => {
   describe('encode', () => {
     it('returns a promise result with expected encoded value', () => {
       const text = "some//text@@";
-      const encoding = "utf-8";
       const expected: Uint8Array = new Uint8Array(2);
       TextEncoder.prototype.encode.mockReturnValue(expected);
     
-      const actual = network.encode(text, encoding);
+      const actual = network.encode(text);
 
-      expect(TextEncoder).toBeCalledWith(encoding)
       expect(TextEncoder.prototype.encode).toBeCalledWith(text);
       return expect(actual).resolves.toBe(expected);
     });
@@ -73,7 +71,7 @@ describe('Network', () => {
         throw exception;
       });
       
-      const actual = network.encode("text", "utf-8");
+      const actual = network.encode("text");
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -82,13 +80,11 @@ describe('Network', () => {
   describe('decode', () => {
     it('returns a promise result with expected decoded string', () => {
       const encodedValue: Uint8Array = new Uint8Array(2);
-      const encoding = "utf-8";
       const expected = "expected text";
       TextDecoder.prototype.decode.mockReturnValue(expected);
     
-      const actual = network.decode(encodedValue, encoding);
+      const actual = network.decode(encodedValue);
 
-      expect(TextDecoder).toBeCalledWith(encoding)
       expect(TextDecoder.prototype.decode).toBeCalledWith(encodedValue);
       return expect(actual).resolves.toBe(expected);
     });
@@ -99,7 +95,7 @@ describe('Network', () => {
         throw exception;
       });
       
-      const actual = network.decode(new Uint8Array(2), "utf-8");
+      const actual = network.decode(new Uint8Array(2));
 
       return expect(actual).rejects.toBe(exception);
     });
