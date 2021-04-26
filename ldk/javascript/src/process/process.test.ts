@@ -40,7 +40,7 @@ describe('Process', () => {
       const callback = jest.fn();
       process.listenAll(callback);
 
-      expect(oliveHelps.process.listenAll).toHaveBeenCalledWith(callback);
+      expect(oliveHelps.process.listenAll).toHaveBeenCalledWith(callback,expect.any(Function));
     });
 
     it('throws exception when passing in listen all callback', () => {

@@ -111,7 +111,7 @@ describe('Filesystem', () => {
 
       filesystem.listenDir(path, callback);
 
-      expect(oliveHelps.filesystem.listenDir).toHaveBeenCalledWith(path, callback);
+      expect(oliveHelps.filesystem.listenDir).toHaveBeenCalledWith(path, callback, expect.any(Function));
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -133,7 +133,7 @@ describe('Filesystem', () => {
 
       filesystem.listenFile(path, callback);
 
-      expect(oliveHelps.filesystem.listenFile).toHaveBeenCalledWith(path, callback);
+      expect(oliveHelps.filesystem.listenFile).toHaveBeenCalledWith(path, callback, expect.any(Function));
     });
 
     it('throws exception when passing in listen callback', () => {

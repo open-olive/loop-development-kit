@@ -39,7 +39,7 @@ describe('Cursor', () => {
       const callback = jest.fn();
       cursor.listenPosition(callback);
 
-      expect(oliveHelps.cursor.listenPosition).toHaveBeenCalledWith(callback);
+      expect(oliveHelps.cursor.listenPosition).toHaveBeenCalledWith(callback,expect.any(Function));
     });
 
     it('throws exception when passing in listen position callback', () => {

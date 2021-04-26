@@ -48,7 +48,7 @@ describe('Window', () => {
             const callback = jest.fn();
             window.listenActiveWindow(callback);
 
-            expect(oliveHelps.window.listenActiveWindow).toHaveBeenCalledWith(callback);
+            expect(oliveHelps.window.listenActiveWindow).toHaveBeenCalledWith(callback, expect.any(Function));
         });
         
         it('throws exception when passing in listen function', () => {
@@ -109,7 +109,7 @@ describe('Window', () => {
             const callback = jest.fn();
             window.listenAll(callback);
 
-            expect(oliveHelps.window.listenAll).toHaveBeenCalledWith(callback);
+            expect(oliveHelps.window.listenAll).toHaveBeenCalledWith(callback,expect.any(Function));
         });
         
         it('throws exception when passing in listen function', () => {

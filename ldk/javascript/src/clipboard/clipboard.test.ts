@@ -46,7 +46,7 @@ describe('Clipboard', () => {
       const callback = jest.fn();
       clipboard.listen(true, callback);
 
-      expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback);
+      expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback,expect.any(Function));
     });
 
     it('throws exception when passing in listen function', () => {

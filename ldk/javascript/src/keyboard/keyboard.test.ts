@@ -19,7 +19,7 @@ describe('Keyboard', () => {
             };
 
             keyboard.listenHotkey(hotkey, callback);
-            expect(oliveHelps.keyboard.listenHotkey).toHaveBeenCalledWith(hotkey, callback);
+            expect(oliveHelps.keyboard.listenHotkey).toHaveBeenCalledWith(hotkey, callback,expect.any(Function));
         });
 
         it('throws exception when olive helps call fails', () => {
@@ -37,7 +37,7 @@ describe('Keyboard', () => {
             const callback = jest.fn();
 
             keyboard.listenText(callback);
-            expect(oliveHelps.keyboard.listenText).toHaveBeenCalledWith(callback);
+            expect(oliveHelps.keyboard.listenText).toHaveBeenCalledWith(callback,expect.any(Function));
         });
 
         it('throws exception when olive helps call fails', () => {
@@ -55,7 +55,7 @@ describe('Keyboard', () => {
             const callback = jest.fn();
 
             keyboard.listenCharacter(callback);
-            expect(oliveHelps.keyboard.listenCharacter).toHaveBeenCalledWith(callback);
+            expect(oliveHelps.keyboard.listenCharacter).toHaveBeenCalledWith(callback,expect.any(Function));
         });
 
         it('throws exception when olive helps call fails', () => {
