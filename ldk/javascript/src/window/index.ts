@@ -8,9 +8,26 @@ export interface WindowInfo {
     height: number;
 }
 
+export type WindowActionFocused = "focus"
+export type WindowActionUnfocused = "unfocused"
+export type WindowActionOpened = "open"
+export type WindowActionClosed = "close"
+export type WindowActionMoved = "move"
+export type WindowActionResized = "resized"
+export type WindowActionTitleChanged = "titleChange"
+
+export type WindowAction =
+      WindowActionFocused 
+    | WindowActionUnfocused
+    | WindowActionOpened
+    | WindowActionClosed
+    | WindowActionMoved
+    | WindowActionResized
+    | WindowActionTitleChanged
+
 export interface WindowEvent {
     info: WindowInfo;
-    action: number;
+    action: WindowAction;
 }
 
 export interface Window {
@@ -40,7 +57,7 @@ export interface Window {
      *  
      * @param callback A function called when any window changes.
      */
-    listenAll(callback: (windowInfo: WindowInfo) => void): void;
+    listenAll(callback: (windowEvent: WindowEvent) => void): void;
 }
 
 function activeWindow(): Promise<WindowInfo> {
@@ -69,7 +86,7 @@ function all(): Promise<WindowInfo[]> {
     });
 }
 
-function listenAll(callback: (windowInfo: WindowInfo) => void): void {
+function listenAll(callback: (windowEvent: WindowEvent) => void): void {
     oliveHelps.window.listenAll(callback);
 }
 

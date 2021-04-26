@@ -1,0 +1,30 @@
+name: Build and Deploy Goja Documents
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-node:
+      defaults:
+        run:
+          working-directory: ldk/javascript
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v2
+        - uses: actions/setup-node@v1
+          with:
+            node-version: 14.x
+        - run: npm ci
+        - run: npm run build
+        - run: npm run doc
+        - name: Deploy
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_branch: gh-pages
+            publish_dir: ./ldk/javascript/docs
+            destination_dir: ldk/javascript
+            force_orphan: true
