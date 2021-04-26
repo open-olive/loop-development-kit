@@ -17,14 +17,14 @@ describe('UI', () => {
       expect(oliveHelps.ui.listenSearchbar).toHaveBeenCalledWith(callback,expect.any(Function));
     });
 
-    it('throws exception when passing in Listen function', () => {
+    it('rejects with the error when the underlying call throws an error', () => {
       const exception = 'Exception';
       mocked(oliveHelps.ui.listenSearchbar).mockImplementation(() => {
         throw exception;
       });
 
       const callback = jest.fn();
-      expect(() => ui.listenSearchbar(callback)).toThrow(exception);
+      expect(() => ui.listenSearchbar(callback)).rejects.toBe(exception);
     });
   });
 
@@ -36,14 +36,14 @@ describe('UI', () => {
       expect(oliveHelps.ui.listenGlobalSearch).toHaveBeenCalledWith(callback,expect.any(Function));
     });
 
-    it('throws exception when passing in Listen function', () => {
+    it('rejects with the error when the underlying call throws an error', () => {
       const exception = 'Exception';
       mocked(oliveHelps.ui.listenGlobalSearch).mockImplementation(() => {
         throw exception;
       });
 
       const callback = jest.fn();
-      expect(() => ui.listenGlobalSearch(callback)).toThrow(exception);
+      expect(() => ui.listenGlobalSearch(callback)).rejects.toBe(exception);
     });
   });
 });

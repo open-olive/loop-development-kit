@@ -57,7 +57,7 @@ describe('Window', () => {
               throw exception;
             });
       
-            expect(() => window.listenActiveWindow(jest.fn())).toThrow(exception);
+            expect(() => window.listenActiveWindow(jest.fn())).rejects.toBe(exception);
          });
     });
 
@@ -112,13 +112,13 @@ describe('Window', () => {
             expect(oliveHelps.window.listenAll).toHaveBeenCalledWith(callback,expect.any(Function));
         });
         
-        it('throws exception when passing in listen function', () => {
+        it('rejects with the error when the underlying call throws an error', () => {
             const exception = 'Exception';
             mocked(oliveHelps.window.listenAll).mockImplementation(() => {
               throw exception;
             });
       
-            expect(() => window.listenAll(jest.fn())).toThrow(exception);
+            expect(() => window.listenAll(jest.fn())).rejects.toBe(exception);
          });
     });
 });

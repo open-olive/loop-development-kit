@@ -22,13 +22,13 @@ describe('Keyboard', () => {
             expect(oliveHelps.keyboard.listenHotkey).toHaveBeenCalledWith(hotkey, callback,expect.any(Function));
         });
 
-        it('throws exception when olive helps call fails', () => {
+        it('rejects with the error when the underlying call throws an error', () => {
             const exception = 'Exception';
             mocked(oliveHelps.keyboard.listenHotkey).mockImplementation(() => {
               throw exception;
             });
       
-            expect(keyboard.listenHotkey).toThrow(exception);
+            expect(keyboard.listenHotkey).rejects.toBe(exception);
         });
     });
 
@@ -40,13 +40,13 @@ describe('Keyboard', () => {
             expect(oliveHelps.keyboard.listenText).toHaveBeenCalledWith(callback,expect.any(Function));
         });
 
-        it('throws exception when olive helps call fails', () => {
+        it('rejects with the error when the underlying call throws an error', () => {
             const exception = 'Exception';
             mocked(oliveHelps.keyboard.listenText).mockImplementation(() => {
               throw exception;
             });
       
-            expect(keyboard.listenText).toThrow(exception);
+            expect(keyboard.listenText).rejects.toBe(exception);
         });
     });
 
@@ -58,13 +58,13 @@ describe('Keyboard', () => {
             expect(oliveHelps.keyboard.listenCharacter).toHaveBeenCalledWith(callback,expect.any(Function));
         });
 
-        it('throws exception when olive helps call fails', () => {
+        it('rejects with the error when the underlying call throws an error', () => {
             const exception = 'Exception';
             mocked(oliveHelps.keyboard.listenCharacter).mockImplementation(() => {
               throw exception;
             });
       
-            expect(keyboard.listenCharacter).toThrow(exception);
+            expect(keyboard.listenCharacter).rejects.toBe(exception);
         });
     });
 });

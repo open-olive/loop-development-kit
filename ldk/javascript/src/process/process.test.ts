@@ -43,14 +43,14 @@ describe('Process', () => {
       expect(oliveHelps.process.listenAll).toHaveBeenCalledWith(callback,expect.any(Function));
     });
 
-    it('throws exception when passing in listen all callback', () => {
+    it('rejects with the error when the underlying call throws an error', () => {
       const exception = 'Exception';
       mocked(oliveHelps.process.listenAll).mockImplementation(() => {
         throw exception;
       });
 
       const callback = jest.fn();
-      expect(() => process.listenAll(callback)).toThrow(exception);
+      expect(() => process.listenAll(callback)).rejects.toBe(exception);
     });
   });
 });
