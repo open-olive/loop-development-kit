@@ -40,12 +40,12 @@ export function promisifyWithTwoParams<TParam1, TParam2, TOut>(
   });
 }
 
-export function promisifyWithFourParams<TP1, TP2, TP3, TP4, TOut>(
-  p1: TP1,
-  p2: TP2,
-  p3: TP3,
-  p4: TP4,
-  arg: OliveHelps.ReadableWithFourParams<TP1, TP2, TP3, TP4, TOut>,
+export function promisifyWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut>(
+  p1: TParam1,
+  p2: TParam2,
+  p3: TParam3,
+  p4: TParam4,
+  arg: OliveHelps.ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut>,
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
