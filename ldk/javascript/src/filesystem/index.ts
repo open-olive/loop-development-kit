@@ -1,7 +1,7 @@
 /**
  * An object containing file data.
  */
-export interface FileInfo {
+ export interface FileInfo {
   /**
    * The file name, not including path.
    */
@@ -23,7 +23,7 @@ export interface FileInfo {
    */
   isDir: boolean;
 }
-
+  
 /**
  * An object representing an action and the file details which action were applied to.
  */
@@ -267,7 +267,7 @@ export function writeFile(
   });
 }
 
-export function join(segments: [string]): Promise<string> {
+export function join(segments: string[]): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     try {
       oliveHelps.filesystem.join(segments, (path: string) => resolve(path));
@@ -277,18 +277,3 @@ export function join(segments: [string]): Promise<string> {
     }
   });
 }
-
-export const filesystem: Filesystem = {
-  copy,
-  dir,
-  exists,
-  listenDir,
-  listenFile,
-  makeDir,
-  move,
-  readFile,
-  remove,
-  stat,
-  writeFile,
-  join,
-};

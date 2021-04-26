@@ -17,15 +17,10 @@ export interface UI {
     listenGlobalSearch(cb: (val: string) => void): void;
   }
   
-  function listenSearchbar(callback: (val: string) => void): void {
+  export function listenSearchbar(callback: (val: string) => void): void {
     return oliveHelps.ui.listenSearchbar(callback);
   }
   
-  function listenGlobalSearch(callback: (val: string) => void): void {
+  export function listenGlobalSearch(callback: (val: string) => void): void {
     return oliveHelps.ui.listenGlobalSearch(callback);
   }
-  
-  export const ui: UI = {
-    listenSearchbar,
-    listenGlobalSearch,
-  };

@@ -1,5 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { process, ProcessInfo } from '.';
+import * as process from '.';
 
 describe('Process', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Process', () => {
 
   describe('all', () => {
     it('returns a promise result with expected proces infos', () => {
-      const expected: ProcessInfo[] = [{
+      const expected: process.ProcessInfo[] = [{
         arguments: "arguments",
         command: "command",
         pid: 456

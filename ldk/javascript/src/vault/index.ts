@@ -37,7 +37,7 @@ export interface Vault {
 }
 
 // TODO: Do we want to override js delete?
-function remove(key: string): Promise<void> { 
+export function remove(key: string): Promise<void> { 
     return new Promise<void>((resolve, reject) => {
         try {
             oliveHelps.vault.remove(key, () => resolve());
@@ -48,7 +48,7 @@ function remove(key: string): Promise<void> {
     });
 }
 
-function exists(key: string): Promise<boolean> {
+export function exists(key: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
         try {
             oliveHelps.vault.exists(key, (doesExist: boolean) => resolve(doesExist));
@@ -59,7 +59,7 @@ function exists(key: string): Promise<boolean> {
     });
 }
 
-function read(key: string): Promise<string> {
+export function read(key: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
         try {
             oliveHelps.vault.read(key, (readValue: string) => resolve(readValue));
@@ -70,7 +70,7 @@ function read(key: string): Promise<string> {
     });
 }
 
-function write(key: string, value: string): Promise<void> {
+export function write(key: string, value: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         try {
             oliveHelps.vault.write(key, value, () => resolve());
@@ -79,11 +79,4 @@ function write(key: string, value: string): Promise<void> {
             reject(error);
         }
     });
-}
-
-export const vault: Vault = {
-    remove,
-    exists,
-    read,
-    write
 }

@@ -38,20 +38,14 @@ export interface Keyboard {
     listenCharacter(callback: (char: string) => void): void
 }
 
-function listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): void {
+export function listenHotkey(hotkey: Hotkey, callback: (pressed: boolean) => void): void {
     oliveHelps.keyboard.listenHotkey(hotkey, callback);
 }
 
-function listenText(callback: (text: string) => void): void {
+export function listenText(callback: (text: string) => void): void {
     oliveHelps.keyboard.listenText(callback);
 }
 
-function listenCharacter(callback: (char: string) => void): void {
+export function listenCharacter(callback: (char: string) => void): void {
     oliveHelps.keyboard.listenCharacter(callback);
 }
-
-export const keyboard: Keyboard = {
-    listenHotkey,
-    listenText,
-    listenCharacter
-};
