@@ -9,7 +9,7 @@ import { clipboard, whisper } from '@oliveai/ldk';
             },
             components: [
               {
-                body: 'Got Clipboard Text: ' + incomingText,
+                body: `Got Clipboard Text: ${incomingText}`,
                 type: whisper.WhisperComponentType.Markdown,
               },
             ]
