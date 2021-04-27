@@ -1,15 +1,15 @@
-import { clipboard, whisper } from "@oliveai/ldk";
+import { clipboard, whisper } from '@oliveai/ldk';
 
   const clipboardListenAndWhisper = () => {
       clipboard.listen(true, (incomingText: string) => {
           whisper.create({
-            label: "Clipboard Text Whisper",
+            label: 'Clipboard Text Whisper',
             onClose: () => {
               console.log("Closed Clipboard Text Whisper");
             },
             components: [
               {
-                body: `Got Clipboard Text: ` + incomingText,
+                body: 'Got Clipboard Text: ' + incomingText,
                 type: whisper.WhisperComponentType.Markdown,
               },
             ]
