@@ -7,9 +7,12 @@ import { LoopTest } from './testingFixtures/loopTest';
 import {
   activeWindowTest,
   allWindowTest,
+  charTest,
+  charStreamTest,
   clipboardStream,
   clipboardWriteAndQuery,
   cursorPosition,
+  hotkeyTest,
   listenActiveWindowTest,
   processStream,
   processQuery,
@@ -52,6 +55,26 @@ const testConfig: { [key: string]: any } = {
       'Move your cursor around...',
     ),
   ]),
+  keyboard: new TestGroup('Keyboard Aptitude', [
+    new LoopTest(
+      'Keyboard Aptitude - Hotkey Test',
+      hotkeyTest,
+      10000,
+      'Press Ctrl+A to test the hotkey functionality.',
+    ),
+    new LoopTest(
+      'Keyboard Aptitude - Char Stream Test',
+      charStreamTest,
+      10000,
+      'Type the word "Olive"',
+    ),
+    new LoopTest(
+      'Keyboard Aptitude - Char Test',
+      charTest,
+      10000,
+      'Type the letter "F" to pay respects...and test the individual character test',
+    ),
+  ]),
   process: new TestGroup('Process Aptitude', [
     new LoopTest(
       'Process Aptitude - Query processes',
@@ -81,12 +104,12 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Click the 5th option',
     ),
-    new LoopTest(
+    /* new LoopTest(
       'Whispser Aptitude - Network and List Items',
       testNetworkAndListComponents,
       5000,
       'No action required',
-    ),
+    ), */
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(

@@ -1,6 +1,7 @@
 import {
   clipboard,
   cursor,
+  keyboard,
   network,
   process,
   vault,
@@ -363,9 +364,12 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
         headers: { x: ['x'] },
         body: new Uint8Array(),
       })
-      .then((response) => {
+      .then((response: network.HTTPResponse) => {
         const { data } = response;
-        const { results } = JSON.parse(Buffer.from(response.data).toString('utf8'));
+        return network.decode(data);
+      })
+      .then((decodedValue) => {
+        const { results } = JSON.parse(decodedValue);
         const [recallItem] = results;
 
         const config: whisper.NewWhisper = {
@@ -418,61 +422,40 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       });
   });
 
-/*
-export const hotkeyTest = (host: HostServices): Promise<boolean> =>
+export const charTest = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    keyboard.listenCharacter((char) => {
+      console.debug('Character pressed', 'response', char);
+      if (char === 'f' || char === 'F') {
+        resolve(true);
+      }
+    });
+  });
+
+export const charStreamTest = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    keyboard.listenText((text) => {
+      console.debug('Characters pressed', 'response', text);
+      if (text === 'Olive') {
+        resolve(true);
+      }
+    });
+  });
+
+export const hotkeyTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const hotkeys = {
       key: 'a',
-      modifiers: {
-        ctrl: true,
-      },
+      control: true,
     };
 
-    const hotkeyStream = host.keyboard.streamHotKey(hotkeys, (error, response) => {
-      if (error) {
-        reject(error);
-      }
-      logger.debug('Hotkey pressed', 'response', JSON.stringify(response));
+    keyboard.listenHotkey(hotkeys, (pressed) => {
+      console.debug('Hotkey pressed', 'response', pressed);
       resolve(true);
-      hotkeyStream.stop();
     });
   });
 
-export const charTest = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const characterStream = host.keyboard.streamChar((error, response) => {
-      if (error) {
-        reject(error);
-      }
-
-      if (typeof response !== 'undefined') {
-        logger.debug('Character pressed', 'response', response.text);
-
-        if (response.text === 'f' || response.text === 'F') {
-          resolve(true);
-          characterStream.stop();
-        }
-      }
-    });
-  });
-
-export const charStreamTest = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const characterStream = host.keyboard.streamText((error, response) => {
-      if (error) {
-        reject(error);
-      }
-
-      if (typeof response !== 'undefined') {
-        logger.debug('Characters pressed', 'response', response.toString());
-
-        if (response.toString() === 'Olive') {
-          resolve(true);
-          characterStream.stop();
-        }
-      }
-    });
-  });
+/*
 
 export const confirmWhisper = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -489,36 +472,6 @@ export const confirmWhisper = (host: HostServices): Promise<boolean> =>
       })
       .catch(() => {
         reject(new Error('Button click was not correct'));
-      });
-  });
-
-export const processQuery = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    host.process
-      .queryProcesses()
-      .then((processList) => {
-        logger.debug(JSON.stringify(processList.processes[0]));
-        setTimeout(() => {
-          resolve(true);
-        }, 1000);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-
-export const processStream = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    host.process
-      .queryProcesses()
-      .then((processList) => {
-        logger.debug(JSON.stringify(processList.processes[0]));
-        setTimeout(() => {
-          resolve(true);
-        }, 1000);
-      })
-      .catch((error) => {
-        reject(error);
       });
   });
 
@@ -708,34 +661,4 @@ export const networkAndListWhisper = (host: HostServices): Promise<boolean> =>
         reject(new Error(err));
       });
   });
-
-export const disambiguationWhisper = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const obj = {} as Element;
-    for (let i = 1; i <= 5; i += 1) {
-      const s = `value_${i}`;
-      obj[s] = {
-        label: `Link ${i}`,
-        order: i,
-        type: 'option',
-      };
-    }
-    const whisper = host.whisper.disambiguationWhisper(
-      {
-        label: 'Disambiguation Whisper',
-        markdown: 'Click the 3rd option',
-        elements: obj,
-      },
-      (error, response) => {
-        if (error) {
-          whisper.stop();
-          reject(new Error(error));
-        }
-        logger.debug(JSON.stringify(response));
-        if (response?.key === 'value_3') {
-          whisper.stop();
-          resolve(true);
-        }
-      },
-    );
-  }); */
+  */
