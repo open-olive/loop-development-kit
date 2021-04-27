@@ -8,14 +8,18 @@ declare namespace OliveHelps {
     cancel(): void;
   }
 
-  type Readable<T> = (callback: (a: T) => void) => void;
+  type Callback<T> = (error: Error | undefined, value: T) => void;
 
-  type ReadableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
+  type ReturnCallback = (obj: Cancellable) => void;
+
+  type Readable<T> = (callback: Callback<T>) => void;
+
+  type ReadableWithParam<TParam, TOut> = (param: TParam, callback: Callback<TOut>) => void;
 
   type ReadableWithTwoParams<TParam1, TParam2, TOut> = (
     param: TParam1,
     param2: TParam2,
-    callback: (a: TOut) => void,
+    callback: Callback<TOut>,
   ) => void;
 
   type ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut> = (
@@ -23,15 +27,15 @@ declare namespace OliveHelps {
     param2: TParam2,
     param3: TParam3,
     param4: TParam4,
-    callback: (a: TOut) => void,
+    callback: Callback<TOut>,
   ) => void;
 
-  type Listenable<T> = (callback: (a: T) => void, returnCb: (obj: Cancellable) => void) => void;
+  type Listenable<T> = (callback: Callback<T>, returnCb: ReturnCallback) => void;
 
   type ListenableWithParam<TParam, TOut> = (
     param: TParam,
-    callback: (a: TOut) => void,
-    returnCb: (obj: Cancellable) => void,
+    callback: Callback<TOut>,
+    returnCb: ReturnCallback,
   ) => void;
 
   interface Aptitudes {
