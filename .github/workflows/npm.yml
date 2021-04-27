@@ -7,7 +7,7 @@ name: NPM Publish
 
 defaults:
   run:
-    working-directory: ldk/node
+    working-directory: ldk/javascript
 
 on:
   release:
