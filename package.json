@@ -1,6 +1,6 @@
 {
   "name": "loop-development-kit",
-  "version": "3.0.0-beta.1",
+  "version": "1.0.0",
   "description": "This is the central repository for all the Olive Help LDKs. You'll probably want to look at the individual LDK readmes in the `ldk\\{language}` folder.",
   "main": "index.js",
   "private": true,
