@@ -11,5 +11,5 @@
     "strict": true,
     "typeRoots": ["node_modules/@types", "src/types"]
   },
-  "exclude": ["node_modules", "dist", "docs", "scripts", "jest.config.js", "coverage", "tests"]
+  "exclude": ["node_modules", "dist", "docs", "scripts", "jest.config.js", "coverage", "tests", "examples"]
 }

@@ -1,10 +1,10 @@
 {
-  "name": "loop-goja",
+  "name": "self-test-loop",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "webpack --entry core-js/features/promise --entry core-js/features/symbol --entry ./src/index.ts --config ./webpack.config.js"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +24,7 @@
   "dependencies": {
     "@babel/runtime": "7.13.10",
     "@babel/runtime-corejs2": "7.13.10",
-    "@oliveai/ldk": "file:../../",
+    "@oliveai/ldk": "file:../..",
     "babel-runtime": "6.26.0",
     "chance": "1.1.7",
     "core-js": "3.10.1",
