@@ -1,6 +1,6 @@
 export function generateMetadata(): string {
   const json = JSON.stringify({
-    oliveHelpsContractVersion: '0.1.0',
+    ldkVersion: '0.1.0',
   });
   return Buffer.from(json).toString('base64');
 }
