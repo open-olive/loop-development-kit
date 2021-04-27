@@ -6,11 +6,12 @@ import {
   vault,
   whisper,
   window,
-} from "@oliveai/ldk";
+  filesystem,
+} from '@oliveai/ldk';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const string = "Im in yr loop, writing to yr clipboard";
+    const string = 'Im in yr loop, writing to yr clipboard';
     clipboard
       .write(string)
       .then(() => {
@@ -20,7 +21,7 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
               resolve(true);
             }, 1000);
           } else {
-            reject(new Error("Incorrect value detected"));
+            reject(new Error('Incorrect value detected'));
           }
         });
       })
@@ -32,7 +33,7 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
 export const clipboardStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     clipboard.listen(true, (response) => {
-      if (response === "LDKThxBai") {
+      if (response === 'LDKThxBai') {
         resolve(true);
       }
     });
@@ -58,7 +59,7 @@ export const streamCursorPosition = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     let i = 0;
     const cursorPoritionStream = cursor.listenPosition((response) => {
-      if (typeof response !== "undefined") {
+      if (typeof response !== 'undefined') {
         console.debug(`Cursor Stream X - ${response.x}`);
         console.debug(`Cursor Stream Y - ${response.y}`);
         i += 1;
@@ -75,7 +76,7 @@ export const listenActiveWindowTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     window.listenActiveWindow((response) => {
       if (response) {
-        console.debug("Window become active", "response", response.title);
+        console.debug('Window become active', 'response', response.title);
         resolve(true);
       }
     });
@@ -134,7 +135,7 @@ export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const clickableElements = [];
     clickableElements.push({
-      body: "Select Option 5",
+      body: 'Select Option 5',
       type: whisper.WhisperComponentType.Markdown,
     });
 
@@ -158,11 +159,11 @@ export const testClickableWhisper = (): Promise<boolean> =>
       style: whisper.Urgency.None,
     });
     whisper.create({
-      label: "Markdown Options",
+      label: 'Markdown Options',
       onClose: () => {},
       components: [
         {
-          body: "Select Option 5",
+          body: 'Select Option 5',
           type: whisper.WhisperComponentType.Markdown,
         },
         {
@@ -208,27 +209,27 @@ export const testClickableWhisper = (): Promise<boolean> =>
 
 export const vaultReadWrite = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const value = "Do I exist?";
-    vault.write("testKey", value).then(() => {
+    const value = 'Do I exist?';
+    vault.write('testKey', value).then(() => {
       vault
-        .exists("testKey")
+        .exists('testKey')
         .then((exists) => {
           console.debug(`Value exists in vault: ${exists}`);
           if (!exists) {
-            reject(new Error("Key does not exist in storge"));
+            reject(new Error('Key does not exist in storge'));
             return null;
           }
 
-          return vault.read("testKey");
+          return vault.read('testKey');
         })
         .then((vaultValue) => {
           console.debug(`Value in vault: ${vaultValue}`);
           if (vaultValue !== value) {
-            reject(new Error("Stored value does not match initial value"));
+            reject(new Error('Stored value does not match initial value'));
             return null;
           }
 
-          return vault.remove("testKey");
+          return vault.remove('testKey');
         })
         .then(() => {
           console.debug(`Value deleted from vault`);
@@ -238,6 +239,128 @@ export const vaultReadWrite = (): Promise<boolean> =>
           reject(error);
         });
     });
+  });
+
+function textToUtf8Array(text: string) {
+  const buf = new ArrayBuffer(textToUtf8Array.length * 2);
+  const bufView = new Uint8Array(buf);
+  for (let i = 0; i < text.length; i += 1) {
+    bufView[i] = text.charCodeAt(i);
+  }
+  return bufView;
+}
+
+function utf8ArrayToText(array: Uint8Array) {
+  return String.fromCharCode.apply(null, Array.from(array));
+}
+
+export const queryFileDirectory = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    filesystem
+      .dir('./')
+      .then((response) => {
+        for (let i = 0; i < response.length; i += 1) {
+          if (response[i].name === 'go.mod' && !response[i].isDir) {
+            setTimeout(() => {
+              resolve(true);
+            }, 1500);
+          }
+        }
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          reject(error);
+        }, 1500);
+      });
+  });
+
+export const createAndDeleteFile = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const filePath = './test.txt';
+    const writeMode = 0o755;
+    filesystem.writeFile(
+      filePath,
+      textToUtf8Array('some text'),
+      filesystem.WriteOperation.overwrite,
+      writeMode,
+    );
+    setTimeout(() => {
+      filesystem
+        .remove(filePath)
+        .then(() => {
+          setTimeout(() => {
+            resolve(true);
+          }, 1500);
+        })
+        .catch((error) => {
+          setTimeout(() => {
+            reject(error);
+          }, 1500);
+        });
+    }, 500);
+    resolve(true);
+  });
+
+export const updateAndReadFile = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const testString = 'Im in yr loop, writing to yr clipboard';
+    const filePath = './test.txt';
+    const writeMode = 0o755;
+
+    setTimeout(() => {
+      filesystem
+        .writeFile(
+          filePath,
+          textToUtf8Array(testString),
+          filesystem.WriteOperation.overwrite,
+          writeMode,
+        )
+        .then(() => {
+          console.debug('Write successful');
+          let isCorrectContents = false;
+
+          filesystem
+            .readFile(filePath)
+            .then((res) => {
+              const decodedText = utf8ArrayToText(res);
+              console.debug(decodedText);
+              if (decodedText === testString) {
+                isCorrectContents = true;
+              }
+              return filesystem.remove(filePath);
+            })
+            .then(() => {
+              if (isCorrectContents) {
+                resolve(true);
+              } else {
+                reject(new Error('File contents were incorrect'));
+              }
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    }, 1000);
+  });
+
+  export const listenFile = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const filePath = './test.txt';
+    console.info('listening to file changes');
+    filesystem.listenFile(filePath,
+      (response) => {
+        if (response) {
+          console.info(response.action);
+          console.info(`${response.info.modTime}`);
+          resolve(true);
+        } else {
+          reject(new Error("File info is not received"));
+        }
+      },
+    );
   });
 
 /* export const testNetworkAndListComponents = (): Promise<boolean> =>
@@ -361,124 +484,6 @@ export const charStreamTest = (host: HostServices): Promise<boolean> =>
         }
       }
     });
-  });
-
-export const queryFileDirectory = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    // Queries the sidekick
-    host.fileSystem
-      .queryDirectory({
-        directory: './',
-      })
-      .then((response) => {
-        for (let i = 0; i < response.files.length; i += 1) {
-          if (response.files[i].name === 'go.mod' && !response.files[i].isDir) {
-            setTimeout(() => {
-              resolve(true);
-            }, 1500);
-          }
-        }
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          reject(error);
-        }, 1500);
-      });
-  });
-
-// TODO: create file needs to have a promise
-export const createAndDeleteFile = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    host.fileSystem.createFile('./test.txt');
-    setTimeout(() => {
-      host.fileSystem
-        .removeFile({ path: './test.txt' })
-        .then((response) => {
-          setTimeout(() => {
-            resolve(true);
-          }, 1500);
-        })
-        .catch((error) => {
-          setTimeout(() => {
-            reject(error);
-          }, 1500);
-        });
-    }, 500);
-  });
-
-// TODO: create file needs to have a promise
-export const updateAndReadFile = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const encoder = new TextEncoder();
-    const decoder = new TextDecoder();
-    const testString = 'Im in yr loop, writing to yr clipboard';
-    const encodedMessage = encoder.encode(testString);
-
-    // Create a new file
-    host.fileSystem.createFile('./test.txt');
-
-    // TODO: streamPromise does not work for create file
-    // Open a file and encode a test string
-    setTimeout(() => {
-      // TODO: currently, can't write / read to files easily from same handle
-      const fileHandle = host.fileSystem.openFile('./test.txt');
-      let isCorrectContents = false;
-
-      fileHandle
-        .write(encodedMessage)
-        .then((response) => {
-          logger.debug('Write successful');
-          // TODO: Something strange with the close function, hangs thread
-          // fileHandle.close();
-
-          const fileHandle2 = host.fileSystem.openFile('./test.txt');
-          fileHandle2
-            .read()
-            .then((res) => {
-              logger.debug(decoder.decode(res));
-              if (decoder.decode(res) === testString) {
-                isCorrectContents = true;
-              }
-              // fileHandle2.close();
-              return host.fileSystem.removeFile({ path: './test.txt' });
-            })
-            .then((res) => {
-              if (isCorrectContents) {
-                resolve(true);
-              } else {
-                reject(new Error('File contents were incorrect'));
-              }
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        })
-        .catch((error) => {
-          fileHandle.close();
-          reject(error);
-        });
-    }, 1000);
-  });
-
-export const streamFileInfo = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    // Queries the sidekick
-    logger.info('listening to file changes');
-    host.fileSystem.streamFileInfo(
-      {
-        file: './test.txt',
-      },
-      (error, response) => {
-        if (error) {
-          reject(new Error(error));
-        }
-
-        if (response) {
-          logger.info(response.action);
-          logger.info(`${response.file.updated?.toDateString()}`);
-        }
-      },
-    );
   });
 
 export const confirmWhisper = (host: HostServices): Promise<boolean> =>
