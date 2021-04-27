@@ -17,6 +17,10 @@ import {
   testClickableWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
+  queryFileDirectory,
+  createAndDeleteFile,
+  updateAndReadFile,
+  listenFile,
 } from './tests';
 
 const testConfig: { [key: string]: any } = {
@@ -102,6 +106,32 @@ const testConfig: { [key: string]: any } = {
       listenActiveWindowTest,
       10000,
       'Listening to active windows, please change active window...',
+    ),
+  ]),
+  file: new TestGroup('File Aptitude', [
+    new LoopTest(
+      'File Aptitude - Query File Directory',
+      queryFileDirectory,
+      10000,
+      'Querying root directory to look for "go.mod"...',
+    ),
+    new LoopTest(
+      'File Aptitude - Create and Delete File',
+      createAndDeleteFile,
+      10000,
+      'Trying to create then delete "test.txt"',
+    ),
+    new LoopTest(
+      'File Aptitude - Update and read a file',
+      updateAndReadFile,
+      15000,
+      'Trying to create, update, then read the text in "test.txt" before deleting',
+    ),
+    new LoopTest(
+      'File Aptitude - Listen File',
+      listenFile,
+      10000,
+      'Monitoring for file changes...',
     ),
   ]),
 };
