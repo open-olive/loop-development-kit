@@ -17,13 +17,32 @@ export function promisifyWithMapper<TParam, TInternalOut, TExternalOut>(
   });
 }
 
+function promiseResolver<T>(
+  resolve: (value?: T | PromiseLike<T> | undefined) => void,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  reject: (reason?: any) => void,
+): (error: Error | undefined, value: T) => void {
+  return (error, value) => {
+    if (error) {
+      console.error('Received error on result', error);
+      reject(error);
+    }
+    resolve(value);
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function handleCaughtError(reject: (reason?: any) => void, error: Error) {
+  console.error('Received error calling service', error);
+  reject(error);
+}
+
 export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     try {
-      arg((cb: T) => resolve(cb));
+      arg(promiseResolver(resolve, reject));
     } catch (e) {
-      console.error(e);
-      reject(e);
+      handleCaughtError(reject, e);
     }
   });
 }
@@ -34,10 +53,9 @@ export function promisifyWithParam<TParam, TOut>(
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
-      arg(param, (cb: TOut) => resolve(cb));
+      arg(param, promiseResolver(resolve, reject));
     } catch (e) {
-      console.error(e);
-      reject(e);
+      handleCaughtError(reject, e);
     }
   });
 }
@@ -49,10 +67,9 @@ export function promisifyWithTwoParams<TParam1, TParam2, TOut>(
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
-      arg(param, param2, (cb: TOut) => resolve(cb));
+      arg(param, param2, promiseResolver(resolve, reject));
     } catch (e) {
-      console.error(e);
-      reject(e);
+      handleCaughtError(reject, e);
     }
   });
 }
@@ -66,12 +83,21 @@ export function promisifyWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
-      arg(p1, p2, p3, p4, (cb: TOut) => resolve(cb));
+      arg(p1, p2, p3, p4, promiseResolver(resolve, reject));
     } catch (e) {
-      console.error(e);
-      reject(e);
+      handleCaughtError(reject, e);
     }
   });
+}
+
+function handleListenerCallback<T>(cb: (v: T) => void): OliveHelps.Callback<T> {
+  return (error, value) => {
+    if (error) {
+      console.error('Received call during listener');
+    } else {
+      cb(value);
+    }
+  };
 }
 
 export function promisifyListenable<T>(
@@ -80,12 +106,9 @@ export function promisifyListenable<T>(
 ): Promise<Cancellable> {
   return new Promise((resolve, reject) => {
     try {
-      arg(cb, (obj) => {
-        resolve(obj);
-      });
+      arg(handleListenerCallback(cb), (obj) => resolve(obj));
     } catch (e) {
-      console.error('Received error making request', e);
-      reject(e);
+      handleCaughtError(reject, e);
     }
   });
 }
@@ -97,12 +120,11 @@ export function promisifyListenableWithParam<TParam, TOut>(
 ): Promise<Cancellable> {
   return new Promise((resolve, reject) => {
     try {
-      arg(param, cb, (obj) => {
+      arg(param, handleListenerCallback(cb), (obj) => {
         resolve(obj);
       });
     } catch (e) {
-      console.error('Received error making request', e);
-      reject(e);
+      handleCaughtError(reject, e);
     }
   });
 }
