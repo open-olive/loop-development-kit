@@ -1,0 +1,34 @@
+# This workflow will do a clean install of node dependencies, build the source code,
+# and publish to NPM.
+# For more information, see:
+#   https://docs.github.com/en/actions/language-and-framework-guides/publishing-nodejs-packages#publishing-packages-to-the-npm-registry
+
+name: JavaScript NPM Publish
+
+defaults:
+  run:
+    working-directory: ldk/javascript
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: npm set audit false
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: printf '\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}' >> .npmrc
+      - run: npm publish --access public
+        env:
+          # `secrets.NPM_TOKEN` references a GitHub Secret configured for this repo or organization,
+          # and is used to authenticate for the NPM publish command.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
