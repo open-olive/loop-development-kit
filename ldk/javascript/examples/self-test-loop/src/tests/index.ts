@@ -227,20 +227,7 @@ export const vaultReadWrite = (): Promise<boolean> =>
     });
   });
 
-function textToUtf8Array(text: string) {
-  const buf = new ArrayBuffer(textToUtf8Array.length * 2);
-  const bufView = new Uint8Array(buf);
-  for (let i = 0; i < text.length; i += 1) {
-    bufView[i] = text.charCodeAt(i);
-  }
-  return bufView;
-}
-
-function utf8ArrayToText(array: Uint8Array) {
-  return String.fromCharCode.apply(null, Array.from(array));
-}
-
-export const queryFileDirectory = (): Promise<boolean> =>
+export const queryDirectory = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     filesystem
       .dir('./')
@@ -264,27 +251,30 @@ export const createAndDeleteFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test.txt';
     const writeMode = 0o755;
-    filesystem.writeFile(
-      filePath,
-      textToUtf8Array('some text'),
-      filesystem.WriteOperation.overwrite,
-      writeMode,
-    );
-    setTimeout(() => {
-      filesystem
-        .remove(filePath)
-        .then(() => {
-          setTimeout(() => {
-            resolve(true);
-          }, 1500);
-        })
-        .catch((error) => {
-          setTimeout(() => {
+    network.encode('some text').then((encodedText) => {
+      setTimeout(() => {
+        const newEncodedValue = new Uint8Array(encodedText);
+        filesystem
+          .writeFile(filePath, newEncodedValue, filesystem.WriteOperation.overwrite, writeMode)
+          .then(() => {
+            filesystem
+              .remove(filePath)
+              .then(() => {
+                setTimeout(() => {
+                  resolve(true);
+                }, 1500);
+              })
+              .catch((error) => {
+                setTimeout(() => {
+                  reject(error);
+                }, 1500);
+              });
+          })
+          .catch((error) => {
             reject(error);
-          }, 1500);
-        });
-    }, 500);
-    resolve(true);
+          });
+      }, 500);
+    });
   });
 
 export const updateAndReadFile = (): Promise<boolean> =>
@@ -294,33 +284,39 @@ export const updateAndReadFile = (): Promise<boolean> =>
     const writeMode = 0o755;
 
     setTimeout(() => {
-      filesystem
-        .writeFile(
-          filePath,
-          textToUtf8Array(testString),
-          filesystem.WriteOperation.overwrite,
-          writeMode,
-        )
-        .then(() => {
-          console.debug('Write successful');
-          let isCorrectContents = false;
-
+      network
+        .encode(testString)
+        .then((encodedText) => {
+          const newEncodedValue = new Uint8Array(encodedText);
           filesystem
-            .readFile(filePath)
-            .then((res) => {
-              const decodedText = utf8ArrayToText(res);
-              console.debug(decodedText);
-              if (decodedText === testString) {
-                isCorrectContents = true;
-              }
-              return filesystem.remove(filePath);
-            })
+            .writeFile(filePath, newEncodedValue, filesystem.WriteOperation.overwrite, writeMode)
             .then(() => {
-              if (isCorrectContents) {
-                resolve(true);
-              } else {
-                reject(new Error('File contents were incorrect'));
-              }
+              console.debug('Write successful');
+              console.debug(newEncodedValue);
+
+              filesystem
+                .readFile(filePath)
+                .then((encodedValue) => {
+                  network
+                    .decode(new Uint8Array(encodedValue))
+                    .then((decodedText) => {
+                      console.debug(decodedText);
+                      if (decodedText === testString) {
+                        resolve(true);
+                      } else {
+                        reject(new Error('File contents were incorrect'));
+                      }
+                    })
+                    .catch((error) => {
+                      reject(error);
+                    });
+                })
+                .catch((error) => {
+                  reject(error);
+                })
+                .finally(() => {
+                  filesystem.remove(filePath);
+                });
             })
             .catch((error) => {
               reject(error);
@@ -335,16 +331,33 @@ export const updateAndReadFile = (): Promise<boolean> =>
 export const listenFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test.txt';
+    const writeMode = 0o755;
     console.info('listening to file changes');
-    filesystem.listenFile(filePath, (response) => {
-      if (response) {
-        console.info(response.action);
-        console.info(`${response.info.modTime}`);
-        resolve(true);
-      } else {
-        reject(new Error('File info is not received'));
-      }
-    });
+
+    filesystem
+      .listenFile(filePath, (response) => {
+        if (response) {
+          console.info(response.action);
+          console.info(`${response.info.modTime}`);
+          resolve(true);
+        } else {
+          reject(new Error('File info is not received'));
+        }
+      })
+      .then(() => {
+        network
+        .encode('some text')
+        .then((encodedText) => {
+          filesystem
+            .writeFile(filePath, new Uint8Array(encodedText), filesystem.WriteOperation.overwrite, writeMode)
+            .catch((error) => {
+              reject(error);
+            });
+        });
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 
 export const testNetworkAndListComponents = (): Promise<boolean> =>
