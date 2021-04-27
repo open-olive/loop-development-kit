@@ -1,16 +1,8 @@
-import {
-  clipboard,
-  cursor,
-  network,
-  process,
-  vault,
-  whisper,
-  window,
-} from "@oliveai/ldk";
+import { clipboard, cursor, network, process, vault, whisper, window } from '@oliveai/ldk';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const string = "Im in yr loop, writing to yr clipboard";
+    const string = 'Im in yr loop, writing to yr clipboard';
     clipboard
       .write(string)
       .then(() => {
@@ -20,7 +12,7 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
               resolve(true);
             }, 1000);
           } else {
-            reject(new Error("Incorrect value detected"));
+            reject(new Error('Incorrect value detected'));
           }
         });
       })
@@ -32,7 +24,7 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
 export const clipboardStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     clipboard.listen(true, (response) => {
-      if (response === "LDKThxBai") {
+      if (response === 'LDKThxBai') {
         resolve(true);
       }
     });
@@ -58,7 +50,7 @@ export const streamCursorPosition = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     let i = 0;
     const cursorPoritionStream = cursor.listenPosition((response) => {
-      if (typeof response !== "undefined") {
+      if (typeof response !== 'undefined') {
         console.debug(`Cursor Stream X - ${response.x}`);
         console.debug(`Cursor Stream Y - ${response.y}`);
         i += 1;
@@ -75,7 +67,7 @@ export const listenActiveWindowTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     window.listenActiveWindow((response) => {
       if (response) {
-        console.debug("Window become active", "response", response.title);
+        console.debug('Window become active', 'response', response.title);
         resolve(true);
       }
     });
@@ -132,64 +124,49 @@ export const processStream = (): Promise<boolean> =>
 
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const clickableElements = [];
-    clickableElements.push({
-      body: "Select Option 5",
-      type: whisper.WhisperComponentType.Markdown,
-    });
-
-    for (let i = 0; i < 4; i += 1) {
-      clickableElements.push({
-        type: whisper.WhisperComponentType.Link,
-        textAlign: whisper.TextAlign.Left,
-        onClick: () => {},
-        text: `Option ${i + 1}`,
-        style: whisper.Urgency.None,
-      });
-    }
-
-    clickableElements.push({
-      type: whisper.WhisperComponentType.Link,
-      textAlign: whisper.TextAlign.Left,
-      onClick: () => {
-        resolve(true);
-      },
-      text: `Option 5`,
-      style: whisper.Urgency.None,
-    });
     whisper.create({
-      label: "Markdown Options",
-      onClose: () => {},
+      label: 'Markdown Options',
+      onClose: () => {
+        console.debug('closed');
+      },
       components: [
         {
-          body: "Select Option 5",
+          body: 'Select Option 5',
           type: whisper.WhisperComponentType.Markdown,
         },
         {
           type: whisper.WhisperComponentType.Link,
           textAlign: whisper.TextAlign.Left,
-          onClick: () => {},
+          onClick: () => {
+            console.debug('wrong');
+          },
           text: `Option 1`,
           style: whisper.Urgency.None,
         },
         {
           type: whisper.WhisperComponentType.Link,
           textAlign: whisper.TextAlign.Left,
-          onClick: () => {},
+          onClick: () => {
+            console.debug('wrong');
+          },
           text: `Option 2`,
           style: whisper.Urgency.None,
         },
         {
           type: whisper.WhisperComponentType.Link,
           textAlign: whisper.TextAlign.Left,
-          onClick: () => {},
+          onClick: () => {
+            console.debug('wrong');
+          },
           text: `Option 3`,
           style: whisper.Urgency.None,
         },
         {
           type: whisper.WhisperComponentType.Link,
           textAlign: whisper.TextAlign.Left,
-          onClick: () => {},
+          onClick: () => {
+            console.debug('wrong');
+          },
           text: `Option 4`,
           style: whisper.Urgency.None,
         },
@@ -208,27 +185,27 @@ export const testClickableWhisper = (): Promise<boolean> =>
 
 export const vaultReadWrite = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const value = "Do I exist?";
-    vault.write("testKey", value).then(() => {
+    const value = 'Do I exist?';
+    vault.write('testKey', value).then(() => {
       vault
-        .exists("testKey")
+        .exists('testKey')
         .then((exists) => {
           console.debug(`Value exists in vault: ${exists}`);
           if (!exists) {
-            reject(new Error("Key does not exist in storge"));
+            reject(new Error('Key does not exist in storge'));
             return null;
           }
 
-          return vault.read("testKey");
+          return vault.read('testKey');
         })
         .then((vaultValue) => {
           console.debug(`Value in vault: ${vaultValue}`);
           if (vaultValue !== value) {
-            reject(new Error("Stored value does not match initial value"));
+            reject(new Error('Stored value does not match initial value'));
             return null;
           }
 
-          return vault.remove("testKey");
+          return vault.remove('testKey');
         })
         .then(() => {
           console.debug(`Value deleted from vault`);
@@ -240,28 +217,33 @@ export const vaultReadWrite = (): Promise<boolean> =>
     });
   });
 
-/* export const testNetworkAndListComponents = (): Promise<boolean> =>
+export const testNetworkAndListComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
 
-    console.debug("Network call succeeded, emmitting list whisper", url);
+    console.debug('Network call succeeded, emmitting list whisper', url);
+
+    setTimeout(() => {
+      resolve(true);
+    }, 5000);
 
     network
       .httpRequest({
         url,
-        method: "GET",
-        headers: { x: ["x"] },
+        method: 'GET',
+        headers: { x: ['x'] },
         body: new Uint8Array(),
       })
       .then((response) => {
-        const { results } = JSON.parse(
-          // Buffer.from(response.data).toString("utf8")
-        );
+        const { data } = response;
+        const { results } = JSON.parse(Buffer.from(response.data).toString('utf8'));
         const [recallItem] = results;
 
-        const config: NewWhisper = {
-          label: "Latest FDA Food Recall",
-          onClose: () => {},
+        const config: whisper.NewWhisper = {
+          label: 'Latest FDA Food Recall',
+          onClose: () => {
+            console.debug('closed');
+          },
           components: [
             {
               body: recallItem.product_description,
@@ -274,28 +256,28 @@ export const vaultReadWrite = (): Promise<boolean> =>
             },
             {
               copyable: true,
-              label: "Reason",
+              label: 'Reason',
               style: whisper.Urgency.None,
               type: whisper.WhisperComponentType.ListPair,
               value: recallItem.reason_for_recall,
             },
             {
               copyable: true,
-              label: "Distribution",
+              label: 'Distribution',
               style: whisper.Urgency.None,
               type: whisper.WhisperComponentType.ListPair,
               value: recallItem.distribution_pattern,
             },
             {
               copyable: true,
-              label: "Quantity",
+              label: 'Quantity',
               style: whisper.Urgency.None,
               type: whisper.WhisperComponentType.ListPair,
               value: recallItem.product_quantity,
             },
             {
               copyable: true,
-              label: "Codes",
+              label: 'Codes',
               style: whisper.Urgency.None,
               type: whisper.WhisperComponentType.ListPair,
               value: recallItem.code_info,
@@ -305,7 +287,7 @@ export const vaultReadWrite = (): Promise<boolean> =>
 
         whisper.create(config);
       });
-  }); */
+  });
 
 /*
 export const hotkeyTest = (host: HostServices): Promise<boolean> =>

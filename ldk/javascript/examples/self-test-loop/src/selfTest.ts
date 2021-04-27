@@ -16,7 +16,7 @@ import {
   streamCursorPosition,
   testClickableWhisper,
   vaultReadWrite,
-  // testNetworkAndListComponents,
+  testNetworkAndListComponents,
 } from './tests';
 
 const testConfig: { [key: string]: any } = {
@@ -77,12 +77,12 @@ const testConfig: { [key: string]: any } = {
       10000,
       'Click the 5th option',
     ),
-    /* new LoopTest(
-      "Whispser Aptitude - Network and List Items",
+    new LoopTest(
+      'Whispser Aptitude - Network and List Items',
       testNetworkAndListComponents,
       5000,
-      "No action required"
-    ), */
+      'No action required',
+    ),
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
