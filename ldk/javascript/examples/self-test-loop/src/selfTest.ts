@@ -236,10 +236,6 @@ export default class SelfTestLoop {
     let allTests = [] as LoopTest[];
     // eslint-disable-next-line
     const clickableElements: any[] = [];
-    // eslint-disable-next-line
-    for (const config in testConfig) {
-      clickableElements.push();
-    }
     const keys = Object.keys(testConfig);
     for (let i = 0; i < keys.length; i += 1) {
       const group: TestGroup = testConfig[keys[i]];
