@@ -23,7 +23,7 @@ import {
   testClickableWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
-  queryFileDirectory,
+  queryDirectory,
   createAndDeleteFile,
   uiSearchTest,
   updateAndReadFile,
@@ -164,7 +164,7 @@ const testConfig: { [key: string]: any } = {
   file: new TestGroup('File Aptitude', [
     new LoopTest(
       'File Aptitude - Query File Directory',
-      queryFileDirectory,
+      queryDirectory,
       10000,
       'Querying root directory to look for "go.mod"...',
     ),
