@@ -56,6 +56,7 @@ jobs:
           mkdir typedoc-tmp
           cp -r ./node/docs typedoc-tmp/node
           cp -r ./javascript/docs typedoc-tmp/javascript
+          cp -r ./javascript/readme_assets typedoc-tmp/javascript
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
