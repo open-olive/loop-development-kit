@@ -7,26 +7,30 @@ import { LoopTest } from './testingFixtures/loopTest';
 import {
   activeWindowTest,
   allWindowTest,
+  buttonWhisper,
   charTest,
   charStreamTest,
   clipboardStream,
   clipboardWriteAndQuery,
   cursorPosition,
   hotkeyTest,
+  linkWhisper,
   listenActiveWindowTest,
   processStream,
   processQuery,
+  simpleFormWhisper,
   streamCursorPosition,
   testClickableWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
   queryDirectory,
   createAndDeleteFile,
+  uiSearchTest,
   updateAndReadFile,
   listenFile,
 } from './tests';
 
-const testConfig: { [key: string]: any } = {
+const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Cliboard Aptitude', [
     new LoopTest(
       'Clipboard Aptitude - Write And Query Test',
@@ -89,6 +93,14 @@ const testConfig: { [key: string]: any } = {
       'Streaming info on what processes are running on the computer...',
     ),
   ]),
+  ui: new TestGroup('UI Aptitude', [
+    new LoopTest(
+      'UI Aptitude - Listen Search',
+      uiSearchTest,
+      10000,
+      'Click the magnifying lens at the top of the panel and search "for life"',
+    ),
+  ]),
   vault: new TestGroup('Vault Aptitude', [
     new LoopTest(
       'Vault Aptitude - Write / Read from vault',
@@ -99,17 +111,35 @@ const testConfig: { [key: string]: any } = {
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
     new LoopTest(
-      'Whispser Aptitude - Clickable Links',
+      'Whispser Aptitude - Internal Links',
       testClickableWhisper,
       10000,
       'Click the 5th option',
     ),
-    /* new LoopTest(
+    new LoopTest(
+      'Whispser Aptitude - External Links',
+      linkWhisper,
+      10000,
+      'Click the link in the whisper',
+    ),
+    new LoopTest(
       'Whispser Aptitude - Network and List Items',
       testNetworkAndListComponents,
       5000,
       'No action required',
-    ), */
+    ),
+    new LoopTest(
+      'Whispser Aptitude - Button Whisper',
+      buttonWhisper,
+      10000,
+      'Click the 3rd button',
+    ),
+    new LoopTest(
+      'Whispser Aptitude - Simple Form Whisper',
+      simpleFormWhisper,
+      10000,
+      `Enter 'Stonks into the field`,
+    ),
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
@@ -259,26 +289,19 @@ const testConfig: { [key: string]: any } = {
 }; */
 
 export default class SelfTestLoop {
-  start() {
+  start(): void {
     console.log('Starting Self Test...');
     const hotkeys = {
-      key: '.',
-      modifiers: {
-        ctrl: true,
-      },
+      key: '/',
+      control: true,
     };
 
     try {
       this.openTestGroups();
       keyboard.listenHotkey(hotkeys, (pressed: boolean) => {
-        console.log('Hot Keys!!!');
-        console.log(pressed);
-        /* if (error) {
-            console.error('Something is wrong with the hotkey sensor');
-            console.error(error);
-          } else {
-            openTestGroups();
-          } */
+        if (pressed) {
+          this.openTestGroups();
+        }
       });
     } catch (e) {
       console.log('Error Streaming', 'error', e.toString());
@@ -287,6 +310,7 @@ export default class SelfTestLoop {
 
   openTestGroups(): void {
     let allTests = [] as LoopTest[];
+    // eslint-disable-next-line
     const clickableElements: any[] = [];
     // eslint-disable-next-line
     for (const config in testConfig) {
@@ -302,7 +326,7 @@ export default class SelfTestLoop {
           const suite = new TestSuite(group.getTests());
           suite.start().then(() => {
             console.log('🎉 Group Done!');
-            const prompt = whisper.create({
+            whisper.create({
               label: 'Testing Complete',
               onClose: () => {
                 console.log('');
@@ -333,7 +357,7 @@ export default class SelfTestLoop {
 
         suite.start().then(() => {
           console.info('🎉 Done!');
-          const prompt = whisper.create({
+          whisper.create({
             label: 'Testing Complete',
             onClose: () => {
               console.log('');

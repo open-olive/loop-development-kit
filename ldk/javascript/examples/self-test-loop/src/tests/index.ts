@@ -7,6 +7,7 @@ import {
   vault,
   whisper,
   window,
+  ui,
   filesystem,
 } from '@oliveai/ldk';
 
@@ -135,7 +136,7 @@ export const processStream = (): Promise<boolean> =>
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     whisper.create({
-      label: 'Markdown Options',
+      label: 'Internal Link Test',
       onClose: () => {
         console.debug('closed');
       },
@@ -408,7 +409,8 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       })
       .then((response: network.HTTPResponse) => {
         const { data } = response;
-        return network.decode(data);
+        const dataArray = new Uint8Array(data);
+        return network.decode(dataArray);
       })
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
@@ -457,11 +459,142 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
               type: whisper.WhisperComponentType.ListPair,
               value: recallItem.code_info,
             },
+            {
+              label: 'Expand',
+              open: false,
+              children: [
+                {
+                  copyable: true,
+                  label: 'Recall Type',
+                  style: whisper.Urgency.None,
+                  type: whisper.WhisperComponentType.ListPair,
+                  value: recallItem.voluntary_mandated,
+                },
+                {
+                  copyable: true,
+                  label: 'Product type',
+                  style: whisper.Urgency.None,
+                  type: whisper.WhisperComponentType.ListPair,
+                  value: recallItem.product_type,
+                },
+                {
+                  copyable: true,
+                  label: 'Classification',
+                  style: whisper.Urgency.None,
+                  type: whisper.WhisperComponentType.ListPair,
+                  value: recallItem.calssification,
+                },
+              ],
+              type: whisper.WhisperComponentType.CollapseBox,
+            },
           ],
         };
 
-        whisper.create(config);
+        whisper.create(config).then(() => {
+          setTimeout(() => {
+            resolve(true);
+          }, 2000);
+        });
       });
+  });
+
+export const buttonWhisper = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Button Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          body: 'Click the correct button',
+          type: whisper.WhisperComponentType.Markdown,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          children: [
+            {
+              label: `Don't click me`,
+              onClick: () => console.debug(`Why'd you do that?`),
+              type: whisper.WhisperComponentType.Button,
+            },
+            {
+              label: `Me neither`,
+              onClick: () => console.debug(`Why'd you do that?`),
+              type: whisper.WhisperComponentType.Button,
+            },
+            {
+              label: `Click me`,
+              onClick: () => resolve(true),
+              type: whisper.WhisperComponentType.Button,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+      ],
+    };
+
+    whisper.create(config);
+  });
+
+export const linkWhisper = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'External Link Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          body: 'Click the link below',
+          type: whisper.WhisperComponentType.Markdown,
+        },
+        {
+          type: whisper.WhisperComponentType.Link,
+          textAlign: whisper.TextAlign.Left,
+          href: 'https://www.google.com',
+          text: 'https://www.google.com',
+          style: whisper.Urgency.None,
+        },
+      ],
+    };
+
+    whisper.create(config).then(() => {
+      setTimeout(() => {
+        resolve(true);
+      }, 5000);
+    });
+  });
+
+// TODO: This requires a submit button at some point
+export const simpleFormWhisper = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Link Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          body: `Enter in 'Stonks' in the field`,
+          type: whisper.WhisperComponentType.Markdown,
+        },
+        {
+          label: `What can't you explain?`,
+          onChange: (value) => {
+            if (value === 'Stonks') {
+              resolve(true);
+            }
+          },
+          tooltip: 'Stonks?',
+          value: '',
+          type: whisper.WhisperComponentType.TextInput,
+        },
+      ],
+    };
+
+    whisper.create(config);
   });
 
 export const charTest = (): Promise<boolean> =>
@@ -497,26 +630,16 @@ export const hotkeyTest = (): Promise<boolean> =>
     });
   });
 
-/*
-
-export const confirmWhisper = (host: HostServices): Promise<boolean> =>
+export const uiSearchTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    host.whisper
-      .confirmWhisper({
-        rejectButton: "Don't Click me",
-        resolveButton: 'Click me',
-        markdown: 'Please click the correct button',
-        label: 'Test accept',
-      })
-      .promise()
-      .then(() => {
+    ui.listenSearchbar((value) => {
+      if (value.toLowerCase() === 'for life') {
         resolve(true);
-      })
-      .catch(() => {
-        reject(new Error('Button click was not correct'));
-      });
+      }
+    });
   });
 
+/*
 export const formWhisper = (host: HostServices): Promise<boolean> =>
   new Promise((resolve, reject) => {
     host.whisper.formWhisper(
@@ -581,126 +704,4 @@ export const formWhisper = (host: HostServices): Promise<boolean> =>
     );
   });
 
-export const networkAndListWhisper = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const now = moment();
-    const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[${now
-      .subtract(3, 'months')
-      .startOf('month')
-      .format('YYYYMMDD')}+TO+${now.endOf('month').format('YYYYMMDD')}]&limit=1`;
-
-    logger.debug('Network call succeeded, emmitting list whisper', url);
-
-    host.network
-      .httpRequest({
-        url,
-        method: 'GET',
-        body: '',
-      })
-      .then((response) => {
-        const { results } = JSON.parse(Buffer.from(response.data).toString('utf8'));
-        const [recallItem] = results;
-
-        const list = host.whisper.listWhisper({
-          label: 'Latest FDA Food Recall',
-          markdown: 'If this whisper works, it will disappear after 10 seconds',
-          elements: {
-            topMessage: {
-              align: WhisperListAlign.LEFT,
-              body: recallItem.product_description,
-              header: recallItem.recalling_firm,
-              order: 0,
-              style: WhisperListStyle.NONE,
-              type: 'message',
-            },
-            sectionDivider: {
-              order: 1,
-              type: 'divider',
-            },
-            reason: {
-              value: recallItem.reason_for_recall,
-              label: 'Reason',
-              order: 2,
-              type: 'pair',
-            },
-            distribution: {
-              value: recallItem.distribution_pattern,
-              label: 'Distribution',
-              order: 3,
-              type: 'pair',
-            },
-            quantity: {
-              value: recallItem.product_quantity,
-              label: 'Quantity',
-              order: 4,
-              type: 'pair',
-            },
-            codes: {
-              extra: true,
-              value: recallItem.code_info,
-              label: 'Codes',
-              order: 5,
-              type: 'pair',
-            },
-            id: {
-              extra: true,
-              value: recallItem.recall_number,
-              label: 'Recall number',
-              order: 6,
-              type: 'pair',
-            },
-            date: {
-              extra: true,
-              value: recallItem.recall_initiation_date,
-              label: 'Date initiated',
-              order: 7,
-              type: 'pair',
-            },
-            recallType: {
-              extra: true,
-              value: recallItem.voluntary_mandated,
-              label: 'Recall type',
-              order: 8,
-              type: 'pair',
-            },
-            type: {
-              extra: true,
-              value: recallItem.product_type,
-              label: 'Product type',
-              order: 9,
-              type: 'pair',
-            },
-            classification: {
-              extra: true,
-              value: recallItem.classification,
-              label: 'Classification',
-              order: 10,
-              type: 'pair',
-            },
-            address: {
-              extra: true,
-              value: `${recallItem.address_1} ${recallItem.address_2} ${recallItem.city}, ${recallItem.state} ${recallItem.postal_code} ${recallItem.country}`,
-              label: 'Company address',
-              order: 11,
-              type: 'pair',
-            },
-            link: {
-              align: WhisperListAlign.LEFT,
-              href: url,
-              order: 12,
-              style: WhisperListStyle.NONE,
-              text: 'Link to data',
-              type: 'link',
-            },
-          },
-        });
-        setTimeout(() => {
-          list.stop();
-          resolve(true);
-        }, 10000);
-      })
-      .catch((err) => {
-        reject(new Error(err));
-      });
-  });
   */

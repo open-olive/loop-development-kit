@@ -1,6 +1,6 @@
-import { keyboard, whisper } from "@oliveai/ldk";
+import { whisper } from '@oliveai/ldk';
 
-import { LoopTest } from "./loopTest";
+import { LoopTest } from './loopTest';
 
 export default class TestSuite {
   private tests: LoopTest[];
@@ -10,7 +10,9 @@ export default class TestSuite {
   }
 
   public async start(): Promise<boolean> {
+    // eslint-disable-next-line
     const elements: any[] = [];
+    // eslint-disable-next-line
     for await (const test of this.tests) {
       try {
         await test.runTest();
@@ -32,24 +34,22 @@ export default class TestSuite {
       }
     }
 
-    const hotkeys = {
-      key: "/",
-      modifiers: {
-        ctrl: true,
-      },
-    };
+    /* const hotkeys = {
+      key: '/',
+      control: true,
+    }; */
 
     whisper.create({
-      label: "Self Test Loop - Results",
+      label: 'Self Test Loop - Results',
       onClose: () => {
-        console.log("closed Results");
+        console.log('closed Results');
       },
       components: elements,
     });
     whisper.create({
-      label: "Self Test Loop - Results",
+      label: 'Self Test Loop - Results',
       onClose: () => {
-        console.log("closed Results");
+        console.log('closed Results');
       },
       components: [
         {
@@ -58,14 +58,11 @@ export default class TestSuite {
         },
       ],
     });
-    /* keyboard.keyboard.streamHotKey(hotkeys, (error, response) => {
-      if (error) {
-        // Do nothing
-      } else {
-        listWhisper.stop();
+    /* keyboard.listenHotkey(hotkeys, (pressed) => {
+
+      listWhisper.stop();
         markdown.stop();
         keyboard.stop();
-      }
     }); */
     return true;
   }
