@@ -1,37 +1,19 @@
-## LDK Development
+# LDK Development
 
-### Running from experimental branch
-
-To work with the Javascript LDK while we're in development, do the following:
-
-1. Run `npm i` inside this directory.
-2. Build the LDK (`npm run build`).
-3. Switch to the `experiment-goja` branch in the sidekick repo.
-4. Go to the `./experimentGoja/loopGoja` folder.
-5. If necessary, replace references to the `ldk` package inside the `loopGoja` folder to `@oliveai/ldk`.
-6. Replace the relative file reference in `./experimentGoja/loopGoja/package.json` to point to the location of the `ldk/javascript` folder in your local instance of the LDK repo. (`"@oliveai/ldk": "file:../../../../GitHub/loop-development-kit/ldk/javascript",`)
-7. Execute `npm i` to install the dependencies in the `./experimentGoja/loopGoja` folder.
-8. Run `npm run build` in the `./experimentGoja/loopGoja` folder.
-9. Run Sidekick from the code (`make run` for the first time or if you run into any bugs, `make run-internal` for subsequent executions).
-
+## New Loop: Getting Started
 ### Producing Loop Compilations
-
 We recommend using Webpack 5 to compile your Loop code for you. Our Webpack configuration includes support for Typescript, and generates the Loop metadata required for installation.
 
-Examples are provided in the `./ldk/javascript/tests/` directory.
-
-#### Using Our Configuration As-Is
-
+### Using Our Configuration As-Is
 Install Webpack 5 and its CLI, and add this build script to your `package.json`:
 
 ```shell
 webpack --entry core-js/fn/promise --entry ./index.js --config ./node_modules/@oliveai/ldk/dist/webpack/config.js
 ```
 
-This will use our configuration and compile the file to the `./dist/loop.js`.
+This will use the LDK webpack configuration and compile the file to the `./dist/loop.js` directory.
 
-#### Extending the Configuration
-
+### Extending the Configuration
 If you want to extend the Webpack configuration, create a webpack.config.js file and use `webpack-merge` to extend it:
 
 ```js
@@ -46,8 +28,32 @@ const merged = merge.merge(ldkConfig.default, {
 module.exports = merged;
 ```
 
-#### Guidelines and Warnings
+### Loop Examples
+Examples are provided in the `ldk/javascript/examples/` directory. These examples include more information about creating and building Loops.
 
+## Loading a Local Loop Into Olive Helps
+Once you have generated the Loop using the above steps into your `./dist/loop.js` directory, you can now load it into Olive Helps to test.
+
+- Open up Olive Helps and authenticate
+- Click "Loop Library"
+
+![loop library](./readme_assets/loop_library.png)
+
+- Click "Local Loops"
+
+![loop library](./readme_assets/local_loops.png)
+
+- Click "Install Local Loop"
+
+![loop library](./readme_assets/install_local_loop.png)
+
+- Fill out the required Loop data, and browse to your `./dist` directory via the "Local Directory" dialog
+
+![loop library](./readme_assets/local_loop_directory.png)
+
+You will see a toast within Olive Helps if your Loop was started.
+
+### Guidelines and Warnings
 * The Goja runtime is not the same thing as the Node runtime, and built-in Node modules (like `fs`, `path`) are not available.
 * You can install npm packages and use them in your code, however Webpack will not throw a compilation error if a package you import requires a Node built-in module. Instead it will generate an error at runtime.
 * Olive Helps expects that the compilation folder is empty besides the `loop.js` file.

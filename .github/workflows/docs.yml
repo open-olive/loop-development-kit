@@ -1,11 +1,10 @@
-name: Build and Deploy Documents
+name: Build and Deploy Node/Javascript Documents
 
 
 on:
   push:
     branches:
       - main
-      - SIDE-1196
 
 jobs:
   deploy-developer-hub:
@@ -28,25 +27,42 @@ jobs:
           publish_dir: ./docs/public
           force_orphan: true
           external_repository: open-olive/olive-helps
-  deploy-node:
-    defaults:
-      run:
-        working-directory: ldk/node
+  
+  deploy-gh-pages-docs:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - run: npm ci
-      - run: npm run build
-      - run: npm run doc
+
+      # Build node docs
+      - run: |
+          cd ./ldk/node
+          npm ci
+          npm run build
+          npm run doc
+
+      # Build javascript docs
+      - run: |
+          cd ./ldk/javascript
+          npm ci
+          npm run build
+          npm run doc
+
+      # Consolidate docs
+      - run: |
+          cd ./ldk
+          mkdir typedoc-tmp
+          cp -r ./node/docs typedoc-tmp/node
+          cp -r ./javascript/docs typedoc-tmp/javascript
+          cp -r ./javascript/readme_assets typedoc-tmp/javascript
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./ldk/node/docs
-          destination_dir: ldk/node
+          publish_dir: ./ldk/typedoc-tmp
+          destination_dir: ldk
           force_orphan: true
