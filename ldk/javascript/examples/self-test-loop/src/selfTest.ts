@@ -30,7 +30,7 @@ import {
   listenFile,
 } from './tests';
 
-const testConfig: { [key: string]: any } = {
+const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Cliboard Aptitude', [
     new LoopTest(
       'Clipboard Aptitude - Write And Query Test',
@@ -289,7 +289,7 @@ const testConfig: { [key: string]: any } = {
 }; */
 
 export default class SelfTestLoop {
-  start() {
+  start(): void {
     console.log('Starting Self Test...');
     const hotkeys = {
       key: '/',
@@ -310,6 +310,7 @@ export default class SelfTestLoop {
 
   openTestGroups(): void {
     let allTests = [] as LoopTest[];
+    // eslint-disable-next-line
     const clickableElements: any[] = [];
     // eslint-disable-next-line
     for (const config in testConfig) {
@@ -325,7 +326,7 @@ export default class SelfTestLoop {
           const suite = new TestSuite(group.getTests());
           suite.start().then(() => {
             console.log('🎉 Group Done!');
-            const prompt = whisper.create({
+            whisper.create({
               label: 'Testing Complete',
               onClose: () => {
                 console.log('');
@@ -356,7 +357,7 @@ export default class SelfTestLoop {
 
         suite.start().then(() => {
           console.info('🎉 Done!');
-          const prompt = whisper.create({
+          whisper.create({
             label: 'Testing Complete',
             onClose: () => {
               console.log('');

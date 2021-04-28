@@ -1,4 +1,4 @@
-import { keyboard, whisper } from '@oliveai/ldk';
+import { whisper } from '@oliveai/ldk';
 
 import { LoopTest } from './loopTest';
 
@@ -10,6 +10,7 @@ export default class TestSuite {
   }
 
   public async start(): Promise<boolean> {
+    // eslint-disable-next-line
     const elements: any[] = [];
     // eslint-disable-next-line
     for await (const test of this.tests) {
@@ -33,10 +34,10 @@ export default class TestSuite {
       }
     }
 
-    const hotkeys = {
+    /* const hotkeys = {
       key: '/',
       control: true,
-    };
+    }; */
 
     whisper.create({
       label: 'Self Test Loop - Results',
@@ -57,11 +58,12 @@ export default class TestSuite {
         },
       ],
     });
-    keyboard.listenHotkey(hotkeys, (pressed) => {
-      /* listWhisper.stop();
+    /* keyboard.listenHotkey(hotkeys, (pressed) => {
+
+      listWhisper.stop();
         markdown.stop();
-        keyboard.stop(); */
-    });
+        keyboard.stop();
+    }); */
     return true;
   }
 }

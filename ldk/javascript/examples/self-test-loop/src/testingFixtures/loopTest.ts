@@ -1,9 +1,9 @@
-import { whisper } from "@oliveai/ldk";
+import { whisper } from '@oliveai/ldk';
 
 export enum Status {
-  PASS = "pass",
-  FAIL = "fail",
-  NOT_STARTED = "not_started",
+  PASS = 'pass',
+  FAIL = 'fail',
+  NOT_STARTED = 'not_started',
 }
 
 export class LoopTest {
@@ -25,7 +25,7 @@ export class LoopTest {
     name: string,
     methodToExecute: () => Promise<boolean>,
     timeoutTime: number,
-    promptMarkdown: string
+    promptMarkdown: string,
   ) {
     this.id = name;
     this.methodToExecute = methodToExecute;
@@ -40,10 +40,10 @@ export class LoopTest {
       this.status = Status.PASS;
       console.log(`✅ PASS - ${this.id}`);
       return Promise.resolve(this.status);
-    } catch (error: any) {
+    } catch (error) {
       this.status = Status.FAIL;
       console.error(`💀 FAIL - ${this.id}`);
-      console.error(typeof error === "string" ? error : error.message);
+      console.error(typeof error === 'string' ? error : error.message);
       return Promise.reject(error);
     }
   }
@@ -54,7 +54,7 @@ export class LoopTest {
         whisper.create({
           label: this.id,
           onClose: () => {
-            console.log("closed prompt");
+            console.log('closed prompt');
           },
           components: [
             {
@@ -66,7 +66,7 @@ export class LoopTest {
 
         this.timeout = setTimeout(() => {
           // prompt.stop();
-          reject(new Error("Timeout - Too much time has passed"));
+          reject(new Error('Timeout - Too much time has passed'));
         }, this.timeoutTime);
         this.methodToExecute()
           .then((response) => {
