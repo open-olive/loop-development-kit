@@ -7,21 +7,25 @@ import { LoopTest } from './testingFixtures/loopTest';
 import {
   activeWindowTest,
   allWindowTest,
+  buttonWhisper,
   charTest,
   charStreamTest,
   clipboardStream,
   clipboardWriteAndQuery,
   cursorPosition,
   hotkeyTest,
+  linkWhisper,
   listenActiveWindowTest,
   processStream,
   processQuery,
+  simpleFormWhisper,
   streamCursorPosition,
   testClickableWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
   queryFileDirectory,
   createAndDeleteFile,
+  uiSearchTest,
   updateAndReadFile,
   listenFile,
 } from './tests';
@@ -89,6 +93,14 @@ const testConfig: { [key: string]: any } = {
       'Streaming info on what processes are running on the computer...',
     ),
   ]),
+  ui: new TestGroup('UI Aptitude', [
+    new LoopTest(
+      'UI Aptitude - Listen Search',
+      uiSearchTest,
+      10000,
+      'Click the magnifying lens at the top of the panel and search "for life"',
+    ),
+  ]),
   vault: new TestGroup('Vault Aptitude', [
     new LoopTest(
       'Vault Aptitude - Write / Read from vault',
@@ -99,17 +111,35 @@ const testConfig: { [key: string]: any } = {
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
     new LoopTest(
-      'Whispser Aptitude - Clickable Links',
+      'Whispser Aptitude - Internal Links',
       testClickableWhisper,
       10000,
       'Click the 5th option',
     ),
-    /* new LoopTest(
+    new LoopTest(
+      'Whispser Aptitude - External Links',
+      linkWhisper,
+      10000,
+      'Click the link in the whisper',
+    ),
+    new LoopTest(
       'Whispser Aptitude - Network and List Items',
       testNetworkAndListComponents,
       5000,
       'No action required',
-    ), */
+    ),
+    new LoopTest(
+      'Whispser Aptitude - Button Whisper',
+      buttonWhisper,
+      10000,
+      'Click the 3rd button',
+    ),
+    new LoopTest(
+      'Whispser Aptitude - Simple Form Whisper',
+      simpleFormWhisper,
+      10000,
+      `Enter 'Stonks into the field`,
+    ),
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
@@ -262,23 +292,16 @@ export default class SelfTestLoop {
   start() {
     console.log('Starting Self Test...');
     const hotkeys = {
-      key: '.',
-      modifiers: {
-        ctrl: true,
-      },
+      key: '/',
+      control: true,
     };
 
     try {
       this.openTestGroups();
       keyboard.listenHotkey(hotkeys, (pressed: boolean) => {
-        console.log('Hot Keys!!!');
-        console.log(pressed);
-        /* if (error) {
-            console.error('Something is wrong with the hotkey sensor');
-            console.error(error);
-          } else {
-            openTestGroups();
-          } */
+        if (pressed) {
+          this.openTestGroups();
+        }
       });
     } catch (e) {
       console.log('Error Streaming', 'error', e.toString());
