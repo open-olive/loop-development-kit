@@ -248,34 +248,59 @@ export const queryDirectory = (): Promise<boolean> =>
       });
   });
 
+function toUint8Array(array: Uint8Array) {
+  const buffer = new ArrayBuffer(array.length);
+  const newArray = new Uint8Array(buffer);
+  for (let i = 0; i < array.length; i += 1) {
+    newArray[i] = array[i];
+  }
+
+  return newArray;
+}
+
+// function getBytes(str: string) {
+//     let bytes: number[] = []; // char codes
+//     for (let i = 0; i < str.length; i+=1) {
+//       const code = str.charCodeAt(i);
+//       bytes = bytes.concat([code]);
+//     }
+
+//     return bytes;
+// }
+
 export const createAndDeleteFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test.txt';
     const writeMode = 0o755;
-    network.encode('some text').then((encodedText) => {
-      setTimeout(() => {
-        const newEncodedValue = new Uint8Array(encodedText);
-        filesystem
-          .writeFile(filePath, newEncodedValue, filesystem.WriteOperation.overwrite, writeMode)
-          .then(() => {
-            filesystem
-              .remove(filePath)
-              .then(() => {
-                setTimeout(() => {
-                  resolve(true);
-                }, 1500);
-              })
-              .catch((error) => {
-                setTimeout(() => {
-                  reject(error);
-                }, 1500);
-              });
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      }, 500);
-    });
+    network
+      .encode('some text')
+      .then((encodedValue) => {
+        setTimeout(() => {
+          filesystem
+            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .then(() => {
+              filesystem
+                .remove(filePath)
+                .then(() => {
+                  setTimeout(() => {
+                    resolve(true);
+                  }, 1500);
+                })
+                .catch((error) => {
+                  setTimeout(() => {
+                    reject(error);
+                  }, 1500);
+                });
+            })
+            .catch((error) => {
+              console.error('write file failed');
+              reject(error);
+            });
+        }, 500);
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 
 export const updateAndReadFile = (): Promise<boolean> =>
@@ -287,19 +312,19 @@ export const updateAndReadFile = (): Promise<boolean> =>
     setTimeout(() => {
       network
         .encode(testString)
-        .then((encodedText) => {
-          const newEncodedValue = new Uint8Array(encodedText);
+        .then((encodedValue) => {
+          // const newEncodedValue = toUint8Array(encodedValue);
           filesystem
-            .writeFile(filePath, newEncodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
             .then(() => {
               console.debug('Write successful');
-              console.debug(newEncodedValue);
+              console.debug(encodedValue);
 
               filesystem
                 .readFile(filePath)
-                .then((encodedValue) => {
+                .then((readEncodedValue) => {
                   network
-                    .decode(new Uint8Array(encodedValue))
+                    .decode(toUint8Array(readEncodedValue))
                     .then((decodedText) => {
                       console.debug(decodedText);
                       if (decodedText === testString) {
@@ -331,7 +356,7 @@ export const updateAndReadFile = (): Promise<boolean> =>
 
 export const listenFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const filePath = './test.txt';
+    const filePath = './test_listen.txt';
     const writeMode = 0o755;
     console.info('listening to file changes');
 
@@ -346,18 +371,19 @@ export const listenFile = (): Promise<boolean> =>
         }
       })
       .then(() => {
-        network.encode('some text').then((encodedText) => {
-          filesystem
-            .writeFile(
-              filePath,
-              new Uint8Array(encodedText),
-              filesystem.WriteOperation.overwrite,
-              writeMode,
-            )
-            .catch((error) => {
-              reject(error);
-            });
-        });
+        console.info('writing file we listen to');
+        network
+          .encode('some text')
+          .then((encodedValue) => {
+            filesystem
+              .writeFile(filePath, encodedValue, filesystem.WriteOperation.append, writeMode)
+              .catch((error) => {
+                reject(error);
+              });
+          })
+          .catch((error) => {
+            reject(error);
+          });
       })
       .catch((error) => {
         reject(error);
