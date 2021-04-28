@@ -16,6 +16,8 @@ import {
   hotkeyTest,
   linkWhisper,
   listenActiveWindowTest,
+  networkHTTP,
+  networkHTTPS,
   processStream,
   processQuery,
   simpleFormWhisper,
@@ -26,6 +28,7 @@ import {
   queryDirectory,
   createAndDeleteFile,
   uiSearchTest,
+  uiGlobalSearchTest,
   updateAndReadFile,
   listenFile,
 } from './tests';
@@ -79,6 +82,20 @@ const testConfig: { [key: string]: TestGroup } = {
       'Type the letter "F" to pay respects...and test the individual character test',
     ),
   ]),
+  network: new TestGroup('Network Aptitude', [
+    new LoopTest(
+      'Network Aptitude - HTTPS test',
+      networkHTTPS,
+      5000,
+      'Calling a public HTTPS API. Should succeed.',
+    ),
+    new LoopTest(
+      'Network Aptitude - HTTP test',
+      networkHTTP,
+      5000,
+      'Calling a public HTTP API. Should fail',
+    ),
+  ]),
   process: new TestGroup('Process Aptitude', [
     new LoopTest(
       'Process Aptitude - Query processes',
@@ -99,6 +116,12 @@ const testConfig: { [key: string]: TestGroup } = {
       uiSearchTest,
       10000,
       'Click the magnifying lens at the top of the panel and search "for life"',
+    ),
+    new LoopTest(
+      'UI Aptitude - Listen Global Search',
+      uiGlobalSearchTest,
+      10000,
+      'Press CMD + O and search "for meaning"',
     ),
   ]),
   vault: new TestGroup('Vault Aptitude', [
@@ -138,7 +161,7 @@ const testConfig: { [key: string]: TestGroup } = {
       'Whispser Aptitude - Simple Form Whisper',
       simpleFormWhisper,
       10000,
-      `Enter 'Stonks into the field`,
+      `Enter 'Stonks' into the field`,
     ),
   ]),
   window: new TestGroup('Window Aptitude', [
@@ -188,105 +211,6 @@ const testConfig: { [key: string]: TestGroup } = {
     ),
   ]),
 };
-
-/* import {
-  charTest,
-  charStreamTest,
-  clipboardStream,
-  windowTest,
-  clipboardWriteAndQuery,
-  confirmWhisper,
-  createAndDeleteFile,
-  cursorPosition,
-  disambiguationWhisper,
-  formWhisper,
-  hotkeyTest,
-  networkAndListWhisper,
-  processQuery,
-  queryFileDirectory,
-  vaultReadWrite,
-  streamCursorPosition,
-  streamFileInfo,
-  updateAndReadFile,
-} from './tests';
-
-const testConfig: { [key: string]: any } = {
-  window: new TestGroup('Window Aptitude', [
-    new LoopTest('Window Aptitude - Active Window Test', windowTest, 10000, 'Make window active...'),
-  ]),
-  file: new TestGroup('File Aptitude', [
-    new LoopTest(
-      'File Aptitude - Query File Directory',
-      queryFileDirectory,
-      10000,
-      'Querying root directory to look for "go.mod"...',
-    ),
-    new LoopTest(
-      'File Aptitude - Create and Delete File',
-      createAndDeleteFile,
-      10000,
-      'Trying to create then delete "test.txt"',
-    ),
-    new LoopTest(
-      'File Aptitude - Update and read a file',
-      updateAndReadFile,
-      15000,
-      'Trying to create, update, then read the text in "test.txt" before deleting',
-    ),
-    new LoopTest(
-      'File Aptitude - Stream File Info',
-      this.streamFileInfo,
-      10000,
-      'Monitoring for file changes...',
-    ),
-  ]),
-  keyboard: new TestGroup('Keyboard Aptitude', [
-    new LoopTest(
-      'Keyboard Aptitude - Hotkey Test',
-      hotkeyTest,
-      10000,
-      'Press Ctrl+A to test the hotkey functionality.',
-    ),
-    new LoopTest(
-      'Keyboard Aptitude - Char Stream Test',
-      charStreamTest,
-      10000,
-      'Type the word "Olive"',
-    ),
-    new LoopTest(
-      'Keyboard Aptitude - Char Test',
-      charTest,
-      10000,
-      'Type the letter "F" to pay respects...and test the individual character test',
-    ),
-  ]),
-  whispers: new TestGroup('Whisper Aptitude', [
-    new LoopTest(
-      'Whispser Aptitude - Confirm Whisper',
-      confirmWhisper,
-      10000,
-      'Click the resolve button',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Form Whisper',
-      formWhisper,
-      10000,
-      'Type in "Stonks" and submit',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - List Whisper',
-      networkAndListWhisper,
-      20000,
-      'Opening list whisper. In 10 seconds, this whisper will be dismissed',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Disambiguation Whisper',
-      disambiguationWhisper,
-      20000,
-      'Click the 3rd link',
-    ),
-  ]),
-}; */
 
 export default class SelfTestLoop {
   start(): void {

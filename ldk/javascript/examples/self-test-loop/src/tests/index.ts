@@ -346,11 +346,14 @@ export const listenFile = (): Promise<boolean> =>
         }
       })
       .then(() => {
-        network
-        .encode('some text')
-        .then((encodedText) => {
+        network.encode('some text').then((encodedText) => {
           filesystem
-            .writeFile(filePath, new Uint8Array(encodedText), filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile(
+              filePath,
+              new Uint8Array(encodedText),
+              filesystem.WriteOperation.overwrite,
+              writeMode,
+            )
             .catch((error) => {
               reject(error);
             });
@@ -365,12 +368,6 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
 
-    console.debug('Network call succeeded, emmitting list whisper', url);
-
-    setTimeout(() => {
-      resolve(true);
-    }, 5000);
-
     network
       .httpRequest({
         url,
@@ -379,6 +376,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
         body: new Uint8Array(),
       })
       .then((response: network.HTTPResponse) => {
+        console.debug('Network call succeeded, emmitting list whisper', url);
         const { data } = response;
         const dataArray = new Uint8Array(data);
         return network.decode(dataArray);
@@ -386,6 +384,10 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
         const [recallItem] = results;
+
+        setTimeout(() => {
+          resolve(true);
+        }, 5000);
 
         const config: whisper.NewWhisper = {
           label: 'Latest FDA Food Recall',
@@ -568,6 +570,51 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     whisper.create(config);
   });
 
+export const networkHTTPS = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
+
+    setTimeout(() => {
+      resolve(true);
+    }, 5000);
+
+    network
+      .httpRequest({
+        url,
+        method: 'GET',
+        headers: { x: ['x'] },
+        body: new Uint8Array(),
+      })
+      .then(() => {
+        resolve(true);
+      })
+      .catch((e) => {
+        reject(e);
+      });
+  });
+
+export const networkHTTP = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const url = `http://catalog.data.gov/api/3/`;
+    setTimeout(() => {
+      resolve(true);
+    }, 5000);
+
+    network
+      .httpRequest({
+        url,
+        method: 'GET',
+        headers: { x: ['x'] },
+        body: new Uint8Array(),
+      })
+      .then(() => {
+        reject(new Error('Should not have succeeded'));
+      })
+      .catch(() => {
+        resolve(true);
+      });
+  });
+
 export const charTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     keyboard.listenCharacter((char) => {
@@ -605,6 +652,15 @@ export const uiSearchTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     ui.listenSearchbar((value) => {
       if (value.toLowerCase() === 'for life') {
+        resolve(true);
+      }
+    });
+  });
+
+export const uiGlobalSearchTest = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    ui.listenGlobalSearch((value) => {
+      if (value.toLowerCase() === 'for meaning') {
         resolve(true);
       }
     });
