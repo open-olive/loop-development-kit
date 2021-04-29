@@ -1,5 +1,6 @@
 import * as clipboard from './clipboard';
 import * as cursor from './cursor';
+import * as environment from './environment';
 import * as filesystem from './filesystem';
 import * as keyboard from './keyboard';
 import * as network from './network';
@@ -12,8 +13,9 @@ import * as window from './window';
 /* eslint-disable */ // These are provided to validate that the aptitude object meets the interface contract.
 const _clipboard: clipboard.Clipboard = clipboard;
 const _cursor: cursor.Cursor = cursor;
-const _keyboard: keyboard.Keyboard = keyboard;
+const _environment: environment.Environment = environment;
 const _filesystem: filesystem.Filesystem = filesystem;
+const _keyboard: keyboard.Keyboard = keyboard;
 const _network: network.Network = network;
 const _process: process.Process = process;
 const _ui: ui.UI = ui;
@@ -25,6 +27,7 @@ const _window: window.Window = window;
 export {
     clipboard,
     cursor,
+    environment,
     filesystem,
     keyboard,
     network,

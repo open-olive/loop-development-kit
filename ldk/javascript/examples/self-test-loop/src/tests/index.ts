@@ -9,6 +9,7 @@ import {
   window,
   ui,
   filesystem,
+  environment,
 } from '@oliveai/ldk';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
@@ -227,6 +228,29 @@ export const vaultReadWrite = (): Promise<boolean> =>
         });
     });
   });
+
+export const environmentRead = (): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+        environment.read('PATH').then((value) => {
+            console.debug(`Environment variable PATH value: ${value}`);
+            if (!value) {
+                reject(new Error('Unable to read environment variable PATH'));
+                return;
+            }
+            resolve(true);
+        })
+    })
+
+export const environmentReadNonExistent = (): Promise<boolean> =>
+    new Promise((resolve, reject) => {
+        environment.read('THIS_VAR_DOES_NOT_EXIST').then((value) => {
+            if (value) {
+                reject(new Error('Missing environment variable value should have been empty'));
+                return;
+            }
+            resolve(true);
+        })
+    })
 
 export const queryDirectory = (): Promise<boolean> =>
   new Promise((resolve, reject) => {

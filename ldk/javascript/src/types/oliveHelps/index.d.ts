@@ -15,6 +15,11 @@ declare namespace OliveHelps {
     ui: UI;
     vault: Vault;
     window: Window;
+    environment: Environment;
+  }
+
+  interface Environment {
+    read(key: string, cb: (value: string) => void): void;
   }
 
   //-- Window

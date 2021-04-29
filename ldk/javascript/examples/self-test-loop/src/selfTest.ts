@@ -31,6 +31,8 @@ import {
   uiGlobalSearchTest,
   updateAndReadFile,
   listenFile,
+  environmentRead,
+  environmentReadNonExistent,
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -61,6 +63,20 @@ const testConfig: { [key: string]: TestGroup } = {
       10000,
       'Move your cursor around...',
     ),
+  ]),
+  environment: new TestGroup('Environment Aptitude', [
+      new LoopTest(
+          'Environment Aptitude - Read Test',
+          environmentRead,
+          10000,
+          'Reading the PATH environment variable...'
+      ),
+      new LoopTest(
+          'Environment Aptitude - Read Non-Existent Test',
+          environmentReadNonExistent,
+          10000,
+          'Reading a non-existent environment variable and checking for failure...'
+      )
   ]),
   keyboard: new TestGroup('Keyboard Aptitude', [
     new LoopTest(
