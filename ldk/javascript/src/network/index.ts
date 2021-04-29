@@ -3,6 +3,8 @@ import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 /**
  * The HTTP Request configuration.
  */
+import { promisifyWithParam } from '../promisify';
+
 export interface HTTPRequest {
   body: Uint8Array;
   headers: Record<string, string[]>;
@@ -41,7 +43,7 @@ export interface Network {
 
   /**
    * Encoding provided text
-   * 
+   *
    * @param text - Specified text to encode
    * @returns A promise resolving with the encoded Uint8Array
    */
@@ -49,24 +51,15 @@ export interface Network {
 
   /**
    * Decoding provided value
-   * 
+   *
    * @param encodedValue - Specified encoded value to decode
    * @returns A promise resolving with the decoded text
    */
   decode(encodedValue: Uint8Array, encoding: string): Promise<string>;
 }
 
-export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  return new Promise<HTTPResponse>((resolve, reject) => {
-    try {
-      oliveHelps.network.httpRequest(request, (val: HTTPResponse) => {
-        resolve(val);
-      });
-    } catch (e) {
-      console.log(e);
-      reject(e);
-    }
-  });
+export function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
+  return promisifyWithParam(req, oliveHelps.network.httpRequest);
 }
 
 export function encode(text: string): Promise<Uint8Array> {

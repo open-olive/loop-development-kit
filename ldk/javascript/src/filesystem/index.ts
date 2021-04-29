@@ -1,7 +1,15 @@
 /**
  * An object containing file data.
  */
- export interface FileInfo {
+import {
+  promisifyListenableWithParam,
+  promisifyWithFourParams,
+  promisifyWithParam,
+  promisifyWithTwoParams,
+} from '../promisify';
+import { Cancellable } from '../cancellable';
+
+export interface FileInfo {
   /**
    * The file name, not including path.
    */
@@ -23,7 +31,7 @@
    */
   isDir: boolean;
 }
-  
+
 /**
  * An object representing an action and the file details which action were applied to.
  */
@@ -44,6 +52,25 @@ export enum WriteOperation {
  * Represents file mode and permission bits
  */
 export type WriteMode = number;
+
+export interface WriteFileParams {
+  /**
+   * path to the file location to be written
+   */
+  path: string;
+  /**
+   * byte array data
+   */
+  data: Uint8Array;
+  /**
+   * indicates if file should be overwritten or appended with the provided data
+   */
+  writeOperation: WriteOperation;
+  /**
+   * file mode and permission bits
+   */
+  writeMode: WriteMode;
+}
 
 /**
  * The FileSystem interfaces provides access to the ability to read, write, delete files.
@@ -74,15 +101,15 @@ export interface Filesystem {
    * @param path - path of directory to listen.
    * @param callback - the callback function that's called when a file in the directory changes.
    */
-  listenDir(path: string, callback: (fileEvent: FileEvent) => void): void;
+  listenDir(path: string, callback: (fileEvent: FileEvent) => void): Promise<Cancellable>;
 
   /**
    * Listen changes to a specific file.
    *
-   * @param Path - path of file to listen.
+   * @param path - path of file to listen.
    * @param callback - the callback function called when the file changes.
    */
-  listenFile(path: string, callback: (fileEvent: FileEvent) => void): void;
+  listenFile(path: string, callback: (fileEvent: FileEvent) => void): Promise<Cancellable>;
 
   /**
    * Makes a directory at the specified location.
@@ -118,23 +145,14 @@ export interface Filesystem {
 
   /**
    * Writes (overwrites or appends) data to the specified file with specific permissions. New file will be created if file not exist
-   * @param path - path to the file location to be written
-   * @param data - byte array data
-   * @param writeOperation - indicates if file shold be ovewritten or appended with the provided data
-   * @param writeMode - file mode and permission bits
    */
-  writeFile(
-    path: string,
-    data: Uint8Array,
-    writeOperation: WriteOperation,
-    writeMode: WriteMode,
-  ): Promise<void>;
+  writeFile(params: WriteFileParams): Promise<void>;
 
   /**
-   * Join joins an array of path elements into a single path, separating them with an OS specific Separator. 
-   * Empty elements are ignored. The result is Cleaned. However, if the argument list is empty or all its elements are empty, 
+   * Join joins an array of path elements into a single path, separating them with an OS specific Separator.
+   * Empty elements are ignored. The result is Cleaned. However, if the argument list is empty or all its elements are empty,
    * Join returns an empty string. On Windows, the result will only be a UNC path if the first non-empty element is a UNC path.
-   * 
+   *
    * @param segments - an array of path segments to join
    * @returns - a single path seperated with an OS specific Separator
    */
@@ -142,138 +160,66 @@ export interface Filesystem {
 }
 
 export function copy(source: string, destination: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.copy(source, destination, () => resolve());
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithTwoParams(source, destination, oliveHelps.filesystem.copy);
 }
 
 export function dir(path: string): Promise<FileInfo[]> {
-  return new Promise<FileInfo[]>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.dir(path, (fileInfo: FileInfo[]) => resolve(fileInfo));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(path, oliveHelps.filesystem.dir);
 }
 
 export function exists(path: string): Promise<boolean> {
-  return new Promise<boolean>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.exists(path, (result: boolean) => resolve(result));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(path, oliveHelps.filesystem.exists);
 }
 
-export function listenDir(path: string, callback: (fileEvent: FileEvent) => void): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.listenDir(path, callback);
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });  
+export function listenDir(
+  path: string,
+  callback: (fileEvent: FileEvent) => void,
+): Promise<Cancellable> {
+  return promisifyListenableWithParam(path, callback, oliveHelps.filesystem.listenDir);
 }
 
-export function listenFile(path: string, callback: (fileEvent: FileEvent) => void): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.listenFile(path, callback);
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+export function listenFile(
+  path: string,
+  callback: (fileEvent: FileEvent) => void,
+): Promise<Cancellable> {
+  return promisifyListenableWithParam(path, callback, oliveHelps.filesystem.listenFile);
 }
 
 export function makeDir(destination: string, writeMode: WriteMode): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.makeDir(destination, writeMode, () => resolve());
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithTwoParams(destination, writeMode, oliveHelps.filesystem.makeDir);
 }
 
 export function move(source: string, destination: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.move(source, destination, () => resolve());
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithTwoParams(source, destination, oliveHelps.filesystem.move);
 }
 
 export function readFile(path: string): Promise<Uint8Array> {
-  return new Promise<Uint8Array>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.readFile(path, (data: Uint8Array) => resolve(data));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(path, oliveHelps.filesystem.readFile);
 }
 
 export function remove(source: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.remove(source, () => resolve());
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(source, oliveHelps.filesystem.remove);
 }
 
 export function stat(path: string): Promise<FileInfo> {
-  return new Promise<FileInfo>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.stat(path, (fileInfo) => resolve(fileInfo));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(path, oliveHelps.filesystem.stat);
 }
 
-export function writeFile(
-  path: string,
-  data: Uint8Array,
-  writeOperation: WriteOperation,
-  writeMode: WriteMode,
-): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.writeFile(path, data, writeOperation, writeMode, () => resolve());
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+export function writeFile({
+  path,
+  data,
+  writeOperation,
+  writeMode,
+}: WriteFileParams): Promise<void> {
+  return promisifyWithFourParams(
+    path,
+    data,
+    writeOperation,
+    writeMode,
+    oliveHelps.filesystem.writeFile,
+  );
 }
 
 export function join(segments: string[]): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    try {
-      oliveHelps.filesystem.join(segments, (path: string) => resolve(path));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(segments, oliveHelps.filesystem.join);
 }

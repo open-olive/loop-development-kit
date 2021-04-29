@@ -1,6 +1,6 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 import { mocked } from 'ts-jest/utils';
-import * as network from '.'
+import * as network from '.';
 
 jest.mock('text-encoding-shim');
 
