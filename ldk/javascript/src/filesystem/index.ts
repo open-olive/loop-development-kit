@@ -1,7 +1,7 @@
 /**
  * An object containing file data.
  */
- export interface FileInfo {
+export interface FileInfo {
   /**
    * The file name, not including path.
    */
@@ -23,7 +23,7 @@
    */
   isDir: boolean;
 }
-  
+
 /**
  * An object representing an action and the file details which action were applied to.
  */
@@ -131,10 +131,10 @@ export interface Filesystem {
   ): Promise<void>;
 
   /**
-   * Join joins an array of path elements into a single path, separating them with an OS specific Separator. 
-   * Empty elements are ignored. The result is Cleaned. However, if the argument list is empty or all its elements are empty, 
+   * Join joins an array of path elements into a single path, separating them with an OS specific Separator.
+   * Empty elements are ignored. The result is Cleaned. However, if the argument list is empty or all its elements are empty,
    * Join returns an empty string. On Windows, the result will only be a UNC path if the first non-empty element is a UNC path.
-   * 
+   *
    * @param segments - an array of path segments to join
    * @returns - a single path seperated with an OS specific Separator
    */
@@ -182,7 +182,7 @@ export function listenDir(path: string, callback: (fileEvent: FileEvent) => void
       console.log(error);
       reject(error);
     }
-  });  
+  });
 }
 
 export function listenFile(path: string, callback: (fileEvent: FileEvent) => void): Promise<void> {
