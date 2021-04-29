@@ -11,8 +11,8 @@
   "license": "ISC",
   "ldk": {
     "permissions": {
-      "urlPermissions": ["*.google.com", "https://www.typescriptlang.org/*", "https://jsonplaceholder.typicode.com/todos"],
-      "filesystemPermissions": ["/tmp", ""],
+      "urlPermissions": ["*.google.com", "github.com", "en.wikipedia.org"],
+      "filesystemPermissions": ["/tmp", "/Users/ldkuser/Desktop/*"],
       "aptitudePermissions": ["clipboard", "keyboard", "whisper"]
     }
   },

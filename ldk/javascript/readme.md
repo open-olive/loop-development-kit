@@ -45,7 +45,7 @@ Permissions are declared inside of the Loop `package.json` within a `permissions
 Any domain URL reference. Supports domain wildcards.
 | Examples | | |
 ----------- | ----------- | -----------  
-| "*.google.com" | "https://github.com/" | "en.wikipedia.org" |
+| "*.google.com" | "github.com/" | "en.wikipedia.org" |
 <br>
 
 #### Filesystem Permission:
