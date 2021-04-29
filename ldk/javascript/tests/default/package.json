@@ -9,6 +9,11 @@
   },
   "author": "",
   "license": "ISC",
+  "permissions": {
+    "urlPermissions": ["google.com/*", "https://www.typescriptlang.org/*", "https://jsonplaceholder.typicode.com/todos"],
+    "filesystemPermissions": ["/tmp", ""],
+    "aptitudePermissions": ["clipboard", "keyboard", "whisper"]
+  },
   "dependencies": {
     "@oliveai/ldk": "file:../..",
     "webpack": "^5.32.0",

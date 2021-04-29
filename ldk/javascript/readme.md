@@ -28,6 +28,43 @@ const merged = merge.merge(ldkConfig.default, {
 module.exports = merged;
 ```
 
+### Loop Permissions
+In order to ensure your Loop is executing in a secure manner, you must declare which network URLs, file system paths, and aptitudes your Loop will use.
+
+Permissions are declared inside of the Loop `package.json` within a `permissions` json object.
+
+```json
+  "permissions": {
+    "urlPermissions": ["google.com/*"],
+    "filesystemPermissions": ["/tmp"],
+    "aptitudePermissions": ["clipboard"]
+   }
+```
+
+#### URL Permission:
+Any domain URL reference. Supports domain wildcards.
+| Examples | | |
+----------- | ----------- | -----------  
+| "http://www.google.com" | "google.com" | "google.com/*" |
+<br>
+
+#### Filesystem Permission:
+Any filesystem path. Supports domain wildcards.
+| Examples  ||
+|-----------|---------|
+| "/tmp" | "/Users/ldkuser/Desktop/*" |
+<br>
+
+#### Aptitude Permission:
+An Aptitude Name.
+| Options |||
+|-----------|---------| --------- |
+| "clipboard" | "cursor" | "filesystem" |
+| "keyboard" | "network" | "process" |
+| "ui" | "vault" | "whisper" |
+| "window" |
+<br>
+
 ### Loop Examples
 Examples are provided in the `ldk/javascript/examples/` directory. These examples include more information about creating and building Loops.
 

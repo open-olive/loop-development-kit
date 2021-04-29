@@ -3,6 +3,8 @@ import * as path from 'path';
 import Terser from 'terser-webpack-plugin';
 import { generateBanner } from './generate-banner';
 
+const loopPackage = require(path.join(process.cwd(), '/package.json'));
+
 const config: webpack.Configuration = {
   entry: ['core-js/fn/promise'],
   target: ['web', 'es5'],
@@ -13,9 +15,9 @@ const config: webpack.Configuration = {
   mode: 'production',
   plugins: [
     new webpack.BannerPlugin({
-      banner: generateBanner(),
+      banner: generateBanner(loopPackage),
       raw: true
-    }),
+    })
   ],
   optimization: {
     minimize: true,
