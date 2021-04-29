@@ -34,11 +34,13 @@ In order to ensure your Loop is executing in a secure manner, you must declare w
 Permissions are declared inside of the Loop `package.json` within a `permissions` json object.
 
 ```json
+"ldk": {
   "permissions": {
-    "urlPermissions": ["google.com/*"],
-    "filesystemPermissions": ["/tmp"],
-    "aptitudePermissions": ["clipboard"]
-   }
+    "urlPermissions": ["*.google.com", "github.com", "en.wikipedia.org"],
+    "filesystemPermissions": ["/tmp", "/Users/ldkuser/Desktop/*"],
+    "aptitudePermissions": ["clipboard", "keyboard", "whisper"]
+  }
+ },
 ```
 
 #### URL Permission:
