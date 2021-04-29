@@ -403,9 +403,9 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
-        const { data } = response;
-        const dataArray = new Uint8Array(data);
-        return network.decode(dataArray);
+        const { body } = response;
+        const bodyArray = new Uint8Array(body);
+        return network.decode(bodyArray);
       })
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
@@ -601,18 +601,20 @@ export const networkHTTPS = (): Promise<boolean> =>
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
 
     setTimeout(() => {
-      resolve(true);
+      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);
 
     network
       .httpRequest({
         url,
         method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
       })
-      .then(() => {
+      .then((response: network.HTTPResponse) => {
+        if (response.statusCode === 200) {
         resolve(true);
+        } else {
+          reject(new Error('Network http request failed with code: ' + response.statusCode));
+        }
       })
       .catch((e) => {
         reject(e);
@@ -623,15 +625,13 @@ export const networkHTTP = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `http://catalog.data.gov/api/3/`;
     setTimeout(() => {
-      resolve(true);
+      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);
 
     network
       .httpRequest({
         url,
         method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
       })
       .then(() => {
         reject(new Error('Should not have succeeded'));

@@ -4,8 +4,8 @@ import { TextEncoder, TextDecoder } from 'text-encoding-shim';
  * The HTTP Request configuration.
  */
 export interface HTTPRequest {
-  body: Uint8Array;
-  headers: Record<string, string[]>;
+  body?: Uint8Array;
+  headers?: Record<string, string[]>;
   method: string;
   url: string;
 }
@@ -23,7 +23,7 @@ export interface HTTPResponse {
    * var string = new TextDecoder("utf-8").decode(uint8array);
    * ```
    */
-  data: Uint8Array;
+  body: Uint8Array;
   headers: Record<string, string[]>;
 }
 
