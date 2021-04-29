@@ -1,6 +1,6 @@
 import { LoopPermissions } from './loop-permissions';
 
-function isPermissionDefined(permission: string[]): boolean {
+function isPermissionUndefined(permission: string[]): boolean {
   if (permission.length === 0 || 
       permission === undefined) {
     return true;
@@ -9,7 +9,7 @@ function isPermissionDefined(permission: string[]): boolean {
 }
 
 function buildUrlPermissions(permissions: LoopPermissions): string {
-  if (isPermissionDefined(permissions.urlPermissions)) {
+  if (isPermissionUndefined(permissions.urlPermissions)) {
     throw new Error("No permission declaration found for URLs. Add Loop permissions for URLs.");
   } else {
     return permissions.urlPermissions.toString();
@@ -17,7 +17,7 @@ function buildUrlPermissions(permissions: LoopPermissions): string {
 }
 
 function buildFilesystemPermissions(permissions: LoopPermissions): string {
-  if (isPermissionDefined(permissions.filesystemPermissions)) {
+  if (isPermissionUndefined(permissions.filesystemPermissions)) {
     throw new Error("No permission declaration found for filesystem. Add Loop mermissions for Filesystem.");
   } else {
     return permissions.filesystemPermissions.toString();
@@ -25,11 +25,7 @@ function buildFilesystemPermissions(permissions: LoopPermissions): string {
 }
 
 function buildAptitudePermissions(permissions: LoopPermissions): string {
-  if (isPermissionDefined(permissions.aptitudePermissions)) {
-    throw new Error("No permission declaration found for aptitudes. Add Loop mermissions for aptitudes.");
-  } else {
     return permissions.aptitudePermissions.toString();
-  } 
 }
 
 export function generateMetadata(loopPackage: LoopPermissions): string {
@@ -44,10 +40,10 @@ export function generateMetadata(loopPackage: LoopPermissions): string {
 
 export function generateBanner(loopPackage: LoopPermissions): string {
   return `
-  /*
-  ---BEGIN-LOOP-JSON-BASE64---
-  ${generateMetadata(loopPackage)}
-  ---END-LOOP-JSON-BASE64---
-  */
- `;
+/*
+---BEGIN-LOOP-JSON-BASE64---
+${generateMetadata(loopPackage)}
+---END-LOOP-JSON-BASE64---
+*/
+`;
 }
