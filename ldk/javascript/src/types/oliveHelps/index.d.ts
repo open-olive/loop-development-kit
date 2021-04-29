@@ -115,7 +115,7 @@ declare namespace OliveHelps {
 
   interface HTTPResponse {
     statusCode: number;
-    data: Uint8Array;
+    data: ArrayBuffer;
     headers: Record<string, string[]>;
   }
 
@@ -396,7 +396,7 @@ declare namespace OliveHelps {
 
     move(source: string, destination: string, callback: () => void): void;
 
-    readFile(path: string, callback: (data: Uint8Array) => void): void;
+    readFile(path: string, callback: (data: ArrayBuffer) => void): void;
 
     remove(path: string, callback: () => void): void;
 

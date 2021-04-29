@@ -18,9 +18,7 @@ export interface HTTPResponse {
   /**
    * The HTTP response as a byte array. To decode into a UTF-8 string you can:
    * ```
-   * import * as util from 'util';
-   * ...
-   * var string = new TextDecoder("utf-8").decode(uint8array);
+   let decodedText = network.decode(data);
    * ```
    */
   data: Uint8Array;
@@ -59,8 +57,12 @@ export interface Network {
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
   return new Promise<HTTPResponse>((resolve, reject) => {
     try {
-      oliveHelps.network.httpRequest(request, (val: HTTPResponse) => {
-        resolve(val);
+      oliveHelps.network.httpRequest(request, (val: OliveHelps.HTTPResponse) => {
+        resolve({
+          statusCode: val.statusCode,
+          data: new Uint8Array(val.data),
+          headers: val.headers,
+        });
       });
     } catch (e) {
       console.log(e);

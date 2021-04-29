@@ -221,7 +221,7 @@ export function move(source: string, destination: string): Promise<void> {
 export function readFile(path: string): Promise<Uint8Array> {
   return new Promise<Uint8Array>((resolve, reject) => {
     try {
-      oliveHelps.filesystem.readFile(path, (data: Uint8Array) => resolve(data));
+      oliveHelps.filesystem.readFile(path, (data: ArrayBuffer) => resolve(new Uint8Array(data)));
     } catch (error) {
       console.log(error);
       reject(error);
