@@ -11,9 +11,18 @@
   "license": "ISC",
   "ldk": {
     "permissions": {
-      "url": ["*.google.com", "github.com", "en.wikipedia.org"],
-      "filesystem": ["/tmp", "/Users/ldkuser/Desktop/*"],
-      "aptitude": ["clipboard", "keyboard", "whisper"]
+      "clipboard": { "reason": "To monitor the users clipboard" },
+      "filesystem": {
+        "pathGlobs": [
+          { "value": "/some/path/something.txt", "reason": "To read the shared file" }
+        ]
+      },
+      "network": {
+        "urlDomains": [
+          { "value": "*.google.com", "reason": "For Google searches" }
+        ]
+      },
+      "window": { "reason": "To monitor users window activity" }
     }
   },
   "dependencies": {
