@@ -31,16 +31,16 @@ module.exports = merged;
 ### Loop Permissions
 In order to ensure your Loop is executing in a secure manner, you must declare which network URLs, file system paths, and aptitudes your Loop will use.
 
-Permissions are declared inside of the Loop `package.json` within a `permissions` json object.
+Permissions are declared inside of the Loop `package.json` within a `ldk/permissions` json object.
 
 ```json
 "ldk": {
   "permissions": {
-    "urlPermissions": ["*.google.com", "github.com", "en.wikipedia.org"],
-    "filesystemPermissions": ["/tmp", "/Users/ldkuser/Desktop/*"],
-    "aptitudePermissions": ["clipboard", "keyboard", "whisper"]
+    "url": ["*.google.com", "github.com", "en.wikipedia.org"],
+    "filesystem": ["/tmp", "/Users/ldkuser/Desktop/*"],
+    "aptitude": ["clipboard", "keyboard", "whisper"]
   }
- },
+},
 ```
 
 #### URL Permission:
@@ -51,7 +51,7 @@ Any domain URL reference. Supports domain wildcards.
 <br>
 
 #### Filesystem Permission:
-Any filesystem path. Supports domain wildcards.
+Any filesystem path. Supports path wildcards.
 | Examples  ||
 |-----------|---------|
 | "/tmp" | "/Users/ldkuser/Desktop/*" |

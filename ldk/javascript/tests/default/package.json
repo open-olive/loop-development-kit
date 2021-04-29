@@ -11,9 +11,9 @@
   "license": "ISC",
   "ldk": {
     "permissions": {
-      "urlPermissions": ["*.google.com", "github.com", "en.wikipedia.org"],
-      "filesystemPermissions": ["/tmp", "/Users/ldkuser/Desktop/*"],
-      "aptitudePermissions": ["clipboard", "keyboard", "whisper"]
+      "url": ["*.google.com", "github.com", "en.wikipedia.org"],
+      "filesystem": ["/tmp", "/Users/ldkuser/Desktop/*"],
+      "aptitude": ["clipboard", "keyboard", "whisper"]
     }
   },
   "dependencies": {

@@ -1,48 +1,50 @@
-import { LoopPermissions } from './loop-permissions';
+import { LdkPermissions, LdkSettings } from './ldk-settings';
 
 function isPermissionUndefined(permission: string[]): boolean {
-  if (permission.length === 0 || 
-      permission === undefined) {
+  if (permission === undefined || 
+      permission.length === 0 ) {
     return true;
   } 
   return false;
 }
 
-function buildUrlPermissions(permissions: LoopPermissions): string {
-  if (isPermissionUndefined(permissions.urlPermissions)) {
+function buildUrlPermissions(ldkPermissions: LdkPermissions): string[] {
+  if (isPermissionUndefined(ldkPermissions.url)) {
     throw new Error("No permission declaration found for URLs. Add Loop permissions for URLs.");
   } else {
-    return permissions.urlPermissions.toString();
+    return ldkPermissions.url;
   }
 }
 
-function buildFilesystemPermissions(permissions: LoopPermissions): string {
-  if (isPermissionUndefined(permissions.filesystemPermissions)) {
-    throw new Error("No permission declaration found for filesystem. Add Loop mermissions for Filesystem.");
+function buildFilesystemPermissions(ldkPermissions: LdkPermissions): string[] {
+  if (isPermissionUndefined(ldkPermissions.filesystem)) {
+    throw new Error("No permission declaration found for filesystem. Add Loop permissions for Filesystem.");
   } else {
-    return permissions.filesystemPermissions.toString();
+    return ldkPermissions.filesystem;
   }
 }
 
-function buildAptitudePermissions(permissions: LoopPermissions): string {
-    return permissions.aptitudePermissions.toString();
+function buildAptitudePermissions(permissions: LdkPermissions): string[] {
+    return permissions.aptitude;
 }
 
-export function generateMetadata(loopPackage: LoopPermissions): string {
+export function generateMetadata(ldkSettings: LdkSettings): string {
   const json = JSON.stringify({
     ldkVersion: '0.1.0',
-    urlPermissions: buildUrlPermissions(loopPackage),
-    filesystemPermissions: buildFilesystemPermissions(loopPackage),
-    aptitudePermissions: buildAptitudePermissions(loopPackage)
+    permissions: {
+      urlPermissions: buildUrlPermissions(ldkSettings.ldk.permissions),
+      filesystemPermissions: buildFilesystemPermissions(ldkSettings.ldk.permissions),
+      aptitudePermissions: buildAptitudePermissions(ldkSettings.ldk.permissions)
+    },
   });
   return Buffer.from(json).toString('base64');
 }
 
-export function generateBanner(loopPackage: LoopPermissions): string {
+export function generateBanner(ldkSettings: LdkSettings): string {
   return `
 /*
 ---BEGIN-LOOP-JSON-BASE64---
-${generateMetadata(loopPackage)}
+${generateMetadata(ldkSettings)}
 ---END-LOOP-JSON-BASE64---
 */
 `;

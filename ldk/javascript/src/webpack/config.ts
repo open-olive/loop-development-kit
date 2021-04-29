@@ -2,11 +2,10 @@ import * as webpack from 'webpack';
 import * as path from 'path';
 import Terser from 'terser-webpack-plugin';
 import { generateBanner } from './generate-banner';
-import { LoopPermissions } from './loop-permissions';
+import { LdkSettings } from './ldk-settings';
 
 /* eslint-disable-next-line */ // Need to dynamically refer to Loop's package.json
-const loopPackage = require(path.join(process.cwd(), '/package.json'));
-const loopPermissions = Object.assign(new LoopPermissions(), loopPackage.permissions)
+const ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
 
 const config: webpack.Configuration = {
   entry: ['core-js/fn/promise'],
@@ -18,7 +17,7 @@ const config: webpack.Configuration = {
   mode: 'production',
   plugins: [
     new webpack.BannerPlugin({
-      banner: generateBanner(loopPermissions),
+      banner: generateBanner(ldkSettings),
       raw: true
     })
   ],
