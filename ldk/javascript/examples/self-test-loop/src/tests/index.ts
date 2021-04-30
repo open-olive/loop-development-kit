@@ -382,8 +382,8 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
-        const { data } = response;
-        return network.decode(data);
+        const { body } = response;
+        return network.decode(body);
       })
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
