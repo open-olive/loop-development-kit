@@ -8,10 +8,9 @@ import * as process from './process';
 import * as ui from './ui';
 import * as vault from './vault';
 import * as whisper from './whisper';
-import * as window from './window';
+import * as window from './window'; // These are provided to validate that the aptitude object meets the interface contract.
 
-/* eslint-disable */ // These are provided to validate that the aptitude object meets the interface contract.
-const _clipboard: clipboard.Clipboard = clipboard;
+/* eslint-disable */ const _clipboard: clipboard.Clipboard = clipboard;
 const _cursor: cursor.Cursor = cursor;
 const _environment: environment.Environment = environment;
 const _filesystem: filesystem.Filesystem = filesystem;

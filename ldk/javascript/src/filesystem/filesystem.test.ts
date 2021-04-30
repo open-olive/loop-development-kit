@@ -111,7 +111,11 @@ describe('Filesystem', () => {
 
       filesystem.listenDir(path, callback);
 
-      expect(oliveHelps.filesystem.listenDir).toHaveBeenCalledWith(path, callback);
+      expect(oliveHelps.filesystem.listenDir).toHaveBeenCalledWith(
+        path,
+        callback,
+        expect.any(Function),
+      );
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -133,7 +137,11 @@ describe('Filesystem', () => {
 
       filesystem.listenFile(path, callback);
 
-      expect(oliveHelps.filesystem.listenFile).toHaveBeenCalledWith(path, callback);
+      expect(oliveHelps.filesystem.listenFile).toHaveBeenCalledWith(
+        path,
+        callback,
+        expect.any(Function),
+      );
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -209,14 +217,14 @@ describe('Filesystem', () => {
   describe('readFile', () => {
     it('returns a promise result with expected array', () => {
       const path = 'path';
-      const expected = new Uint8Array([84]);
+      const expected = new Uint8Array([84, 102]);
       mocked(oliveHelps.filesystem.readFile).mockImplementation((_path, callback) =>
-        callback(expected),
+        callback(expected.buffer),
       );
 
       const actual = filesystem.readFile(path);
 
-      return expect(actual).resolves.toBe(expected);
+      return expect(actual).resolves.toEqual(expected);
     });
 
     it('returns a rejected promise', () => {
@@ -294,7 +302,7 @@ describe('Filesystem', () => {
         oliveHelps.filesystem.writeFile,
       ).mockImplementation((_path, _data, _writeOperation, _writeMode, callback) => callback());
 
-      filesystem.writeFile(path, data, writeOperation, writeMode);
+      filesystem.writeFile({ path, data, writeOperation, writeMode });
 
       expect(oliveHelps.filesystem.writeFile).toHaveBeenCalledWith(
         path,
@@ -311,7 +319,12 @@ describe('Filesystem', () => {
         throw exception;
       });
 
-      const actual = filesystem.writeFile('path', new Uint8Array([84]), 1, 54);
+      const actual = filesystem.writeFile({
+        path: 'path',
+        data: new Uint8Array([84]),
+        writeOperation: 1,
+        writeMode: 54,
+      });
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -319,10 +332,12 @@ describe('Filesystem', () => {
 
   describe('join', () => {
     it('returns a promise result with given joined path', () => {
-      const segments = ["first", "second", "third"];
-      const expected = "first/second/third";
+      const segments = ['first', 'second', 'third'];
+      const expected = 'first/second/third';
 
-      mocked(oliveHelps.filesystem.join).mockImplementation((_segments, callback) => callback(expected));
+      mocked(oliveHelps.filesystem.join).mockImplementation((_segments, callback) =>
+        callback(expected),
+      );
 
       const actual = filesystem.join(segments);
 
@@ -335,7 +350,7 @@ describe('Filesystem', () => {
         throw exception;
       });
 
-      const actual = filesystem.join(['a','b','c']);
+      const actual = filesystem.join(['a', 'b', 'c']);
 
       return expect(actual).rejects.toBe(exception);
     });
