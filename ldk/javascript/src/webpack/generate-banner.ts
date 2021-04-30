@@ -1,8 +1,8 @@
 import { LdkSettings } from './ldk-settings';
 
 export function generateMetadata(ldkSettings: LdkSettings): string {
-  if(ldkSettings.ldk === undefined) {
-    throw new Error("Please provide LDK Settings in your Loop package.json. See README for more information.")
+  if(Object.keys(ldkSettings.ldk).length === 0 || Object.keys(ldkSettings.ldk.permissions).length === 0) {
+    throw new Error("Please provide LDK settings and permissions in your Loop package.json. See README for more information.")
   }
   const json = JSON.stringify({
     ldkVersion: '0.1.0',

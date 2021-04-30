@@ -1,5 +1,5 @@
 import { generateBanner } from "./generate-banner";
-import { LdkSettings } from "./ldk-settings";
+import { LdkPermissions, LdkSettings, Ldk } from "./ldk-settings";
 
 function getLoopMetadataContent(encodedData: string): string {
     const metadataContents = 
@@ -49,8 +49,16 @@ describe('Generate Banner', () => {
     });
 
     it('throws exception when LdkSettings are not provided', () => {
-        const invalidLdkSettings = {}
+        const invalidLdkSettings: LdkSettings = { ldk: {} as Ldk }
 
-        expect(() => generateBanner(invalidLdkSettings as LdkSettings)).toThrowError("Please provide LDK Settings in your Loop package.json. See README for more information.");
+        expect(() => generateBanner(invalidLdkSettings))
+            .toThrowError("Please provide LDK settings and permissions in your Loop package.json. See README for more information.");
+    });
+
+    it('throws an exception when permissions are not provided', () => {
+        const settingsWithNoPermissions: LdkSettings = { ldk: { permissions: {} as LdkPermissions }}
+        
+        expect(() => generateBanner(settingsWithNoPermissions))
+            .toThrowError("Please provide LDK settings and permissions in your Loop package.json. See README for more information.");
     });
 });
