@@ -3,7 +3,9 @@ import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 /**
  * The HTTP Request configuration.
  */
-import { promisifyWithParam } from '../promisify';
+import {
+  promisifyWithMapper,
+} from '../promisify';
 
 export interface HTTPRequest {
   body: Uint8Array;
@@ -20,9 +22,7 @@ export interface HTTPResponse {
   /**
    * The HTTP response as a byte array. To decode into a UTF-8 string you can:
    * ```
-   * import * as util from 'util';
-   * ...
-   * var string = new TextDecoder("utf-8").decode(uint8array);
+   let decodedText = network.decode(data);
    * ```
    */
   data: Uint8Array;
@@ -58,8 +58,18 @@ export interface Network {
   decode(encodedValue: Uint8Array, encoding: string): Promise<string>;
 }
 
-export function httpRequest(req: HTTPRequest): Promise<HTTPResponse> {
-  return promisifyWithParam(req, oliveHelps.network.httpRequest);
+const mapToHttpResponse = (response: OliveHelps.HTTPResponse) => ({
+  statusCode: response.statusCode,
+  data: new Uint8Array(response.data),
+  headers: response.headers,
+});
+
+export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
+  return promisifyWithMapper(
+    request,
+    mapToHttpResponse,
+    oliveHelps.network.httpRequest,
+  );
 }
 
 export function encode(text: string): Promise<Uint8Array> {

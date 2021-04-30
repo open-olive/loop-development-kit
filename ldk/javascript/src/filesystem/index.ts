@@ -1,14 +1,15 @@
-/**
- * An object containing file data.
- */
 import {
   promisifyListenableWithParam,
   promisifyWithFourParams,
   promisifyWithParam,
   promisifyWithTwoParams,
+  promisifyWithMapper,
 } from '../promisify';
 import { Cancellable } from '../cancellable';
 
+/**
+ * An object containing file data.
+ */
 export interface FileInfo {
   /**
    * The file name, not including path.
@@ -193,8 +194,10 @@ export function move(source: string, destination: string): Promise<void> {
   return promisifyWithTwoParams(source, destination, oliveHelps.filesystem.move);
 }
 
+const mapToUint8Array = (data: ArrayBuffer) => (new Uint8Array(data));
+
 export function readFile(path: string): Promise<Uint8Array> {
-  return promisifyWithParam(path, oliveHelps.filesystem.readFile);
+  return promisifyWithMapper(path, mapToUint8Array, oliveHelps.filesystem.readFile);
 }
 
 export function remove(source: string): Promise<void> {
