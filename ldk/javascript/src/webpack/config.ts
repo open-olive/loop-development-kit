@@ -46,7 +46,7 @@ const config: webpack.Configuration = {
                   '@babel/preset-env',
                   {
                     useBuiltIns: 'entry',
-                    corejs: '2.6',
+                    corejs: '3.11',
                   },
                 ],
               ],
@@ -69,7 +69,7 @@ const config: webpack.Configuration = {
                 '@babel/preset-env',
                 {
                   useBuiltIns: 'entry',
-                  corejs: '2.6',
+                  corejs: '3.11',
                 },
               ],
             ],
