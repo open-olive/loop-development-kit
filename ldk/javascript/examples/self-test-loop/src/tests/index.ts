@@ -597,6 +597,38 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     whisper.create(config);
   });
 
+export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Default Values Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          label: 'Select a color',
+          options: ['green', 'red', 'blue'],
+          onSelect: (selected) => {console.log(`${selected} has been selected!`)},
+          type: whisper.WhisperComponentType.Select,
+          selected: 2,
+          tooltip: 'Select a color tooltip'
+        },
+        {
+          onSelect: (selected) => {console.log(`${selected} has been selected!`)},
+          options: ['dog', 'cat', 'snake'],
+          selected: 1,
+          type: whisper.WhisperComponentType.RadioGroup
+        }
+      ],
+    };
+
+    whisper.create(config).then(() => {
+      setTimeout(() => {
+        resolve(true);
+      }, 5000);
+    });
+  });
+
 export const networkHTTPS = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
