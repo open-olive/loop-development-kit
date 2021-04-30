@@ -1,3 +1,4 @@
+import "core-js";
 import * as clipboard from './clipboard';
 import * as cursor from './cursor';
 import * as filesystem from './filesystem';
