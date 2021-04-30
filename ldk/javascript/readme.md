@@ -112,17 +112,16 @@ An Aptitude Name. Each aptitude must also include a reason.
   "clipboard": {
     "reason": string
   },
-  "network": {
+  "process": {
     "reason": string
   }
 }
 ```
 | Valid Options |||
 |-----------|---------| --------- |
-| "clipboard" | "cursor" | "filesystem" |
-| "keyboard" | "network" | "process" |
-| "ui" | "vault" | "whisper" |
-| "window" |
+"clipboard" | "cursor" | "keyboard"
+"process"  | "ui" | "vault"
+"whisper" | "window"
 
 | Reason |
 |--------|

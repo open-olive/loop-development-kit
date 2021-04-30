@@ -1,39 +1,17 @@
-import { LdkAptitude, LdkFilesystem, LdkNetwork, LdkPermissions, LdkSettings } from './ldk-settings';
-
-function isPermissionUndefined(permission: string[]): boolean {
-  if (permission === undefined || 
-      permission.length === 0 ) {
-    return true;
-  } 
-  return false;
-}
-
-function buildNetworkPermissions(ldkPermissions: LdkPermissions): LdkNetwork {
-  return ldkPermissions.network;
-  // TODO: Error handling
-  //   throw new Error("No permission declaration found for URLs. Add Loop permissions for URLs.");
-}
-
-function buildFilesystemPermissions(ldkPermissions: LdkPermissions): LdkFilesystem {
-  return ldkPermissions.filesystem;
-  // TODO: Error handling
-  //   throw new Error("No permission declaration found for filesystem. Add Loop permissions for Filesystem.");
-}
-
-function validateAptitudePermissions(ldkPermissions: LdkAptitude): LdkAptitude {
-  return ldkPermissions;
-  // TODO: Error handling || return nil
-}
+import { LdkSettings } from './ldk-settings';
 
 export function generateMetadata(ldkSettings: LdkSettings): string {
+  if(ldkSettings.ldk === undefined) {
+    throw new Error("Please provide LDK Settings in your Loop package.json. See README for more information.")
+  }
   const json = JSON.stringify({
     ldkVersion: '0.1.0',
     permissions: {
       clipboard: ldkSettings.ldk.permissions.clipboard,
       cursor: ldkSettings.ldk.permissions.cursor,
-      filesystem: buildFilesystemPermissions(ldkSettings.ldk.permissions),
+      filesystem: ldkSettings.ldk.permissions.filesystem,
       keyboard: ldkSettings.ldk.permissions.keyboard,
-      network: buildNetworkPermissions(ldkSettings.ldk.permissions),
+      network: ldkSettings.ldk.permissions.network,
       process: ldkSettings.ldk.permissions.process,
       ui: ldkSettings.ldk.permissions.ui,
       vault: ldkSettings.ldk.permissions.vault,

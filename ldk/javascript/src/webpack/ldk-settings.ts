@@ -1,11 +1,3 @@
-export interface LdkSettings {
-    ldk: Ldk
-}
-
-export interface Ldk {
-    permissions: LdkPermissions
-}
-
 export interface LdkAptitude {
     reason: string
 }
@@ -44,4 +36,12 @@ export interface LdkPermissions {
     whisper: LdkAptitude
 
     window: LdkAptitude
+}
+
+export interface Ldk {
+    permissions: LdkPermissions
+}
+
+export interface LdkSettings {
+    ldk: Ldk
 }
