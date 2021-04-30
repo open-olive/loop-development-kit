@@ -377,7 +377,7 @@ export const listenFile = (): Promise<boolean> =>
           .encode('some text')
           .then((encodedValue) => {
             filesystem
-              .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode: writeMode})
+              .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.append, writeMode: writeMode})
               .catch((error) => {
                 reject(error);
               });
