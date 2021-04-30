@@ -1,4 +1,3 @@
-
 /* eslint-disable */
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
@@ -32,22 +31,22 @@ declare namespace OliveHelps {
     info: WindowInfo;
     action: WindowAction;
   }
-  type WindowActionFocused = "focus"
-  type WindowActionUnfocused = "unfocused"
-  type WindowActionOpened = "open"
-  type WindowActionClosed = "close"
-  type WindowActionMoved = "move"
-  type WindowActionResized = "resized"
-  type WindowActionTitleChanged = "titleChange"
+  type WindowActionFocused = 'focus';
+  type WindowActionUnfocused = 'unfocused';
+  type WindowActionOpened = 'open';
+  type WindowActionClosed = 'close';
+  type WindowActionMoved = 'move';
+  type WindowActionResized = 'resized';
+  type WindowActionTitleChanged = 'titleChange';
 
   type WindowAction =
-    WindowActionFocused
+    | WindowActionFocused
     | WindowActionUnfocused
     | WindowActionOpened
     | WindowActionClosed
     | WindowActionMoved
     | WindowActionResized
-    | WindowActionTitleChanged
+    | WindowActionTitleChanged;
 
   interface WindowInfo {
     title: string;
@@ -208,6 +207,17 @@ declare namespace OliveHelps {
     SpaceEvenly = 'space_evenly',
   }
 
+  enum ButtonSize {
+    Large = 'large',
+    Small = 'small',
+  }
+
+  enum ButtonStyle {
+    Primary = 'primary',
+    Secondary = 'secondary',
+    Text = 'text',
+  }
+
   enum Direction {
     Horizontal = 'horizontal',
     Vertical = 'vertical',
@@ -225,8 +235,10 @@ declare namespace OliveHelps {
   }
 
   type Button = Component<WhisperComponentType.Button> & {
+    buttonStyle?: ButtonStyle;
     label: string;
     onClick: () => void;
+    size?: ButtonSize;
   };
 
   type Checkbox = Component<WhisperComponentType.Checkbox> & {

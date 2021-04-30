@@ -514,19 +514,25 @@ export const buttonWhisper = (): Promise<boolean> =>
           direction: whisper.Direction.Horizontal,
           children: [
             {
+              buttonStyle: whisper.ButtonStyle.Secondary,
               label: `Don't click me`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
             },
             {
+              buttonStyle: whisper.ButtonStyle.Text,
               label: `Me neither`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Small,
             },
             {
+              buttonStyle: whisper.ButtonStyle.Primary,
               label: `Click me`,
               onClick: () => resolve(true),
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
             },
           ],
           type: whisper.WhisperComponentType.Box,

@@ -68,6 +68,17 @@ export enum Alignment {
   SpaceEvenly = 'space_evenly',
 }
 
+export enum ButtonSize {
+  Large = 'large',
+  Small = 'small',
+}
+
+export enum ButtonStyle {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Text = 'text',
+}
+
 export enum Direction {
   Horizontal = 'horizontal',
   Vertical = 'vertical',
@@ -92,8 +103,10 @@ export interface WhisperComponent<T extends WhisperComponentType> {
 }
 
 export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
+  buttonStyle?: ButtonStyle;
   label: string;
   onClick: () => void;
+  size?: ButtonSize;
 };
 
 export declare type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> & {
