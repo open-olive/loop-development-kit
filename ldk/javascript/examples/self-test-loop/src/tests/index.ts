@@ -272,12 +272,13 @@ export const createAndDeleteFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test.txt';
     const writeMode = 0o755;
+
     network
       .encode('some text')
       .then((encodedValue) => {
         setTimeout(() => {
           filesystem
-            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode: writeMode})
             .then(() => {
               filesystem
                 .remove(filePath)
@@ -315,7 +316,7 @@ export const updateAndReadFile = (): Promise<boolean> =>
         .then((encodedValue) => {
           // const newEncodedValue = toUint8Array(encodedValue);
           filesystem
-            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode: writeMode})
             .then(() => {
               console.debug('Write successful');
               console.debug(encodedValue);
@@ -376,7 +377,7 @@ export const listenFile = (): Promise<boolean> =>
           .encode('some text')
           .then((encodedValue) => {
             filesystem
-              .writeFile(filePath, encodedValue, filesystem.WriteOperation.append, writeMode)
+              .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode: writeMode})
               .catch((error) => {
                 reject(error);
               });
