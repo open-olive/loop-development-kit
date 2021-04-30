@@ -231,10 +231,14 @@ export const vaultReadWrite = (): Promise<boolean> =>
 
 export const environmentRead = (): Promise<boolean> =>
     new Promise((resolve, reject) => {
-        environment.read('PATH').then((value) => {
-            console.debug(`Environment variable PATH value: ${value}`);
-            if (!value) {
+        environment.read('PATH').then((environmentVariable) => {
+            console.debug(`Environment variable PATH value: ${environmentVariable.value}`);
+            if (!environmentVariable.value) {
                 reject(new Error('Unable to read environment variable PATH'));
+                return;
+            }
+            if (!environmentVariable.exists) {
+                reject(new Error('Environment variable PATH does not exist'));
                 return;
             }
             resolve(true);
@@ -243,9 +247,13 @@ export const environmentRead = (): Promise<boolean> =>
 
 export const environmentReadNonExistent = (): Promise<boolean> =>
     new Promise((resolve, reject) => {
-        environment.read('THIS_VAR_DOES_NOT_EXIST').then((value) => {
-            if (value) {
+        environment.read('THIS_VAR_DOES_NOT_EXIST').then((environmentVariable) => {
+            if (environmentVariable.value) {
                 reject(new Error('Missing environment variable value should have been empty'));
+                return;
+            }
+            if (environmentVariable.exists) {
+                reject(new Error('Missing environment variable has property "exists" set to true'));
                 return;
             }
             resolve(true);

@@ -12,12 +12,14 @@ describe('Environment', () => {
         it('returns a promise with expected read value', () => {
             const expectedName = 'myReadName';
             const expectedValue = 'myReadValue';
-            mocked(oliveHelps.environment.read).mockImplementation((name, callback) => callback(expectedValue));
+            const expectedExists = true;
+            mocked(oliveHelps.environment.read).mockImplementation((name, callback) =>
+                callback(expectedValue, expectedExists));
 
             const actual = environment.read(expectedName);
 
             expect(oliveHelps.environment.read).toHaveBeenCalledWith(expectedName, expect.any(Function))
-            return expect(actual).resolves.toBe(expectedValue)
+            return expect(actual).resolves.toStrictEqual({value: expectedValue, exists: expectedExists})
         });
 
         it('returns a rejected promise', () => {

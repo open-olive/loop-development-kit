@@ -19,7 +19,7 @@ declare namespace OliveHelps {
   }
 
   interface Environment {
-    read(key: string, cb: (value: string) => void): void;
+    read(key: string, cb: (value: string, exists: boolean) => void): void;
   }
 
   //-- Window
