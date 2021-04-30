@@ -1,6 +1,6 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 import { mocked } from 'ts-jest/utils';
-import * as network from '.'
+import * as network from '.';
 
 jest.mock('text-encoding-shim');
 
@@ -16,23 +16,28 @@ describe('Network', () => {
   describe('httpRequest', () => {
     it('returns a promise result with expected httpresponse', () => {
       const request: network.HTTPRequest = {
-        body: new Uint8Array(),
+        body: new Uint8Array([44, 65]),
         headers: { x: ['x'] },
         method: 'GET',
         url: 'some url',
       };
-      const response: network.HTTPResponse = {
+      const expectedResponse: network.HTTPResponse = {
         statusCode: 200,
-        body: new Uint8Array(),
+        body: new Uint8Array([102, 75]),
         headers: { x: ['x'] },
       };
+      const oliveHelpsResponse: OliveHelps.HTTPResponse = {
+        statusCode: expectedResponse.statusCode,
+        body: expectedResponse.body.buffer,
+        headers: expectedResponse.headers,
+      };
       mocked(oliveHelps.network.httpRequest).mockImplementation((_request, callback) => {
-        callback(response);
+        callback(oliveHelpsResponse);
       });
 
       const actual = network.httpRequest(request);
 
-      return expect(actual).resolves.toBe(response);
+      return expect(actual).resolves.toEqual(expectedResponse);
     });
 
     it('returns a rejected promise', () => {

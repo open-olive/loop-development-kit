@@ -1,6 +1,9 @@
 /**
  * The ClipboardService provides access to the OS's clipboard.
  */
+import { Cancellable } from '../cancellable';
+import { promisify, promisifyListenable, promisifyWithParam } from '../promisify';
+
 export interface Clipboard {
   /**
    * @returns A Promise resolving with the current contents of the clipboard.
@@ -20,32 +23,24 @@ export interface Clipboard {
    * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus
    * @param callback - A function that's called whenever the clipboard's contents change.
    */
-  listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void;
+  listen(
+    includeOliveHelpsEvents: boolean,
+    callback: (clipboardText: string) => void,
+  ): Promise<Cancellable>;
 }
 
-export function listen(includeOliveHelpsEvents: boolean, callback: (clipboardText: string) => void): void {
+export function listen(
+  includeOliveHelpsEvents: boolean,
+  callback: (clipboardText: string) => void,
+): Promise<Cancellable> {
   oliveHelps.clipboard.includeOliveHelpsEvents(includeOliveHelpsEvents);
-  return oliveHelps.clipboard.listen(callback);
+  return promisifyListenable(callback, oliveHelps.clipboard.listen);
 }
 
 export function read(): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    try {
-      oliveHelps.clipboard.read((clipboardText: string) => resolve(clipboardText));
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisify(oliveHelps.clipboard.read);
 }
 
 export function write(text: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    try {
-      oliveHelps.clipboard.write(text, () => resolve());
-    } catch (error) {
-      console.log(error);
-      reject(error);
-    }
-  });
+  return promisifyWithParam(text, oliveHelps.clipboard.write);
 }
