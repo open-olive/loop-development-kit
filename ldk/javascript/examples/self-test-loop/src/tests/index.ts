@@ -257,7 +257,7 @@ export const createAndDeleteFile = (): Promise<boolean> =>
       .then((encodedValue) => {
         setTimeout(() => {
           filesystem
-            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile({ path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode })
             .then(() => {
               filesystem
                 .remove(filePath)
@@ -294,7 +294,7 @@ export const updateAndReadFile = (): Promise<boolean> =>
         .encode(testString)
         .then((encodedValue) => {
           filesystem
-            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile({ path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode })
             .then(() => {
               console.debug('Write successful');
               console.debug(encodedValue);
@@ -355,7 +355,7 @@ export const listenFile = (): Promise<boolean> =>
           .encode('some text')
           .then((encodedValue) => {
             filesystem
-              .writeFile(filePath, encodedValue, filesystem.WriteOperation.append, writeMode)
+              .writeFile({ path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.append, writeMode })
               .catch((error) => {
                 reject(error);
               });
@@ -382,8 +382,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
-        const { body } = response;
-        return network.decode(body);
+        return network.decode(response.body);
       })
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
@@ -579,18 +578,20 @@ export const networkHTTPS = (): Promise<boolean> =>
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
 
     setTimeout(() => {
-      resolve(true);
+      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);
 
     network
       .httpRequest({
         url,
         method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
       })
-      .then(() => {
+      .then((response: network.HTTPResponse) => {
+        if (response.statusCode === 200) {
         resolve(true);
+        } else {
+          reject(new Error('Network http request failed with code: ' + response.statusCode));
+        }
       })
       .catch((e) => {
         reject(e);
@@ -601,15 +602,13 @@ export const networkHTTP = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `http://catalog.data.gov/api/3/`;
     setTimeout(() => {
-      resolve(true);
+      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);
 
     network
       .httpRequest({
         url,
         method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
       })
       .then(() => {
         reject(new Error('Should not have succeeded'));

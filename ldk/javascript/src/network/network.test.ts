@@ -23,12 +23,12 @@ describe('Network', () => {
       };
       const expectedResponse: network.HTTPResponse = {
         statusCode: 200,
-        data: new Uint8Array([102, 75]),
+        body: new Uint8Array([102, 75]),
         headers: { x: ['x'] },
       };
       const oliveHelpsResponse: OliveHelps.HTTPResponse = {
         statusCode: expectedResponse.statusCode,
-        data: expectedResponse.data.buffer,
+        body: expectedResponse.body.buffer,
         headers: expectedResponse.headers,
       };
       mocked(oliveHelps.network.httpRequest).mockImplementation((_request, callback) => {

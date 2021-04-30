@@ -137,15 +137,15 @@ declare namespace OliveHelps {
   }
 
   interface HTTPRequest {
-    body: Uint8Array;
-    headers: Record<string, string[]>;
+    body?: Uint8Array;
+    headers?: Record<string, string[]>;
     method: string;
     url: string;
   }
 
   interface HTTPResponse {
     statusCode: number;
-    data: ArrayBuffer;
+    body: ArrayBuffer;
     headers: Record<string, string[]>;
   }
 

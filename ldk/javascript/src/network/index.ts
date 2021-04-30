@@ -8,8 +8,8 @@ import {
 } from '../promisify';
 
 export interface HTTPRequest {
-  body: Uint8Array;
-  headers: Record<string, string[]>;
+  body?: Uint8Array;
+  headers?: Record<string, string[]>;
   method: string;
   url: string;
 }
@@ -25,7 +25,7 @@ export interface HTTPResponse {
    let decodedText = network.decode(data);
    * ```
    */
-  data: Uint8Array;
+  body: Uint8Array;
   headers: Record<string, string[]>;
 }
 
@@ -60,7 +60,7 @@ export interface Network {
 
 const mapToHttpResponse = (response: OliveHelps.HTTPResponse) => ({
   statusCode: response.statusCode,
-  data: new Uint8Array(response.data),
+  body: new Uint8Array(response.body),
   headers: response.headers,
 });
 
