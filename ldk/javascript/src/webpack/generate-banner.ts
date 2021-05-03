@@ -5,7 +5,7 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
     throw new Error("Please provide LDK settings and permissions in your Loop package.json. See README for more information.")
   }
   const json = JSON.stringify({
-    ldkVersion: '0.1.0',
+    oliveHelpsContractVersion: '0.1.0',
     permissions: {
       clipboard: ldkSettings.ldk.permissions.clipboard,
       cursor: ldkSettings.ldk.permissions.cursor,

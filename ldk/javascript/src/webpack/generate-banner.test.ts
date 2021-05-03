@@ -12,23 +12,25 @@ function getLoopMetadataContent(encodedData: string): string {
 }
 
 describe('Generate Banner', () => {
-    it('generates banner given valid LdkSettings', () => {
-        const ldkSettings: LdkSettings = {
-            ldk: {
-                permissions: {
-                    clipboard: { reason: "access clipboard" },
-                    cursor: { reason: "access cursor" },
-                    filesystem: { pathGlobs: [ { value: "/my/path", reason: "monitor /my/path"} ] },
-                    keyboard: { reason: "access keyboard" },
-                    network: { urlDomains: [ { value: "*.google.com", reason: "request data from Google"} ] },
-                    process: { reason: "access processes" },
-                    ui: { reason: "access ui" },
-                    vault: { reason: "access vault" },
-                    whisper: { reason: "access whisper" },
-                    window: { reason: "access window" },
-                }
+
+    const ldkSettings: LdkSettings = {
+        ldk: {
+            permissions: {
+                clipboard: { reason: "access clipboard" },
+                cursor: { reason: "access cursor" },
+                filesystem: { pathGlobs: [ { value: "/my/path", reason: "monitor /my/path"} ] },
+                keyboard: { reason: "access keyboard" },
+                network: { urlDomains: [ { value: "*.google.com", reason: "request data from Google"} ] },
+                process: { reason: "access processes" },
+                ui: { reason: "access ui" },
+                vault: { reason: "access vault" },
+                whisper: { reason: "access whisper" },
+                window: { reason: "access window" },
             }
         }
+    };
+
+    it('generates banner given valid LdkSettings', () => {
         const result = getLoopMetadataContent(generateBanner(ldkSettings));
 
         //* aptitudes *//
@@ -46,6 +48,12 @@ describe('Generate Banner', () => {
 
         //* network *//
         expect(result).toContain("\"network\":{\"urlDomains\":[{\"value\":\"*.google.com\",\"reason\":\"request data from Google\"}]}");
+    });
+
+    it('adds oliveHelpsContractVersion', () => {
+        const result = getLoopMetadataContent(generateBanner(ldkSettings));
+
+        expect(result).toContain("\"oliveHelpsContractVersion\":");
     });
 
     it('throws exception when LdkSettings are not provided', () => {
