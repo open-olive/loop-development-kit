@@ -1,5 +1,5 @@
 ---
 name: "Remove"
-links_js: "removeFile"
+links_js: "remove"
 ---
 Remove a file or directory

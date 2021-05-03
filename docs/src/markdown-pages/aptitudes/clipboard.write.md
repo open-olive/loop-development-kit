@@ -1,5 +1,5 @@
 ---
 name: "Write"
-links_js: "writeClipboard"
+links_js: "write"
 ---
 Write text content to the clipboard.

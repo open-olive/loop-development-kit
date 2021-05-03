@@ -1,5 +1,5 @@
 ---
 name: "Delete"
-links_js: "vaultDelete"
+links_js: "remove"
 ---
 Deletes a certain key

@@ -1,5 +1,5 @@
 ---
 name: "Keyboard"
-links_js: "KeyboardService"
+links_js: "Keyboard"
 ---
 Observe keyboard activity.
