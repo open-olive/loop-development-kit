@@ -12,14 +12,14 @@ const config: webpack.Configuration = {
   target: ['web', 'es5'],
   output: {
     path: path.join(process.cwd(), 'dist'),
-    filename: 'loop.js'
+    filename: 'loop.js',
   },
   mode: 'production',
   plugins: [
     new webpack.BannerPlugin({
       banner: generateBanner(ldkSettings),
       raw: true
-    })
+    }),
   ],
   optimization: {
     minimize: true,
