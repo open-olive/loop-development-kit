@@ -528,11 +528,9 @@ export const buttonWhisper = (): Promise<boolean> =>
               size: whisper.ButtonSize.Small,
             },
             {
-              buttonStyle: whisper.ButtonStyle.Primary,
               label: `Click me`,
               onClick: () => resolve(true),
               type: whisper.WhisperComponentType.Button,
-              size: whisper.ButtonSize.Large,
             },
           ],
           type: whisper.WhisperComponentType.Box,
