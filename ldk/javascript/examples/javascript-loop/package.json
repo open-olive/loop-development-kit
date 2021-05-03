@@ -9,6 +9,9 @@
   },
   "author": "LDK Team",
   "license": "ISC",
+  "ldk": {
+    "permissions": {}
+  },
   "dependencies": {
     "@oliveai/ldk": "file:../.."
   },
