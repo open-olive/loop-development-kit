@@ -1,5 +1,5 @@
 ---
 name: "Read"
-links_node: "queryClipboard"
+links_js: "queryClipboard"
 ---
 Read the current text contents of the clipboard.

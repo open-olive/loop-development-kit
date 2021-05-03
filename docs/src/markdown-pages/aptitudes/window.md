@@ -1,5 +1,5 @@
 ---
 name: "Window"
-links_node: "WindowService"
+links_js: "WindowService"
 ---
 Allows Loops to see what application windows are open in the system.

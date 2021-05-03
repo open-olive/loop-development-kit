@@ -1,5 +1,5 @@
 ---
 name: "Process"
-links_node: "ProcessService"
+links_js: "ProcessService"
 ---
 Allows Loops to observe processes running on the system.

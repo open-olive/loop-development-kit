@@ -1,5 +1,5 @@
 ---
 name: "Move"
-links_node: "moveFile"
+links_js: "moveFile"
 ---
 Move a file or directory.

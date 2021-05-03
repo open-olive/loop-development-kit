@@ -1,5 +1,5 @@
 ---
 name: "Write"
-links_node: "vaultWrite"
+links_js: "vaultWrite"
 ---
 Writes a value to a given key, overwriting any existing value.

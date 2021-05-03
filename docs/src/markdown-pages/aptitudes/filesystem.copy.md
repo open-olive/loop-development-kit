@@ -1,5 +1,5 @@
 ---
 name: "Copy"
-links_node: "copyFile"
+links_js: "copyFile"
 ---
 Copy a file or directory.

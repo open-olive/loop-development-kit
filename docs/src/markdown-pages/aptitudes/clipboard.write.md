@@ -1,5 +1,5 @@
 ---
 name: "Write"
-links_node: "writeClipboard"
+links_js: "writeClipboard"
 ---
 Write text content to the clipboard.

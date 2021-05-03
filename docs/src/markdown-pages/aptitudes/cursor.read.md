@@ -1,5 +1,5 @@
 ---
 name: "Read"
-links_node: "queryCursorPosition"
+links_js: "queryCursorPosition"
 ---
 Reads the current cursor position on screen.

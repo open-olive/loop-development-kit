@@ -1,5 +1,5 @@
 ---
 name: "Markdown"
-links_node: "markdownWhisper"
+links_js: "markdownWhisper"
 ---
 Displays a Whisper formatted using the Markdown syntax.
