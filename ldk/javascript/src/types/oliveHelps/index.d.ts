@@ -34,7 +34,15 @@ declare namespace OliveHelps {
     returnCb: (obj: Cancellable) => void,
   ) => void;
 
+  type ListenableWithTwoParams<TParam1, TParam2, TOut> = (
+    param1: TParam1,
+    param2: TParam2,
+    callback: (a: TOut) => void,
+    returnCb: (obj: Cancellable) => void,
+  ) => void;
+
   interface Aptitudes {
+    oliveHelps: { httpRequest: jest.Mock<any, any>; webSocketText: jest.Mock<any, any>; webSocketBinary: jest.Mock<any, any>; };
     clipboard: Clipboard;
     whisper: WhisperService;
     filesystem: Filesystem;
@@ -134,6 +142,8 @@ declare namespace OliveHelps {
   //-- Network
   interface Network {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
+    webSocketText: ListenableWithTwoParams<string, string, string>;
+    webSocketBinary: ListenableWithTwoParams<string, Uint8Array, ArrayBuffer>;
   }
 
   interface HTTPRequest {
