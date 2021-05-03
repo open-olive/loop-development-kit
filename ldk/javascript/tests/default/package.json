@@ -11,28 +11,22 @@
   "license": "ISC",
   "ldk": {
     "permissions": {
-      "clipboard": {
-        "reason": "To monitor the users clipboard"
-      },
+      "clipboard": {},
       "filesystem": {
         "pathGlobs": [
           {
-            "value": "/some/path/something.txt",
-            "reason": "To read the shared file"
+            "value": "/some/path/something.txt"
           }
         ]
       },
       "network": {
         "urlDomains": [
           {
-            "value": "*.google.com",
-            "reason": "For Google searches"
+            "value": "*.google.com"
           }
         ]
       },
-      "window": {
-        "reason": "To monitor users window activity"
-      }
+      "window": {}
     }
   },
   "dependencies": {

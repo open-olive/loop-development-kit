@@ -16,36 +16,36 @@ describe('Generate Banner', () => {
         const ldkSettings: LdkSettings = {
             ldk: {
                 permissions: {
-                    clipboard: { reason: "access clipboard" },
-                    cursor: { reason: "access cursor" },
-                    filesystem: { pathGlobs: [ { value: "/my/path", reason: "monitor /my/path"} ] },
-                    keyboard: { reason: "access keyboard" },
-                    network: { urlDomains: [ { value: "*.google.com", reason: "request data from Google"} ] },
-                    process: { reason: "access processes" },
-                    ui: { reason: "access ui" },
-                    vault: { reason: "access vault" },
-                    whisper: { reason: "access whisper" },
-                    window: { reason: "access window" },
+                    clipboard: {},
+                    cursor: {},
+                    filesystem: { pathGlobs: [ { value: "/my/path" } ] },
+                    keyboard: {},
+                    network: { urlDomains: [ { value: "*.google.com" } ] },
+                    process: {},
+                    ui: {},
+                    vault: {},
+                    whisper: {},
+                    window: {},
                 }
             }
         }
         const result = getLoopMetadataContent(generateBanner(ldkSettings));
 
         //* aptitudes *//
-        expect(result).toContain("\"clipboard\":{\"reason\":\"access clipboard\"}");
-        expect(result).toContain("\"cursor\":{\"reason\":\"access cursor\"}");
-        expect(result).toContain("\"keyboard\":{\"reason\":\"access keyboard\"}");
-        expect(result).toContain("\"process\":{\"reason\":\"access processes\"}");
-        expect(result).toContain("\"ui\":{\"reason\":\"access ui\"}");
-        expect(result).toContain("\"vault\":{\"reason\":\"access vault\"}");
-        expect(result).toContain("\"whisper\":{\"reason\":\"access whisper\"}");
-        expect(result).toContain("\"window\":{\"reason\":\"access window\"}");
+        expect(result).toContain("\"clipboard\":{}");
+        expect(result).toContain("\"cursor\":{}");
+        expect(result).toContain("\"keyboard\":{}");
+        expect(result).toContain("\"process\":{}");
+        expect(result).toContain("\"ui\":{}");
+        expect(result).toContain("\"vault\":{}");
+        expect(result).toContain("\"whisper\":{}");
+        expect(result).toContain("\"window\":{}");
 
         //* filesystem *//
-        expect(result).toContain("\"filesystem\":{\"pathGlobs\":[{\"value\":\"/my/path\",\"reason\":\"monitor /my/path\"}]}");
+        expect(result).toContain("\"filesystem\":{\"pathGlobs\":[{\"value\":\"/my/path\"}]");
 
         //* network *//
-        expect(result).toContain("\"network\":{\"urlDomains\":[{\"value\":\"*.google.com\",\"reason\":\"request data from Google\"}]}");
+        expect(result).toContain("\"network\":{\"urlDomains\":[{\"value\":\"*.google.com\"}]");
     });
 
     it('throws exception when LdkSettings are not provided', () => {
