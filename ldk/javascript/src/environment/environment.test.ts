@@ -13,8 +13,9 @@ describe('Environment', () => {
             const expectedName = 'myReadName';
             const expectedValue = 'myReadValue';
             const expectedExists = true;
+            const expectedEnvironmentVariable = {value: expectedValue, exists: expectedExists}
             mocked(oliveHelps.environment.read).mockImplementation((name, callback) =>
-                callback(expectedValue, expectedExists));
+                callback(expectedEnvironmentVariable));
 
             const actual = environment.read(expectedName);
 

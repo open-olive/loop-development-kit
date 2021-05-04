@@ -1,3 +1,5 @@
+import { promisifyWithParam } from "../promisify";
+
 export interface EnvironmentVariable {
     value: string,
     exists: boolean,
@@ -17,13 +19,5 @@ export interface Environment {
 }
 
 export function read(name: string): Promise<EnvironmentVariable> {
-    return new Promise<EnvironmentVariable>((resolve, reject) => {
-        try {
-            oliveHelps.environment.read(name, (value: string, exists: boolean) =>
-                resolve({value, exists}));
-        } catch(error) {
-            console.log(error);
-            reject(error);
-        }
-    });
+    return promisifyWithParam<string, EnvironmentVariable>(name, oliveHelps.environment.read)
 }

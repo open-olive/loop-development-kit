@@ -48,8 +48,13 @@ declare namespace OliveHelps {
     environment: Environment;
   }
 
+  interface EnvironmentVariable {
+    value: string,
+    exists: boolean,
+  }
+
   interface Environment {
-    read(key: string, cb: (value: string, exists: boolean) => void): void;
+    read(key: string, cb: (environmentVariable: EnvironmentVariable) => void): void;
   }
 
   //-- Window
