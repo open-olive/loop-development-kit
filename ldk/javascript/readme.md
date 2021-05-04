@@ -29,106 +29,87 @@ module.exports = merged;
 ```
 
 ### Loop Permissions
-In order to ensure your Loop is executing in a secure manner, you must declare which network URL domains, file system path globs, and aptitudes your Loop will use. Each permission must also include a reason for letting the user know why the Loop is requesting certain permissions.
+In order to ensure your Loop is executing in a secure manner, you must declare which network URL domains, file system path globs, and aptitudes your Loop will use. 
 
 Permissions are declared inside of the Loop `package.json` root within a `ldk/permissions` json object.
 
 ```json
 "ldk": {
   "permissions": {
-    "clipboard": {
-      "reason": "To monitor the users clipboard"
-    },
+    "clipboard": {},
     "filesystem": {
       "pathGlobs": [
         {
-          "value": "/some/path/something.txt",
-          "reason": "To read the shared file"
+          "value": "/some/path/something.txt"
         }
       ]
     },
     "network": {
       "urlDomains": [
         {
-          "value": "*.google.com",
-          "reason": "For Google searches"
+          "value": "*.google.com"
         }
       ]
     },
-    "window": {
-      "reason": "To monitor users window activity"
-    }
+    "window": {}
   }
 },
 ```
 
 #### Network Permission:
-Any domain URL reference. Supports domain wildcards. Each urlDomain must contain a reason.
+Any domain URL reference. Supports domain wildcards.
 ```json
 "ldk": {
   "network": {
     "urlDomains": [
       {
-        "value": string,
-        "reason": string
+        "value": string
       }
     ]
   }
 }
 ```
 Examples
-| Value | Reason |
------------|-----------
-"*.google.com" | "For Google searches"
-"github.com/" | "Access Github to check pull requests"
-"en.wikipedia.org" | "Fetch information from Wikipedia"
+| Value |
+|-----------|
+"*.google.com"
+"github.com/"
+"en.wikipedia.org"
 <br>
 
 #### Filesystem Permission:
-Any filesystem path. Supports path wildcards. Each pathGlob must contain a reason.
+Any filesystem path. Supports path wildcards.
 ```json
 "ldk": {
   "filesystem": {
     "pathGlobs": [
       {
-        "value": string,
-        "reason": string
+        "value": string
       }
     ]
   }
 }
 ```
 Examples
-| Value  | Reason |
------------|------------
-"/some/path/something.txt" | "To read the shared file"
-"/Users/ldkuser/Desktop/*" | "To access documents on users desktop"
+| Value |
+|-----------|
+"/some/path/something.txt"
+"/Users/ldkuser/Desktop/*"
 <br>
 
 #### Aptitude Permission:
-An Aptitude Name. Each aptitude must also include a reason.
+An Aptitude Name.
 ```json
 "ldk": {
-  "clipboard": {
-    "reason": string
-  },
-  "process": {
-    "reason": string
-  }
+  "clipboard": {},
+  "process": {}
 }
 ```
 | Valid Options |||
-|-----------|---------| --------- |
+|-----------|---------|---------|
 "clipboard" | "cursor" | "keyboard"
 "process"  | "ui" | "vault"
 "whisper" | "window"
-
-| Reason |
-|--------|
-"To monitor the users clipboard"
-"To make network requests"
-"to monitor users filesystem"
-
 <br>
 
 ### Loop Examples

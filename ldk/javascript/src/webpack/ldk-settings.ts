@@ -1,19 +1,17 @@
+/* eslint-disable-next-line */ // Keeping type for future expansion.
 export interface LdkAptitude {
-    reason: string
 }
 
-export interface LdkValueReason {
+export interface LdkValue {
     value: string
-
-    reason: string
 }
 
 export interface LdkFilesystem {
-    pathGlobs:  LdkValueReason[]
+    pathGlobs:  LdkValue[]
 }
 
 export interface LdkNetwork {
-    urlDomains: LdkValueReason[]   
+    urlDomains: LdkValue[]   
 }
 
 export interface LdkPermissions {
