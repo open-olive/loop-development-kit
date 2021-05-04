@@ -4,8 +4,13 @@ declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
+  
   interface Cancellable {
     cancel(): void;
+  }
+
+  interface Sendable extends Cancellable {
+    send(mesasge: Uint8Array): void;
   }
 
   type Readable<T> = (callback: (a: T) => void) => void;
@@ -28,10 +33,10 @@ declare namespace OliveHelps {
 
   type Listenable<T> = (callback: (a: T) => void, returnCb: (obj: Cancellable) => void) => void;
 
-  type ListenableWithParam<TParam, TOut> = (
+  type ListenableWithParam<TParam, TOut, TReturn = Cancellable> = (
     param: TParam,
     callback: (a: TOut) => void,
-    returnCb: (obj: Cancellable) => void,
+    returnCb: (obj: TReturn) => void,
   ) => void;
 
   type ListenableWithTwoParams<TParam1, TParam2, TOut> = (
@@ -142,8 +147,7 @@ declare namespace OliveHelps {
   //-- Network
   interface Network {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
-    webSocketConnect: ListenableWithParam<string, ArrayBuffer>;
-    webSocketSend: ReadableWithTwoParams<string, Uint8Array, void>;
+    webSocket: ListenableWithParam<string, ArrayBuffer, Sendable>;
   }
 
   interface HTTPRequest {

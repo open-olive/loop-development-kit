@@ -8,8 +8,8 @@ describe('Network', () => {
   beforeEach(() => {
     oliveHelps.network = {
       httpRequest: jest.fn(),
-      webSocketConnect: jest.fn(),
-      webSocketSend: jest.fn(),
+      // webSocketConnect: jest.fn(),
+      webSocket: jest.fn(),
     };
     TextEncoder.prototype.encode = jest.fn();
     TextDecoder.prototype.decode = jest.fn();
@@ -108,55 +108,55 @@ describe('Network', () => {
     });
   });
 
-  describe('webSocketConnect', () => {
-    it('passed in callback function to olive helps', () => {
-      const url = 'url';
-      const callback = jest.fn();
+  // describe('webSocketConnect', () => {
+  //   it('passed in callback function to olive helps', () => {
+  //     const url = 'url';
+  //     const callback = jest.fn();
 
-      network.webSocketConnect(url, callback);
+  //     network.webSocketConnect(url, callback);
 
-      expect(oliveHelps.network.webSocketConnect).toHaveBeenCalledWith(
-        url,
-        expect.any(Function),
-        expect.any(Function),
-      );
-    });
+  //     expect(oliveHelps.network.webSocketConnect).toHaveBeenCalledWith(
+  //       url,
+  //       expect.any(Function),
+  //       expect.any(Function),
+  //     );
+  //   });
 
-    it('throws exception when passing in callback function', () => {
-      const exception = 'Exception';
-      mocked(oliveHelps.network.webSocketConnect).mockImplementation(() => {
-        throw exception;
-      });
+  //   it('throws exception when passing in callback function', () => {
+  //     const exception = 'Exception';
+  //     mocked(oliveHelps.network.webSocketConnect).mockImplementation(() => {
+  //       throw exception;
+  //     });
 
-      const actual = network.webSocketConnect('url', jest.fn());
+  //     const actual = network.webSocketConnect('url', jest.fn());
 
-      return expect(actual).rejects.toBe(exception);
-    });
-  });
+  //     return expect(actual).rejects.toBe(exception);
+  //   });
+  // });
 
-  describe('webSocketSend', () => {
-    it('passed in callback function to olive helps', () => {
-      const url = 'url';
-      const request = new Uint8Array([105, 86]);
+  // describe('webSocketSend', () => {
+  //   it('passed in callback function to olive helps', () => {
+  //     const url = 'url';
+  //     const request = new Uint8Array([105, 86]);
 
-      network.webSocketSend(url, request);
+  //     network.webSocketSend(url, request);
 
-      expect(oliveHelps.network.webSocketSend).toHaveBeenCalledWith(
-        url,
-        request,
-        expect.any(Function),
-      );
-    });
+  //     expect(oliveHelps.network.webSocketSend).toHaveBeenCalledWith(
+  //       url,
+  //       request,
+  //       expect.any(Function),
+  //     );
+  //   });
 
-    it('throws exception when passing in callback function', () => {
-      const exception = 'Exception';
-      mocked(oliveHelps.network.webSocketSend).mockImplementation(() => {
-        throw exception;
-      });
+  //   it('throws exception when passing in callback function', () => {
+  //     const exception = 'Exception';
+  //     mocked(oliveHelps.network.webSocketSend).mockImplementation(() => {
+  //       throw exception;
+  //     });
 
-      const actual = network.webSocketSend('url', new Uint8Array([105, 86]));
+  //     const actual = network.webSocketSend('url', new Uint8Array([105, 86]));
 
-      return expect(actual).rejects.toBe(exception);
-    });
-  });
+  //     return expect(actual).rejects.toBe(exception);
+  //   });
+  // });
 });
