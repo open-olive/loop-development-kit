@@ -8,7 +8,7 @@ We recommend using Webpack 5 to compile your Loop code for you. Our Webpack conf
 Install Webpack 5 and its CLI, and add this build script to your `package.json`:
 
 ```shell
-webpack --entry core-js/fn/promise --entry ./index.js --config ./node_modules/@oliveai/ldk/dist/webpack/config.js
+webpack --entry ./index.js --config ./node_modules/@oliveai/ldk/dist/webpack/config.js
 ```
 
 This will use the LDK webpack configuration and compile the file to the `./dist/loop.js` directory.

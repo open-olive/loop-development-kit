@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --entry core-js/fn/promise --entry ./index.ts --config ./node_modules/@oliveai/ldk/dist/webpack/config.js"
+    "build": "webpack --entry ./index.ts --config ./node_modules/@oliveai/ldk/dist/webpack/config.js"
   },
   "author": "LDK Team",
   "license": "ISC",
