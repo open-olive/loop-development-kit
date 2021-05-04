@@ -1,5 +1,22 @@
 import { Cancellable } from './cancellable';
 
+type Mapper<TIn, TOut> = (param: TIn) => TOut;
+
+export function promisifyWithMapper<TParam, TInternalOut, TExternalOut>(
+  param: TParam,
+  map: Mapper<TInternalOut, TExternalOut>,
+  arg: OliveHelps.ReadableWithParam<TParam, TInternalOut>,
+): Promise<TExternalOut> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param, (cb: TInternalOut) => resolve(map(cb)));
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });
+}
+
 export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     try {

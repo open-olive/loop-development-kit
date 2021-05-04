@@ -217,14 +217,14 @@ describe('Filesystem', () => {
   describe('readFile', () => {
     it('returns a promise result with expected array', () => {
       const path = 'path';
-      const expected = new Uint8Array([84]);
+      const expected = new Uint8Array([84, 102]);
       mocked(oliveHelps.filesystem.readFile).mockImplementation((_path, callback) =>
-        callback(expected),
+        callback(expected.buffer),
       );
 
       const actual = filesystem.readFile(path);
 
-      return expect(actual).resolves.toBe(expected);
+      return expect(actual).resolves.toEqual(expected);
     });
 
     it('returns a rejected promise', () => {

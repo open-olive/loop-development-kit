@@ -137,15 +137,15 @@ declare namespace OliveHelps {
   }
 
   interface HTTPRequest {
-    body: Uint8Array;
-    headers: Record<string, string[]>;
+    body?: Uint8Array;
+    headers?: Record<string, string[]>;
     method: string;
     url: string;
   }
 
   interface HTTPResponse {
     statusCode: number;
-    data: Uint8Array;
+    body: ArrayBuffer;
     headers: Record<string, string[]>;
   }
 
@@ -426,7 +426,7 @@ declare namespace OliveHelps {
 
     move: ReadableWithTwoParams<string, string, void>;
 
-    readFile: ReadableWithParam<string, Uint8Array>;
+    readFile: ReadableWithParam<string, ArrayBuffer>;
 
     remove: ReadableWithParam<string, void>;
 

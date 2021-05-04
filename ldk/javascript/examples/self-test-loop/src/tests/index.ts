@@ -248,26 +248,6 @@ export const queryDirectory = (): Promise<boolean> =>
       });
   });
 
-function toUint8Array(array: Uint8Array) {
-  const buffer = new ArrayBuffer(array.length);
-  const newArray = new Uint8Array(buffer);
-  for (let i = 0; i < array.length; i += 1) {
-    newArray[i] = array[i];
-  }
-
-  return newArray;
-}
-
-// function getBytes(str: string) {
-//     let bytes: number[] = []; // char codes
-//     for (let i = 0; i < str.length; i+=1) {
-//       const code = str.charCodeAt(i);
-//       bytes = bytes.concat([code]);
-//     }
-
-//     return bytes;
-// }
-
 export const createAndDeleteFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test.txt';
@@ -314,18 +294,17 @@ export const updateAndReadFile = (): Promise<boolean> =>
       network
         .encode(testString)
         .then((encodedValue) => {
-          // const newEncodedValue = toUint8Array(encodedValue);
           filesystem
             .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode: writeMode})
             .then(() => {
               console.debug('Write successful');
               console.debug(encodedValue);
-
+              
               filesystem
-                .readFile(filePath)
-                .then((readEncodedValue) => {
+              .readFile(filePath)
+              .then((readEncodedValue) => {
                   network
-                    .decode(toUint8Array(readEncodedValue))
+                    .decode(readEncodedValue)
                     .then((decodedText) => {
                       console.debug(decodedText);
                       if (decodedText === testString) {
@@ -404,9 +383,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
-        const { data } = response;
-        const dataArray = new Uint8Array(data);
-        return network.decode(dataArray);
+        return network.decode(response.body);
       })
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
@@ -634,18 +611,20 @@ export const networkHTTPS = (): Promise<boolean> =>
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
 
     setTimeout(() => {
-      resolve(true);
+      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);
 
     network
       .httpRequest({
         url,
         method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
       })
-      .then(() => {
+      .then((response: network.HTTPResponse) => {
+        if (response.statusCode === 200) {
         resolve(true);
+        } else {
+          reject(new Error('Network http request failed with code: ' + response.statusCode));
+        }
       })
       .catch((e) => {
         reject(e);
@@ -656,15 +635,13 @@ export const networkHTTP = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `http://catalog.data.gov/api/3/`;
     setTimeout(() => {
-      resolve(true);
+      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);
 
     network
       .httpRequest({
         url,
         method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
       })
       .then(() => {
         reject(new Error('Should not have succeeded'));
