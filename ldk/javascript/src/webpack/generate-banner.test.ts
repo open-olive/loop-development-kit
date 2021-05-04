@@ -1,5 +1,5 @@
 import { generateBanner } from "./generate-banner";
-import { LdkPermissions, LdkSettings, Ldk } from "./ldk-settings";
+import { LdkSettings, Ldk } from "./ldk-settings";
 
 function getLoopMetadataContent(encodedData: string): string {
     const metadataContents = 
