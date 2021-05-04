@@ -52,6 +52,6 @@ describe('Generate Banner', () => {
         const invalidLdkSettings: LdkSettings = { ldk: {} as Ldk }
 
         expect(() => generateBanner(invalidLdkSettings))
-            .toThrowError("Please provide LDK settings and permissions in your Loop package.json. See README for more information.");
+            .toThrowError("Please provide LDK settings in your Loop package.json. See README for more information.");
     });
 });
