@@ -2,7 +2,7 @@ import { Cancellable } from './cancellable';
 
 type Mapper<TIn, TOut> = (param: TIn) => TOut;
 
-export function promisifyWithMapper<TParam, TInternalOut, TExternalOut>(
+export function promisifyMapped<TParam, TInternalOut, TExternalOut>(
   param: TParam,
   map: Mapper<TInternalOut, TExternalOut>,
   arg: OliveHelps.ReadableWithParam<TParam, TInternalOut>,
@@ -107,39 +107,19 @@ export function promisifyListenableWithParam<TParam, TOut>(
   });
 }
 
-export function promisifyListenableWithTwoParams<TParam1, TParam2, TOut>(
-  param1: TParam1,
-  param2: TParam2,
-  cb: (v: TOut) => void,
-  arg: OliveHelps.ListenableWithTwoParams<TParam1, TParam2, TOut>,
-): Promise<Cancellable> {
-  return new Promise((resolve, reject) => {
-    try {
-      arg(param1, param2, cb, (obj) => {
-        resolve(obj);
-      });
-    } catch (e) {
-      console.error('Received error making request', e);
-      reject(e);
-    }
-  });
-}
-
-export function promisifyListenableWithTwoParamsAndMapper<TParam1, TParam2, TInternalOut, TExternalOut>(
-  param1: TParam1,
-  param2: TParam2,
+export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExternalOut>(
+  param: TParam,
   cb: (v: TExternalOut) => void,
   map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ListenableWithTwoParams<TParam1, TParam2, TInternalOut>,
-): Promise<Cancellable> {
-  return new Promise((resolve, reject) => {
-    try {
-      arg(param1, param2, (callbackValue: TInternalOut) => cb(map(callbackValue)), (obj) => {
-        resolve(obj);
-      });
-    } catch (e) {
-      console.error('Received error making request', e);
-      reject(e);
-    }
-  });
-}
+  arg: OliveHelps.ListenableWithParam<TParam, TInternalOut>,
+  ): Promise<Cancellable> {
+    return new Promise((resolve, reject) => {
+      try {
+        arg(param, (callbackValue: TInternalOut) => cb(map(callbackValue)), (obj) => { resolve(obj); });
+      } catch (e) {
+        console.error('Received error making request', e);
+        reject(e);
+      }
+    });
+  }
+  

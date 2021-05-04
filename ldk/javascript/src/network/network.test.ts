@@ -8,8 +8,8 @@ describe('Network', () => {
   beforeEach(() => {
     oliveHelps.network = {
       httpRequest: jest.fn(),
-      webSocketText: jest.fn(),
-      webSocketBinary: jest.fn(),
+      webSocketConnect: jest.fn(),
+      webSocketSend: jest.fn(),
     };
     TextEncoder.prototype.encode = jest.fn();
     TextDecoder.prototype.decode = jest.fn();
@@ -108,56 +108,53 @@ describe('Network', () => {
     });
   });
 
-  describe('webSocketText', () => {
-    it('passed in collback function to olive helps', () => {
+  describe('webSocketConnect', () => {
+    it('passed in callback function to olive helps', () => {
       const url = 'url';
-      const request = 'request';
       const callback = jest.fn();
 
-      network.webSocketText(url, request, callback);
+      network.webSocketConnect(url, callback);
 
-      expect(oliveHelps.network.webSocketText).toHaveBeenCalledWith(
+      expect(oliveHelps.network.webSocketConnect).toHaveBeenCalledWith(
         url,
-        request,
-        callback,
+        expect.any(Function),
         expect.any(Function),
       );
     });
 
     it('throws exception when passing in callback function', () => {
       const exception = 'Exception';
-      mocked(oliveHelps.network.webSocketText).mockImplementation(() => {
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation(() => {
         throw exception;
       });
 
-      const actual = network.webSocketText('url', "request", jest.fn());
+      const actual = network.webSocketConnect('url', jest.fn());
 
       return expect(actual).rejects.toBe(exception);
     });
   });
 
-  describe('webSocketBinary', () => {
-    it('passed in collback function to olive helps', () => {
+  describe('webSocketSend', () => {
+    it('passed in callback function to olive helps', () => {
       const url = 'url';
       const request = new Uint8Array([105, 86]);
 
-      network.webSocketBinary(url, request, jest.fn());
+      network.webSocketSend(url, request);
 
-      expect(oliveHelps.network.webSocketBinary).toHaveBeenCalledWith(
+      expect(oliveHelps.network.webSocketSend).toHaveBeenCalledWith(
         url,
         request,
-        expect.any(Function),
         expect.any(Function),
       );
     });
 
     it('throws exception when passing in callback function', () => {
       const exception = 'Exception';
-      mocked(oliveHelps.network.webSocketBinary).mockImplementation(() => {
+      mocked(oliveHelps.network.webSocketSend).mockImplementation(() => {
         throw exception;
       });
 
-      const actual = network.webSocketBinary('url', new Uint8Array([105, 86]), jest.fn());
+      const actual = network.webSocketSend('url', new Uint8Array([105, 86]));
 
       return expect(actual).rejects.toBe(exception);
     });

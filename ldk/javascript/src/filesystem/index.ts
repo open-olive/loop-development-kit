@@ -3,7 +3,7 @@ import {
   promisifyWithFourParams,
   promisifyWithParam,
   promisifyWithTwoParams,
-  promisifyWithMapper,
+  promisifyMapped,
 } from '../promisify';
 import { Cancellable } from '../cancellable';
 import * as mapper from '../utils/mapper';
@@ -196,7 +196,7 @@ export function move(source: string, destination: string): Promise<void> {
 }
 
 export function readFile(path: string): Promise<Uint8Array> {
-  return promisifyWithMapper(path, mapper.mapToUint8Array, oliveHelps.filesystem.readFile);
+  return promisifyMapped(path, mapper.mapToUint8Array, oliveHelps.filesystem.readFile);
 }
 
 export function remove(source: string): Promise<void> {

@@ -6,9 +6,9 @@ import * as mapper from '../utils/mapper';
  * The HTTP Request configuration.
  */
 import {
-  promisifyWithMapper,
-  promisifyListenableWithTwoParams,
-  promisifyListenableWithTwoParamsAndMapper,
+  promisifyMapped,
+  promisifyWithTwoParams,
+  promisifyMappedListenableWithParam,
 } from '../promisify';
 
 export interface HTTPRequest {
@@ -62,28 +62,30 @@ export interface Network {
   decode(encodedValue: Uint8Array, encoding: string): Promise<string>;
 
   /**
-   * 
+   *
    * @param url websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
-   * @param request request message text
    * @param callback function to call with response message
+   * @returns a promise with cancellable function
    */
-  webSocketText(url: string, request: string, callback: (response: string) => void ): Promise<Cancellable>;
+  webSocketConnect(
+    url: string,
+    callback: (response: string | Uint8Array) => void,
+  ): Promise<Cancellable>;
 
-    /**
+  /**
    * 
    * @param url websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
-   * @param request request message byte array
-   * @param callback function to call with response message
+   * @param request request message text or byte array
+   * @returns a promise which is resolved upon completion
    */
-  webSocketBinary(url: string, request: Uint8Array, callback: (response: Uint8Array) => void ): Promise<Cancellable>;
+  webSocketSend(
+    url: string,
+    request: string | Uint8Array,
+  ): Promise<void>;
 }
 
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  return promisifyWithMapper(
-    request,
-    mapper.mapToHttpResponse,
-    oliveHelps.network.httpRequest,
-  );
+  return promisifyMapped(request, mapper.mapToHttpResponse, oliveHelps.network.httpRequest);
 }
 
 export function encode(text: string): Promise<Uint8Array> {
@@ -108,18 +110,23 @@ export function decode(encodedValue: Uint8Array): Promise<string> {
   });
 }
 
-export function webSocketText(
-  url: string, 
-  request: string,
-  callback: (response: string) => void,
+export function webSocketConnect(
+  url: string,
+  callback: (response: string | Uint8Array) => void
 ): Promise<Cancellable> {
-  return promisifyListenableWithTwoParams(url, request, callback, oliveHelps.network.webSocketText);
+  return promisifyMappedListenableWithParam(url, callback, mapper.mapToUint8Array, oliveHelps.network.webSocketConnect);
 }
 
-export function webSocketBinary(
-  url: string, 
-  request: Uint8Array,
-  callback: (response: Uint8Array) => void,
-): Promise<Cancellable> {
-  return promisifyListenableWithTwoParamsAndMapper(url, request, callback, mapper.mapToUint8Array, oliveHelps.network.webSocketBinary);
+export function webSocketSend(
+  url: string,
+  request: string | Uint8Array
+): Promise<void> {
+  const message: Uint8Array =
+    typeof request === 'string' ? new TextEncoder().encode(request) : request;
+
+  return promisifyWithTwoParams(
+    url,
+    message,
+    oliveHelps.network.webSocketSend,
+  );
 }

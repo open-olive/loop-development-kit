@@ -142,8 +142,8 @@ declare namespace OliveHelps {
   //-- Network
   interface Network {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
-    webSocketText: ListenableWithTwoParams<string, string, string>;
-    webSocketBinary: ListenableWithTwoParams<string, Uint8Array, ArrayBuffer>;
+    webSocketConnect: ListenableWithParam<string, ArrayBuffer>;
+    webSocketSend: ReadableWithTwoParams<string, Uint8Array, void>;
   }
 
   interface HTTPRequest {
