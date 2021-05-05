@@ -236,6 +236,17 @@ declare namespace OliveHelps {
     SpaceEvenly = 'space_evenly',
   }
 
+  enum ButtonSize {
+    Large = 'large',
+    Small = 'small',
+  }
+
+  enum ButtonStyle {
+    Primary = 'primary',
+    Secondary = 'secondary',
+    Text = 'text',
+  }
+
   enum Direction {
     Horizontal = 'horizontal',
     Vertical = 'vertical',
@@ -253,8 +264,10 @@ declare namespace OliveHelps {
   }
 
   type Button = Component<WhisperComponentType.Button> & {
+    buttonStyle?: ButtonStyle;
     label: string;
     onClick: (whisper: Whisper) => void;
+    size?: ButtonSize;
   };
 
   type Checkbox = Component<WhisperComponentType.Checkbox> & {
