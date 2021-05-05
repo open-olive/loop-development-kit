@@ -1,15 +1,22 @@
 import { generateBanner } from "./generate-banner";
 import { LdkSettings, Ldk } from "./ldk-settings";
 
-function getLoopMetadataContent(encodedData: string): string {
+function getLoopMetadataContent(encodedData: string) {
     const metadataContents = 
         encodedData.replace('---BEGIN-LOOP-JSON-BASE64---', '')
             .replace('---END-LOOP-JSON-BASE64---', '')
             .replace('/*', '')
             .replace('*/', '')
             .trim();
-    return Buffer.from(metadataContents, 'base64').toString('utf-8');
+    return JSON.parse(Buffer.from(metadataContents, 'base64').toString('utf-8'));
 }
+
+const expectedErrorMessage = 
+`Please add a "ldk" object to your package.json file with a permission property:
+    "ldk": {
+        "permissions": {}
+    }
+See README for more information.`;
 
 describe('Generate Banner', () => {
     const ldkSettings: LdkSettings = {
@@ -30,35 +37,62 @@ describe('Generate Banner', () => {
     };
 
     it('generates banner given valid LdkSettings', () => {
-        const result = getLoopMetadataContent(generateBanner(ldkSettings));
+        const actual = getLoopMetadataContent(generateBanner(ldkSettings));
+        const expected = {
+            ldkVersion: '0.1.0',
+            permissions: {
+                clipboard: {},
+                cursor: {},
+                filesystem: { pathGlobs: [ { value: "/my/path" } ] },
+                keyboard: {},
+                network: { urlDomains: [ { value: "*.google.com" } ] },
+                process: {},
+                ui: {},
+                vault: {},
+                whisper: {},
+                window: {},
+            }
+        }
 
-        //* aptitudes *//
-        expect(result).toContain("\"clipboard\":{}");
-        expect(result).toContain("\"cursor\":{}");
-        expect(result).toContain("\"keyboard\":{}");
-        expect(result).toContain("\"process\":{}");
-        expect(result).toContain("\"ui\":{}");
-        expect(result).toContain("\"vault\":{}");
-        expect(result).toContain("\"whisper\":{}");
-        expect(result).toContain("\"window\":{}");
+        expect(actual).toEqual(expected);
+    });
 
-        //* filesystem *//
-        expect(result).toContain("\"filesystem\":{\"pathGlobs\":[{\"value\":\"/my/path\"}]");
+    it('omits aptitude permissions that are not declared', () => {
+        /* eslint-disable-next-line */ // Have to force any type here to allow generateBanner to accept this shape
+        const ldkSettings: any = {
+            ldk: {
+                permissions: {
+                    filesystem: { pathGlobs: [ { value: "/my/path" } ] },
+                    network: { urlDomains: [ { value: "*.google.com" } ] },
+                    vault: {},
+                }
+            }
+        };
 
-        //* network *//
-        expect(result).toContain("\"network\":{\"urlDomains\":[{\"value\":\"*.google.com\"}]");
+        const actual = getLoopMetadataContent(generateBanner(ldkSettings));
+
+        const expected = {
+            ldkVersion: '0.1.0',
+            permissions: {
+                filesystem: { pathGlobs: [ { value: "/my/path" } ] },
+                network: { urlDomains: [ { value: "*.google.com" } ] },
+                vault: {},
+            }
+        };
+
+        expect(actual).toEqual(expected);
     });
 
     it('adds oliveHelpsContractVersion', () => {
         const result = getLoopMetadataContent(generateBanner(ldkSettings));
 
-        expect(result).toContain("\"oliveHelpsContractVersion\":");
+        expect(result.oliveHelpsContractVersion).toEqual('0.1.0');
     });
 
     it('throws exception when LdkSettings are not provided', () => {
         const invalidLdkSettings: LdkSettings = { ldk: {} as Ldk }
 
         expect(() => generateBanner(invalidLdkSettings))
-            .toThrowError("Please provide LDK settings in your Loop package.json. See README for more information.");
+            .toThrowError(expectedErrorMessage);
     });
 });

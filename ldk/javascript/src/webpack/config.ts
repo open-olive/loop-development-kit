@@ -8,7 +8,6 @@ import { LdkSettings } from './ldk-settings';
 const ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
 
 const config: webpack.Configuration = {
-  entry: ['core-js/fn/promise'],
   target: ['web', 'es5'],
   output: {
     path: path.join(process.cwd(), 'dist'),
@@ -41,7 +40,25 @@ const config: webpack.Configuration = {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              sourceType: 'unambiguous',
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'entry',
+                    corejs: '3.11',
+                  },
+                ],
+              ],
+              plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
+            },
+          },
+          { loader: 'ts-loader' },
+        ],
         exclude: /node_modules/,
       },
       {
@@ -51,7 +68,15 @@ const config: webpack.Configuration = {
           loader: 'babel-loader',
           options: {
             sourceType: 'unambiguous',
-            presets: ['@babel/preset-env'],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  useBuiltIns: 'entry',
+                  corejs: '3.11',
+                },
+              ],
+            ],
             plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
           },
         },

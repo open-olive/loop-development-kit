@@ -1,8 +1,15 @@
 import { LdkSettings } from './ldk-settings';
 
+const permissionsErrorMessage = 
+`Please add a "ldk" object to your package.json file with a permission property:
+    "ldk": {
+        "permissions": {}
+    }
+See README for more information.`
+
 export function generateMetadata(ldkSettings: LdkSettings): string {
   if(Object.keys(ldkSettings.ldk).length === 0) {
-    throw new Error("Please provide LDK settings in your Loop package.json. See README for more information.")
+    throw new Error(permissionsErrorMessage);
   }
   const json = JSON.stringify({
     oliveHelpsContractVersion: '0.1.0',
