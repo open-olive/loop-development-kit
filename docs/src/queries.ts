@@ -58,7 +58,7 @@ export interface AptitudeMarkdown {
   html: string;
   frontmatter: {
     name: string;
-    links_node: string | undefined;
+    links_js: string | undefined;
   };
 }
 
@@ -80,13 +80,13 @@ export function getAptitudeDataFromQuery(queryResult: AptitudeQueryResult): IApt
     name: aptitudeFrontMatter.name,
     description: queryResult.markdown.html,
     links: {
-      node: aptitudeFrontMatter.links_node,
+      js: aptitudeFrontMatter.links_js,
     },
     capabilities: queryResult.capabilities.map((capability) => ({
       name: capability.markdown.frontmatter.name,
       description: capability.markdown.html,
       links: {
-        node: capability.markdown.frontmatter.links_node,
+        js: capability.markdown.frontmatter.links_js,
       },
     })),
   };

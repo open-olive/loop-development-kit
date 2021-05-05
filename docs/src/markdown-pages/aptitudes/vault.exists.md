@@ -1,5 +1,5 @@
 ---
 name: "Exists"
-links_node: "vaultExists"
+links_js: "exists"
 ---
 Returns whether the key exists

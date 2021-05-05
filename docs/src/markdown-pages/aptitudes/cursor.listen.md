@@ -1,5 +1,5 @@
 ---
-name: "Stream Changes"
-links_node: "streamCursorPosition"
+name: "Listen"
+links_js: "listenPosition"
 ---
 Receive a message whenever the user moves the cursor on screen.
