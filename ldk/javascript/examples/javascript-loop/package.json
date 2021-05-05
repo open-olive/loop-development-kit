@@ -9,6 +9,12 @@
   },
   "author": "LDK Team",
   "license": "ISC",
+  "ldk": {
+    "permissions": {
+      "clipboard": {},
+      "whisper": {}
+    }
+  },
   "dependencies": {
     "@oliveai/ldk": "file:../.."
   },
