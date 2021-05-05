@@ -1,8 +1,39 @@
 /* eslint-disable */
+
 declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
+  interface Cancellable {
+    cancel(): void;
+  }
+
+  type Readable<T> = (callback: (a: T) => void) => void;
+
+  type ReadableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
+
+  type ReadableWithTwoParams<TParam1, TParam2, TOut> = (
+    param: TParam1,
+    param2: TParam2,
+    callback: (a: TOut) => void,
+  ) => void;
+
+  type ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut> = (
+    param: TParam1,
+    param2: TParam2,
+    param3: TParam3,
+    param4: TParam4,
+    callback: (a: TOut) => void,
+  ) => void;
+
+  type Listenable<T> = (callback: (a: T) => void, returnCb: (obj: Cancellable) => void) => void;
+
+  type ListenableWithParam<TParam, TOut> = (
+    param: TParam,
+    callback: (a: TOut) => void,
+    returnCb: (obj: Cancellable) => void,
+  ) => void;
+
   interface Aptitudes {
     clipboard: Clipboard;
     whisper: WhisperService;
@@ -18,13 +49,13 @@ declare namespace OliveHelps {
 
   //-- Window
   interface Window {
-    activeWindow(cb: (windowInfo: WindowInfo) => void): void;
+    activeWindow: Readable<WindowInfo>;
 
-    listenActiveWindow(cb: (windowInfo: WindowInfo) => void): void;
+    listenActiveWindow: Listenable<WindowInfo>;
 
-    all(cb: (windowInfos: WindowInfo[]) => void): void;
+    all: Readable<WindowInfo[]>;
 
-    listenAll(cb: (windowEvent: WindowEvent) => void): void;
+    listenAll: Listenable<WindowEvent>;
   }
 
   interface WindowEvent {
@@ -60,20 +91,20 @@ declare namespace OliveHelps {
 
   //-- Vault
   interface Vault {
-    remove(key: string, cb: () => void): void;
+    remove: ReadableWithParam<string, void>;
 
-    exists(key: string, cb: (exists: boolean) => void): void;
+    exists: ReadableWithParam<string, boolean>;
 
-    read(key: string, cb: (value: string) => void): void;
+    read: ReadableWithParam<string, string>;
 
-    write(key: string, value: string, cb: () => void): void;
+    write: ReadableWithTwoParams<string, string, void>;
   }
 
   //-- UI
   interface UI {
-    listenSearchbar(cb: (text: string) => void): void;
+    listenSearchbar: Listenable<string>;
 
-    listenGlobalSearch(cb: (text: string) => void): void;
+    listenGlobalSearch: Listenable<string>;
   }
 
   //-- Process
@@ -95,36 +126,36 @@ declare namespace OliveHelps {
   }
 
   interface Process {
-    all(cb: (processInfo: ProcessInfo[]) => void): void;
+    all: Readable<ProcessInfo[]>;
 
-    listenAll(cb: (event: ProcessEvent) => void): void;
+    listenAll: Listenable<ProcessEvent>;
   }
 
   //-- Network
   interface Network {
-    httpRequest(req: HTTPRequest, cb: (res: HTTPResponse) => void): void;
+    httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
   }
 
   interface HTTPRequest {
-    body: Uint8Array;
-    headers: Record<string, string[]>;
+    body?: Uint8Array;
+    headers?: Record<string, string[]>;
     method: string;
     url: string;
   }
 
   interface HTTPResponse {
     statusCode: number;
-    data: Uint8Array;
+    body: ArrayBuffer;
     headers: Record<string, string[]>;
   }
 
   //--Keyboard
   interface Keyboard {
-    listenHotkey(hotkey: Hotkey, cb: (pressed: boolean) => void): void;
+    listenHotkey: ListenableWithParam<Hotkey, boolean>;
 
-    listenText(cb: (text: string) => void): void;
+    listenText: Listenable<string>;
 
-    listenCharacter(cb: (char: string) => void): void;
+    listenCharacter: Listenable<string>;
   }
 
   interface Hotkey {
@@ -145,9 +176,9 @@ declare namespace OliveHelps {
 
   //-- Cursor
   interface Cursor {
-    position(cb: (pos: Position) => void): void;
+    position: Readable<Position>;
 
-    listenPosition(cb: (pos: Position) => void): void;
+    listenPosition: Listenable<Position>;
   }
 
   interface Position {
@@ -157,20 +188,20 @@ declare namespace OliveHelps {
 
   //-- Clipboard
   interface Clipboard {
-    read(cb: (val: string) => void): void;
+    read: Readable<string>;
 
-    write(value: string, cb: () => void): void;
+    write: ReadableWithParam<string, void>;
 
-    listen(cb: (val: string) => void): void;
+    listen: Listenable<string>;
 
     includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   //-- Whisper
   interface WhisperService {
-    create(whisper: NewWhisper, cb: (whisper: Whisper) => void): void;
+    create: ReadableWithParam<NewWhisper, Whisper>;
 
-    all(cb: (whispers: Whisper[]) => void): void;
+    all: Readable<Whisper[]>;
   }
 
   enum WhisperComponentType {
@@ -394,34 +425,28 @@ declare namespace OliveHelps {
 
   //-- Filesystem
   interface Filesystem {
-    copy(source: string, destination: string, callback: () => void): void;
+    copy: ReadableWithTwoParams<string, string, void>;
 
-    dir(path: string, callback: (fileInfos: FileInfo[]) => void): void;
+    dir: ReadableWithParam<string, FileInfo[]>;
 
-    exists(path: string, callback: (exists: boolean) => void): void;
+    exists: ReadableWithParam<string, boolean>;
 
-    listenDir(path: string, callback: (fileEvent: FileEvent) => void): void;
+    listenDir: ListenableWithParam<string, FileEvent>;
 
-    listenFile(path: string, callback: (fileEvent: FileEvent) => void): void;
+    listenFile: ListenableWithParam<string, FileEvent>;
 
-    makeDir(path: string, writeMode: WriteMode, callback: () => void): void;
+    makeDir: ReadableWithTwoParams<string, WriteMode, void>;
 
-    move(source: string, destination: string, callback: () => void): void;
+    move: ReadableWithTwoParams<string, string, void>;
 
-    readFile(path: string, callback: (data: Uint8Array) => void): void;
+    readFile: ReadableWithParam<string, ArrayBuffer>;
 
-    remove(path: string, callback: () => void): void;
+    remove: ReadableWithParam<string, void>;
 
-    stat(path: string, callback: (fileInfo: FileInfo) => void): void;
+    stat: ReadableWithParam<string, FileInfo>;
 
-    writeFile(
-      path: string,
-      data: Uint8Array,
-      writeOperation: WriteOperation,
-      writeMode: WriteMode,
-      callback: () => void,
-    ): void;
+    writeFile: ReadableWithFourParams<string, Uint8Array, WriteOperation, WriteMode, void>;
 
-    join(segments: string[], cb: (path: string) => void): void;
+    join: ReadableWithParam<string[], string>;
   }
 }

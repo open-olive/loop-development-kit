@@ -5,7 +5,7 @@ const ldkConfig = require('@oliveai/ldk/dist/webpack/config');
 /* eslint-disable */
 
 const merged = merge.merge(ldkConfig.default, {
-  entry: [path.resolve(__dirname, './src/index.ts'), 'core-js/features/symbol'],
+  entry: [path.resolve(__dirname, './src/index.ts')],
 });
 
 module.exports = merged;

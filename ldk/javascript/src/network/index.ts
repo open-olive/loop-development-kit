@@ -3,9 +3,13 @@ import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 /**
  * The HTTP Request configuration.
  */
+import {
+  promisifyWithMapper,
+} from '../promisify';
+
 export interface HTTPRequest {
-  body: Uint8Array;
-  headers: Record<string, string[]>;
+  body?: Uint8Array;
+  headers?: Record<string, string[]>;
   method: string;
   url: string;
 }
@@ -18,12 +22,10 @@ export interface HTTPResponse {
   /**
    * The HTTP response as a byte array. To decode into a UTF-8 string you can:
    * ```
-   * import * as util from 'util';
-   * ...
-   * var string = new TextDecoder("utf-8").decode(uint8array);
+   let decodedText = network.decode(data);
    * ```
    */
-  data: Uint8Array;
+  body: Uint8Array;
   headers: Record<string, string[]>;
 }
 
@@ -41,7 +43,7 @@ export interface Network {
 
   /**
    * Encoding provided text
-   * 
+   *
    * @param text - Specified text to encode
    * @returns A promise resolving with the encoded Uint8Array
    */
@@ -49,24 +51,25 @@ export interface Network {
 
   /**
    * Decoding provided value
-   * 
+   *
    * @param encodedValue - Specified encoded value to decode
    * @returns A promise resolving with the decoded text
    */
   decode(encodedValue: Uint8Array, encoding: string): Promise<string>;
 }
 
+const mapToHttpResponse = (response: OliveHelps.HTTPResponse) => ({
+  statusCode: response.statusCode,
+  body: new Uint8Array(response.body),
+  headers: response.headers,
+});
+
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  return new Promise<HTTPResponse>((resolve, reject) => {
-    try {
-      oliveHelps.network.httpRequest(request, (val: HTTPResponse) => {
-        resolve(val);
-      });
-    } catch (e) {
-      console.log(e);
-      reject(e);
-    }
-  });
+  return promisifyWithMapper(
+    request,
+    mapToHttpResponse,
+    oliveHelps.network.httpRequest,
+  );
 }
 
 export function encode(text: string): Promise<Uint8Array> {

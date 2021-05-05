@@ -8,7 +8,7 @@ We recommend using Webpack 5 to compile your Loop code for you. Our Webpack conf
 Install Webpack 5 and its CLI, and add this build script to your `package.json`:
 
 ```shell
-webpack --entry core-js/fn/promise --entry ./index.js --config ./node_modules/@oliveai/ldk/dist/webpack/config.js
+webpack --entry ./index.js --config ./node_modules/@oliveai/ldk/dist/webpack/config.js
 ```
 
 This will use the LDK webpack configuration and compile the file to the `./dist/loop.js` directory.
@@ -27,6 +27,90 @@ const merged = merge.merge(ldkConfig.default, {
 
 module.exports = merged;
 ```
+
+### Loop Permissions
+In order to ensure your Loop is executing in a secure manner, you must declare which network URL domains, file system path globs, and aptitudes your Loop will use. 
+
+Permissions are declared inside of the Loop `package.json` root within a `ldk/permissions` json object.
+
+```json
+"ldk": {
+  "permissions": {
+    "clipboard": {},
+    "filesystem": {
+      "pathGlobs": [
+        {
+          "value": "/some/path/something.txt"
+        }
+      ]
+    },
+    "network": {
+      "urlDomains": [
+        {
+          "value": "*.google.com"
+        }
+      ]
+    },
+    "window": {}
+  }
+},
+```
+
+#### Network Permission:
+Any domain URL reference. Supports domain wildcards.
+```json
+"ldk": {
+  "network": {
+    "urlDomains": [
+      {
+        "value": string
+      }
+    ]
+  }
+}
+```
+Examples
+| Value |
+|-----------|
+"*.google.com"
+"github.com/"
+"en.wikipedia.org"
+<br>
+
+#### Filesystem Permission:
+Any filesystem path. Supports path wildcards.
+```json
+"ldk": {
+  "filesystem": {
+    "pathGlobs": [
+      {
+        "value": string
+      }
+    ]
+  }
+}
+```
+Examples
+| Value |
+|-----------|
+"/some/path/something.txt"
+"/Users/ldkuser/Desktop/*"
+<br>
+
+#### Aptitude Permission:
+An Aptitude Name.
+```json
+"ldk": {
+  "clipboard": {},
+  "process": {}
+}
+```
+| Valid Options |||
+|-----------|---------|---------|
+"clipboard" | "cursor" | "keyboard"
+"process"  | "ui" | "vault"
+"whisper" | "window"
+<br>
 
 ### Loop Examples
 Examples are provided in the `ldk/javascript/examples/` directory. These examples include more information about creating and building Loops.

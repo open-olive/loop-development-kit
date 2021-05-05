@@ -1,3 +1,4 @@
+import "core-js";
 import * as clipboard from './clipboard';
 import * as cursor from './cursor';
 import * as filesystem from './filesystem';
@@ -7,10 +8,9 @@ import * as process from './process';
 import * as ui from './ui';
 import * as vault from './vault';
 import * as whisper from './whisper';
-import * as window from './window';
+import * as window from './window'; // These are provided to validate that the aptitude object meets the interface contract.
 
-/* eslint-disable */ // These are provided to validate that the aptitude object meets the interface contract.
-const _clipboard: clipboard.Clipboard = clipboard;
+/* eslint-disable */ const _clipboard: clipboard.Clipboard = clipboard;
 const _cursor: cursor.Cursor = cursor;
 const _keyboard: keyboard.Keyboard = keyboard;
 const _filesystem: filesystem.Filesystem = filesystem;
@@ -22,15 +22,4 @@ const _whisper: whisper.WhisperAptitude = whisper;
 const _window: window.Window = window;
 /* eslint-enable */
 
-export {
-    clipboard,
-    cursor,
-    filesystem,
-    keyboard,
-    network,
-    process,
-    ui,
-    vault,
-    whisper,
-    window
-}
+export { clipboard, cursor, filesystem, keyboard, network, process, ui, vault, whisper, window };

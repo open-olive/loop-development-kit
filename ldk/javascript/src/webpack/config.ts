@@ -2,18 +2,21 @@ import * as webpack from 'webpack';
 import * as path from 'path';
 import Terser from 'terser-webpack-plugin';
 import { generateBanner } from './generate-banner';
+import { LdkSettings } from './ldk-settings';
+
+/* eslint-disable-next-line */ // Need to dynamically refer to Loop's package.json
+const ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
 
 const config: webpack.Configuration = {
-  entry: ['core-js/fn/promise'],
   target: ['web', 'es5'],
   output: {
     path: path.join(process.cwd(), 'dist'),
-    filename: 'loop.js'
+    filename: 'loop.js',
   },
   mode: 'production',
   plugins: [
     new webpack.BannerPlugin({
-      banner: generateBanner(),
+      banner: generateBanner(ldkSettings),
       raw: true
     }),
   ],
@@ -37,7 +40,25 @@ const config: webpack.Configuration = {
     rules: [
       {
         test: /\.ts$/,
-        use: 'ts-loader',
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              sourceType: 'unambiguous',
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'entry',
+                    corejs: '3.11',
+                  },
+                ],
+              ],
+              plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
+            },
+          },
+          { loader: 'ts-loader' },
+        ],
         exclude: /node_modules/,
       },
       {
@@ -47,7 +68,15 @@ const config: webpack.Configuration = {
           loader: 'babel-loader',
           options: {
             sourceType: 'unambiguous',
-            presets: ['@babel/preset-env'],
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  useBuiltIns: 'entry',
+                  corejs: '3.11',
+                },
+              ],
+            ],
             plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
           },
         },
