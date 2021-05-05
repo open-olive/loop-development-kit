@@ -258,6 +258,11 @@ declare namespace OliveHelps {
     Right = 'right',
   }
 
+  interface Whisper {
+    id: string;
+    close(cb: (err: string) => void): void;
+    // update(whisper: NewWhisper, cb: (err: string) => void): void // TODO: Implement 
+  }
   interface Component<T extends WhisperComponentType> {
     id?: string;
     type: T;
@@ -394,11 +399,6 @@ declare namespace OliveHelps {
     onClose: () => void;
   }
 
-  interface Whisper {
-    id: string;
-    close(cb: (err: string) => void): void;
-    // update(whisper: NewWhisper, cb: (err: string) => void): void // TODO: Implement 
-  }
 
   interface FileInfo {
     name: string;

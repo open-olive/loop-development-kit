@@ -1,4 +1,4 @@
-import { promisify, promisifyWithParam } from '../promisify';
+import { promisifyWithParam } from '../promisify';
 
 export enum WhisperComponentType {
   /**
@@ -97,6 +97,12 @@ export enum Urgency {
   None = 'none',
   Success = 'success',
   Warning = 'warning',
+}
+
+export interface Whisper {
+  id: string;
+  close(cb:(err: string) => void): void;
+  // update(whisper: NewWhisper, cb: (err: string) => void): void
 }
 
 export interface WhisperComponent<T extends WhisperComponentType> {
@@ -233,12 +239,6 @@ export interface NewWhisper {
   components: Array<Components>;
   label: string;
   onClose: () => void;
-}
-
-export interface Whisper {
-  id: string;
-  close(cb:(err: string) => void): void;
-  // update(whisper: NewWhisper, cb: (err: string) => void): void
 }
 
 export interface WhisperAptitude {
