@@ -39,7 +39,7 @@ describe('Generate Banner', () => {
     it('generates banner given valid LdkSettings', () => {
         const actual = getLoopMetadataContent(generateBanner(ldkSettings));
         const expected = {
-            ldkVersion: '0.1.0',
+            oliveHelpsContractVersion: '0.1.0',
             permissions: {
                 clipboard: {},
                 cursor: {},
@@ -72,7 +72,7 @@ describe('Generate Banner', () => {
         const actual = getLoopMetadataContent(generateBanner(ldkSettings));
 
         const expected = {
-            ldkVersion: '0.1.0',
+            oliveHelpsContractVersion: '0.1.0',
             permissions: {
                 filesystem: { pathGlobs: [ { value: "/my/path" } ] },
                 network: { urlDomains: [ { value: "*.google.com" } ] },
