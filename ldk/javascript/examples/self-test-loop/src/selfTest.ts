@@ -18,6 +18,7 @@ import {
   listenActiveWindowTest,
   networkHTTP,
   networkHTTPS,
+  numberInputs,
   processStream,
   processQuery,
   simpleFormWhisper,
@@ -133,6 +134,12 @@ const testConfig: { [key: string]: TestGroup } = {
     ),
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
+    new LoopTest(
+      'Whispser Aptitude - Number Tests',
+      numberInputs,
+      10000,
+      'Testing number inputs. Will automatically resolve after 5 seconds',
+    ),
     new LoopTest(
       'Whispser Aptitude - Internal Links',
       testClickableWhisper,

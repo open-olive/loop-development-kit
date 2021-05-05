@@ -257,7 +257,7 @@ export const createAndDeleteFile = (): Promise<boolean> =>
       .then((encodedValue) => {
         setTimeout(() => {
           filesystem
-            .writeFile({ path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode })
+            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
             .then(() => {
               filesystem
                 .remove(filePath)
@@ -294,14 +294,14 @@ export const updateAndReadFile = (): Promise<boolean> =>
         .encode(testString)
         .then((encodedValue) => {
           filesystem
-            .writeFile({ path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode })
+            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
             .then(() => {
               console.debug('Write successful');
               console.debug(encodedValue);
-              
+
               filesystem
-              .readFile(filePath)
-              .then((readEncodedValue) => {
+                .readFile(filePath)
+                .then((readEncodedValue) => {
                   network
                     .decode(readEncodedValue)
                     .then((decodedText) => {
@@ -355,7 +355,7 @@ export const listenFile = (): Promise<boolean> =>
           .encode('some text')
           .then((encodedValue) => {
             filesystem
-              .writeFile({ path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.append, writeMode })
+              .writeFile(filePath, encodedValue, filesystem.WriteOperation.append, writeMode)
               .catch((error) => {
                 reject(error);
               });
@@ -382,7 +382,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
-        return network.decode(response.body);
+        return network.decode(response.data);
       })
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
@@ -547,7 +547,7 @@ export const linkWhisper = (): Promise<boolean> =>
 export const simpleFormWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const config: whisper.NewWhisper = {
-      label: 'Link Test',
+      label: 'Simple Form Test',
       onClose: () => {
         console.debug('closed');
       },
@@ -573,6 +573,54 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     whisper.create(config);
   });
 
+export const numberInputs = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Number Test',
+      components: [
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'No min, max 10, step 1',
+          max: 10,
+          step: 1,
+          tooltip: 'A tooltip',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'No optional fields',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'All optional fields',
+          value: 0,
+          min: 0,
+          max: 10,
+          step: 1,
+          tooltip: 'A tooltip',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Telephone,
+          label: 'label',
+          onChange: (value) => console.log(`Telephone is changed: ${value}`),
+          tooltip: 'tooltip',
+          value: '09123456789',
+        },
+      ],
+      onClose: () => {
+        console.log('close');
+      },
+    };
+
+    whisper.create(config).then(() => {
+      setTimeout(() => {
+        resolve(true);
+      }, 5000);
+    });
+  });
+
 export const networkHTTPS = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
@@ -583,14 +631,16 @@ export const networkHTTPS = (): Promise<boolean> =>
 
     network
       .httpRequest({
+        body: new Uint8Array(),
         url,
         method: 'GET',
+        headers: {},
       })
       .then((response: network.HTTPResponse) => {
         if (response.statusCode === 200) {
-        resolve(true);
+          resolve(true);
         } else {
-          reject(new Error('Network http request failed with code: ' + response.statusCode));
+          reject(new Error(`Network http request failed with code: ${response.statusCode}`));
         }
       })
       .catch((e) => {
@@ -607,8 +657,10 @@ export const networkHTTP = (): Promise<boolean> =>
 
     network
       .httpRequest({
+        body: new Uint8Array(),
         url,
         method: 'GET',
+        headers: {},
       })
       .then(() => {
         reject(new Error('Should not have succeeded'));
