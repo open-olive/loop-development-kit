@@ -635,13 +635,8 @@ export const networkHTTP = (): Promise<boolean> =>
 
 export const networkWebSocket = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    // const url = `wss://demo.websocket.me/v3/channel_1?api_key=oCdCMcMPQpbvNjUIzqtvF1d2X2okWpDQj4AwARJuAgtjhzKxVEjQU6IdCjwm&notify_self`;
-    // const url = 'wss://echo.websocket.org/';
     const url = 'ws://html5rocks.websocket.org/echo';
     const data = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
-    const text = 'Some text';
-    // let textSendPassed = false;
-    // let dataSendPassed = false;
 
     setTimeout(() => {
       reject(new Error('Network websocket test didnt finished in the appropriate timespan.'));
@@ -651,46 +646,15 @@ export const networkWebSocket = (): Promise<boolean> =>
       .webSocket(url, (response) => {
         // receiving response message
         if (response) {
-          // if (typeof response === 'string') {
-          //   console.info('Received text response  from the webSocket');
-          //   console.info(response);
-          //   if (response == text) {
-          //     textSendPassed = true;
-          //   }
-          // } else {
             console.info('Received binary response from the webSocket');
             console.info(JSON.stringify(response));
             resolve(true);
-          // }
-          // if (textSendPassed && dataSendPassed) {
-          //   resolve(true);
-          // }
         } else {
           reject(new Error('Received response is empty'));
         }
       })
       .then((sendable) => {
         sendable.send(data)
-        sendable.send(text)
-        // sending binary request
-        // network
-        //   .webSocketSend(url, data)
-        //   .then(() => {
-        //     console.info('Binary message sent to the webSocket');
-        //   })
-        //   .catch((error) => {
-        //     reject(error);
-        //   });
-
-        // sending text message
-        // network
-        //   .webSocketSend(url, text)
-        //   .then(() => {
-        //     console.info('Text message sent to the webSocket');
-        //   })
-        //   .catch((error) => {
-        //     reject(error);
-        //   });
       })
       .catch((error) => {
         reject(error);

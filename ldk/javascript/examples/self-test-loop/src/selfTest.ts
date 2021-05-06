@@ -84,18 +84,18 @@ const testConfig: { [key: string]: TestGroup } = {
     ),
   ]),
   network: new TestGroup('Network Aptitude', [
-    // new LoopTest(
-    //   'Network Aptitude - HTTPS test',
-    //   networkHTTPS,
-    //   5000,
-    //   'Calling a public HTTPS API. Should succeed.',
-    // ),
-    // new LoopTest(
-    //   'Network Aptitude - HTTP test',
-    //   networkHTTP,
-    //   5000,
-    //   'Calling a public HTTP API. Should fail',
-    // ),
+    new LoopTest(
+      'Network Aptitude - HTTPS test',
+      networkHTTPS,
+      5000,
+      'Calling a public HTTPS API. Should succeed.',
+    ),
+    new LoopTest(
+      'Network Aptitude - HTTP test',
+      networkHTTP,
+      5000,
+      'Calling a public HTTP API. Should fail',
+    ),
     new LoopTest(
       'Network Aptitude - WebSocket test',
       networkWebSocket,

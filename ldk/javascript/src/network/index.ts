@@ -1,5 +1,5 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
-import { Cancellable, Sendable } from '../cancellable';
+import { Sendable } from '../cancellable';
 import * as mapper from '../utils/mapper';
 
 /**
