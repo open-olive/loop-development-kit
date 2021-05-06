@@ -143,7 +143,7 @@ export default function Home(
         </p>
       </Section>
       <Section sectionClassName={styles.sectionBackground}>
-        <h2 className={styles.sectionTitle}>Disclaimer</h2>
+        <h2 className={styles.disclaimerTitle}>Disclaimer</h2>
         <p className={styles.disclaimer}>
           This “LDK” or “Loop Development Kit” Copyright © Olive AI, Inc., all rights reserved.
           Redistribution and or publication for sale, with or without modification, or any
