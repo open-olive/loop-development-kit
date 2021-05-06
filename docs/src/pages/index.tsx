@@ -142,6 +142,31 @@ export default function Home(
           additional help.
         </p>
       </Section>
+      <Section sectionClassName={styles.sectionBackground}>
+        <h2 className={styles.sectionTitle}>Disclaimer</h2>
+        <p className={styles.disclaimer}>
+          This “LDK” or “Loop Development Kit” Copyright © Olive AI, Inc., all rights reserved.
+          Redistribution and or publication for sale, with or without modification, or any
+          publication without proper reference to Olive AI, Inc. is prohibited. Neither the name of
+          “Olive” or “Olive AI, Inc.”, nor the “LDK” or “Loop Development Kit”, or any names of
+          contributors may be used to endorse or promote products derived from this access without
+          specific prior written permission from Olive AI, Inc. The LDK and all content/resources
+          available exist purely for informational or research purposes and creates no relationship
+          of any kind between you and Olive AI, Inc.
+        </p>
+        <p className={styles.disclaimer}>
+          The LDK IS PROVIDED BY OLIVE “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+          NOT LIMITED TO, REPRESENTATIONS OR WARRANTIES TO ITS ACCURACY OR COMPLETENESS, AS WELL THE
+          IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+          IN NO EVENT SHALL OLIVE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+          EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+          SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+          HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+          TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THE LDK,
+          EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. ANY USE OF THE LDK AND OR ACCESS TO
+          THESE RESOURCES IS ENTIRELY AT YOUR OWN RISK.
+        </p>
+      </Section>
     </Layout>
   );
 }

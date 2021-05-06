@@ -69,3 +69,7 @@
 .aptitudeTitle {
   @extend %sectionItemTitle;
 }
+
+.disclaimer {
+  font-size: $smallFontSize;
+}
