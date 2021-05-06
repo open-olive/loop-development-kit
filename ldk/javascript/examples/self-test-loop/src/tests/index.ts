@@ -252,17 +252,13 @@ export const createAndDeleteFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test.txt';
     const writeMode = 0o755;
+
     network
       .encode('some text')
       .then((encodedValue) => {
         setTimeout(() => {
           filesystem
-            .writeFile({
-              path: filePath,
-              data: encodedValue,
-              writeOperation: filesystem.WriteOperation.overwrite,
-              writeMode,
-            })
+            .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode: writeMode})
             .then(() => {
               filesystem
                 .remove(filePath)
@@ -299,12 +295,7 @@ export const updateAndReadFile = (): Promise<boolean> =>
         .encode(testString)
         .then((encodedValue) => {
           filesystem
-            .writeFile({
-              path: filePath,
-              data: encodedValue,
-              writeOperation: filesystem.WriteOperation.overwrite,
-              writeMode,
-            })
+            .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.overwrite, writeMode: writeMode})
             .then(() => {
               console.debug('Write successful');
               console.debug(encodedValue);
@@ -365,12 +356,7 @@ export const listenFile = (): Promise<boolean> =>
           .encode('some text')
           .then((encodedValue) => {
             filesystem
-              .writeFile({
-                path: filePath,
-                data: encodedValue,
-                writeOperation: filesystem.WriteOperation.append,
-                writeMode,
-              })
+              .writeFile({path: filePath, data: encodedValue, writeOperation: filesystem.WriteOperation.append, writeMode: writeMode})
               .catch((error) => {
                 reject(error);
               });
@@ -506,14 +492,18 @@ export const buttonWhisper = (): Promise<boolean> =>
           direction: whisper.Direction.Horizontal,
           children: [
             {
+              buttonStyle: whisper.ButtonStyle.Secondary,
               label: `Don't click me`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
             },
             {
+              buttonStyle: whisper.ButtonStyle.Text,
               label: `Me neither`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Small,
             },
             {
               label: `Click me`,
@@ -586,6 +576,38 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     };
 
     whisper.create(config);
+  });
+
+export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Default Values Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          label: 'Select a color',
+          options: ['green', 'red', 'blue'],
+          onSelect: (selected) => {console.log(`${selected} has been selected!`)},
+          type: whisper.WhisperComponentType.Select,
+          selected: 2,
+          tooltip: 'Select a color tooltip'
+        },
+        {
+          onSelect: (selected) => {console.log(`${selected} has been selected!`)},
+          options: ['dog', 'cat', 'snake'],
+          selected: 1,
+          type: whisper.WhisperComponentType.RadioGroup
+        }
+      ],
+    };
+
+    whisper.create(config).then(() => {
+      setTimeout(() => {
+        resolve(true);
+      }, 5000);
+    });
   });
 
 export const networkHTTPS = (): Promise<boolean> =>

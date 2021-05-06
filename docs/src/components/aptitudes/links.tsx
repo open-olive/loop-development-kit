@@ -4,12 +4,12 @@ import styles from './links.module.scss';
 import { SupportedLanguage } from '../../references';
 import { NodeLogo } from './node-logo';
 
-export const languages: SupportedLanguage[] = ['node'];
+export const languages: SupportedLanguage[] = ['js'];
 
 function languageLogo(language: SupportedLanguage): React.ReactNode {
   const color = '#000000';
   switch (language) {
-    case 'node':
+    case 'js':
       return <NodeLogo fillColor={color} />;
   }
 }
@@ -17,7 +17,7 @@ function languageLogo(language: SupportedLanguage): React.ReactNode {
 function buildNodeLink(interfaceName: string, methodName?: string): string {
   const renderedInterfaceName = interfaceName.toLowerCase();
   const renderedMethodName = methodName ? `#${methodName.toLowerCase()}` : '';
-  return `https://open-olive.github.io/loop-development-kit/ldk/node/interfaces/${renderedInterfaceName}.html${renderedMethodName}`;
+  return `https://open-olive.github.io/loop-development-kit/ldk/javascript/interfaces/${renderedInterfaceName}.html${renderedMethodName}`;
 }
 
 function linkBuilder(
@@ -35,7 +35,7 @@ function linkBuilder(
   }
   const capabilityLink = capability?.links?.[language];
   switch (language) {
-    case 'node':
+    case 'js':
       return buildNodeLink(aptitudeLink, capabilityLink);
   }
 }

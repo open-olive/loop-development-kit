@@ -9,6 +9,26 @@
   },
   "author": "",
   "license": "ISC",
+  "ldk": {
+    "permissions": {
+      "clipboard": {},
+      "filesystem": {
+        "pathGlobs": [
+          {
+            "value": "/some/path/something.txt"
+          }
+        ]
+      },
+      "network": {
+        "urlDomains": [
+          {
+            "value": "*.google.com"
+          }
+        ]
+      },
+      "window": {}
+    }
+  },
   "dependencies": {
     "@oliveai/ldk": "file:../..",
     "webpack": "^5.32.0",

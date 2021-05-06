@@ -1,6 +1,6 @@
 ---
-name: "List"
-links_node: "listWhisper"
+name: "Create"
+links_js: "create"
 ---
 Displays a list of values with corresponding labels. Each entry can have styles
 attached (Success, Warn, Error), and aligned (Left, Center, Right).

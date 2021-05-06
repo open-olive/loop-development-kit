@@ -1,5 +1,5 @@
 ---
 name: "Read"
-links_node: "vaultRead"
+links_js: "read"
 ---
 Reads the value from the given key.
