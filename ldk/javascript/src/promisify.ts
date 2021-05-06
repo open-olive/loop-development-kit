@@ -1,4 +1,4 @@
-import { Cancellable, Sendable } from './cancellable';
+import { Cancellable } from './cancellable';
 
 type Mapper<TIn, TOut> = (param: TIn) => TOut;
 
