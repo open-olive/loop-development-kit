@@ -32,6 +32,7 @@ import {
   uiGlobalSearchTest,
   updateAndReadFile,
   listenFile,
+  listenDir,
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -215,6 +216,12 @@ const testConfig: { [key: string]: TestGroup } = {
       listenFile,
       10000,
       'Monitoring for file changes...',
+    ),
+    new LoopTest(
+      'File Aptitude - Listen Dir',
+      listenDir,
+      10000,
+      'Monitoring for dir change...',
     ),
   ]),
 };
