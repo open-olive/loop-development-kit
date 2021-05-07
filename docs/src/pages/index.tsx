@@ -143,8 +143,7 @@ export default function Home(
         </p>
       </Section>
       <Section sectionClassName={styles.sectionBackground}>
-        <h2 className={styles.disclaimerTitle}>Disclaimer</h2>
-        <p className={styles.disclaimer}>
+        <p>
           <a
             href="https://github.com/open-olive/loop-development-kit/blob/main/LICENSE"
             target="_blank"
