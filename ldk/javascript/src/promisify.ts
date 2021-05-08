@@ -2,6 +2,12 @@ import { Cancellable } from './cancellable';
 
 type Mapper<TIn, TOut> = (param: TIn) => TOut;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function handleCaughtError(reject: (reason?: any) => void, error: Error) {
+  console.error('Received error calling service', error);
+  reject(error);
+}
+
 export function promisifyWithMapper<TParam, TInternalOut, TExternalOut>(
   param: TParam,
   map: Mapper<TInternalOut, TExternalOut>,
@@ -9,10 +15,9 @@ export function promisifyWithMapper<TParam, TInternalOut, TExternalOut>(
 ): Promise<TExternalOut> {
   return new Promise((resolve, reject) => {
     try {
-      arg(param, (cb: TInternalOut) => resolve(map(cb)));
+      arg(param, (error, value) => resolve(map(value)));
     } catch (e) {
-      console.error(e);
-      reject(e);
+      handleCaughtError(reject, e);
     }
   });
 }
@@ -29,12 +34,6 @@ function promiseResolver<T>(
     }
     resolve(value);
   };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function handleCaughtError(reject: (reason?: any) => void, error: Error) {
-  console.error('Received error calling service', error);
-  reject(error);
 }
 
 export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
