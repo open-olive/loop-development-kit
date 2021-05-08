@@ -15,7 +15,14 @@ export function promisifyWithMapper<TParam, TInternalOut, TExternalOut>(
 ): Promise<TExternalOut> {
   return new Promise((resolve, reject) => {
     try {
-      arg(param, (error, value) => resolve(map(value)));
+      arg(param, (error, value) => {
+        if (error) {
+          console.error('Received error on result', error);
+          reject(error);
+          return;
+        }
+        resolve(map(value));
+      });
     } catch (e) {
       handleCaughtError(reject, e);
     }
@@ -23,7 +30,7 @@ export function promisifyWithMapper<TParam, TInternalOut, TExternalOut>(
 }
 
 function promiseResolver<T>(
-  resolve: (value?: T | PromiseLike<T> | undefined) => void,
+  resolve: (value: T | PromiseLike<T>) => void,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   reject: (reason?: any) => void,
 ): (error: Error | undefined, value: T) => void {
@@ -31,6 +38,7 @@ function promiseResolver<T>(
     if (error) {
       console.error('Received error on result', error);
       reject(error);
+      return;
     }
     resolve(value);
   };
