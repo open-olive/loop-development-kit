@@ -15,7 +15,7 @@ describe('Cursor', () => {
         x: 2345,
         y: 6789,
       };
-      mocked(oliveHelps.cursor.position).mockImplementation((callback) => callback(expected));
+      mocked(oliveHelps.cursor.position).mockImplementation((callback) => callback(undefined, expected));
 
       const actual = cursor.position();
 

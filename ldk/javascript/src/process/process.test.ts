@@ -18,7 +18,9 @@ describe('Process', () => {
           pid: 456,
         },
       ];
-      mocked(oliveHelps.process.all).mockImplementation((callback) => callback(expected));
+      mocked(oliveHelps.process.all).mockImplementation((callback) =>
+        callback(undefined, expected),
+      );
 
       const actual = process.all();
 

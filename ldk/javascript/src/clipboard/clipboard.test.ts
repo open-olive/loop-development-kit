@@ -14,7 +14,7 @@ describe('Clipboard', () => {
   describe('read', () => {
     it('returns a promise result with expected clipboard value', () => {
       const expected = 'expected string';
-      mocked(oliveHelps.clipboard.read).mockImplementation((callback) => callback(expected));
+      mocked(oliveHelps.clipboard.read).mockImplementation((callback) => callback(undefined, expected));
 
       const actual = clipboard.read();
 
@@ -66,7 +66,7 @@ describe('Clipboard', () => {
     it('writes text to an olive helps clipboard', () => {
       const expectedText = 'text';
       mocked(oliveHelps.clipboard.write).mockImplementation((text, callback) => {
-        callback();
+        callback(undefined);
       });
 
       const actual = clipboard.write(expectedText);

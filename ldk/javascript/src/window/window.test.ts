@@ -24,7 +24,7 @@ describe('Window', () => {
       };
 
       mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
-        callback(expectedWindowInfo),
+        callback(undefined, expectedWindowInfo),
       );
 
       const actual = window.activeWindow();
@@ -89,7 +89,9 @@ describe('Window', () => {
         },
       ];
 
-      mocked(oliveHelps.window.all).mockImplementation((callback) => callback(expectedWindowInfo));
+      mocked(oliveHelps.window.all).mockImplementation((callback) =>
+        callback(undefined, expectedWindowInfo),
+      );
 
       const actual = window.all();
 
