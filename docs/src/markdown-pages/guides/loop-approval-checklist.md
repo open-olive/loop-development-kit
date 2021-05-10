@@ -37,6 +37,6 @@ description: 'A checklist of security, design, and other requirements to get a l
 3. **Whisper, don’t shout**: Rely on the merits of your content, not on loud graphics
 4. **Know your audience**: They are experts in their field, treat them as such
 5. **Represent your brand**: Use colors, graphic elements and language that has been established for your brand
-6. **Don’t betray our users’ trust**: Use data and sensorst o deliver valuable information and insights to our users
+6. **Don’t betray our users’ trust**: Use data and sensors to deliver valuable information and insights to our users
 7. **Overdeliver and delight**: Olive Helps pushes the boundaries of what’s possible
 8. **Be original**: Add unique value to the Library
