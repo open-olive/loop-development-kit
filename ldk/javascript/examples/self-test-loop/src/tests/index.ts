@@ -315,6 +315,7 @@ export const updateAndReadFile = (): Promise<boolean> =>
               filesystem
                 .readFile(filePath)
                 .then((readEncodedValue) => {
+                  console.debug(readEncodedValue);
                   network
                     .decode(readEncodedValue)
                     .then((decodedText) => {
@@ -412,7 +413,7 @@ export const listenFile = (): Promise<boolean> =>
 export const listenDir = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test_listenDir.txt';
-    const dirPath = '.';
+    const dirPath = './';
     const writeMode = 0o755;
     let listenDirCancellable: Cancellable;
     console.info('listening to directory changes');
@@ -707,7 +708,7 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
 
 export const networkHTTPS = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
+    const url = 'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
 
     setTimeout(() => {
       reject(new Error('Network http request didnt finished in the appropriate timespan.'));
@@ -732,7 +733,7 @@ export const networkHTTPS = (): Promise<boolean> =>
 
 export const networkHTTP = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const url = `http://catalog.data.gov/api/3/`;
+    const url = 'http://catalog.data.gov/api/3/';
     setTimeout(() => {
       reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);

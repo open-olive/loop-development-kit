@@ -137,7 +137,7 @@ declare namespace OliveHelps {
   }
 
   interface HTTPRequest {
-    body?: Uint8Array;
+    body?: Array<number>;
     headers?: Record<string, string[]>;
     method: string;
     url: string;
@@ -442,7 +442,7 @@ declare namespace OliveHelps {
 
     stat: ReadableWithParam<string, FileInfo>;
 
-    writeFile: ReadableWithFourParams<string, Uint8Array, WriteOperation, WriteMode, void>;
+    writeFile: ReadableWithFourParams<string, Array<number>, WriteOperation, WriteMode, void>;
 
     join: ReadableWithParam<string[], string>;
   }

@@ -216,7 +216,7 @@ export function writeFile({
 }: WriteFileParams): Promise<void> {
   return promisifyWithFourParams(
     path,
-    data,
+    [...data],
     writeOperation,
     writeMode,
     oliveHelps.filesystem.writeFile,

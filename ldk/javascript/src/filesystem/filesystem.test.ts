@@ -306,7 +306,7 @@ describe('Filesystem', () => {
 
       expect(oliveHelps.filesystem.writeFile).toHaveBeenCalledWith(
         path,
-        data,
+        [...data],
         writeOperation,
         writeMode,
         expect.any(Function),
