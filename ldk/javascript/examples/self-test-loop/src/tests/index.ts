@@ -381,7 +381,7 @@ export const listenFile = (): Promise<boolean> =>
           })
           .then((cancellable) => {
             listenFileCancelable = cancellable;
-            console.info('writing file we listen to');            
+            console.debug('writing file we listen to');            
             network
               .encode('Listen to file text')
               .then((encodedValue) => {
