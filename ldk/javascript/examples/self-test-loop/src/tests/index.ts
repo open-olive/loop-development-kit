@@ -369,8 +369,8 @@ export const listenFile = (): Promise<boolean> =>
         filesystem
           .listenFile(filePath, async (response) => {
             if (response) {
-              console.info('Received file action: ' + response.action);
-              console.info(`${response.info.modTime}`);
+              console.debug('Received file action: ' + response.action);
+              console.debug(`${response.info.modTime}`);
               
               listenFileCancelable.cancel();
               await filesystem.remove(filePath);              
