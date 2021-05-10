@@ -2,4 +2,4 @@
 name: "Filesystem"
 links_js: "Filesystem"
 ---
-Observe changes within directories and files, and interact with individual files.
+The FileSystem interfaces provides access to the ability to read, write, delete files.

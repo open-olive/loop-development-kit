@@ -4,7 +4,7 @@ title: 'Troubleshooting'
 description: 'Running into problems? We have some ideas that could help!'
 ---
 
-So you've ran into some unexpected behaviour and you're not sure how to deal with it? We have some ideas:
+So you've ran into some unexpected behavior and you're not sure how to deal with it? We have some ideas:
 
 ## Logs
 
@@ -22,38 +22,16 @@ Olive Helps saves logs, and they often include pertinent information:
 4. If the logging data is inadequate, you can start the application with detailed logging:
    * Mac Terminal: `LOG_LEVEL=trace open /Applications/Olive\ Helps.app`
    * Windows Powershell: `$env:LOG_LEVEL='trace'; &"$($env:LOCALAPPDATA)/Olive Helps/olivehelps.exe"`
-   
+
+## Github Issues
+
+The LDK provides [a location](https://github.com/open-olive/loop-development-kit/issues) for Loop Authors to open and track issues that they are experiencing when building Loops. We recommend searching issues to find solutions to common problems.
+
 ## Common Issues
 
 ### Cannot Add Local Loop
 
-If you're not able to add a Local Loop successfully, that means that the command you provided could not be successfully 
-run in the directory you selected. Often this is a compilation issue where the program fails to start up successfully. 
-You should check whether the Loop starts up successfully in the Terminal. 
+If you're not able to add a Local Loop successfully, that means that the compiled Loop you provided could not be successfully 
+run in the directory you selected. Often this is a runtime issue where the program fails to evaluate your Loop successfully. 
 
-If it is starting up successfully, it should write to `STDOUT` a string in the format `1|1|tcp|{HOST}:{PORT}|grpc`.
-
-If you are using the Go LDK, it should generate this error message instead:
-
-> This binary is a plugin. These are not meant to be executed directly.
-> Please execute the program that consumes these plugins, which will
-> load any plugins automatically
-> exit status 1
-
-
-### MacOS - "Executable File not found in $PATH" Error when Adding Local Loop
-
-This error means that the command you entered for the Loop didn't correspond to an executable that's available under 
-the default `$PATH` environment variable. Often that means you entered a command that works in your terminal like
-`node src/index.js` because your `.zshrc` file adds its location to the `$PATH` variable on launch.
-
-To solve this error, use the direct path to the executable that you're missing. You can get that location with the `which` command:
-```shell
-which node
-```
-
-And then use that path to the executable in the Command field when adding Local Loops:
-
-```shell
-/Users/richardseviora/.nvm/versions/node/v15.7.0/bin/node src/index.js
-```
+If your Loop is failing in this way, please check the Olive Helps log as specified above.
