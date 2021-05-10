@@ -425,7 +425,7 @@ export const listenDir = (): Promise<boolean> =>
     filesystem
       .listenDir(dirPath, async (response) => {
         if (response) {
-          console.info('Received file action in directory: ' + response.action);
+          console.info(`Received file action in directory: ${response.action}`);
           console.info(`${response.info.modTime}`);
           
           listenDirCancellable.cancel();
