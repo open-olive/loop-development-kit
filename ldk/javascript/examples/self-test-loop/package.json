@@ -9,7 +9,42 @@
   "keywords": [],
   "author": "",
   "ldk": {
-    "permissions": {}
+    "permissions": {
+      "clipboard": {},
+      "cursor": {},
+      "network": {
+        "urlDomains": [
+          {
+              "value": "api.fda.gov"
+            },
+            {
+              "value": "catalog.data.gov"
+          }
+        ]
+      },
+      "filesystem": {
+        "pathGlobs": [
+          {
+            "value": "./"
+          },
+          {
+            "value": "./test_listenFile.txt"
+          },
+          {
+            "value": "./test_listenDir.txt"
+          },
+          {
+            "value": "./test.txt"
+          }
+        ]
+      },
+      "process": {},
+      "ui": {},
+      "keyboard": {},
+      "whisper": {},
+      "vault": {},
+      "window": {}
+    }
   },
   "devDependencies": {
     "@babel/core": "7.13.10",
