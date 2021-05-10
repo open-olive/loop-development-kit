@@ -46,14 +46,26 @@ describe('Window', () => {
   });
 
   describe('listenActiveWindow', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const callback = jest.fn();
-      window.listenActiveWindow(callback);
+      const windowEvent = {
+        title: 'title',
+        path: 'path',
+        x: 1,
+        y: 2,
+        pid: 3,
+        height: 4,
+        width: 5,
+      };
+      mocked(oliveHelps.window.listenActiveWindow).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, windowEvent);
+      });
 
-      expect(oliveHelps.window.listenActiveWindow).toHaveBeenCalledWith(
-        callback,
-        expect.any(Function),
-      );
+      await window.listenActiveWindow(callback);
+
+      expect(callback).toHaveBeenCalledWith(windowEvent);
     });
 
     it('throws exception when passing in listen function', () => {
@@ -112,11 +124,29 @@ describe('Window', () => {
   });
 
   describe('listenAll', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const callback = jest.fn();
-      window.listenAll(callback);
+      const windowAllEvent = {
+        action: 'focused' as window.WindowActionFocused,
+        info: {
+          title: 'title',
+          path: 'path',
+          x: 1,
+          y: 2,
+          pid: 3,
+          height: 4,
+          width: 5,
+        },
+      };
+      mocked(oliveHelps.window.listenAll).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, windowAllEvent);
+      });
+      
+      await window.listenAll(callback);
 
-      expect(oliveHelps.window.listenAll).toHaveBeenCalledWith(callback, expect.any(Function));
+      expect(callback).toHaveBeenCalledWith(windowAllEvent);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

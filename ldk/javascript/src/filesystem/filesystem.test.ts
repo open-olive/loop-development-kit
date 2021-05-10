@@ -107,17 +107,29 @@ describe('Filesystem', () => {
   });
 
   describe('listenDir', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const path = 'path';
       const callback = jest.fn();
+      const fileEvent = {
+        action: 'action',
+        info: {
+          name: 'bob',
+          size: 1,
+          mode: '0o755',
+          modTime: 'time',
+          isDir: false,
+        },
+      };
+      mocked(oliveHelps.filesystem.listenDir).mockImplementation((pathCb, listenerCb, returnCb) => {
+        expect(pathCb).toEqual(path);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, fileEvent);
+      });
 
-      filesystem.listenDir(path, callback);
+      await filesystem.listenDir(path, callback);
 
-      expect(oliveHelps.filesystem.listenDir).toHaveBeenCalledWith(
-        path,
-        callback,
-        expect.any(Function),
-      );
+      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -133,17 +145,30 @@ describe('Filesystem', () => {
   });
 
   describe('listenFile', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const path = 'path';
       const callback = jest.fn();
+      const fileEvent = {
+        action: 'action',
+        info: {
+          name: 'bob',
+          size: 1,
+          mode: '0o755',
+          modTime: 'time',
+          isDir: false,
+        },
+      };
 
-      filesystem.listenFile(path, callback);
+      mocked(oliveHelps.filesystem.listenFile).mockImplementation((pathCb, listenerCb, returnCb) => {
+        expect(pathCb).toEqual(path);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, fileEvent);
+      });
 
-      expect(oliveHelps.filesystem.listenFile).toHaveBeenCalledWith(
-        path,
-        callback,
-        expect.any(Function),
-      );
+      await filesystem.listenFile(path, callback);
+
+      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
