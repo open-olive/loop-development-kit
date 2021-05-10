@@ -100,7 +100,7 @@ export function promisifyWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut
 function handleListenerCallback<T>(cb: (v: T) => void): OliveHelps.Callback<T> {
   return (error, value) => {
     if (error) {
-      console.error('Received call during listener');
+      console.error('Received error in listener', error);
     } else {
       cb(value);
     }
