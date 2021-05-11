@@ -8,7 +8,6 @@ describe('Whisper', () => {
     };
   });
 
-
   describe('create', () => {
     it('Creates a whisper', () => {
       const newWhisper: whisper.NewWhisper = {
@@ -31,7 +30,7 @@ describe('Whisper', () => {
       };
 
       mocked(oliveHelps.whisper.create).mockImplementation((_whisper, callback) =>
-        callback(expected),
+        callback(undefined, expected),
       );
 
       const actual = whisper.create(newWhisper);

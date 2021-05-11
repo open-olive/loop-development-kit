@@ -12,18 +12,23 @@ describe('Keyboard', () => {
   });
 
   describe('listenHotkey', () => {
-    it('calls olive helps with given hotkey and callback function', () => {
+    it('calls olive helps with given hotkey and callback function', async () => {
       const callback = jest.fn();
       const hotkey: Hotkey = {
         key: 'q',
       };
-
-      keyboard.listenHotkey(hotkey, callback);
-      expect(oliveHelps.keyboard.listenHotkey).toHaveBeenCalledWith(
-        hotkey,
-        callback,
-        expect.any(Function),
+      mocked(oliveHelps.keyboard.listenHotkey).mockImplementation(
+        (hotKeyParam, listenerCb, returnCb) => {
+          expect(hotKeyParam).toEqual(hotkey);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          returnCb({} as any);
+          listenerCb(undefined, true);
+        },
       );
+
+      await keyboard.listenHotkey(hotkey, callback);
+
+      expect(callback).toHaveBeenCalledWith(true);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {
@@ -37,11 +42,17 @@ describe('Keyboard', () => {
   });
 
   describe('listenText', () => {
-    it('calls olive helps with given callback function', () => {
+    it('calls olive helps with given callback function', async () => {
       const callback = jest.fn();
+      const text = 'text123';
+      mocked(oliveHelps.keyboard.listenText).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
 
-      keyboard.listenText(callback);
-      expect(oliveHelps.keyboard.listenText).toHaveBeenCalledWith(callback, expect.any(Function));
+      await keyboard.listenText(callback);
+      expect(callback).toHaveBeenCalledWith(text);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {
@@ -55,14 +66,18 @@ describe('Keyboard', () => {
   });
 
   describe('listenCharacter', () => {
-    it('calls olive helps with given callback function', () => {
+    it('calls olive helps with given callback function', async () => {
       const callback = jest.fn();
+      const char = '1';
+      mocked(oliveHelps.keyboard.listenCharacter).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, char);
+      });
 
-      keyboard.listenCharacter(callback);
-      expect(oliveHelps.keyboard.listenCharacter).toHaveBeenCalledWith(
-        callback,
-        expect.any(Function),
-      );
+      await keyboard.listenCharacter(callback);
+
+      expect(callback).toHaveBeenCalledWith(char);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

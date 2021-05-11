@@ -24,7 +24,7 @@ describe('Filesystem', () => {
       const source = 'source';
       const destination = 'destination';
       mocked(oliveHelps.filesystem.copy).mockImplementation((_source, _destination, callback) =>
-        callback(),
+        callback(undefined),
       );
 
       filesystem.copy(source, destination);
@@ -60,7 +60,9 @@ describe('Filesystem', () => {
           isDir: true,
         },
       ];
-      mocked(oliveHelps.filesystem.dir).mockImplementation((_path, callback) => callback(expected));
+      mocked(oliveHelps.filesystem.dir).mockImplementation((_path, callback) =>
+        callback(undefined, expected),
+      );
 
       const actual = filesystem.dir(path);
 
@@ -84,7 +86,7 @@ describe('Filesystem', () => {
       const path = 'path';
       const expected = true;
       mocked(oliveHelps.filesystem.exists).mockImplementation((_path, callback) =>
-        callback(expected),
+        callback(undefined, expected),
       );
 
       const actual = filesystem.exists(path);
@@ -105,17 +107,29 @@ describe('Filesystem', () => {
   });
 
   describe('listenDir', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const path = 'path';
       const callback = jest.fn();
+      const fileEvent = {
+        action: 'action',
+        info: {
+          name: 'bob',
+          size: 1,
+          mode: '0o755',
+          modTime: 'time',
+          isDir: false,
+        },
+      };
+      mocked(oliveHelps.filesystem.listenDir).mockImplementation((pathCb, listenerCb, returnCb) => {
+        expect(pathCb).toEqual(path);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, fileEvent);
+      });
 
-      filesystem.listenDir(path, callback);
+      await filesystem.listenDir(path, callback);
 
-      expect(oliveHelps.filesystem.listenDir).toHaveBeenCalledWith(
-        path,
-        callback,
-        expect.any(Function),
-      );
+      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -131,17 +145,30 @@ describe('Filesystem', () => {
   });
 
   describe('listenFile', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const path = 'path';
       const callback = jest.fn();
+      const fileEvent = {
+        action: 'action',
+        info: {
+          name: 'bob',
+          size: 1,
+          mode: '0o755',
+          modTime: 'time',
+          isDir: false,
+        },
+      };
 
-      filesystem.listenFile(path, callback);
+      mocked(oliveHelps.filesystem.listenFile).mockImplementation((pathCb, listenerCb, returnCb) => {
+        expect(pathCb).toEqual(path);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, fileEvent);
+      });
 
-      expect(oliveHelps.filesystem.listenFile).toHaveBeenCalledWith(
-        path,
-        callback,
-        expect.any(Function),
-      );
+      await filesystem.listenFile(path, callback);
+
+      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -162,7 +189,7 @@ describe('Filesystem', () => {
       const destination = 'destination';
       mocked(
         oliveHelps.filesystem.makeDir,
-      ).mockImplementation((_destination, _writeMode, callback) => callback());
+      ).mockImplementation((_destination, _writeMode, callback) => callback(undefined));
 
       filesystem.makeDir(destination, writeMode);
 
@@ -190,7 +217,7 @@ describe('Filesystem', () => {
       const source = 'source';
       const destination = 'destination';
       mocked(oliveHelps.filesystem.move).mockImplementation((_source, _destination, callback) =>
-        callback(),
+        callback(undefined),
       );
 
       filesystem.move(source, destination);
@@ -219,7 +246,7 @@ describe('Filesystem', () => {
       const path = 'path';
       const expected = new Uint8Array([84, 102]);
       mocked(oliveHelps.filesystem.readFile).mockImplementation((_path, callback) =>
-        callback(expected.buffer),
+        callback(undefined, expected.buffer),
       );
 
       const actual = filesystem.readFile(path);
@@ -242,7 +269,9 @@ describe('Filesystem', () => {
   describe('remove', () => {
     it('returns a promise result when file is removed', () => {
       const source = 'source';
-      mocked(oliveHelps.filesystem.remove).mockImplementation((_source, callback) => callback());
+      mocked(oliveHelps.filesystem.remove).mockImplementation((_source, callback) =>
+        callback(undefined),
+      );
 
       filesystem.remove(source);
 
@@ -272,7 +301,7 @@ describe('Filesystem', () => {
         isDir: true,
       };
       mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
-        callback(expected),
+        callback(undefined, expected),
       );
 
       const actual = filesystem.stat(path);
@@ -300,7 +329,9 @@ describe('Filesystem', () => {
       const writeMode: filesystem.WriteMode = 54;
       mocked(
         oliveHelps.filesystem.writeFile,
-      ).mockImplementation((_path, _data, _writeOperation, _writeMode, callback) => callback());
+      ).mockImplementation((_path, _data, _writeOperation, _writeMode, callback) =>
+        callback(undefined),
+      );
 
       filesystem.writeFile({ path, data, writeOperation, writeMode });
 
@@ -336,7 +367,7 @@ describe('Filesystem', () => {
       const expected = 'first/second/third';
 
       mocked(oliveHelps.filesystem.join).mockImplementation((_segments, callback) =>
-        callback(expected),
+        callback(undefined, expected),
       );
 
       const actual = filesystem.join(segments);
