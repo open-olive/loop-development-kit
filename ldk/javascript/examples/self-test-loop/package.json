@@ -15,10 +15,10 @@
       "network": {
         "urlDomains": [
           {
-              "value": "api.fda.gov"
-            },
-            {
-              "value": "catalog.data.gov"
+            "value": "api.fda.gov"
+          },
+          {
+            "value": "catalog.data.gov"
           }
         ]
       },
