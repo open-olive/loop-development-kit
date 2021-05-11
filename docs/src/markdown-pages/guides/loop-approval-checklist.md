@@ -12,7 +12,7 @@ description: 'A checklist of security, design, and other requirements to get a l
 
    - License Agreement (can be a link to an external resource)
    - Privacy Policy (can be a link to an external resource)
-   - Declare what sensors your loop uses from the LDK
+   - Declare what Aptitudes your loop uses from the LDK
    - Must declare how your Loop uses the user’s information and how your organization uses that information
    - Declare where your loop is sending users’ information to the subdomain level
    - Include updated contact information for a user to reach out in the event they need help with your loop
@@ -37,6 +37,6 @@ description: 'A checklist of security, design, and other requirements to get a l
 3. **Whisper, don’t shout**: Rely on the merits of your content, not on loud graphics
 4. **Know your audience**: They are experts in their field, treat them as such
 5. **Represent your brand**: Use colors, graphic elements and language that has been established for your brand
-6. **Don’t betray our users’ trust**: Use data and sensors to deliver valuable information and insights to our users
+6. **Don’t betray our users’ trust**: Use data and Aptitudes to deliver valuable information and insights to our users
 7. **Overdeliver and delight**: Olive Helps pushes the boundaries of what’s possible
 8. **Be original**: Add unique value to the Library

@@ -15,6 +15,7 @@ The following component types are available:
 * Link - This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
 * ListPair - This component shows a two column view of information typically used for lists of information.
 * Markdown - Renders a message as Markdown.
+    * Markdown syntax for the Markdown Component Type is defined by to the [CommonMark](https://commonmark.org/) specification. 
 * Message - This component shows a banner in the whisper that functions as a call to action to the user.
 * Number - The text input field allows the user to provide a number within the parameters provided.
 * Password - The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
