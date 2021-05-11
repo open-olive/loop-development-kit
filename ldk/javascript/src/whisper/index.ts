@@ -1,4 +1,4 @@
-import { promisify, promisifyWithParam } from '../promisify';
+import { promisifyWithParam } from '../promisify';
 
 export enum WhisperComponentType {
   /**
@@ -99,6 +99,12 @@ export enum Urgency {
   Warning = 'warning',
 }
 
+export interface Whisper {
+  id: string;
+  close(cb:(err: string) => void): void;
+  // update(whisper: NewWhisper, cb: (err: string) => void): void
+}
+
 export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
   type: T;
@@ -107,7 +113,7 @@ export interface WhisperComponent<T extends WhisperComponentType> {
 export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   label: string;
-  onClick: () => void;
+  onClick: (whisper: Whisper) => void;
   size?: ButtonSize;
 };
 
@@ -115,12 +121,12 @@ export declare type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> &
   label: string;
   tooltip?: string;
   value: boolean;
-  onChange: (value: boolean) => void;
+  onChange: (value: boolean, whisper: Whisper) => void;
 };
 
 export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
   label: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, whisper: Whisper) => void;
   tooltip?: string;
   value?: string;
 };
@@ -128,7 +134,7 @@ export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
 export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
   href?: string;
   text: string;
-  onClick?: () => void;
+  onClick?: (whisper: Whisper) => void;
   style?: Urgency;
   textAlign?: TextAlign;
 };
@@ -153,7 +159,7 @@ export declare type Message = WhisperComponent<WhisperComponentType.Message> & {
 
 export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
   label: string;
-  onChange: (value: number) => void;
+  onChange: (value: number, whisper: Whisper) => void;
   value?: number;
   max?: number;
   min?: number;
@@ -163,13 +169,13 @@ export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> 
 
 export declare type Password = WhisperComponent<WhisperComponentType.Password> & {
   label: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, whisper: Whisper) => void;
   tooltip?: string;
   value?: string;
 };
 
 export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
-  onSelect: (value: number) => void;
+  onSelect: (value: number, whisper: Whisper) => void;
   options: string[];
   selected?: number;
 };
@@ -177,14 +183,14 @@ export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGrou
 export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
   label: string;
   options: string[];
-  onSelect: (value: number) => void;
+  onSelect: (value: number, whisper: Whisper) => void;
   selected?: number;
   tooltip?: string;
 };
 
 export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
   label: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, whisper: Whisper) => void;
   // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
@@ -192,7 +198,7 @@ export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone>
 
 export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
   label: string;
-  onChange: (value: string) => void;
+  onChange: (value: string, whisper: Whisper) => void;
   tooltip?: string;
   value?: string;
 };
@@ -235,19 +241,7 @@ export interface NewWhisper {
   onClose: () => void;
 }
 
-export interface Whisper {
-  id: string;
-  label: string;
-  components: Array<Components>;
-  close(callback: () => void): void;
-}
-
 export interface WhisperAptitude {
-  /**
-   * Returns a promise which provides a list of all of the current whispers in Olive Helps
-   */
-  all(): Promise<Whisper[]>;
-
   /**
    * Adds a new whisper to Olive Helps based on the configuration provided.
    * Returns a promise which provides a reference to the newly created whisper
@@ -255,10 +249,6 @@ export interface WhisperAptitude {
    * @param whisper The configuration for the whisper being created
    */
   create(whisper: NewWhisper): Promise<Whisper>;
-}
-
-export function all(): Promise<Whisper[]> {
-  return promisify(oliveHelps.whisper.all);
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {

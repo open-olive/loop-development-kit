@@ -7,7 +7,7 @@ import * as mapper from '../utils/mapper';
  */
 import {
   promisifyMapped,
-  promisifyMappedListenableWithParam,
+  // promisifyMappedListenableWithParam,
 } from '../promisify';
 
 export interface HTTPRequest {
@@ -66,14 +66,24 @@ export interface Network {
    * @param callback function to call with response message
    * @returns a promise with sendable function
    */
-  webSocket(
-    url: string,
-    callback: (response: Uint8Array) => void,
-  ): Promise<Sendable>;
+  // webSocket(
+  //   url: string,
+  //   callback: (response: Uint8Array) => void,
+  // ): Promise<Sendable>;
 }
 
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  return promisifyMapped(request, mapper.mapToHttpResponse, oliveHelps.network.httpRequest);
+  const bodyData = (request.body) ? [...request.body] : undefined;
+  return promisifyMapped(
+    {
+      body: bodyData,
+      headers: request.headers,
+      method: request.method,
+      url: request.url,
+    },
+    mapper.mapToHttpResponse,
+    oliveHelps.network.httpRequest,
+  );
 }
 
 export function encode(text: string): Promise<Uint8Array> {
@@ -98,9 +108,9 @@ export function decode(encodedValue: Uint8Array): Promise<string> {
   });
 }
 
-export function webSocket(
-  url: string,
-  callback: (response: Uint8Array) => void
-): Promise<Sendable> {
-  return promisifyMappedListenableWithParam(url, callback, mapper.mapToUint8Array, oliveHelps.network.webSocket);
-}
+// export function webSocket(
+//   url: string,
+//   callback: (response: Uint8Array) => void
+// ): Promise<Sendable> {
+//   return promisifyMappedListenableWithParam(url, callback, mapper.mapToUint8Array, oliveHelps.network.webSocket);
+// }
