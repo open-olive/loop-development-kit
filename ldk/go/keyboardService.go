@@ -14,6 +14,9 @@ type Hotkey struct {
 	Modifiers KeyModifier
 }
 
+// This function takes the hotkey param (which is understood to be the actual hotkey combination provided by the
+// keyboard service) and compares it against the receiver's configuration.
+// It is expected that the actual value provided will set both the position bit (left/right) and the either side value to true.
 func (h Hotkey) Match(v Hotkey) bool {
 	if h.Key != v.Key {
 		return false
@@ -21,10 +24,28 @@ func (h Hotkey) Match(v Hotkey) bool {
 	// You can't do a direct bitmask as Alt means Altleft or AltRight.  So checking all combinations is the only safe way to actually compare
 	configured, incoming := h.Modifiers, v.Modifiers
 
-	return (configured.AltLeft() == incoming.AltLeft() || configured.Alt() == incoming.Alt()) && (configured.AltRight() == incoming.AltRight() || configured.Alt() == incoming.Alt()) &&
-		(configured.ControlLeft() == incoming.ControlLeft() || configured.Control() == incoming.Control()) && (configured.ControlRight() == incoming.ControlRight() || configured.Control() == incoming.Control()) &&
-		(configured.MetaLeft() == incoming.MetaLeft() || configured.Meta() == incoming.Meta()) && (configured.MetaRight() == incoming.MetaRight() || configured.Meta() == incoming.Meta()) &&
-		(configured.ShiftLeft() == incoming.ShiftLeft() || configured.Shift() == incoming.Shift()) && (configured.ShiftRight() == incoming.ShiftRight() || configured.Shift() == incoming.Shift())
+	altMatch := configured.AltGroup().MatchesActual(incoming.AltGroup())
+	controlMatch := configured.ControlGroup().MatchesActual(incoming.ControlGroup())
+	shiftMatch := configured.ShiftGroup().MatchesActual(incoming.ShiftGroup())
+	metaMatch := configured.MetaGroup().MatchesActual(incoming.MetaGroup())
+
+	return altMatch && shiftMatch && metaMatch && controlMatch
+}
+
+type KeyModifierGroup struct {
+	Either bool
+	Left   bool
+	Right  bool
+}
+
+func (k KeyModifierGroup) MatchesActual(a KeyModifierGroup) bool {
+	// Even if either is set to false, it should be OK if left OR right is pressed.
+	eitherPass := k.Either == a.Either || (k.Either == false && (a.Left || a.Right))
+	// If Left is set to false, Either is still fine on the actual because it can be set by right.
+	leftMatch := k.Left == a.Left || (k.Left == false && a.Either)
+	// If Right is set to false, Either is still fine on the actual because it will be true if left key is pressed.
+	rightMatch := k.Right == a.Right || (k.Right == false && a.Either)
+	return eitherPass && leftMatch && rightMatch
 }
 
 type KeyModifier int
@@ -36,19 +57,54 @@ func (k KeyModifier) AltRight() bool {
 	return int(k)&KeyModifierCommandAltRight == KeyModifierCommandAltRight
 }
 func (k KeyModifier) Alt() bool { return int(k)&KeyModifierCommandAlt == KeyModifierCommandAlt }
+
+func (k KeyModifier) AltGroup() KeyModifierGroup {
+	return KeyModifierGroup{
+		Either: k.Alt(),
+		Left:   k.AltLeft(),
+		Right:  k.AltRight(),
+	}
+}
+
 func (k KeyModifier) ControlLeft() bool {
 	return int(k)&KeyModifierControlLeft == KeyModifierControlLeft
 }
 func (k KeyModifier) ControlRight() bool {
 	return int(k)&KeyModifierControlRight == KeyModifierControlRight
 }
-func (k KeyModifier) Control() bool    { return int(k)&KeyModifierControl == KeyModifierControl }
-func (k KeyModifier) MetaLeft() bool   { return int(k)&KeyModifierMetaLeft == KeyModifierMetaLeft }
-func (k KeyModifier) MetaRight() bool  { return int(k)&KeyModifierMetaRight == KeyModifierMetaRight }
-func (k KeyModifier) Meta() bool       { return int(k)&KeyModifierMeta == KeyModifierMeta }
+func (k KeyModifier) Control() bool { return int(k)&KeyModifierControl == KeyModifierControl }
+
+func (k KeyModifier) ControlGroup() KeyModifierGroup {
+	return KeyModifierGroup{
+		Either: k.Control(),
+		Left:   k.ControlLeft(),
+		Right:  k.ControlRight(),
+	}
+}
+
+func (k KeyModifier) MetaLeft() bool  { return int(k)&KeyModifierMetaLeft == KeyModifierMetaLeft }
+func (k KeyModifier) MetaRight() bool { return int(k)&KeyModifierMetaRight == KeyModifierMetaRight }
+func (k KeyModifier) Meta() bool      { return int(k)&KeyModifierMeta == KeyModifierMeta }
+
+func (k KeyModifier) MetaGroup() KeyModifierGroup {
+	return KeyModifierGroup{
+		Either: k.Meta(),
+		Left:   k.MetaLeft(),
+		Right:  k.MetaRight(),
+	}
+}
+
 func (k KeyModifier) ShiftLeft() bool  { return int(k)&KeyModifierShiftLeft == KeyModifierShiftLeft }
 func (k KeyModifier) ShiftRight() bool { return int(k)&KeyModifierShiftRight == KeyModifierShiftRight }
 func (k KeyModifier) Shift() bool      { return int(k)&KeyModifierShift == KeyModifierShift }
+
+func (k KeyModifier) ShiftGroup() KeyModifierGroup {
+	return KeyModifierGroup{
+		Either: k.Shift(),
+		Left:   k.ShiftLeft(),
+		Right:  k.ShiftRight(),
+	}
+}
 
 // generate this base formatted code from: https://play.golang.org/p/CukMdzwdU0P
 const (
