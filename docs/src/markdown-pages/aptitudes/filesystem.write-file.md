@@ -2,4 +2,4 @@
 name: "Write File"
 links_js: "writeFile"
 ---
-Creates a file at the specified path and allows you to write to that file.
+Writes (overwrites or appends) data to the specified file with specific permissions. New file will be created if file not exist.

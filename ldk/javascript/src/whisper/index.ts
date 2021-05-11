@@ -51,7 +51,7 @@ export enum WhisperComponentType {
    */
   Select = 'select',
   /**
-   * The text input field allows the user to provide an email address.
+   * The text input field allows the user to provide a telephone number.
    */
   Telephone = 'telephone',
   /**

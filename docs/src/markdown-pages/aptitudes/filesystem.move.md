@@ -2,4 +2,4 @@
 name: "Move"
 links_js: "move"
 ---
-Move a file or directory.
+Moves a file from one location to another.
