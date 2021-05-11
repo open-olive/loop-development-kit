@@ -214,9 +214,11 @@ export function writeFile({
   writeOperation,
   writeMode,
 }: WriteFileParams): Promise<void> {
+  // converting to a simplified array to satisfy sidekick contract as goja has major issues with regular Uint8Array
+  const simplifiedArray = [...data];
   return promisifyWithFourParams(
     path,
-    [...data],
+    simplifiedArray,
     writeOperation,
     writeMode,
     oliveHelps.filesystem.writeFile,
