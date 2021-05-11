@@ -1,5 +1,5 @@
 ---
-name: "Stream Changes"
-links_node: "streamClipboard"
+name: "Listen"
+links_js: "listen"
 ---
 Receive messages whenever the clipboard contents change.

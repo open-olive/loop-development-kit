@@ -65,8 +65,14 @@ const mapToHttpResponse = (response: OliveHelps.HTTPResponse) => ({
 });
 
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
+  const bodyData = (request.body) ? [...request.body] : undefined;
   return promisifyWithMapper(
-    request,
+    {
+      body: bodyData,
+      headers: request.headers,
+      method: request.method,
+      url: request.url,
+    },
     mapToHttpResponse,
     oliveHelps.network.httpRequest,
   );

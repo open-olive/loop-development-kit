@@ -32,7 +32,7 @@ describe('Network', () => {
         headers: expectedResponse.headers,
       };
       mocked(oliveHelps.network.httpRequest).mockImplementation((_request, callback) => {
-        callback(oliveHelpsResponse);
+        callback(undefined, oliveHelpsResponse);
       });
 
       const actual = network.httpRequest(request);

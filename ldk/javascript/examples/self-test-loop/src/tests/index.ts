@@ -11,6 +11,8 @@ import {
   filesystem,
 } from '@oliveai/ldk';
 
+import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const string = 'Im in yr loop, writing to yr clipboard';
@@ -252,12 +254,18 @@ export const createAndDeleteFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const filePath = './test.txt';
     const writeMode = 0o755;
+
     network
       .encode('some text')
       .then((encodedValue) => {
         setTimeout(() => {
           filesystem
-            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile({
+              path: filePath,
+              data: encodedValue,
+              writeOperation: filesystem.WriteOperation.overwrite,
+              writeMode,
+            })
             .then(() => {
               filesystem
                 .remove(filePath)
@@ -294,7 +302,12 @@ export const updateAndReadFile = (): Promise<boolean> =>
         .encode(testString)
         .then((encodedValue) => {
           filesystem
-            .writeFile(filePath, encodedValue, filesystem.WriteOperation.overwrite, writeMode)
+            .writeFile({
+              path: filePath,
+              data: encodedValue,
+              writeOperation: filesystem.WriteOperation.overwrite,
+              writeMode,
+            })
             .then(() => {
               console.debug('Write successful');
               console.debug(encodedValue);
@@ -302,6 +315,7 @@ export const updateAndReadFile = (): Promise<boolean> =>
               filesystem
                 .readFile(filePath)
                 .then((readEncodedValue) => {
+                  console.debug(readEncodedValue);
                   network
                     .decode(readEncodedValue)
                     .then((decodedText) => {
@@ -335,27 +349,106 @@ export const updateAndReadFile = (): Promise<boolean> =>
 
 export const listenFile = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const filePath = './test_listen.txt';
+    const filePath = './test_listenFile.txt';
     const writeMode = 0o755;
     console.info('listening to file changes');
+    let listenFileCancelable: Cancellable;
+
+    setTimeout(() => {
+      reject(new Error('ListenFile test didnt passed within allowed timeframe'));
+    }, 3000);
 
     filesystem
-      .listenFile(filePath, (response) => {
-        if (response) {
-          console.info(response.action);
-          console.info(`${response.info.modTime}`);
-          resolve(true);
-        } else {
-          reject(new Error('File info is not received'));
-        }
+      .writeFile({
+        path: filePath,
+        data: new Uint8Array(),
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode,
       })
       .then(() => {
+        console.debug('Write file for listening successful');
+        filesystem
+          .listenFile(filePath, async (response) => {
+            if (response) {
+              console.debug(`Received file action: ${response.action}`);
+              console.debug(`${response.info.modTime}`);
+
+              listenFileCancelable.cancel();
+              await filesystem.remove(filePath);
+              resolve(true);
+            } else {
+              reject(new Error('File info is not received'));
+            }
+          })
+          .then((cancellable) => {
+            listenFileCancelable = cancellable;
+            console.debug('writing file we listen to');
+            network
+              .encode('Listen to file text')
+              .then((encodedValue) => {
+                filesystem
+                  .writeFile({
+                    path: filePath,
+                    data: encodedValue,
+                    writeOperation: filesystem.WriteOperation.append,
+                    writeMode,
+                  })
+                  .catch((error) => {
+                    reject(error);
+                  });
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+
+export const listenDir = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const filePath = './test_listenDir.txt';
+    const dirPath = './';
+    const writeMode = 0o755;
+    let listenDirCancellable: Cancellable;
+    console.info('listening to directory changes');
+
+    setTimeout(() => {
+      reject(new Error('ListenDir test didnt passed within allowed timeframe'));
+    }, 3000);
+
+    console.debug('Write file for listening successful');
+    filesystem
+      .listenDir(dirPath, async (response) => {
+        if (response) {
+          console.info(`Received file action in directory: ${response.action}`);
+          console.info(`${response.info.modTime}`);
+
+          listenDirCancellable.cancel();
+          await filesystem.remove(filePath);
+          resolve(true);
+        } else {
+          reject(new Error('File action is not received'));
+        }
+      })
+      .then((cancellable) => {
+        listenDirCancellable = cancellable;
         console.info('writing file we listen to');
         network
-          .encode('some text')
+          .encode('Listen to dir text')
           .then((encodedValue) => {
             filesystem
-              .writeFile(filePath, encodedValue, filesystem.WriteOperation.append, writeMode)
+              .writeFile({
+                path: filePath,
+                data: encodedValue,
+                writeOperation: filesystem.WriteOperation.overwrite,
+                writeMode,
+              })
               .catch((error) => {
                 reject(error);
               });
@@ -382,7 +475,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
-        return network.decode(response.data);
+        return network.decode(response.body);
       })
       .then((decodedValue) => {
         const { results } = JSON.parse(decodedValue);
@@ -491,14 +584,18 @@ export const buttonWhisper = (): Promise<boolean> =>
           direction: whisper.Direction.Horizontal,
           children: [
             {
+              buttonStyle: whisper.ButtonStyle.Secondary,
               label: `Don't click me`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
             },
             {
+              buttonStyle: whisper.ButtonStyle.Text,
               label: `Me neither`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Small,
             },
             {
               label: `Click me`,
@@ -573,6 +670,42 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     whisper.create(config);
   });
 
+export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Default Values Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          label: 'Select a color',
+          options: ['green', 'red', 'blue'],
+          onSelect: (selected) => {
+            console.log(`${selected} has been selected!`);
+          },
+          type: whisper.WhisperComponentType.Select,
+          selected: 2,
+          tooltip: 'Select a color tooltip',
+        },
+        {
+          onSelect: (selected) => {
+            console.log(`${selected} has been selected!`);
+          },
+          options: ['dog', 'cat', 'snake'],
+          selected: 1,
+          type: whisper.WhisperComponentType.RadioGroup,
+        },
+      ],
+    };
+
+    whisper.create(config).then(() => {
+      setTimeout(() => {
+        resolve(true);
+      }, 5000);
+    });
+  });
+
 export const numberInputs = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const config: whisper.NewWhisper = {
@@ -623,7 +756,8 @@ export const numberInputs = (): Promise<boolean> =>
 
 export const networkHTTPS = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
+    const url =
+      'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
 
     setTimeout(() => {
       reject(new Error('Network http request didnt finished in the appropriate timespan.'));
@@ -650,7 +784,7 @@ export const networkHTTPS = (): Promise<boolean> =>
 
 export const networkHTTP = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const url = `http://catalog.data.gov/api/3/`;
+    const url = 'http://catalog.data.gov/api/3/';
     setTimeout(() => {
       reject(new Error('Network http request didnt finished in the appropriate timespan.'));
     }, 5000);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface LDKLinks {
-  node: string;
+  js: string;
 }
 
 export type LDKLinkActive = Partial<LDKLinks>;

@@ -27,7 +27,7 @@ export const pageQuery = graphql`
           html
           frontmatter {
             name
-            links_node
+            links_js
           }
         }
       }
@@ -35,7 +35,7 @@ export const pageQuery = graphql`
         html
         frontmatter {
           name
-          links_node
+          links_js
         }
       }
     }

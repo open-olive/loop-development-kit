@@ -22,6 +22,7 @@ import {
   processStream,
   processQuery,
   simpleFormWhisper,
+  initialValueSelectAndRadioWhispers,
   streamCursorPosition,
   testClickableWhisper,
   vaultReadWrite,
@@ -32,6 +33,7 @@ import {
   uiGlobalSearchTest,
   updateAndReadFile,
   listenFile,
+  listenDir,
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -170,6 +172,12 @@ const testConfig: { [key: string]: TestGroup } = {
       10000,
       `Enter 'Stonks' into the field`,
     ),
+    new LoopTest(
+      'Whisper Aptitude - Initial Value for Select and Radio',
+      initialValueSelectAndRadioWhispers,
+      10000,
+      `No action required`, 
+    )
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
@@ -215,6 +223,12 @@ const testConfig: { [key: string]: TestGroup } = {
       listenFile,
       10000,
       'Monitoring for file changes...',
+    ),
+    new LoopTest(
+      'File Aptitude - Listen Dir',
+      listenDir,
+      10000,
+      'Monitoring for dir change...',
     ),
   ]),
 };
