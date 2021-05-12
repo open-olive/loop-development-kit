@@ -74,24 +74,25 @@ func TestHotKeyMatch(t *testing.T) {
 		name      string
 	}{
 		{
-			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt},
-			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt},
-			expected:  true,
-		},
-		{
 			name:      "alt vs alt+shift",
 			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft},
 			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierShift},
 			expected:  false,
 		},
 		{
-			name:      "alt+shift vs alt",
-			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierShift | ldk.KeyModifierCommandAltLeft},
+			name:      "do not permit if missing",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierShift},
+			expected:  false,
+		},
+		{
+			name:      "do not permit if superset is pressed",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft | ldk.KeyModifierShift | ldk.KeyModifierShiftLeft},
 			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt},
 			expected:  false,
 		},
 		{
-			name:      "altleft vs altright",
+			name:      "altright vs altleft",
 			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft},
 			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltRight},
 			expected:  false,
@@ -103,7 +104,7 @@ func TestHotKeyMatch(t *testing.T) {
 			expected:  true,
 		},
 		{
-			name:      "alt vs alt+shift",
+			name:      "altleft vs altright",
 			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltRight},
 			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltLeft},
 			expected:  false,

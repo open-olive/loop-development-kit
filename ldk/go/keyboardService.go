@@ -45,7 +45,11 @@ func (k KeyModifierGroup) MatchesActual(a KeyModifierGroup) bool {
 	leftMatch := k.Left == a.Left || (k.Left == false && a.Either)
 	// If Right is set to false, Either is still fine on the actual because it will be true if left key is pressed.
 	rightMatch := k.Right == a.Right || (k.Right == false && a.Either)
-	return eitherPass && leftMatch && rightMatch
+	excludeAllMatch := true
+	if k.Either == k.Left == k.Right == false {
+		excludeAllMatch = !(a.Left || a.Either || a.Right)
+	}
+	return eitherPass && leftMatch && rightMatch && excludeAllMatch
 }
 
 type KeyModifier int
