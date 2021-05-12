@@ -40,13 +40,13 @@ type KeyModifierGroup struct {
 
 func (k KeyModifierGroup) MatchesActual(a KeyModifierGroup) bool {
 	// Even if either is set to false, it should be OK if left OR right is pressed.
-	eitherPass := k.Either == a.Either || (k.Either == false && (a.Left || a.Right))
+	eitherPass := k.Either == a.Either || (!k.Either && (a.Left || a.Right))
 	// If Left is set to false, Either is still fine on the actual because it can be set by right.
-	leftMatch := k.Left == a.Left || (k.Left == false && a.Either)
+	leftMatch := k.Left == a.Left || (!k.Left && a.Either)
 	// If Right is set to false, Either is still fine on the actual because it will be true if left key is pressed.
-	rightMatch := k.Right == a.Right || (k.Right == false && a.Either)
+	rightMatch := k.Right == a.Right || (!k.Right && a.Either)
 	excludeAllMatch := true
-	if k.Either == k.Left == k.Right == false {
+	if !k.Either == k.Left == k.Right {
 		excludeAllMatch = !(a.Left || a.Either || a.Right)
 	}
 	return eitherPass && leftMatch && rightMatch && excludeAllMatch
