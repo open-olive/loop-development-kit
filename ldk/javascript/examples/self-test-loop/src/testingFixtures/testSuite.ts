@@ -1,5 +1,5 @@
 import { keyboard, whisper } from '@oliveai/ldk';
-import { Cancellable } from '../../../../dist/cancellable';
+import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 import { LoopTest } from './loopTest';
 
