@@ -1,14 +1,10 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
-import { Sendable } from '../cancellable';
 import * as mapper from '../utils/mapper';
 
 /**
  * The HTTP Request configuration.
  */
-import {
-  promisifyMapped,
-  // promisifyMappedListenableWithParam,
-} from '../promisify';
+import { promisifyMappedWithParam } from '../promisify';
 
 export interface HTTPRequest {
   body?: Uint8Array;
@@ -30,6 +26,30 @@ export interface HTTPResponse {
    */
   body: Uint8Array;
   headers: Record<string, string[]>;
+}
+
+export interface ConnectionOptions {
+  useCompression?: boolean;
+  useSSL?: boolean;
+  subprotocols?: Array<string>;
+}
+
+export type CallbackError = (error: Error | undefined) => void;
+
+export interface SocketConfig {
+  options?: ConnectionOptions;
+  headers?: Record<string, string[]>;
+  onTextMessage?: (message: string) => void;
+  onBinaryMessage?: (data: Uint8Array) => void;
+  onConnectError?: CallbackError;
+  onDisconnected?: CallbackError;
+}
+
+export interface Socket {
+  connect(socketConfig: SocketConfig, callback: CallbackError): void;
+  sendText(text: string): void;
+  sendBinary(data: Uint8Array): void;
+  close(): void;
 }
 
 /**
@@ -63,18 +83,14 @@ export interface Network {
   /**
    *
    * @param url websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
-   * @param callback function to call with response message
    * @returns a promise with sendable function
    */
-  // webSocket(
-  //   url: string,
-  //   callback: (response: Uint8Array) => void,
-  // ): Promise<Sendable>;
+  webSocket(url: string): Promise<Socket>;
 }
 
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  const bodyData = (request.body) ? [...request.body] : undefined;
-  return promisifyMapped(
+  const bodyData = request.body ? [...request.body] : undefined;
+  return promisifyMappedWithParam(
     {
       body: bodyData,
       headers: request.headers,
@@ -108,9 +124,6 @@ export function decode(encodedValue: Uint8Array): Promise<string> {
   });
 }
 
-// export function webSocket(
-//   url: string,
-//   callback: (response: Uint8Array) => void
-// ): Promise<Sendable> {
-//   return promisifyMappedListenableWithParam(url, callback, mapper.mapToUint8Array, oliveHelps.network.webSocket);
-// }
+export function webSocket(url: string): Promise<Socket> {
+  return promisifyMappedWithParam(url, mapper.mapToSocket, oliveHelps.network.webSocket);
+}

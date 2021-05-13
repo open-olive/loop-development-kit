@@ -15,6 +15,9 @@
       "network": {
         "urlDomains": [
           {
+            "value": "html5rocks.websocket.org"
+          },
+          {
             "value": "api.fda.gov"
           },
           {

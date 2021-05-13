@@ -11,7 +11,7 @@ import {
   filesystem,
 } from '@oliveai/ldk';
 
-import { Cancellable } from '@oliveai/ldk/dist/cancellable'
+import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -372,9 +372,9 @@ export const listenFile = (): Promise<boolean> =>
             if (response) {
               console.debug('Received file action: ' + response.action);
               console.debug(`${response.info.modTime}`);
-              
+
               listenFileCancelable.cancel();
-              await filesystem.remove(filePath);              
+              await filesystem.remove(filePath);
               resolve(true);
             } else {
               reject(new Error('File info is not received'));
@@ -382,7 +382,7 @@ export const listenFile = (): Promise<boolean> =>
           })
           .then((cancellable) => {
             listenFileCancelable = cancellable;
-            console.debug('writing file we listen to');            
+            console.debug('writing file we listen to');
             network
               .encode('Listen to file text')
               .then((encodedValue) => {
@@ -407,7 +407,7 @@ export const listenFile = (): Promise<boolean> =>
       })
       .catch((error) => {
         reject(error);
-      });;
+      });
   });
 
 export const listenDir = (): Promise<boolean> =>
@@ -428,7 +428,7 @@ export const listenDir = (): Promise<boolean> =>
         if (response) {
           console.info(`Received file action in directory: ${response.action}`);
           console.info(`${response.info.modTime}`);
-          
+
           listenDirCancellable.cancel();
           await filesystem.remove(filePath);
           resolve(true);
@@ -708,7 +708,8 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
 
 export const networkHTTPS = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const url = 'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
+    const url =
+      'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
 
     setTimeout(() => {
       reject(new Error('Network http request didnt finished in the appropriate timespan.'));
@@ -727,6 +728,7 @@ export const networkHTTPS = (): Promise<boolean> =>
         }
       })
       .catch((e) => {
+        console.debug(JSON.stringify(e));
         reject(e);
       });
   });
@@ -754,27 +756,78 @@ export const networkHTTP = (): Promise<boolean> =>
 export const networkWebSocket = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = 'ws://html5rocks.websocket.org/echo';
-    const data = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
+    const testData = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
+    const testText = 'some text';
+    let textTestPassed = false;
+    let binaryTestPassed = false;
 
     setTimeout(() => {
       reject(new Error('Network websocket test didnt finished in the appropriate timespan.'));
-    }, 25000);
+    }, 15000);
 
     network
-      .webSocket(url, (response) => {
-        // receiving response message
-        if (response) {
-            console.info('Received binary response from the webSocket');
-            console.info(JSON.stringify(response));
-            resolve(true);
-        } else {
-          reject(new Error('Received response is empty'));
-        }
+      .webSocket(url)
+      .then((socket: network.Socket) => {
+        console.debug('Websocket is initialized');
+        const socketConfig: network.SocketConfig = {
+          // options: {
+          //   useCompression: true,
+          //   useSSL: true,
+          // },
+          onBinaryMessage: (receivedData: Uint8Array) => {
+            const receivedDataString = JSON.stringify(receivedData);
+            const testDataString = JSON.stringify(testData);
+            console.debug(`Received binary data: ${receivedDataString}`);
+            if (testDataString === receivedDataString) {
+              binaryTestPassed = true;
+              if (textTestPassed) {
+                console.debug(`Closing websocket`);
+                socket.close();
+                setTimeout(() => {                  
+                  // waiting 1 sec to allow callback to finish
+                  resolve(true);
+                }, 1000);
+              }
+            }
+          },
+          onTextMessage: (message: string) => {
+            console.debug(`Received text message: ${message}`);
+            if (message === testText) {
+              textTestPassed = true;
+              if (binaryTestPassed) {
+                console.debug(`Closing websocket`);
+                socket.close();
+                setTimeout(() => {                  
+                  // waiting 1 sec to allow callback to finish
+                  resolve(true);
+                }, 1000);
+              }
+            }
+          },
+          onConnectError: (error: Error) => {
+            if (error != null) {
+              console.debug(`Received on connect error: ${JSON.stringify(error)}`);
+            }
+          },
+          onDisconnected: (error: Error) => {
+            console.debug(`Received on disconnected: ${JSON.stringify(error)}`);
+          },
+        };
+
+        console.debug('Connecting to websocket');
+        socket.connect(socketConfig, (error: Error) => {
+          if (error) {
+            console.debug(`Connect failed with error: ${JSON.stringify(error)}`);
+          } else {
+            console.debug('Sending binary data to websocket');
+            socket.sendBinary(testData);
+            console.debug('Sending text to websocket');
+            socket.sendText(testText);
+          }
+        });
       })
-      .then((sendable) => {
-        sendable.send(data)
-      })
-      .catch((error) => {
+      .catch((error: Error) => {
+        console.debug(JSON.stringify(error));
         reject(error);
       });
   });

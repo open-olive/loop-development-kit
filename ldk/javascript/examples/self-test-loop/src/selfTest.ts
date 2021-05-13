@@ -101,8 +101,8 @@ const testConfig: { [key: string]: TestGroup } = {
     new LoopTest(
       'Network Aptitude - WebSocket test',
       networkWebSocket,
-      25000,
-      'Calling a WebSocket. Should pass',
+      15000,
+      'Sending/receiving data to websocket should pass.',
     ),
   ]),
   process: new TestGroup('Process Aptitude', [

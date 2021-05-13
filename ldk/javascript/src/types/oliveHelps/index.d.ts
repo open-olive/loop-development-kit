@@ -4,15 +4,10 @@ declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
-  
   interface Cancellable {
     cancel(): void;
   }
 
-  interface Sendable extends Cancellable {
-    send(mesasge: Uint8Array): void;
-  }
-  
   type Callback<T> = (error: Error | undefined, value: T) => void;
 
   type ReturnCallback = (obj: Cancellable) => void;
@@ -44,7 +39,6 @@ declare namespace OliveHelps {
   ) => void;
 
   interface Aptitudes {
-    oliveHelps: { httpRequest: jest.Mock<any, any>; webSocketText: jest.Mock<any, any>; webSocketBinary: jest.Mock<any, any>; };
     clipboard: Clipboard;
     whisper: WhisperService;
     filesystem: Filesystem;
@@ -144,7 +138,29 @@ declare namespace OliveHelps {
   //-- Network
   interface Network {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
-    webSocket: ListenableWithParam<string, ArrayBuffer, Sendable>;
+    webSocket: ReadableWithParam<string, Socket>;
+  }
+
+  interface ConnectionOptions {
+    useCompression?: boolean;
+    useSSL?: boolean;
+    subprotocols?: Array<string>;
+  }
+
+  interface SocketConfig {
+    options?: ConnectionOptions;
+    headers?: Record<string, string[]>;
+    onTextMessage?: (message: string) => void;
+    onBinaryMessage?: (data: ArrayBuffer) => void;
+    onConnectError?: (error: Error | undefined) => void;
+    onDisconnected?: (error: Error | undefined) => void;
+  }
+
+  interface Socket {
+    connect(socketConfig: SocketConfig, callback: (error: Error | undefined) => void): void;
+    sendText(text: string): void;
+    sendBinary(data: Array<number>): void;
+    close(): void;
   }
 
   interface HTTPRequest {
@@ -272,7 +288,7 @@ declare namespace OliveHelps {
   interface Whisper {
     id: string;
     close(cb: (err: string) => void): void;
-    // update(whisper: NewWhisper, cb: (err: string) => void): void // TODO: Implement 
+    // update(whisper: NewWhisper, cb: (err: string) => void): void // TODO: Implement
   }
   interface Component<T extends WhisperComponentType> {
     id?: string;
@@ -409,7 +425,6 @@ declare namespace OliveHelps {
     components: Array<Components>;
     onClose: () => void;
   }
-
 
   interface FileInfo {
     name: string;
