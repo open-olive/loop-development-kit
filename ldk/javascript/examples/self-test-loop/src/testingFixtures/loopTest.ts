@@ -51,6 +51,7 @@ export class LoopTest {
   private async testWrapper(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
+        var prompt: whisper.Whisper;
         whisper.create({
           label: this.id,
           onClose: () => {
@@ -62,21 +63,21 @@ export class LoopTest {
               type: whisper.WhisperComponentType.Markdown,
             },
           ],
-        });
+        }).then((whisper: whisper.Whisper) => prompt = whisper);
 
         this.timeout = setTimeout(() => {
-          // prompt.stop();
+          prompt.close(error => console.error(error));
           reject(new Error('Timeout - Too much time has passed'));
         }, this.timeoutTime);
         this.methodToExecute()
           .then((response) => {
             clearTimeout(this.timeout);
-            // prompt.stop();
+            prompt.close(error => console.error(error));
             resolve(response);
           })
           .catch((error) => {
             clearTimeout(this.timeout);
-            // prompt.stop();
+            prompt.close(error => console.error(error));
             reject(error);
           });
       } catch (e) {
