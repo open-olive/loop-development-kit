@@ -381,9 +381,9 @@ export const listenFile = (): Promise<boolean> =>
             if (response) {
               console.debug('Received file action: ' + response.action);
               console.debug(`${response.info.modTime}`);
-              
+
               listenFileCancelable.cancel();
-              await filesystem.remove(filePath);              
+              await filesystem.remove(filePath);
               resolve(true);
             } else {
               reject(new Error('File info is not received'));
@@ -391,7 +391,7 @@ export const listenFile = (): Promise<boolean> =>
           })
           .then((cancellable: Cancellable) => {
             listenFileCancelable = cancellable;
-            console.debug('writing file we listen to');            
+            console.debug('writing file we listen to');
             network
               .encode('Listen to file text')
               .then((encodedValue) => {
@@ -437,7 +437,7 @@ export const listenDir = (): Promise<boolean> =>
         if (response) {
           console.info(`Received file action in directory: ${response.action}`);
           console.info(`${response.info.modTime}`);
-          
+
           listenDirCancellable.cancel();
           await filesystem.remove(filePath);
           resolve(true);
@@ -685,6 +685,53 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     whisper.create(config).then((whisper: whisper.Whisper) => form = whisper);
   });
 
+export const numberInputs = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Number Test',
+      components: [
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'No min, max 10, step 1',
+          max: 10,
+          step: 1,
+          tooltip: 'A tooltip',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'No optional fields',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'All optional fields',
+          value: 0,
+          min: 0,
+          max: 10,
+          step: 1,
+          tooltip: 'A tooltip',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Telephone,
+          label: 'label',
+          onChange: (value) => console.log(`Telephone is changed: ${value}`),
+          tooltip: 'tooltip',
+          value: '09123456789',
+        },
+      ],
+      onClose: () => {
+        console.log('close');
+      },
+    };
+    whisper.create(config).then(() => {
+      setTimeout(() => {
+        resolve(true);
+      }, 5000);
+    });
+  });
+  
 export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const config: whisper.NewWhisper = {

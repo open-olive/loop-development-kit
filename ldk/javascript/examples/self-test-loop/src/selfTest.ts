@@ -21,6 +21,7 @@ import {
   processStream,
   processQuery,
   simpleFormWhisper,
+  numberInputs,
   initialValueSelectAndRadioWhispers,
   streamCursorPosition,
   testClickableWhisper,
@@ -164,6 +165,12 @@ const testConfig: { [key: string]: TestGroup } = {
       simpleFormWhisper,
       10000,
       `Enter 'Stonks' into the field`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Number Inputs',
+      numberInputs,
+      10000,
+      `No action required`
     ),
     new LoopTest(
       'Whisper Aptitude - Initial Value for Select and Radio',
