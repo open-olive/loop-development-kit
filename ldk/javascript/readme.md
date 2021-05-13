@@ -72,9 +72,9 @@ Any domain URL reference. Supports domain wildcards.
 Examples
 | Value |
 |-----------|
-"*.google.com"
-"github.com/"
-"en.wikipedia.org"
+| "*.google.com" |
+| "github.com/" |
+| "en.wikipedia.org" |
 <br>
 
 #### Filesystem Permission:
@@ -93,8 +93,8 @@ Any filesystem path. Supports path wildcards.
 Examples
 | Value |
 |-----------|
-"/some/path/something.txt"
-"/Users/ldkuser/Desktop/*"
+| "/some/path/something.txt" |
+| "/Users/ldkuser/Desktop/*" |
 <br>
 
 #### Aptitude Permission:
