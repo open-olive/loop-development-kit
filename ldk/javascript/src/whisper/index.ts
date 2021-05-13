@@ -101,9 +101,16 @@ export enum Urgency {
 
 export interface Whisper {
   id: string;
-  close(cb:(err: string) => void): void;
+  close: (cb: (err: Error | undefined) => void) => void;
   // update(whisper: NewWhisper, cb: (err: string) => void): void
 }
+
+export type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
+export type WhisperHandlerWithParam<T> = (
+  error: Error | undefined,
+  param: T,
+  whisper: Whisper,
+) => void;
 
 export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
@@ -113,7 +120,7 @@ export interface WhisperComponent<T extends WhisperComponentType> {
 export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   label: string;
-  onClick: (whisper: Whisper) => void;
+  onClick: WhisperHandler;
   size?: ButtonSize;
 };
 
@@ -121,12 +128,12 @@ export declare type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> &
   label: string;
   tooltip?: string;
   value: boolean;
-  onChange: (value: boolean, whisper: Whisper) => void;
+  onChange: WhisperHandlerWithParam<boolean>;
 };
 
 export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
   label: string;
-  onChange: (value: string, whisper: Whisper) => void;
+  onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
 };
@@ -134,7 +141,7 @@ export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
 export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
   href?: string;
   text: string;
-  onClick?: (whisper: Whisper) => void;
+  onClick?: WhisperHandler;
   style?: Urgency;
   textAlign?: TextAlign;
 };
@@ -159,7 +166,7 @@ export declare type Message = WhisperComponent<WhisperComponentType.Message> & {
 
 export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
   label: string;
-  onChange: (value: number, whisper: Whisper) => void;
+  onChange: WhisperHandlerWithParam<number>;
   value?: number;
   max?: number;
   min?: number;
@@ -169,13 +176,13 @@ export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> 
 
 export declare type Password = WhisperComponent<WhisperComponentType.Password> & {
   label: string;
-  onChange: (value: string, whisper: Whisper) => void;
+  onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
 };
 
 export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
-  onSelect: (value: number, whisper: Whisper) => void;
+  onSelect: WhisperHandlerWithParam<number>;
   options: string[];
   selected?: number;
 };
@@ -183,14 +190,14 @@ export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGrou
 export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
   label: string;
   options: string[];
-  onSelect: (value: number, whisper: Whisper) => void;
+  onSelect: WhisperHandlerWithParam<number>;
   selected?: number;
   tooltip?: string;
 };
 
 export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
   label: string;
-  onChange: (value: string, whisper: Whisper) => void;
+  onChange: WhisperHandlerWithParam<string>;
   // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
@@ -198,7 +205,7 @@ export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone>
 
 export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
   label: string;
-  onChange: (value: string, whisper: Whisper) => void;
+  onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
 };

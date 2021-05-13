@@ -23,14 +23,16 @@ describe('Whisper', () => {
       };
 
       const expected: whisper.Whisper = {
-        close: () => {
-          console.log();
+        close: (c: (r: Error | undefined) => void) => {
+          console.log(c);
         },
         id: '1',
       };
 
       mocked(oliveHelps.whisper.create).mockImplementation((_whisper, callback) =>
-        callback(undefined, expected),
+        // TS isn't recognizing compatibility b/c readable requires a second undefined param.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        callback(undefined, expected as any),
       );
 
       const actual = whisper.create(newWhisper);
