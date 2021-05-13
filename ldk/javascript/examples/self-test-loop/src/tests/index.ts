@@ -36,11 +36,13 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
 
 export const clipboardStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var clipboardStream: Cancellable;
     clipboard.listen(true, (response) => {
       if (response === 'LDKThxBai') {
+        clipboardStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => clipboardStream = cancellable);
   });
 
 export const cursorPosition = (): Promise<boolean> =>
@@ -62,28 +64,31 @@ export const cursorPosition = (): Promise<boolean> =>
 export const streamCursorPosition = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     let i = 0;
-    const cursorPoritionStream = cursor.listenPosition((response) => {
+    var cursorPositionStream: Cancellable;
+    cursor.listenPosition((response) => {
       if (typeof response !== 'undefined') {
         console.debug(`Cursor Stream X - ${response.x}`);
         console.debug(`Cursor Stream Y - ${response.y}`);
         i += 1;
 
         if (i >= 5) {
-          // cursorPoritionStream.stop();
+          cursorPositionStream.cancel();
           resolve(true);
         }
       }
-    });
+    }).then((cancellable: Cancellable) => cursorPositionStream = cancellable);
   });
 
 export const listenActiveWindowTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var activeWindowStream: Cancellable;
     window.listenActiveWindow((response) => {
       if (response) {
         console.debug('Window become active', 'response', response.title);
+        activeWindowStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => activeWindowStream = cancellable);
   });
 
 export const activeWindowTest = (): Promise<boolean> =>
@@ -129,14 +134,17 @@ export const processQuery = (): Promise<boolean> =>
 
 export const processStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var processStream: Cancellable;
     process.listenAll((response) => {
       console.debug(response.processInfo.pid);
+      processStream.cancel();
       resolve(true);
-    });
+    }).then((cancellable: Cancellable) => processStream = cancellable);
   });
 
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     whisper.create({
       label: 'Internal Link Test',
       onClose: () => {
@@ -187,13 +195,14 @@ export const testClickableWhisper = (): Promise<boolean> =>
           type: whisper.WhisperComponentType.Link,
           textAlign: whisper.TextAlign.Left,
           onClick: () => {
+            form.close(error => console.log(error));
             resolve(true);
           },
           text: `Option 5`,
           style: whisper.Urgency.None,
         },
       ],
-    });
+    }).then((whisper: whisper.Whisper) => form = whisper);
   });
 
 export const vaultReadWrite = (): Promise<boolean> =>
@@ -205,7 +214,7 @@ export const vaultReadWrite = (): Promise<boolean> =>
         .then((exists) => {
           console.debug(`Value exists in vault: ${exists}`);
           if (!exists) {
-            reject(new Error('Key does not exist in storge'));
+            reject(new Error('Key does not exist in storage'));
             return null;
           }
 
@@ -380,7 +389,7 @@ export const listenFile = (): Promise<boolean> =>
               reject(new Error('File info is not received'));
             }
           })
-          .then((cancellable) => {
+          .then((cancellable: Cancellable) => {
             listenFileCancelable = cancellable;
             console.debug('writing file we listen to');            
             network
@@ -419,7 +428,7 @@ export const listenDir = (): Promise<boolean> =>
     console.info('listening to directory changes');
 
     setTimeout(() => {
-      reject(new Error('ListenDir test didnt passed within allowed timeframe'));
+      reject(new Error('ListenDir test did not pass within allowed timeframe'));
     }, 3000);
 
     console.debug('Write file for listening successful');
@@ -469,9 +478,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
     network
       .httpRequest({
         url,
-        method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
+        method: 'GET'
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
@@ -559,8 +566,9 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
           ],
         };
 
-        whisper.create(config).then(() => {
+        whisper.create(config).then((form: whisper.Whisper) => {
           setTimeout(() => {
+            form.close(error => console.error(error));
             resolve(true);
           }, 2000);
         });
@@ -569,6 +577,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
 
 export const buttonWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Button Test',
       onClose: () => {
@@ -599,7 +608,10 @@ export const buttonWhisper = (): Promise<boolean> =>
             },
             {
               label: `Click me`,
-              onClick: () => resolve(true),
+              onClick: () => {
+                form.close(error => console.error(error));
+                resolve(true)
+              },
               type: whisper.WhisperComponentType.Button,
             },
           ],
@@ -608,7 +620,7 @@ export const buttonWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config);
+    whisper.create(config).then((whisper: whisper.Whisper) => form = whisper);
   });
 
 export const linkWhisper = (): Promise<boolean> =>
@@ -633,8 +645,9 @@ export const linkWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config).then(() => {
+    whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
+        form.close(error => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -643,6 +656,7 @@ export const linkWhisper = (): Promise<boolean> =>
 // TODO: This requires a submit button at some point
 export const simpleFormWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Link Test',
       onClose: () => {
@@ -655,8 +669,9 @@ export const simpleFormWhisper = (): Promise<boolean> =>
         },
         {
           label: `What can't you explain?`,
-          onChange: (value) => {
+          onChange: (error, value) => {
             if (value === 'Stonks') {
+              form.close(error => console.error(error));
               resolve(true);
             }
           },
@@ -667,7 +682,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config);
+    whisper.create(config).then((whisper: whisper.Whisper) => form = whisper);
   });
 
 export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
@@ -699,8 +714,9 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config).then(() => {
+    whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
+        form.close(error => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -711,7 +727,7 @@ export const networkHTTPS = (): Promise<boolean> =>
     const url = 'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
 
     setTimeout(() => {
-      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
+      reject(new Error('Network http request did not finish in the appropriate timespan.'));
     }, 5000);
 
     network
@@ -735,7 +751,7 @@ export const networkHTTP = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = 'http://catalog.data.gov/api/3/';
     setTimeout(() => {
-      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
+      reject(new Error('Network http request did not finish in the appropriate timespan.'));
     }, 5000);
 
     network
@@ -753,22 +769,26 @@ export const networkHTTP = (): Promise<boolean> =>
 
 export const charTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var keyboardStream: Cancellable;
     keyboard.listenCharacter((char) => {
       console.debug('Character pressed', 'response', char);
       if (char === 'f' || char === 'F') {
+        keyboardStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => keyboardStream = cancellable);
   });
 
 export const charStreamTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var keyboardStream: Cancellable;
     keyboard.listenText((text) => {
       console.debug('Characters pressed', 'response', text);
       if (text === 'Olive') {
+        keyboardStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => keyboardStream = cancellable);
   });
 
 export const hotkeyTest = (): Promise<boolean> =>
@@ -778,28 +798,34 @@ export const hotkeyTest = (): Promise<boolean> =>
       control: true,
     };
 
+    var keyboardStream: Cancellable;
     keyboard.listenHotkey(hotkeys, (pressed) => {
       console.debug('Hotkey pressed', 'response', pressed);
+      keyboardStream.cancel();
       resolve(true);
-    });
+    }).then((cancellable: Cancellable) => keyboardStream = cancellable);
   });
 
 export const uiSearchTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var uiStream: Cancellable;
     ui.listenSearchbar((value) => {
       if (value.toLowerCase() === 'for life') {
+        uiStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => uiStream = cancellable);
   });
 
 export const uiGlobalSearchTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var uiStream: Cancellable;
     ui.listenGlobalSearch((value) => {
       if (value.toLowerCase() === 'for meaning') {
+        uiStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => uiStream = cancellable);
   });
 
 /*
