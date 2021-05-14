@@ -2,4 +2,4 @@
 name: "Make Directory"
 links_js: "makeDir"
 ---
-Creates a directory at the specified location
+Makes a directory at the specified location.
