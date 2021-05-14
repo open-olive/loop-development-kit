@@ -772,7 +772,6 @@ export const networkWebSocket = (): Promise<boolean> =>
         const socketConfig: network.SocketConfig = {
           // options: {
           //   useCompression: true,
-          //   useSSL: true,
           // },
           onBinaryMessage: (receivedData: Uint8Array) => {
             const receivedDataString = JSON.stringify(receivedData);

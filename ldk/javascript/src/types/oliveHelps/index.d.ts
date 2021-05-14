@@ -143,7 +143,6 @@ declare namespace OliveHelps {
 
   interface ConnectionOptions {
     useCompression?: boolean;
-    useSSL?: boolean;
     subprotocols?: Array<string>;
   }
 

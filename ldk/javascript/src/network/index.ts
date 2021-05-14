@@ -30,7 +30,6 @@ export interface HTTPResponse {
 
 export interface ConnectionOptions {
   useCompression?: boolean;
-  useSSL?: boolean;
   subprotocols?: Array<string>;
 }
 
