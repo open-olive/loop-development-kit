@@ -10,11 +10,17 @@ describe('UI', () => {
   });
 
   describe('listenSearchbar', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const callback = jest.fn();
-      ui.listenSearchbar(callback);
+      const text = 'abc';
+      mocked(oliveHelps.ui.listenSearchbar).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
+      await ui.listenSearchbar(callback);
 
-      expect(oliveHelps.ui.listenSearchbar).toHaveBeenCalledWith(callback, expect.any(Function));
+      expect(callback).toHaveBeenCalledWith(text);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {
@@ -29,11 +35,17 @@ describe('UI', () => {
   });
 
   describe('listenGlobalSearch', () => {
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const callback = jest.fn();
-      ui.listenGlobalSearch(callback);
+      const text = 'abc';
+      mocked(oliveHelps.ui.listenGlobalSearch).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
+      await ui.listenGlobalSearch(callback);
 
-      expect(oliveHelps.ui.listenGlobalSearch).toHaveBeenCalledWith(callback, expect.any(Function));
+      expect(callback).toHaveBeenCalledWith(text);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

@@ -15,7 +15,9 @@ describe('Cursor', () => {
         x: 2345,
         y: 6789,
       };
-      mocked(oliveHelps.cursor.position).mockImplementation((callback) => callback(expected));
+      mocked(oliveHelps.cursor.position).mockImplementation((callback) =>
+        callback(undefined, expected),
+      );
 
       const actual = cursor.position();
 
@@ -35,11 +37,20 @@ describe('Cursor', () => {
   });
 
   describe('listenPosition', () => {
-    it('passed in listen position callback to olive helps', () => {
+    it('passed in listen position callback to olive helps', async () => {
       const callback = jest.fn();
-      cursor.listenPosition(callback);
+      const position = {
+        x: 1,
+        y: 2,
+      };
+      mocked(oliveHelps.cursor.listenPosition).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, position);
+      });
+      await cursor.listenPosition(callback);
 
-      expect(oliveHelps.cursor.listenPosition).toHaveBeenCalledWith(callback, expect.any(Function));
+      expect(callback).toHaveBeenCalledWith(position);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

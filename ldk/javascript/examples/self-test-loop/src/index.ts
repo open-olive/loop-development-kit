@@ -6,4 +6,4 @@ async function main() {
   console.log("end");
 }
 
-main().catch((e) => console.log("something bad happend :(", e));
+main().catch((e) => console.log("something bad happened :(", e));

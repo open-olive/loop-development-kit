@@ -8,14 +8,18 @@ declare namespace OliveHelps {
     cancel(): void;
   }
 
-  type Readable<T> = (callback: (a: T) => void) => void;
+  type Callback<T> = (error: Error | undefined, value: T) => void;
 
-  type ReadableWithParam<TParam, TOut> = (param: TParam, callback: (a: TOut) => void) => void;
+  type ReturnCallback = (obj: Cancellable) => void;
+
+  type Readable<T> = (callback: Callback<T>) => void;
+
+  type ReadableWithParam<TParam, TOut> = (param: TParam, callback: Callback<TOut>) => void;
 
   type ReadableWithTwoParams<TParam1, TParam2, TOut> = (
     param: TParam1,
     param2: TParam2,
-    callback: (a: TOut) => void,
+    callback: Callback<TOut>,
   ) => void;
 
   type ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut> = (
@@ -23,15 +27,15 @@ declare namespace OliveHelps {
     param2: TParam2,
     param3: TParam3,
     param4: TParam4,
-    callback: (a: TOut) => void,
+    callback: Callback<TOut>,
   ) => void;
 
-  type Listenable<T> = (callback: (a: T) => void, returnCb: (obj: Cancellable) => void) => void;
+  type Listenable<T> = (callback: Callback<T>, returnCb: ReturnCallback) => void;
 
   type ListenableWithParam<TParam, TOut> = (
     param: TParam,
-    callback: (a: TOut) => void,
-    returnCb: (obj: Cancellable) => void,
+    callback: Callback<TOut>,
+    returnCb: ReturnCallback,
   ) => void;
 
   interface Aptitudes {
@@ -137,7 +141,7 @@ declare namespace OliveHelps {
   }
 
   interface HTTPRequest {
-    body?: Uint8Array;
+    body?: Array<number>;
     headers?: Record<string, string[]>;
     method: string;
     url: string;
@@ -260,18 +264,21 @@ declare namespace OliveHelps {
 
   interface Whisper {
     id: string;
-    close(cb: (err: string) => void): void;
-    // update(whisper: NewWhisper, cb: (err: string) => void): void // TODO: Implement 
+    close: Readable<undefined>;
+    // update(whisper: NewWhisper, cb: (err: string) => void): void // TODO: Implement
   }
   interface Component<T extends WhisperComponentType> {
     id?: string;
     type: T;
   }
 
+  type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
+  type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
+
   type Button = Component<WhisperComponentType.Button> & {
     buttonStyle?: ButtonStyle;
     label: string;
-    onClick: (whisper: Whisper) => void;
+    onClick: WhisperHandler;
     size?: ButtonSize;
   };
 
@@ -279,12 +286,12 @@ declare namespace OliveHelps {
     label: string;
     tooltip?: string;
     value: boolean;
-    onChange: (value: boolean, whisper: Whisper) => void;
+    onChange: WhisperHandlerWithParam<boolean>;
   };
 
   type Email = Component<WhisperComponentType.Email> & {
     label: string;
-    onChange: (value: string, whisper: Whisper) => void;
+    onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
   };
@@ -292,7 +299,7 @@ declare namespace OliveHelps {
   type Link = Component<WhisperComponentType.Link> & {
     href?: string;
     text: string;
-    onClick?: (whisper: Whisper) => void;
+    onClick?: WhisperHandler;
     style?: Urgency;
     textAlign?: TextAlign;
   };
@@ -317,7 +324,7 @@ declare namespace OliveHelps {
 
   type NumberInput = Component<WhisperComponentType.Number> & {
     label: string;
-    onChange: (value: number, whisper: Whisper) => void;
+    onChange: WhisperHandlerWithParam<number>;
     value?: number;
     max?: number;
     min?: number;
@@ -327,13 +334,13 @@ declare namespace OliveHelps {
 
   type Password = Component<WhisperComponentType.Password> & {
     label: string;
-    onChange: (value: string, whisper: Whisper) => void;
+    onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
   };
 
   type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
-    onSelect: (value: number, whisper: Whisper) => void;
+    onSelect: WhisperHandlerWithParam<number>
     options: string[];
     selected?: number;
   };
@@ -341,14 +348,14 @@ declare namespace OliveHelps {
   type Select = Component<WhisperComponentType.Select> & {
     label: string;
     options: string[];
-    onSelect: (value: number, whisper: Whisper) => void;
+    onSelect: WhisperHandlerWithParam<number>
     selected?: number;
     tooltip?: string;
   };
 
   type Telephone = Component<WhisperComponentType.Telephone> & {
     label: string;
-    onChange: (value: string, whisper: Whisper) => void;
+    onChange: WhisperHandlerWithParam<string>
     // pattern?: RegExp; TODO: Implement this
     tooltip?: string;
     value?: string;
@@ -356,7 +363,7 @@ declare namespace OliveHelps {
 
   type TextInput = Component<WhisperComponentType.TextInput> & {
     label: string;
-    onChange: (value: string, whisper: Whisper) => void;
+    onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
   };
@@ -398,7 +405,6 @@ declare namespace OliveHelps {
     components: Array<Components>;
     onClose: () => void;
   }
-
 
   interface FileInfo {
     name: string;
@@ -442,7 +448,7 @@ declare namespace OliveHelps {
 
     stat: ReadableWithParam<string, FileInfo>;
 
-    writeFile: ReadableWithFourParams<string, Uint8Array, WriteOperation, WriteMode, void>;
+    writeFile: ReadableWithFourParams<string, Array<number>, WriteOperation, WriteMode, void>;
 
     join: ReadableWithParam<string[], string>;
   }

@@ -2,4 +2,4 @@
 name: "Remove"
 links_js: "remove"
 ---
-Remove a file or directory
+Removes a file/directory at the specified path.

@@ -1,4 +1,5 @@
-import { whisper } from '@oliveai/ldk';
+import { keyboard, whisper } from '@oliveai/ldk';
+import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 import { LoopTest } from './loopTest';
 
@@ -34,18 +35,21 @@ export default class TestSuite {
       }
     }
 
-    /* const hotkeys = {
+    const hotkeys = {
       key: '/',
       control: true,
-    }; */
+    };
 
+    var listWhisper: whisper.Whisper;
     whisper.create({
       label: 'Self Test Loop - Results',
       onClose: () => {
         console.log('closed Results');
       },
       components: elements,
-    });
+    }).then((whisper: whisper.Whisper) => listWhisper = whisper);
+
+    var markdownWhisper: whisper.Whisper;
     whisper.create({
       label: 'Self Test Loop - Results',
       onClose: () => {
@@ -57,13 +61,14 @@ export default class TestSuite {
           type: whisper.WhisperComponentType.Markdown,
         },
       ],
-    });
-    /* keyboard.listenHotkey(hotkeys, (pressed) => {
+    }).then((whisper: whisper.Whisper) => markdownWhisper = whisper);
 
-      listWhisper.stop();
-        markdown.stop();
-        keyboard.stop();
-    }); */
+    var keyboardListener: Cancellable;
+    keyboard.listenHotkey(hotkeys, (pressed) => {
+      listWhisper.close(error => console.error(error));
+      markdownWhisper.close(error => console.error(error));
+      keyboardListener.cancel();
+    }).then((cancellable: Cancellable) => keyboardListener = cancellable);
     return true;
   }
 }

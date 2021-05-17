@@ -1,6 +1,7 @@
 package ldk_test
 
 import (
+	"fmt"
 	"reflect"
 	"runtime"
 	"testing"
@@ -50,7 +51,7 @@ func TestKeyModifiers(t *testing.T) {
 				for j, fn := range funcs {
 					fnName := runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name()
 					if i == j {
-						t.Logf("testing %d -> %s", bit, fnName)
+						// t.Logf("testing %d -> %s", bit, fnName)
 						if !fn(ldk.KeyModifier(bit)) {
 							t.Errorf("%s not detected for %d", test.name, bit)
 						}
@@ -60,6 +61,76 @@ func TestKeyModifiers(t *testing.T) {
 						}
 					}
 				}
+			}
+		})
+	}
+}
+
+func TestHotKeyMatch(t *testing.T) {
+	tests := []struct {
+		actual    ldk.Hotkey
+		requested ldk.Hotkey
+		expected  bool
+		name      string
+	}{
+		{
+			name:      "alt vs alt+shift",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierShift},
+			expected:  false,
+		},
+		{
+			name:      "do not permit if missing",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierShift},
+			expected:  false,
+		},
+		{
+			name:      "do not permit if superset is pressed",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft | ldk.KeyModifierShift | ldk.KeyModifierShiftLeft},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt},
+			expected:  false,
+		},
+		{
+			name:      "altright vs altleft",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltRight},
+			expected:  false,
+		},
+		{
+			name:      "altleft vs alteither",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltLeft},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt},
+			expected:  true,
+		},
+		{
+			name:      "altleft vs altright",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt | ldk.KeyModifierCommandAltRight},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltLeft},
+			expected:  false,
+		},
+		{
+			name:      "alt vs left alt",
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltLeft | ldk.KeyModifierCommandAlt},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltLeft},
+			expected:  true,
+		},
+		{
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltRight | ldk.KeyModifierCommandAlt},
+			requested: ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAltLeft},
+			expected:  false,
+		},
+		{
+			actual:    ldk.Hotkey{Key: 'a', Modifiers: ldk.KeyModifierCommandAlt},
+			requested: ldk.Hotkey{Key: 'b', Modifiers: ldk.KeyModifierCommandAlt},
+			expected:  false,
+		},
+	}
+	for idx, test := range tests {
+		test := test
+		t.Run(fmt.Sprintf("%v %v", test.name, idx), func(t *testing.T) {
+			if test.requested.Match(test.actual) != test.expected {
+				t.Errorf("Received Error on Keycombination actual %#v vs. requested %#v, it should have returned %#v", test.actual, test.requested, test.expected)
 			}
 		})
 	}

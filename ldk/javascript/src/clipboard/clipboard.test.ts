@@ -14,7 +14,9 @@ describe('Clipboard', () => {
   describe('read', () => {
     it('returns a promise result with expected clipboard value', () => {
       const expected = 'expected string';
-      mocked(oliveHelps.clipboard.read).mockImplementation((callback) => callback(expected));
+      mocked(oliveHelps.clipboard.read).mockImplementation((callback) =>
+        callback(undefined, expected),
+      );
 
       const actual = clipboard.read();
 
@@ -44,11 +46,22 @@ describe('Clipboard', () => {
       );
     });
 
-    it('passed in listen function to olive helps', () => {
+    it('passed in listen function to olive helps', async () => {
       const callback = jest.fn();
-      clipboard.listen(true, callback);
+      const text = 'abc';
+      const include = true;
+      mocked(oliveHelps.clipboard.includeOliveHelpsEvents).mockImplementation((param) => {
+        expect(param).toEqual(include);
+      });
+      mocked(oliveHelps.clipboard.listen).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
 
-      expect(oliveHelps.clipboard.listen).toHaveBeenCalledWith(callback, expect.any(Function));
+      await clipboard.listen(include, callback);
+
+      expect(callback).toHaveBeenCalledWith(text);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {
@@ -66,7 +79,7 @@ describe('Clipboard', () => {
     it('writes text to an olive helps clipboard', () => {
       const expectedText = 'text';
       mocked(oliveHelps.clipboard.write).mockImplementation((text, callback) => {
-        callback();
+        callback(undefined);
       });
 
       const actual = clipboard.write(expectedText);

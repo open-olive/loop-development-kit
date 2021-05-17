@@ -89,10 +89,15 @@ describe('Generate Banner', () => {
         expect(result.oliveHelpsContractVersion).toEqual('0.1.0');
     });
 
-    it('throws exception when LdkSettings are not provided', () => {
+    it('throws exception when LDK permissions are not provided', () => {
         const invalidLdkSettings: LdkSettings = { ldk: {} as Ldk }
 
         expect(() => generateBanner(invalidLdkSettings))
             .toThrowError(expectedErrorMessage);
+    });
+
+    it('throws exception when LDK key is not specified', () => {
+        expect(() => generateBanner(<LdkSettings>{}))
+          .toThrowError(expectedErrorMessage);
     });
 });
