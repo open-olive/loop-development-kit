@@ -825,7 +825,7 @@ export const networkWebSocket = (): Promise<boolean> =>
     let binaryTestPassed = false;
 
     setTimeout(() => {
-      reject(new Error('Network websocket test didnt finished in the appropriate timespan.'));
+      reject(new Error('Network websocket test did not finish in the appropriate timespan.'));
     }, 15000);
 
     network
