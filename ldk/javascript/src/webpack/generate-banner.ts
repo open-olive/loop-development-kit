@@ -1,6 +1,6 @@
 import { LdkSettings } from './ldk-settings';
 
-const permissionsErrorMessage = 
+const permissionsErrorMessage =
 `Please add a "ldk" object to your package.json file with a permission property:
     "ldk": {
         "permissions": {}
@@ -21,6 +21,7 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
       network: ldkSettings.ldk.permissions.network || undefined,
       process: ldkSettings.ldk.permissions.process || undefined,
       ui: ldkSettings.ldk.permissions.ui || undefined,
+      user: ldkSettings.ldk.permissions.user || undefined,
       vault: ldkSettings.ldk.permissions.vault || undefined,
       whisper: ldkSettings.ldk.permissions.whisper || undefined,
       window: ldkSettings.ldk.permissions.window || undefined,

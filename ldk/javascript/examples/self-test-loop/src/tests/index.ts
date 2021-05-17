@@ -7,6 +7,7 @@ import {
   vault,
   whisper,
   window,
+  user,
   ui,
   filesystem,
 } from '@oliveai/ldk';
@@ -781,6 +782,18 @@ export const hotkeyTest = (): Promise<boolean> =>
     keyboard.listenHotkey(hotkeys, (pressed) => {
       console.debug('Hotkey pressed', 'response', pressed);
       resolve(true);
+    });
+  });
+
+export const userJWTTest = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    user.jwt().then((token) => {
+      if (token) {
+          console.debug('jwt', token);
+          resolve(true);
+      } else {
+          reject("JWT should not have been empty")
+      }
     });
   });
 

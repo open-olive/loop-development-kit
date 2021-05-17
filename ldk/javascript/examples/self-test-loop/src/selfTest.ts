@@ -28,6 +28,7 @@ import {
   testNetworkAndListComponents,
   queryDirectory,
   createAndDeleteFile,
+  userJWTTest,
   uiSearchTest,
   uiGlobalSearchTest,
   updateAndReadFile,
@@ -124,6 +125,14 @@ const testConfig: { [key: string]: TestGroup } = {
       uiGlobalSearchTest,
       10000,
       'Press CMD + O and search "for meaning"',
+    ),
+  ]),
+  user: new TestGroup('User Aptitude', [
+    new LoopTest(
+      'User Aptitude - JWT',
+      userJWTTest,
+      10000,
+      'No action required',
     ),
   ]),
   vault: new TestGroup('Vault Aptitude', [
