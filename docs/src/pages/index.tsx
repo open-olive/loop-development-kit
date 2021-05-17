@@ -149,7 +149,16 @@ export default function Home(
             target="_blank"
             rel="noopener noreferrer"
           >
-            Terms & Conditions
+            Loop Development Kit Open Source License
+          </a>
+        </p>
+        <p>
+          <a
+            href="https://olive.page.link/olive-helps-terms"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Olive Helps Terms &amp; Conditions
           </a>
         </p>
       </Section>
