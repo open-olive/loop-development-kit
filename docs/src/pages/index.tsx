@@ -151,8 +151,7 @@ export default function Home(
           >
             Loop Development Kit Open Source License
           </a>
-        </p>
-        <p>
+          {'  |  '}
           <a
             href="https://olive.page.link/olive-helps-terms"
             target="_blank"
