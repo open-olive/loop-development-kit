@@ -70,11 +70,10 @@
   @extend %sectionItemTitle;
 }
 
-.disclaimerTitle {
-  font-size: $twoXlFontSize;
+.licenseLink {
+  margin-right: 16px;
 }
 
-.disclaimer {
-  font-size: $smallFontSize;
-  opacity: 0.5;
+.termsLink {
+  margin-left: 16px;
 }

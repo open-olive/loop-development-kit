@@ -145,14 +145,16 @@ export default function Home(
       <Section sectionClassName={styles.sectionBackground}>
         <p>
           <a
+            className={styles.licenseLink}
             href="https://github.com/open-olive/loop-development-kit/blob/main/LICENSE"
             target="_blank"
             rel="noopener noreferrer"
           >
             Loop Development Kit Open Source License
           </a>
-          {'  |  '}
+          {'|'}
           <a
+            className={styles.termsLink}
             href="https://olive.page.link/olive-helps-terms"
             target="_blank"
             rel="noopener noreferrer"
