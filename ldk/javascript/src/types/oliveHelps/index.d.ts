@@ -32,7 +32,7 @@ declare namespace OliveHelps {
 
   type Listenable<T> = (callback: Callback<T>, returnCb: ReturnCallback) => void;
 
-  type ListenableWithParam<TParam, TOut, TReturn = Cancellable> = (
+  type ListenableWithParam<TParam, TOut> = (
     param: TParam,
     callback: Callback<TOut>,
     returnCb: ReturnCallback,
@@ -138,28 +138,28 @@ declare namespace OliveHelps {
   //-- Network
   interface Network {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
-    webSocket: ReadableWithParam<string, Socket>;
+    webSocketConnect: ReadableWithParam<SocketConfiguration, Socket>;
   }
 
   interface ConnectionOptions {
+  }
+  
+  interface SocketConfiguration {
+    url: string;
+    headers?: Record<string, string[]>;
     useCompression?: boolean;
     subprotocols?: Array<string>;
   }
 
-  interface SocketConfig {
-    options?: ConnectionOptions;
-    headers?: Record<string, string[]>;
-    onTextMessage?: (message: string) => void;
-    onBinaryMessage?: (data: ArrayBuffer) => void;
-    onConnectError?: (error: Error | undefined) => void;
-    onDisconnected?: (error: Error | undefined) => void;
+  enum MessageType {
+    text = 1,
+    binary = 2,
   }
 
   interface Socket {
-    connect(socketConfig: SocketConfig, callback: (error: Error | undefined) => void): void;
-    sendText(text: string): void;
-    sendBinary(data: Array<number>): void;
-    close(): void;
+    writeMessage(messageType: MessageType, data: Array<number>, callback: (error: Error | undefined) => void): void;
+    close(callback: (error: Error | undefined) => void): void;
+    listenMessage: (callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void, returnCb: ReturnCallback) => void;
   }
 
   interface HTTPRequest {

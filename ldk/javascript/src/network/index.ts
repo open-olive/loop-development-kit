@@ -1,5 +1,6 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 import * as mapper from '../utils/mapper';
+import { Cancellable } from '../cancellable';
 
 /**
  * The HTTP Request configuration.
@@ -28,27 +29,52 @@ export interface HTTPResponse {
   headers: Record<string, string[]>;
 }
 
-export interface ConnectionOptions {
+/**
+ * a simplified representation of a callback which take error
+ */
+export type CallbackError = (error: Error | undefined) => void;
+
+/**
+ *
+ */
+export interface SocketConfiguration {
+  /**
+   * websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
+   */
+  url: string;
+  /**
+   * collection of the handshake headers
+   */
+  headers?: Record<string, string[]>;
+  /**
+   * specifies if compression is used
+   */
   useCompression?: boolean;
+  /**
+   * specifies the client's requested subprotocols.
+   */
   subprotocols?: Array<string>;
 }
 
-export type CallbackError = (error: Error | undefined) => void;
-
-export interface SocketConfig {
-  options?: ConnectionOptions;
-  headers?: Record<string, string[]>;
-  onTextMessage?: (message: string) => void;
-  onBinaryMessage?: (data: Uint8Array) => void;
-  onConnectError?: CallbackError;
-  onDisconnected?: CallbackError;
-}
-
 export interface Socket {
-  connect(socketConfig: SocketConfig, callback: CallbackError): void;
-  sendText(text: string): void;
-  sendBinary(data: Uint8Array): void;
-  close(): void;
+  /**
+   * writes message to a websocket
+   * @param message text or data message
+   * @param callback function to call if error occured
+   */
+  writeMessage(message: string | Uint8Array, callback: CallbackError): void;
+  /**
+   * closes websocket
+   * @param callback function to call if error occured
+   */
+  close(callback: CallbackError): void;
+  /**
+   * allows to listen for a websocket message
+   * @param callback receives text or data message from websocket and error if occures
+   */
+  listenMessage: (
+    callback: (error: Error | undefined, message: string | Uint8Array) => void,
+  ) => Cancellable;
 }
 
 /**
@@ -81,10 +107,10 @@ export interface Network {
 
   /**
    *
-   * @param url websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
-   * @returns a promise with sendable function
+   * @param socketConfiguration a configuration object defines websocket
+   * @returns a promise with Socket
    */
-  webSocket(url: string): Promise<Socket>;
+  webSocketConnect(socketConfiguration: SocketConfiguration): Promise<Socket>;
 }
 
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
@@ -123,6 +149,10 @@ export function decode(encodedValue: Uint8Array): Promise<string> {
   });
 }
 
-export function webSocket(url: string): Promise<Socket> {
-  return promisifyMappedWithParam(url, mapper.mapToSocket, oliveHelps.network.webSocket);
+export function webSocketConnect(socketConfiguration: SocketConfiguration): Promise<Socket> {
+  return promisifyMappedWithParam(
+    socketConfiguration,
+    mapper.mapToSocket,
+    oliveHelps.network.webSocketConnect,
+  );
 }
