@@ -141,21 +141,3 @@ export function promisifyListenableWithParam<TParam, TOut>(
     }
   });
 }
-
-// export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExternalOut, TReturn = Cancellable>(
-//   param: TParam,
-//   cb: (v: TExternalOut) => void,
-//   map: Mapper<TInternalOut, TExternalOut>,
-//   arg: OliveHelps.ListenableWithParam<TParam, TInternalOut, TReturn>,
-//   ): Promise<TReturn> {
-//     return new Promise((resolve, reject) => {
-//       try {
-//         arg(param, (callbackValue: TInternalOut) => {
-//           cb(map(callbackValue))
-//         }, (obj) => { resolve(obj); });
-//       } catch (e) {
-//         console.error('Received error making request', e);
-//         reject(e);
-//       }
-//     });
-//   }

@@ -141,9 +141,6 @@ declare namespace OliveHelps {
     webSocketConnect: ReadableWithParam<SocketConfiguration, Socket>;
   }
 
-  interface ConnectionOptions {
-  }
-  
   interface SocketConfiguration {
     url: string;
     headers?: Record<string, string[]>;

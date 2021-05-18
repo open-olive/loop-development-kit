@@ -74,7 +74,7 @@ export interface Socket {
    */
   listenMessage: (
     callback: (error: Error | undefined, message: string | Uint8Array) => void,
-  ) => Cancellable;
+  ) => Promise<Cancellable>;
 }
 
 /**
