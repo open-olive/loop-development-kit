@@ -141,7 +141,7 @@ const testConfig: { [key: string]: TestGroup } = {
       'Whisper Aptitude - Markdown whisper',
       testMarkdownWhisper,
       20000,
-      'Dit markdown rendered properly?',
+      'Did markdown rendered properly?',
     ),
     new LoopTest(
       'Whisper Aptitude - Internal Links',
