@@ -34,6 +34,7 @@ import {
   updateAndReadFile,
   listenFile,
   listenDir,
+  dirExists,
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -229,6 +230,12 @@ const testConfig: { [key: string]: TestGroup } = {
       listenDir,
       10000,
       'Monitoring for dir change...',
+    ),
+    new LoopTest(
+      'File Aptitude - Dir Exists',
+      dirExists,
+      10000,
+      'Checking for directory existence...',
     ),
   ]),
 };
