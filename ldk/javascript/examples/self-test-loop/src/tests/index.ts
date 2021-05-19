@@ -12,7 +12,7 @@ import {
   filesystem,
 } from '@oliveai/ldk';
 
-import { Cancellable } from '@oliveai/ldk/dist/cancellable'
+import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -37,11 +37,15 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
 
 export const clipboardStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    clipboard.listen(true, (response) => {
-      if (response === 'LDKThxBai') {
-        resolve(true);
-      }
-    });
+    var clipboardStream: Cancellable;
+    clipboard
+      .listen(true, (response) => {
+        if (response === 'LDKThxBai') {
+          clipboardStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (clipboardStream = cancellable));
   });
 
 export const cursorPosition = (): Promise<boolean> =>
@@ -63,28 +67,35 @@ export const cursorPosition = (): Promise<boolean> =>
 export const streamCursorPosition = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     let i = 0;
-    const cursorPoritionStream = cursor.listenPosition((response) => {
-      if (typeof response !== 'undefined') {
-        console.debug(`Cursor Stream X - ${response.x}`);
-        console.debug(`Cursor Stream Y - ${response.y}`);
-        i += 1;
+    var cursorPositionStream: Cancellable;
+    cursor
+      .listenPosition((response) => {
+        if (typeof response !== 'undefined') {
+          console.debug(`Cursor Stream X - ${response.x}`);
+          console.debug(`Cursor Stream Y - ${response.y}`);
+          i += 1;
 
-        if (i >= 5) {
-          // cursorPoritionStream.stop();
-          resolve(true);
+          if (i >= 5) {
+            cursorPositionStream.cancel();
+            resolve(true);
+          }
         }
-      }
-    });
+      })
+      .then((cancellable: Cancellable) => (cursorPositionStream = cancellable));
   });
 
 export const listenActiveWindowTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    window.listenActiveWindow((response) => {
-      if (response) {
-        console.debug('Window become active', 'response', response.title);
-        resolve(true);
-      }
-    });
+    var activeWindowStream: Cancellable;
+    window
+      .listenActiveWindow((response) => {
+        if (response) {
+          console.debug('Window become active', 'response', response.title);
+          activeWindowStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (activeWindowStream = cancellable));
   });
 
 export const activeWindowTest = (): Promise<boolean> =>
@@ -130,71 +141,135 @@ export const processQuery = (): Promise<boolean> =>
 
 export const processStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    process.listenAll((response) => {
-      console.debug(response.processInfo.pid);
-      resolve(true);
-    });
+    var processStream: Cancellable;
+    process
+      .listenAll((response) => {
+        console.debug(response.processInfo.pid);
+        processStream.cancel();
+        resolve(true);
+      })
+      .then((cancellable: Cancellable) => (processStream = cancellable));
+  });
+
+export const testMarkdownWhisper = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
+    whisper
+      .create({
+        label: 'Markdown whisper Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 
+              `A paragraph with *emphasis* and **strong importance**.
+              > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
+
+              * Lists
+              * [ ] todo
+              * [x] done
+
+              A table:
+
+              | Table Header 1 | Table header 2 |
+              | - | - |
+              | Row 1 Col 1 | Row 1 Col 2 |
+              | Row 2 Col 1 | Row 2 Col 2 |
+              `,
+            type: whisper.WhisperComponentType.Markdown,
+          },
+          {
+            alignment: whisper.Alignment.SpaceEvenly,
+            direction: whisper.Direction.Horizontal,
+            children: [
+              {
+                label: `No`,
+                onClick: () => {
+                  form.close((error) => console.error(error));
+                  reject(true);
+                },
+                type: whisper.WhisperComponentType.Button,
+              },
+              {
+                label: `Yes`,
+                onClick: () => {
+                  form.close((error) => console.error(error));
+                  resolve(true);
+                },
+                type: whisper.WhisperComponentType.Button,
+              },
+            ],
+            type: whisper.WhisperComponentType.Box,
+          },
+        ],
+      })
+      .then((whisper: whisper.Whisper) => (form = whisper));
   });
 
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    whisper.create({
-      label: 'Internal Link Test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          body: 'Select Option 5',
-          type: whisper.WhisperComponentType.Markdown,
+    var form: whisper.Whisper;
+    whisper
+      .create({
+        label: 'Internal Link Test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+        components: [
+          {
+            body: 'Select Option 5',
+            type: whisper.WhisperComponentType.Markdown,
           },
-          text: `Option 1`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 1`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 2`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 2`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 3`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 3`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 4`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            resolve(true);
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 4`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 5`,
-          style: whisper.Urgency.None,
-        },
-      ],
-    });
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              form.close((error) => console.log(error));
+              resolve(true);
+            },
+            text: `Option 5`,
+            style: whisper.Urgency.None,
+          },
+        ],
+      })
+      .then((whisper: whisper.Whisper) => (form = whisper));
   });
 
 export const vaultReadWrite = (): Promise<boolean> =>
@@ -206,7 +281,7 @@ export const vaultReadWrite = (): Promise<boolean> =>
         .then((exists) => {
           console.debug(`Value exists in vault: ${exists}`);
           if (!exists) {
-            reject(new Error('Key does not exist in storge'));
+            reject(new Error('Key does not exist in storage'));
             return null;
           }
 
@@ -373,17 +448,17 @@ export const listenFile = (): Promise<boolean> =>
             if (response) {
               console.debug('Received file action: ' + response.action);
               console.debug(`${response.info.modTime}`);
-              
+
               listenFileCancelable.cancel();
-              await filesystem.remove(filePath);              
+              await filesystem.remove(filePath);
               resolve(true);
             } else {
               reject(new Error('File info is not received'));
             }
           })
-          .then((cancellable) => {
+          .then((cancellable: Cancellable) => {
             listenFileCancelable = cancellable;
-            console.debug('writing file we listen to');            
+            console.debug('writing file we listen to');
             network
               .encode('Listen to file text')
               .then((encodedValue) => {
@@ -408,7 +483,7 @@ export const listenFile = (): Promise<boolean> =>
       })
       .catch((error) => {
         reject(error);
-      });;
+      });
   });
 
 export const listenDir = (): Promise<boolean> =>
@@ -420,7 +495,7 @@ export const listenDir = (): Promise<boolean> =>
     console.info('listening to directory changes');
 
     setTimeout(() => {
-      reject(new Error('ListenDir test didnt passed within allowed timeframe'));
+      reject(new Error('ListenDir test did not pass within allowed timeframe'));
     }, 3000);
 
     console.debug('Write file for listening successful');
@@ -429,7 +504,7 @@ export const listenDir = (): Promise<boolean> =>
         if (response) {
           console.info(`Received file action in directory: ${response.action}`);
           console.info(`${response.info.modTime}`);
-          
+
           listenDirCancellable.cancel();
           await filesystem.remove(filePath);
           resolve(true);
@@ -471,8 +546,6 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       .httpRequest({
         url,
         method: 'GET',
-        headers: { x: ['x'] },
-        body: new Uint8Array(),
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
@@ -560,8 +633,9 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
           ],
         };
 
-        whisper.create(config).then(() => {
+        whisper.create(config).then((form: whisper.Whisper) => {
           setTimeout(() => {
+            form.close((error) => console.error(error));
             resolve(true);
           }, 2000);
         });
@@ -570,6 +644,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
 
 export const buttonWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Button Test',
       onClose: () => {
@@ -600,7 +675,10 @@ export const buttonWhisper = (): Promise<boolean> =>
             },
             {
               label: `Click me`,
-              onClick: () => resolve(true),
+              onClick: () => {
+                form.close((error) => console.error(error));
+                resolve(true);
+              },
               type: whisper.WhisperComponentType.Button,
             },
           ],
@@ -609,7 +687,7 @@ export const buttonWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config);
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
   });
 
 export const linkWhisper = (): Promise<boolean> =>
@@ -634,8 +712,9 @@ export const linkWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config).then(() => {
+    whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
+        form.close((error) => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -644,6 +723,7 @@ export const linkWhisper = (): Promise<boolean> =>
 // TODO: This requires a submit button at some point
 export const simpleFormWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Link Test',
       onClose: () => {
@@ -656,8 +736,9 @@ export const simpleFormWhisper = (): Promise<boolean> =>
         },
         {
           label: `What can't you explain?`,
-          onChange: (value) => {
+          onChange: (error, value) => {
             if (value === 'Stonks') {
+              form.close((error) => console.error(error));
               resolve(true);
             }
           },
@@ -668,7 +749,54 @@ export const simpleFormWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config);
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+  });
+
+export const numberInputs = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const config: whisper.NewWhisper = {
+      label: 'Number Test',
+      components: [
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'No min, max 10, step 1',
+          max: 10,
+          step: 1,
+          tooltip: 'A tooltip',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'No optional fields',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Number,
+          label: 'All optional fields',
+          value: 0,
+          min: 0,
+          max: 10,
+          step: 1,
+          tooltip: 'A tooltip',
+          onChange: (newValue) => console.log(`New number: ${newValue}`),
+        },
+        {
+          type: whisper.WhisperComponentType.Telephone,
+          label: 'label',
+          onChange: (value) => console.log(`Telephone is changed: ${value}`),
+          tooltip: 'tooltip',
+          value: '09123456789',
+        },
+      ],
+      onClose: () => {
+        console.log('close');
+      },
+    };
+    whisper.create(config).then(() => {
+      setTimeout(() => {
+        resolve(true);
+      }, 5000);
+    });
   });
 
 export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
@@ -700,8 +828,9 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config).then(() => {
+    whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
+        form.close((error) => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -709,10 +838,11 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
 
 export const networkHTTPS = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const url = 'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
+    const url =
+      'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
 
     setTimeout(() => {
-      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
+      reject(new Error('Network http request did not finish in the appropriate timespan.'));
     }, 5000);
 
     network
@@ -736,7 +866,7 @@ export const networkHTTP = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = 'http://catalog.data.gov/api/3/';
     setTimeout(() => {
-      reject(new Error('Network http request didnt finished in the appropriate timespan.'));
+      reject(new Error('Network http request did not finish in the appropriate timespan.'));
     }, 5000);
 
     network
@@ -754,22 +884,30 @@ export const networkHTTP = (): Promise<boolean> =>
 
 export const charTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    keyboard.listenCharacter((char) => {
-      console.debug('Character pressed', 'response', char);
-      if (char === 'f' || char === 'F') {
-        resolve(true);
-      }
-    });
+    var keyboardStream: Cancellable;
+    keyboard
+      .listenCharacter((char) => {
+        console.debug('Character pressed', 'response', char);
+        if (char === 'f' || char === 'F') {
+          keyboardStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (keyboardStream = cancellable));
   });
 
 export const charStreamTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    keyboard.listenText((text) => {
-      console.debug('Characters pressed', 'response', text);
-      if (text === 'Olive') {
-        resolve(true);
-      }
-    });
+    var keyboardStream: Cancellable;
+    keyboard
+      .listenText((text) => {
+        console.debug('Characters pressed', 'response', text);
+        if (text === 'Olive') {
+          keyboardStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (keyboardStream = cancellable));
   });
 
 export const hotkeyTest = (): Promise<boolean> =>
@@ -779,10 +917,14 @@ export const hotkeyTest = (): Promise<boolean> =>
       control: true,
     };
 
-    keyboard.listenHotkey(hotkeys, (pressed) => {
-      console.debug('Hotkey pressed', 'response', pressed);
-      resolve(true);
-    });
+    var keyboardStream: Cancellable;
+    keyboard
+      .listenHotkey(hotkeys, (pressed) => {
+        console.debug('Hotkey pressed', 'response', pressed);
+        keyboardStream.cancel();
+        resolve(true);
+      })
+      .then((cancellable: Cancellable) => (keyboardStream = cancellable));
   });
 
 export const userJWTTest = (): Promise<boolean> =>
@@ -799,20 +941,24 @@ export const userJWTTest = (): Promise<boolean> =>
 
 export const uiSearchTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var uiStream: Cancellable;
     ui.listenSearchbar((value) => {
       if (value.toLowerCase() === 'for life') {
+        uiStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => (uiStream = cancellable));
   });
 
 export const uiGlobalSearchTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var uiStream: Cancellable;
     ui.listenGlobalSearch((value) => {
       if (value.toLowerCase() === 'for meaning') {
+        uiStream.cancel();
         resolve(true);
       }
-    });
+    }).then((cancellable: Cancellable) => (uiStream = cancellable));
   });
 
 /*

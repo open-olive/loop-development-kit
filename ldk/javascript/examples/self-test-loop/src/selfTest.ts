@@ -21,9 +21,11 @@ import {
   processStream,
   processQuery,
   simpleFormWhisper,
+  numberInputs,
   initialValueSelectAndRadioWhispers,
   streamCursorPosition,
   testClickableWhisper,
+  testMarkdownWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
   queryDirectory,
@@ -37,7 +39,7 @@ import {
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
-  clipboard: new TestGroup('Cliboard Aptitude', [
+  clipboard: new TestGroup('Clipboard Aptitude', [
     new LoopTest(
       'Clipboard Aptitude - Write And Query Test',
       clipboardWriteAndQuery,
@@ -145,34 +147,46 @@ const testConfig: { [key: string]: TestGroup } = {
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
     new LoopTest(
-      'Whispser Aptitude - Internal Links',
+      'Whisper Aptitude - Markdown whisper',
+      testMarkdownWhisper,
+      20000,
+      'Did markdown rendered properly?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Internal Links',
       testClickableWhisper,
       10000,
       'Click the 5th option',
     ),
     new LoopTest(
-      'Whispser Aptitude - External Links',
+      'Whisper Aptitude - External Links',
       linkWhisper,
       10000,
       'Click the link in the whisper',
     ),
     new LoopTest(
-      'Whispser Aptitude - Network and List Items',
+      'Whisper Aptitude - Network and List Items',
       testNetworkAndListComponents,
       5000,
       'No action required',
     ),
     new LoopTest(
-      'Whispser Aptitude - Button Whisper',
+      'Whisper Aptitude - Button Whisper',
       buttonWhisper,
       10000,
       'Click the 3rd button',
     ),
     new LoopTest(
-      'Whispser Aptitude - Simple Form Whisper',
+      'Whisper Aptitude - Simple Form Whisper',
       simpleFormWhisper,
       10000,
       `Enter 'Stonks' into the field`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Number Inputs',
+      numberInputs,
+      10000,
+      `No action required`
     ),
     new LoopTest(
       'Whisper Aptitude - Initial Value for Select and Radio',
@@ -269,6 +283,7 @@ export default class SelfTestLoop {
           const suite = new TestSuite(group.getTests());
           suite.start().then(() => {
             console.log('🎉 Group Done!');
+            var form: whisper.Whisper;
             whisper.create({
               label: 'Testing Complete',
               onClose: () => {
@@ -280,9 +295,9 @@ export default class SelfTestLoop {
                   type: whisper.WhisperComponentType.Markdown,
                 },
               ],
-            });
+            }).then((whisper: whisper.Whisper) => form = whisper);
             setTimeout(() => {
-              // prompt.stop();
+              form.close(error => console.error(error));
             }, 5000);
           });
         },
@@ -300,6 +315,7 @@ export default class SelfTestLoop {
 
         suite.start().then(() => {
           console.info('🎉 Done!');
+          var prompt: whisper.Whisper;
           whisper.create({
             label: 'Testing Complete',
             onClose: () => {
@@ -311,9 +327,9 @@ export default class SelfTestLoop {
                 type: whisper.WhisperComponentType.Markdown,
               },
             ],
-          });
+          }).then((whisper: whisper.Whisper) => prompt = whisper);
           setTimeout(() => {
-            // prompt.stop();
+            prompt.close(error => console.error(error));
           }, 5000);
         });
       },

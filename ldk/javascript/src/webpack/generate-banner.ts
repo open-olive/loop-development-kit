@@ -8,7 +8,7 @@ const permissionsErrorMessage =
 See README for more information.`
 
 export function generateMetadata(ldkSettings: LdkSettings): string {
-  if(Object.keys(ldkSettings.ldk).length === 0) {
+  if(!ldkSettings || !ldkSettings.ldk || Object.keys(ldkSettings.ldk).length === 0) {
     throw new Error(permissionsErrorMessage);
   }
   const json = JSON.stringify({
