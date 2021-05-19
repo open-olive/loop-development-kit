@@ -25,6 +25,7 @@ import {
   initialValueSelectAndRadioWhispers,
   streamCursorPosition,
   testClickableWhisper,
+  testMarkdownWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
   queryDirectory,
@@ -136,6 +137,12 @@ const testConfig: { [key: string]: TestGroup } = {
     ),
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
+    new LoopTest(
+      'Whisper Aptitude - Markdown whisper',
+      testMarkdownWhisper,
+      20000,
+      'Did markdown rendered properly?',
+    ),
     new LoopTest(
       'Whisper Aptitude - Internal Links',
       testClickableWhisper,

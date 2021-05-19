@@ -68,7 +68,7 @@ export interface WriteFileParams {
    */
   writeOperation: WriteOperation;
   /**
-   * file mode and permission bits
+   * file mode and permission bits. Should be provided as octal value (ex. 0o755, 0o777, ...)
    */
   writeMode: WriteMode;
 }

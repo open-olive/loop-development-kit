@@ -150,6 +150,61 @@ export const processStream = (): Promise<boolean> =>
       .then((cancellable: Cancellable) => (processStream = cancellable));
   });
 
+export const testMarkdownWhisper = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
+    whisper
+      .create({
+        label: 'Markdown whisper Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: `A paragraph with *emphasis* and **strong importance**.
+              > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
+
+              * Lists
+              * [ ] todo
+              * [x] done
+
+              A table:
+
+              | Table Header 1 | Table header 2 |
+              | - | - |
+              | Row 1 Col 1 | Row 1 Col 2 |
+              | Row 2 Col 1 | Row 2 Col 2 |
+              `,
+            type: whisper.WhisperComponentType.Markdown,
+          },
+          {
+            alignment: whisper.Alignment.SpaceEvenly,
+            direction: whisper.Direction.Horizontal,
+            children: [
+              {
+                label: `No`,
+                onClick: () => {
+                  form.close((error) => console.error(error));
+                  reject(true);
+                },
+                type: whisper.WhisperComponentType.Button,
+              },
+              {
+                label: `Yes`,
+                onClick: () => {
+                  form.close((error) => console.error(error));
+                  resolve(true);
+                },
+                type: whisper.WhisperComponentType.Button,
+              },
+            ],
+            type: whisper.WhisperComponentType.Box,
+          },
+        ],
+      })
+      .then((whisper: whisper.Whisper) => (form = whisper));
+  });
+
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     var form: whisper.Whisper;
