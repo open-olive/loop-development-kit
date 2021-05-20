@@ -6,6 +6,8 @@ import { promisify } from "../promisify";
 export interface User {
     /**
      * Returns a JWT with the current username in the subject field
+     *
+     * @returns JWT with the current username in the subject field.
      */
     jwt(): Promise<string>;
 }
