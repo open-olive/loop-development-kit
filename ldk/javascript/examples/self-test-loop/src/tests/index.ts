@@ -486,6 +486,30 @@ export const dirExists = (): Promise<boolean> =>
     });
   });
 
+export const fileExists = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const filePath = './test_listenDir.txt';
+    const writeMode = 0o755;
+    network.encode('some file text').then((encodedValue) => {
+      filesystem.writeFile({
+        path: filePath,
+        data: encodedValue,
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode: writeMode,
+      }).then(() => {
+        filesystem.exists(filePath).then(exists => {
+          filesystem.remove(filePath);
+          if (exists === true) {
+            resolve(true);
+          }
+          reject('Could not check if directory exists');
+        });
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  });
+
 export const testNetworkAndListComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
