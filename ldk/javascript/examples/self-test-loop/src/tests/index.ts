@@ -679,14 +679,44 @@ export const buttonWhisper = (): Promise<boolean> =>
               },
               type: whisper.WhisperComponentType.Button,
             },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          children: [
             {
-              label: `Disabled`,
+              label: `Disabled Primary`,
               disabled: true,
               onClick: () => {
                 form.close((error) => console.error(error));
                 reject(new Error(`Shouldn't be able to click disabled button`));
               },
               type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
+            },
+            {
+              label: `Disabled Secondary`,
+              buttonStyle: whisper.ButtonStyle.Secondary,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
+            },
+            {
+              label: `Disabled Text`,
+              buttonStyle: whisper.ButtonStyle.Text,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
             },
           ],
           type: whisper.WhisperComponentType.Box,
