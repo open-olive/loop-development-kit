@@ -12,6 +12,7 @@ import {
 } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import * as testUtils from '../testUtils';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -882,17 +883,6 @@ export const networkHTTP = (): Promise<boolean> =>
       });
   });
 
-const finaliseWebsocketTest = async (cancellable: Cancellable, socket: network.Socket) => {
-  try {
-    cancellable.cancel();
-    await socket.close((error) => {
-      console.error(`Received error while closing websocket: ${error.message}`);
-    });
-  } catch (e) {
-    console.error(`Received error while finalising websocket: ${e.message}`);
-  }
-};
-
 export const networkWebSocket = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const url = 'wss://html5rocks.websocket.org/echo';
@@ -924,7 +914,7 @@ export const networkWebSocket = (): Promise<boolean> =>
             textTestPassed = true;
             if (binaryTestPassed) {
               resolve(true);
-              await finaliseWebsocketTest(cancellable, socket);
+              await testUtils.finaliseWebsocketTest(cancellable, socket);
             }
           }
         } else {
@@ -933,7 +923,7 @@ export const networkWebSocket = (): Promise<boolean> =>
             binaryTestPassed = true;
             if (textTestPassed) {
               resolve(true);
-              await finaliseWebsocketTest(cancellable, socket);
+              await testUtils.finaliseWebsocketTest(cancellable, socket);
             }
           }
         }

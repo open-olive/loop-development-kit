@@ -10,7 +10,7 @@ export const mapToHttpResponse = (response: OliveHelps.HTTPResponse): HTTPRespon
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: string) => {
+const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: string): void => {
   console.error(`Received error calling ${type}: ${error.message}`);
   reject(error);
 };
@@ -20,15 +20,15 @@ enum MessageType {
   binary = 2,
 }
 
-const mapToBinaryData = (message: string | Uint8Array) =>
+const mapToBinaryData = (message: string | Uint8Array): Array<number> =>
   typeof message === 'string' ? [...new TextEncoder().encode(message)] : [...message];
 
-const mapToResponseMessage = (messageType: MessageType, buffer: ArrayBuffer) => {
+const mapToResponseMessage = (messageType: MessageType, buffer: ArrayBuffer): string | Uint8Array => {
   const data = mapToUint8Array(buffer);
   return messageType === MessageType.text ? new TextDecoder().decode(data) : data;
 };
 
-const mapToMessageType = (message: string | Uint8Array) =>
+const mapToMessageType = (message: string | Uint8Array): MessageType =>
   typeof message === 'string' ? MessageType.text : MessageType.binary;
 
 export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({

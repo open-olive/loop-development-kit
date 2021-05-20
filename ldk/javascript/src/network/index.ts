@@ -50,7 +50,7 @@ export interface SocketConfiguration {
    */
   useCompression?: boolean;
   /**
-   * specifies the client's requested subprotocols.
+   * specifies the client's requested subprotocols
    */
   subprotocols?: Array<string>;
 }
@@ -62,17 +62,17 @@ export interface Socket {
   /**
    * writes message to a websocket
    * @param message text or data message
-   * @param callback function to call if error occured
+   * @param callback function to call if error occurred
    */
   writeMessage(message: string | Uint8Array, callback: CallbackError): Promise<void>;
   /**
    * closes websocket
-   * @param callback function to call if error occured
+   * @param callback function to call if error occurred
    */
   close(callback: CallbackError): Promise<void>;
   /**
-   * allows to listen for a websocket message (there should be only 1 listen message callback per socket to allow messages being fully received)
-   * @param callback receives text or data message from websocket and error if occures
+   * allows to listen for a websocket message (there must be only one listener registered per socket for messages to be fully received)
+   * @param callback receives text or data message from websocket and error if occurs
    */
   listenMessage: (
     callback: (error: Error | undefined, message: string | Uint8Array) => void,
