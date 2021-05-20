@@ -4,7 +4,7 @@ type Mapper<TIn, TOut> = (param: TIn) => TOut;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function handleCaughtError(reject: (reason?: any) => void, error: Error) {
-  console.error('Received error calling service', error);
+  console.error(`Received error calling service ${error.message}`);
   reject(error);
 }
 
@@ -18,7 +18,7 @@ export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
       arg(param, (error, value) => {
         if (error) {
           console.error(
-            `Received error on result: ${JSON.stringify(error)} with value: ${JSON.stringify(
+            `Received error on result: ${error.message} with value: ${JSON.stringify(
               value,
             )}`,
           );
@@ -41,7 +41,7 @@ function promiseResolver<T>(
   return (error, value) => {
     if (error) {
       console.error(
-        `Received error on result: ${JSON.stringify(error)} with value: ${JSON.stringify(value)}`,
+        `Received error on result: ${error.message} with value: ${JSON.stringify(value)}`,
       );
       reject(error);
       return;

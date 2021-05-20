@@ -102,7 +102,7 @@ const testConfig: { [key: string]: TestGroup } = {
     new LoopTest(
       'Network Aptitude - WebSocket test',
       networkWebSocket,
-      15000,
+      20000,
       'Sending/receiving data to websocket should pass.',
     ),
   ]),

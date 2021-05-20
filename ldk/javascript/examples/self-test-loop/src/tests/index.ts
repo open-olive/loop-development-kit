@@ -12,6 +12,7 @@ import {
 } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -37,12 +38,14 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
 export const clipboardStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     var clipboardStream: Cancellable;
-    clipboard.listen(true, (response) => {
-      if (response === 'LDKThxBai') {
-        clipboardStream.cancel();
-        resolve(true);
-      }
-    }).then((cancellable: Cancellable) => clipboardStream = cancellable);
+    clipboard
+      .listen(true, (response) => {
+        if (response === 'LDKThxBai') {
+          clipboardStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (clipboardStream = cancellable));
   });
 
 export const cursorPosition = (): Promise<boolean> =>
@@ -65,30 +68,34 @@ export const streamCursorPosition = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     let i = 0;
     var cursorPositionStream: Cancellable;
-    cursor.listenPosition((response) => {
-      if (typeof response !== 'undefined') {
-        console.debug(`Cursor Stream X - ${response.x}`);
-        console.debug(`Cursor Stream Y - ${response.y}`);
-        i += 1;
+    cursor
+      .listenPosition((response) => {
+        if (typeof response !== 'undefined') {
+          console.debug(`Cursor Stream X - ${response.x}`);
+          console.debug(`Cursor Stream Y - ${response.y}`);
+          i += 1;
 
-        if (i >= 5) {
-          cursorPositionStream.cancel();
-          resolve(true);
+          if (i >= 5) {
+            cursorPositionStream.cancel();
+            resolve(true);
+          }
         }
-      }
-    }).then((cancellable: Cancellable) => cursorPositionStream = cancellable);
+      })
+      .then((cancellable: Cancellable) => (cursorPositionStream = cancellable));
   });
 
 export const listenActiveWindowTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     var activeWindowStream: Cancellable;
-    window.listenActiveWindow((response) => {
-      if (response) {
-        console.debug('Window become active', 'response', response.title);
-        activeWindowStream.cancel();
-        resolve(true);
-      }
-    }).then((cancellable: Cancellable) => activeWindowStream = cancellable);
+    window
+      .listenActiveWindow((response) => {
+        if (response) {
+          console.debug('Window become active', 'response', response.title);
+          activeWindowStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (activeWindowStream = cancellable));
   });
 
 export const activeWindowTest = (): Promise<boolean> =>
@@ -135,74 +142,78 @@ export const processQuery = (): Promise<boolean> =>
 export const processStream = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     var processStream: Cancellable;
-    process.listenAll((response) => {
-      console.debug(response.processInfo.pid);
-      processStream.cancel();
-      resolve(true);
-    }).then((cancellable: Cancellable) => processStream = cancellable);
+    process
+      .listenAll((response) => {
+        console.debug(response.processInfo.pid);
+        processStream.cancel();
+        resolve(true);
+      })
+      .then((cancellable: Cancellable) => (processStream = cancellable));
   });
 
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     var form: whisper.Whisper;
-    whisper.create({
-      label: 'Internal Link Test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          body: 'Select Option 5',
-          type: whisper.WhisperComponentType.Markdown,
+    whisper
+      .create({
+        label: 'Internal Link Test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+        components: [
+          {
+            body: 'Select Option 5',
+            type: whisper.WhisperComponentType.Markdown,
           },
-          text: `Option 1`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 1`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 2`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 2`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 3`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            console.debug('wrong');
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 3`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 4`,
-          style: whisper.Urgency.None,
-        },
-        {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
-          onClick: () => {
-            form.close(error => console.log(error));
-            resolve(true);
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              console.debug('wrong');
+            },
+            text: `Option 4`,
+            style: whisper.Urgency.None,
           },
-          text: `Option 5`,
-          style: whisper.Urgency.None,
-        },
-      ],
-    }).then((whisper: whisper.Whisper) => form = whisper);
+          {
+            type: whisper.WhisperComponentType.Link,
+            textAlign: whisper.TextAlign.Left,
+            onClick: () => {
+              form.close((error) => console.log(error));
+              resolve(true);
+            },
+            text: `Option 5`,
+            style: whisper.Urgency.None,
+          },
+        ],
+      })
+      .then((whisper: whisper.Whisper) => (form = whisper));
   });
 
 export const vaultReadWrite = (): Promise<boolean> =>
@@ -478,7 +489,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
     network
       .httpRequest({
         url,
-        method: 'GET'
+        method: 'GET',
       })
       .then((response: network.HTTPResponse) => {
         console.debug('Network call succeeded, emmitting list whisper', url);
@@ -568,7 +579,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
 
         whisper.create(config).then((form: whisper.Whisper) => {
           setTimeout(() => {
-            form.close(error => console.error(error));
+            form.close((error) => console.error(error));
             resolve(true);
           }, 2000);
         });
@@ -609,8 +620,8 @@ export const buttonWhisper = (): Promise<boolean> =>
             {
               label: `Click me`,
               onClick: () => {
-                form.close(error => console.error(error));
-                resolve(true)
+                form.close((error) => console.error(error));
+                resolve(true);
               },
               type: whisper.WhisperComponentType.Button,
             },
@@ -620,7 +631,7 @@ export const buttonWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => form = whisper);
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
   });
 
 export const linkWhisper = (): Promise<boolean> =>
@@ -647,7 +658,7 @@ export const linkWhisper = (): Promise<boolean> =>
 
     whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
-        form.close(error => console.error(error));
+        form.close((error) => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -671,7 +682,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
           label: `What can't you explain?`,
           onChange: (error, value) => {
             if (value === 'Stonks') {
-              form.close(error => console.error(error));
+              form.close((error) => console.error(error));
               resolve(true);
             }
           },
@@ -682,7 +693,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => form = whisper);
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
   });
 
 export const numberInputs = (): Promise<boolean> =>
@@ -731,7 +742,7 @@ export const numberInputs = (): Promise<boolean> =>
       }, 5000);
     });
   });
-  
+
 export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const config: whisper.NewWhisper = {
@@ -763,7 +774,7 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
 
     whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
-        form.close(error => console.error(error));
+        form.close((error) => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -816,9 +827,20 @@ export const networkHTTP = (): Promise<boolean> =>
       });
   });
 
+const finaliseWebsocketTest = (cancellable: Cancellable, socket: network.Socket) => {
+  try {
+    cancellable.cancel();
+    await socket.close((error) => {
+      console.error(`Received error while closing websocket: ${error.message}`);
+    });
+  } catch (e) {
+    console.error(`Received error while finalising websocket: ${e.message}`);
+  }
+};
+
 export const networkWebSocket = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const url = 'ws://html5rocks.websocket.org/echo';
+  new Promise(async (resolve, reject) => {
+    const url = 'wss://html5rocks.websocket.org/echo';
     const testData = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
     const testText = 'some text';
     let textTestPassed = false;
@@ -826,96 +848,86 @@ export const networkWebSocket = (): Promise<boolean> =>
 
     setTimeout(() => {
       reject(new Error('Network websocket test did not finish in the appropriate timespan.'));
-    }, 15000);
+    }, 20000);
 
-    network
-      .webSocket(url)
-      .then((socket: network.Socket) => {
-        console.debug('Websocket is initialized');
-        const socketConfig: network.SocketConfig = {
-          // options: {
-          //   useCompression: true,
-          // },
-          onBinaryMessage: (receivedData: Uint8Array) => {
-            const receivedDataString = JSON.stringify(receivedData);
-            const testDataString = JSON.stringify(testData);
-            console.debug(`Received binary data: ${receivedDataString}`);
-            if (testDataString === receivedDataString) {
-              binaryTestPassed = true;
-              if (textTestPassed) {
-                console.debug(`Closing websocket`);
-                socket.close();
-                setTimeout(() => {                  
-                  // waiting 1 sec to allow callback to finish
-                  resolve(true);
-                }, 1000);
-              }
-            }
-          },
-          onTextMessage: (message: string) => {
-            console.debug(`Received text message: ${message}`);
-            if (message === testText) {
-              textTestPassed = true;
-              if (binaryTestPassed) {
-                console.debug(`Closing websocket`);
-                socket.close();
-                setTimeout(() => {                  
-                  // waiting 1 sec to allow callback to finish
-                  resolve(true);
-                }, 1000);
-              }
-            }
-          },
-          onConnectError: (error: Error) => {
-            if (error != null) {
-              console.debug(`Received on connect error: ${JSON.stringify(error)}`);
-            }
-          },
-          onDisconnected: (error: Error) => {
-            console.debug(`Received on disconnected: ${JSON.stringify(error)}`);
-          },
-        };
+    const socketConfiguration: network.SocketConfiguration = {
+      url: url,
+      useCompression: true,
+    };
 
-        console.debug('Connecting to websocket');
-        socket.connect(socketConfig, (error: Error) => {
-          if (error) {
-            console.debug(`Connect failed with error: ${JSON.stringify(error)}`);
-          } else {
-            console.debug('Sending binary data to websocket');
-            socket.sendBinary(testData);
-            console.debug('Sending text to websocket');
-            socket.sendText(testText);
+    try {
+      const socket = await network.webSocketConnect(socketConfiguration);
+      console.debug('Websocket successfully connected');
+      const cancellable: Cancellable = await socket.listenMessage(async (error, message) => {
+        if (error) {
+          console.error(`Received on listen message error: ${error.message}`);
+        }
+        if (typeof message === 'string') {
+          if (message === testText) {
+            console.debug(`Received text data`);
+            textTestPassed = true;
+            if (binaryTestPassed) {
+              resolve(true);
+              finaliseWebsocketTest(cancellable, socket);
+            }
           }
-        });
-      })
-      .catch((error: Error) => {
-        console.debug(JSON.stringify(error));
-        reject(error);
+        } else {
+          if (JSON.stringify(message) === JSON.stringify(testData)) {
+            console.debug(`Received binary data`);
+            binaryTestPassed = true;
+            if (textTestPassed) {
+              resolve(true);
+              finaliseWebsocketTest(cancellable, socket);
+            }
+          }
+        }
       });
+      // send text
+      await socket.writeMessage(testText, (error) => {
+        if (error) {
+          console.error(`Received on write text message error: ${error.message}`);
+          reject(error);
+        }
+      });
+      // send binary
+      await socket.writeMessage(testData, (error) => {
+        if (error) {
+          console.error(`Received on write binary message error: ${error.message}`);
+          reject(error);
+        }
+      });
+    } catch (error) {
+      console.error(`Error received while testing websocket: ${error.message}`);
+      reject(error);
+    }
   });
 
 export const charTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     var keyboardStream: Cancellable;
-    keyboard.listenCharacter((char) => {
-      console.debug('Character pressed', 'response', char);
-      if (char === 'f' || char === 'F') {
-        keyboardStream.cancel();
-        resolve(true);
-      }
-    }).then((cancellable: Cancellable) => keyboardStream = cancellable);
+    keyboard
+      .listenCharacter((char) => {
+        console.debug('Character pressed', 'response', char);
+        if (char === 'f' || char === 'F') {
+          keyboardStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (keyboardStream = cancellable));
   });
 
 export const charStreamTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     var keyboardStream: Cancellable;
-    keyboard.listenText((text) => {
-      console.debug('Characters pressed', 'response', text);
-      if (text === 'Olive') {
-        keyboardStream.cancel();
-        resolve(true);
-      }
-    }).then((cancellable: Cancellable) => keyboardStream = cancellable);
+    keyboard
+      .listenText((text) => {
+        console.debug('Characters pressed', 'response', text);
+        if (text === 'Olive') {
+          keyboardStream.cancel();
+          resolve(true);
+        }
+      })
+      .then((cancellable: Cancellable) => (keyboardStream = cancellable));
   });
 
 export const hotkeyTest = (): Promise<boolean> =>
@@ -926,11 +938,13 @@ export const hotkeyTest = (): Promise<boolean> =>
     };
 
     var keyboardStream: Cancellable;
-    keyboard.listenHotkey(hotkeys, (pressed) => {
-      console.debug('Hotkey pressed', 'response', pressed);
-      keyboardStream.cancel();
-      resolve(true);
-    }).then((cancellable: Cancellable) => keyboardStream = cancellable);
+    keyboard
+      .listenHotkey(hotkeys, (pressed) => {
+        console.debug('Hotkey pressed', 'response', pressed);
+        keyboardStream.cancel();
+        resolve(true);
+      })
+      .then((cancellable: Cancellable) => (keyboardStream = cancellable));
   });
 
 export const uiSearchTest = (): Promise<boolean> =>
@@ -941,7 +955,7 @@ export const uiSearchTest = (): Promise<boolean> =>
         uiStream.cancel();
         resolve(true);
       }
-    }).then((cancellable: Cancellable) => uiStream = cancellable);
+    }).then((cancellable: Cancellable) => (uiStream = cancellable));
   });
 
 export const uiGlobalSearchTest = (): Promise<boolean> =>
@@ -952,7 +966,7 @@ export const uiGlobalSearchTest = (): Promise<boolean> =>
         uiStream.cancel();
         resolve(true);
       }
-    }).then((cancellable: Cancellable) => uiStream = cancellable);
+    }).then((cancellable: Cancellable) => (uiStream = cancellable));
   });
 
 /*

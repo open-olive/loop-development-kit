@@ -62,12 +62,12 @@ export interface Socket {
    * @param message text or data message
    * @param callback function to call if error occured
    */
-  writeMessage(message: string | Uint8Array, callback: CallbackError): void;
+  writeMessage(message: string | Uint8Array, callback: CallbackError): Promise<void>;
   /**
    * closes websocket
    * @param callback function to call if error occured
    */
-  close(callback: CallbackError): void;
+  close(callback: CallbackError): Promise<void>;
   /**
    * allows to listen for a websocket message
    * @param callback receives text or data message from websocket and error if occures

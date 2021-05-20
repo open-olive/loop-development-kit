@@ -8,7 +8,7 @@ describe('Network', () => {
   beforeEach(() => {
     oliveHelps.network = {
       httpRequest: jest.fn(),
-      webSocket: jest.fn(),
+      webSocketConnect: jest.fn(),
     };
     TextEncoder.prototype.encode = jest.fn();
     TextDecoder.prototype.decode = jest.fn();
@@ -109,23 +109,27 @@ describe('Network', () => {
 
   describe('webSocket', () => {
     it('passed in callback function to olive helps', () => {
-      const url = 'url';
+      const socketConfiguration: network.SocketConfiguration = {
+        url: "url"
+      };
 
-      network.webSocket(url);
+      network.webSocketConnect(socketConfiguration);
 
-      expect(oliveHelps.network.webSocket).toHaveBeenCalledWith(
-        url,
+      expect(oliveHelps.network.webSocketConnect).toHaveBeenCalledWith(
+        socketConfiguration,
         expect.any(Function),
       );
     });
 
     it('throws exception when passing in callback function', () => {
       const exception = 'Exception';
-      mocked(oliveHelps.network.webSocket).mockImplementation(() => {
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation(() => {
         throw exception;
       });
 
-      const actual = network.webSocket('url');
+      const actual = network.webSocketConnect({
+        url: "url"
+      });
 
       return expect(actual).rejects.toBe(exception);
     });
