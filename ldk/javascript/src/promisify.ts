@@ -18,9 +18,7 @@ export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
       arg(param, (error, value) => {
         if (error) {
           console.error(
-            `Received error on result: ${error.message} with value: ${JSON.stringify(
-              value,
-            )}`,
+            `Received error on result: ${error.message}`,
           );
           reject(error);
           return;
@@ -41,7 +39,7 @@ function promiseResolver<T>(
   return (error, value) => {
     if (error) {
       console.error(
-        `Received error on result: ${error.message} with value: ${JSON.stringify(value)}`,
+        `Received error on result: ${error.message}`,
       );
       reject(error);
       return;
