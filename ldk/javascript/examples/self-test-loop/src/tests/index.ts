@@ -861,6 +861,7 @@ export const networkWebSocket = (): Promise<boolean> =>
       const cancellable: Cancellable = await socket.listenMessage(async (error, message) => {
         if (error) {
           console.error(`Received on listen message error: ${error.message}`);
+          return;
         }
         if (typeof message === 'string') {
           if (message === testText) {

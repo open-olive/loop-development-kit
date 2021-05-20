@@ -71,7 +71,7 @@ export interface Socket {
    */
   close(callback: CallbackError): Promise<void>;
   /**
-   * allows to listen for a websocket message
+   * allows to listen for a websocket message (there should be only 1 listen message callback per socket to allow messages being fully received)
    * @param callback receives text or data message from websocket and error if occures
    */
   listenMessage: (
