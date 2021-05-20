@@ -1,12 +1,11 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 import * as mapper from '../utils/mapper';
 import { Cancellable } from '../cancellable';
+import { promisifyMappedWithParam } from '../promisify';
 
 /**
  * The HTTP Request configuration.
  */
-import { promisifyMappedWithParam } from '../promisify';
-
 export interface HTTPRequest {
   body?: Uint8Array;
   headers?: Record<string, string[]>;
@@ -35,7 +34,7 @@ export interface HTTPResponse {
 export type CallbackError = (error: Error | undefined) => void;
 
 /**
- *
+ * configuration object to configure a websocket handshake
  */
 export interface SocketConfiguration {
   /**
@@ -56,6 +55,9 @@ export interface SocketConfiguration {
   subprotocols?: Array<string>;
 }
 
+/**
+ * Object to communicate with the websocket
+ */
 export interface Socket {
   /**
    * writes message to a websocket

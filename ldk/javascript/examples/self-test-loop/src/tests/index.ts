@@ -827,7 +827,7 @@ export const networkHTTP = (): Promise<boolean> =>
       });
   });
 
-const finaliseWebsocketTest = (cancellable: Cancellable, socket: network.Socket) => {
+const finaliseWebsocketTest = async (cancellable: Cancellable, socket: network.Socket) => {
   try {
     cancellable.cancel();
     await socket.close((error) => {
@@ -868,7 +868,7 @@ export const networkWebSocket = (): Promise<boolean> =>
             textTestPassed = true;
             if (binaryTestPassed) {
               resolve(true);
-              finaliseWebsocketTest(cancellable, socket);
+              await finaliseWebsocketTest(cancellable, socket);
             }
           }
         } else {
@@ -877,7 +877,7 @@ export const networkWebSocket = (): Promise<boolean> =>
             binaryTestPassed = true;
             if (textTestPassed) {
               resolve(true);
-              finaliseWebsocketTest(cancellable, socket);
+              await finaliseWebsocketTest(cancellable, socket);
             }
           }
         }
