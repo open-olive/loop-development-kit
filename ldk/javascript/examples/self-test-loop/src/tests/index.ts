@@ -623,7 +623,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
                   label: 'Classification',
                   style: whisper.Urgency.None,
                   type: whisper.WhisperComponentType.ListPair,
-                  value: recallItem.calssification,
+                  value: recallItem.classification,
                 },
               ],
               type: whisper.WhisperComponentType.CollapseBox,
@@ -847,7 +847,7 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
         {
           label: 'Select a color',
           options: ['green', 'red', 'blue'],
-          onSelect: (selected) => {
+          onSelect: (error, selected) => {
             console.log(`${selected} has been selected!`);
           },
           type: whisper.WhisperComponentType.Select,
