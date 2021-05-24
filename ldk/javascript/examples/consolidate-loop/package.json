@@ -13,11 +13,19 @@
     "permissions": {
       "clipboard": {},
       "keyboard": {},
-      "whisper": {}
+      "whisper": {},
+      "filesystem": {
+        "pathGlobs": [
+          {
+            "value": "./PatientInfo.txt"
+          }
+        ]
+      }
     }
   },
   "dependencies": {
-    "@oliveai/ldk": "file:../.."
+    "@oliveai/ldk": "file:../..",
+    "file-system": "^2.2.2"
   },
   "devDependencies": {
     "webpack": "^5.32.0",
