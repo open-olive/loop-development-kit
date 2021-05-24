@@ -47,8 +47,13 @@ declare namespace OliveHelps {
     network: Network;
     process: Process;
     ui: UI;
+    user: User;
     vault: Vault;
     window: Window;
+  }
+
+  interface User {
+    jwt: Readable<string>;
   }
 
   //-- Window

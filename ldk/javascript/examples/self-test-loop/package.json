@@ -43,6 +43,7 @@
       },
       "process": {},
       "ui": {},
+      "user": {},
       "keyboard": {},
       "whisper": {},
       "vault": {},
