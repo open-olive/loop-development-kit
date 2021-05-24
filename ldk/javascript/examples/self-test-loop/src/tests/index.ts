@@ -162,8 +162,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         },
         components: [
           {
-            body: 
-              `A paragraph with *emphasis* and **strong importance**.
+            body: `A paragraph with *emphasis* and **strong importance**.
               > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
 
               * Lists
@@ -913,25 +912,29 @@ export const networkWebSocket = (): Promise<boolean> =>
       });
       const cancellable: Cancellable = await socket.listenMessage(async (error, message) => {
         if (error) {
-          console.error(`Received on listen message error: ${error.message}, ${error.stack}, ${error.name}`);
+          console.error(
+            `Received on listen message error: ${error.message}, ${error.stack}, ${error.name}`,
+          );
           return;
         }
-        if (typeof message === 'string') {
-          if (message === testText) {
-            console.debug(`Received text data`);
-            textTestPassed = true;
-            if (binaryTestPassed) {
-              resolve(true);
-              await testUtils.finalizeWebsocketTest(cancellable, socket);
+        if (message) {
+          if (typeof message === 'string') {
+            if (message === testText) {
+              console.debug(`Received text data`);
+              textTestPassed = true;
+              if (binaryTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
             }
-          }
-        } else {
-          if (JSON.stringify(message) === JSON.stringify(testData)) {
-            console.debug(`Received binary data`);
-            binaryTestPassed = true;
-            if (textTestPassed) {
-              resolve(true);
-              await testUtils.finalizeWebsocketTest(cancellable, socket);
+          } else {
+            if (JSON.stringify(message) === JSON.stringify(testData)) {
+              console.debug(`Received binary data`);
+              binaryTestPassed = true;
+              if (textTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
             }
           }
         }

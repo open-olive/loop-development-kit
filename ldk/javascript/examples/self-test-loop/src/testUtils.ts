@@ -5,7 +5,9 @@ export const finalizeWebsocketTest = async (cancellable: Cancellable, socket: ne
   try {
     cancellable.cancel();
     await socket.close((error) => {
-      console.error(`Received error while closing websocket: ${error.message}`);
+      if (error) {
+        console.error(`Received error while closing websocket: ${error.message}`);
+      }
     });
   } catch (e) {
     console.error(`Received error while finalising websocket: ${e.message}`);
