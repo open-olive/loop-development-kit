@@ -32,20 +32,37 @@ const mapToMessageType = (message: string | Uint8Array): MessageType =>
   typeof message === 'string' ? MessageType.text : MessageType.binary;
 
 export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({
-  writeMessage: (message: string | Uint8Array, callback) =>
+  writeMessage: (message: string | Uint8Array) =>
     new Promise((resolve, reject) => {
       try {
-        socket.writeMessage(mapToMessageType(message), mapToBinaryData(message), callback);
-        resolve();
+        socket.writeMessage(mapToMessageType(message), mapToBinaryData(message), (error: Error | undefined) => {
+          if (error) {
+            console.error(
+              `Received error on result: ${error.message}`,
+            );
+            reject(error);
+            return;
+          }
+          resolve();
+        });
+        
       } catch (e) {
         handleCaughtError(reject, e, 'writeMessage');
       }
     }),
-  close: (callback) =>
+  close: () =>
     new Promise((resolve, reject) => {
       try {
-        socket.close(callback);
-        resolve();
+        socket.close((error: Error | undefined) => {
+          if (error) {
+            console.error(
+              `Received error on result: ${error.message}`,
+            );
+            reject(error);
+            return;
+          }
+          resolve();
+        });
       } catch (e) {
         handleCaughtError(reject, e, 'close');
       }

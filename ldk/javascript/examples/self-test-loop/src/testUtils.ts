@@ -4,12 +4,8 @@ import { network } from '@oliveai/ldk';
 export const finalizeWebsocketTest = async (cancellable: Cancellable, socket: network.Socket) => {
   try {
     cancellable.cancel();
-    await socket.close((error) => {
-      if (error) {
-        console.error(`Received error while closing websocket: ${error.message}`);
-      }
-    });
+    await socket.close();
   } catch (e) {
-    console.error(`Received error while finalising websocket: ${e.message}`);
+    console.error(`Received error while finalizing websocket: ${e.message}`);
   }
 };

@@ -979,19 +979,9 @@ export const networkWebSocket = (): Promise<boolean> =>
         }
       });
       // send text
-      await socket.writeMessage(testText, (error) => {
-        if (error) {
-          console.error(`Received on write text message error: ${error.message}`);
-          reject(error);
-        }
-      });
+      await socket.writeMessage(testText);
       // send binary
-      await socket.writeMessage(testData, (error) => {
-        if (error) {
-          console.error(`Received on write binary message error: ${error.message}`);
-          reject(error);
-        }
-      });
+      await socket.writeMessage(testData);
     } catch (error) {
       console.error(`Error received while testing websocket: ${error.message}`);
       reject(error);
