@@ -157,6 +157,7 @@ declare namespace OliveHelps {
     writeMessage(messageType: MessageType, data: Array<number>, callback: (error: Error | undefined) => void): void;
     close(callback: (error: Error | undefined) => void): void;
     listenMessage: (callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void, returnCb: ReturnCallback) => void;
+    onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
   }
 
   interface HTTPRequest {

@@ -903,9 +903,17 @@ export const networkWebSocket = (): Promise<boolean> =>
     try {
       const socket = await network.webSocketConnect(socketConfiguration);
       console.debug('Websocket successfully connected');
+      socket.onCloseHandler((error, code, text) => {
+        if (error) {
+          console.error(`OnCloseHandler received error: ${error.message}`);
+          return;
+        }
+
+        console.info(`Received on close code: ${code}. ${text}`);
+      });
       const cancellable: Cancellable = await socket.listenMessage(async (error, message) => {
         if (error) {
-          console.error(`Received on listen message error: ${error.message}`);
+          console.error(`Received on listen message error: ${error.message}, ${error.stack}, ${error.name}`);
           return;
         }
         if (typeof message === 'string') {
@@ -914,7 +922,7 @@ export const networkWebSocket = (): Promise<boolean> =>
             textTestPassed = true;
             if (binaryTestPassed) {
               resolve(true);
-              await testUtils.finaliseWebsocketTest(cancellable, socket);
+              await testUtils.finalizeWebsocketTest(cancellable, socket);
             }
           }
         } else {
@@ -923,7 +931,7 @@ export const networkWebSocket = (): Promise<boolean> =>
             binaryTestPassed = true;
             if (textTestPassed) {
               resolve(true);
-              await testUtils.finaliseWebsocketTest(cancellable, socket);
+              await testUtils.finalizeWebsocketTest(cancellable, socket);
             }
           }
         }

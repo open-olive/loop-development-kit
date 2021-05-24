@@ -50,12 +50,12 @@ export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({
         handleCaughtError(reject, e, 'close');
       }
     }),
-  listenMessage: (cb: (error: Error | undefined, message: Uint8Array | string) => void) =>
+  listenMessage: (callback: (error: Error | undefined, message: Uint8Array | string) => void) =>
     new Promise((resolve, reject) => {
       try {
         socket.listenMessage(
           (error: Error | undefined, messageType: MessageType, buffer: ArrayBuffer) => {
-            cb(error, mapToResponseMessage(messageType, buffer));
+            callback(error, mapToResponseMessage(messageType, buffer));
           },
           (obj) => {
             resolve(obj);
@@ -65,4 +65,13 @@ export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({
         handleCaughtError(reject, e, 'listenMessage');
       }
     }),
+    onCloseHandler: (callback) => 
+      new Promise((resolve, reject) => {
+        try {
+          socket.onCloseHandler(callback)
+          resolve();
+        } catch (e) {
+          handleCaughtError(reject, e, 'onCloseHandler');
+        }
+      }),    
 });

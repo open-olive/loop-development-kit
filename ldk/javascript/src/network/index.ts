@@ -77,6 +77,13 @@ export interface Socket {
   listenMessage: (
     callback: (error: Error | undefined, message: string | Uint8Array) => void,
   ) => Promise<Cancellable>;
+  /**
+   * allows to provide handler when websocket closing
+   * @param callback receives code status and text received from the peer
+   */
+  onCloseHandler(
+    callback: (error: Error | undefined, code: number, text: string) => void,
+  ): Promise<void>;
 }
 
 /**
