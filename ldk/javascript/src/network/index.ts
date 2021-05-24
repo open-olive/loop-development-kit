@@ -70,17 +70,17 @@ export interface Socket {
   close(): Promise<void>;
   /**
    * allows to listen for a websocket message (there must be only one listener registered per socket for messages to be fully received)
-   * @param callback receives text or data message from websocket and error if occurs
+   * @param handler receives text or data message from websocket and error if occurs
    */
-  listenMessage: (
-    callback: (error: Error | undefined, message: string | Uint8Array) => void,
+  setMessageHandler: (
+    handler: (error: Error | undefined, message: string | Uint8Array) => void,
   ) => Promise<Cancellable>;
   /**
    * allows to provide handler when websocket closing
-   * @param callback receives code status and text received from the peer
+   * @param handler receives code status and text received from the peer
    */
-  onCloseHandler(
-    callback: (error: Error | undefined, code: number, text: string) => void,
+  setCloseHandler(
+    handler: (error: Error | undefined, code: number, text: string) => void,
   ): Promise<void>;
 }
 

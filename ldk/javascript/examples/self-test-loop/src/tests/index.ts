@@ -941,7 +941,7 @@ export const networkWebSocket = (): Promise<boolean> =>
     try {
       const socket = await network.webSocketConnect(socketConfiguration);
       console.debug('Websocket successfully connected');
-      socket.onCloseHandler((error, code, text) => {
+      socket.setCloseHandler((error, code, text) => {
         if (error) {
           console.error(`OnCloseHandler received error: ${error.message}`);
           return;
@@ -949,7 +949,7 @@ export const networkWebSocket = (): Promise<boolean> =>
 
         console.info(`Received on close code: ${code}. ${text}`);
       });
-      const cancellable: Cancellable = await socket.listenMessage(async (error, message) => {
+      const cancellable: Cancellable = await socket.setMessageHandler(async (error, message) => {
         if (error) {
           console.error(
             `Received on listen message error: ${error.message}, ${error.stack}, ${error.name}`,
