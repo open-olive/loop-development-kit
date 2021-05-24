@@ -40,6 +40,9 @@
           },
           {
             "value": "./test.txt"
+          },
+          {
+            "value": "./test-tmp-dir"
           }
         ]
       },
