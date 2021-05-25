@@ -13,6 +13,7 @@ import {
 } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import * as testUtils from '../testUtils';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -162,8 +163,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         },
         components: [
           {
-            body: 
-              `A paragraph with *emphasis* and **strong importance**.
+            body: `A paragraph with *emphasis* and **strong importance**.
               > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
 
               * Lists
@@ -897,6 +897,7 @@ export const networkHTTPS = (): Promise<boolean> =>
         }
       })
       .catch((e) => {
+        console.debug(JSON.stringify(e));
         reject(e);
       });
   });
@@ -919,6 +920,75 @@ export const networkHTTP = (): Promise<boolean> =>
       .catch(() => {
         resolve(true);
       });
+  });
+
+export const networkWebSocket = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const url = 'wss://html5rocks.websocket.org/echo';
+    const testData = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
+    const testText = 'some text';
+    let textTestPassed = false;
+    let binaryTestPassed = false;
+
+    setTimeout(() => {
+      reject(new Error('Network websocket test did not finish in the appropriate timespan.'));
+    }, 20000);
+
+    const socketConfiguration: network.SocketConfiguration = {
+      url: url,
+      useCompression: true,
+    };
+
+    try {
+      console.debug('Stating websocket connect');
+      const socket = await network.webSocketConnect(socketConfiguration);
+      console.debug('Websocket successfully connected');
+      socket.setCloseHandler((error, code, text) => {
+        if (error) {
+          console.error(`OnCloseHandler received error:`);
+          console.error(error);
+          
+          return;
+        }
+
+        console.info(`Received on close code: ${code}. ${text}`);
+      });
+      const cancellable: Cancellable = await socket.setMessageHandler(async (error, message) => {
+        if (error) {
+          console.error(error);
+
+          return;
+        }
+        if (message) {
+          if (typeof message === 'string') {
+            if (message === testText) {
+              console.debug(`Received text data`);
+              textTestPassed = true;
+              if (binaryTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
+            }
+          } else {
+            if (JSON.stringify(message) === JSON.stringify(testData)) {
+              console.debug(`Received binary data`);
+              binaryTestPassed = true;
+              if (textTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
+            }
+          }
+        }
+      });
+      // send text
+      await socket.writeMessage(testText);
+      // send binary
+      await socket.writeMessage(testData);
+    } catch (error) {
+      console.error(`Error received while testing websocket: ${error.message}`);
+      reject(error);
+    }
   });
 
 export const charTest = (): Promise<boolean> =>

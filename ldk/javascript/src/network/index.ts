@@ -1,12 +1,11 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
+import * as mapper from '../utils/mapper';
+import { Cancellable } from '../cancellable';
+import { promisifyMappedWithParam } from '../promisify';
 
 /**
  * The HTTP Request configuration.
  */
-import {
-  promisifyWithMapper,
-} from '../promisify';
-
 export interface HTTPRequest {
   body?: Uint8Array;
   headers?: Record<string, string[]>;
@@ -27,6 +26,62 @@ export interface HTTPResponse {
    */
   body: Uint8Array;
   headers: Record<string, string[]>;
+}
+
+/**
+ * A simplified representation of a callback which take error
+ */
+export type CallbackError = (error: Error | undefined) => void;
+
+/**
+ * Configuration object to configure a websocket handshake
+ */
+export interface SocketConfiguration {
+  /**
+   * Websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
+   */
+  url: string;
+  /**
+   * Collection of the handshake headers
+   */
+  headers?: Record<string, string[]>;
+  /**
+   * Specifies if compression is used
+   */
+  useCompression?: boolean;
+  /**
+   * Specifies the client's requested subprotocols
+   */
+  subprotocols?: Array<string>;
+}
+
+/**
+ * Object to communicate with the websocket
+ */
+export interface Socket {
+  /**
+   * Writes message to a websocket
+   * @param message Text or data message
+   */
+  writeMessage(message: string | Uint8Array): Promise<void>;
+  /**
+   * Closes websocket
+   */
+  close(): Promise<void>;
+  /**
+   * Allows to listen for a websocket message (there must be only one listener registered per socket for messages to be fully received)
+   * @param handler Receives text or data message from websocket and error if occurs (error could be returned if reading from the closed connection)
+   */
+  setMessageHandler: (
+    handler: (error: Error | undefined, message: string | Uint8Array) => void,
+  ) => Promise<Cancellable>;
+  /**
+   * Allows to provide handler when websocket closing
+   * @param handler Receives code status and text received from the peer
+   */
+  setCloseHandler(
+    handler: (error: Error | undefined, code: number, text: string) => void,
+  ): Promise<void>;
 }
 
 /**
@@ -56,24 +111,26 @@ export interface Network {
    * @returns A promise resolving with the decoded text
    */
   decode(encodedValue: Uint8Array, encoding: string): Promise<string>;
+
+  /**
+   *  Connects to a specified websocket
+   * 
+   * @param socketConfiguration A configuration object defines websocket
+   * @returns A promise with Socket
+   */
+  webSocketConnect(socketConfiguration: SocketConfiguration): Promise<Socket>;
 }
 
-const mapToHttpResponse = (response: OliveHelps.HTTPResponse) => ({
-  statusCode: response.statusCode,
-  body: new Uint8Array(response.body),
-  headers: response.headers,
-});
-
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  const bodyData = (request.body) ? [...request.body] : undefined;
-  return promisifyWithMapper(
+  const bodyData = request.body ? [...request.body] : undefined;
+  return promisifyMappedWithParam(
     {
       body: bodyData,
       headers: request.headers,
       method: request.method,
       url: request.url,
     },
-    mapToHttpResponse,
+    mapper.mapToHttpResponse,
     oliveHelps.network.httpRequest,
   );
 }
@@ -98,4 +155,12 @@ export function decode(encodedValue: Uint8Array): Promise<string> {
       reject(e);
     }
   });
+}
+
+export function webSocketConnect(socketConfiguration: SocketConfiguration): Promise<Socket> {
+  return promisifyMappedWithParam(
+    socketConfiguration,
+    mapper.mapToSocket,
+    oliveHelps.network.webSocketConnect,
+  );
 }

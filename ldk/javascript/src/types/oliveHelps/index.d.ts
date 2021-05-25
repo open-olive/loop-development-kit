@@ -143,6 +143,26 @@ declare namespace OliveHelps {
   //-- Network
   interface Network {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
+    webSocketConnect: ReadableWithParam<SocketConfiguration, Socket>;
+  }
+
+  interface SocketConfiguration {
+    url: string;
+    headers?: Record<string, string[]>;
+    useCompression?: boolean;
+    subprotocols?: Array<string>;
+  }
+
+  enum MessageType {
+    text = 1,
+    binary = 2,
+  }
+
+  interface Socket {
+    writeMessage(messageType: MessageType, data: Array<number>, callback: (error: Error | undefined) => void): void;
+    close(callback: (error: Error | undefined) => void): void;
+    listenMessage: (callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void, returnCb: ReturnCallback) => void;
+    onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
   }
 
   interface HTTPRequest {

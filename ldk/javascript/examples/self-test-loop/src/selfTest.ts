@@ -18,6 +18,7 @@ import {
   listenActiveWindowTest,
   networkHTTP,
   networkHTTPS,
+  networkWebSocket,
   processStream,
   processQuery,
   simpleFormWhisper,
@@ -101,6 +102,12 @@ const testConfig: { [key: string]: TestGroup } = {
       networkHTTP,
       5000,
       'Calling a public HTTP API. Should fail',
+    ),
+    new LoopTest(
+      'Network Aptitude - WebSocket test',
+      networkWebSocket,
+      20000,
+      'Sending/receiving data to websocket should pass.',
     ),
   ]),
   process: new TestGroup('Process Aptitude', [
