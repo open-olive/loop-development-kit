@@ -4,20 +4,17 @@ let componentState = new Map<string, any>(); // TODO: This will bleed over into 
 
 export class LdkForm {
     children: Array<Components>;
-    onSubmit: (values: Map<string, any>) => void;
 
-    constructor(children: Array<Components>, onSubmit: (values: Map<string, any>) => void) {
+    constructor(children: Array<Components>) {
         this.children = children;
-        this.onSubmit = onSubmit;
-        this.onSubmitHandler(this.onSubmit);
 
         componentState = new Map<string, any>();
 
         this.registerListeners(children);
     }
 
-    private onSubmitHandler(onSubmit: (values: Map<string, any>) => void) {
-        onSubmit(componentState);
+    getComponentState(): Map<string, any> {
+        return componentState;
     }
 
     private registerListeners(children: Array<Components>) {

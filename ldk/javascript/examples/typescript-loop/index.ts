@@ -39,7 +39,10 @@ import { clipboard, whisper } from '@oliveai/ldk';
             type: whisper.WhisperComponentType.RadioGroup
           }
         ],
-        onSubmit: (values: Map<string, any>) => {},
+        onSubmit: (values: Map<string, any>) => {
+          console.info("Got component state!");
+          values.forEach((value: any, key: string) => console.info(key, value));
+        },
         type: whisper.WhisperComponentType.Form
       };
   

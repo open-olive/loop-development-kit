@@ -289,14 +289,15 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
       whisper.components = whisper.components.splice(index, 1); // Remove form whisper from collection (don't send to sidekick)
       component.children.forEach(component => outgoingWhisper.components.push(component)); // Add form child components to top level
 
+      ldkForm = new LdkForm(component.children); // Store off all form child components
+      
       // Add submit button component
-      // const submitButton: Button = {
-      //   label: 'Submit',
-      //   onClick: component.onSubmit,
-      //   type: WhisperComponentType.Button
-      // }
-      // component.children.push(submitButton);
-      ldkForm = new LdkForm(component.children, component.onSubmit); // Store off all form child components
+      const submitButton: Button = {
+        label: 'Submit',
+        onClick: () => { component.onSubmit(ldkForm.getComponentState()) },
+        type: WhisperComponentType.Button
+      }
+      outgoingWhisper.components.push(submitButton);
       
       // Logging
       console.error(`ldkForm children: ${JSON.stringify(ldkForm.children)}`);
