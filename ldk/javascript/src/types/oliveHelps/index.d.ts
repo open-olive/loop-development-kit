@@ -302,6 +302,7 @@ declare namespace OliveHelps {
 
   type Button = Component<WhisperComponentType.Button> & {
     buttonStyle?: ButtonStyle;
+    disabled?: boolean;
     label: string;
     onClick: WhisperHandler;
     size?: ButtonSize;
@@ -365,7 +366,7 @@ declare namespace OliveHelps {
   };
 
   type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
-    onSelect: WhisperHandlerWithParam<number>
+    onSelect: WhisperHandlerWithParam<number>;
     options: string[];
     selected?: number;
   };
@@ -373,14 +374,14 @@ declare namespace OliveHelps {
   type Select = Component<WhisperComponentType.Select> & {
     label: string;
     options: string[];
-    onSelect: WhisperHandlerWithParam<number>
+    onSelect: WhisperHandlerWithParam<number>;
     selected?: number;
     tooltip?: string;
   };
 
   type Telephone = Component<WhisperComponentType.Telephone> & {
     label: string;
-    onChange: WhisperHandlerWithParam<string>
+    onChange: WhisperHandlerWithParam<string>;
     // pattern?: RegExp; TODO: Implement this
     tooltip?: string;
     value?: string;

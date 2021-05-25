@@ -717,7 +717,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
                   label: 'Classification',
                   style: whisper.Urgency.None,
                   type: whisper.WhisperComponentType.ListPair,
-                  value: recallItem.calssification,
+                  value: recallItem.classification,
                 },
               ],
               type: whisper.WhisperComponentType.CollapseBox,
@@ -772,6 +772,45 @@ export const buttonWhisper = (): Promise<boolean> =>
                 resolve(true);
               },
               type: whisper.WhisperComponentType.Button,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          children: [
+            {
+              label: `Disabled Primary`,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
+            },
+            {
+              label: `Disabled Secondary`,
+              buttonStyle: whisper.ButtonStyle.Secondary,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
+            },
+            {
+              label: `Disabled Text`,
+              buttonStyle: whisper.ButtonStyle.Text,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
             },
           ],
           type: whisper.WhisperComponentType.Box,
@@ -905,7 +944,7 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
         {
           label: 'Select a color',
           options: ['green', 'red', 'blue'],
-          onSelect: (selected) => {
+          onSelect: (error, selected) => {
             console.log(`${selected} has been selected!`);
           },
           type: whisper.WhisperComponentType.Select,
