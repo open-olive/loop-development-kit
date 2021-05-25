@@ -1,4 +1,5 @@
 import { promisifyWithParam } from '../promisify';
+import { isForm, LdkForm } from './form';
 
 export enum WhisperComponentType {
   /**
@@ -60,6 +61,11 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
+
+  /**
+   * A form component allows for child component values to be read during a submit event.
+   */
+  Form = 'form',
 }
 
 export enum Alignment {
@@ -129,6 +135,7 @@ export declare type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> &
   tooltip?: string;
   value: boolean;
   onChange: WhisperHandlerWithParam<boolean>;
+  name?: string;
 };
 
 export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
@@ -136,6 +143,7 @@ export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  name?: string;
 };
 
 export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
@@ -172,6 +180,7 @@ export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> 
   min?: number;
   step?: number;
   tooltip?: string;
+  name?: string;
 };
 
 export declare type Password = WhisperComponent<WhisperComponentType.Password> & {
@@ -179,12 +188,14 @@ export declare type Password = WhisperComponent<WhisperComponentType.Password> &
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  name?: string;
 };
 
 export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
   onSelect: WhisperHandlerWithParam<number>;
   options: string[];
   selected?: number;
+  name?: string;
 };
 
 export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
@@ -193,6 +204,7 @@ export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
   onSelect: WhisperHandlerWithParam<number>;
   selected?: number;
   tooltip?: string;
+  name?: string;
 };
 
 export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
@@ -201,6 +213,7 @@ export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone>
   // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
+  name?: string;
 };
 
 export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
@@ -208,6 +221,7 @@ export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput>
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  name?: string;
 };
 
 export declare type Divider = WhisperComponent<WhisperComponentType.Divider>;
@@ -240,7 +254,12 @@ export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
   direction: Direction;
 };
 
-export type Components = Box | ChildComponents | CollapseBox;
+export declare type Form = WhisperComponent<WhisperComponentType.Form> & {
+  children: Array<Components>;
+  onSubmit: (values: Map<string, any>) => void;
+};
+
+export type Components = Box | ChildComponents | CollapseBox | Form;
 
 export interface NewWhisper {
   components: Array<Components>;
@@ -259,5 +278,32 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
+  let ldkForm: LdkForm;
+
+  whisper.components.forEach((component: Components, index: number) => {
+    if(isForm(component)) {
+      let outgoingWhisper: NewWhisper = {
+        ...whisper,
+        components: []
+      }
+      whisper.components = whisper.components.splice(index, 1); // Remove form whisper from collection (don't send to sidekick)
+      component.children.forEach(component => outgoingWhisper.components.push(component)); // Add form child components to top level
+
+      // Add submit button component
+      // const submitButton: Button = {
+      //   label: 'Submit',
+      //   onClick: component.onSubmit,
+      //   type: WhisperComponentType.Button
+      // }
+      // component.children.push(submitButton);
+      ldkForm = new LdkForm(component.children, component.onSubmit); // Store off all form child components
+      
+      // Logging
+      console.error(`ldkForm children: ${JSON.stringify(ldkForm.children)}`);
+      console.error(`outgoingWhisper components: ${JSON.stringify(outgoingWhisper.components)}`);
+      
+      whisper = outgoingWhisper
+    }
+  });
   return promisifyWithParam(whisper, oliveHelps.whisper.create);
 }

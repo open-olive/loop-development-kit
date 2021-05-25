@@ -223,6 +223,7 @@ declare namespace OliveHelps {
     Select = 'select',
     Telephone = 'telephone',
     TextInput = 'textInput',
+    Form = 'form',
   }
 
   enum Urgency {
@@ -287,6 +288,7 @@ declare namespace OliveHelps {
     tooltip?: string;
     value: boolean;
     onChange: WhisperHandlerWithParam<boolean>;
+    name?: string;
   };
 
   type Email = Component<WhisperComponentType.Email> & {
@@ -294,6 +296,7 @@ declare namespace OliveHelps {
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
+    name?: string;
   };
 
   type Link = Component<WhisperComponentType.Link> & {
@@ -330,6 +333,7 @@ declare namespace OliveHelps {
     min?: number;
     step?: number;
     tooltip?: string;
+    name?: string;
   };
 
   type Password = Component<WhisperComponentType.Password> & {
@@ -337,12 +341,14 @@ declare namespace OliveHelps {
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
+    name?: string;
   };
 
   type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
     onSelect: WhisperHandlerWithParam<number>
     options: string[];
     selected?: number;
+    name?: string;
   };
 
   type Select = Component<WhisperComponentType.Select> & {
@@ -351,6 +357,7 @@ declare namespace OliveHelps {
     onSelect: WhisperHandlerWithParam<number>
     selected?: number;
     tooltip?: string;
+    name?: string;
   };
 
   type Telephone = Component<WhisperComponentType.Telephone> & {
@@ -359,6 +366,7 @@ declare namespace OliveHelps {
     // pattern?: RegExp; TODO: Implement this
     tooltip?: string;
     value?: string;
+    name?: string;
   };
 
   type TextInput = Component<WhisperComponentType.TextInput> & {
@@ -366,6 +374,7 @@ declare namespace OliveHelps {
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
+    name?: string;
   };
 
   type Divider = Component<WhisperComponentType.Divider>;
@@ -398,7 +407,13 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput;
 
-  type Components = Box | ChildComponents | CollapseBox;
+  type Form = Component<WhisperComponentType.Form> & {
+    children: Array<Components>; // whisper.Create() Introduce state to the LDK, 
+    onSubmit: (values: Map<string, any>) => void;
+    //keep them updated onChange events
+  };
+
+  type Components = Box | ChildComponents | CollapseBox | Form;
 
   interface NewWhisper {
     label: string;

@@ -39,5 +39,43 @@ describe('Whisper', () => {
       expect(oliveHelps.whisper.create).toHaveBeenCalledWith(newWhisper, expect.any(Function));
       return expect(actual).resolves.toBe(expected);
     });
+
+    fit('Replaces form with child components', () => {
+      const expectedLabel = 'Test';
+      const expectedCloseFunction = jest.fn();
+
+      const formWhisper: whisper.NewWhisper = {
+        components: [
+          {
+            children: [
+              {
+                body: 'Test',
+                id: '1',
+                type: whisper.WhisperComponentType.Markdown,
+              },
+            ],
+            onSubmit: () => { },
+            type: whisper.WhisperComponentType.Form
+          },
+        ],
+        label: expectedLabel,
+        onClose: expectedCloseFunction,
+      };
+
+      const expectedWhisper: whisper.NewWhisper = {
+        components: [
+          {
+            body: 'Test',
+            id: '1',
+            type: whisper.WhisperComponentType.Markdown,
+          },
+        ],
+        label: expectedLabel,
+        onClose: expectedCloseFunction,
+      }
+
+      const actual = whisper.create(formWhisper);
+      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function));
+    });
   });
 });
