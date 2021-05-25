@@ -154,6 +154,7 @@ export const processStream = (): Promise<boolean> =>
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    const options = ['M12.01', 'M00.123']
     var form: whisper.Whisper;
     whisper
       .create({
@@ -178,6 +179,58 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
               | Row 2 Col 1 | Row 2 Col 2 |
               `,
             type: whisper.WhisperComponentType.Markdown,
+          },
+          {
+            label: `${options[0]}  
+            line one
+            line two 100.0%`,
+            value: false,
+            onChange: (error, value) => {
+              console.debug(`selected value: ${options[0]}`);
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `${options[1]}  
+            this is a longer line one, it was known for being long 
+            99.2 %`,
+            value: false,
+            onChange: () => {
+              console.debug(`selected value: ${options[1]}`);
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `Single Line Example that is extremely 
+            long extremely long extremely long extremely 
+            long extremely long extremely long extremely long extremely 
+            long extremely long extremely long extremely long extremely 
+            long extremely long extremely long`,
+            value: false,
+            onChange: () => {
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `normal label with no surprises`,
+            value: false,
+            onChange: () => {
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            onSelect: (selected) => {
+              console.log(`${selected} has been selected!`);
+            },
+            options: [
+              'no markdown', 
+              '**Strong Option**', 
+              `multiline  
+              line 1  
+              line 2`
+            ],
+            selected: 0,
+            type: whisper.WhisperComponentType.RadioGroup,
           },
           {
             alignment: whisper.Alignment.SpaceEvenly,
@@ -793,6 +846,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
 
 export const numberInputs = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Number Test',
       components: [
@@ -831,8 +885,10 @@ export const numberInputs = (): Promise<boolean> =>
         console.log('close');
       },
     };
-    whisper.create(config).then(() => {
+    whisper.create(config).then((whisper: whisper.Whisper) => {
+      form = whisper;
       setTimeout(() => {
+        form.close((error => console.error(error)));
         resolve(true);
       }, 5000);
     });
