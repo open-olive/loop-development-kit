@@ -7,11 +7,13 @@ import {
   vault,
   whisper,
   window,
+  user,
   ui,
   filesystem,
 } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import * as testUtils from '../testUtils';
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -152,6 +154,7 @@ export const processStream = (): Promise<boolean> =>
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    const options = ['M12.01', 'M00.123']
     var form: whisper.Whisper;
     whisper
       .create({
@@ -176,6 +179,58 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
               | Row 2 Col 1 | Row 2 Col 2 |
               `,
             type: whisper.WhisperComponentType.Markdown,
+          },
+          {
+            label: `${options[0]}  
+            line one
+            line two 100.0%`,
+            value: false,
+            onChange: (error, value) => {
+              console.debug(`selected value: ${options[0]}`);
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `${options[1]}  
+            this is a longer line one, it was known for being long 
+            99.2 %`,
+            value: false,
+            onChange: () => {
+              console.debug(`selected value: ${options[1]}`);
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `Single Line Example that is extremely 
+            long extremely long extremely long extremely 
+            long extremely long extremely long extremely long extremely 
+            long extremely long extremely long extremely long extremely 
+            long extremely long extremely long`,
+            value: false,
+            onChange: () => {
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `normal label with no surprises`,
+            value: false,
+            onChange: () => {
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            onSelect: (selected) => {
+              console.log(`${selected} has been selected!`);
+            },
+            options: [
+              'no markdown', 
+              '**Strong Option**', 
+              `multiline  
+              line 1  
+              line 2`
+            ],
+            selected: 0,
+            type: whisper.WhisperComponentType.RadioGroup,
           },
           {
             alignment: whisper.Alignment.SpaceEvenly,
@@ -536,6 +591,45 @@ export const listenDir = (): Promise<boolean> =>
       });
   });
 
+export const dirExists = (): Promise<boolean> => 
+  new Promise((resolve, reject) => {
+    const destination = './test-tmp-dir';
+    const writeMode = 0o755;
+    filesystem.makeDir(destination, writeMode).then(() => {
+      filesystem.exists(destination).then(exists => {
+        filesystem.remove(destination);
+        if (exists === true) {
+          resolve(true);
+        }
+        reject('Could not check if directory exists');
+      });
+    });
+  });
+
+export const fileExists = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const filePath = './test_listenDir.txt';
+    const writeMode = 0o755;
+    network.encode('some file text').then((encodedValue) => {
+      filesystem.writeFile({
+        path: filePath,
+        data: encodedValue,
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode: writeMode,
+      }).then(() => {
+        filesystem.exists(filePath).then(exists => {
+          filesystem.remove(filePath);
+          if (exists === true) {
+            resolve(true);
+          }
+          reject('Could not check if directory exists');
+        });
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  });
+
 export const testNetworkAndListComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
@@ -791,6 +885,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
 
 export const numberInputs = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Number Test',
       components: [
@@ -829,8 +924,10 @@ export const numberInputs = (): Promise<boolean> =>
         console.log('close');
       },
     };
-    whisper.create(config).then(() => {
+    whisper.create(config).then((whisper: whisper.Whisper) => {
+      form = whisper;
       setTimeout(() => {
+        form.close((error => console.error(error)));
         resolve(true);
       }, 5000);
     });
@@ -895,6 +992,7 @@ export const networkHTTPS = (): Promise<boolean> =>
         }
       })
       .catch((e) => {
+        console.debug(JSON.stringify(e));
         reject(e);
       });
   });
@@ -917,6 +1015,75 @@ export const networkHTTP = (): Promise<boolean> =>
       .catch(() => {
         resolve(true);
       });
+  });
+
+export const networkWebSocket = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const url = 'wss://html5rocks.websocket.org/echo';
+    const testData = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
+    const testText = 'some text';
+    let textTestPassed = false;
+    let binaryTestPassed = false;
+
+    setTimeout(() => {
+      reject(new Error('Network websocket test did not finish in the appropriate timespan.'));
+    }, 20000);
+
+    const socketConfiguration: network.SocketConfiguration = {
+      url: url,
+      useCompression: true,
+    };
+
+    try {
+      console.debug('Stating websocket connect');
+      const socket = await network.webSocketConnect(socketConfiguration);
+      console.debug('Websocket successfully connected');
+      socket.setCloseHandler((error, code, text) => {
+        if (error) {
+          console.error(`OnCloseHandler received error:`);
+          console.error(error);
+          
+          return;
+        }
+
+        console.info(`Received on close code: ${code}. ${text}`);
+      });
+      const cancellable: Cancellable = await socket.setMessageHandler(async (error, message) => {
+        if (error) {
+          console.error(error);
+
+          return;
+        }
+        if (message) {
+          if (typeof message === 'string') {
+            if (message === testText) {
+              console.debug(`Received text data`);
+              textTestPassed = true;
+              if (binaryTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
+            }
+          } else {
+            if (JSON.stringify(message) === JSON.stringify(testData)) {
+              console.debug(`Received binary data`);
+              binaryTestPassed = true;
+              if (textTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
+            }
+          }
+        }
+      });
+      // send text
+      await socket.writeMessage(testText);
+      // send binary
+      await socket.writeMessage(testData);
+    } catch (error) {
+      console.error(`Error received while testing websocket: ${error.message}`);
+      reject(error);
+    }
   });
 
 export const charTest = (): Promise<boolean> =>
@@ -962,6 +1129,18 @@ export const hotkeyTest = (): Promise<boolean> =>
         resolve(true);
       })
       .then((cancellable: Cancellable) => (keyboardStream = cancellable));
+  });
+
+export const userJWTTest = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    user.jwt().then((token) => {
+      if (token) {
+          console.debug('jwt', token);
+          resolve(true);
+      } else {
+          reject("JWT should not have been empty")
+      }
+    });
   });
 
 export const uiSearchTest = (): Promise<boolean> =>

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "build-ldk": "cd ../.. && npm i && rm -rf dist && tsc",
+    "build-all": "npm run build-ldk && npm i && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,9 @@
       "cursor": {},
       "network": {
         "urlDomains": [
+          {
+            "value": "html5rocks.websocket.org"
+          },
           {
             "value": "api.fda.gov"
           },
@@ -35,11 +40,15 @@
           },
           {
             "value": "./test.txt"
+          },
+          {
+            "value": "./test-tmp-dir"
           }
         ]
       },
       "process": {},
       "ui": {},
+      "user": {},
       "keyboard": {},
       "whisper": {},
       "vault": {},

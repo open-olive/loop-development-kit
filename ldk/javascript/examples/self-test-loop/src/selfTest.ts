@@ -18,6 +18,7 @@ import {
   listenActiveWindowTest,
   networkHTTP,
   networkHTTPS,
+  networkWebSocket,
   processStream,
   processQuery,
   simpleFormWhisper,
@@ -30,11 +31,14 @@ import {
   testNetworkAndListComponents,
   queryDirectory,
   createAndDeleteFile,
+  userJWTTest,
   uiSearchTest,
   uiGlobalSearchTest,
   updateAndReadFile,
   listenFile,
   listenDir,
+  dirExists,
+  fileExists,
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -99,6 +103,12 @@ const testConfig: { [key: string]: TestGroup } = {
       5000,
       'Calling a public HTTP API. Should fail',
     ),
+    new LoopTest(
+      'Network Aptitude - WebSocket test',
+      networkWebSocket,
+      20000,
+      'Sending/receiving data to websocket should pass.',
+    ),
   ]),
   process: new TestGroup('Process Aptitude', [
     new LoopTest(
@@ -127,6 +137,9 @@ const testConfig: { [key: string]: TestGroup } = {
       10000,
       'Press CMD + O and search "for meaning"',
     ),
+  ]),
+  user: new TestGroup('User Aptitude', [
+    new LoopTest('User Aptitude - JWT', userJWTTest, 10000, 'No action required'),
   ]),
   vault: new TestGroup('Vault Aptitude', [
     new LoopTest(
@@ -222,6 +235,18 @@ const testConfig: { [key: string]: TestGroup } = {
       'Monitoring for file changes...',
     ),
     new LoopTest('File Aptitude - Listen Dir', listenDir, 10000, 'Monitoring for dir change...'),
+    new LoopTest(
+      'File Aptitude - Dir Exists',
+      dirExists,
+      10000,
+      'Checking for directory existence...',
+    ),
+    new LoopTest(
+      'File Aptitude - File Exists',
+      fileExists,
+      10000,
+      'Checking for file existence...',
+    ),
   ]),
 };
 
