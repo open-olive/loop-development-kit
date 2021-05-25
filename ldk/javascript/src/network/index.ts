@@ -29,28 +29,28 @@ export interface HTTPResponse {
 }
 
 /**
- * a simplified representation of a callback which take error
+ * A simplified representation of a callback which take error
  */
 export type CallbackError = (error: Error | undefined) => void;
 
 /**
- * configuration object to configure a websocket handshake
+ * Configuration object to configure a websocket handshake
  */
 export interface SocketConfiguration {
   /**
-   * websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
+   * Websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
    */
   url: string;
   /**
-   * collection of the handshake headers
+   * Collection of the handshake headers
    */
   headers?: Record<string, string[]>;
   /**
-   * specifies if compression is used
+   * Specifies if compression is used
    */
   useCompression?: boolean;
   /**
-   * specifies the client's requested subprotocols
+   * Specifies the client's requested subprotocols
    */
   subprotocols?: Array<string>;
 }
@@ -60,24 +60,24 @@ export interface SocketConfiguration {
  */
 export interface Socket {
   /**
-   * writes message to a websocket
-   * @param message text or data message
+   * Writes message to a websocket
+   * @param message Text or data message
    */
   writeMessage(message: string | Uint8Array): Promise<void>;
   /**
-   * closes websocket
+   * Closes websocket
    */
   close(): Promise<void>;
   /**
-   * allows to listen for a websocket message (there must be only one listener registered per socket for messages to be fully received)
-   * @param handler receives text or data message from websocket and error if occurs
+   * Allows to listen for a websocket message (there must be only one listener registered per socket for messages to be fully received)
+   * @param handler Receives text or data message from websocket and error if occurs (error could be returned if reading from the closed connection)
    */
   setMessageHandler: (
     handler: (error: Error | undefined, message: string | Uint8Array) => void,
   ) => Promise<Cancellable>;
   /**
-   * allows to provide handler when websocket closing
-   * @param handler receives code status and text received from the peer
+   * Allows to provide handler when websocket closing
+   * @param handler Receives code status and text received from the peer
    */
   setCloseHandler(
     handler: (error: Error | undefined, code: number, text: string) => void,
@@ -113,9 +113,10 @@ export interface Network {
   decode(encodedValue: Uint8Array, encoding: string): Promise<string>;
 
   /**
-   *
-   * @param socketConfiguration a configuration object defines websocket
-   * @returns a promise with Socket
+   *  Connects to a specified websocket
+   * 
+   * @param socketConfiguration A configuration object defines websocket
+   * @returns A promise with Socket
    */
   webSocketConnect(socketConfiguration: SocketConfiguration): Promise<Socket>;
 }
