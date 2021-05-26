@@ -75,7 +75,7 @@ describe('Whisper', () => {
       }
 
       const actual = whisper.create(formWhisper);
-      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function));
+      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function)); // TODO: Add captor, test components independently
     });
   });
 });

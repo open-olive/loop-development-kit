@@ -411,6 +411,7 @@ declare namespace OliveHelps {
     children: Array<Components>; // whisper.Create() Introduce state to the LDK, 
     onSubmit: (values: Map<string, any>) => void;
     //keep them updated onChange events
+    // TODO: Make submit button configurable
   };
 
   type Components = Box | ChildComponents | CollapseBox | Form;

@@ -280,7 +280,7 @@ export interface WhisperAptitude {
 export function create(whisper: NewWhisper): Promise<Whisper> {
   let ldkForm: LdkForm;
 
-  whisper.components.forEach((component: Components, index: number) => {
+  whisper.components.forEach((component: Components, index: number) => { // TODO: Multiple forms
     if(isForm(component)) {
       let outgoingWhisper: NewWhisper = {
         ...whisper,

@@ -11,17 +11,39 @@ export class LdkForm {
         componentState = new Map<string, any>();
 
         this.registerListeners(children);
+        // this.oldRegisterListeners(this.children);
     }
 
     getComponentState(): Map<string, any> {
         return componentState;
     }
 
-    private registerListeners(children: Array<Components>) {
+    private registerListeners(children: Array<any>) {
+        children.forEach((child: any) => {
+            if (child.name !== undefined) { // Empty string or undefined
+                componentState = componentState.set(child.name, child.value);
+                if (child.onChange !== undefined) {
+                    const incomingOnChange = child.onChange;
+                    child.onChange = function (error: Error | undefined, param: string, whisper: Whisper) {
+                        console.info(`update with new state: ${param}`);
+                        componentState = componentState.set(child.name, param);
+                        componentState.forEach((value: any, key: string) => {
+                            console.info(`global state updated: ${key + ': ' + value}`)
+                        });
+                        incomingOnChange(error, param, whisper);
+                    }
+                }
+            } if (child['selected'] !== undefined) {
+                console.info(`setting up component state for ${child.name} and ${child.selected}`)
+                componentState = componentState.set(child['name'], child['selected'] || 0);
+            }
+        });
+    }
+
+    private oldRegisterListeners(children: Array<Components>) {
         children.forEach(child => {
-            //TODO: How to elegantly handle every kind of type?
-            // TextInput
             if ((child as TextInput).type === WhisperComponentType.TextInput) {
+                // componentState.set(child['name']! || 'tempName', child['value'] || 'initialTextInputValue');
                 componentState = componentState.set((child as TextInput)['name']! ||
                     'tempName', (child as TextInput)['value'] || 'initialTextInputValue');
 
@@ -159,7 +181,5 @@ export class LdkForm {
 }
 
 export function isForm(component: Components): component is Form {
-    return (component as Form).onSubmit !== undefined &&
-        (component as Form).children !== undefined;
-        (component as Form).type === WhisperComponentType.Form  // TODO: Simplify
+    return (component as Form).type === WhisperComponentType.Form
 }
