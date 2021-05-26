@@ -1,3 +1,4 @@
+import { whisper } from '..';
 import { promisifyWithParam } from '../promisify';
 import { isForm, LdkForm } from './form';
 
@@ -298,11 +299,7 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
         type: WhisperComponentType.Button
       }
       outgoingWhisper.components.push(submitButton);
-      
-      // Logging
-      console.error(`ldkForm children: ${JSON.stringify(ldkForm.children)}`);
-      console.error(`outgoingWhisper components: ${JSON.stringify(outgoingWhisper.components)}`);
-      
+    
       whisper = outgoingWhisper
     }
   });
