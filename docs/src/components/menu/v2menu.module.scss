@@ -1,0 +1,45 @@
+@import '../../pages/global';
+
+.desktopMenu {
+  background-color: $menuBackgroundColor;
+  color: white;
+
+  padding: 24px 96px 18px;
+
+  display: flex;
+  align-items: center;
+}
+
+.desktopMenuLinks {
+  display: flex;
+  flex: 1 1 100px;
+  justify-content: flex-end;
+  margin: 0;
+  align-self: stretch;
+  align-items: center;
+}
+
+.desktopMenuLink {
+
+  display: flex;
+  align-self: stretch;
+  margin-left: 40px;
+  align-items: center;
+}
+
+.desktopMenuLink--active {
+  @extend .desktopMenuLink;
+  //border-bottom: 4px solid white;
+  //margin-bottom: -18px;
+  //padding-bottom: 16px;
+}
+
+.desktopMenuTitle {
+  flex: 0 0 200px;
+}
+
+.desktopMenuLogo {
+  width: 210px;
+  padding-right: 16px;
+  box-sizing: content-box;
+}

@@ -41,12 +41,11 @@ $headerFontWeight: 700;
 $bodyFontSize: 16px;
 $bodyFontWeight: 500;
 
-$headerBackgroundColor: $primaryThemeColor;
-$headerBackgroundImage: linear-gradient($mediumGradientStart, $mediumGradientEnd);
+$headerBackgroundColor: $oliveSecondary3;
 
-$menuBackgroundImage: linear-gradient(to bottom left, $darkGradientStart, $darkGradientEnd);
+$menuBackgroundImage: linear-gradient(to bottom left, $oliveSecondary3, $oliveSecondary3);
 
-$menuBackgroundColor: $primaryThemeColor;
+$menuBackgroundColor: $oliveSecondary3;
 $menuTextColor: white;
 $menuLinkColor: $menuTextColor;
 $menuLinkColorHover: $hoverColor;

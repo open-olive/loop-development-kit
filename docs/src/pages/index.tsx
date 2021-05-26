@@ -11,6 +11,7 @@ import { graphql, Link, PageProps } from 'gatsby';
 import { buildAptitudePath } from '../components/aptitudes/aptitudePaths';
 import { mapGuidePages } from '../components/menu/shared-menu';
 import { getAptitudeDataFromQuery, IAllAptitudeQuery, IAllFileQuery } from '../queries';
+import { V2Menu } from "../components/menu/v2menu";
 
 interface LanguageBlockProps {
   language: string;
@@ -80,6 +81,7 @@ export default function Home(
   );
   return (
     <Layout>
+      <V2Menu />
       <PageHeader title={title} />
       <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Download</h2>
