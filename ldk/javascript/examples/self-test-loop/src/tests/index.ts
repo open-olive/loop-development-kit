@@ -15,6 +15,25 @@ import {
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 import * as testUtils from '../testUtils';
 
+let testFolderPath: string;
+
+async function createFolder(path: string): Promise<void> {
+  if (!(await filesystem.exists(path))) {
+    const writeMode = 0o755;
+    await filesystem.makeDir(path, writeMode);
+  }
+}
+
+async function getTestFolderPath(): Promise<string> {
+  if (!testFolderPath) {
+    const path = 'test_dir';
+    await createFolder(path);
+    testFolderPath = path;
+  }
+
+  return testFolderPath;
+}
+
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const string = 'Im in yr loop, writing to yr clipboard';
@@ -154,7 +173,7 @@ export const processStream = (): Promise<boolean> =>
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    const options = ['M12.01', 'M00.123']
+    const options = ['M12.01', 'M00.123'];
     var form: whisper.Whisper;
     whisper
       .create({
@@ -207,15 +226,13 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
             long extremely long extremely long extremely long extremely 
             long extremely long extremely long`,
             value: false,
-            onChange: () => {
-            },
+            onChange: () => {},
             type: whisper.WhisperComponentType.Checkbox,
           },
           {
             label: `normal label with no surprises`,
             value: false,
-            onChange: () => {
-            },
+            onChange: () => {},
             type: whisper.WhisperComponentType.Checkbox,
           },
           {
@@ -223,11 +240,11 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
               console.log(`${selected} has been selected!`);
             },
             options: [
-              'no markdown', 
-              '**Strong Option**', 
+              'no markdown',
+              '**Strong Option**',
               `multiline  
               line 1  
-              line 2`
+              line 2`,
             ],
             selected: 0,
             type: whisper.WhisperComponentType.RadioGroup,
@@ -360,12 +377,20 @@ export const vaultReadWrite = (): Promise<boolean> =>
   });
 
 export const queryDirectory = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+  new Promise(async (resolve, reject) => {
+    const dirPath = `${await getTestFolderPath()}`;
+    const writeMode = 0o755;
+    await filesystem.writeFile({
+      path: `${dirPath}/file.json`,
+      data: new Uint8Array([102, 85]),
+      writeOperation: filesystem.WriteOperation.overwrite,
+      writeMode: writeMode,
+    });
     filesystem
-      .dir('./')
+      .dir(dirPath)
       .then((response) => {
         for (let i = 0; i < response.length; i += 1) {
-          if (response[i].name === 'go.mod' && !response[i].isDir) {
+          if (response[i].name === 'file.json' && !response[i].isDir) {
             setTimeout(() => {
               resolve(true);
             }, 1500);
@@ -376,12 +401,14 @@ export const queryDirectory = (): Promise<boolean> =>
         setTimeout(() => {
           reject(error);
         }, 1500);
+      }).finally(async () => {
+        await filesystem.remove(`${dirPath}/file.json`);
       });
   });
 
 export const createAndDeleteFile = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const filePath = './test.txt';
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test.txt`;
     const writeMode = 0o755;
 
     network
@@ -421,9 +448,9 @@ export const createAndDeleteFile = (): Promise<boolean> =>
   });
 
 export const updateAndReadFile = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+  new Promise(async (resolve, reject) => {
     const testString = 'Im in yr loop, writing to yr clipboard';
-    const filePath = './test.txt';
+    const filePath = `${await getTestFolderPath()}/test.txt`;
     const writeMode = 0o755;
 
     setTimeout(() => {
@@ -477,8 +504,8 @@ export const updateAndReadFile = (): Promise<boolean> =>
   });
 
 export const listenFile = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const filePath = './test_listenFile.txt';
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test_listenFile.txt`;
     const writeMode = 0o755;
     console.info('listening to file changes');
     let listenFileCancelable: Cancellable;
@@ -540,9 +567,9 @@ export const listenFile = (): Promise<boolean> =>
   });
 
 export const listenDir = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const filePath = './test_listenDir.txt';
-    const dirPath = './';
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
+    const dirPath = `${await getTestFolderPath()}`;
     const writeMode = 0o755;
     let listenDirCancellable: Cancellable;
     console.info('listening to directory changes');
@@ -591,12 +618,12 @@ export const listenDir = (): Promise<boolean> =>
       });
   });
 
-export const dirExists = (): Promise<boolean> => 
-  new Promise((resolve, reject) => {
-    const destination = './test-tmp-dir';
+export const dirExists = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const destination = `${await getTestFolderPath()}/test-tmp-dir`;
     const writeMode = 0o755;
     filesystem.makeDir(destination, writeMode).then(() => {
-      filesystem.exists(destination).then(exists => {
+      filesystem.exists(destination).then((exists) => {
         filesystem.remove(destination);
         if (exists === true) {
           resolve(true);
@@ -607,26 +634,29 @@ export const dirExists = (): Promise<boolean> =>
   });
 
 export const fileExists = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const filePath = './test_listenDir.txt';
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
     const writeMode = 0o755;
     network.encode('some file text').then((encodedValue) => {
-      filesystem.writeFile({
-        path: filePath,
-        data: encodedValue,
-        writeOperation: filesystem.WriteOperation.overwrite,
-        writeMode: writeMode,
-      }).then(() => {
-        filesystem.exists(filePath).then(exists => {
-          filesystem.remove(filePath);
-          if (exists === true) {
-            resolve(true);
-          }
-          reject('Could not check if directory exists');
+      filesystem
+        .writeFile({
+          path: filePath,
+          data: encodedValue,
+          writeOperation: filesystem.WriteOperation.overwrite,
+          writeMode: writeMode,
+        })
+        .then(() => {
+          filesystem.exists(filePath).then((exists) => {
+            filesystem.remove(filePath);
+            if (exists === true) {
+              resolve(true);
+            }
+            reject('Could not check if directory exists');
+          });
+        })
+        .catch((error) => {
+          reject(error);
         });
-      }).catch((error) => {
-        reject(error);
-      });
     });
   });
 
@@ -927,7 +957,7 @@ export const numberInputs = (): Promise<boolean> =>
     whisper.create(config).then((whisper: whisper.Whisper) => {
       form = whisper;
       setTimeout(() => {
-        form.close((error => console.error(error)));
+        form.close((error) => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -1042,7 +1072,7 @@ export const networkWebSocket = (): Promise<boolean> =>
         if (error) {
           console.error(`OnCloseHandler received error:`);
           console.error(error);
-          
+
           return;
         }
 
@@ -1135,10 +1165,10 @@ export const userJWTTest = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     user.jwt().then((token) => {
       if (token) {
-          console.debug('jwt', token);
-          resolve(true);
+        console.debug('jwt', token);
+        resolve(true);
       } else {
-          reject("JWT should not have been empty")
+        reject('JWT should not have been empty');
       }
     });
   });

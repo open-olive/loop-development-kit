@@ -27,25 +27,7 @@
           }
         ]
       },
-      "filesystem": {
-        "pathGlobs": [
-          {
-            "value": "./"
-          },
-          {
-            "value": "./test_listenFile.txt"
-          },
-          {
-            "value": "./test_listenDir.txt"
-          },
-          {
-            "value": "./test.txt"
-          },
-          {
-            "value": "./test-tmp-dir"
-          }
-        ]
-      },
+      "filesystem": {},
       "process": {},
       "ui": {},
       "user": {},

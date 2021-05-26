@@ -214,7 +214,7 @@ const testConfig: { [key: string]: TestGroup } = {
       'File Aptitude - Query File Directory',
       queryDirectory,
       10000,
-      'Querying root directory to look for "go.mod"...',
+      'Querying root directory to look for newly created "file.json"...',
     ),
     new LoopTest(
       'File Aptitude - Create and Delete File',
