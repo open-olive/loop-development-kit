@@ -408,7 +408,7 @@ declare namespace OliveHelps {
     | TextInput;
 
   type Form = Component<WhisperComponentType.Form> & {
-    children: Array<Components>;
+    children: Array<ChildComponents>;
     onSubmit: (values: Map<string, any>) => void;
     // TODO: Make submit button configurable
   };

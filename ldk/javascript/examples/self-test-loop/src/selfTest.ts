@@ -143,7 +143,7 @@ const testConfig: { [key: string]: TestGroup } = {
       'Whisper Aptitude - Markdown whisper',
       testMarkdownWhisper,
       20000,
-      'Did markdown rendered properly?',
+      'Did markdown render properly?',
     ),
     new LoopTest(
       'Whisper Aptitude - Internal Links',
@@ -172,8 +172,8 @@ const testConfig: { [key: string]: TestGroup } = {
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
       simpleFormWhisper,
-      10000,
-      `Enter 'Stonks' into the field`,
+      20000,
+      `Fill out the form...`,
     ),
     new LoopTest(
       'Whisper Aptitude - Number Inputs',

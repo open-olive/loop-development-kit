@@ -256,7 +256,7 @@ export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
 };
 
 export declare type Form = WhisperComponent<WhisperComponentType.Form> & {
-  children: Array<Components>;
+  children: Array<ChildComponents>;
   onSubmit: (values: Map<string, any>) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 };
 

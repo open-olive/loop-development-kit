@@ -758,33 +758,74 @@ export const linkWhisper = (): Promise<boolean> =>
     });
   });
 
-// TODO: This requires a submit button at some point
 export const simpleFormWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    const textInput = 'myTextInput';
+    const emailInput = 'myEmailInput';
+    const selectInput = 'mySelectInput';
     var form: whisper.Whisper;
+
     const config: whisper.NewWhisper = {
-      label: 'Link Test',
+      label: 'Form Whisper',
       onClose: () => {
         console.debug('closed');
       },
       components: [
         {
-          body: `Enter in 'Stonks' in the field`,
-          type: whisper.WhisperComponentType.Markdown,
-        },
-        {
-          label: `What can't you explain?`,
-          onChange: (error, value) => {
-            if (value === 'Stonks') {
-              form.close((error) => console.error(error));
-              resolve(true);
+          children: [
+            {
+              label: `Enter 'a'`,
+              onChange: (error, value) => {},
+              tooltip: 'a?',
+              name: textInput,
+              type: whisper.WhisperComponentType.TextInput,
+            },
+            {
+              label: 'Enter a@b',
+              onChange: (error, value) => {},
+              name: emailInput,
+              type: whisper.WhisperComponentType.Email
+            },
+            {
+              label: `Select 'blue'`,
+              onSelect: (error, value) => {},
+              options: ['red', 'blue'],
+              name: selectInput,
+              type: whisper.WhisperComponentType.Select
+            }
+          ],
+          onSubmit: (values: Map<string, any>) => {
+            values.forEach((value: any, key: string) => console.info(key, value));
+            if(values.get(textInput) === 'a' && 
+              values.get(emailInput) === 'a@b' &&
+              values.get(selectInput) === 1) {
+                form.close(error => console.error(error));
+                resolve(true);
+            } else {
+              form.close(error => console.error(error));
+              reject(new Error('Please enter correct form values.'))
             }
           },
-          tooltip: 'Stonks?',
-          value: '',
-          type: whisper.WhisperComponentType.TextInput,
+          type: whisper.WhisperComponentType.Form
         },
-      ],
+        {
+          children: [
+            {
+              label: `Don't touch this form! Render form 2.`,
+              onChange: (error: any, value: any) => {},
+              value: '',
+              name: 'myTextInputTwo',
+              type: whisper.WhisperComponentType.TextInput,
+            }
+          ],
+          onSubmit: (values: Map<string, any>) => {
+            console.info("Got second component state!");
+            values.forEach((value: any, key: string) => console.info(key, value)); 
+            reject(new Error(`Don't submit this form!`));
+          },
+          type: whisper.WhisperComponentType.Form
+        }, 
+      ]
     };
 
     whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
@@ -830,8 +871,9 @@ export const numberInputs = (): Promise<boolean> =>
         console.log('close');
       },
     };
-    whisper.create(config).then(() => {
+    whisper.create(config).then((whisper: whisper.Whisper) => {
       setTimeout(() => {
+        whisper.close(error => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -986,70 +1028,3 @@ export const uiGlobalSearchTest = (): Promise<boolean> =>
       }
     }).then((cancellable: Cancellable) => (uiStream = cancellable));
   });
-
-/*
-export const formWhisper = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    host.whisper.formWhisper(
-      {
-        submitButton: 'Submit',
-        cancelButton: 'Cancel',
-        label: 'Form Whisper Test',
-        markdown: 'Type in the value "Stonks"',
-        inputs: {
-          topic: {
-            type: 'text',
-            value: 'Blah',
-            label: 'What can you not explain?',
-            tooltip: '',
-            order: 1,
-          },
-          radioButton: {
-            type: 'radio',
-            value: 'red',
-            label: 'Please select color',
-            options: ["green", "red", "blue"],
-            tooltip: '',
-            order: 2,
-          },
-          selectDropDown: {
-            type: 'select',
-            value: 'red',
-            label: 'Please select color',
-            options: ["green", "red", "blue"],
-            tooltip: '',
-            order: 3,
-          },
-        },
-      },
-      (e, response) => {
-        // TODO: calling stop here seems to break things, unsure why
-        if (e !== null) {
-          // form.stop();
-          reject(e);
-        }
-
-        if (typeof response === 'undefined') {
-          // form.stop();
-          reject(new Error('Form response is undefined'));
-        }
-
-        const updateEvent = response as WhisperFormUpdateEvent;
-        const submitEvent = response as WhisperFormSubmitEvent;
-
-        if (updateEvent.type === 'update') {
-          logger.debug(JSON.stringify(updateEvent));
-        } else if (
-          submitEvent.type === 'submit' &&
-          submitEvent.submitted &&
-          submitEvent.outputs.topic === 'Stonks'
-        ) {
-          logger.debug(JSON.stringify(submitEvent));
-          // form.stop();
-          resolve(true);
-        }
-      },
-    );
-  });
-
-  */
