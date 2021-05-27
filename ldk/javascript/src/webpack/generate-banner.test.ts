@@ -40,7 +40,7 @@ describe('Generate Banner', () => {
     it('generates banner given valid LdkSettings', () => {
         const actual = getLoopMetadataContent(generateBanner(ldkSettings));
         const expected = {
-            oliveHelpsContractVersion: '0.1.0',
+            oliveHelpsContractVersion: '0.1.1',
             permissions: {
                 clipboard: {},
                 cursor: {},
@@ -74,7 +74,7 @@ describe('Generate Banner', () => {
         const actual = getLoopMetadataContent(generateBanner(ldkSettings));
 
         const expected = {
-            oliveHelpsContractVersion: '0.1.0',
+            oliveHelpsContractVersion: '0.1.1',
             permissions: {
                 filesystem: { pathGlobs: [ { value: "/my/path" } ] },
                 network: { urlDomains: [ { value: "*.google.com" } ] },
@@ -88,7 +88,7 @@ describe('Generate Banner', () => {
     it('adds oliveHelpsContractVersion', () => {
         const result = getLoopMetadataContent(generateBanner(ldkSettings));
 
-        expect(result.oliveHelpsContractVersion).toEqual('0.1.0');
+        expect(result.oliveHelpsContractVersion).toEqual('0.1.1');
     });
 
     it('throws exception when LDK permissions are not provided', () => {
