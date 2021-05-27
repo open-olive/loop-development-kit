@@ -278,7 +278,7 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  let ldkForms: LdkForm[] = [];
+  let ldkForms: LdkForm[] = []; //TODO: Expose and test ldkForms?
   let outgoingWhisper: NewWhisper = {
     ...whisper,
     components: []
@@ -286,17 +286,22 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
   
   whisper.components.forEach((component: Components) => {
     if(isForm(component)) {
+      // Lift form components up
       component.children.forEach(component => outgoingWhisper.components.push(component));
 
+      // Store form state
       const ldkForm = new LdkForm(component.children);
+      ldkForms.push(ldkForm);
+
+      // Add submit button
       const submitButton: Button = {
         label: 'Submit',
         onClick: () => { component.onSubmit(ldkForm.getComponentState()) },
         type: WhisperComponentType.Button // TODO: Configure button?
       };
       outgoingWhisper.components.push(submitButton);
-
-      ldkForms.push(ldkForm);
+    } else {
+      outgoingWhisper.components.push(component)
     }
   });
   return promisifyWithParam(outgoingWhisper, oliveHelps.whisper.create);

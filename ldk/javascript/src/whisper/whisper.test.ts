@@ -9,7 +9,7 @@ describe('Whisper', () => {
   });
 
   describe('create', () => {
-    it('Creates a whisper', () => {
+    it('creates a whisper', () => {
       const newWhisper: whisper.NewWhisper = {
         components: [
           {
@@ -40,7 +40,7 @@ describe('Whisper', () => {
       return expect(actual).resolves.toBe(expected);
     });
 
-    fit('Replaces form with child components', () => {
+    it('creates a form component with submit button', () => {
       const expectedLabel = 'Test';
       const expectedCloseFunction = jest.fn();
 
@@ -69,13 +69,87 @@ describe('Whisper', () => {
             id: '1',
             type: whisper.WhisperComponentType.Markdown,
           },
+          {
+            label: 'Submit',
+            onClick: expect.any(Function),
+            type: whisper.WhisperComponentType.Button
+          }
         ],
         label: expectedLabel,
         onClose: expectedCloseFunction,
       }
 
-      const actual = whisper.create(formWhisper);
-      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function)); // TODO: Add captor, test components independently
+      whisper.create(formWhisper);
+
+      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function));
+    });
+
+    it('creates multiple form components with submit buttons', () => {
+      const expectedOnChange = jest.fn();
+      const expectedLabel = 'Test';
+      const expectedCloseFunction = jest.fn();
+
+      const expectedOnChangeTwo = jest.fn();
+
+      const twoFormWhisper: whisper.NewWhisper = {
+        components: [
+          {
+            children: [
+              {
+                label: 'TestEmailInput',
+                onChange: expectedOnChange,
+                type: whisper.WhisperComponentType.Email,
+              },
+            ],
+            onSubmit: () => { },
+            type: whisper.WhisperComponentType.Form
+          },
+          {
+            children: [
+              {
+                label: 'TestTelephoneInput',
+                onChange: expectedOnChangeTwo,
+                type: whisper.WhisperComponentType.Telephone,
+              },
+            ],
+            onSubmit: () => { },
+            type: whisper.WhisperComponentType.Form
+          },
+        ],
+        label: expectedLabel,
+        onClose: expectedCloseFunction,
+      };
+
+      const expectedWhisper: whisper.NewWhisper = {
+        components: [
+          {
+            label: 'TestEmailInput',
+            onChange: expectedOnChange,
+            type: whisper.WhisperComponentType.Email,
+          },
+          {
+            label: 'Submit',
+            onClick: expect.any(Function),
+            type: whisper.WhisperComponentType.Button
+          },
+          {
+            label: 'TestTelephoneInput',
+            onChange: expectedOnChangeTwo,
+            type: whisper.WhisperComponentType.Telephone,
+          },
+          {
+            label: 'Submit',
+            onClick: expect.any(Function),
+            type: whisper.WhisperComponentType.Button
+          },
+        ],
+        label: expectedLabel,
+        onClose: expectedCloseFunction,
+      }
+
+      whisper.create(twoFormWhisper);
+
+      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function));
     });
   });
 });
