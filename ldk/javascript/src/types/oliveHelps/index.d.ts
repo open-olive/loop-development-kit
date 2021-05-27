@@ -408,9 +408,8 @@ declare namespace OliveHelps {
     | TextInput;
 
   type Form = Component<WhisperComponentType.Form> & {
-    children: Array<Components>; // whisper.Create() Introduce state to the LDK, 
+    children: Array<Components>;
     onSubmit: (values: Map<string, any>) => void;
-    //keep them updated onChange events
     // TODO: Make submit button configurable
   };
 
