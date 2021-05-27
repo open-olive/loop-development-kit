@@ -50,6 +50,11 @@
   }
 }
 
+.headerSubtext {
+  font-size: $headerSubtextSize;
+  font-weight: $headerSubtextWeight;
+}
+
 .aptitudeList {
   display: grid;
   grid-column-gap: 20px;
@@ -76,4 +81,19 @@
 
 .termsLink {
   margin-left: 16px;
+}
+
+.button {
+  font-size: $buttonNormalFontSize;
+  background: $buttonNormalBackground;
+  color: $buttonNormalColor;
+  padding: $buttonNormalPadding;
+  border-radius: $buttonNormalRadius;
+  margin: 0px 40px;
+}
+
+.buttonInverse {
+  font-size: $buttonNormalFontSize;
+  color: $buttonNormalBackground;
+  margin: 0px 40px;
 }

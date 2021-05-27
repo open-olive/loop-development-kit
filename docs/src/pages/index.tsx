@@ -11,7 +11,7 @@ import { graphql, Link, PageProps } from 'gatsby';
 import { buildAptitudePath } from '../components/aptitudes/aptitudePaths';
 import { mapGuidePages } from '../components/menu/shared-menu';
 import { getAptitudeDataFromQuery, IAllAptitudeQuery, IAllFileQuery } from '../queries';
-import { V2Menu } from "../components/menu/v2menu";
+import { V2Menu } from '../components/menu/v2menu';
 
 interface LanguageBlockProps {
   language: string;
@@ -73,16 +73,18 @@ export default function Home(
     return <AptitudeItem aptitude={aptitude} key={aptitude.name} />;
   });
   const guideItems = mapGuidePages(props.data).map((guide) => <GuideItem {...guide} />);
-  const title = (
-    <>
-      <OliveHelpsLogo className={styles.headerImage} /> <br />
-      Developer Hub
-    </>
-  );
+  const title = <>Welcome To the Olive Helps Developer Hub</>;
   return (
     <Layout>
       <V2Menu />
-      <PageHeader title={title} />
+      <PageHeader title={title}>
+        <p className={styles.headerSubtext}>Ready to put your solution in front of a new group of healthcare users?
+          Get started using the Loop Developer Kit (LDK).</p>
+        <div>
+          <a className={styles.button}>Get started</a>
+          <a className={styles.buttonInverse}>Access the LDK XXARROWXX</a>
+        </div>
+      </PageHeader>
       <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Download</h2>
         <p>Download the Olive Helps app.</p>

@@ -31,12 +31,15 @@ $lightestAccent: #faf6ff;
 
 $primaryFont: sofia-pro, sans-serif;
 
-$fiveXlFontSize: 64px;
+$fiveXlFontSize: 72px;
 $fourXlFontSize: 48px;
 $threeXlFontSize: 36px;
 $twoXlFontSize: 24px;
 
-$headerFontWeight: 700;
+$headerFontWeight: 400;
+
+$headerSubtextSize: 22px;
+$headerSubtextWeight: 400;
 
 $bodyFontSize: 16px;
 $bodyFontWeight: 500;
@@ -49,6 +52,12 @@ $menuBackgroundColor: $oliveSecondary3;
 $menuTextColor: white;
 $menuLinkColor: $menuTextColor;
 $menuLinkColorHover: $hoverColor;
+
+$buttonNormalRadius: 8px;
+$buttonNormalBackground: $primaryThemeColor;
+$buttonNormalColor: white;
+$buttonNormalPadding: 8px 16px;
+$buttonNormalFontSize: 16px;
 
 $breakpoints: (
   'mobile': (

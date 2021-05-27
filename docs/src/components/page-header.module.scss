@@ -3,8 +3,8 @@
 .section {
   background-color: white;
   background-image: url('../assets/images/faint-olive.svg');
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 200px;
+  padding-bottom: 185px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,6 +15,9 @@
   width: 80%;
   max-width: 1280px;
   z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sectionOverlay {
@@ -32,5 +35,6 @@
 .title {
   font-size: $fiveXlFontSize;
   font-weight: $headerFontWeight;
-  color: white;
+  color: black;
+  text-align: center;
 }
