@@ -14,7 +14,7 @@
       "clipboard": {},
       "keyboard": {},
       "whisper": {},
-      "ui":{},
+      "ui": {},
       "filesystem": {
         "pathGlobs": [
           {
@@ -29,6 +29,7 @@
     "file-system": "^2.2.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "webpack": "^5.32.0",
     "webpack-cli": "^4.6.0"
   }

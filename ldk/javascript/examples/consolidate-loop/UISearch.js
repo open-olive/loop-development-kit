@@ -3,14 +3,6 @@ import Patient from './Patient'
 
 const { TextInput, Telephone,Checkbox, ListPair, Email, Button, Message, Link} = whisper.WhisperComponentType; 
 
-
-// type Message = Component<WhisperComponentType.Message> & {
-//     body?: string;
-//     header?: string;
-//     style?: Urgency;
-//     textAlign?: TextAlign;
-//   };
-
 function SearchResultWhisper(rows){
     let result = []
     console.log(result)
@@ -67,20 +59,14 @@ export default () =>
         }).catch(console.error)
     })
 
-
-//     content += `
-//     ${p._firstName} ${p._lastName} ${p.email}
-// `
     ui.listenSearchbar((value) => {
         let rows = []
         patients.forEach(p => {
-           // console.log(p.seralize(), p.getSearchCred())
 
             if (p.getSearchCred().includes(value)) {
                 rows.push(p)
             }
         })
-        //uiStream.cancel();//??? what is cancel ???
 
         SearchResultWhisper(rows)
 

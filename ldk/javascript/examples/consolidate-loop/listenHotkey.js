@@ -34,13 +34,7 @@ const { TextInput, Telephone,Checkbox, ListPair, Email, Button} = whisper.Whispe
                   },
                   {
                   label: 'Last Name',
-                  onChange: (error,value) => 
-                //   onChange: (error, value) => {
-                //     if (value === 'Stonks') {
-                //       form.close((error) => console.error(error));
-                //       resolve(true);
-                //     }
-                  {
+                  onChange: (error,value) => {
                     if (value != null )
                     {
                         patient.setLastName(value);
@@ -106,7 +100,7 @@ const { TextInput, Telephone,Checkbox, ListPair, Email, Button} = whisper.Whispe
                     type: TextInput,
                   },
                   {
-                    //TODO: close&clear the loop after clicking submit 
+                    // Close&clear the loop after clicking submit 
                     label: 'Submit',
                     onClick: async () => 
                     {
@@ -117,19 +111,10 @@ const { TextInput, Telephone,Checkbox, ListPair, Email, Button} = whisper.Whispe
                         return
                       }
                         // varify if having duplicated patients
-                        //TODO: 2 patients have same name and dob? Id, use email/ phone number to identify. 
+                        // If patients have same name and dob,use email to distinguish. 
                       let cred1 = `${patient._firstName}:${patient._lastName}:${patient._dob}` 
                       let cred2 = patient._email
                       let patientRecord = '|' + patient.seralize()
-                      // this._firstName = firstName;
-                      // this._lastName = lastName;
-                      // this._dob = dob;
-                      // this._gender = gender;
-                      // this._telephone = telephone;
-                      // this._email = email;
-                      // this._visitReason = visitReason;
-                      // this._appointmentDate = appointmentDate;
-                      // this._appointmentTime = appointmentTime;
 
                       const found = await new Promise((resolve, reject) => {
 
@@ -144,8 +129,6 @@ const { TextInput, Telephone,Checkbox, ListPair, Email, Button} = whisper.Whispe
                     if (found) {
                       throw new Error(`patient already exist: ${cred1}:${cred2}`)
                     }
-
-                      //const str = patientRecord;
                       network
                         .encode(patientRecord)
                         .then((encodedValue) => {
@@ -163,17 +146,9 @@ const { TextInput, Telephone,Checkbox, ListPair, Email, Button} = whisper.Whispe
                         })
                       instance.close && instance.close()
                     },
-                    
-                    //console.log(patient._firstName, patient._lastName, patient._dob),
-                    //onClick: () => validateForm(),
                     type: Button,
                   }
                 ],
               })
             })
         }; 
-        // function validateForm() {
-        //     if (firstName) {
-        //       alert("Name must be filled out");
-        //       return false;
-        //     }
