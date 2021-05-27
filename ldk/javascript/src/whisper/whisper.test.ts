@@ -54,7 +54,7 @@ describe('Whisper', () => {
                 type: whisper.WhisperComponentType.Markdown,
               },
             ],
-            onSubmit: () => { },
+            onSubmit: jest.fn(),
             type: whisper.WhisperComponentType.Form
           },
         ],
@@ -101,7 +101,7 @@ describe('Whisper', () => {
                 type: whisper.WhisperComponentType.Email,
               },
             ],
-            onSubmit: () => { },
+            onSubmit: jest.fn(),
             type: whisper.WhisperComponentType.Form
           },
           {
@@ -112,7 +112,7 @@ describe('Whisper', () => {
                 type: whisper.WhisperComponentType.Telephone,
               },
             ],
-            onSubmit: () => { },
+            onSubmit: jest.fn(),
             type: whisper.WhisperComponentType.Form
           },
         ],

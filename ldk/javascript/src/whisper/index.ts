@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import { promisifyWithParam } from '../promisify';
 import { isForm, LdkForm } from './form';
 
@@ -256,7 +257,7 @@ export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
 
 export declare type Form = WhisperComponent<WhisperComponentType.Form> & {
   children: Array<Components>;
-  onSubmit: (values: Map<string, any>) => void;
+  onSubmit: (values: Map<string, any>) => void; // eslint-disable-line @typescript-eslint/no-explicit-any
 };
 
 export type Components = Box | ChildComponents | CollapseBox | Form;
@@ -278,8 +279,8 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  let ldkForms: LdkForm[] = []; //TODO: Expose and test ldkForms?
-  let outgoingWhisper: NewWhisper = {
+  const ldkForms: LdkForm[] = []; // TODO: Expose and test ldkForms?
+  const outgoingWhisper: NewWhisper = {
     ...whisper,
     components: []
   };
@@ -287,7 +288,7 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
   whisper.components.forEach((component: Components) => {
     if(isForm(component)) {
       // Lift form components up
-      component.children.forEach(component => outgoingWhisper.components.push(component));
+      component.children.forEach(formChild => outgoingWhisper.components.push(formChild));
 
       // Store form state
       const ldkForm = new LdkForm(component.children);

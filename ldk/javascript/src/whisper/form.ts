@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Components, Form, Whisper, WhisperComponentType } from '.';
 
 export class LdkForm {
     children: Array<Components>;
+
     componentState: Map<string, any>;
 
     constructor(children: Array<Components>) {
         this.componentState = new Map<string, any>();
         this.children = children;
-        
+
         this.setInitialComponentState(children);
         this.registerListeners(children);
     }
@@ -38,13 +40,13 @@ export class LdkForm {
         children.forEach((child: any) => {
             if (this.isOnChangeInput(child)) {
                 const incomingOnChange = child.onChange;
-                child.onChange = (error: Error | undefined, param: string, whisper: Whisper) => {
+                child.onChange = (error: Error | undefined, param: string, whisper: Whisper) => { // eslint-disable-line no-param-reassign
                     this.componentState = this.componentState.set(child.name, param);
                     incomingOnChange(error, param, whisper);
                 }
             } else if (this.isOnSelectInput(child)) {
                 const incomingOnSelect = child.onSelect;
-                child.onSelect = (error: Error | undefined, param: string, whisper: Whisper) => {
+                child.onSelect = (error: Error | undefined, param: string, whisper: Whisper) => { // eslint-disable-line no-param-reassign
                     this.componentState = this.componentState.set(child.name, param);
                     incomingOnSelect(error, param, whisper);
                 }

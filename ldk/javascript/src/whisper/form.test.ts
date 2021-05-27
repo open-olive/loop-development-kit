@@ -4,6 +4,7 @@ import { isForm, LdkForm } from './form';
 
 describe('Form', () => {
     it('updates component state for given components upon change', () => {
+        // TODO: Test onChange is recalled
         const textInputComponentName = 'myTextInput';
         const telephoneInputComponentName  = 'myTelephoneInput';
 
@@ -12,7 +13,7 @@ describe('Form', () => {
         const components: Array<whisper.ChildComponents> = [
             {
                 label: `myLabel`,
-                onChange: (error: any, value: any) => { },
+                onChange: (error, value) => { console.log(error, value) },
                 tooltip: 'myTooltip',
                 value: 'myValue',
                 name: textInputComponentName,
@@ -20,13 +21,13 @@ describe('Form', () => {
             },
             {
                 label: 'myTelephone',
-                onChange: (error: any, value: any) => { },
+                onChange: (error, value) => { console.log(error, value) },
                 name: telephoneInputComponentName,
                 type: whisper.WhisperComponentType.Telephone
             },
             {
                 label: 'mySelectInput',
-                onSelect: () => {},
+                onSelect: jest.fn(),
                 options: ['option1', 'option2'],
                 name: selectComponentName,
                 type: whisper.WhisperComponentType.Select
@@ -37,15 +38,15 @@ describe('Form', () => {
         
         const expectedTextInputValue = 'my new value!';
         (ldkForm.children[0] as TextInput)
-            .onChange(undefined, expectedTextInputValue, { id: '', close: () => {}});
+            .onChange(undefined, expectedTextInputValue, { id: '', close: jest.fn()});
 
         const expectedTelephoneInputValue = '330-614-1234';
         (ldkForm.children[1] as Telephone)
-            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: () => {}});
+            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: jest.fn()});
 
         const expectedSelectInputValue = 1;
         (ldkForm.children[2] as Select)
-            .onSelect(undefined, expectedSelectInputValue, { id: '', close: () => {}});
+            .onSelect(undefined, expectedSelectInputValue, { id: '', close: jest.fn()});
         
         expect(ldkForm.getComponentState().get(textInputComponentName)).toBe(expectedTextInputValue);
         expect(ldkForm.getComponentState().get(telephoneInputComponentName)).toBe(expectedTelephoneInputValue);
@@ -59,7 +60,7 @@ describe('Form', () => {
             [
                 {
                     label: `myLabel`,
-                    onChange: (error: any, value: any) => { },
+                    onChange: (error, value) => { console.log(error, value) },
                     tooltip: 'myTooltip',
                     name: textInputComponentName,
                     type: whisper.WhisperComponentType.TextInput,
@@ -81,7 +82,7 @@ describe('Form', () => {
             [
                 {
                     label: `myTextInput`,
-                    onChange: (error: any, value: any) => { },
+                    onChange: (error, value) => { console.log(error, value) },
                     tooltip: 'myTooltip',
                     value: expectedTextInputInitialValue,
                     name: textInputComponentName,
@@ -89,7 +90,7 @@ describe('Form', () => {
                 },
                 {
                     label: 'mySelectInput',
-                    onSelect: () => {},
+                    onSelect: jest.fn(),
                     options: ['option1', 'option2'],
                     selected: expectedSelectInitialValue,
                     name: selectComponentName,
@@ -108,7 +109,7 @@ describe('Form', () => {
         const components: Array<whisper.ChildComponents> = [
             {
                 label: `myLabel`,
-                onChange: (error: any, value: any) => { },
+                onChange: (error, value) => { console.log(error, value) },
                 tooltip: 'myTooltip',
                 value: 'myValue',
                 name: duplicateComponentName,
@@ -116,7 +117,7 @@ describe('Form', () => {
             },
             {
                 label: 'myTelephone',
-                onChange: (error: any, value: any) => { },
+                onChange: (error, value) => { console.log(error, value) },
                 name: duplicateComponentName,
                 type: whisper.WhisperComponentType.Telephone
             }
@@ -126,12 +127,12 @@ describe('Form', () => {
 
         const expectedTextInputValue = 'my new value!';
         (ldkForm.children[0] as TextInput)
-            .onChange(undefined, expectedTextInputValue, { id: '', close: () => {}});
+            .onChange(undefined, expectedTextInputValue, { id: '', close: jest.fn()});
 
         // Overwrite value for duplicate key
         const expectedTelephoneInputValue = '330-614-1234';
         (ldkForm.children[1] as TextInput)
-            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: () => {}});
+            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: jest.fn()});
         
         expect(ldkForm.getComponentState().size).toBe(1);
         expect(ldkForm.getComponentState().get(duplicateComponentName)).toBe(expectedTelephoneInputValue);
@@ -140,18 +141,19 @@ describe('Form', () => {
 
 describe('isForm', () => {
     it('determines if component is form', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const form: any = {
             children: [
                 {
                     label: `myLabel`,
-                    onChange: (error: any, value: any) => { },
+                    onChange: jest.fn(),
                     tooltip: 'myTooltip',
                     value: 'myValue',
                     name: 'myTextInput',
                     type: whisper.WhisperComponentType.TextInput,
                 },
             ],
-            onSubmit: (values: Map<string, any>) => { },
+            onSubmit: jest.fn(),
             type: whisper.WhisperComponentType.Form
         }
 
@@ -159,9 +161,10 @@ describe('isForm', () => {
     });
 
     it('determines if component is not a form', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const notForm: any = {
             label: `myLabel`,
-            onChange: (error: any, value: any) => { },
+            onChange: jest.fn(),
             tooltip: 'myTooltip',
             value: 'myValue',
             name: 'myTextInput',
