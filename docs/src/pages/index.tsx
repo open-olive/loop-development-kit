@@ -78,11 +78,19 @@ export default function Home(
     <Layout>
       <V2Menu />
       <PageHeader title={title}>
-        <p className={styles.headerSubtext}>Ready to put your solution in front of a new group of healthcare users?
-          Get started using the Loop Developer Kit (LDK).</p>
+        <p className={styles.headerSubtext}>
+          Ready to put your solution in front of a new group of healthcare users? Get started using
+          the Loop Developer Kit (LDK).
+        </p>
         <div>
+          {/* TODO: What does this button do? */}
           <a className={styles.button}>Get started</a>
-          <a className={styles.buttonInverse}>Access the LDK XXARROWXX</a>
+          <a
+            className={styles.buttonInverse}
+            href="https://github.com/open-olive/loop-development-kit/tree/main/ldk/javascript"
+          >
+            Access the LDK XXARROWXX
+          </a>
         </div>
       </PageHeader>
       <Section sectionClassName={styles.sectionBackground}>
