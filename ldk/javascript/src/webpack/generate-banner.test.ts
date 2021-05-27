@@ -2,7 +2,7 @@ import { generateBanner } from "./generate-banner";
 import { LdkSettings, Ldk } from "./ldk-settings";
 
 function getLoopMetadataContent(encodedData: string) {
-    const metadataContents = 
+    const metadataContents =
         encodedData.replace('---BEGIN-LOOP-JSON-BASE64---', '')
             .replace('---END-LOOP-JSON-BASE64---', '')
             .replace('/*', '')
@@ -11,7 +11,7 @@ function getLoopMetadataContent(encodedData: string) {
     return JSON.parse(Buffer.from(metadataContents, 'base64').toString('utf-8'));
 }
 
-const expectedErrorMessage = 
+const expectedErrorMessage =
 `Please add a "ldk" object to your package.json file with a permission property:
     "ldk": {
         "permissions": {}
@@ -29,6 +29,7 @@ describe('Generate Banner', () => {
                 network: { urlDomains: [ { value: "*.google.com" } ] },
                 process: {},
                 ui: {},
+                user: {},
                 vault: {},
                 whisper: {},
                 window: {},
@@ -48,6 +49,7 @@ describe('Generate Banner', () => {
                 network: { urlDomains: [ { value: "*.google.com" } ] },
                 process: {},
                 ui: {},
+                user: {},
                 vault: {},
                 whisper: {},
                 window: {},

@@ -11,7 +11,7 @@ export interface LdkFilesystem {
 }
 
 export interface LdkNetwork {
-    urlDomains: LdkValue[]   
+    urlDomains: LdkValue[]
 }
 
 export interface LdkPermissions {
@@ -28,6 +28,8 @@ export interface LdkPermissions {
     process: LdkAptitude
 
     ui: LdkAptitude
+
+    user: LdkAptitude
 
     vault: LdkAptitude
 
