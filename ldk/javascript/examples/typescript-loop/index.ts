@@ -45,6 +45,24 @@ import { clipboard, whisper } from '@oliveai/ldk';
         },
         type: whisper.WhisperComponentType.Form
       };
+
+      const formTwo = {
+        children: [
+          {
+            label: `What is your quest?`,
+            onChange: (error: any, value: any) => {},
+            tooltip: 'Quest?',
+            value: '',
+            name: 'myTextInputTwo',
+            type: whisper.WhisperComponentType.TextInput,
+          },
+        ],
+        onSubmit: (values: Map<string, any>) => {
+          console.info("Got second component state!");
+          values.forEach((value: any, key: string) => console.info(key, value)); 
+        },
+        type: whisper.WhisperComponentType.Form
+      }
   
       const config = {
         label: 'Form Whisper',
@@ -53,6 +71,7 @@ import { clipboard, whisper } from '@oliveai/ldk';
         },
         components: [
           form,
+          formTwo
         ]
       };
       whisper.create(config);

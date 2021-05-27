@@ -1,4 +1,3 @@
-import { whisper } from '..';
 import { promisifyWithParam } from '../promisify';
 import { isForm, LdkForm } from './form';
 
@@ -279,29 +278,26 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  let ldkForm: LdkForm;
-
-  whisper.components.forEach((component: Components, index: number) => { // TODO: Multiple forms
+  let ldkForms: LdkForm[] = [];
+  let outgoingWhisper: NewWhisper = {
+    ...whisper,
+    components: []
+  };
+  
+  whisper.components.forEach((component: Components) => {
     if(isForm(component)) {
-      let outgoingWhisper: NewWhisper = {
-        ...whisper,
-        components: []
-      }
-      whisper.components = whisper.components.splice(index, 1); // Remove form whisper from collection (don't send to sidekick)
-      component.children.forEach(component => outgoingWhisper.components.push(component)); // Add form child components to top level
+      component.children.forEach(component => outgoingWhisper.components.push(component));
 
-      ldkForm = new LdkForm(component.children); // Store off all form child components
-      
-      // Add submit button component
+      const ldkForm = new LdkForm(component.children);
       const submitButton: Button = {
         label: 'Submit',
         onClick: () => { component.onSubmit(ldkForm.getComponentState()) },
-        type: WhisperComponentType.Button
-      }
+        type: WhisperComponentType.Button // TODO: Configure button?
+      };
       outgoingWhisper.components.push(submitButton);
-    
-      whisper = outgoingWhisper
+
+      ldkForms.push(ldkForm);
     }
   });
-  return promisifyWithParam(whisper, oliveHelps.whisper.create);
+  return promisifyWithParam(outgoingWhisper, oliveHelps.whisper.create);
 }
