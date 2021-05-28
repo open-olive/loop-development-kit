@@ -13,8 +13,6 @@
   margin: 0;
 }
 
-
-
 .sectionDescription {
   text-align: center;
   font-weight: $sectionDescriptionFontWeight;
@@ -52,8 +50,6 @@
   }
 }
 
-
-
 .downloadLink {
   font-size: $threeXlFontSize;
 }
@@ -62,12 +58,17 @@
   font-size: $twoXlFontSize;
 }
 
+.sectionBackgroundExtraSpace {
+  padding-top: 160px !important;
+}
+
 .sectionBackground .sectionTitle {
   color: $primaryThemeColor;
 }
 
 .sectionHeroBackground {
-  background: $oliveSecondary3 url('../assets/images/olive-soft-glow-bottom.png') no-repeat center bottom/100% 100%;
+  background: $oliveSecondary3 url('../assets/images/olive-soft-glow-bottom.png') no-repeat center
+    bottom/100% 100%;
   color: white;
 }
 
@@ -79,10 +80,10 @@
 
 .aptitudeList {
   display: grid;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 24px;
+  grid-row-gap: 24px;
   @include respond-to('desktop') {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
   @include respond-to('mobile') {
     grid-template-columns: 1fr;
@@ -91,10 +92,38 @@
 }
 
 .aptitudeItem {
+  padding: 24px;
+  background: #FFFFFF;
+  /* Light Shadow */
+
+  box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  &:hover {
+    box-shadow: 0px 16px 32px #E5D0FF;
+    text-decoration: none;
+  }
+
+}
+
+.aptitudeIcon {
+  margin-right: 11px;
+  max-height: 32px;
 }
 
 .aptitudeTitle {
-  @extend %sectionItemTitle;
+  color: $olivePurple;
+  margin: 0;
+  font-size: $aptitudeTitleFontSize;
+  font-weight: $aptitudeTitleFontWeight;
+  display: flex;
+  align-items: center;
+
+}
+.aptitudeDescription {
+  font-size: $aptitudeDescriptionFontSize;
+  font-weight: $aptitudeDescriptionFontWeight;
+  color: black;
+
 }
 
 .licenseLink {

@@ -80,6 +80,7 @@ export function getAptitudeDataFromQuery(queryResult: AptitudeQueryResult): IApt
   const aptitudeFrontMatter = queryResult.markdown.frontmatter;
   return {
     name: aptitudeFrontMatter.name,
+    internalName: queryResult.internalName,
     shortDescription: aptitudeFrontMatter.description,
     description: queryResult.markdown.html,
     links: {

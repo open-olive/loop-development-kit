@@ -12,6 +12,7 @@ import { buildAptitudePath } from '../components/aptitudes/aptitudePaths';
 import { mapGuidePages } from '../components/menu/shared-menu';
 import { getAptitudeDataFromQuery, IAllAptitudeQuery, IAllFileQuery } from '../queries';
 import { V2Menu } from '../components/menu/v2menu';
+import { Image } from '../components/image';
 
 interface LanguageBlockProps {
   language: string;
@@ -40,15 +41,20 @@ const AptitudeItem: React.FunctionComponent<{
   aptitude: IAptitudeData;
 }> = (props) => {
   return (
-    <div className={styles.aptitudeItem}>
+    <Link to={buildAptitudePath(props.aptitude)} className={styles.aptitudeItem}>
       <h3 className={styles.aptitudeTitle}>
-        <Link to={buildAptitudePath(props.aptitude)}>{props.aptitude.name}</Link>
+        <Image
+          src={`aptitude-${props.aptitude.internalName}.svg`}
+          width={32}
+          className={styles.aptitudeIcon}
+        />
+        {props.aptitude.name}
       </h3>
       <p
         className={styles.aptitudeDescription}
         dangerouslySetInnerHTML={{ __html: props.aptitude.shortDescription }}
       />
-    </div>
+    </Link>
   );
 };
 
@@ -112,9 +118,11 @@ export default function Home(
           </article>
         </div>
       </Section>
-      <Section sectionClassName={styles.sectionBackground}>
+      <Section
+        sectionClassName={[styles.sectionBackground, styles.sectionBackgroundExtraSpace].join(' ')}
+      >
         <h2 className={styles.sectionTitle}>Aptitude is everything</h2>
-        <p>
+        <p className={styles.sectionDescription}>
           As you build Loops, leverage Olive’s collection of Aptitudes — tools and capabilities that
           capture important user information. Aptitudes enable Sensors, which let Olive understand
           how users are working and when to offer help.
