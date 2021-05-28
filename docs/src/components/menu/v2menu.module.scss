@@ -28,15 +28,17 @@
   &:hover {
     border-bottom: 4px solid white;
     margin-bottom: -18px;
-    padding-bottom: 16px;
+    padding-bottom: 14px;
     > a {
       color: white;
       text-decoration: none;
     }
 
   }
-  color: white;
-  text-decoration: none;
+  > a {
+    color: white;
+    text-decoration: none;
+  }
 }
 
 .desktopMenuTitle {

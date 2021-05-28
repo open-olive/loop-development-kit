@@ -76,7 +76,7 @@ export default function Home(
   const aptitudeItems = combinedData.map((aptitude) => {
     return <AptitudeItem aptitude={aptitude} key={aptitude.name} />;
   });
-  const guideItems = mapGuidePages(props.data).map((guide) => <GuideItem {...guide} />);
+  const guideItems = mapGuidePages(props.data).filter(x => !x.slug.includes('getting-started')).map((guide) => <GuideItem {...guide} />);
   const title = <>Welcome To the Olive Helps Developer Hub</>;
   return (
     <Layout>

@@ -6,7 +6,7 @@ const DesktopV2Menu: React.FunctionComponent = (props) => (
   <div className={styles.desktopMenu}>
     <div className={styles.desktopMenuLogo}>
       <OliveHelpsLogo />
-    </div>z
+    </div>
     <div className={styles.desktopMenuTitle}>Developer Hub</div>
     <ul className={styles.desktopMenuLinks}>
       <li className={styles.desktopMenuLink}>
