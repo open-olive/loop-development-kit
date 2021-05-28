@@ -77,6 +77,12 @@
   color: white;
 }
 
+.footerBackground {
+  background: $oliveDarkPurple;
+  color: white;
+  padding: 24px 24px 64px !important;
+}
+
 .headerSubtext {
   font-size: $headerSubtextSize;
   font-weight: $headerSubtextWeight;
@@ -186,13 +192,30 @@
   margin-bottom: 35px;
 }
 
-.licenseLink {
-  margin-right: 16px;
+.footerContents {
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
 }
 
-.termsLink {
-  margin-left: 16px;
+.footerSocialMedia {
+  flex: 1 1 100px;
+  text-align: right;
+  > * {
+    margin-left: 20px;
+  }
 }
+
+.footerLink {
+  margin-right: 20px;
+  color: white;
+}
+
+.footerSocialMediaImage {
+  width: 25px;
+  height: 25px;
+}
+
 
 .button {
   font-size: $buttonNormalFontSize;

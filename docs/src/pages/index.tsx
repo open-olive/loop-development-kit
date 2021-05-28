@@ -3,7 +3,6 @@ import { Layout } from '../components/layout';
 import styles from './index.module.scss';
 import './index.scss';
 import { PageHeader } from '../components/page-header';
-import OliveHelpsLogo from '../components/olive-helps-logo';
 import { languages, downloadMacUrl, downloadWindowsUrl } from '../references';
 import { Section } from '../components/section';
 import { IAptitudeData } from '../components/aptitudes/aptitudeData';
@@ -88,8 +87,7 @@ export default function Home(
           the Loop Developer Kit (LDK).
         </p>
         <div>
-          {/* TODO: What does this button do? */}
-          <a className={styles.button}>Get started</a>
+          <Link className={styles.button} to="guides/getting-started">Get started</Link>
           <a
             className={[styles.buttonInverse, styles.buttonArrow].join(' ')}
             href="https://github.com/open-olive/loop-development-kit/tree/main/ldk/javascript"
@@ -134,7 +132,7 @@ export default function Home(
           Create beautiful Loops that seamlessly integrated with Olive Helps.
         </p>
         <p className={styles.sectionDescription}>
-          <a href="" className={styles.buttonInversePadding}>
+          <a href="https://coda.io/@olive-helps-design/design-system" target="_blank" className={styles.buttonInversePadding}>
             View the design system
           </a>
         </p>
@@ -148,24 +146,24 @@ export default function Home(
             Submit a request or email your Olive Helps developer contact for further assistance.
           </p>
           <div>
-            <a href="" className={styles.button}>Submit a request</a>
+            <a href="https://github.com/open-olive/loop-development-kit/issues" className={styles.button} target="_blank">
+              Submit a request
+            </a>
           </div>
-
         </div>
       </Section>
-      <Section sectionClassName={styles.sectionBackground}>
-        <p>
+      <Section sectionClassName={styles.footerBackground}>
+        <div className={styles.footerContents}>
           <a
-            className={styles.termsLink}
-            href="https://olive.page.link/olive-helps-terms"
+            className={styles.footerLink}
+            href="https://oliveai.com/our-story//olive-helps-terms"
             target="_blank"
             rel="noopener noreferrer"
           >
             About Olive
           </a>
-
           <a
-            className={styles.termsLink}
+            className={styles.footerLink}
             href="https://olive.page.link/olive-helps-terms"
             target="_blank"
             rel="noopener noreferrer"
@@ -173,24 +171,30 @@ export default function Home(
             Terms and Conditions
           </a>
           <a
-            className={styles.licenseLink}
+            className={styles.footerLink}
             href="https://github.com/open-olive/loop-development-kit/blob/main/LICENSE"
             target="_blank"
             rel="noopener noreferrer"
           >
             LDK Open Source License
           </a>
-          <a href="https://www.instagram.com/oliveai__/" target="_blank" rel="noopener noreferrer">
-            INSTAGRAM ICON HERE
-          </a>
-          <a
-            href="https://www.linkedin.com/company/oliveai"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LINKEDIN ICON HERE
-          </a>
-        </p>
+          <div className={styles.footerSocialMedia}>
+            <a
+              href="https://www.instagram.com/oliveai__/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image src={'socialmedia-instagram.svg'} className={styles.footerSocialMediaImage}/>
+            </a>
+            <a
+              href="https://www.linkedin.com/company/oliveai"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image src={'socialmedia-linkedin.svg'} className={styles.footerSocialMediaImage}/>
+            </a>
+          </div>
+        </div>
       </Section>
     </Layout>
   );
