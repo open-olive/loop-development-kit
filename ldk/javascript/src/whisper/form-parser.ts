@@ -1,10 +1,9 @@
-import { Button, Components, WhisperComponentType } from ".";
-import { whisper } from "..";
+import { Button, Components, NewWhisper, WhisperComponentType } from ".";
 import { isForm, LdkForm } from "./form";
 
-export function parse(whisper: whisper.NewWhisper): whisper.NewWhisper {
+export function parse(whisper: NewWhisper): NewWhisper {
   const ldkForms: LdkForm[] = [];
-  const outgoingWhisper: whisper.NewWhisper = {
+  const outgoingWhisper: NewWhisper = {
     ...whisper,
     components: []
   };
