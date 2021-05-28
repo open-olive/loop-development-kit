@@ -165,6 +165,16 @@ export default function Home(
           >
             LDK Open Source License
           </a>
+          <a href="https://www.instagram.com/oliveai__/" target="_blank" rel="noopener noreferrer">
+            INSTAGRAM ICON HERE
+          </a>
+          <a
+            href="https://www.linkedin.com/company/oliveai"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LINKEDIN ICON HERE
+          </a>
         </p>
       </Section>
     </Layout>
