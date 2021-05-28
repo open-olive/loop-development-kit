@@ -1,6 +1,7 @@
 ---
 slug: 'guides/olive-helps-install-guide'
-title: 'Installation'
+title: 'Olive Helps installation guide'
+description: "Learn how to download and install Olive Helps for Windows and Mac operating systems."
 ---
 
 # Requirements

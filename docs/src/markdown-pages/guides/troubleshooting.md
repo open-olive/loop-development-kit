@@ -1,7 +1,7 @@
 ---
 slug: 'guides/troubleshooting'
 title: 'Troubleshooting'
-description: 'Running into problems? We have some ideas that could help!'
+description: 'View solutions to common issues and other helpful tips.'
 ---
 
 So you've ran into some unexpected behavior and you're not sure how to deal with it? We have some ideas:

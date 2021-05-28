@@ -1,6 +1,7 @@
 ---
 slug: 'guides/olive-helps-sec-it'
 title: 'Security/IT'
+description: "Review Olive Helps’ data and information security standards."
 ---
 
 <p style="text-align: center;">
