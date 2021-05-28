@@ -4,7 +4,6 @@ import { isForm, LdkForm } from './form';
 
 describe('Form', () => {
     it('updates component state for given components upon change', () => {
-        // TODO: Test onChange is recalled
         const textInputComponentName = 'myTextInput';
         const telephoneInputComponentName  = 'myTelephoneInput';
 
@@ -13,7 +12,7 @@ describe('Form', () => {
         const components: Array<whisper.ChildComponents> = [
             {
                 label: `myLabel`,
-                onChange: (error, value) => { console.log(error, value) },
+                onChange: jest.fn(),
                 tooltip: 'myTooltip',
                 value: 'myValue',
                 name: textInputComponentName,
@@ -21,7 +20,7 @@ describe('Form', () => {
             },
             {
                 label: 'myTelephone',
-                onChange: (error, value) => { console.log(error, value) },
+                onChange: jest.fn(),
                 name: telephoneInputComponentName,
                 type: whisper.WhisperComponentType.Telephone
             },
@@ -51,6 +50,31 @@ describe('Form', () => {
         expect(ldkForm.getComponentState().get(textInputComponentName)).toBe(expectedTextInputValue);
         expect(ldkForm.getComponentState().get(telephoneInputComponentName)).toBe(expectedTelephoneInputValue);
         expect(ldkForm.getComponentState().get(selectComponentName)).toBe(expectedSelectInputValue);
+    });
+
+    it('forwards calls to provided onChange after updating component state', () => {
+        const textInputComponentName = 'myTextInput';
+        const textInputOnChange = jest.fn();
+
+        const ldkForm = new LdkForm(
+            [
+                {
+                    label: `myLabel`,
+                    onChange: textInputOnChange,
+                    tooltip: 'myTooltip',
+                    name: textInputComponentName,
+                    type: whisper.WhisperComponentType.TextInput,
+                }
+            ]
+        );
+
+        const expectedTextInputValue = 'my new value!';
+        const expectedError = undefined;
+        const expectedWhisper = { id: '', close: jest.fn()};
+        (ldkForm.children[0] as TextInput)
+            .onChange(expectedError, expectedTextInputValue, expectedWhisper);
+        
+        expect(textInputOnChange).toHaveBeenCalledWith(expectedError, expectedTextInputValue, expectedWhisper);
     });
 
     it('initializes component state as undefined when no value is provided', () => {
