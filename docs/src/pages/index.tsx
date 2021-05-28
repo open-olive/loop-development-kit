@@ -86,16 +86,16 @@ export default function Home(
           {/* TODO: What does this button do? */}
           <a className={styles.button}>Get started</a>
           <a
-            className={styles.buttonInverse}
+            className={[styles.buttonInverse, styles.buttonArrow].join(' ')}
             href="https://github.com/open-olive/loop-development-kit/tree/main/ldk/javascript"
           >
-            Access the LDK XXARROWXX
+            Access the LDK
           </a>
         </div>
       </PageHeader>
-      <Section sectionClassName={styles.sectionBackground}>
+      <Section sectionClassName={styles.sectionHeroBackground}>
         <h2 className={styles.sectionTitle}>Download Olive Helps</h2>
-        <p>
+        <p className={styles.sectionDescription}>
           First things first: Download Olive Helps and create your Olive account. Then, visit the
           Loop Library to become a Loop Author and get building.
         </p>

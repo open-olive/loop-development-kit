@@ -7,9 +7,19 @@
 }
 
 .sectionTitle {
-  font-size: $fourXlFontSize;
-  font-weight: $headerFontWeight;
-  color: $primaryThemeColor;
+  font-size: $sectionTitleFontSize;
+  font-weight: $sectionTitleFontWeight;
+  text-align: center;
+  margin: 0;
+}
+
+
+
+.sectionDescription {
+  text-align: center;
+  font-weight: $sectionDescriptionFontWeight;
+  font-size: $sectionDescriptionFontSize;
+  line-height: $sectionDescriptionLineHeight;
 }
 
 .languageTitle {
@@ -18,10 +28,22 @@
 
 .downloadCollection {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   @include mobile() {
     flex-direction: column;
   }
+  padding: 64px 0;
+}
+
+.downloadItem {
+  flex: 0 0 100px;
+  text-align: center;
+}
+
+.downloadItem > a {
+  display: inline-block;
+  @extend .buttonInversePadding;
+  margin: 0 20px !important;
 }
 
 .headerImage {
@@ -30,11 +52,7 @@
   }
 }
 
-.downloadItem {
-  padding: 25px;
-  flex: 1 1 50px;
-  text-align: center;
-}
+
 
 .downloadLink {
   font-size: $threeXlFontSize;
@@ -44,10 +62,13 @@
   font-size: $twoXlFontSize;
 }
 
-.sectionBackground {
-  &:nth-child(2n) {
-    background-color: $lightestAccent;
-  }
+.sectionBackground .sectionTitle {
+  color: $primaryThemeColor;
+}
+
+.sectionHeroBackground {
+  background: $oliveSecondary3 url('../assets/images/olive-soft-glow-bottom.png') no-repeat center bottom/100% 100%;
+  color: white;
 }
 
 .headerSubtext {
@@ -93,8 +114,25 @@
   margin: 0px 40px;
 }
 
+.buttonInversePadding {
+  font-size: $buttonNormalFontSize;
+  background: $buttonNormalColor;
+  color: $buttonNormalBackground;
+  padding: $buttonNormalPadding;
+  border-radius: $buttonNormalRadius;
+  margin: 0px 40px;
+}
+
 .buttonInverse {
   font-size: $buttonNormalFontSize;
   color: $buttonNormalBackground;
+  background: white;
   margin: 0px 40px;
+}
+
+.buttonArrow {
+  background-image: url('../assets/images/right-arrow.svg');
+  background-position: right center;
+  background-repeat: no-repeat;
+  padding-right: 32px;
 }
