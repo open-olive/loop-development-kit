@@ -1,6 +1,7 @@
 ---
 name: "Filesystem"
 links_js: "Filesystem"
+description: "Provides read and write access to the filesystem, enabling Loop Authors to read and write files."
 ---
 Provides read and write access to the filesystem, enabling Loop Authors to read and write files.
 

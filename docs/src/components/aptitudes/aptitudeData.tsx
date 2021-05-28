@@ -8,6 +8,7 @@ export type LDKLinkActive = Partial<LDKLinks>;
 
 export interface IAptitudeData {
   name: string;
+  shortDescription: string;
   description: string;
   capabilities: ICapabilityData[];
   links?: LDKLinkActive;

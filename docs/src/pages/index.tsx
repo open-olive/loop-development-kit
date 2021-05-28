@@ -46,7 +46,7 @@ const AptitudeItem: React.FunctionComponent<{
       </h3>
       <p
         className={styles.aptitudeDescription}
-        dangerouslySetInnerHTML={{ __html: props.aptitude.description }}
+        dangerouslySetInnerHTML={{ __html: props.aptitude.shortDescription }}
       />
     </div>
   );
@@ -196,6 +196,7 @@ export const pageQuery = graphql`
             html
             frontmatter {
               name
+              description
             }
           }
         }
