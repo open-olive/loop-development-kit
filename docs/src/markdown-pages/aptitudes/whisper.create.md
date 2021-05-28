@@ -23,3 +23,4 @@ The following component types are available:
 * Select - A selected value of -1 indicates that nothing is selected.
 * Telephone - The text input field allows the user to provide a telephone number.
 * TextInput - The text input field allows the user to provide text information. The text can be pre-populated by the loop
+* Form - This component takes a collection of child components, and a function that returns each provided component's current value upon submission. A submit button will be generated for each form. Any number of forms are allowed, but forms cannot be inside of other forms.
