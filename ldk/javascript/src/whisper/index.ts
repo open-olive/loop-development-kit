@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { promisifyWithParam } from '../promisify';
-import { isForm, LdkForm } from './form';
+import { parse } from './form-parser';
 
 export enum WhisperComponentType {
   /**
@@ -280,31 +280,6 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  const ldkForms: LdkForm[] = []; // TODO: Expose and test ldkForms?
-  const outgoingWhisper: NewWhisper = {
-    ...whisper,
-    components: []
-  };
-  
-  whisper.components.forEach((component: Components) => {
-    if(isForm(component)) {
-      // Lift form components up
-      component.children.forEach(formChild => outgoingWhisper.components.push(formChild));
-
-      // Store form state
-      const ldkForm = new LdkForm(component.children);
-      ldkForms.push(ldkForm);
-
-      // Add submit button
-      const submitButton: Button = {
-        label: 'Submit',
-        onClick: () => { component.onSubmit(ldkForm.getComponentState()) },
-        type: WhisperComponentType.Button // TODO: Configure button?
-      };
-      outgoingWhisper.components.push(submitButton);
-    } else {
-      outgoingWhisper.components.push(component)
-    }
-  });
+  const outgoingWhisper = parse(whisper);
   return promisifyWithParam(outgoingWhisper, oliveHelps.whisper.create);
 }
