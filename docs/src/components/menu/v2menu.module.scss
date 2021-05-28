@@ -25,13 +25,18 @@
   align-self: stretch;
   margin-left: 40px;
   align-items: center;
-}
+  &:hover {
+    border-bottom: 4px solid white;
+    margin-bottom: -18px;
+    padding-bottom: 16px;
+    > a {
+      color: white;
+      text-decoration: none;
+    }
 
-.desktopMenuLink--active {
-  @extend .desktopMenuLink;
-  //border-bottom: 4px solid white;
-  //margin-bottom: -18px;
-  //padding-bottom: 16px;
+  }
+  color: white;
+  text-decoration: none;
 }
 
 .desktopMenuTitle {
