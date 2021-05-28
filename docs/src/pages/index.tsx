@@ -60,10 +60,10 @@ const AptitudeItem: React.FunctionComponent<{
 
 const GuideItem: React.FunctionComponent<IFrontmatterProps> = (props) => {
   return (
-    <Link to={props.slug} className={styles.aptitudeItem}>
+    <Link to={props.slug} className={styles.guideItem}>
       <h3 className={styles.guideTitle}>{props.title}</h3>
       <p className={styles.aptitudeDescription}>{props.description}</p>
-      <p> <span className={styles.guideCTA}>Read more</span></p>
+      <p className={styles.guideCTA}>Read more</p>
     </Link>
   );
 };
@@ -142,12 +142,15 @@ export default function Home(
       <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Additional Resources</h2>
         <div className={styles.guideList}>{guideItems}</div>
-        <div>
-          <h3>Need help getting started?</h3>
-          <p>
+        <div className={styles.needHelpBanner}>
+          <h3 className={styles.needHelpTitle}>Need help getting started?</h3>
+          <p className={styles.needHelpSubtext}>
             Submit a request or email your Olive Helps developer contact for further assistance.
           </p>
-          <a href="">Submit a request</a>
+          <div>
+            <a href="" className={styles.button}>Submit a request</a>
+          </div>
+
         </div>
       </Section>
       <Section sectionClassName={styles.sectionBackground}>
