@@ -51,6 +51,10 @@ $sectionDescriptionLineHeight: 1.5em;
 $aptitudeTitleFontSize: 24px;
 $aptitudeTitleFontWeight: 300;
 
+$guideTitleFontSize: 40px;
+$guideTitleFontWeight: 400;
+
+
 $aptitudeDescriptionFontSize: 16px;
 $aptitudeDescriptionFontWeight: 400;
 
@@ -71,6 +75,7 @@ $buttonNormalBackground: $primaryThemeColor;
 $buttonNormalColor: white;
 $buttonNormalPadding: 8px 16px;
 $buttonNormalFontSize: 16px;
+$buttonNormalFontWeight: 400;
 
 $breakpoints: (
   'mobile': (

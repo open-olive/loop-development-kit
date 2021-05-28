@@ -60,12 +60,11 @@ const AptitudeItem: React.FunctionComponent<{
 
 const GuideItem: React.FunctionComponent<IFrontmatterProps> = (props) => {
   return (
-    <div className={styles.aptitudeItem}>
-      <h3 className={styles.aptitudeTitle}>
-        <Link to={props.slug}>{props.title}</Link>
-      </h3>
+    <Link to={props.slug} className={styles.aptitudeItem}>
+      <h3 className={styles.guideTitle}>{props.title}</h3>
       <p className={styles.aptitudeDescription}>{props.description}</p>
-    </div>
+      <p> <span className={styles.guideCTA}>Read more</span></p>
+    </Link>
   );
 };
 
@@ -129,15 +128,20 @@ export default function Home(
         </p>
         <div className={styles.aptitudeList}>{aptitudeItems}</div>
       </Section>
-      <Section sectionClassName={styles.sectionBackground}>
+      <Section sectionClassName={styles.sectionDarkBackground}>
         <h2 className={styles.sectionTitle}>Design system</h2>
-        <p>Create beautiful Loops that seamlessly integrated with Olive Helps.</p>
-        <a href="">View the design system</a>
+        <p className={styles.sectionDescription}>
+          Create beautiful Loops that seamlessly integrated with Olive Helps.
+        </p>
+        <p className={styles.sectionDescription}>
+          <a href="" className={styles.buttonInversePadding}>
+            View the design system
+          </a>
+        </p>
       </Section>
       <Section sectionClassName={styles.sectionBackground}>
         <h2 className={styles.sectionTitle}>Additional Resources</h2>
-        <p>We have guides available to help you at various steps.</p>
-        <div className={styles.aptitudeList}>{guideItems}</div>
+        <div className={styles.guideList}>{guideItems}</div>
         <div>
           <h3>Need help getting started?</h3>
           <p>
