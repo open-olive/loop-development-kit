@@ -3,8 +3,6 @@ slug: 'guides/olive-helps-install-guide'
 title: 'Installation'
 ---
 
-![Installation Guide](./images/oh_installation_guide.png)
-
 # Requirements
 
 - Windows 10 or macOS 10.15

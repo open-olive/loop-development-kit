@@ -3,8 +3,6 @@ slug: 'guides/olive-helps-faqs'
 title: 'FAQs'
 ---
 
-![FAQs](./images/oh_faqs_guide.png)
-
 # Getting help
 
 To contact us for help, please click [here](https://olive.page.link/olive-help-support).

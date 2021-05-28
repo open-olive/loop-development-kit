@@ -3,8 +3,6 @@ slug: 'guides/olive-helps-sec-it'
 title: 'Security/IT'
 ---
 
-![Security/IT Overview](./images/oh_security_guide.png)
-
 <p style="text-align: center;">
     <mark>The Olive Helps platform is designed with the security of your data and information at its heart.</mark>
 </p>
