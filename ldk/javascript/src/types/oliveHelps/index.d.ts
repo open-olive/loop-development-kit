@@ -47,8 +47,13 @@ declare namespace OliveHelps {
     network: Network;
     process: Process;
     ui: UI;
+    user: User;
     vault: Vault;
     window: Window;
+  }
+
+  interface User {
+    jwt: Readable<string>;
   }
 
   //-- Window
@@ -138,6 +143,26 @@ declare namespace OliveHelps {
   //-- Network
   interface Network {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
+    webSocketConnect: ReadableWithParam<SocketConfiguration, Socket>;
+  }
+
+  interface SocketConfiguration {
+    url: string;
+    headers?: Record<string, string[]>;
+    useCompression?: boolean;
+    subprotocols?: Array<string>;
+  }
+
+  enum MessageType {
+    text = 1,
+    binary = 2,
+  }
+
+  interface Socket {
+    writeMessage(messageType: MessageType, data: Array<number>, callback: (error: Error | undefined) => void): void;
+    close(callback: (error: Error | undefined) => void): void;
+    listenMessage: (callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void, returnCb: ReturnCallback) => void;
+    onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
   }
 
   interface HTTPRequest {
@@ -278,6 +303,7 @@ declare namespace OliveHelps {
 
   type Button = Component<WhisperComponentType.Button> & {
     buttonStyle?: ButtonStyle;
+    disabled?: boolean;
     label: string;
     onClick: WhisperHandler;
     size?: ButtonSize;
@@ -345,7 +371,7 @@ declare namespace OliveHelps {
   };
 
   type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
-    onSelect: WhisperHandlerWithParam<number>
+    onSelect: WhisperHandlerWithParam<number>;
     options: string[];
     selected?: number;
     name?: string;
@@ -354,7 +380,7 @@ declare namespace OliveHelps {
   type Select = Component<WhisperComponentType.Select> & {
     label: string;
     options: string[];
-    onSelect: WhisperHandlerWithParam<number>
+    onSelect: WhisperHandlerWithParam<number>;
     selected?: number;
     tooltip?: string;
     name?: string;
@@ -362,7 +388,7 @@ declare namespace OliveHelps {
 
   type Telephone = Component<WhisperComponentType.Telephone> & {
     label: string;
-    onChange: WhisperHandlerWithParam<string>
+    onChange: WhisperHandlerWithParam<string>;
     // pattern?: RegExp; TODO: Implement this
     tooltip?: string;
     value?: string;

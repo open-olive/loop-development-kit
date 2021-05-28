@@ -126,6 +126,7 @@ export interface WhisperComponent<T extends WhisperComponentType> {
 
 export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
+  disabled?: boolean;
   label: string;
   onClick: WhisperHandler;
   size?: ButtonSize;

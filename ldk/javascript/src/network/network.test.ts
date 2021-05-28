@@ -8,6 +8,7 @@ describe('Network', () => {
   beforeEach(() => {
     oliveHelps.network = {
       httpRequest: jest.fn(),
+      webSocketConnect: jest.fn(),
     };
     TextEncoder.prototype.encode = jest.fn();
     TextDecoder.prototype.decode = jest.fn();
@@ -60,10 +61,10 @@ describe('Network', () => {
 
   describe('encode', () => {
     it('returns a promise result with expected encoded value', () => {
-      const text = "some//text@@";
+      const text = 'some//text@@';
       const expected: Uint8Array = new Uint8Array(2);
       TextEncoder.prototype.encode.mockReturnValue(expected);
-    
+
       const actual = network.encode(text);
 
       expect(TextEncoder.prototype.encode).toBeCalledWith(text);
@@ -75,8 +76,8 @@ describe('Network', () => {
       mocked(TextEncoder.prototype.encode).mockImplementation(() => {
         throw exception;
       });
-      
-      const actual = network.encode("text");
+
+      const actual = network.encode('text');
 
       return expect(actual).rejects.toBe(exception);
     });
@@ -85,9 +86,9 @@ describe('Network', () => {
   describe('decode', () => {
     it('returns a promise result with expected decoded string', () => {
       const encodedValue: Uint8Array = new Uint8Array(2);
-      const expected = "expected text";
+      const expected = 'expected text';
       TextDecoder.prototype.decode.mockReturnValue(expected);
-    
+
       const actual = network.decode(encodedValue);
 
       expect(TextDecoder.prototype.decode).toBeCalledWith(encodedValue);
@@ -99,8 +100,36 @@ describe('Network', () => {
       mocked(TextDecoder.prototype.decode).mockImplementation(() => {
         throw exception;
       });
-      
+
       const actual = network.decode(new Uint8Array(2));
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('webSocket', () => {
+    it('passed in callback function to olive helps', () => {
+      const socketConfiguration: network.SocketConfiguration = {
+        url: "url"
+      };
+
+      network.webSocketConnect(socketConfiguration);
+
+      expect(oliveHelps.network.webSocketConnect).toHaveBeenCalledWith(
+        socketConfiguration,
+        expect.any(Function),
+      );
+    });
+
+    it('throws exception when passing in callback function', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = network.webSocketConnect({
+        url: "url"
+      });
 
       return expect(actual).rejects.toBe(exception);
     });

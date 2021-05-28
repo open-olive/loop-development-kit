@@ -2,7 +2,7 @@ import { generateBanner } from "./generate-banner";
 import { LdkSettings, Ldk } from "./ldk-settings";
 
 function getLoopMetadataContent(encodedData: string) {
-    const metadataContents = 
+    const metadataContents =
         encodedData.replace('---BEGIN-LOOP-JSON-BASE64---', '')
             .replace('---END-LOOP-JSON-BASE64---', '')
             .replace('/*', '')
@@ -11,7 +11,7 @@ function getLoopMetadataContent(encodedData: string) {
     return JSON.parse(Buffer.from(metadataContents, 'base64').toString('utf-8'));
 }
 
-const expectedErrorMessage = 
+const expectedErrorMessage =
 `Please add a "ldk" object to your package.json file with a permission property:
     "ldk": {
         "permissions": {}
@@ -29,6 +29,7 @@ describe('Generate Banner', () => {
                 network: { urlDomains: [ { value: "*.google.com" } ] },
                 process: {},
                 ui: {},
+                user: {},
                 vault: {},
                 whisper: {},
                 window: {},
@@ -39,7 +40,7 @@ describe('Generate Banner', () => {
     it('generates banner given valid LdkSettings', () => {
         const actual = getLoopMetadataContent(generateBanner(ldkSettings));
         const expected = {
-            oliveHelpsContractVersion: '0.1.0',
+            oliveHelpsContractVersion: '0.1.1',
             permissions: {
                 clipboard: {},
                 cursor: {},
@@ -48,6 +49,7 @@ describe('Generate Banner', () => {
                 network: { urlDomains: [ { value: "*.google.com" } ] },
                 process: {},
                 ui: {},
+                user: {},
                 vault: {},
                 whisper: {},
                 window: {},
@@ -72,7 +74,7 @@ describe('Generate Banner', () => {
         const actual = getLoopMetadataContent(generateBanner(ldkSettings));
 
         const expected = {
-            oliveHelpsContractVersion: '0.1.0',
+            oliveHelpsContractVersion: '0.1.1',
             permissions: {
                 filesystem: { pathGlobs: [ { value: "/my/path" } ] },
                 network: { urlDomains: [ { value: "*.google.com" } ] },
@@ -86,7 +88,7 @@ describe('Generate Banner', () => {
     it('adds oliveHelpsContractVersion', () => {
         const result = getLoopMetadataContent(generateBanner(ldkSettings));
 
-        expect(result.oliveHelpsContractVersion).toEqual('0.1.0');
+        expect(result.oliveHelpsContractVersion).toEqual('0.1.1');
     });
 
     it('throws exception when LDK permissions are not provided', () => {
