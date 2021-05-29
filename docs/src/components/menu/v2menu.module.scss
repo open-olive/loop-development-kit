@@ -8,6 +8,9 @@
 
   display: flex;
   align-items: center;
+  @include mobile() {
+    display: none;
+  }
 }
 
 .desktopMenuLinks {
@@ -19,25 +22,55 @@
   align-items: center;
 }
 
-.desktopMenuLink {
+.mobileMenu {
+  padding: 24px 24px 0;
+  background-color: $oliveDarkPurple;
+  @include desktop() {
+    display: none;
+  }
+}
 
+.mobileMenuLinks {
+  display: flex;
+  padding: 0;
+  justify-content: space-between;
+}
+
+%sharedMenuLink {
   display: flex;
   align-self: stretch;
-  margin-left: 40px;
   align-items: center;
   &:hover {
-    border-bottom: 4px solid white;
-    margin-bottom: -18px;
-    padding-bottom: 14px;
     > a {
       color: white;
       text-decoration: none;
     }
-
   }
   > a {
     color: white;
     text-decoration: none;
+  }
+}
+
+.desktopMenuLink {
+  @extend %sharedMenuLink;
+  margin-left: 40px;
+  &:hover {
+    border-bottom: 4px solid white;
+    margin-bottom: -18px;
+    padding-bottom: 14px;
+  }
+}
+
+.mobileMenuLink {
+  @extend %sharedMenuLink;
+  font-size: 14px;
+  font-weight: 300;
+  padding-bottom: 32px;
+  box-sizing: border-box;
+  &:hover {
+    padding-bottom: 28px;
+    border-bottom: 4px solid white;
   }
 }
 
@@ -49,4 +82,8 @@
   width: 210px;
   padding-right: 16px;
   box-sizing: content-box;
+}
+
+.mobileMenuLogo {
+  width: 150px;
 }
