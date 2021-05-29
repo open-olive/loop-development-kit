@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - SIDE-2327-landing-page-update
 
 jobs:
   deploy-developer-hub:
