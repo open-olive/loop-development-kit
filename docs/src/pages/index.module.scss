@@ -1,13 +1,25 @@
 @import './global';
 
 %sectionItemTitle {
-  font-size: $threeXlFontSize;
+  @include desktop() {
+    font-size: $threeXlFontSize;
+  }
+  @include mobile() {
+    font-size: $threeXlFontSize * 0.4;
+  }
+
   font-weight: $headerFontWeight;
   color: $primaryThemeColor;
 }
 
 .sectionTitle {
-  font-size: $sectionTitleFontSize;
+  @include desktop() {
+    font-size: $sectionTitleFontSize;
+  }
+  @include mobile() {
+    font-size: $sectionTitleFontSize * 0.4;
+  }
+
   font-weight: $sectionTitleFontWeight;
   text-align: center;
   margin: 0;
@@ -16,8 +28,14 @@
 .sectionDescription {
   text-align: center;
   font-weight: $sectionDescriptionFontWeight;
-  font-size: $sectionDescriptionFontSize;
-  line-height: $sectionDescriptionLineHeight;
+  @include desktop() {
+    font-size: $sectionDescriptionFontSize;
+    line-height: $sectionDescriptionLineHeight;
+  }
+  @include mobile() {
+    font-size: $sectionDescriptionFontSize * 0.4;
+    line-height: $sectionDescriptionLineHeight;
+  }
 }
 
 .languageTitle {
@@ -50,16 +68,39 @@
   }
 }
 
+.headerActions {
+  @include mobile() {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .downloadLink {
-  font-size: $threeXlFontSize;
+  @include desktop() {
+    font-size: $threeXlFontSize;
+  }
+  @include mobile() {
+    font-size: $threeXlFontSize * 0.4;
+  }
 }
 
 .ldkLink {
-  font-size: $twoXlFontSize;
+  @include desktop() {
+    font-size: $twoXlFontSize;
+  }
+  @include mobile() {
+    font-size: $twoXlFontSize * 0.4;
+  }
 }
 
 .sectionBackgroundExtraSpace {
-  padding-top: 160px !important;
+  @include desktop() {
+    padding-top: 160px !important;
+  }
+  @include mobile() {
+    padding-top: 80px !important;
+  }
+
 }
 
 .sectionBackground .sectionTitle {
@@ -84,15 +125,29 @@
 }
 
 .headerSubtext {
-  font-size: $headerSubtextSize;
+  @include desktop() {
+    font-size: $headerSubtextSize;
+    padding-bottom: 64px;
+  }
+  @include mobile() {
+    font-size: $headerSubtextSize * 0.4;
+    padding-bottom: 64px * 0.4;
+  }
+
   font-weight: $headerSubtextWeight;
-  padding-bottom: 64px;
+
 }
 
 .aptitudeList {
   display: grid;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
+  @include desktop() {
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+  }
+  @include mobile() {
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+  }
   @include respond-to('desktop') {
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-auto-rows: 1fr;
@@ -107,8 +162,14 @@
 .guideList {
   margin-top: 64px;
   display: grid;
-  grid-column-gap: 24px;
-  grid-row-gap: 24px;
+  @include desktop() {
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+  }
+  @include mobile() {
+    grid-column-gap: 12px;
+    grid-row-gap: 12px;
+  }
   @include respond-to('desktop') {
     grid-template-columns: 1fr 1fr 1fr;
     grid-auto-rows: 1fr;
@@ -121,7 +182,13 @@
 }
 
 .aptitudeItem {
-  padding: 24px 24px 24px;
+  @include desktop() {
+    padding: 24px;
+  }
+  @include mobile() {
+    padding: 12px;
+  }
+
   background: #ffffff;
   box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
@@ -139,12 +206,24 @@
 
 .aptitudeIcon {
   margin-right: 11px;
-  max-height: 32px;
+  @include desktop() {
+    max-height: 32px;
+  }
+  @include mobile() {
+    max-height: 16px;
+  }
+
 }
 
 .guideTitle {
   margin: 0;
-  font-size: $guideTitleFontSize;
+  @include desktop() {
+    font-size: $guideTitleFontSize;
+  }
+  @include mobile() {
+    font-size: $guideTitleFontSize * 0.4;
+  }
+
   font-weight: $guideTitleFontWeight;
   color: black;
 }
@@ -159,14 +238,26 @@
 .aptitudeTitle {
   color: $olivePurple;
   margin: 0;
-  font-size: $aptitudeTitleFontSize;
+  @include desktop() {
+    font-size: $aptitudeTitleFontSize;
+  }
+  @include mobile() {
+    font-size: $aptitudeTitleFontSize * 0.8;
+  }
+
   font-weight: $aptitudeTitleFontWeight;
   display: flex;
   align-items: center;
 }
 
 .aptitudeDescription {
-  font-size: $aptitudeDescriptionFontSize;
+  @include desktop() {
+    font-size: $aptitudeDescriptionFontSize;
+  }
+  @include mobile() {
+    font-size: $aptitudeDescriptionFontSize * 0.8;
+  }
+
   font-weight: $aptitudeDescriptionFontWeight;
   color: black;
 }
@@ -196,6 +287,9 @@
   display: flex;
   font-size: 14px;
   font-weight: 400;
+  @include mobile() {
+    flex-direction: column;
+  }
 }
 
 .footerSocialMedia {
@@ -215,7 +309,6 @@
   width: 25px;
   height: 25px;
 }
-
 
 .button {
   font-size: $buttonNormalFontSize;

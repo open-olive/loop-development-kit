@@ -86,7 +86,7 @@ export default function Home(
           Ready to put your solution in front of a new group of healthcare users? Get started using
           the Loop Developer Kit (LDK).
         </p>
-        <div>
+        <div className={styles.headerActions}>
           <Link className={styles.button} to="guides/getting-started">Get started</Link>
           <a
             className={[styles.buttonInverse, styles.buttonArrow].join(' ')}

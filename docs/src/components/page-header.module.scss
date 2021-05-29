@@ -3,8 +3,15 @@
 .section {
   background-color: white;
   background-image: url('../assets/images/faint-olive.svg');
-  padding-top: 200px;
-  padding-bottom: 185px;
+  @include desktop() {
+    padding-top: 200px;
+    padding-bottom: 185px;
+  }
+  @include mobile() {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,8 +40,15 @@
 }
 
 .title {
-  font-size: $fiveXlFontSize;
   font-weight: $headerFontWeight;
+  @include desktop() {
+    font-size: $fiveXlFontSize;
+
+  }
+  @include mobile() {
+    font-size: $fiveXlFontSize * 0.4;
+  }
+
   color: black;
   text-align: center;
   margin: 16px 0;
