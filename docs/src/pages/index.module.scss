@@ -30,13 +30,21 @@
   display: flex;
   justify-content: center;
   @include mobile() {
-    flex-direction: column;
+    //flex-direction: column;
   }
-  padding: 64px 0;
+  @include desktop() {
+    padding: 64px 0;
+  }
+
 }
 
 .downloadItem {
-  flex: 0 0 100px;
+  @include desktop() {
+    flex: 0 0 100px;
+  }
+  @include mobile() {
+    padding-top: 32px;
+  }
   text-align: center;
 }
 
@@ -56,6 +64,10 @@
   @include mobile() {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    > * {
+      margin-top: 28px !important;
+    }
   }
 }
 
@@ -123,7 +135,7 @@
 }
 
 .guideList {
-  margin-top: 64px;
+  @include breakPoint(margin-top, 64px, 32px);
   display: grid;
   @include desktop() {
     grid-column-gap: 24px;
@@ -254,30 +266,42 @@
 
 .footerContents {
   display: flex;
-  font-size: 14px;
-  font-weight: 400;
+  @include breakPoint(font-size, $footerTextFontSize, $footerTextFontSizeMobile);
+  font-weight: $footerTextFontSizeMobile;
   @include mobile() {
     flex-direction: column;
+    align-items: center;
   }
 }
 
 .footerSocialMedia {
-  flex: 1 1 100px;
-  text-align: right;
+  @include desktop() {
+    flex: 1 1 100px;
+    text-align: right;
 
-  > * {
-    margin-left: 20px;
+    > * {
+      margin-left: 20px;
+    }
   }
 }
 
 .footerLink {
-  margin-right: 20px;
+  @include desktop() {
+    margin-right: 20px;
+  }
+  @include mobile() {
+    padding-bottom: 16px;
+  }
   color: white;
 }
 
 .footerSocialMediaImage {
   width: 25px;
   height: 25px;
+  box-sizing: content-box;
+  @include mobile() {
+    padding: 12px;
+  }
 }
 
 .button {
@@ -304,7 +328,6 @@
   font-size: $buttonNormalFontSize;
   font-weight: $buttonNormalFontWeight;
   color: $buttonNormalBackground;
-  background: white;
   margin: 0px 40px;
 }
 
