@@ -40,14 +40,8 @@
 }
 
 .title {
-  font-weight: $headerFontWeight;
-  @include desktop() {
-    font-size: $fiveXlFontSize;
-
-  }
-  @include mobile() {
-    font-size: $fiveXlFontSize * 0.4;
-  }
+  font-weight: $pageHeaderFontWeight;
+  @include breakPoint(font-size, $pageHeaderFontSize, $pageHeaderFontSizeMobile);
 
   color: black;
   text-align: center;

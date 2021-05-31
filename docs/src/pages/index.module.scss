@@ -1,23 +1,11 @@
 @import './global';
 
-%sectionItemTitle {
-  @include desktop() {
-    font-size: $threeXlFontSize;
-  }
-  @include mobile() {
-    font-size: $threeXlFontSize * 0.4;
-  }
-
-  font-weight: $headerFontWeight;
-  color: $primaryThemeColor;
-}
-
 .sectionTitle {
   @include desktop() {
     font-size: $sectionTitleFontSize;
   }
   @include mobile() {
-    font-size: $sectionTitleFontSize * 0.4;
+    font-size: $sectionTitleFontSizeMobile;
   }
 
   font-weight: $sectionTitleFontWeight;
@@ -33,13 +21,9 @@
     line-height: $sectionDescriptionLineHeight;
   }
   @include mobile() {
-    font-size: $sectionDescriptionFontSize * 0.4;
+    font-size: $sectionDescriptionFontSizeMobile;
     line-height: $sectionDescriptionLineHeight;
   }
-}
-
-.languageTitle {
-  @extend %sectionItemTitle;
 }
 
 .downloadCollection {
@@ -75,24 +59,6 @@
   }
 }
 
-.downloadLink {
-  @include desktop() {
-    font-size: $threeXlFontSize;
-  }
-  @include mobile() {
-    font-size: $threeXlFontSize * 0.4;
-  }
-}
-
-.ldkLink {
-  @include desktop() {
-    font-size: $twoXlFontSize;
-  }
-  @include mobile() {
-    font-size: $twoXlFontSize * 0.4;
-  }
-}
-
 .sectionBackgroundExtraSpace {
   @include desktop() {
     padding-top: 160px !important;
@@ -100,7 +66,6 @@
   @include mobile() {
     padding-top: 80px !important;
   }
-
 }
 
 .sectionBackground .sectionTitle {
@@ -108,8 +73,7 @@
 }
 
 .sectionHeroBackground {
-  background: $oliveSecondary3 url('../assets/images/olive-soft-glow-bottom.png') no-repeat center
-    bottom/100% 100%;
+  background: $oliveSecondary3 url('../assets/images/olive-soft-glow-bottom.png') no-repeat center bottom/100% 100%;
   color: white;
 }
 
@@ -130,12 +94,11 @@
     padding-bottom: 64px;
   }
   @include mobile() {
-    font-size: $headerSubtextSize * 0.4;
+    font-size: $headerSubtextSizeMobile;
     padding-bottom: 64px * 0.4;
   }
 
   font-weight: $headerSubtextWeight;
-
 }
 
 .aptitudeList {
@@ -192,6 +155,7 @@
   background: #ffffff;
   box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
+
   &:hover {
     box-shadow: 0px 16px 32px #e5d0ff;
     text-decoration: none;
@@ -212,7 +176,6 @@
   @include mobile() {
     max-height: 16px;
   }
-
 }
 
 .guideTitle {
@@ -221,7 +184,7 @@
     font-size: $guideTitleFontSize;
   }
   @include mobile() {
-    font-size: $guideTitleFontSize * 0.4;
+    font-size: $guideTitleFontSizeMobile;
   }
 
   font-weight: $guideTitleFontWeight;
@@ -242,7 +205,7 @@
     font-size: $aptitudeTitleFontSize;
   }
   @include mobile() {
-    font-size: $aptitudeTitleFontSize * 0.8;
+    font-size: $aptitudeTitleFontSizeMobile;
   }
 
   font-weight: $aptitudeTitleFontWeight;
@@ -255,7 +218,7 @@
     font-size: $aptitudeDescriptionFontSize;
   }
   @include mobile() {
-    font-size: $aptitudeDescriptionFontSize * 0.8;
+    font-size: $aptitudeDescriptionFontSizeMobile;
   }
 
   font-weight: $aptitudeDescriptionFontWeight;
@@ -271,15 +234,21 @@
 }
 
 .needHelpTitle {
-  font-size: 40px;
+  @include desktop() {
+    font-size: $needHelpTitleFontSize;
+  }
+  @include mobile() {
+    font-size: $needHelpTitleFontSizeMobile;
+  }
+
   color: $olivePurple;
-  font-weight: 300;
+  font-weight: $needHelpTitleFontWeight;
   margin: 0;
 }
 
 .needHelpSubtext {
-  font-weight: 300;
-  font-size: 16px;
+  font-weight: $needHelpSubtextFontWeight;
+  @include breakPoint(font-size, $needHelpSubtextFontSize, $needHelpSubtextFontSizeMobile);
   margin-bottom: 35px;
 }
 
@@ -295,6 +264,7 @@
 .footerSocialMedia {
   flex: 1 1 100px;
   text-align: right;
+
   > * {
     margin-left: 20px;
   }

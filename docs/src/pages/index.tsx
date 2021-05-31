@@ -20,22 +20,6 @@ interface LanguageBlockProps {
   docURLNotice?: string;
 }
 
-const LanguageBlock: React.FunctionComponent<LanguageBlockProps> = (props) => (
-  <article className={styles.downloadItem}>
-    <h3 className={styles.languageTitle}>{props.language}</h3>
-    <a href={props.repoURL} className={styles.ldkLink}>
-      GitHub
-    </a>
-    <br />
-    {props.docURL && (
-      <a href={props.docURL} className={styles.ldkLink}>
-        Documentation
-      </a>
-    )}
-    {props.docURLNotice && <span className={styles.ldkLink}>{props.docURLNotice}</span>}
-  </article>
-);
-
 const AptitudeItem: React.FunctionComponent<{
   aptitude: IAptitudeData;
 }> = (props) => {
@@ -104,12 +88,12 @@ export default function Home(
         </p>
         <div className={styles.downloadCollection}>
           <article className={styles.downloadItem}>
-            <a href={downloadWindowsUrl} className={styles.downloadLink}>
+            <a href={downloadWindowsUrl}>
               Windows
             </a>
           </article>
           <article className={styles.downloadItem}>
-            <a className={styles.downloadLink} href={downloadMacUrl}>
+            <a href={downloadMacUrl}>
               Mac
             </a>
           </article>

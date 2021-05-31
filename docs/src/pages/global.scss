@@ -38,28 +38,52 @@ $twoXlFontSize: 24px;
 
 $headerFontWeight: 300;
 
+$mobileTitleSize: 36px;
+$mobileHeader1Size: 24px;
+$mobileHeader2Size: 20px;
+$mobileDescriptionSize: 16px;
+
+
+$pageHeaderFontSize: 72px;
+$pageHeaderFontSizeMobile: $mobileTitleSize;
+$pageHeaderFontWeight: 300;
+
 $headerSubtextSize: 22px;
+$headerSubtextSizeMobile: $mobileDescriptionSize;
 $headerSubtextWeight: 300;
 
 $sectionTitleFontSize: 56px;
+$sectionTitleFontSizeMobile: $mobileHeader1Size;
 $sectionTitleFontWeight: 200;
 
 $sectionDescriptionFontSize: 22px;
+$sectionDescriptionFontSizeMobile: $mobileDescriptionSize;
 $sectionDescriptionFontWeight: 200;
 $sectionDescriptionLineHeight: 1.5em;
 
 $aptitudeTitleFontSize: 24px;
+$aptitudeTitleFontSizeMobile: $mobileHeader2Size;
 $aptitudeTitleFontWeight: 200;
 
-$guideTitleFontSize: 40px;
-$guideTitleFontWeight: 300;
-
-
 $aptitudeDescriptionFontSize: 16px;
+$aptitudeDescriptionFontSizeMobile: $mobileDescriptionSize;
 $aptitudeDescriptionFontWeight: 300;
+
+$guideTitleFontSize: 40px;
+$guideTitleFontSizeMobile: $mobileHeader2Size;
+$guideTitleFontWeight: 300;
 
 $bodyFontSize: 16px;
 $bodyFontWeight: 400;
+
+$needHelpTitleFontSize: 40px;
+$needHelpTitleFontSizeMobile: $mobileHeader1Size;
+$needHelpTitleFontWeight: 300;
+
+$needHelpSubtextFontSize: 40px;
+$needHelpSubtextFontSizeMobile: $mobileDescriptionSize;
+$needHelpSubtextFontWeight: 300;
+
 
 $headerBackgroundColor: $oliveSecondary3;
 
@@ -111,5 +135,14 @@ $breakpoints: (
 @mixin desktop() {
   @include respond-to('desktop') {
     @content;
+  }
+}
+
+@mixin breakPoint($property, $desktopValue, $mobileValue) {
+  @include desktop() {
+    #{$property}: $desktopValue;
+  }
+  @include mobile() {
+    #{$property}: $mobileValue;
   }
 }
