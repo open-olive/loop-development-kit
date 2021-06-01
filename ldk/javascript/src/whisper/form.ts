@@ -10,8 +10,8 @@ export class LdkForm {
         this.componentState = new Map<string, any>();
         this.children = children;
 
-        this.setInitialComponentState(children);
-        this.registerListeners(children);
+        this.setInitialComponentState(this.children);
+        this.registerListeners(this.children);
     }
 
     getComponentState(): Map<string, any> {
@@ -19,11 +19,11 @@ export class LdkForm {
     }
 
     private isOnChangeInput(child: any): boolean {
-        return (child.onChange !== undefined && child.name !== undefined);
+        return (child.onChange && child.name);
     }
 
     private isOnSelectInput(child: any): boolean {
-        return (child.onSelect !== undefined && child.name !== undefined);
+        return (child.onSelect && child.name);
     }
 
     private setInitialComponentState(children: Array<any>) {

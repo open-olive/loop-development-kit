@@ -62,7 +62,6 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
-
   /**
    * A form component allows for child component values to be read during a submit event. 
    * 

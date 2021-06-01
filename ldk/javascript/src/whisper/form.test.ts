@@ -161,6 +161,14 @@ describe('Form', () => {
         expect(ldkForm.getComponentState().size).toBe(1);
         expect(ldkForm.getComponentState().get(duplicateComponentName)).toBe(expectedTelephoneInputValue);
     });
+
+    it('handles empty form', () => {
+        const components: Array<whisper.ChildComponents> = [];
+        
+        const ldkForm = new LdkForm(components);
+
+        expect(ldkForm.getComponentState().size).toBe(0);
+    });
 });
 
 describe('isForm', () => {
