@@ -73,7 +73,7 @@ export default function Home(
           <Link className={styles.button} to="guides/getting-started">Get started</Link>
           <a
             className={[styles.buttonInverse, styles.buttonArrow].join(' ')}
-            href="https://github.com/open-olive/loop-development-kit/tree/main/ldk/javascript"
+            href="https://www.npmjs.com/package/@oliveai/ldk"
           >
             Access the LDK
           </a>
