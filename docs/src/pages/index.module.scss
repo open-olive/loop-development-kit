@@ -69,6 +69,9 @@
       margin-top: 28px !important;
     }
   }
+  > * {
+    margin: 0 20px;
+  }
 }
 
 .sectionBackgroundExtraSpace {
@@ -156,6 +159,18 @@
   grid-auto-flow: row;
 }
 
+.aptitudeIcon {
+  margin-right: 11px;
+  @include desktop() {
+    max-height: 32px;
+    width: 40px;
+  }
+  @include mobile() {
+    max-height: 16px;
+    width: 20px;
+  }
+}
+
 .aptitudeItem {
   @include desktop() {
     padding: 24px;
@@ -176,19 +191,10 @@
 
 .guideItem {
   @extend .aptitudeItem;
-  padding-bottom: 24px+24px+16px;
+  @include breakPoint(padding-bottom, 24px+24px+16px, 12px+12px+16px);
   position: relative;
 }
 
-.aptitudeIcon {
-  margin-right: 11px;
-  @include desktop() {
-    max-height: 32px;
-  }
-  @include mobile() {
-    max-height: 16px;
-  }
-}
 
 .guideTitle {
   margin: 0;
@@ -206,8 +212,9 @@
 .guideCTA {
   @extend .buttonArrow;
   position: absolute;
-  bottom: 24px;
-  left: 24px;
+  margin: 0;
+  @include breakPoint(bottom, 24px, 12px);
+  @include breakPoint(left, 24px, 12px);
 }
 
 .aptitudeTitle {
@@ -305,13 +312,13 @@
 }
 
 .button {
+  display: inline-block;
   font-size: $buttonNormalFontSize;
   font-weight: $buttonNormalFontWeight;
   background: $buttonNormalBackground;
   color: $buttonNormalColor;
   padding: $buttonNormalPadding;
   border-radius: $buttonNormalRadius;
-  margin: 0px 40px;
 }
 
 .buttonInversePadding {
@@ -321,14 +328,12 @@
   color: $buttonNormalBackground;
   padding: $buttonNormalPadding;
   border-radius: $buttonNormalRadius;
-  margin: 0px 40px;
 }
 
 .buttonInverse {
   font-size: $buttonNormalFontSize;
   font-weight: $buttonNormalFontWeight;
   color: $buttonNormalBackground;
-  margin: 0px 40px;
 }
 
 .buttonArrow {

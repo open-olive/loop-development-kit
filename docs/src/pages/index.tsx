@@ -28,7 +28,6 @@ const AptitudeItem: React.FunctionComponent<{
       <h3 className={styles.aptitudeTitle}>
         <Image
           src={`aptitude-${props.aptitude.internalName}.svg`}
-          width={32}
           className={styles.aptitudeIcon}
         />
         {props.aptitude.name}
@@ -140,7 +139,7 @@ export default function Home(
         <div className={styles.footerContents}>
           <a
             className={styles.footerLink}
-            href="https://oliveai.com/our-story//olive-helps-terms"
+            href="https://oliveai.com/our-story/"
             target="_blank"
             rel="noopener noreferrer"
           >
