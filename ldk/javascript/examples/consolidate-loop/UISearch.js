@@ -8,7 +8,7 @@ function SearchResultWhisper(rows){
     console.log(result)
     rows.forEach(row => {
         result.push({
-            text: row._firstName + ' ' + row._lastName + ' ' + row._email,// clickable, email is the distinguisher if fn&ln are same 
+            text: row.firstName + ' ' + row.lastName + ' ' + row.email,// clickable, email is the distinguisher if fn&ln are same 
             onClick: () => {
                 console.log(row.seralize())
 
@@ -18,7 +18,7 @@ function SearchResultWhisper(rows){
                       console.log('Patient Search Result');
                     },
                     components: [{
-                        header: row._firstName + ' ' + row._lastName,
+                        header: row.firstName + ' ' + row.lastName,
                         body: row.patientInfo.reduce((rst, k) => {
                             return `
 ${rst}
