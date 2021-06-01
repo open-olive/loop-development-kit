@@ -436,7 +436,6 @@ declare namespace OliveHelps {
   type Form = Component<WhisperComponentType.Form> & {
     children: Array<ChildComponents>;
     onSubmit: (values: Map<string, any>) => void;
-    // TODO: Make submit button configurable
   };
 
   type Components = Box | ChildComponents | CollapseBox | Form;
