@@ -1,7 +1,12 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-var */
+/* eslint-disable prefer-const */
 import { ui, whisper, filesystem, network } from '@oliveai/ldk';
 import Patient from './Patient';
 
-const { TextInput, Telephone, Checkbox, ListPair, Email, Button, Message, Link } =
+const { Message, Link } =
   whisper.WhisperComponentType;
 
 function SearchResultWhisper(rows) {
@@ -9,7 +14,7 @@ function SearchResultWhisper(rows) {
   console.log(result);
   rows.forEach((row) => {
     result.push({
-      text: row.firstName + ' ' + row.lastName + ' ' + row.email,
+      text: `${row.firstName  } ${  row.lastName  } ${  row.email}`,
       onClick: () => {
         console.log(row.seralize());
 
@@ -20,13 +25,11 @@ function SearchResultWhisper(rows) {
           },
           components: [
             {
-              header: row.firstName + ' ' + row.lastName,
-              body: row.patientInfo.reduce((rst, k) => {
-                return `
+              header: `${row.firstName  } ${  row.lastName}`,
+              body: row.patientInfo.reduce((rst, k) => `
 ${rst}
 ${k}:   ${row[k]}
-                            `;
-              }, ''),
+                            `, ''),
               type: Message,
             },
           ],
@@ -45,10 +48,10 @@ ${k}:   ${row[k]}
 }
 
 export default () =>
-  new Promise(async (resolve, reject) => {
+  new Promise(async () => {
     var uiStream;
 
-    const patients = await new Promise((resolve, reject) => {
+    const patients = await new Promise((resolve) => {
       filesystem
         .readFile('./PatientInfo.txt')
         .then((data) => {

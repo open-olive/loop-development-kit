@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 class Patient {
   constructor(
     firstName,
@@ -62,14 +63,17 @@ class Patient {
   getSearchCred() {
     return `${this.firstName} ${this.lastName}:${this.email}:${this.appointmentDate}:${this.appointmentTime}`;
   }
+
   setFirstName(val) {
     this.firstName = val;
   }
+
   setLastName(val) {
     this.lastName = val;
   }
+
   setDob(val) {
-    var regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 
     if (!regex.test(val)) {
       this.dob = null;
@@ -85,18 +89,23 @@ class Patient {
     }
     this.gender = val;
   }
+
   setTelephone(val) {
     this.telephone = val;
   }
+
   setEmail(val) {
     this.email = val;
   }
+
   setVisitReason(val) {
     this.visitReason = val;
   }
+
   setAppointmentDate(val) {
     this.appointmentDate = val;
   }
+
   setAppointmentTime(val) {
     this.appointmentTime = val;
   }

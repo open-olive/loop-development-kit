@@ -1,7 +1,8 @@
-import { clipboard, whisper, keyboard, filesystem, network } from '@oliveai/ldk';
+/* eslint-disable prefer-const */
+import { whisper, keyboard, filesystem, network } from '@oliveai/ldk';
 import Patient from './Patient';
 
-const { TextInput, Telephone, Checkbox, ListPair, Email, Button } = whisper.WhisperComponentType;
+const { TextInput, Telephone, Email, Button } = whisper.WhisperComponentType;
 
 const hotkeys = {
   key: 'n',
@@ -9,9 +10,10 @@ const hotkeys = {
 };
 
 export default function listenHotKey() {
-  keyboard.listenHotkey(hotkeys, async (pressed) => {
+  keyboard.listenHotkey(hotkeys, async () => {
     let instance = null;
 
+    // eslint-disable-next-line prefer-const
     let patient = new Patient();
     instance = await whisper.create({
       label: 'Consolidate Loop - Form Whisper',
@@ -83,7 +85,7 @@ export default function listenHotKey() {
         },
         {
           label: 'Appointment Time',
-          onChange: (error, value) => {
+          onChange: () => {
             patient.setAppointmentTime();
           },
           type: TextInput,
@@ -100,16 +102,16 @@ export default function listenHotKey() {
 
             let cred1 = `${patient.firstName}:${patient.lastName}:${patient.dob}`;
             let cred2 = patient.email;
-            let patientRecord = '|' + patient.seralize();
+            let patientRecord = `|${  patient.seralize()}`;
 
-            const found = await new Promise((resolve, reject) => {
+            const found = await new Promise((resolve) => {
               filesystem
                 .readFile('./PatientInfo.txt')
                 .then((data) => {
                   network.decode(data).then((decodedRecord) => {
                     console.log('Decoded: ', decodedRecord);
                     resolve(
-                      !!('' + decodedRecord).match(cred1) || !!('' + decodedRecord).match(cred2),
+                      !!(`${  decodedRecord}`).match(cred1) || !!(`${  decodedRecord}`).match(cred2),
                     );
                   });
                 })
