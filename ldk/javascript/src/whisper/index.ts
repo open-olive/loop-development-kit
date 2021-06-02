@@ -102,7 +102,7 @@ export enum Urgency {
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
-  // update(whisper: NewWhisper, cb: (err: string) => void): void
+  update(whisper: UpdateWhisper, cb?: (err: Error) => void): void
 }
 
 export type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
@@ -246,7 +246,12 @@ export type Components = Box | ChildComponents | CollapseBox;
 export interface NewWhisper {
   components: Array<Components>;
   label: string;
-  onClose: () => void;
+  onClose?: () => void;
+}
+
+export interface UpdateWhisper {
+  label?: string;
+  components: Array<Components>;
 }
 
 export interface WhisperAptitude {

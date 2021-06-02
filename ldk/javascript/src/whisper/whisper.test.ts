@@ -26,6 +26,9 @@ describe('Whisper', () => {
         close: (c: (r: Error | undefined) => void) => {
           console.log(c);
         },
+        update: (w: whisper.NewWhisper) => {
+          console.log(w)
+        },
         id: '1',
       };
 
