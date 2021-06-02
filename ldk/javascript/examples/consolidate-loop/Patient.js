@@ -71,7 +71,6 @@ class Patient {
   setDob(val) {
     var regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
 
-    //Check whether valid MM/dd/yyyy Date Format.
     if (!regex.test(val)) {
       this.dob = null;
       throw new Error('date of birth must be as follow format: MM/DD/YYYY');

@@ -89,7 +89,6 @@ export default function listenHotKey() {
           type: TextInput,
         },
         {
-          // Close&clear the loop after clicking submit
           label: 'Submit',
           onClick: async () => {
             try {
@@ -98,8 +97,7 @@ export default function listenHotKey() {
               console.error(e);
               return;
             }
-            // varify if having duplicated patients
-            // If patients have same name and dob,use email to distinguish.
+
             let cred1 = `${patient.firstName}:${patient.lastName}:${patient.dob}`;
             let cred2 = patient.email;
             let patientRecord = '|' + patient.seralize();
@@ -123,21 +121,19 @@ export default function listenHotKey() {
             }
             network.encode(patientRecord).then((encodedValue) => {
               console.log('ENCODED: ', encodedValue);
-              setTimeout(() => {
-                filesystem
-                  .writeFile({
-                    path: './PatientInfo.txt',
-                    data: encodedValue,
-                    writeOperation: filesystem.WriteOperation.append,
-                    writeMode: 0o744,
-                  })
-                  .then(() => {
-                    console.log('filesystem.writeFile callback');
-                  })
-                  .catch(console.error);
-              });
+              filesystem
+                .writeFile({
+                  path: './PatientInfo.txt',
+                  data: encodedValue,
+                  writeOperation: filesystem.WriteOperation.append,
+                  writeMode: 0o744,
+                })
+                .then(() => {
+                  console.log('Successfully saved patient record');
+                })
+                .catch(console.error);
             });
-            instance.close && instance.close();
+            instance.close();
           },
           type: Button,
         },
