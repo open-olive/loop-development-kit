@@ -61,7 +61,19 @@ export default () =>
             let pList = [];
             decodedData.split('|').forEach((row) => {
               if (row) {
-                pList.push(new Patient(...row.split(':')));
+                const splitRow = row.split(':');
+                const newPatient = new Patient({
+                  firstName: splitRow[0],
+                  lastName: splitRow[1],
+                  dob: splitRow[2],
+                  gender: splitRow[3],
+                  telephone: splitRow[4],
+                  email: splitRow[5],
+                  visitReason: splitRow[6],
+                  appointmentDate: splitRow[7],
+                  appointmentTime: splitRow[8],
+                });
+                pList.push(newPatient);
               }
             });
             resolve(pList);

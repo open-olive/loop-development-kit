@@ -14,7 +14,7 @@ export default function listenHotKey() {
     let instance = null;
 
     // eslint-disable-next-line prefer-const
-    let patient = new Patient();
+    let patient = new Patient({});
     instance = await whisper.create({
       label: 'Consolidate Loop - Form Whisper',
       onClose: () => {
