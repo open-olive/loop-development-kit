@@ -54,6 +54,7 @@ export default function listenHotKey() {
             patient.setGender(value);
           },
           type: TextInput,
+          tooltip: 'Male, Female, Other or Prefer not to say',
         },
         {
           label: 'Telephone',
@@ -102,7 +103,7 @@ export default function listenHotKey() {
 
             let cred1 = `${patient.firstName}:${patient.lastName}:${patient.dob}`;
             let cred2 = patient.email;
-            let patientRecord = `|${  patient.serialize()}`;
+            let patientRecord = `|${patient.serialize()}`;
 
             const found = await new Promise((resolve) => {
               filesystem
@@ -110,9 +111,7 @@ export default function listenHotKey() {
                 .then((data) => {
                   network.decode(data).then((decodedRecord) => {
                     console.log('Decoded: ', decodedRecord);
-                    resolve(
-                      !!(`${  decodedRecord}`).match(cred1) || !!(`${  decodedRecord}`).match(cred2),
-                    );
+                    resolve(!!`${decodedRecord}`.match(cred1) || !!`${decodedRecord}`.match(cred2));
                   });
                 })
                 .catch(console.error);

@@ -6,15 +6,14 @@
 import { ui, whisper, filesystem, network } from '@oliveai/ldk';
 import Patient from './Patient';
 
-const { Message, Link } =
-  whisper.WhisperComponentType;
+const { Message, Link } = whisper.WhisperComponentType;
 
 function SearchResultWhisper(rows) {
   let result = [];
   console.log(result);
   rows.forEach((row) => {
     result.push({
-      text: `${row.firstName  } ${  row.lastName  } ${  row.email}`,
+      text: `${row.firstName} ${row.lastName} ${row.email}`,
       onClick: () => {
         console.log(row.serialize());
 
@@ -25,11 +24,14 @@ function SearchResultWhisper(rows) {
           },
           components: [
             {
-              header: `${row.firstName  } ${  row.lastName}`,
-              body: row.patientInfo.reduce((rst, k) => `
+              header: `${row.firstName} ${row.lastName}`,
+              body: row.patientInfo.reduce(
+                (rst, k) => `
 ${rst}
 ${k}:   ${row[k]}
-                            `, ''),
+                            `,
+                '',
+              ),
               type: Message,
             },
           ],

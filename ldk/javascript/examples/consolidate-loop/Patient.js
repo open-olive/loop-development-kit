@@ -41,6 +41,9 @@ class Patient {
     if (!this.lastName) {
       throw new Error('lastName is required');
     }
+    if (!this.telephone) {
+      throw new Error('telephone number is required');
+    }
     if (!this.email) {
       throw new Error('email is required');
     }
@@ -50,14 +53,18 @@ class Patient {
   }
 
   serialize() {
-    let patientRecord = ``;
-    this.patientInfo.forEach((k, i) => {
-      if (i !== 0) {
-        patientRecord += ':';
-      }
-      patientRecord += this[k] || '';
-    });
-    return patientRecord;
+    return [
+      this.firstName + this.lastName,
+      this.dob,
+      this.gender,
+      this.telephone,
+      this.email,
+      this.visitReason,
+      this.appointmentDate,
+      this.appointmentTime,
+    ]
+      .map((x) => x || '')
+      .join(':');
   }
 
   getSearchCred() {
@@ -83,14 +90,18 @@ class Patient {
   }
 
   setGender(val) {
-    const genderList = ['Male', 'Female', 'Any'];
+    const genderList = ['Male', 'Female', 'Other', 'Prefer not to say'];
     if (!genderList.includes(val)) {
-      throw new Error('gender need to be “Male” or “Female”');
+      throw new Error('gender need to be “Male”, “Female”, "Other" or "Prefer not to say"');
     }
     this.gender = val;
   }
 
   setTelephone(val) {
+    if (!Number.isInteger(val)) {
+      this.telephone = null;
+      throw new Error('Please enter validated number');
+    }
     this.telephone = val;
   }
 
