@@ -62,6 +62,7 @@ export default function listenHotKey() {
             patient.setTelephone(value);
           },
           type: Telephone,
+          tooltip: 'XXX-XXX-XXXX',
         },
         {
           label: 'Email',

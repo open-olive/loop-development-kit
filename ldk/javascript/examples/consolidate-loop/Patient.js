@@ -121,9 +121,10 @@ class Patient {
   }
 
   setTelephone(val) {
-    if (!Number.isInteger(val)) {
+    const regexPhoneNumber = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    if (!regexPhoneNumber.test(val)) {
       this.telephone = null;
-      throw new Error('Please enter validated number');
+      throw new Error('Please enter validated number in the following format: XXX-XXX-XXXX ');
     }
     this.telephone = val;
   }
