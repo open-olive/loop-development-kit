@@ -49,7 +49,7 @@ class Patient {
     }
   }
 
-  seralize() {
+  serialize() {
     let patientRecord = ``;
     this.patientInfo.forEach((k, i) => {
       if (i !== 0) {

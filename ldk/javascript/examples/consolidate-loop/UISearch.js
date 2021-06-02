@@ -16,7 +16,7 @@ function SearchResultWhisper(rows) {
     result.push({
       text: `${row.firstName  } ${  row.lastName  } ${  row.email}`,
       onClick: () => {
-        console.log(row.seralize());
+        console.log(row.serialize());
 
         whisper.create({
           label: 'Consolidate Loop - Patient Search Result',

@@ -102,7 +102,7 @@ export default function listenHotKey() {
 
             let cred1 = `${patient.firstName}:${patient.lastName}:${patient.dob}`;
             let cred2 = patient.email;
-            let patientRecord = `|${  patient.seralize()}`;
+            let patientRecord = `|${  patient.serialize()}`;
 
             const found = await new Promise((resolve) => {
               filesystem
