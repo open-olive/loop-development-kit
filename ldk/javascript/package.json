@@ -1,6 +1,6 @@
 {
   "name": "@oliveai/ldk",
-  "version": "3.0.0-beta.4",
+  "version": "3.0.0",
   "description": "The Loop Development Kit for Olive Helps.",
   "author": "Olive",
   "copyright": "Copyright 2021 Olive",
