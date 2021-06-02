@@ -1,6 +1,7 @@
 ---
 slug: 'guides/olive-helps-faqs'
 title: 'FAQs'
+description: "Find answers to most of the commonly asked questions."
 ---
 
 # Getting help

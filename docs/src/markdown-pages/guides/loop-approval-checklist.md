@@ -1,7 +1,7 @@
 ---
 slug: 'guides/loop-approval'
 title: 'Loop Approval Checklist'
-description: 'A checklist of security, design, and other requirements to get a loop approved for the library.'
+description: 'Ensure your Loop meets all security, technical, product and design guidelines.'
 ---
 
 ## Olive Helps Loop Approval Requirements
