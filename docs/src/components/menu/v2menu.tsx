@@ -7,7 +7,7 @@ interface LinksProps {
   itemClass: string;
 }
 
-const Links: React.FunctionComponent<LinksProps> = props => (
+const Links: React.FunctionComponent<LinksProps> = (props) => (
   <ul className={props.listClass}>
     <li className={props.itemClass}>
       <a href="https://open-olive.github.io/loop-development-kit/ldk/javascript/" target="_blank">
@@ -21,16 +21,16 @@ const Links: React.FunctionComponent<LinksProps> = props => (
       <a href="https://github.com/open-olive/loop-development-kit/issues">Support</a>
     </li>
   </ul>
-)
+);
 
-const MobileV2Menu: React.FunctionComponent = props => (
+const MobileV2Menu: React.FunctionComponent = (props) => (
   <div className={styles.mobileMenu}>
     <div className={styles.mobileMenuLogo}>
-      <OliveHelpsLogo/>
+      <OliveHelpsLogo />
     </div>
-    <Links itemClass={styles.mobileMenuLink} listClass={styles.mobileMenuLinks}/>
+    <Links itemClass={styles.mobileMenuLink} listClass={styles.mobileMenuLinks} />
   </div>
-)
+);
 
 const DesktopV2Menu: React.FunctionComponent = (props) => (
   <div className={styles.desktopMenu}>
@@ -38,7 +38,7 @@ const DesktopV2Menu: React.FunctionComponent = (props) => (
       <OliveHelpsLogo />
     </div>
     <div className={styles.desktopMenuTitle}>Developer Hub</div>
-    <Links itemClass={styles.desktopMenuLink} listClass={styles.desktopMenuLinks}/>
+    <Links itemClass={styles.desktopMenuLink} listClass={styles.desktopMenuLinks} />
   </div>
 );
 
