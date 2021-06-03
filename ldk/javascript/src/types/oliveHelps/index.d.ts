@@ -290,7 +290,7 @@ declare namespace OliveHelps {
   interface Whisper {
     id: string;
     close: Readable<undefined>;
-    update(whisper: UpdateWhisper, cb?: (err: Error) => void): void 
+    update(whisper: UpdateWhisper, cb?: (err: Error) => void): void
   }
   interface Component<T extends WhisperComponentType> {
     id?: string;
@@ -332,6 +332,7 @@ declare namespace OliveHelps {
 
   type ListPair = Component<WhisperComponentType.ListPair> & {
     copyable: boolean;
+    labelCopyable?: boolean;
     label: string;
     value: string;
     style: Urgency;

@@ -16,6 +16,8 @@ import {
   hotkeyTest,
   linkWhisper,
   listenActiveWindowTest,
+  listPairWhisperCopyableValue,
+  listPairWhisperCopyableLabel,
   networkHTTP,
   networkHTTPS,
   networkWebSocket,
@@ -173,6 +175,18 @@ const testConfig: { [key: string]: TestGroup } = {
       testNetworkAndListComponents,
       5000,
       'No action required',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - ListPair Copyable Value',
+      listPairWhisperCopyableValue,
+      10000,
+      'Click the ListPair value to copy its text',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - ListPair Copyable Label',
+      listPairWhisperCopyableLabel,
+      10000,
+      'Click the ListPair label to copy its text',
     ),
     new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
     new LoopTest(
