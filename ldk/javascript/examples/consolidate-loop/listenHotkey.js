@@ -125,7 +125,7 @@ export default function listenHotKey() {
               console.log('ENCODED: ', encodedValue);
               filesystem
                 .writeFile({
-                  path: './PatientInfo.txt',
+                  path: 'PatientInfo.txt',
                   data: encodedValue,
                   writeOperation: filesystem.WriteOperation.append,
                   writeMode: 0o744,

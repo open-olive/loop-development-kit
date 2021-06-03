@@ -15,13 +15,7 @@
       "keyboard": {},
       "whisper": {},
       "ui": {},
-      "filesystem": {
-        "pathGlobs": [
-          {
-            "value": "./PatientInfo.txt"
-          }
-        ]
-      }
+      "filesystem": {}
     }
   },
   "dependencies": {

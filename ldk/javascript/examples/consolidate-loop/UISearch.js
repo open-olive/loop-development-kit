@@ -55,7 +55,7 @@ export default () =>
 
     const patients = await new Promise((resolve) => {
       filesystem
-        .readFile('./PatientInfo.txt')
+        .readFile('PatientInfo.txt')
         .then((data) => {
           network.decode(data).then((decodedData) => {
             let pList = [];
