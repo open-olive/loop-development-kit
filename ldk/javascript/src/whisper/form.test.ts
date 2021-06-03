@@ -9,27 +9,27 @@ describe('Form', () => {
 
         const selectComponentName = 'mySelect';
 
-        const components: Array<whisper.ChildComponents> = [
+        const components = [
             {
                 label: `myLabel`,
                 onChange: jest.fn(),
                 tooltip: 'myTooltip',
                 value: 'myValue',
                 name: textInputComponentName,
-                type: whisper.WhisperComponentType.TextInput,
+                type: 'textInput' as OliveHelps.WhisperComponentType.TextInput,
             },
             {
                 label: 'myTelephone',
                 onChange: jest.fn(),
                 name: telephoneInputComponentName,
-                type: whisper.WhisperComponentType.Telephone
+                type: 'telephone' as OliveHelps.WhisperComponentType.Telephone
             },
             {
                 label: 'mySelectInput',
                 onSelect: jest.fn(),
                 options: ['option1', 'option2'],
                 name: selectComponentName,
-                type: whisper.WhisperComponentType.Select
+                type: 'select' as OliveHelps.WhisperComponentType.Select
             } 
         ];
 
@@ -55,18 +55,16 @@ describe('Form', () => {
     it('forwards calls to provided onChange after updating component state', () => {
         const textInputComponentName = 'myTextInput';
         const textInputOnChange = jest.fn();
-
-        const ldkForm = new LdkForm(
-            [
-                {
-                    label: `myLabel`,
-                    onChange: textInputOnChange,
-                    tooltip: 'myTooltip',
-                    name: textInputComponentName,
-                    type: whisper.WhisperComponentType.TextInput,
-                }
-            ]
-        );
+        const components = [
+            {
+                label: `myLabel`,
+                onChange: textInputOnChange,
+                tooltip: 'myTooltip',
+                name: textInputComponentName,
+                type: 'textInput' as OliveHelps.WhisperComponentType.TextInput,
+            }
+        ]
+        const ldkForm = new LdkForm(components);
 
         const expectedTextInputValue = 'my new value!';
         const expectedError = undefined;
@@ -79,18 +77,16 @@ describe('Form', () => {
 
     it('initializes component state as undefined when no value is provided', () => {
         const textInputComponentName = 'myTextInput';
-
-        const ldkForm = new LdkForm(
-            [
-                {
-                    label: `myLabel`,
-                    onChange: (error, value) => { console.log(error, value) },
-                    tooltip: 'myTooltip',
-                    name: textInputComponentName,
-                    type: whisper.WhisperComponentType.TextInput,
-                }
-            ]
-        );
+        const components = [
+            {
+                label: `myLabel`,
+                onChange: jest.fn(),
+                tooltip: 'myTooltip',
+                name: textInputComponentName,
+                type: 'textInput' as OliveHelps.WhisperComponentType.TextInput,
+            }
+        ]
+        const ldkForm = new LdkForm(components);
 
         expect(ldkForm.getComponentState().get(textInputComponentName)).toBeUndefined();
     });
@@ -101,27 +97,26 @@ describe('Form', () => {
 
         const selectComponentName = 'mySelect';
         const expectedSelectInitialValue = 1;
-
-        const ldkForm = new LdkForm(
-            [
-                {
-                    label: `myTextInput`,
-                    onChange: (error, value) => { console.log(error, value) },
-                    tooltip: 'myTooltip',
-                    value: expectedTextInputInitialValue,
-                    name: textInputComponentName,
-                    type: whisper.WhisperComponentType.TextInput,
-                },
-                {
-                    label: 'mySelectInput',
-                    onSelect: jest.fn(),
-                    options: ['option1', 'option2'],
-                    selected: expectedSelectInitialValue,
-                    name: selectComponentName,
-                    type: whisper.WhisperComponentType.Select
-                }
-            ]
-        );
+        
+        const components = [
+            {
+                label: `myTextInput`,
+                onChange: jest.fn(),
+                tooltip: 'myTooltip',
+                value: expectedTextInputInitialValue,
+                name: textInputComponentName,
+                type: 'textInput' as OliveHelps.WhisperComponentType.TextInput,
+            },
+            {
+                label: 'mySelectInput',
+                onSelect: jest.fn(),
+                options: ['option1', 'option2'],
+                selected: expectedSelectInitialValue,
+                name: selectComponentName,
+                type: 'select' as OliveHelps.WhisperComponentType.Select
+            }
+        ]
+        const ldkForm = new LdkForm(components);
 
         expect(ldkForm.getComponentState().get(textInputComponentName)).toBe(expectedTextInputInitialValue);
         expect(ldkForm.getComponentState().get(selectComponentName)).toBe(expectedSelectInitialValue);
@@ -130,20 +125,20 @@ describe('Form', () => {
     it('replaces duplicate component names and stores last onChange value', () => {
         const duplicateComponentName = 'myDuplicateName';
 
-        const components: Array<whisper.ChildComponents> = [
+        const components = [
             {
                 label: `myLabel`,
-                onChange: (error, value) => { console.log(error, value) },
+                onChange: jest.fn(),
                 tooltip: 'myTooltip',
                 value: 'myValue',
                 name: duplicateComponentName,
-                type: whisper.WhisperComponentType.TextInput,
+                type: 'textInput' as OliveHelps.WhisperComponentType.TextInput,
             },
             {
                 label: 'myTelephone',
-                onChange: (error, value) => { console.log(error, value) },
+                onChange: jest.fn(),
                 name: duplicateComponentName,
-                type: whisper.WhisperComponentType.Telephone
+                type: 'telephone' as OliveHelps.WhisperComponentType.Telephone
             }
         ];
 
@@ -163,7 +158,7 @@ describe('Form', () => {
     });
 
     it('handles empty form', () => {
-        const components: Array<whisper.ChildComponents> = [];
+        const components: Array<OliveHelps.ChildComponents> = [];
         
         const ldkForm = new LdkForm(components);
 

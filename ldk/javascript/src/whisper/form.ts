@@ -2,11 +2,11 @@
 import { Components, Form, Whisper, WhisperComponentType } from '.';
 
 export class LdkForm {
-    children: Array<Components>;
+    children: Array<OliveHelps.Components>;
 
     componentState: Map<string, string | number | boolean>;
 
-    constructor(children: Array<Components>) {
+    constructor(children: Array<OliveHelps.Components>) {
         this.componentState = new Map<string, string |number | boolean>();
         this.children = children;
 
