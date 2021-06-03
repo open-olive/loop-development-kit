@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - SIDE-2274-fix-display-bug
 
 jobs:
   deploy-developer-hub:
