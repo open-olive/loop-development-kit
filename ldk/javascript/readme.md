@@ -36,7 +36,7 @@ module.exports = merged;
 ```
 
 ### Loop Permissions
-In order to ensure your Loop is executing in a secure manner, you must declare which network URL domains, file system path globs, and aptitudes your Loop will use. 
+In order to ensure your Loop is executing in a secure manner, you must declare which network URL domains, file system path globs, and aptitudes your Loop will use.
 
 Permissions are declared inside of the Loop `package.json` root within a `ldk/permissions` json object.
 
@@ -115,8 +115,8 @@ An Aptitude Name.
 | Valid Options |||
 |-----------|---------|---------|
 "clipboard" | "cursor" | "keyboard"
-"process"  | "ui" | "vault"
-"whisper" | "window"
+"process"  | "ui" | "user"
+"vault" | "whisper" | "window"
 <br>
 
 ### Loop Examples
