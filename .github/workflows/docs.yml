@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - SIDE-2327-landing-page-update
+      - SIDE-2274-fix-display-bug
 
 jobs:
   deploy-developer-hub:
