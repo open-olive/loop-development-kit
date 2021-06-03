@@ -23,7 +23,10 @@ enum MessageType {
 const mapToBinaryData = (message: string | Uint8Array): Array<number> =>
   typeof message === 'string' ? [...new TextEncoder().encode(message)] : [...message];
 
-const mapToResponseMessage = (messageType: MessageType, buffer: ArrayBuffer): string | Uint8Array => {
+const mapToResponseMessage = (
+  messageType: MessageType,
+  buffer: ArrayBuffer,
+): string | Uint8Array => {
   const data = mapToUint8Array(buffer);
   return messageType === MessageType.text ? new TextDecoder().decode(data) : data;
 };
@@ -35,17 +38,18 @@ export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({
   writeMessage: (message: string | Uint8Array) =>
     new Promise((resolve, reject) => {
       try {
-        socket.writeMessage(mapToMessageType(message), mapToBinaryData(message), (error: Error | undefined) => {
-          if (error) {
-            console.error(
-              `Received error on result: ${error.message}`,
-            );
-            reject(error);
-            return;
-          }
-          resolve();
-        });
-        
+        socket.writeMessage(
+          mapToMessageType(message),
+          mapToBinaryData(message),
+          (error: Error | undefined) => {
+            if (error) {
+              console.error(`Received error on result: ${error.message}`);
+              reject(error);
+              return;
+            }
+            resolve();
+          },
+        );
       } catch (e) {
         handleCaughtError(reject, e, 'writeMessage');
       }
@@ -55,9 +59,7 @@ export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({
       try {
         socket.close((error: Error | undefined) => {
           if (error) {
-            console.error(
-              `Received error on result: ${error.message}`,
-            );
+            console.error(`Received error on result: ${error.message}`);
             reject(error);
             return;
           }
@@ -82,13 +84,13 @@ export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({
         handleCaughtError(reject, e, 'listenMessage');
       }
     }),
-    setCloseHandler: (handler) => 
-      new Promise((resolve, reject) => {
-        try {
-          socket.onCloseHandler(handler)
-          resolve();
-        } catch (e) {
-          handleCaughtError(reject, e, 'onCloseHandler');
-        }
-      }),    
+  setCloseHandler: (handler) =>
+    new Promise((resolve, reject) => {
+      try {
+        socket.onCloseHandler(handler);
+        resolve();
+      } catch (e) {
+        handleCaughtError(reject, e, 'onCloseHandler');
+      }
+    }),
 });

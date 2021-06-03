@@ -2,10 +2,12 @@ import * as webpack from 'webpack';
 import * as path from 'path';
 import Terser from 'terser-webpack-plugin';
 import { generateBanner } from './generate-banner';
-import { LdkSettings } from './ldk-settings';
+import { LdkSettings } from './ldk-settings'; // Need to dynamically refer to Loop's package.json
 
-/* eslint-disable-next-line */ // Need to dynamically refer to Loop's package.json
-const ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
+/* eslint-disable-next-line */ const ldkSettings: LdkSettings = require(path.join(
+  process.cwd(),
+  '/package.json',
+));
 
 const config: webpack.Configuration = {
   target: ['web', 'es5'],
@@ -17,7 +19,7 @@ const config: webpack.Configuration = {
   plugins: [
     new webpack.BannerPlugin({
       banner: generateBanner(ldkSettings),
-      raw: true
+      raw: true,
     }),
   ],
   optimization: {

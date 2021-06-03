@@ -64,7 +64,9 @@ describe('Vault', () => {
     it('returns a promise with expected read value', () => {
       const expectedKey = 'myReadKey';
       const expectedResult = 'my read value';
-      mocked(oliveHelps.vault.read).mockImplementation((key, callback) => callback(undefined, expectedResult));
+      mocked(oliveHelps.vault.read).mockImplementation((key, callback) =>
+        callback(undefined, expectedResult),
+      );
 
       const actual = vault.read(expectedKey);
 
@@ -88,7 +90,9 @@ describe('Vault', () => {
     it('returns a promise with expected write value', () => {
       const expectedKey = 'myWriteKey';
       const expectedValue = 'my write value';
-      mocked(oliveHelps.vault.write).mockImplementation((key, value, callback) => callback(undefined));
+      mocked(oliveHelps.vault.write).mockImplementation((key, value, callback) =>
+        callback(undefined),
+      );
 
       const actual = vault.write(expectedKey, expectedValue);
 

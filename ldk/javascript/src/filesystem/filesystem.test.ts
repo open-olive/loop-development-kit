@@ -159,12 +159,14 @@ describe('Filesystem', () => {
         },
       };
 
-      mocked(oliveHelps.filesystem.listenFile).mockImplementation((pathCb, listenerCb, returnCb) => {
-        expect(pathCb).toEqual(path);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        returnCb({} as any);
-        listenerCb(undefined, fileEvent);
-      });
+      mocked(oliveHelps.filesystem.listenFile).mockImplementation(
+        (pathCb, listenerCb, returnCb) => {
+          expect(pathCb).toEqual(path);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          returnCb({} as any);
+          listenerCb(undefined, fileEvent);
+        },
+      );
 
       await filesystem.listenFile(path, callback);
 
