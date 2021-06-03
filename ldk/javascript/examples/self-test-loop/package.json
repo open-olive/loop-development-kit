@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "build-ldk": "cd ../.. && npm i && rm -rf dist && tsc",
+    "build-all": "npm run build-ldk && npm i && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,9 @@
       "network": {
         "urlDomains": [
           {
+            "value": "html5rocks.websocket.org"
+          },
+          {
             "value": "api.fda.gov"
           },
           {
@@ -22,24 +27,10 @@
           }
         ]
       },
-      "filesystem": {
-        "pathGlobs": [
-          {
-            "value": "./"
-          },
-          {
-            "value": "./test_listenFile.txt"
-          },
-          {
-            "value": "./test_listenDir.txt"
-          },
-          {
-            "value": "./test.txt"
-          }
-        ]
-      },
+      "filesystem": {},
       "process": {},
       "ui": {},
+      "user": {},
       "keyboard": {},
       "whisper": {},
       "vault": {},

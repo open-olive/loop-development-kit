@@ -1,6 +1,7 @@
 ---
 name: "Network"
 links_js: "Network"
+description: "Allows Loops to make network requests to external services."
 ---
 Allows Loops to make network requests to external services.
 

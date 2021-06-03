@@ -29,27 +29,81 @@ $hoverColor: #b388ff;
 $codeBorderColor: #e8dbff;
 $lightestAccent: #faf6ff;
 
-$primaryFont: sofia-pro, sans-serif;
+$primaryFont: "Circular", sans-serif;
 
-$fiveXlFontSize: 64px;
+$fiveXlFontSize: 72px;
 $fourXlFontSize: 48px;
 $threeXlFontSize: 36px;
 $twoXlFontSize: 24px;
 
-$headerFontWeight: 700;
+$headerFontWeight: 300;
+
+$mobileTitleSize: 36px;
+$mobileHeader1Size: 24px;
+$mobileHeader2Size: 20px;
+$mobileDescriptionSize: 16px;
+
+
+$pageHeaderFontSize: 72px;
+$pageHeaderFontSizeMobile: $mobileTitleSize;
+$pageHeaderFontWeight: 300;
+
+$headerSubtextSize: 22px;
+$headerSubtextSizeMobile: $mobileDescriptionSize;
+$headerSubtextWeight: 300;
+
+$sectionTitleFontSize: 56px;
+$sectionTitleFontSizeMobile: $mobileHeader1Size;
+$sectionTitleFontWeight: 200;
+
+$sectionDescriptionFontSize: 22px;
+$sectionDescriptionFontSizeMobile: $mobileDescriptionSize;
+$sectionDescriptionFontWeight: 200;
+$sectionDescriptionLineHeight: 1.5em;
+
+$aptitudeTitleFontSize: 24px;
+$aptitudeTitleFontSizeMobile: $mobileHeader2Size;
+$aptitudeTitleFontWeight: 200;
+
+$aptitudeDescriptionFontSize: 16px;
+$aptitudeDescriptionFontSizeMobile: $mobileDescriptionSize;
+$aptitudeDescriptionFontWeight: 300;
+
+$guideTitleFontSize: 40px;
+$guideTitleFontSizeMobile: $mobileHeader2Size;
+$guideTitleFontWeight: 300;
 
 $bodyFontSize: 16px;
-$bodyFontWeight: 500;
+$bodyFontWeight: 400;
 
-$headerBackgroundColor: $primaryThemeColor;
-$headerBackgroundImage: linear-gradient($mediumGradientStart, $mediumGradientEnd);
+$needHelpTitleFontSize: 40px;
+$needHelpTitleFontSizeMobile: $mobileHeader1Size;
+$needHelpTitleFontWeight: 300;
 
-$menuBackgroundImage: linear-gradient(to bottom left, $darkGradientStart, $darkGradientEnd);
+$needHelpSubtextFontSize: 16px;
+$needHelpSubtextFontSizeMobile: $mobileDescriptionSize;
+$needHelpSubtextFontWeight: 300;
 
-$menuBackgroundColor: $primaryThemeColor;
+$footerTextFontSize: 14px;
+$footerTextFontSizeMobile: $mobileDescriptionSize;
+$footerFontWeight: 400;
+
+
+$headerBackgroundColor: $oliveSecondary3;
+
+$menuBackgroundImage: linear-gradient(to bottom left, $oliveSecondary3, $oliveSecondary3);
+
+$menuBackgroundColor: $oliveSecondary3;
 $menuTextColor: white;
 $menuLinkColor: $menuTextColor;
 $menuLinkColorHover: $hoverColor;
+
+$buttonNormalRadius: 8px;
+$buttonNormalBackground: $primaryThemeColor;
+$buttonNormalColor: white;
+$buttonNormalPadding: 8px 16px;
+$buttonNormalFontSize: 16px;
+$buttonNormalFontWeight: 400;
 
 $breakpoints: (
   'mobile': (
@@ -85,5 +139,14 @@ $breakpoints: (
 @mixin desktop() {
   @include respond-to('desktop') {
     @content;
+  }
+}
+
+@mixin breakPoint($property, $desktopValue, $mobileValue) {
+  @include desktop() {
+    #{$property}: $desktopValue;
+  }
+  @include mobile() {
+    #{$property}: $mobileValue;
   }
 }

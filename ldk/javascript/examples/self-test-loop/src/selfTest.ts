@@ -18,6 +18,7 @@ import {
   listenActiveWindowTest,
   networkHTTP,
   networkHTTPS,
+  networkWebSocket,
   processStream,
   processQuery,
   simpleFormWhisper,
@@ -30,11 +31,14 @@ import {
   testNetworkAndListComponents,
   queryDirectory,
   createAndDeleteFile,
+  userJWTTest,
   uiSearchTest,
   uiGlobalSearchTest,
   updateAndReadFile,
   listenFile,
   listenDir,
+  dirExists,
+  fileExists,
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -99,6 +103,12 @@ const testConfig: { [key: string]: TestGroup } = {
       5000,
       'Calling a public HTTP API. Should fail',
     ),
+    new LoopTest(
+      'Network Aptitude - WebSocket test',
+      networkWebSocket,
+      20000,
+      'Sending/receiving data to websocket should pass.',
+    ),
   ]),
   process: new TestGroup('Process Aptitude', [
     new LoopTest(
@@ -127,6 +137,9 @@ const testConfig: { [key: string]: TestGroup } = {
       10000,
       'Press CMD + O and search "for meaning"',
     ),
+  ]),
+  user: new TestGroup('User Aptitude', [
+    new LoopTest('User Aptitude - JWT', userJWTTest, 10000, 'No action required'),
   ]),
   vault: new TestGroup('Vault Aptitude', [
     new LoopTest(
@@ -161,30 +174,20 @@ const testConfig: { [key: string]: TestGroup } = {
       5000,
       'No action required',
     ),
-    new LoopTest(
-      'Whisper Aptitude - Button Whisper',
-      buttonWhisper,
-      10000,
-      'Click the 3rd button',
-    ),
+    new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
       simpleFormWhisper,
       10000,
       `Enter 'Stonks' into the field`,
     ),
-    new LoopTest(
-      'Whisper Aptitude - Number Inputs',
-      numberInputs,
-      10000,
-      `No action required`
-    ),
+    new LoopTest('Whisper Aptitude - Number Inputs', numberInputs, 10000, `No action required`),
     new LoopTest(
       'Whisper Aptitude - Initial Value for Select and Radio',
       initialValueSelectAndRadioWhispers,
       10000,
-      `No action required`, 
-    )
+      `No action required`,
+    ),
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
@@ -211,7 +214,7 @@ const testConfig: { [key: string]: TestGroup } = {
       'File Aptitude - Query File Directory',
       queryDirectory,
       10000,
-      'Querying root directory to look for "go.mod"...',
+      'Querying root directory to look for newly created "file.json"...',
     ),
     new LoopTest(
       'File Aptitude - Create and Delete File',
@@ -231,11 +234,18 @@ const testConfig: { [key: string]: TestGroup } = {
       10000,
       'Monitoring for file changes...',
     ),
+    new LoopTest('File Aptitude - Listen Dir', listenDir, 10000, 'Monitoring for dir change...'),
     new LoopTest(
-      'File Aptitude - Listen Dir',
-      listenDir,
+      'File Aptitude - Dir Exists',
+      dirExists,
       10000,
-      'Monitoring for dir change...',
+      'Checking for directory existence...',
+    ),
+    new LoopTest(
+      'File Aptitude - File Exists',
+      fileExists,
+      10000,
+      'Checking for file existence...',
     ),
   ]),
 };
@@ -275,20 +285,22 @@ export default class SelfTestLoop {
           suite.start().then(() => {
             console.log('🎉 Group Done!');
             var form: whisper.Whisper;
-            whisper.create({
-              label: 'Testing Complete',
-              onClose: () => {
-                console.log('');
-              },
-              components: [
-                {
-                  body: `All tests for ${group.getId()} have been run`,
-                  type: whisper.WhisperComponentType.Markdown,
+            whisper
+              .create({
+                label: 'Testing Complete',
+                onClose: () => {
+                  console.log('');
                 },
-              ],
-            }).then((whisper: whisper.Whisper) => form = whisper);
+                components: [
+                  {
+                    body: `All tests for ${group.getId()} have been run`,
+                    type: whisper.WhisperComponentType.Markdown,
+                  },
+                ],
+              })
+              .then((whisper: whisper.Whisper) => (form = whisper));
             setTimeout(() => {
-              form.close(error => console.error(error));
+              form.close((error) => console.error(error));
             }, 5000);
           });
         },
@@ -307,20 +319,22 @@ export default class SelfTestLoop {
         suite.start().then(() => {
           console.info('🎉 Done!');
           var prompt: whisper.Whisper;
-          whisper.create({
-            label: 'Testing Complete',
-            onClose: () => {
-              console.log('');
-            },
-            components: [
-              {
-                body: 'All tests have been run',
-                type: whisper.WhisperComponentType.Markdown,
+          whisper
+            .create({
+              label: 'Testing Complete',
+              onClose: () => {
+                console.log('');
               },
-            ],
-          }).then((whisper: whisper.Whisper) => prompt = whisper);
+              components: [
+                {
+                  body: 'All tests have been run',
+                  type: whisper.WhisperComponentType.Markdown,
+                },
+              ],
+            })
+            .then((whisper: whisper.Whisper) => (prompt = whisper));
           setTimeout(() => {
-            prompt.close(error => console.error(error));
+            prompt.close((error) => console.error(error));
           }, 5000);
         });
       },

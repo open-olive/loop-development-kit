@@ -3,9 +3,10 @@ import {
   promisifyWithFourParams,
   promisifyWithParam,
   promisifyWithTwoParams,
-  promisifyWithMapper,
+  promisifyMappedWithParam,
 } from '../promisify';
 import { Cancellable } from '../cancellable';
+import * as mapper from '../utils/mapper';
 
 /**
  * An object containing file data.
@@ -194,10 +195,8 @@ export function move(source: string, destination: string): Promise<void> {
   return promisifyWithTwoParams(source, destination, oliveHelps.filesystem.move);
 }
 
-const mapToUint8Array = (data: ArrayBuffer) => (new Uint8Array(data));
-
 export function readFile(path: string): Promise<Uint8Array> {
-  return promisifyWithMapper(path, mapToUint8Array, oliveHelps.filesystem.readFile);
+  return promisifyMappedWithParam(path, mapper.mapToUint8Array, oliveHelps.filesystem.readFile);
 }
 
 export function remove(source: string): Promise<void> {

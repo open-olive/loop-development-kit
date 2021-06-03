@@ -7,11 +7,32 @@ import {
   vault,
   whisper,
   window,
+  user,
   ui,
   filesystem,
 } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import * as testUtils from '../testUtils';
+
+let testFolderPath: string;
+
+async function createFolder(path: string): Promise<void> {
+  if (!(await filesystem.exists(path))) {
+    const writeMode = 0o755;
+    await filesystem.makeDir(path, writeMode);
+  }
+}
+
+async function getTestFolderPath(): Promise<string> {
+  if (!testFolderPath) {
+    const path = 'test_dir';
+    await createFolder(path);
+    testFolderPath = path;
+  }
+
+  return testFolderPath;
+}
 
 export const clipboardWriteAndQuery = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
@@ -152,6 +173,7 @@ export const processStream = (): Promise<boolean> =>
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    const options = ['M12.01', 'M00.123'];
     var form: whisper.Whisper;
     whisper
       .create({
@@ -161,8 +183,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         },
         components: [
           {
-            body: 
-              `A paragraph with *emphasis* and **strong importance**.
+            body: `A paragraph with *emphasis* and **strong importance**.
               > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
 
               * Lists
@@ -177,6 +198,56 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
               | Row 2 Col 1 | Row 2 Col 2 |
               `,
             type: whisper.WhisperComponentType.Markdown,
+          },
+          {
+            label: `${options[0]}  
+            line one
+            line two 100.0%`,
+            value: false,
+            onChange: (error, value) => {
+              console.debug(`selected value: ${options[0]}`);
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `${options[1]}  
+            this is a longer line one, it was known for being long 
+            99.2 %`,
+            value: false,
+            onChange: () => {
+              console.debug(`selected value: ${options[1]}`);
+            },
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `Single Line Example that is extremely 
+            long extremely long extremely long extremely 
+            long extremely long extremely long extremely long extremely 
+            long extremely long extremely long extremely long extremely 
+            long extremely long extremely long`,
+            value: false,
+            onChange: () => {},
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            label: `normal label with no surprises`,
+            value: false,
+            onChange: () => {},
+            type: whisper.WhisperComponentType.Checkbox,
+          },
+          {
+            onSelect: (selected) => {
+              console.log(`${selected} has been selected!`);
+            },
+            options: [
+              'no markdown',
+              '**Strong Option**',
+              `multiline  
+              line 1  
+              line 2`,
+            ],
+            selected: 0,
+            type: whisper.WhisperComponentType.RadioGroup,
           },
           {
             alignment: whisper.Alignment.SpaceEvenly,
@@ -306,12 +377,20 @@ export const vaultReadWrite = (): Promise<boolean> =>
   });
 
 export const queryDirectory = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+  new Promise(async (resolve, reject) => {
+    const dirPath = `${await getTestFolderPath()}`;
+    const writeMode = 0o755;
+    await filesystem.writeFile({
+      path: `${dirPath}/file.json`,
+      data: new Uint8Array([102, 85]),
+      writeOperation: filesystem.WriteOperation.overwrite,
+      writeMode: writeMode,
+    });
     filesystem
-      .dir('./')
+      .dir(dirPath)
       .then((response) => {
         for (let i = 0; i < response.length; i += 1) {
-          if (response[i].name === 'go.mod' && !response[i].isDir) {
+          if (response[i].name === 'file.json' && !response[i].isDir) {
             setTimeout(() => {
               resolve(true);
             }, 1500);
@@ -322,12 +401,14 @@ export const queryDirectory = (): Promise<boolean> =>
         setTimeout(() => {
           reject(error);
         }, 1500);
+      }).finally(async () => {
+        await filesystem.remove(`${dirPath}/file.json`);
       });
   });
 
 export const createAndDeleteFile = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const filePath = './test.txt';
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test.txt`;
     const writeMode = 0o755;
 
     network
@@ -367,9 +448,9 @@ export const createAndDeleteFile = (): Promise<boolean> =>
   });
 
 export const updateAndReadFile = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+  new Promise(async (resolve, reject) => {
     const testString = 'Im in yr loop, writing to yr clipboard';
-    const filePath = './test.txt';
+    const filePath = `${await getTestFolderPath()}/test.txt`;
     const writeMode = 0o755;
 
     setTimeout(() => {
@@ -423,8 +504,8 @@ export const updateAndReadFile = (): Promise<boolean> =>
   });
 
 export const listenFile = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const filePath = './test_listenFile.txt';
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test_listenFile.txt`;
     const writeMode = 0o755;
     console.info('listening to file changes');
     let listenFileCancelable: Cancellable;
@@ -486,9 +567,9 @@ export const listenFile = (): Promise<boolean> =>
   });
 
 export const listenDir = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    const filePath = './test_listenDir.txt';
-    const dirPath = './';
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
+    const dirPath = `${await getTestFolderPath()}`;
     const writeMode = 0o755;
     let listenDirCancellable: Cancellable;
     console.info('listening to directory changes');
@@ -535,6 +616,48 @@ export const listenDir = (): Promise<boolean> =>
       .catch((error) => {
         reject(error);
       });
+  });
+
+export const dirExists = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const destination = `${await getTestFolderPath()}/test-tmp-dir`;
+    const writeMode = 0o755;
+    filesystem.makeDir(destination, writeMode).then(() => {
+      filesystem.exists(destination).then((exists) => {
+        filesystem.remove(destination);
+        if (exists === true) {
+          resolve(true);
+        }
+        reject('Could not check if directory exists');
+      });
+    });
+  });
+
+export const fileExists = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
+    const writeMode = 0o755;
+    network.encode('some file text').then((encodedValue) => {
+      filesystem
+        .writeFile({
+          path: filePath,
+          data: encodedValue,
+          writeOperation: filesystem.WriteOperation.overwrite,
+          writeMode: writeMode,
+        })
+        .then(() => {
+          filesystem.exists(filePath).then((exists) => {
+            filesystem.remove(filePath);
+            if (exists === true) {
+              resolve(true);
+            }
+            reject('Could not check if directory exists');
+          });
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   });
 
 export const testNetworkAndListComponents = (): Promise<boolean> =>
@@ -624,7 +747,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
                   label: 'Classification',
                   style: whisper.Urgency.None,
                   type: whisper.WhisperComponentType.ListPair,
-                  value: recallItem.calssification,
+                  value: recallItem.classification,
                 },
               ],
               type: whisper.WhisperComponentType.CollapseBox,
@@ -679,6 +802,45 @@ export const buttonWhisper = (): Promise<boolean> =>
                 resolve(true);
               },
               type: whisper.WhisperComponentType.Button,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          children: [
+            {
+              label: `Disabled Primary`,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
+            },
+            {
+              label: `Disabled Secondary`,
+              buttonStyle: whisper.ButtonStyle.Secondary,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
+            },
+            {
+              label: `Disabled Text`,
+              buttonStyle: whisper.ButtonStyle.Text,
+              disabled: true,
+              onClick: () => {
+                form.close((error) => console.error(error));
+                reject(new Error(`Shouldn't be able to click disabled button`));
+              },
+              type: whisper.WhisperComponentType.Button,
+              size: whisper.ButtonSize.Large,
             },
           ],
           type: whisper.WhisperComponentType.Box,
@@ -753,6 +915,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
 
 export const numberInputs = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    var form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Number Test',
       components: [
@@ -791,8 +954,10 @@ export const numberInputs = (): Promise<boolean> =>
         console.log('close');
       },
     };
-    whisper.create(config).then(() => {
+    whisper.create(config).then((whisper: whisper.Whisper) => {
+      form = whisper;
       setTimeout(() => {
+        form.close((error) => console.error(error));
         resolve(true);
       }, 5000);
     });
@@ -809,7 +974,7 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
         {
           label: 'Select a color',
           options: ['green', 'red', 'blue'],
-          onSelect: (selected) => {
+          onSelect: (error, selected) => {
             console.log(`${selected} has been selected!`);
           },
           type: whisper.WhisperComponentType.Select,
@@ -857,6 +1022,7 @@ export const networkHTTPS = (): Promise<boolean> =>
         }
       })
       .catch((e) => {
+        console.debug(JSON.stringify(e));
         reject(e);
       });
   });
@@ -879,6 +1045,75 @@ export const networkHTTP = (): Promise<boolean> =>
       .catch(() => {
         resolve(true);
       });
+  });
+
+export const networkWebSocket = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const url = 'wss://html5rocks.websocket.org/echo';
+    const testData = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
+    const testText = 'some text';
+    let textTestPassed = false;
+    let binaryTestPassed = false;
+
+    setTimeout(() => {
+      reject(new Error('Network websocket test did not finish in the appropriate timespan.'));
+    }, 20000);
+
+    const socketConfiguration: network.SocketConfiguration = {
+      url: url,
+      useCompression: true,
+    };
+
+    try {
+      console.debug('Stating websocket connect');
+      const socket = await network.webSocketConnect(socketConfiguration);
+      console.debug('Websocket successfully connected');
+      socket.setCloseHandler((error, code, text) => {
+        if (error) {
+          console.error(`OnCloseHandler received error:`);
+          console.error(error);
+
+          return;
+        }
+
+        console.info(`Received on close code: ${code}. ${text}`);
+      });
+      const cancellable: Cancellable = await socket.setMessageHandler(async (error, message) => {
+        if (error) {
+          console.error(error);
+
+          return;
+        }
+        if (message) {
+          if (typeof message === 'string') {
+            if (message === testText) {
+              console.debug(`Received text data`);
+              textTestPassed = true;
+              if (binaryTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
+            }
+          } else {
+            if (JSON.stringify(message) === JSON.stringify(testData)) {
+              console.debug(`Received binary data`);
+              binaryTestPassed = true;
+              if (textTestPassed) {
+                resolve(true);
+                await testUtils.finalizeWebsocketTest(cancellable, socket);
+              }
+            }
+          }
+        }
+      });
+      // send text
+      await socket.writeMessage(testText);
+      // send binary
+      await socket.writeMessage(testData);
+    } catch (error) {
+      console.error(`Error received while testing websocket: ${error.message}`);
+      reject(error);
+    }
   });
 
 export const charTest = (): Promise<boolean> =>
@@ -924,6 +1159,18 @@ export const hotkeyTest = (): Promise<boolean> =>
         resolve(true);
       })
       .then((cancellable: Cancellable) => (keyboardStream = cancellable));
+  });
+
+export const userJWTTest = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    user.jwt().then((token) => {
+      if (token) {
+        console.debug('jwt', token);
+        resolve(true);
+      } else {
+        reject('JWT should not have been empty');
+      }
+    });
   });
 
 export const uiSearchTest = (): Promise<boolean> =>

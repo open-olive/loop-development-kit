@@ -1,7 +1,20 @@
 import * as crypto from 'crypto';
-import { CreatePagesArgs, CreateSchemaCustomizationArgs } from 'gatsby';
+import { Actions, CreatePagesArgs, CreateSchemaCustomizationArgs } from 'gatsby';
 import { IAllFileQuery, IGuideFrontMatter } from './src/queries';
 import { createNodeId } from 'gatsby/dist/utils/create-node-id';
+
+const buildRedirects = async (actions: Actions) => {
+  const { createRedirect } = actions;
+
+  createRedirect({
+    fromPath: `/guides/olive-helps-ldk`,
+    toPath: `/`,
+    isPermanent: true,
+    ignoreCase: true,
+    force: true,
+    redirectInBrowser: true,
+  });
+};
 
 const buildAptitudeTypes = (args: CreateSchemaCustomizationArgs) => {
   const typeDefs = `
@@ -175,6 +188,7 @@ const buildGuidePages = async (args: CreatePagesArgs) => {
 };
 
 export const createPages = async (args: CreatePagesArgs) => {
+  await buildRedirects(args.actions);
   await buildAptitudeNodes(args);
   await buildAptitudePagesWithQuery(args);
   await buildGuidePages(args);

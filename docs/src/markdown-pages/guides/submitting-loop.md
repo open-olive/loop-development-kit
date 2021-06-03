@@ -1,7 +1,7 @@
 ---
 slug: 'guides/submitting-loop'
 title: 'Submitting Your Loop'
-description: 'Submit your Loop for review and approval by the Olive Helps team.'
+description: 'Learn how to successfully submit your Loop after development.'
 ---
 
 # Submit Your Loop
