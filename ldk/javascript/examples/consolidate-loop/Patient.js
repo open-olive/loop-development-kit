@@ -1,27 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 class Patient {
-  // constructor(
-  //   firstName,
-  //   lastName,
-  //   dob,
-  //   gender,
-  //   telephone,
-  //   email,
-  //   visitReason,
-  //   appointmentDate,
-  //   appointmentTime,
-  // ) {
-  //   this.firstName = firstName;
-  //   this.lastName = lastName;
-  //   this.dob = dob;
-  //   this.gender = gender;
-  //   this.telephone = telephone;
-  //   this.email = email;
-  //   this.visitReason = visitReason;
-  //   this.appointmentDate = appointmentDate;
-  //   this.appointmentTime = appointmentTime;
-  // }
-
   constructor({
     firstName,
     lastName,
