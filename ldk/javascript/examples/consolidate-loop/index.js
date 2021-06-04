@@ -1,6 +1,5 @@
-import listenHotKey from './listenHotkey';
-import UISearch from './UISearch';
+import * as hotkeyListener from './hotkeyListener';
+import * as searchBarListener from './searchBarListener';
 
-listenHotKey();
-
-UISearch();
+hotkeyListener.start();
+searchBarListener.start();
