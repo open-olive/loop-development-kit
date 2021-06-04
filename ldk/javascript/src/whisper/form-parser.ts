@@ -1,33 +1,19 @@
-import { NewWhisper } from ".";
-import { whisper } from "..";
+import { Components, NewWhisper, UpdateWhisper } from ".";
 import { isForm, LdkForm } from "./form";
+import { convert } from "./whisper-mapper";
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */ // We have to coerce any type here to force conversion of whisper.NewWhisper to OliveHelps.NewWhisper 
-function convert(whisperComponentType: whisper.WhisperComponentType): any { 
-  if (whisperComponentType === whisper.WhisperComponentType.Form) {
-    throw new Error('unexpected form type');
-  }
-  return whisperComponentType;
-}
 
-export function convertWhisper(whisper: OliveHelps.Whisper): whisper.Whisper {
-  return {...whisper, update: (updateWhisper: whisper.UpdateWhisper) => {parse(updateWhisper)}};
-}
-
-export function parse(newWhisper: NewWhisper): OliveHelps.NewWhisper {
+export function generateForm(components: Array<Components>): Array<OliveHelps.Components> {
   const ldkForms: LdkForm[] = [];
-  const outgoingWhisper: OliveHelps.NewWhisper = {
-    ...newWhisper,
-    components: []
-  };
-
-  newWhisper.components.forEach((component) => {
+  const outgoingComponents: Array<OliveHelps.Components> = [];
+  
+  components.forEach((component) => {
     if (isForm(component)) {
       // Lift form components up
-      component.children.forEach(formChild => outgoingWhisper.components.push({...formChild, type: convert(formChild.type)}));
+      component.children.forEach(formChild => outgoingComponents.push({...formChild, type: convert(formChild.type)}));
 
       // Store form state
-      const ldkForm = new LdkForm(outgoingWhisper.components);
+      const ldkForm = new LdkForm(outgoingComponents);
       ldkForms.push(ldkForm);
 
       // Add submit button
@@ -36,11 +22,24 @@ export function parse(newWhisper: NewWhisper): OliveHelps.NewWhisper {
         onClick: () => { component.onSubmit(ldkForm.getComponentState()) },
         type: 'button' as OliveHelps.WhisperComponentType.Button
       };
-      outgoingWhisper.components.push(submitButton);
+      outgoingComponents.push(submitButton);
     } else {
-      outgoingWhisper.components.push({...component, type: convert(component.type)});
+      outgoingComponents.push({...component, type: convert(component.type)});
     }
   });
+  return outgoingComponents;
+}
 
-  return outgoingWhisper;
+export function parseNewWhisper(newWhisper: NewWhisper): OliveHelps.NewWhisper {  
+  return {
+    ...newWhisper,
+    components: generateForm(newWhisper.components)
+  };
+}
+
+export function parseUpdateWhisper(updateWhisper: UpdateWhisper): OliveHelps.UpdateWhisper {
+  return {
+    ...updateWhisper,
+    components: generateForm(updateWhisper.components)
+  };
 }

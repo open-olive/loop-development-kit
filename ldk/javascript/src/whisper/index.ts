@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
-import { promisifyMappedWithParam, promisifyWithParam } from '../promisify';
-import { convertWhisper, parse } from './form-parser';
+import { promisifyMappedWithParam } from '../promisify';
+import { parseNewWhisper } from './form-parser';
+import { convertWhisper } from './whisper-mapper';
 
 export enum WhisperComponentType {
   /**
@@ -286,6 +287,9 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  const outgoingWhisper: OliveHelps.NewWhisper = parse(whisper);
-  return promisifyMappedWithParam(outgoingWhisper, convertWhisper, oliveHelps.whisper.create)
+  // Converts to "Internal" OliveHelps.NewWhisper
+  const outgoingWhisper: OliveHelps.NewWhisper = parseNewWhisper(whisper);
+
+  // Convert back to "External" Whisper for consumption by Loop Author
+  return promisifyMappedWithParam(outgoingWhisper, convertWhisper, oliveHelps.whisper.create) 
 }

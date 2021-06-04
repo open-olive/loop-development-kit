@@ -9,7 +9,7 @@ describe('Whisper', () => {
   });
 
   describe('create', () => {
-    it('creates a whisper', () => {
+    it('creates a whisper', async () => {
       const newWhisper: whisper.NewWhisper = {
         components: [
           {
@@ -22,25 +22,8 @@ describe('Whisper', () => {
         onClose: jest.fn(),
       };
 
-      const expected: whisper.Whisper = {
-        close: (c: (r: Error | undefined) => void) => {
-          console.log(c);
-        },
-        update: (w: whisper.NewWhisper) => {
-          console.log(w)
-        },
-        id: '1',
-      };
-
-      mocked(oliveHelps.whisper.create).mockImplementation((_whisper, callback) =>
-        // TS isn't recognizing compatibility b/c readable requires a second undefined param.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        callback(undefined, expected as any),
-      );
-
-      const actual = whisper.create(newWhisper);
+      whisper.create(newWhisper);
       expect(oliveHelps.whisper.create).toHaveBeenCalledWith(newWhisper, expect.any(Function));
-      return expect(actual).resolves.toBe(expected);
     });
 
     it('creates a form component with submit button', () => {
