@@ -1,5 +1,5 @@
 import React from 'react';
-import { mapRemarkEdges, IMenuAptitudeProps, IMenuDetailProps, mapGuidePages } from './shared-menu';
+import { IMenuAptitudeProps, IMenuDetailProps, mapGuidePages } from './shared-menu';
 import { buildAptitudePath, buildCapabilityPath } from '../aptitudes/aptitudePaths';
 import styles from './menu.module.scss';
 import { Link } from 'gatsby';

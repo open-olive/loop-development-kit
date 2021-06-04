@@ -1,7 +1,7 @@
 ---
 slug: 'guides/troubleshooting'
 title: 'Troubleshooting'
-description: 'Running into problems? We have some ideas that could help!'
+description: 'View solutions to common issues and other helpful tips.'
 ---
 
 So you've ran into some unexpected behavior and you're not sure how to deal with it? We have some ideas:
@@ -26,6 +26,12 @@ Olive Helps saves logs, and they often include pertinent information:
 ## Github Issues
 
 The LDK provides [a location](https://github.com/open-olive/loop-development-kit/issues) for Loop Authors to open and track issues that they are experiencing when building Loops. We recommend searching issues to find solutions to common problems.
+
+If you have an issue to report, please include:
+
+1. Your operating system version, the Olive Helps version running on your system, and LDK version used to compile the Loop.
+2. Entries from the Olive Helps logs surrounding the bug you're reporting. We may ask you to provide logs with logging level set to `trace`.
+3. A minimal reproducible example of the Loop code causing the bug, if possible.
 
 ## Common Issues
 

@@ -290,7 +290,7 @@ declare namespace OliveHelps {
   interface Whisper {
     id: string;
     close: Readable<undefined>;
-    // update(whisper: NewWhisper, cb: (err: string) => void): void // TODO: Implement
+    update(whisper: UpdateWhisper, cb?: (err: Error) => void): void 
   }
   interface Component<T extends WhisperComponentType> {
     id?: string;
@@ -429,7 +429,12 @@ declare namespace OliveHelps {
   interface NewWhisper {
     label: string;
     components: Array<Components>;
-    onClose: () => void;
+    onClose?: () => void;
+  }
+
+  interface UpdateWhisper {
+    label?: string;
+    components: Array<Components>;
   }
 
   interface FileInfo {

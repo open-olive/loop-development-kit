@@ -47,6 +47,7 @@ export interface IAllAptitudeQuery {
         markdown: {
           frontmatter: {
             name: string;
+            description: string;
           };
         };
       };
@@ -58,6 +59,7 @@ export interface AptitudeMarkdown {
   html: string;
   frontmatter: {
     name: string;
+    description: string;
     links_js: string | undefined;
   };
 }
@@ -78,6 +80,8 @@ export function getAptitudeDataFromQuery(queryResult: AptitudeQueryResult): IApt
   const aptitudeFrontMatter = queryResult.markdown.frontmatter;
   return {
     name: aptitudeFrontMatter.name,
+    internalName: queryResult.internalName,
+    shortDescription: aptitudeFrontMatter.description,
     description: queryResult.markdown.html,
     links: {
       js: aptitudeFrontMatter.links_js,

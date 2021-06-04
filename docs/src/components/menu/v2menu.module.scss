@@ -1,0 +1,89 @@
+@import '../../pages/global';
+
+.desktopMenu {
+  background-color: $menuBackgroundColor;
+  color: white;
+
+  padding: 24px 96px 18px;
+
+  display: flex;
+  align-items: center;
+  @include mobile() {
+    display: none;
+  }
+}
+
+.desktopMenuLinks {
+  display: flex;
+  flex: 1 1 100px;
+  justify-content: flex-end;
+  margin: 0;
+  align-self: stretch;
+  align-items: center;
+}
+
+.mobileMenu {
+  padding: 24px 24px 0;
+  background-color: $oliveDarkPurple;
+  @include desktop() {
+    display: none;
+  }
+}
+
+.mobileMenuLinks {
+  display: flex;
+  padding: 0;
+  justify-content: space-between;
+}
+
+%sharedMenuLink {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  &:hover {
+    > a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+  > a {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.desktopMenuLink {
+  @extend %sharedMenuLink;
+  margin-left: 40px;
+  &:hover {
+    border-bottom: 4px solid white;
+    margin-bottom: -18px;
+    padding-bottom: 14px;
+  }
+}
+
+.mobileMenuLink {
+  @extend %sharedMenuLink;
+  font-size: 14px;
+  font-weight: 300;
+  padding-bottom: 32px;
+  box-sizing: border-box;
+  &:hover {
+    padding-bottom: 28px;
+    border-bottom: 4px solid white;
+  }
+}
+
+.desktopMenuTitle {
+  flex: 0 0 200px;
+}
+
+.desktopMenuLogo {
+  width: 210px;
+  padding-right: 16px;
+  box-sizing: content-box;
+}
+
+.mobileMenuLogo {
+  width: 150px;
+}

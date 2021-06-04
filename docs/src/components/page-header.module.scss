@@ -1,10 +1,17 @@
 @import '../pages/global';
 
 .section {
-  background-color: $headerBackgroundColor;
-  background-image: $headerBackgroundImage;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  background-color: white;
+  background-image: url('../assets/images/faint-olive.svg');
+  @include desktop() {
+    padding-top: 200px;
+    padding-bottom: 185px;
+  }
+  @include mobile() {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,10 +22,12 @@
   width: 80%;
   max-width: 1280px;
   z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sectionOverlay {
-  background-image: url('./banner-pattern.svg');
   background-position: calc(100% + 60px) -10px;
   background-repeat: no-repeat;
   position: absolute;
@@ -31,7 +40,10 @@
 }
 
 .title {
-  font-size: $fiveXlFontSize;
-  font-weight: $headerFontWeight;
-  color: white;
+  font-weight: $pageHeaderFontWeight;
+  @include breakPoint(font-size, $pageHeaderFontSize, $pageHeaderFontSizeMobile);
+
+  color: black;
+  text-align: center;
+  margin: 16px 0;
 }
