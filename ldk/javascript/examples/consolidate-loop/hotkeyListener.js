@@ -2,19 +2,13 @@ import { whisper, keyboard, filesystem, network } from '@oliveai/ldk';
 import Patient from './Patient';
 
 const { TextInput, Telephone, Email, Button, Select } = whisper.WhisperComponentType;
-
 const hotkeys = {
   key: 'n',
   control: true,
 };
-
+const genderOptions = ['Prefer not to say', 'Male', 'Female', 'Other'];
 const patientInfoFileName = 'PatientInfo.txt';
 let formWhisper = null;
-
-// TODO: possibly add a whisper with instructions
-export const emitInstructionsWhisper = async () => {
-  
-}
 
 export const start = async () => {
   await keyboard.listenHotkey(hotkeys, async (pressed) => {
@@ -89,9 +83,11 @@ const getPatientFormWhisperComponents = (patient) => {
     {
       type: Select,
       label: 'Gender',
-      options: ['Prefer not to say', 'Male', 'Female', 'Other'],
-      onChange: (error, value) => {
-        patient.setGender(value);
+      options: genderOptions,
+      onSelect: (error, selectedOption) => {
+        console.log(selectedOption);
+        console.log(genderOptions[selectedOption]);
+        patient.setGender(genderOptions[selectedOption]);
       },
     },
     {
@@ -144,7 +140,7 @@ const getPatientFormWhisperComponents = (patient) => {
 
         const found = await isPatientFound(patient);
         if (found) {
-          console.error(new Error(`patient already exist: ${cred1}:${cred2}`));
+          console.error(new Error(`patient already exist`));
 
           return;
         }

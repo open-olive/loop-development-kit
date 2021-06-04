@@ -1,14 +1,13 @@
 import { ui, whisper, filesystem, network } from '@oliveai/ldk';
 import Patient from './Patient';
 
-const { Message, Link } = whisper.WhisperComponentType;
+const { Message, Link, Markdown } = whisper.WhisperComponentType;
 const patientInfoFileName = 'PatientInfo.txt';
 
 const emitResultWhisper = async (rows) => {
-  let result = [];
-  console.log(result);
+  let searchResults = [];
   rows.forEach((row) => {
-    result.push({
+    searchResults.push({
       text: `${row.firstName} ${row.lastName} ${row.email}`,
       onClick: () => {
         console.log(row.serialize());
@@ -42,7 +41,15 @@ ${k}:   ${row[k]}
     onClose: () => {
       console.log('Patient Search Result');
     },
-    components: result,
+    components:
+      searchResults.length > 0
+        ? searchResults
+        : [
+            {
+              body: `No results are found matching provided criteria`,
+              type: Markdown,
+            },
+          ],
   });
 };
 
@@ -64,7 +71,7 @@ const getPatients = async () => {
   let patients = [];
   try {
     if (!filesystem.exists(patientInfoFileName)) {
-      console.warn("No patients file exists");
+      console.warn('No patients file exists');
       return patients;
     }
 
