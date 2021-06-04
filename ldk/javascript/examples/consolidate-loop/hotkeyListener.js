@@ -1,4 +1,5 @@
 import { whisper, keyboard } from '@oliveai/ldk';
+// eslint-disable-next-line import/no-named-as-default
 import Patient from './Patient';
 
 const { TextInput, Telephone, Email, Button, Select } = whisper.WhisperComponentType;
