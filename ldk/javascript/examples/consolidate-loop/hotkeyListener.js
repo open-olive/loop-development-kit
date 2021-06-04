@@ -27,7 +27,7 @@ export const start = async () => {
   });
 };
 
-const isPatientFound = async (patient) => {
+const isPatientAlreadyExist = async (patient) => {
   let cred1 = `${patient.firstName}:${patient.lastName}:${patient.dob}`;
   let cred2 = patient.email;
 
@@ -85,8 +85,6 @@ const getPatientFormWhisperComponents = (patient) => {
       label: 'Gender',
       options: genderOptions,
       onSelect: (error, selectedOption) => {
-        console.log(selectedOption);
-        console.log(genderOptions[selectedOption]);
         patient.setGender(genderOptions[selectedOption]);
       },
     },
@@ -131,33 +129,22 @@ const getPatientFormWhisperComponents = (patient) => {
       label: 'Submit',
       onClick: async () => {
         try {
-          patient.verify();
-        } catch (e) {
-          console.error(e);
+          const error = patient.validate();
+          if (error) {
+            console.error(error);
 
-          return;
-        }
+            return;
+          }
 
-        const found = await isPatientFound(patient);
-        if (found) {
-          console.error(new Error(`patient already exist`));
+          const exists = await isPatientAlreadyExist(patient);
+          if (exists) {
+            console.error(new Error(`patient already exist`));
 
-          return;
-        }
+            return;
+          }
 
-        try {
-          const patientRecord = `|${patient.serialize()}`;
-          const encodedValue = await network.encode(patientRecord);
+          storePatient(patient);
 
-          console.log('ENCODED: ', encodedValue);
-          await filesystem.writeFile({
-            path: patientInfoFileName,
-            data: encodedValue,
-            writeOperation: filesystem.WriteOperation.append,
-            writeMode: 0o744,
-          });
-
-          console.log('Successfully saved patient record');
           formWhisper.close();
         } catch (error) {
           console.error(error);
@@ -167,3 +154,16 @@ const getPatientFormWhisperComponents = (patient) => {
     },
   ];
 };
+
+const storePatient = async (patient) => {
+  const patientRecord = `|${patient.serialize()}`;
+  const encodedValue = await network.encode(patientRecord);
+  await filesystem.writeFile({
+    path: patientInfoFileName,
+    data: encodedValue,
+    writeOperation: filesystem.WriteOperation.append,
+    writeMode: 0o744,
+  });
+
+  console.log('Successfully saved patient record');
+}

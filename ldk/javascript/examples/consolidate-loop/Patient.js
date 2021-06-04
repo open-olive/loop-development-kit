@@ -33,22 +33,24 @@ class Patient {
     'appointmentTime',
   ];
 
-  verify() {
+  validate() {
     if (!this.firstName) {
-      throw new Error('firstName is required');
+      return new Error('firstName is required');
     }
     if (!this.lastName) {
-      throw new Error('lastName is required');
+      return new Error('lastName is required');
     }
     if (!this.telephone) {
-      throw new Error('telephone number is required');
+      return new Error('telephone number is required');
     }
     if (!this.email) {
-      throw new Error('email is required');
+      return new Error('email is required');
     }
     if (!this.appointmentDate) {
-      throw new Error('appointmentDate is required');
+      return  new Error('appointmentDate is required');
     }
+
+    return undefined;
   }
 
   serialize() {
@@ -84,7 +86,7 @@ class Patient {
 
     if (!regex.test(val)) {
       this.dob = null;
-      throw new Error('date of birth must be as follow format: MM/DD/YYYY');
+      console.error(new Error('date of birth must be as follow format: MM/DD/YYYY'));
     }
     this.dob = val;
   }
@@ -92,7 +94,7 @@ class Patient {
   setGender(val) {
     const genderList = ['Male', 'Female', 'Other', 'Prefer not to say'];
     if (!genderList.includes(val)) {
-      throw new Error('gender need to be “Male”, “Female”, "Other" or "Prefer not to say"');
+      console.error(new Error('gender need to be “Male”, “Female”, "Other" or "Prefer not to say"'));
     }
     this.gender = val;
   }
@@ -101,7 +103,7 @@ class Patient {
     const regexPhoneNumber = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     if (!regexPhoneNumber.test(val)) {
       this.telephone = null;
-      throw new Error('Please enter validated number in the following format: XXX-XXX-XXXX ');
+      console.error(new Error('Please enter validated number in the following format: XXX-XXX-XXXX '));
     }
     this.telephone = val;
   }
