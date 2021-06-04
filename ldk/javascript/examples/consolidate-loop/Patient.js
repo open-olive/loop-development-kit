@@ -1,3 +1,5 @@
+import { filesystem, network } from '@oliveai/ldk';
+
 class Patient {
   constructor({
     firstName,
@@ -47,10 +49,49 @@ class Patient {
       return new Error('email is required');
     }
     if (!this.appointmentDate) {
-      return  new Error('appointmentDate is required');
+      return new Error('appointmentDate is required');
     }
 
     return undefined;
+  }
+
+  async store() {
+    const patientInfoFileName = 'PatientInfo.txt';
+    const patientRecord = `|${this.serialize()}`;
+    const encodedValue = await network.encode(patientRecord);
+    await filesystem.writeFile({
+      path: patientInfoFileName,
+      data: encodedValue,
+      writeOperation: filesystem.WriteOperation.append,
+      writeMode: 0o744,
+    });
+
+    console.log('Successfully saved patient record');
+  }
+
+  async isAlreadyExist() {
+    let cred1 = `${this.firstName}:${this.lastName}:${this.dob}`;
+    let cred2 = this.email;
+
+    const patientInfo = await this.getPatientInfo();
+
+    return !!`${patientInfo}`.match(cred1) || !!`${patientInfo}`.match(cred2);
+  }
+
+  async getPatientInfo() {
+    const patientInfoFileName = 'PatientInfo.txt';
+    if (await filesystem.exists(patientInfoFileName)) {
+      const data = await filesystem.readFile(patientInfoFileName);
+      return await network.decode(data);
+    } else {
+      await filesystem.writeFile({
+        path: patientInfoFileName,
+        data: '',
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode: 0o744,
+      });
+      return '';
+    }
   }
 
   serialize() {
@@ -94,7 +135,9 @@ class Patient {
   setGender(val) {
     const genderList = ['Male', 'Female', 'Other', 'Prefer not to say'];
     if (!genderList.includes(val)) {
-      console.error(new Error('gender need to be “Male”, “Female”, "Other" or "Prefer not to say"'));
+      console.error(
+        new Error('gender need to be “Male”, “Female”, "Other" or "Prefer not to say"'),
+      );
     }
     this.gender = val;
   }
@@ -103,7 +146,9 @@ class Patient {
     const regexPhoneNumber = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     if (!regexPhoneNumber.test(val)) {
       this.telephone = null;
-      console.error(new Error('Please enter validated number in the following format: XXX-XXX-XXXX '));
+      console.error(
+        new Error('Please enter validated number in the following format: XXX-XXX-XXXX '),
+      );
     }
     this.telephone = val;
   }

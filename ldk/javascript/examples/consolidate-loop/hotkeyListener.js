@@ -1,4 +1,4 @@
-import { whisper, keyboard, filesystem, network } from '@oliveai/ldk';
+import { whisper, keyboard } from '@oliveai/ldk';
 import Patient from './Patient';
 
 const { TextInput, Telephone, Email, Button, Select } = whisper.WhisperComponentType;
@@ -7,7 +7,6 @@ const hotkeys = {
   control: true,
 };
 const genderOptions = ['Prefer not to say', 'Male', 'Female', 'Other'];
-const patientInfoFileName = 'PatientInfo.txt';
 let formWhisper = null;
 
 export const start = async () => {
@@ -25,30 +24,6 @@ export const start = async () => {
       });
     }
   });
-};
-
-const isPatientAlreadyExist = async (patient) => {
-  let cred1 = `${patient.firstName}:${patient.lastName}:${patient.dob}`;
-  let cred2 = patient.email;
-
-  const patientInfo = await getPatientInfo();
-
-  return !!`${patientInfo}`.match(cred1) || !!`${patientInfo}`.match(cred2);
-};
-
-const getPatientInfo = async () => {
-  if (await filesystem.exists(patientInfoFileName)) {
-    const data = await filesystem.readFile(patientInfoFileName);
-    return await network.decode(data);
-  } else {
-    await filesystem.writeFile({
-      path: patientInfoFileName,
-      data: '',
-      writeOperation: filesystem.WriteOperation.overwrite,
-      writeMode: 0o744,
-    });
-    return '';
-  }
 };
 
 const getPatientFormWhisperComponents = (patient) => {
@@ -136,14 +111,13 @@ const getPatientFormWhisperComponents = (patient) => {
             return;
           }
 
-          const exists = await isPatientAlreadyExist(patient);
-          if (exists) {
+          if (await patient.isAlreadyExist()) {
             console.error(new Error(`patient already exist`));
 
             return;
           }
 
-          storePatient(patient);
+          await patient.store();
 
           formWhisper.close();
         } catch (error) {
@@ -154,16 +128,3 @@ const getPatientFormWhisperComponents = (patient) => {
     },
   ];
 };
-
-const storePatient = async (patient) => {
-  const patientRecord = `|${patient.serialize()}`;
-  const encodedValue = await network.encode(patientRecord);
-  await filesystem.writeFile({
-    path: patientInfoFileName,
-    data: encodedValue,
-    writeOperation: filesystem.WriteOperation.append,
-    writeMode: 0o744,
-  });
-
-  console.log('Successfully saved patient record');
-}
