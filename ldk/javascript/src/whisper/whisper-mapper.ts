@@ -9,9 +9,9 @@ export function convert(whisperComponentType: whisper.WhisperComponentType): any
     return whisperComponentType;
 }
 
-export function convertWhisper(whisper: OliveHelps.Whisper): whisper.Whisper {
+export function convertWhisper(incomingWhisper: OliveHelps.Whisper): whisper.Whisper {
     return {
-        ...whisper,
+        ...incomingWhisper,
         update: (updateWhisper: whisper.UpdateWhisper) => {
             parseUpdateWhisper(updateWhisper)
         }
