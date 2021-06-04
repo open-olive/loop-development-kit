@@ -10,6 +10,10 @@ function convert(whisperComponentType: whisper.WhisperComponentType): any {
   return whisperComponentType;
 }
 
+export function convertWhisper(whisper: OliveHelps.Whisper): whisper.Whisper {
+  return {...whisper, update: (updateWhisper: whisper.UpdateWhisper) => {parse(updateWhisper)}};
+}
+
 export function parse(newWhisper: NewWhisper): OliveHelps.NewWhisper {
   const ldkForms: LdkForm[] = [];
   const outgoingWhisper: OliveHelps.NewWhisper = {

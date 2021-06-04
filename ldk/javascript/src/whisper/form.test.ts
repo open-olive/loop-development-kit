@@ -37,15 +37,15 @@ describe('Form', () => {
         
         const expectedTextInputValue = 'my new value!';
         (ldkForm.children[0] as TextInput)
-            .onChange(undefined, expectedTextInputValue, { id: '', close: jest.fn()});
+            .onChange(undefined, expectedTextInputValue, { id: '', close: jest.fn(), update: jest.fn()});
 
         const expectedTelephoneInputValue = '330-614-1234';
         (ldkForm.children[1] as Telephone)
-            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: jest.fn()});
+            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: jest.fn(), update: jest.fn()});
 
         const expectedSelectInputValue = 1;
         (ldkForm.children[2] as Select)
-            .onSelect(undefined, expectedSelectInputValue, { id: '', close: jest.fn()});
+            .onSelect(undefined, expectedSelectInputValue, { id: '', close: jest.fn(), update: jest.fn()});
         
         expect(ldkForm.getComponentState().get(textInputComponentName)).toBe(expectedTextInputValue);
         expect(ldkForm.getComponentState().get(telephoneInputComponentName)).toBe(expectedTelephoneInputValue);
@@ -68,7 +68,7 @@ describe('Form', () => {
 
         const expectedTextInputValue = 'my new value!';
         const expectedError = undefined;
-        const expectedWhisper = { id: '', close: jest.fn()};
+        const expectedWhisper = { id: '', close: jest.fn(), update: jest.fn()};
         (ldkForm.children[0] as TextInput)
             .onChange(expectedError, expectedTextInputValue, expectedWhisper);
         
@@ -146,12 +146,12 @@ describe('Form', () => {
 
         const expectedTextInputValue = 'my new value!';
         (ldkForm.children[0] as TextInput)
-            .onChange(undefined, expectedTextInputValue, { id: '', close: jest.fn()});
+            .onChange(undefined, expectedTextInputValue, { id: '', close: jest.fn(), update: jest.fn()});
 
         // Overwrite value for duplicate key
         const expectedTelephoneInputValue = '330-614-1234';
         (ldkForm.children[1] as TextInput)
-            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: jest.fn()});
+            .onChange(undefined, expectedTelephoneInputValue, { id: '', close: jest.fn(), update: jest.fn()});
         
         expect(ldkForm.getComponentState().size).toBe(1);
         expect(ldkForm.getComponentState().get(duplicateComponentName)).toBe(expectedTelephoneInputValue);
