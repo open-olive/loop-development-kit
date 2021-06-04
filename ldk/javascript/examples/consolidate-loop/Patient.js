@@ -1,8 +1,8 @@
 import { filesystem, network } from '@oliveai/ldk';
 
-const patientInfoFileName = 'PatientInfo.txt';
+export const patientInfoFileName = 'PatientInfo.txt';
 
-class Patient {
+export class Patient {
   constructor({
     firstName,
     lastName,
@@ -71,8 +71,8 @@ class Patient {
   }
 
   async isAlreadyExist() {
-    let cred1 = `${this.firstName}:${this.lastName}:${this.dob}`;
-    let cred2 = this.email;
+    const cred1 = `${this.firstName}:${this.lastName}:${this.dob}`;
+    const cred2 = this.email;
 
     const patientInfo = await this.getPatientInfo();
 
@@ -82,16 +82,15 @@ class Patient {
   async getPatientInfo() {
     if (await filesystem.exists(patientInfoFileName)) {
       const data = await filesystem.readFile(patientInfoFileName);
-      return await network.decode(data);
-    } else {
-      await filesystem.writeFile({
-        path: patientInfoFileName,
-        data: '',
-        writeOperation: filesystem.WriteOperation.overwrite,
-        writeMode: 0o744,
-      });
-      return '';
+      return network.decode(data);
     }
+    await filesystem.writeFile({
+      path: patientInfoFileName,
+      data: '',
+      writeOperation: filesystem.WriteOperation.overwrite,
+      writeMode: 0o744,
+    });
+    return '';
   }
 
   serialize() {

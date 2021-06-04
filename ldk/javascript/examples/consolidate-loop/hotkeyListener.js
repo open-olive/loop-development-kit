@@ -9,10 +9,111 @@ const hotkeys = {
 const genderOptions = ['Prefer not to say', 'Male', 'Female', 'Other'];
 let formWhisper = null;
 
+const getPatientFormWhisperComponents = (patient) => [
+  {
+    label: 'First Name',
+    onChange: (error, value) => {
+      if (value != null) {
+        patient.setFirstName(value);
+      }
+      console.log(value, patient.firstName);
+    },
+    type: TextInput,
+  },
+  {
+    label: 'Last Name',
+    onChange: (error, value) => {
+      if (value != null) {
+        patient.setLastName(value);
+      }
+    },
+    type: TextInput,
+  },
+  {
+    label: 'Date of Birth',
+    onChange: (error, value) => {
+      patient.setDob(value);
+    },
+    type: TextInput,
+    tooltip: 'MM/dd/yyyy',
+  },
+  {
+    type: Select,
+    label: 'Gender',
+    options: genderOptions,
+    onSelect: (error, selectedOption) => {
+      patient.setGender(genderOptions[selectedOption]);
+    },
+  },
+  {
+    label: 'Telephone',
+    onChange: (error, value) => {
+      patient.setTelephone(value);
+    },
+    type: Telephone,
+    tooltip: 'XXX-XXX-XXXX',
+  },
+  {
+    label: 'Email',
+    onChange: (error, value) => {
+      patient.setEmail(value);
+    },
+    type: Email,
+  },
+  {
+    label: 'Visit Reason',
+    onChange: (error, value) => {
+      patient.setVisitReason(value);
+    },
+    type: TextInput,
+  },
+  {
+    label: 'Appointment Date',
+    onChange: (error, value) => {
+      patient.setAppointmentDate(value);
+    },
+    tooltip: 'MM/dd/yyyy',
+    type: TextInput,
+  },
+  {
+    label: 'Appointment Time',
+    onChange: () => {
+      patient.setAppointmentTime();
+    },
+    type: TextInput,
+  },
+  {
+    label: 'Submit',
+    onClick: async () => {
+      try {
+        const error = patient.validate();
+        if (error) {
+          console.error(error);
+
+          return;
+        }
+
+        if (await patient.isAlreadyExist()) {
+          console.error(new Error(`patient already exist`));
+
+          return;
+        }
+
+        await patient.store();
+
+        formWhisper.close();
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    type: Button,
+  },
+];
+
 export const start = async () => {
   await keyboard.listenHotkey(hotkeys, async (pressed) => {
     if (pressed) {
-      let patient = new Patient({});
+      const patient = new Patient({});
 
       console.log('creating form whisper');
       formWhisper = await whisper.create({
@@ -24,107 +125,4 @@ export const start = async () => {
       });
     }
   });
-};
-
-const getPatientFormWhisperComponents = (patient) => {
-  return [
-    {
-      label: 'First Name',
-      onChange: (error, value) => {
-        if (value != null) {
-          patient.setFirstName(value);
-        }
-        console.log(value, patient.firstName);
-      },
-      type: TextInput,
-    },
-    {
-      label: 'Last Name',
-      onChange: (error, value) => {
-        if (value != null) {
-          patient.setLastName(value);
-        }
-      },
-      type: TextInput,
-    },
-    {
-      label: 'Date of Birth',
-      onChange: (error, value) => {
-        patient.setDob(value);
-      },
-      type: TextInput,
-      tooltip: 'MM/dd/yyyy',
-    },
-    {
-      type: Select,
-      label: 'Gender',
-      options: genderOptions,
-      onSelect: (error, selectedOption) => {
-        patient.setGender(genderOptions[selectedOption]);
-      },
-    },
-    {
-      label: 'Telephone',
-      onChange: (error, value) => {
-        patient.setTelephone(value);
-      },
-      type: Telephone,
-      tooltip: 'XXX-XXX-XXXX',
-    },
-    {
-      label: 'Email',
-      onChange: (error, value) => {
-        patient.setEmail(value);
-      },
-      type: Email,
-    },
-    {
-      label: 'Visit Reason',
-      onChange: (error, value) => {
-        patient.setVisitReason(value);
-      },
-      type: TextInput,
-    },
-    {
-      label: 'Appointment Date',
-      onChange: (error, value) => {
-        patient.setAppointmentDate(value);
-      },
-      tooltip: 'MM/dd/yyyy',
-      type: TextInput,
-    },
-    {
-      label: 'Appointment Time',
-      onChange: () => {
-        patient.setAppointmentTime();
-      },
-      type: TextInput,
-    },
-    {
-      label: 'Submit',
-      onClick: async () => {
-        try {
-          const error = patient.validate();
-          if (error) {
-            console.error(error);
-
-            return;
-          }
-
-          if (await patient.isAlreadyExist()) {
-            console.error(new Error(`patient already exist`));
-
-            return;
-          }
-
-          await patient.store();
-
-          formWhisper.close();
-        } catch (error) {
-          console.error(error);
-        }
-      },
-      type: Button,
-    },
-  ];
 };

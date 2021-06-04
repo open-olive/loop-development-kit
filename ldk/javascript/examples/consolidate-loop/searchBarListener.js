@@ -4,7 +4,7 @@ import { Patient, patientInfoFileName } from './Patient';
 const { Message, Link, Markdown } = whisper.WhisperComponentType;
 
 const emitResultWhisper = async (rows) => {
-  let searchResults = [];
+  const searchResults = [];
   rows.forEach((row) => {
     searchResults.push({
       text: `${row.firstName} ${row.lastName} ${row.email}`,
@@ -52,22 +52,8 @@ ${k}:   ${row[k]}
   });
 };
 
-export const start = async () => {
-  await ui.listenSearchbar(async (value) => {
-    let rows = [];
-    const patients = await getPatients();
-    patients.forEach((p) => {
-      if (p.getSearchCred().includes(value)) {
-        rows.push(p);
-      }
-    });
-
-    await emitResultWhisper(rows);
-  });
-};
-
 const getPatients = async () => {
-  let patients = [];
+  const patients = [];
   try {
     if (!filesystem.exists(patientInfoFileName)) {
       console.warn('No patients file exists');
@@ -100,4 +86,18 @@ const getPatients = async () => {
   }
 
   return patients;
+};
+
+export const start = async () => {
+  await ui.listenSearchbar(async (value) => {
+    const rows = [];
+    const patients = await getPatients();
+    patients.forEach((p) => {
+      if (p.getSearchCred().includes(value)) {
+        rows.push(p);
+      }
+    });
+
+    await emitResultWhisper(rows);
+  });
 };
