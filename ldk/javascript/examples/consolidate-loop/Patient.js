@@ -1,5 +1,7 @@
 import { filesystem, network } from '@oliveai/ldk';
 
+const patientInfoFileName = 'PatientInfo.txt';
+
 class Patient {
   constructor({
     firstName,
@@ -56,7 +58,6 @@ class Patient {
   }
 
   async store() {
-    const patientInfoFileName = 'PatientInfo.txt';
     const patientRecord = `|${this.serialize()}`;
     const encodedValue = await network.encode(patientRecord);
     await filesystem.writeFile({
@@ -79,7 +80,6 @@ class Patient {
   }
 
   async getPatientInfo() {
-    const patientInfoFileName = 'PatientInfo.txt';
     if (await filesystem.exists(patientInfoFileName)) {
       const data = await filesystem.readFile(patientInfoFileName);
       return await network.decode(data);

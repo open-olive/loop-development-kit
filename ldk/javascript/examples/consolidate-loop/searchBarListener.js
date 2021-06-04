@@ -1,8 +1,7 @@
 import { ui, whisper, filesystem, network } from '@oliveai/ldk';
-import Patient from './Patient';
+import { Patient, patientInfoFileName } from './Patient';
 
 const { Message, Link, Markdown } = whisper.WhisperComponentType;
-const patientInfoFileName = 'PatientInfo.txt';
 
 const emitResultWhisper = async (rows) => {
   let searchResults = [];
