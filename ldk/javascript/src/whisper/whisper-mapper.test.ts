@@ -1,5 +1,5 @@
 import { whisper } from "..";
-import { convertComponentType, convertWhisper } from "./whisper-mapper";
+import { convertComponentType, convertToExternalWhisper } from "./whisper-mapper";
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 function instanceOfExternalWhisper(object: any): object is whisper.Whisper {
@@ -27,7 +27,7 @@ describe('WhisperMapper', () => {
                 update: jest.fn()
             }
 
-            const actual = convertWhisper(internalWhisper);
+            const actual = convertToExternalWhisper(internalWhisper);
 
             expect(instanceOfExternalWhisper(actual)).toBeTruthy();
             expect(actual.id).toEqual(internalWhisper.id);

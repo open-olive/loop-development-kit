@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
-import { promisifyMappedWithParam } from '../promisify';
 import { parseNewWhisper } from './form-parser';
-import { convertWhisper } from './whisper-mapper';
+import { convertToExternalWhisper, convertToInternalUpdateWhisper } from './whisper-mapper';
 
 export enum WhisperComponentType {
   /**
@@ -286,10 +285,40 @@ export interface WhisperAptitude {
   create(whisper: NewWhisper): Promise<Whisper>;
 }
 
+// export function create(whisper: NewWhisper): Promise<Whisper> {
+//   // Converts to "Internal" OliveHelps.NewWhisper
+//   const outgoingWhisper: OliveHelps.NewWhisper = parseNewWhisper(whisper);
+
+//   // Convert back to "External" Whisper for consumption by Loop Author
+//   return promisifyMappedWithParam(outgoingWhisper, convertWhisper, oliveHelps.whisper.create) 
+// }
 export function create(whisper: NewWhisper): Promise<Whisper> {
   // Converts to "Internal" OliveHelps.NewWhisper
   const outgoingWhisper: OliveHelps.NewWhisper = parseNewWhisper(whisper);
 
-  // Convert back to "External" Whisper for consumption by Loop Author
-  return promisifyMappedWithParam(outgoingWhisper, convertWhisper, oliveHelps.whisper.create) 
+  return new Promise((resolve, reject) => {
+    try {
+      oliveHelps.whisper.create(outgoingWhisper, (error, value) => {
+        if (error) {
+          console.error(
+            `Received error on result: ${error.message}`,
+          );
+          reject(error);
+          return;
+        }
+        
+        const origUpdateFunc = value.update; // TODO: Have to call this function reference. How to set its whisper?
+
+        const whisperRef: Whisper = convertToExternalWhisper(value);
+        whisperRef.update = (whisper: UpdateWhisper, cb?: (err: Error) => void) => {
+          console.info('you intercepted the update yo');
+          origUpdateFunc(convertToInternalUpdateWhisper(whisper), cb);
+        };
+        resolve(whisperRef);
+      });
+    } catch (e) {
+      console.error(`Received error calling service ${e.message}`);
+      reject(e);
+    }
+  });
 }

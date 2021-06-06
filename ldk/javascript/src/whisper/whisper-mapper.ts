@@ -9,11 +9,18 @@ export function convertComponentType(whisperComponentType: whisper.WhisperCompon
     return whisperComponentType;
 }
 
-export function convertWhisper(incomingWhisper: OliveHelps.Whisper): whisper.Whisper {
+export function convertToExternalWhisper(incomingWhisper: OliveHelps.Whisper): whisper.Whisper {
     return {
         ...incomingWhisper,
         update: (updateWhisper: whisper.UpdateWhisper) => {
             parseUpdateWhisper(updateWhisper)
         }
     };
+}
+
+export function convertToInternalUpdateWhisper(incomingUpdateWhisper: whisper.UpdateWhisper): OliveHelps.UpdateWhisper {
+    return {
+        ...Object.create(incomingUpdateWhisper),
+        components: parseUpdateWhisper(incomingUpdateWhisper).components
+    }
 }
