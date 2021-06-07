@@ -1,5 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import * as whisper from '.';
+import { Direction, JustifyContent, WhisperComponentType } from '.';
 
 describe('Whisper', () => {
   beforeEach(() => {
@@ -10,6 +11,7 @@ describe('Whisper', () => {
 
   describe('create', () => {
     it('Creates a whisper', () => {
+      const expectedClose = jest.fn();
       const newWhisper: whisper.NewWhisper = {
         components: [
           {
@@ -17,9 +19,32 @@ describe('Whisper', () => {
             id: '1',
             type: whisper.WhisperComponentType.Markdown,
           },
+          {
+            justifyContent: JustifyContent.Center,
+            children: [],
+            direction: Direction.Horizontal,
+            type: WhisperComponentType.Box,
+          },
         ],
         label: 'Test',
-        onClose: jest.fn(),
+        onClose: expectedClose,
+      };
+      const expectedWhisper: OliveHelps.NewWhisper = {
+        components: [
+          {
+            body: 'Test',
+            id: '1',
+            type: whisper.WhisperComponentType.Markdown,
+          },
+          {
+            alignment: JustifyContent.Center,
+            children: [],
+            direction: Direction.Horizontal,
+            type: WhisperComponentType.Box,
+          },
+        ],
+        label: 'Test',
+        onClose: expectedClose,
       };
 
       const expected: whisper.Whisper = {
@@ -39,8 +64,12 @@ describe('Whisper', () => {
       );
 
       const actual = whisper.create(newWhisper);
-      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(newWhisper, expect.any(Function));
-      return expect(actual).resolves.toBe(expected);
+      expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function));
+      return expect(actual).resolves.toStrictEqual({
+        close: expected.close,
+        update: expect.any(Function),
+        id: '1'
+      });
     });
   });
 });

@@ -264,13 +264,7 @@ declare namespace OliveHelps {
     Warning = 'warning',
   }
 
-  enum Alignment {
-    Center = 'center',
-    Left = 'left',
-    Right = 'right',
-    SpaceAround = 'space_around',
-    SpaceEvenly = 'space_evenly',
-  }
+  type Alignment = 'center' | 'left' | 'right' | 'space_around' | 'space_evenly';
 
   enum ButtonSize {
     Large = 'large',

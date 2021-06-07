@@ -62,13 +62,18 @@ export enum WhisperComponentType {
   TextInput = 'textInput',
 }
 
-export enum Alignment {
+export enum JustifyContent {
   Center = 'center',
   Left = 'left',
   Right = 'right',
   SpaceAround = 'space_around',
   SpaceEvenly = 'space_evenly',
 }
+
+/**
+ * @deprecated - Use JustifyContent instead.
+ */
+export const Alignment = JustifyContent;
 
 export enum ButtonSize {
   Large = 'large',
@@ -240,7 +245,11 @@ export declare type CollapseBox = WhisperComponent<WhisperComponentType.Collapse
 };
 
 export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
-  alignment: Alignment;
+  /**
+   * @deprecated - use justifyContent instead.
+   */
+  alignment?: JustifyContent;
+  justifyContent: JustifyContent;
   children: Array<Box | ChildComponents>;
   direction: Direction;
 };
@@ -268,6 +277,141 @@ export interface WhisperAptitude {
   create(whisper: NewWhisper): Promise<Whisper>;
 }
 
+function convertChildComponents(component: ChildComponents): OliveHelps.ChildComponents {
+  switch (component.type) {
+    case WhisperComponentType.Button:
+      return {
+        ...component,
+        onClick: (error, whisper) => {
+          component.onClick(error, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.Button;
+    case WhisperComponentType.Checkbox:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          component.onChange(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.Checkbox;
+    case WhisperComponentType.Divider:
+      return component;
+    case WhisperComponentType.Email:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          component.onChange(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.Email;
+    case WhisperComponentType.Link: {
+      const { onClick } = component;
+      if (onClick) {
+        return {
+          ...component,
+          onClick: (error, whisper) => {
+            onClick(error, convertGojaWhisper(whisper));
+          },
+        } as OliveHelps.Link;
+      }
+      return component as OliveHelps.Link;
+    }
+
+    case WhisperComponentType.ListPair:
+      return component;
+    case WhisperComponentType.Markdown:
+      return component;
+    case WhisperComponentType.Message:
+      return component;
+    case WhisperComponentType.Number:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          component.onChange(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.NumberInput;
+    case WhisperComponentType.Password:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          component.onChange(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.Password;
+    case WhisperComponentType.RadioGroup:
+      return {
+        ...component,
+        onSelect: (error, param, whisper) => {
+          component.onSelect(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.RadioGroup;
+    case WhisperComponentType.Select:
+      return {
+        ...component,
+        onSelect: (error, param, whisper) => {
+          component.onSelect(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.Select;
+    case WhisperComponentType.Telephone:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          component.onChange(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.Telephone;
+    case WhisperComponentType.TextInput:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          component.onChange(error, param, convertGojaWhisper(whisper));
+        },
+      } as OliveHelps.TextInput;
+    default:
+      throw new Error('Unexpected Whisper Component Type');
+  }
+}
+
+function convertComponents(component: Components): OliveHelps.Components {
+  if (component.type === WhisperComponentType.Box) {
+    return {
+      alignment: (component.justifyContent as OliveHelps.Alignment) || component.alignment,
+      direction: component.direction,
+      children: component.children.map(convertChildComponents),
+      type: WhisperComponentType.Box,
+    };
+  }
+  if (component.type === WhisperComponentType.CollapseBox) {
+    return {
+      label: component.label,
+      open: component.open,
+      children: component.children.map(convertChildComponents),
+      type: WhisperComponentType.CollapseBox,
+    };
+  }
+  return convertChildComponents(component);
+}
+
+function convertNewWhisper(whisper: NewWhisper): OliveHelps.NewWhisper {
+  return {
+    label: whisper.label,
+    onClose: whisper.onClose,
+    components: whisper.components.map(convertComponents),
+  };
+}
+
+function convertGojaWhisper(whisper: OliveHelps.Whisper): Whisper {
+  return {
+    id: whisper.id,
+    close: whisper.close,
+    update: (updateWhisper: UpdateWhisper, cb) => ({
+      label: updateWhisper.label,
+      components: updateWhisper.components.map(convertComponents),
+    }),
+  };
+}
+
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  return promisifyWithParam(whisper, oliveHelps.whisper.create);
+  return promisifyMappedBothWithParams(
+    whisper,
+    convertNewWhisper,
+    convertGojaWhisper,
+    oliveHelps.whisper.create,
+  );
 }
