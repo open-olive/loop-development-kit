@@ -33,14 +33,14 @@ function generateForm(components: Array<Components>): Array<OliveHelps.Component
   return outgoingComponents;
 }
 
-export function parseNewWhisper(newWhisper: NewWhisper): OliveHelps.NewWhisper {  
+export function convertExternalNewWhisperToInternal(newWhisper: NewWhisper): OliveHelps.NewWhisper {  
   return {
     ...newWhisper,
     components: generateForm(newWhisper.components)
   };
 }
 
-export function parseUpdateWhisper(updateWhisper: UpdateWhisper): OliveHelps.UpdateWhisper {
+export function convertExternalUpdateWhisperToInternal(updateWhisper: UpdateWhisper): OliveHelps.UpdateWhisper {
   return {
     ...updateWhisper,
     components: generateForm(updateWhisper.components)

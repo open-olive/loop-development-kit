@@ -7,7 +7,7 @@ export class LdkForm {
     componentState: Map<string, string | number | boolean>;
 
     constructor(children: Array<OliveHelps.Components>) {
-        this.componentState = new Map<string, string |number | boolean>();
+        this.componentState = new Map<string, string | number | boolean>();
         this.children = children;
 
         this.setInitialComponentState(this.children);

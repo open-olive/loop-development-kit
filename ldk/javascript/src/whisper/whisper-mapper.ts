@@ -1,5 +1,5 @@
 import { whisper } from "..";
-import { parseUpdateWhisper } from "./form-parser";
+import { convertExternalUpdateWhisperToInternal } from "./form-parser";
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ // We have to coerce any type here to force conversion of whisper.NewWhisper to OliveHelps.NewWhisper 
 export function convertComponentType(whisperComponentType: whisper.WhisperComponentType): any {
@@ -13,7 +13,7 @@ export function convertToExternalWhisper(incomingWhisper: OliveHelps.Whisper): w
     return {
         ...incomingWhisper,
         update: (updateWhisper: whisper.UpdateWhisper) => {
-            parseUpdateWhisper(updateWhisper)
+            convertExternalUpdateWhisperToInternal(updateWhisper)
         }
     };
 }
@@ -21,6 +21,6 @@ export function convertToExternalWhisper(incomingWhisper: OliveHelps.Whisper): w
 export function convertToInternalUpdateWhisper(incomingUpdateWhisper: whisper.UpdateWhisper): OliveHelps.UpdateWhisper {
     return {
         ...Object.create(incomingUpdateWhisper),
-        components: parseUpdateWhisper(incomingUpdateWhisper).components
+        components: convertExternalUpdateWhisperToInternal(incomingUpdateWhisper).components
     }
 }

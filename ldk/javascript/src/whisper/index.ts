@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { parseNewWhisper } from './form-parser';
+import { convertExternalNewWhisperToInternal } from './form-parser';
 import { convertToExternalWhisper, convertToInternalUpdateWhisper } from './whisper-mapper';
 
 export enum WhisperComponentType {
@@ -294,7 +294,7 @@ export interface WhisperAptitude {
 // }
 export function create(whisper: NewWhisper): Promise<Whisper> {
   // Converts to "Internal" OliveHelps.NewWhisper
-  const outgoingWhisper: OliveHelps.NewWhisper = parseNewWhisper(whisper);
+  const outgoingWhisper: OliveHelps.NewWhisper = convertExternalNewWhisperToInternal(whisper);
 
   return new Promise((resolve, reject) => {
     try {
@@ -307,12 +307,10 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
           return;
         }
         
-        const origUpdateFunc = value.update; // TODO: Have to call this function reference. How to set its whisper?
-
+        const updateFunc = value.update;
         const whisperRef: Whisper = convertToExternalWhisper(value);
-        whisperRef.update = (whisper: UpdateWhisper, cb?: (err: Error) => void) => {
-          console.info('you intercepted the update yo');
-          origUpdateFunc(convertToInternalUpdateWhisper(whisper), cb);
+        whisperRef.update = (updateWhisper: UpdateWhisper, cb?: (err: Error) => void) => {
+          updateFunc(convertToInternalUpdateWhisper(updateWhisper), cb);
         };
         resolve(whisperRef);
       });

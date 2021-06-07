@@ -1,6 +1,6 @@
 import { Components, NewWhisper } from ".";
 import { whisper } from "..";
-import { parseNewWhisper, ldkForms } from "./form-parser";
+import { convertExternalNewWhisperToInternal, ldkForms } from "./form-parser";
 
 describe('form parser', () => {
     describe('parseNewWhisper', () => {
@@ -22,7 +22,7 @@ describe('form parser', () => {
                 components,
                 label: 'test whisper',
             }
-            const actual = parseNewWhisper(newWhisper);
+            const actual = convertExternalNewWhisperToInternal(newWhisper);
 
             expect(actual.components.length).toBe(2);
             expect(actual.components).toEqual(components);
@@ -66,7 +66,7 @@ describe('form parser', () => {
                 onClose: jest.fn(),
             };
 
-            parseNewWhisper(twoFormWhisper);
+            convertExternalNewWhisperToInternal(twoFormWhisper);
 
             expect(ldkForms.length).toBe(2);
             
