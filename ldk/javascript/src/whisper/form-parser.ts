@@ -1,17 +1,17 @@
-import { Components, NewWhisper, UpdateWhisper } from ".";
+import { Components } from ".";
 import { isForm, LdkForm } from "./form";
 import { convertComponentType } from "./whisper-mapper";
 
 export const ldkForms: LdkForm[] = [];
 
-function generateForm(components: Array<Components>): Array<OliveHelps.Components> {
+export function parseForm(components: Array<Components>): Array<OliveHelps.Components> {
   const outgoingComponents: Array<OliveHelps.Components> = [];
-  
+
   components.forEach((component) => {
     if (isForm(component)) {
       // Lift form components up
       const formChildren: Array<OliveHelps.Components> = [];
-      component.children.forEach(formChild => formChildren.push({...formChild, type: convertComponentType(formChild.type)}));
+      component.children.forEach(formChild => formChildren.push({ ...formChild, type: convertComponentType(formChild.type) }));
       outgoingComponents.push(...formChildren);
 
       // Store form state
@@ -26,23 +26,9 @@ function generateForm(components: Array<Components>): Array<OliveHelps.Component
       };
       outgoingComponents.push(submitButton);
     } else {
-      outgoingComponents.push({...component, type: convertComponentType(component.type)});
+      outgoingComponents.push({ ...component, type: convertComponentType(component.type) });
     }
   });
 
   return outgoingComponents;
-}
-
-export function convertExternalNewWhisperToInternal(newWhisper: NewWhisper): OliveHelps.NewWhisper {  
-  return {
-    ...newWhisper,
-    components: generateForm(newWhisper.components)
-  };
-}
-
-export function convertExternalUpdateWhisperToInternal(updateWhisper: UpdateWhisper): OliveHelps.UpdateWhisper {
-  return {
-    ...updateWhisper,
-    components: generateForm(updateWhisper.components)
-  };
 }

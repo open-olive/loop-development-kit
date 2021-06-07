@@ -1,6 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { convertExternalNewWhisperToInternal } from './form-parser';
-import { convertToExternalWhisper, convertToInternalUpdateWhisper } from './whisper-mapper';
+import { mapToExternalWhisper, mapToInternalUpdateWhisper, mapToInternalWhisper } from './whisper-mapper';
 
 export enum WhisperComponentType {
   /**
@@ -285,20 +284,21 @@ export interface WhisperAptitude {
   create(whisper: NewWhisper): Promise<Whisper>;
 }
 
-// export function create(whisper: NewWhisper): Promise<Whisper> {
-//   // Converts to "Internal" OliveHelps.NewWhisper
-//   const outgoingWhisper: OliveHelps.NewWhisper = parseNewWhisper(whisper);
+function addUpdateHandler(whisper: OliveHelps.Whisper): Whisper {
+  const updateFunc = whisper.update;
+  const externalWhisper: Whisper = mapToExternalWhisper(whisper);
+  externalWhisper.update = (updateWhisper: UpdateWhisper, cb?: (err: Error) => void) => {
+    updateFunc(mapToInternalUpdateWhisper(updateWhisper), cb);
+  };
+  return externalWhisper;
+}
 
-//   // Convert back to "External" Whisper for consumption by Loop Author
-//   return promisifyMappedWithParam(outgoingWhisper, convertWhisper, oliveHelps.whisper.create) 
-// }
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  // Converts to "Internal" OliveHelps.NewWhisper
-  const outgoingWhisper: OliveHelps.NewWhisper = convertExternalNewWhisperToInternal(whisper);
+  const internalWhisper: OliveHelps.NewWhisper = mapToInternalWhisper(whisper);
 
   return new Promise((resolve, reject) => {
     try {
-      oliveHelps.whisper.create(outgoingWhisper, (error, value) => {
+      oliveHelps.whisper.create(internalWhisper, (error: Error | undefined, value: OliveHelps.Whisper) => {
         if (error) {
           console.error(
             `Received error on result: ${error.message}`,
@@ -306,13 +306,7 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
           reject(error);
           return;
         }
-        
-        const updateFunc = value.update;
-        const whisperRef: Whisper = convertToExternalWhisper(value);
-        whisperRef.update = (updateWhisper: UpdateWhisper, cb?: (err: Error) => void) => {
-          updateFunc(convertToInternalUpdateWhisper(updateWhisper), cb);
-        };
-        resolve(whisperRef);
+        resolve(addUpdateHandler(value));
       });
     } catch (e) {
       console.error(`Received error calling service ${e.message}`);
