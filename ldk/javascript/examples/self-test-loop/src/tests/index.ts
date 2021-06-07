@@ -934,17 +934,67 @@ export const simpleFormWhisper = (): Promise<boolean> =>
         {
           children: [
             {
-              label: `Don't touch this form! Render form 2.`,
+              type: whisper.WhisperComponentType.Divider
+            },
+            {
+              header: 'Form render test. Take no action.',
+              type: whisper.WhisperComponentType.Message
+            },
+            {
+              label: `Second Text Input`,
               onChange: (error: any, value: any) => {},
-              value: '',
+              value:'My Initial Value',
               name: 'myTextInputTwo',
               type: whisper.WhisperComponentType.TextInput,
+            },
+            {
+              label: `Select 'blue'`,
+              onSelect: (error, value) => {},
+              options: ['red', 'blue'],
+              name: 'mySelectInputTwo',
+              type: whisper.WhisperComponentType.Select
+            },
+            {
+              onSelect: (error, value) => {},
+              options: ['option1', 'option2'],
+              name: 'myRadioGroup',
+              type: whisper.WhisperComponentType.RadioGroup
+            },
+            {
+              label: 'Check a box',
+              value: true,
+              onChange: (error, value) => {},
+              name: 'myCheckbox',
+              type: whisper.WhisperComponentType.Checkbox
+            },
+            {
+              label: 'Enter an email',
+              onChange: (error, value) => {},
+              name: 'myEmail',
+              type: whisper.WhisperComponentType.Email
+            },
+            {
+              label: 'Enter a number',
+              onChange: (error, value) => {},
+              name: 'myNumber',
+              type: whisper.WhisperComponentType.Number
+            },
+            {
+              label: 'Enter a password',
+              onChange: (error, value) => {},
+              name: 'myPassword',
+              type: whisper.WhisperComponentType.Password
+            },
+            {
+              label: 'Enter a telephone',
+              onChange: (error, value) => {},
+              name: 'myTelephone',
+              type: whisper.WhisperComponentType.Telephone
             }
           ],
           onSubmit: (values: Map<string, any>) => {
             console.info("Got second component state!");
             values.forEach((value: any, key: string) => console.info(key, value)); 
-            reject(new Error(`Don't submit this form!`));
           },
           type: whisper.WhisperComponentType.Form
         }, 
