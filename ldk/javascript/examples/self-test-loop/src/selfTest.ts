@@ -151,50 +151,50 @@ const testConfig: { [key: string]: TestGroup } = {
     ),
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
-    // new LoopTest(
-    //   'Whisper Aptitude - Markdown whisper',
-    //   testMarkdownWhisper,
-    //   20000,
-    //   'Did markdown rendered properly?',
-    // ),
-    // new LoopTest(
-    //   'Whisper Aptitude - Internal Links',
-    //   testClickableWhisper,
-    //   10000,
-    //   'Click the 5th option',
-    // ),
+    new LoopTest(
+      'Whisper Aptitude - Markdown whisper',
+      testMarkdownWhisper,
+      20000,
+      'Did markdown rendered properly?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Internal Links',
+      testClickableWhisper,
+      10000,
+      'Click the 5th option',
+    ),
     new LoopTest(
       'Whisper Aptitude - Box in the box',
       testBoxInTheBox,
       10000,
       'Verify that box in the box rendered correctly',
     ),
-    // new LoopTest(
-    //   'Whisper Aptitude - External Links',
-    //   linkWhisper,
-    //   10000,
-    //   'Click the link in the whisper',
-    // ),
-    // new LoopTest(
-    //   'Whisper Aptitude - Network and List Items',
-    //   testNetworkAndListComponents,
-    //   5000,
-    //   'No action required',
-    // ),
-    // new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
-    // new LoopTest(
-    //   'Whisper Aptitude - Simple Form Whisper',
-    //   simpleFormWhisper,
-    //   10000,
-    //   `Enter 'Stonks' into the field`,
-    // ),
-    // new LoopTest('Whisper Aptitude - Number Inputs', numberInputs, 10000, `No action required`),
-    // new LoopTest(
-    //   'Whisper Aptitude - Initial Value for Select and Radio',
-    //   initialValueSelectAndRadioWhispers,
-    //   10000,
-    //   `No action required`,
-    // ),
+    new LoopTest(
+      'Whisper Aptitude - External Links',
+      linkWhisper,
+      10000,
+      'Click the link in the whisper',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Network and List Items',
+      testNetworkAndListComponents,
+      5000,
+      'No action required',
+    ),
+    new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
+    new LoopTest(
+      'Whisper Aptitude - Simple Form Whisper',
+      simpleFormWhisper,
+      10000,
+      `Enter 'Stonks' into the field`,
+    ),
+    new LoopTest('Whisper Aptitude - Number Inputs', numberInputs, 10000, `No action required`),
+    new LoopTest(
+      'Whisper Aptitude - Initial Value for Select and Radio',
+      initialValueSelectAndRadioWhispers,
+      10000,
+      `No action required`,
+    ),
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
