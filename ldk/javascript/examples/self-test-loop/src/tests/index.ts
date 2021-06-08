@@ -13,7 +13,7 @@ import {
 } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
-import { Alignment, Direction, ButtonStyle } from '../../../../dist/whisper';
+import { Alignment, Direction, ButtonStyle } from '@oliveai/ldk/dist/whisper';
 import * as testUtils from '../testUtils';
 
 let testFolderPath: string;
