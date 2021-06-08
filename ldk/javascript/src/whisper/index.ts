@@ -122,7 +122,7 @@ export interface WhisperComponent<T extends WhisperComponentType> {
   type: T;
 }
 
-export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
+export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
   label: string;
@@ -131,21 +131,21 @@ export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
   tooltip?: string;
 };
 
-export declare type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> & {
+export type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> & {
   label: string;
   tooltip?: string;
   value: boolean;
   onChange: WhisperHandlerWithParam<boolean>;
 };
 
-export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
+export type Email = WhisperComponent<WhisperComponentType.Email> & {
   label: string;
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
 };
 
-export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
+export type Link = WhisperComponent<WhisperComponentType.Link> & {
   href?: string;
   text: string;
   onClick?: WhisperHandler;
@@ -153,7 +153,7 @@ export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
   textAlign?: TextAlign;
 };
 
-export declare type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
+export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
   labelCopyable?: boolean;
   label: string;
@@ -161,12 +161,12 @@ export declare type ListPair = WhisperComponent<WhisperComponentType.ListPair> &
   style: Urgency;
 };
 
-export declare type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
+export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   body: string;
   tooltip?: string;
 };
 
-export declare type Message = WhisperComponent<WhisperComponentType.Message> & {
+export type Message = WhisperComponent<WhisperComponentType.Message> & {
   body?: string;
   header?: string;
   style?: Urgency;
@@ -174,7 +174,7 @@ export declare type Message = WhisperComponent<WhisperComponentType.Message> & {
   tooltip?: string;
 };
 
-export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
+export type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
   label: string;
   onChange: WhisperHandlerWithParam<number>;
   value?: number;
@@ -184,20 +184,20 @@ export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> 
   tooltip?: string;
 };
 
-export declare type Password = WhisperComponent<WhisperComponentType.Password> & {
+export type Password = WhisperComponent<WhisperComponentType.Password> & {
   label: string;
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
 };
 
-export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
+export type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
   onSelect: WhisperHandlerWithParam<number>;
   options: string[];
   selected?: number;
 };
 
-export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
+export type Select = WhisperComponent<WhisperComponentType.Select> & {
   label: string;
   options: string[];
   onSelect: WhisperHandlerWithParam<number>;
@@ -205,7 +205,7 @@ export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
   tooltip?: string;
 };
 
-export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
+export type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
   label: string;
   onChange: WhisperHandlerWithParam<string>;
   // pattern?: RegExp; TODO: Implement this
@@ -213,14 +213,14 @@ export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone>
   value?: string;
 };
 
-export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
+export type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
   label: string;
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
 };
 
-export declare type Divider = WhisperComponent<WhisperComponentType.Divider>;
+export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
   | Button
@@ -238,13 +238,13 @@ export type ChildComponents =
   | Telephone
   | TextInput;
 
-export declare type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
+export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
   label?: string;
   open: boolean;
 };
 
-export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
+export type Box = WhisperComponent<WhisperComponentType.Box> & {
   /**
    * @deprecated - use justifyContent instead.
    */
