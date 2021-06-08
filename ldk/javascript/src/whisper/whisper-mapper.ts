@@ -20,7 +20,7 @@ export function mapToExternalWhisper(incomingWhisper: OliveHelps.Whisper): whisp
     return {
         ...incomingWhisper,
         update: (updateWhisper: whisper.UpdateWhisper) => {
-            mapToInternalUpdateWhisper(updateWhisper)
+            incomingWhisper.update(mapToInternalUpdateWhisper(updateWhisper));
         }
     };
 }

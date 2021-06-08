@@ -23,7 +23,7 @@ describe('WhisperMapper', () => {
                 components: [],
                 label: 'myLabel',
                 onClose: jest.fn(),
-            }
+            };
 
             const actual = mapToInternalWhisper(externalWhisper);
 
@@ -37,7 +37,7 @@ describe('WhisperMapper', () => {
             const updateWhisper: whisper.UpdateWhisper = {
                 components: [],
                 label: 'myLabel',
-            }
+            };
 
             const actual = mapToInternalUpdateWhisper(updateWhisper);
 
@@ -52,7 +52,7 @@ describe('WhisperMapper', () => {
                 id: 'myId',
                 close: jest.fn(),
                 update: jest.fn()
-            }
+            };
 
             const actual = mapToExternalWhisper(internalWhisper);
 
@@ -60,6 +60,26 @@ describe('WhisperMapper', () => {
             expect(actual.id).toEqual(internalWhisper.id);
             expect(actual.close).toEqual(internalWhisper.close);
             expect(actual.update).not.toEqual(internalWhisper.update); // Update is a copied property
+        });
+
+        it('calls incoming whispers update function (send updates to desktop)', () => {
+            const updateFunc = jest.fn();
+
+            const internalWhisper: OliveHelps.Whisper = {
+                id: 'myId',
+                close: jest.fn(),
+                update: updateFunc
+            };
+
+            const actualWhisper = mapToExternalWhisper(internalWhisper);
+
+            const updateWhisper: whisper.UpdateWhisper = {
+                label: 'myLabel',
+                components: []
+            }
+            actualWhisper.update(updateWhisper);
+
+            expect(updateFunc).toHaveBeenCalledWith(mapToInternalUpdateWhisper(updateWhisper));
         });
     });
 });
