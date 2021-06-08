@@ -409,6 +409,7 @@ declare namespace OliveHelps {
   };
 
   type ChildComponents =
+    | Box
     | Button
     | Checkbox
     | Divider

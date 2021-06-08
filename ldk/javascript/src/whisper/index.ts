@@ -237,7 +237,7 @@ export declare type CollapseBox = WhisperComponent<WhisperComponentType.Collapse
 
 export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignment: Alignment;
-  children: Array<ChildComponents>;
+  children: Array<Box | ChildComponents>
   direction: Direction;
 };
 

@@ -26,6 +26,7 @@ import {
   initialValueSelectAndRadioWhispers,
   streamCursorPosition,
   testClickableWhisper,
+  testBoxInTheBox,
   testMarkdownWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
@@ -150,44 +151,50 @@ const testConfig: { [key: string]: TestGroup } = {
     ),
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
+    // new LoopTest(
+    //   'Whisper Aptitude - Markdown whisper',
+    //   testMarkdownWhisper,
+    //   20000,
+    //   'Did markdown rendered properly?',
+    // ),
+    // new LoopTest(
+    //   'Whisper Aptitude - Internal Links',
+    //   testClickableWhisper,
+    //   10000,
+    //   'Click the 5th option',
+    // ),
     new LoopTest(
-      'Whisper Aptitude - Markdown whisper',
-      testMarkdownWhisper,
-      20000,
-      'Did markdown rendered properly?',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Internal Links',
-      testClickableWhisper,
+      'Whisper Aptitude - Box in the box',
+      testBoxInTheBox,
       10000,
-      'Click the 5th option',
+      'Verify that box in the box rendered correctly',
     ),
-    new LoopTest(
-      'Whisper Aptitude - External Links',
-      linkWhisper,
-      10000,
-      'Click the link in the whisper',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Network and List Items',
-      testNetworkAndListComponents,
-      5000,
-      'No action required',
-    ),
-    new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
-    new LoopTest(
-      'Whisper Aptitude - Simple Form Whisper',
-      simpleFormWhisper,
-      10000,
-      `Enter 'Stonks' into the field`,
-    ),
-    new LoopTest('Whisper Aptitude - Number Inputs', numberInputs, 10000, `No action required`),
-    new LoopTest(
-      'Whisper Aptitude - Initial Value for Select and Radio',
-      initialValueSelectAndRadioWhispers,
-      10000,
-      `No action required`,
-    ),
+    // new LoopTest(
+    //   'Whisper Aptitude - External Links',
+    //   linkWhisper,
+    //   10000,
+    //   'Click the link in the whisper',
+    // ),
+    // new LoopTest(
+    //   'Whisper Aptitude - Network and List Items',
+    //   testNetworkAndListComponents,
+    //   5000,
+    //   'No action required',
+    // ),
+    // new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
+    // new LoopTest(
+    //   'Whisper Aptitude - Simple Form Whisper',
+    //   simpleFormWhisper,
+    //   10000,
+    //   `Enter 'Stonks' into the field`,
+    // ),
+    // new LoopTest('Whisper Aptitude - Number Inputs', numberInputs, 10000, `No action required`),
+    // new LoopTest(
+    //   'Whisper Aptitude - Initial Value for Select and Radio',
+    //   initialValueSelectAndRadioWhispers,
+    //   10000,
+    //   `No action required`,
+    // ),
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
@@ -251,7 +258,7 @@ const testConfig: { [key: string]: TestGroup } = {
 };
 
 export default class SelfTestLoop {
-  start(): void {
+  async start(): Promise<void> {
     console.log('Starting Self Test...');
     const hotkeys = {
       key: '/',
@@ -259,10 +266,11 @@ export default class SelfTestLoop {
     };
 
     try {
-      this.openTestGroups();
-      keyboard.listenHotkey(hotkeys, (pressed: boolean) => {
+      let testGroupsWhisper = await this.openTestGroups();
+      keyboard.listenHotkey(hotkeys, async (pressed: boolean) => {
         if (pressed) {
-          this.openTestGroups();
+          testGroupsWhisper.close((error) => console.log(error));
+          testGroupsWhisper = await this.openTestGroups();
         }
       });
     } catch (e) {
@@ -270,7 +278,7 @@ export default class SelfTestLoop {
     }
   }
 
-  openTestGroups(): void {
+  async openTestGroups(): Promise<whisper.Whisper> {
     let allTests = [] as LoopTest[];
     // eslint-disable-next-line
     const clickableElements: any[] = [];
@@ -342,7 +350,7 @@ export default class SelfTestLoop {
       style: whisper.Urgency.None,
     });
 
-    whisper.create({
+    return await whisper.create({
       label: 'Self Test Loop',
       onClose: () => {
         console.log('closed Self Test whisper');
