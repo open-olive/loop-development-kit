@@ -1,5 +1,5 @@
 import { whisper } from "..";
-import { convertComponentType, mapToExternalWhisper, mapToInternalUpdateWhisper, mapToInternalWhisper } from "./whisper-mapper";
+import { mapToExternalWhisper, mapToInternalUpdateWhisper, mapToInternalWhisper } from "./whisper-mapper";
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 function instanceOfExternalWhisper(object: any): object is whisper.Whisper {
@@ -17,18 +17,6 @@ function instanceOfInternalUpdateWhisper(object: any): object is OliveHelps.Upda
 }
 
 describe('WhisperMapper', () => {
-    describe('convertComponentType', () => {
-        it('returns reference to given whisperComponentType', () => {
-            const expected = whisper.WhisperComponentType.TextInput;
-            expect(convertComponentType(expected)).toBe(expected);
-        });
-
-        it('throws error for form type', () => {
-            expect(() => convertComponentType(whisper.WhisperComponentType.Form))
-                .toThrowError('unexpected form type');
-        });
-    });
-
     describe('mapToInternalWhisper', () => {
         it('converts external NewWhisper type to internal NewWhisper type', () => {
             const externalWhisper: whisper.NewWhisper = {

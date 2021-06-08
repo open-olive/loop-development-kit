@@ -1,6 +1,5 @@
 import { Components } from ".";
 import { isForm, LdkForm } from "./form";
-import { convertComponentType } from "./whisper-mapper";
 
 export const ldkForms: LdkForm[] = [];
 
@@ -11,7 +10,9 @@ export function parseForm(components: Array<Components>): Array<OliveHelps.Compo
     if (isForm(component)) {
       // Lift form components up
       const formChildren: Array<OliveHelps.Components> = [];
-      component.children.forEach(formChild => formChildren.push({ ...formChild, type: convertComponentType(formChild.type) }));
+      
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ // We have to coerce any type here to force conversion of whisper.Components to OliveHelps.Components 
+      component.children.forEach(formChild => formChildren.push({ ...formChild, type: (formChild.type as any) }));
       outgoingComponents.push(...formChildren);
 
       // Store form state
@@ -26,7 +27,8 @@ export function parseForm(components: Array<Components>): Array<OliveHelps.Compo
       };
       outgoingComponents.push(submitButton);
     } else {
-      outgoingComponents.push({ ...component, type: convertComponentType(component.type) });
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ // We have to coerce any type here to force conversion of whisper.Components to OliveHelps.Components 
+      outgoingComponents.push({ ...component, type: (component.type as any) });
     }
   });
 

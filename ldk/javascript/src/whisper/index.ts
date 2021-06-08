@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
-import { mapToExternalWhisper, mapToInternalUpdateWhisper, mapToInternalWhisper } from './whisper-mapper';
+import { promisifyMappedWithParam } from '../promisify';
+import { mapToExternalWhisper, mapToInternalWhisper } from './whisper-mapper';
 
 export enum WhisperComponentType {
   /**
@@ -284,33 +285,8 @@ export interface WhisperAptitude {
   create(whisper: NewWhisper): Promise<Whisper>;
 }
 
-function addUpdateHandler(whisper: OliveHelps.Whisper): Whisper {
-  const updateFunc = whisper.update;
-  const externalWhisper: Whisper = mapToExternalWhisper(whisper);
-  externalWhisper.update = (updateWhisper: UpdateWhisper, cb?: (err: Error) => void) => {
-    updateFunc(mapToInternalUpdateWhisper(updateWhisper), cb);
-  };
-  return externalWhisper;
-}
-
 export function create(whisper: NewWhisper): Promise<Whisper> {
   const internalWhisper: OliveHelps.NewWhisper = mapToInternalWhisper(whisper);
 
-  return new Promise((resolve, reject) => {
-    try {
-      oliveHelps.whisper.create(internalWhisper, (error: Error | undefined, value: OliveHelps.Whisper) => {
-        if (error) {
-          console.error(
-            `Received error on result: ${error.message}`,
-          );
-          reject(error);
-          return;
-        }
-        resolve(addUpdateHandler(value));
-      });
-    } catch (e) {
-      console.error(`Received error calling service ${e.message}`);
-      reject(e);
-    }
-  });
+  return promisifyMappedWithParam(internalWhisper, mapToExternalWhisper, oliveHelps.whisper.create);
 }
