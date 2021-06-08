@@ -244,17 +244,22 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   open: boolean;
 };
 
-export type Box = WhisperComponent<WhisperComponentType.Box> & {
+export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   /**
    * @deprecated - use justifyContent instead.
    */
-  alignment?: JustifyContent;
+  alignment: JustifyContent;
+  children: Array<ChildComponents>;
+  direction: Direction;
+};
+
+export type Box = WhisperComponent<WhisperComponentType.Box> & {
   justifyContent: JustifyContent;
   children: Array<Box | ChildComponents>;
   direction: Direction;
 };
 
-export type Components = Box | ChildComponents | CollapseBox;
+export type Components = DeprecatedBox | Box | ChildComponents | CollapseBox;
 
 export interface NewWhisper {
   components: Array<Components>;
@@ -371,7 +376,7 @@ function convertChildComponents(component: ChildComponents): OliveHelps.ChildCom
 function convertComponents(component: Components): OliveHelps.Components {
   if (component.type === WhisperComponentType.Box) {
     return {
-      alignment: (component.justifyContent as OliveHelps.Alignment) || component.alignment,
+      alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
       direction: component.direction,
       children: component.children.map(convertChildComponents),
       type: WhisperComponentType.Box,
