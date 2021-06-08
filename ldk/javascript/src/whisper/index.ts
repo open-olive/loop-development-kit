@@ -393,29 +393,37 @@ function convertComponents(component: Components): OliveHelps.Components {
   return convertChildComponents(component);
 }
 
-function convertNewWhisper(whisper: NewWhisper): OliveHelps.NewWhisper {
-  return {
-    label: whisper.label,
-    onClose: whisper.onClose,
-    components: whisper.components.map(convertComponents),
-  };
+function convertToGojaWhisper(whisper: UpdateWhisper): OliveHelps.UpdateWhisper;
+function convertToGojaWhisper(whisper: NewWhisper): OliveHelps.NewWhisper;
+function convertToGojaWhisper(
+  whisper: NewWhisper | UpdateWhisper,
+): OliveHelps.NewWhisper | OliveHelps.UpdateWhisper {
+  return 'onClose' in whisper
+    ? {
+        label: whisper.label,
+        onClose: whisper.onClose,
+        components: whisper.components.map(convertComponents),
+      }
+    : {
+        label: whisper.label,
+        components: whisper.components.map(convertComponents),
+      };
 }
 
 function convertGojaWhisper(whisper: OliveHelps.Whisper): Whisper {
   return {
     id: whisper.id,
     close: whisper.close,
-    update: (updateWhisper: UpdateWhisper, cb) => ({
-      label: updateWhisper.label,
-      components: updateWhisper.components.map(convertComponents),
-    }),
+    update(updateWhisper: UpdateWhisper, cb): void {
+      whisper.update(convertToGojaWhisper(updateWhisper), cb);
+    },
   };
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
   return promisifyMappedBothWithParams(
     whisper,
-    convertNewWhisper,
+    convertToGojaWhisper,
     convertGojaWhisper,
     oliveHelps.whisper.create,
   );
