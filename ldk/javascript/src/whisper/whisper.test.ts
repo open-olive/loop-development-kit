@@ -8,7 +8,7 @@ describe('Whisper', () => {
   });
 
   describe('create', () => {
-    it('creates a whisper', async () => {
+    it('creates a whisper', () => {
       const newWhisper: whisper.NewWhisper = {
         components: [
           {
