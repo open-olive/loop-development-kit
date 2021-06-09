@@ -12,7 +12,7 @@ const emitResultWhisper = async (rows) => {
         console.log(row.serialize());
 
         whisper.create({
-          label: 'Consolidate Loop - Patient Search Result',
+          label: 'Universal Example Loop - Patient Search Result',
           onClose: () => {
             console.log('Patient Search Result is closed');
           },
@@ -36,7 +36,7 @@ ${k}:   ${row[k]}
   });
 
   await whisper.create({
-    label: 'Consolidate Loop - Patient Search Result',
+    label: 'Universal Example Loop - Patient Search Result',
     onClose: () => {
       console.log('Patient Search Result');
     },
@@ -45,7 +45,7 @@ ${k}:   ${row[k]}
         ? searchResults
         : [
             {
-              body: `No results are found matching provided criteria`,
+              body: `No results were found matching provided criteria`,
               type: Markdown,
             },
           ],

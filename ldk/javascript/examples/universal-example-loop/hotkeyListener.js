@@ -118,7 +118,7 @@ export const start = async () => {
 
       console.log('creating form whisper');
       formWhisper = await whisper.create({
-        label: 'Consolidate Loop - Form Whisper',
+        label: 'Universal Example Loop - Form Whisper',
         onClose: () => {
           console.log('Closed Form whisper');
         },

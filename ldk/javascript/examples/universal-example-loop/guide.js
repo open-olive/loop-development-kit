@@ -4,7 +4,7 @@ const { Markdown } = whisper.WhisperComponentType;
 
 export const emitInstructionsWhisper = async () => {
   await whisper.create({
-    label: 'Consolidate Loop Example',
+    label: 'Universal Example Loop',
     components: [
       {
         body: `* Press "Ctrl + n" to open the new patient intake form`,
