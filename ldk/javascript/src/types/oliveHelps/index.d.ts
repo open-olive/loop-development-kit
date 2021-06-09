@@ -412,7 +412,7 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput;
 
-  type Components = Box | ChildComponents | CollapseBox;
+  type Components = ChildComponents | CollapseBox;
 
   interface NewWhisper {
     label: string;

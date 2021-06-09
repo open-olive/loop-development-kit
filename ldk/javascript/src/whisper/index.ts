@@ -1,4 +1,5 @@
-import { promisifyWithParam } from '../promisify';
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import { promisifyMappedBothWithParams } from '../promisify';
 
 export enum WhisperComponentType {
   /**
@@ -223,6 +224,8 @@ export type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
+  | Box
+  | DeprecatedBox
   | Button
   | Checkbox
   | Divider
@@ -255,11 +258,13 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
   justifyContent: JustifyContent;
-  children: Array<Box | ChildComponents>;
+  children: Array<ChildComponents>;
   direction: Direction;
 };
 
 export type Components = DeprecatedBox | Box | ChildComponents | CollapseBox;
+
+export type BoxChildComponents = ChildComponents | Box | DeprecatedBox;
 
 export interface NewWhisper {
   components: Array<Components>;
@@ -282,8 +287,15 @@ export interface WhisperAptitude {
   create(whisper: NewWhisper): Promise<Whisper>;
 }
 
-function convertChildComponents(component: ChildComponents): OliveHelps.ChildComponents {
+function convertChildComponent(component: BoxChildComponents): OliveHelps.ChildComponents {
   switch (component.type) {
+    case WhisperComponentType.Box:
+      return {
+        alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
+        direction: component.direction,
+        children: component.children.map(convertChildComponent),
+        type: WhisperComponentType.Box,
+      };
     case WhisperComponentType.Button:
       return {
         ...component,
@@ -298,8 +310,6 @@ function convertChildComponents(component: ChildComponents): OliveHelps.ChildCom
           component.onChange(error, param, convertGojaWhisper(whisper));
         },
       } as OliveHelps.Checkbox;
-    case WhisperComponentType.Divider:
-      return component;
     case WhisperComponentType.Email:
       return {
         ...component,
@@ -319,11 +329,9 @@ function convertChildComponents(component: ChildComponents): OliveHelps.ChildCom
       }
       return component as OliveHelps.Link;
     }
-
+    case WhisperComponentType.Divider:
     case WhisperComponentType.ListPair:
-      return component;
     case WhisperComponentType.Markdown:
-      return component;
     case WhisperComponentType.Message:
       return component;
     case WhisperComponentType.Number:
@@ -369,28 +377,22 @@ function convertChildComponents(component: ChildComponents): OliveHelps.ChildCom
         },
       } as OliveHelps.TextInput;
     default:
-      throw new Error('Unexpected Whisper Component Type');
+      throw new Error('Unexpected component type');
   }
 }
 
-function convertComponents(component: Components): OliveHelps.Components {
-  if (component.type === WhisperComponentType.Box) {
-    return {
-      alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
-      direction: component.direction,
-      children: component.children.map(convertChildComponents),
-      type: WhisperComponentType.Box,
-    };
+function convertComponent(component: Components): OliveHelps.Components {
+  switch (component.type) {
+    case WhisperComponentType.CollapseBox:
+      return {
+        label: component.label,
+        open: component.open,
+        children: component.children.map(convertChildComponent),
+        type: WhisperComponentType.CollapseBox,
+      };
+    default:
+      return convertChildComponent(component);
   }
-  if (component.type === WhisperComponentType.CollapseBox) {
-    return {
-      label: component.label,
-      open: component.open,
-      children: component.children.map(convertChildComponents),
-      type: WhisperComponentType.CollapseBox,
-    };
-  }
-  return convertChildComponents(component);
 }
 
 function convertToGojaWhisper(whisper: UpdateWhisper): OliveHelps.UpdateWhisper;
@@ -402,11 +404,11 @@ function convertToGojaWhisper(
     ? {
         label: whisper.label,
         onClose: whisper.onClose,
-        components: whisper.components.map(convertComponents),
+        components: whisper.components.map(convertComponent),
       }
     : {
         label: whisper.label,
-        components: whisper.components.map(convertComponents),
+        components: whisper.components.map(convertComponent),
       };
 }
 
