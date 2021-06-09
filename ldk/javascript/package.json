@@ -25,11 +25,6 @@
     "lint": "./node_modules/.bin/eslint . --max-warnings 0 --ext .js,.ts",
     "doc": "rm -rf docs && mkdir -p docs && ./node_modules/.bin/typedoc --options typedoc.json"
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "npm run prepush"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/open-olive/loop-development-kit.git",
@@ -48,7 +43,6 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
-    "husky": "^6.0.0",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.4",
