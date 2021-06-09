@@ -26,6 +26,7 @@ import {
   initialValueSelectAndRadioWhispers,
   streamCursorPosition,
   testClickableWhisper,
+  testBoxInTheBox,
   testMarkdownWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
@@ -163,6 +164,12 @@ const testConfig: { [key: string]: TestGroup } = {
       'Click the 5th option',
     ),
     new LoopTest(
+      'Whisper Aptitude - Box in the box',
+      testBoxInTheBox,
+      10000,
+      'Verify that box in the box rendered correctly',
+    ),
+    new LoopTest(
       'Whisper Aptitude - External Links',
       linkWhisper,
       10000,
@@ -251,7 +258,7 @@ const testConfig: { [key: string]: TestGroup } = {
 };
 
 export default class SelfTestLoop {
-  start(): void {
+  async start(): Promise<void> {
     console.log('Starting Self Test...');
     const hotkeys = {
       key: '/',
@@ -259,10 +266,11 @@ export default class SelfTestLoop {
     };
 
     try {
-      this.openTestGroups();
-      keyboard.listenHotkey(hotkeys, (pressed: boolean) => {
+      let testGroupsWhisper = await this.openTestGroups();
+      keyboard.listenHotkey(hotkeys, async (pressed: boolean) => {
         if (pressed) {
-          this.openTestGroups();
+          testGroupsWhisper.close((error) => console.log(error));
+          testGroupsWhisper = await this.openTestGroups();
         }
       });
     } catch (e) {
@@ -270,7 +278,7 @@ export default class SelfTestLoop {
     }
   }
 
-  openTestGroups(): void {
+  async openTestGroups(): Promise<whisper.Whisper> {
     let allTests = [] as LoopTest[];
     // eslint-disable-next-line
     const clickableElements: any[] = [];
@@ -342,7 +350,7 @@ export default class SelfTestLoop {
       style: whisper.Urgency.None,
     });
 
-    whisper.create({
+    return await whisper.create({
       label: 'Self Test Loop',
       onClose: () => {
         console.log('closed Self Test whisper');
