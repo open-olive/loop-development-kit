@@ -149,6 +149,7 @@ export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
 
 export declare type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
+  labelCopyable?: boolean;
   label: string;
   value: string;
   style: Urgency;
