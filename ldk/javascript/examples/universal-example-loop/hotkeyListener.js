@@ -95,7 +95,7 @@ const getPatientFormWhisperComponents = (patient) => [
         }
 
         if (await patient.isAlreadyExist()) {
-          console.error(new Error(`patient already exist`));
+          console.error(new Error(`Patient already exist`));
 
           return;
         }
@@ -116,7 +116,7 @@ export const start = async () => {
     if (pressed) {
       const patient = new Patient({});
 
-      console.log('creating form whisper');
+      console.log('Creating form whisper');
       formWhisper = await whisper.create({
         label: 'Universal Example Loop - Form Whisper',
         onClose: () => {

@@ -45,7 +45,7 @@ export class Patient {
       return new Error('lastName is required');
     }
     if (!this.telephone) {
-      return new Error('telephone number is required');
+      return new Error('telephone is required');
     }
     if (!this.email) {
       return new Error('email is required');
@@ -126,7 +126,7 @@ export class Patient {
 
     if (!regex.test(val)) {
       this.dob = null;
-      console.error(new Error('date of birth must be as follow format: MM/DD/YYYY'));
+      console.error(new Error('Date of birth must be as follow format: MM/DD/YYYY'));
     }
     this.dob = val;
   }
@@ -135,7 +135,7 @@ export class Patient {
     const genderList = ['Male', 'Female', 'Other', 'Prefer not to say'];
     if (!genderList.includes(val)) {
       console.error(
-        new Error('gender need to be “Male”, “Female”, "Other" or "Prefer not to say"'),
+        new Error('Gender need to be “Male”, “Female”, "Other" or "Prefer not to say"'),
       );
     }
     this.gender = val;
