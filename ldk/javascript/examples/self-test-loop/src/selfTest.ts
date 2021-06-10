@@ -41,6 +41,12 @@ import {
   fileExists,
 } from './tests';
 
+import { 
+  updateCollapseState,
+  updateNewState,
+  updateTextInput
+} from './tests/whisper-update';
+
 const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Clipboard Aptitude', [
     new LoopTest(
@@ -188,6 +194,26 @@ const testConfig: { [key: string]: TestGroup } = {
       10000,
       `No action required`,
     ),
+  ]),
+  whisperUpdate: new TestGroup('Whisper Updates', [
+    new LoopTest(
+      'Whisper Update - Update Collapse State',
+      updateCollapseState,
+      10000,
+      `Did the whisper update correctly?`
+    ),
+    // new LoopTest(
+    //   'Whisper Update - Update New State',
+    //   updateNewState,
+    //   10000,
+    //   `Did the whisper update correctly?`
+    // ),
+    new LoopTest(
+      'Whisper Update - Text Input',
+      updateTextInput,
+      10000,
+      `Did the whisper update correctly?`
+    )
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(

@@ -226,13 +226,13 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
             long extremely long extremely long extremely long extremely 
             long extremely long extremely long`,
             value: false,
-            onChange: () => {},
+            onChange: () => { },
             type: whisper.WhisperComponentType.Checkbox,
           },
           {
             label: `normal label with no surprises`,
             value: false,
-            onChange: () => {},
+            onChange: () => { },
             type: whisper.WhisperComponentType.Checkbox,
           },
           {
