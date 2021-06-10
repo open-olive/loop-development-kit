@@ -26,17 +26,17 @@ export class Patient {
   }
 
   patientInfo = [
-    ["firstName", "First Name"],
-    ["lastName", "Last Name"],
-    ["dob", "Date of Birth"],
-    ["gender", "Gender"],
-    ["telephone", "Telephone"],
-    ["email", "Email"],
-    ["visitReason", "Visit Reason"],
-    ["appointmentDate", "Appointment Date"],
-    ["appointmentTime", "Appointment Time"],
+    ['firstName', 'First Name'],
+    ['lastName', 'Last Name'],
+    ['dob', 'Date of Birth'],
+    ['gender', 'Gender'],
+    ['telephone', 'Telephone'],
+    ['email', 'Email'],
+    ['visitReason', 'Visit Reason'],
+    ['appointmentDate', 'Appointment Date'],
+    ['appointmentTime', 'Appointment Time'],
   ];
-  
+
   validate() {
     if (!this.firstName) {
       return new Error('firstName is required');
@@ -126,7 +126,7 @@ export class Patient {
 
     if (!regex.test(val)) {
       this.dob = null;
-      console.error(new Error('Date of birth must be as follow format: MM/DD/YYYY'));
+      console.error(new Error('Date of birth must have the following format: MM/DD/YYYY'));
     }
     this.dob = val;
   }
@@ -135,7 +135,7 @@ export class Patient {
     const genderList = ['Male', 'Female', 'Other', 'Prefer not to say'];
     if (!genderList.includes(val)) {
       console.error(
-        new Error('Gender need to be “Male”, “Female”, "Other" or "Prefer not to say"'),
+        new Error('Gender needs to be "Male”, “Female”, "Other" or "Prefer not to say"'),
       );
     }
     this.gender = val;
@@ -145,9 +145,7 @@ export class Patient {
     const regexPhoneNumber = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     if (!regexPhoneNumber.test(val)) {
       this.telephone = null;
-      console.error(
-        new Error('Please enter validated number in the following format: XXX-XXX-XXXX '),
-      );
+      console.error(new Error('Telephone must have the following format XXX-XXX-XXXX'));
     }
     this.telephone = val;
   }
