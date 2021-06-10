@@ -27,7 +27,7 @@ describe('Whisper', () => {
           console.log(c);
         },
         update: (w: whisper.NewWhisper) => {
-          console.log(w)
+          console.log(w);
         },
         id: '1',
       };

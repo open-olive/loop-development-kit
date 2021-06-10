@@ -1,4 +1,4 @@
-import "core-js";
+import 'core-js';
 import * as clipboard from './clipboard';
 import * as cursor from './cursor';
 import * as filesystem from './filesystem';
@@ -24,4 +24,16 @@ const _whisper: whisper.WhisperAptitude = whisper;
 const _window: window.Window = window;
 /* eslint-enable */
 
-export { clipboard, cursor, filesystem, keyboard, network, process, ui, user, vault, whisper, window };
+export {
+  clipboard,
+  cursor,
+  filesystem,
+  keyboard,
+  network,
+  process,
+  ui,
+  user,
+  vault,
+  whisper,
+  window,
+};

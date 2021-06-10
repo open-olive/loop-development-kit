@@ -1021,76 +1021,76 @@ export const linkWhisper = (): Promise<boolean> =>
   });
 
 export const listPairWhisperCopyableValue = (): Promise<boolean> =>
-new Promise((resolve, reject) => {
-  const copyableText = "Click me to copy the value text"
-  const config: whisper.NewWhisper = {
-    label: 'List Pair Test',
-    onClose: () => {
-      console.debug('closed');
-    },
-    components: [
-      {
-        type: whisper.WhisperComponentType.ListPair,
-        label: "I am Mr. Label",
-        value: copyableText,
-        copyable: true,
-        style: Urgency.None
+  new Promise((resolve, reject) => {
+    const copyableText = 'Click me to copy the value text';
+    const config: whisper.NewWhisper = {
+      label: 'List Pair Test',
+      onClose: () => {
+        console.debug('closed');
       },
-    ],
-  };
-  whisper.create(config).then((form: whisper.Whisper) => {
+      components: [
+        {
+          type: whisper.WhisperComponentType.ListPair,
+          label: 'I am Mr. Label',
+          value: copyableText,
+          copyable: true,
+          style: Urgency.None,
+        },
+      ],
+    };
+    whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
         form.close((error) => console.error(error));
       }, 5000);
-    });;
-
-  setTimeout(() => {
-    clipboard.read().then((response) => {
-      if (response === copyableText) {
-          resolve(true);
-      } else {
-        reject(new Error('Incorrect value detected'));
-      }
     });
-  }, 5000)
-});
+
+    setTimeout(() => {
+      clipboard.read().then((response) => {
+        if (response === copyableText) {
+          resolve(true);
+        } else {
+          reject(new Error('Incorrect value detected'));
+        }
+      });
+    }, 5000);
+  });
 
 export const listPairWhisperCopyableLabel = (): Promise<boolean> =>
-new Promise((resolve, reject) => {
-  const copyableText = "Click me to copy the label text"
-  const config: whisper.NewWhisper = {
-    label: 'List Pair Test',
-    onClose: () => {
-      console.debug('closed');
-    },
-    components: [
-      {
-        type: whisper.WhisperComponentType.ListPair,
-        label: copyableText,
-        value: "I am Mr. Value",
-        labelCopyable: true,
-        copyable: false,
-        style: Urgency.None
+  new Promise((resolve, reject) => {
+    const copyableText = 'Click me to copy the label text';
+    const config: whisper.NewWhisper = {
+      label: 'List Pair Test',
+      onClose: () => {
+        console.debug('closed');
       },
-    ],
-  };
+      components: [
+        {
+          type: whisper.WhisperComponentType.ListPair,
+          label: copyableText,
+          value: 'I am Mr. Value',
+          labelCopyable: true,
+          copyable: false,
+          style: Urgency.None,
+        },
+      ],
+    };
 
-  whisper.create(config).then((form: whisper.Whisper) => {
+    whisper.create(config).then((form: whisper.Whisper) => {
       setTimeout(() => {
         form.close((error) => console.error(error));
       }, 5000);
-    });;
-
-  setTimeout(() => {
-    clipboard.read().then((response) => {
-      if (response === copyableText) {
-          resolve(true);
-      } else {
-        reject(new Error('Incorrect value detected'));
-      }
     });
-  }, 5000)
-});
+
+    setTimeout(() => {
+      clipboard.read().then((response) => {
+        if (response === copyableText) {
+          resolve(true);
+        } else {
+          reject(new Error('Incorrect value detected'));
+        }
+      });
+    }, 5000);
+  });
 
 // TODO: This requires a submit button at some point
 export const simpleFormWhisper = (): Promise<boolean> =>
