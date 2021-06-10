@@ -102,7 +102,7 @@ export enum Urgency {
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
-  update(whisper: UpdateWhisper, cb?: (err: Error) => void): void
+  update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
 }
 
 export type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
@@ -239,6 +239,7 @@ export declare type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignment: Alignment;
   children: Array<ChildComponents>;
   direction: Direction;
+  onClick?: WhisperHandler;
 };
 
 export type Components = Box | ChildComponents | CollapseBox;

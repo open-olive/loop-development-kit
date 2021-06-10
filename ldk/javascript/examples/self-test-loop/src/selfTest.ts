@@ -25,6 +25,7 @@ import {
   numberInputs,
   initialValueSelectAndRadioWhispers,
   streamCursorPosition,
+  testClickableBox,
   testClickableWhisper,
   testMarkdownWhisper,
   vaultReadWrite,
@@ -150,7 +151,7 @@ const testConfig: { [key: string]: TestGroup } = {
     ),
   ]),
   whispers: new TestGroup('Whisper Aptitude', [
-    new LoopTest(
+    /* new LoopTest(
       'Whisper Aptitude - Markdown whisper',
       testMarkdownWhisper,
       20000,
@@ -173,8 +174,14 @@ const testConfig: { [key: string]: TestGroup } = {
       testNetworkAndListComponents,
       5000,
       'No action required',
+    ), */
+    new LoopTest(
+      'Whisper Aptitude - Clickable Boxes',
+      testClickableBox,
+      10000,
+      'Click the correct box',
     ),
-    new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
+    /* new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
       simpleFormWhisper,
@@ -187,7 +194,7 @@ const testConfig: { [key: string]: TestGroup } = {
       initialValueSelectAndRadioWhispers,
       10000,
       `No action required`,
-    ),
+    ), */
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(

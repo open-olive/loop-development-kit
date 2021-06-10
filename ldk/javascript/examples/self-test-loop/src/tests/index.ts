@@ -401,7 +401,8 @@ export const queryDirectory = (): Promise<boolean> =>
         setTimeout(() => {
           reject(error);
         }, 1500);
-      }).finally(async () => {
+      })
+      .finally(async () => {
         await filesystem.remove(`${dirPath}/file.json`);
       });
   });
@@ -764,9 +765,56 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       });
   });
 
+export const testClickableBox = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    let form: whisper.Whisper;
+    const config: whisper.NewWhisper = {
+      label: 'Clickable Box Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          body: 'Click the correct button',
+          type: whisper.WhisperComponentType.Markdown,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          /* onClick: () => {
+            console.debug('The toggles...they do nothing');
+          }, */
+          children: [
+            {
+              body: `Don't click me`,
+              type: whisper.WhisperComponentType.Markdown,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          onClick: () => {
+            resolve(true);
+          },
+          children: [
+            {
+              body: `Click me`,
+              type: whisper.WhisperComponentType.Markdown,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+      ],
+    };
+
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+  });
+
 export const buttonWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    var form: whisper.Whisper;
+    let form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Button Test',
       onClose: () => {
@@ -780,6 +828,9 @@ export const buttonWhisper = (): Promise<boolean> =>
         {
           alignment: whisper.Alignment.SpaceEvenly,
           direction: whisper.Direction.Horizontal,
+          onClick: () => {
+            console.log('Whats up');
+          },
           children: [
             {
               buttonStyle: whisper.ButtonStyle.Secondary,
