@@ -12,7 +12,7 @@ export interface HTTPRequest {
    */
   body?: string | Uint8Array;
   /**
-   * Collection of request headers 
+   * Collection of request headers
    */
   headers?: Record<string, string[]>;
   /**
