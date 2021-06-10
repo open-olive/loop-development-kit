@@ -26,17 +26,17 @@ export class Patient {
   }
 
   patientInfo = [
-    ["firstName", "First Name"],
-    ["lastName", "Last Name"],
-    ["dob", "Date of Birth"],
-    ["gender", "Gender"],
-    ["telephone", "Telephone"],
-    ["email", "Email"],
-    ["visitReason", "Visit Reason"],
-    ["appointmentDate", "Appointment Date"],
-    ["appointmentTime", "Appointment Time"],
+    ['firstName', 'First Name'],
+    ['lastName', 'Last Name'],
+    ['dob', 'Date of Birth'],
+    ['gender', 'Gender'],
+    ['telephone', 'Telephone'],
+    ['email', 'Email'],
+    ['visitReason', 'Visit Reason'],
+    ['appointmentDate', 'Appointment Date'],
+    ['appointmentTime', 'Appointment Time'],
   ];
-  
+
   validate() {
     if (!this.firstName) {
       return new Error('firstName is required');
@@ -145,9 +145,7 @@ export class Patient {
     const regexPhoneNumber = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     if (!regexPhoneNumber.test(val)) {
       this.telephone = null;
-      console.error(
-        new Error('Telephone must have the following format XXX-XXX-XXXX'),
-      );
+      console.error(new Error('Telephone must have the following format XXX-XXX-XXXX'));
     }
     this.telephone = val;
   }
