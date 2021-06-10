@@ -29,7 +29,7 @@ export const Menu: React.FunctionComponent<IMenuProps> = (props) => {
           }
         }
       }
-      allFile(filter: {relativeDirectory: {eq: "guides"}, extension: {eq: "md"}}) {
+      allFile(filter: { relativeDirectory: { eq: "guides" }, extension: { eq: "md" } }) {
         edges {
           node {
             childMarkdownRemark {

@@ -1,9 +1,9 @@
-import SelfTestLoop from "./selfTest";
+import SelfTestLoop from './selfTest';
 
 async function main() {
   const selfTest = new SelfTestLoop();
   selfTest.start();
-  console.log("end");
+  console.log('end');
 }
 
-main().catch((e) => console.log("something bad happened :(", e));
+main().catch((e) => console.log('something bad happened :(', e));
