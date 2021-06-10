@@ -26,17 +26,17 @@ export class Patient {
   }
 
   patientInfo = [
-    'firstName',
-    'lastName',
-    'dob',
-    'gender',
-    'telephone',
-    'email',
-    'visitReason',
-    'appointmentDate',
-    'appointmentTime',
+    ["firstName", "First Name"],
+    ["lastName", "Last Name"],
+    ["dob", "Date of Birth"],
+    ["gender", "Gender"],
+    ["telephone", "Telephone"],
+    ["email", "Email"],
+    ["visitReason", "Visit Reason"],
+    ["appointmentDate", "Appointment Date"],
+    ["appointmentTime", "Appointment Time"],
   ];
-
+  
   validate() {
     if (!this.firstName) {
       return new Error('firstName is required');

@@ -3,13 +3,13 @@ import { Patient, patientInfoFileName } from './Patient';
 
 const { Message, Link, Markdown } = whisper.WhisperComponentType;
 
-const emitResultWhisper = async (rows) => {
+const emitResultWhisper = async (patients) => {
   const searchResults = [];
-  rows.forEach((row) => {
+  patients.forEach((patient) => {
     searchResults.push({
-      text: `${row.firstName} ${row.lastName} ${row.email}`,
+      text: `${patient.firstName} ${patient.lastName} ${patient.email}`,
       onClick: () => {
-        console.log(row.serialize());
+        console.log(patient.serialize());
 
         whisper.create({
           label: 'Universal Example Loop - Patient Search Result',
@@ -18,11 +18,11 @@ const emitResultWhisper = async (rows) => {
           },
           components: [
             {
-              header: `${row.firstName} ${row.lastName}`,
-              body: row.patientInfo.reduce(
-                (rst, k) => `
+              header: `${patient.firstName} ${patient.lastName}`,
+              body: patient.patientInfo.reduce(
+                (rst, currentValue) => `
 ${rst}
-${k}:   ${row[k]}
+${currentValue[1]}:   ${patient[currentValue[0]]}
                             `,
                 '',
               ),
