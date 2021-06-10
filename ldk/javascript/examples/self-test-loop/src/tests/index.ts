@@ -13,6 +13,7 @@ import {
 } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import { Alignment, Direction, ButtonStyle, Urgency } from '@oliveai/ldk/dist/whisper';
 import * as testUtils from '../testUtils';
 
 let testFolderPath: string;
@@ -340,6 +341,143 @@ export const testClickableWhisper = (): Promise<boolean> =>
         ],
       })
       .then((whisper: whisper.Whisper) => (form = whisper));
+  });
+
+export const testBoxInTheBox = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const form = await whisper.create({
+        label: 'Box in the box',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            type: whisper.WhisperComponentType.Markdown,
+            body: `
+# Markdown Example
+`,
+          },
+          {
+            type: whisper.WhisperComponentType.Markdown,
+            body: `
+|||
+|:---|:---|
+|**Video Visit**||
+|ADHD/Learning Problems|Allergies|
+|Anxiety|Asthma|
+|Cold/Sore Throat|Depression|
+|Diaper Rash|F/U Dementia|
+|F/U Diabetes/DM|F/U Imaging Results|
+|F/U Labs|F/U Parkinsons|
+|F/U Thyroid|Fatigue|
+|Flu Symptoms|GWA (Medicare)|
+|Headache|Insomnia|
+|||
+|||
+|||
+|||
+|**In-Person Only**||
+|Back Pain|Earache|
+|F/U Hypertension/Blood Pressure|TB Test|
+|||
+|||
+|||
+|||
+|**OB Video Visit**||
+|Contraceptive Consults|F/U Labs/Tests/Ultrasounds|
+|Infertility Consults|Post-Partum Appointments (Scheduled By Office)|
+            `,
+          },
+          {
+            type: whisper.WhisperComponentType.Markdown,
+            body: `
+# Box in the Box Example
+`,
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            alignment: Alignment.Center,
+            direction: Direction.Horizontal,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Box,
+                alignment: Alignment.Left,
+                direction: Direction.Vertical,
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Markdown,
+                    body: `
+**Header Left**
+
+Some text on the left
+`,
+                  },
+                  {
+                    type: whisper.WhisperComponentType.TextInput,
+                    label: 'Left Input',
+                    onChange: (value) => {
+                      console.debug(`Input value changed: ${value}`);
+                    },
+                  },
+                ],
+              },
+              {
+                type: whisper.WhisperComponentType.Box,
+                alignment: Alignment.Right,
+                direction: Direction.Vertical,
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Markdown,
+                    body: `
+**Header Right**
+
+Some text on the right
+`,
+                  },
+                  {
+                    type: whisper.WhisperComponentType.TextInput,
+                    label: 'Right Input',
+                    onChange: (value) => {
+                      console.debug(`Input value changed: ${value}`);
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            alignment: Alignment.Left,
+            direction: Direction.Horizontal,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Button,
+                buttonStyle: ButtonStyle.Primary,
+                label: 'Press if Rendered',
+                onClick: () => {
+                  form.close((error) => console.log(error));
+                  resolve(true);
+                },
+              },
+              {
+                type: whisper.WhisperComponentType.Button,
+                buttonStyle: ButtonStyle.Secondary,
+                label: 'Press if NOT Rendered',
+                onClick: () => {
+                  form.close((error) => console.log(error));
+                  reject(false);
+                },
+              },
+            ],
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+
+      reject(error);
+    }
   });
 
 export const vaultReadWrite = (): Promise<boolean> =>
@@ -671,7 +809,7 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
         method: 'GET',
       })
       .then((response: network.HTTPResponse) => {
-        console.debug('Network call succeeded, emmitting list whisper', url);
+        console.debug('Network call succeeded, emitting list whisper', url);
         return network.decode(response.body);
       })
       .then((decodedValue) => {
@@ -930,6 +1068,78 @@ export const linkWhisper = (): Promise<boolean> =>
         resolve(true);
       }, 5000);
     });
+  });
+
+export const listPairWhisperCopyableValue = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const copyableText = 'Click me to copy the value text';
+    const config: whisper.NewWhisper = {
+      label: 'List Pair Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: whisper.WhisperComponentType.ListPair,
+          label: 'I am Mr. Label',
+          value: copyableText,
+          copyable: true,
+          style: Urgency.None,
+        },
+      ],
+    };
+    whisper.create(config).then((form: whisper.Whisper) => {
+      setTimeout(() => {
+        form.close((error) => console.error(error));
+      }, 5000);
+    });
+
+    setTimeout(() => {
+      clipboard.read().then((response) => {
+        if (response === copyableText) {
+          resolve(true);
+        } else {
+          reject(new Error('Incorrect value detected'));
+        }
+      });
+    }, 5000);
+  });
+
+export const listPairWhisperCopyableLabel = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const copyableText = 'Click me to copy the label text';
+    const config: whisper.NewWhisper = {
+      label: 'List Pair Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: whisper.WhisperComponentType.ListPair,
+          label: copyableText,
+          value: 'I am Mr. Value',
+          labelCopyable: true,
+          copyable: false,
+          style: Urgency.None,
+        },
+      ],
+    };
+
+    whisper.create(config).then((form: whisper.Whisper) => {
+      setTimeout(() => {
+        form.close((error) => console.error(error));
+      }, 5000);
+    });
+
+    setTimeout(() => {
+      clipboard.read().then((response) => {
+        if (response === copyableText) {
+          resolve(true);
+        } else {
+          reject(new Error('Incorrect value detected'));
+        }
+      });
+    }, 5000);
   });
 
 // TODO: This requires a submit button at some point

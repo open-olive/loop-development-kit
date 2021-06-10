@@ -339,6 +339,7 @@ declare namespace OliveHelps {
 
   type ListPair = Component<WhisperComponentType.ListPair> & {
     copyable: boolean;
+    labelCopyable?: boolean;
     label: string;
     value: string;
     style: Urgency;
@@ -417,6 +418,7 @@ declare namespace OliveHelps {
   };
 
   type ChildComponents =
+    | Box
     | Button
     | Checkbox
     | Divider
