@@ -50,7 +50,7 @@ export type CallbackError = (error: Error | undefined) => void;
  */
 export interface SocketConfiguration {
   /**
-   * Websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
+   * Websocket server endpoint url: '{schema}://{host}:{port}' - schema should be wss
    */
   url: string;
   /**
