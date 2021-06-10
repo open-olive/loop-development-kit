@@ -159,9 +159,16 @@ declare namespace OliveHelps {
   }
 
   interface Socket {
-    writeMessage(messageType: MessageType, data: Array<number>, callback: (error: Error | undefined) => void): void;
+    writeMessage(
+      messageType: MessageType,
+      data: Array<number>,
+      callback: (error: Error | undefined) => void,
+    ): void;
     close(callback: (error: Error | undefined) => void): void;
-    listenMessage: (callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void, returnCb: ReturnCallback) => void;
+    listenMessage: (
+      callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void,
+      returnCb: ReturnCallback,
+    ) => void;
     onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
   }
 
@@ -290,7 +297,7 @@ declare namespace OliveHelps {
   interface Whisper {
     id: string;
     close: Readable<undefined>;
-    update(whisper: UpdateWhisper, cb?: (err: Error) => void): void 
+    update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
   interface Component<T extends WhisperComponentType> {
     id?: string;
@@ -332,6 +339,7 @@ declare namespace OliveHelps {
 
   type ListPair = Component<WhisperComponentType.ListPair> & {
     copyable: boolean;
+    labelCopyable?: boolean;
     label: string;
     value: string;
     style: Urgency;
@@ -409,6 +417,7 @@ declare namespace OliveHelps {
   };
 
   type ChildComponents =
+    | Box
     | Button
     | Checkbox
     | Divider

@@ -52,32 +52,34 @@ export class LoopTest {
     return new Promise((resolve, reject) => {
       try {
         var prompt: whisper.Whisper;
-        whisper.create({
-          label: this.id,
-          onClose: () => {
-            console.log('closed prompt');
-          },
-          components: [
-            {
-              body: this.promptMarkdown,
-              type: whisper.WhisperComponentType.Markdown,
+        whisper
+          .create({
+            label: this.id,
+            onClose: () => {
+              console.log('closed prompt');
             },
-          ],
-        }).then((whisper: whisper.Whisper) => prompt = whisper);
+            components: [
+              {
+                body: this.promptMarkdown,
+                type: whisper.WhisperComponentType.Markdown,
+              },
+            ],
+          })
+          .then((whisper: whisper.Whisper) => (prompt = whisper));
 
         this.timeout = setTimeout(() => {
-          prompt.close(error => console.error(error));
+          prompt.close((error) => console.error(error));
           reject(new Error('Timeout - Too much time has passed'));
         }, this.timeoutTime);
         this.methodToExecute()
           .then((response) => {
             clearTimeout(this.timeout);
-            prompt.close(error => console.error(error));
+            prompt.close((error) => console.error(error));
             resolve(response);
           })
           .catch((error) => {
             clearTimeout(this.timeout);
-            prompt.close(error => console.error(error));
+            prompt.close((error) => console.error(error));
             reject(error);
           });
       } catch (e) {

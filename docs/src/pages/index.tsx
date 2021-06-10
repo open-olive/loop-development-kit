@@ -59,7 +59,9 @@ export default function Home(
   const aptitudeItems = combinedData.map((aptitude) => {
     return <AptitudeItem aptitude={aptitude} key={aptitude.name} />;
   });
-  const guideItems = mapGuidePages(props.data).filter(x => !x.slug.includes('getting-started')).map((guide) => <GuideItem {...guide} />);
+  const guideItems = mapGuidePages(props.data)
+    .filter((x) => !x.slug.includes('getting-started'))
+    .map((guide) => <GuideItem {...guide} />);
   const title = <>Welcome To the Olive Helps Developer Hub</>;
   return (
     <Layout>
@@ -70,7 +72,9 @@ export default function Home(
           the Loop Developer Kit (LDK).
         </p>
         <div className={styles.headerActions}>
-          <Link className={styles.button} to="guides/getting-started">Get started</Link>
+          <Link className={styles.button} to="guides/getting-started">
+            Get started
+          </Link>
           <a
             className={[styles.buttonInverse, styles.buttonArrow].join(' ')}
             href="https://www.npmjs.com/package/@oliveai/ldk"
@@ -87,14 +91,10 @@ export default function Home(
         </p>
         <div className={styles.downloadCollection}>
           <article className={styles.downloadItem}>
-            <a href={downloadWindowsUrl}>
-              Windows
-            </a>
+            <a href={downloadWindowsUrl}>Windows</a>
           </article>
           <article className={styles.downloadItem}>
-            <a href={downloadMacUrl}>
-              Mac
-            </a>
+            <a href={downloadMacUrl}>Mac</a>
           </article>
         </div>
       </Section>
@@ -115,7 +115,11 @@ export default function Home(
           Create beautiful Loops that seamlessly integrated with Olive Helps.
         </p>
         <p className={styles.sectionDescription}>
-          <a href="https://coda.io/@olive-helps-design/design-system" target="_blank" className={styles.buttonInversePadding}>
+          <a
+            href="https://coda.io/@olive-helps-design/design-system"
+            target="_blank"
+            className={styles.buttonInversePadding}
+          >
             View the design system
           </a>
         </p>
@@ -129,7 +133,11 @@ export default function Home(
             Submit a request or email your Olive Helps developer contact for further assistance.
           </p>
           <div>
-            <a href="https://github.com/open-olive/loop-development-kit/issues" className={styles.button} target="_blank">
+            <a
+              href="https://github.com/open-olive/loop-development-kit/issues"
+              className={styles.button}
+              target="_blank"
+            >
               Submit a request
             </a>
           </div>
@@ -167,14 +175,14 @@ export default function Home(
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image src={'socialmedia-instagram.svg'} className={styles.footerSocialMediaImage}/>
+              <Image src={'socialmedia-instagram.svg'} className={styles.footerSocialMediaImage} />
             </a>
             <a
               href="https://www.linkedin.com/company/oliveai"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Image src={'socialmedia-linkedin.svg'} className={styles.footerSocialMediaImage}/>
+              <Image src={'socialmedia-linkedin.svg'} className={styles.footerSocialMediaImage} />
             </a>
           </div>
         </div>

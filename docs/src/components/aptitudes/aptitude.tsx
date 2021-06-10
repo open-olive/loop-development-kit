@@ -23,7 +23,7 @@ export const Capability: React.FunctionComponent<{
         capability={props.capability}
         aptitude={props.aptitude}
       />
-      <p
+      <div
         className={styles.capabilityDescription}
         dangerouslySetInnerHTML={{ __html: props.capability.description }}
       />
@@ -36,7 +36,7 @@ export const Aptitude: React.FunctionComponent<IAptitudeData> = (props) => {
     <article className={styles.aptitude}>
       <h1 className={styles.aptitudeName}>{props.name} Aptitude</h1>
       <Links links={props.links} aptitude={props} />
-      <p
+      <div
         className={styles.aptitudeDescription}
         dangerouslySetInnerHTML={{ __html: props.description }}
       />

@@ -114,7 +114,7 @@ export interface Network {
 
   /**
    *  Connects to a specified websocket
-   * 
+   *
    * @param socketConfiguration A configuration object defines websocket
    * @returns A promise with Socket
    */
