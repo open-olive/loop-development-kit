@@ -1,6 +1,7 @@
 import { whisper } from '@oliveai/ldk'
 import { Button, Checkbox, ChildComponents, Components, Markdown, TextInput, UpdateWhisper, Whisper } from "@oliveai/ldk/dist/whisper";
 
+//** Reusable Components */
 const markdownComponent: Markdown = {
     type: whisper.WhisperComponentType.Markdown,
     body: '**Test Markdown**'
@@ -96,6 +97,7 @@ const updateWithConfirmation = (
     }
 });
 
+//** Tests */
 export const basicWhisperUpdate = (): Promise<boolean> =>
     new Promise(async (resolve, reject) => {
         try {
@@ -172,34 +174,33 @@ export const updateOnChange = (): Promise<boolean> =>
                 label: 'Update onChange events',
                 onClose: () => { },
                 components: [
-                    configurableTextInput(
-                        (error, value, incomingWhisper) => {
-                            if (value === '1') {
-                                incomingWhisper.update({
-                                    label: 'Whisper Updated',
-                                    components: [
-                                        configurableTextInput((error, value, incomingWhisper) => {
-                                            if (value === '2') {
-                                                incomingWhisper.close(error => { console.error(error) });
-                                                resolve(true)
-                                            } else {
-                                                incomingWhisper.close(error => { console.error(error) });
-                                                reject(new Error('User did not enter required value.'));
-                                            }
-                                        }, 'Enter 2', '')
-                                    ]
-                                }, (error) => {
-                                    if (error) {
-                                        console.error(error);
-                                        incomingWhisper.close(error => console.error(error));
-                                        reject(error);
-                                    }
-                                });
-                            } else {
-                                incomingWhisper.close(error => { console.error(error) });
-                                reject(new Error('User did not enter required value.'));
-                            }
-                        }, 'Enter 1'
+                    configurableTextInput((error, value, incomingWhisper) => {
+                        if (value === '1') {
+                            incomingWhisper.update({
+                                label: 'Whisper Updated',
+                                components: [
+                                    configurableTextInput((error, value, incomingWhisper) => {
+                                        if (value === '2') {
+                                            incomingWhisper.close(error => { console.error(error) });
+                                            resolve(true)
+                                        } else {
+                                            incomingWhisper.close(error => { console.error(error) });
+                                            reject(new Error('User did not enter required value.'));
+                                        }
+                                    }, 'Enter 2', '')
+                                ]
+                            }, (error) => {
+                                if (error) {
+                                    console.error(error);
+                                    incomingWhisper.close(error => console.error(error));
+                                    reject(error);
+                                }
+                            });
+                        } else {
+                            incomingWhisper.close(error => { console.error(error) });
+                            reject(new Error('User did not enter required value.'));
+                        }
+                    }, 'Enter 1'
                     )
                 ]
             })
