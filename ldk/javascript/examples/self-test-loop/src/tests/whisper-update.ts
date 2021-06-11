@@ -1,13 +1,11 @@
 import { whisper } from '@oliveai/ldk'
-import { ChildComponents, Components, TextInput } from "@oliveai/ldk/dist/whisper";
+import { Checkbox, ChildComponents, Components, Markdown, TextInput } from "@oliveai/ldk/dist/whisper";
 
 const textInput: TextInput = {
     type: whisper.WhisperComponentType.TextInput,
     label: 'Text Input',
+    tooltip: 'myTooltip',
     onChange: (error, value) => {
-        // Tooltip is causing an issue. If 1 whisper has tooltip and the second doesn't.
-        // Check index.ts inside desktop. The id prop for new whispers where tooltip does not match is problematic.
-        // A fix for this is something like making ids more unique per component, however this will force React to re-render the entire component (losing focus and such.)
         console.info(`New Value for TextInput: ${value}`);
     }
 };
@@ -20,6 +18,18 @@ const textInputTwo: TextInput = {
     }
 };
 
+const markdown: Markdown = {
+    type: whisper.WhisperComponentType.Markdown,
+    body: '**Test Markdown**'
+};
+
+const checkbox: Checkbox = {
+    type: whisper.WhisperComponentType.Checkbox,
+    label: 'Checkbox',
+    value: false,
+    onChange: (error, value, whisper) => { console.info(`Checkbox OnChange: ${value}`) }
+};
+
 const confirmOrDeny = (
     resolve: (value: boolean | PromiseLike<boolean>) => void,
     reject: (reason?: any) => void,
@@ -27,12 +37,12 @@ const confirmOrDeny = (
     rejectReason?: any,
     incomingWhisper?: whisper.Whisper): Array<Components> => [
         {
-            type: whisper.WhisperComponentType.Markdown,
+            type: whisper.WhisperComponentType.Message,
             body: prompt
         },
         {
             type: whisper.WhisperComponentType.Box,
-            alignment: whisper.Alignment.SpaceEvenly,
+            alignment: whisper.Alignment.SpaceAround,
             direction: whisper.Direction.Horizontal,
             children: [
                 {
@@ -48,7 +58,7 @@ const confirmOrDeny = (
                     label: 'No',
                     onClick: () => {
                         incomingWhisper?.close(error => { console.error(error) });
-                        if(rejectReason) reject(new Error(rejectReason));
+                        if (rejectReason) reject(new Error(rejectReason));
                         reject();
                     }
                 }
@@ -56,7 +66,7 @@ const confirmOrDeny = (
         }
     ];
 
-export const updateTextInput = (): Promise<boolean> =>
+export const basicWhisperUpdate = (): Promise<boolean> =>
     new Promise(async (resolve, reject) => {
         try {
             whisper.create({
@@ -64,13 +74,23 @@ export const updateTextInput = (): Promise<boolean> =>
                 onClose: () => { },
                 components: [
                     textInput,
+                    markdown,
+                    checkbox,
                     {
                         type: whisper.WhisperComponentType.Button,
                         label: 'Update',
                         onClick: (error, incomingWhisper) => {
+                            if (error) {
+                                incomingWhisper.close(error => { console.error(error) });
+                                console.error(error);
+                                reject(error);
+                            }
                             incomingWhisper.update({
                                 label: 'Update Whisper',
                                 components: [
+                                    textInput,
+                                    markdown,
+                                    checkbox,
                                     textInputTwo,
                                     ...confirmOrDeny(
                                         resolve,
@@ -79,20 +99,17 @@ export const updateTextInput = (): Promise<boolean> =>
                                         'TextInput failed to update',
                                         incomingWhisper)
                                 ]
+                            }, (error) => {
+                                if (error) {
+                                    console.error(error);
+                                    incomingWhisper.close(error => console.error(error));
+                                    reject(error);
+                                }
                             });
                         }
                     }
                 ],
             });
-        } catch (error) {
-            console.error(error);
-            console.error(error.message);
-        }
-    });
-
-export const updateNewState = (): Promise<boolean> =>
-    new Promise(async (resolve, reject) => {
-        try {
         } catch (error) {
             console.error(error);
             console.error(error.message);
@@ -130,15 +147,19 @@ export const updateCollapseState = (): Promise<boolean> =>
                 label: 'First Whisper',
                 onClose: () => { },
                 components: [
+                    collapseBox,
                     {
                         type: whisper.WhisperComponentType.Markdown,
                         body: 'Expand the collapse box and Update.'
                     },
-                    collapseBox,
                     {
                         type: whisper.WhisperComponentType.Button,
                         label: 'Update',
                         onClick: (error, incomingWhisper) => {
+                            if (error) {
+                                console.error(error);
+                                reject(error);
+                            }
                             incomingWhisper.update({
                                 label: 'Update Whisper',
                                 components: [
@@ -152,14 +173,67 @@ export const updateCollapseState = (): Promise<boolean> =>
                                     ),
                                 ]
                             }, (error) => {
-                                console.error(error);
-                                incomingWhisper.close(error => console.error(error));
-                                reject(error);
+                                if (error) {
+                                    console.error(error);
+                                    incomingWhisper.close(error => console.error(error));
+                                    reject(error);
+                                }
                             });
                         },
                     }
                 ]
             });
+        } catch (error) {
+            console.error(error);
+            console.error(error.message);
+        }
+    });
+
+export const updateOnChange = (): Promise<boolean> =>
+    new Promise(async (resolve, reject) => {
+        try {
+            whisper.create({
+                label: 'Update onChange events',
+                onClose: () => { },
+                components: [
+                    {
+                        type: whisper.WhisperComponentType.TextInput,
+                        label: 'Enter 1',
+                        onChange: (error, value, incomingWhisper) => {
+                            if (value === '1') {
+                                incomingWhisper.update({
+                                    label: 'Whisper Updated',
+                                    components: [
+                                        {
+                                            type: whisper.WhisperComponentType.TextInput,
+                                            label: 'Enter 2',
+                                            value: '',
+                                            onChange: (error, value, incomingWhisper) => {
+                                                if (value === '2') {
+                                                    incomingWhisper.close(error => { console.error(error) });
+                                                    resolve(true)
+                                                } else {
+                                                    incomingWhisper.close(error => { console.error(error) });
+                                                    reject(new Error('User did not enter required value.'));
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }, (error) => {
+                                    if (error) {
+                                        console.error(error);
+                                        incomingWhisper.close(error => console.error(error));
+                                        reject(error);
+                                    }
+                                });
+                            } else {
+                                incomingWhisper.close(error => { console.error(error) });
+                                reject(new Error('User did not enter required value.'));
+                            }
+                        }
+                    }
+                ]
+            })
         } catch (error) {
             console.error(error);
             console.error(error.message);

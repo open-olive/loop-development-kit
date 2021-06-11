@@ -42,9 +42,9 @@ import {
 } from './tests';
 
 import { 
+  basicWhisperUpdate,
   updateCollapseState,
-  updateNewState,
-  updateTextInput
+  updateOnChange
 } from './tests/whisper-update';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -197,21 +197,21 @@ const testConfig: { [key: string]: TestGroup } = {
   ]),
   whisperUpdate: new TestGroup('Whisper Updates', [
     new LoopTest(
-      'Whisper Update - Update Collapse State',
-      updateCollapseState,
-      10000,
+      'Whisper Update - Basic Whisper Update',
+      basicWhisperUpdate,
+      20000,
       `Did the whisper update correctly?`
     ),
-    // new LoopTest(
-    //   'Whisper Update - Update New State',
-    //   updateNewState,
-    //   10000,
-    //   `Did the whisper update correctly?`
-    // ),
     new LoopTest(
-      'Whisper Update - Text Input',
-      updateTextInput,
-      10000,
+      'Whisper Update - Collapse State Across Update',
+      updateCollapseState,
+      20000,
+      `Did the whisper update correctly?`
+    ),
+    new LoopTest(
+      'Whisper Update - OnChange Across Update',
+      updateOnChange,
+      20000,
       `Did the whisper update correctly?`
     )
   ]),
