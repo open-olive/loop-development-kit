@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "build": "rm -rf dist && tsc",
+    "prepush": "npm run build && npm run test && npm run lint",
     "test": "jest",
     "test-coverage": "jest --collectCoverage",
     "test-watch": "jest --watchAll",
