@@ -1,34 +1,30 @@
 import { whisper } from '@oliveai/ldk'
-import { Checkbox, ChildComponents, Components, Markdown, TextInput } from "@oliveai/ldk/dist/whisper";
+import { Button, Checkbox, ChildComponents, Components, Markdown, TextInput, UpdateWhisper, Whisper } from "@oliveai/ldk/dist/whisper";
 
-const textInput: TextInput = {
-    type: whisper.WhisperComponentType.TextInput,
-    label: 'Text Input',
-    tooltip: 'myTooltip',
-    onChange: (error, value) => {
-        console.info(`New Value for TextInput: ${value}`);
-    }
-};
-
-const textInputTwo: TextInput = {
-    type: whisper.WhisperComponentType.TextInput,
-    label: 'Text Input Two',
-    onChange: (error, value) => {
-        console.info(`New Value for TextInput: ${value}`);
-    }
-};
-
-const markdown: Markdown = {
+const markdownComponent: Markdown = {
     type: whisper.WhisperComponentType.Markdown,
     body: '**Test Markdown**'
 };
 
-const checkbox: Checkbox = {
+const checkboxComponent: Checkbox = {
     type: whisper.WhisperComponentType.Checkbox,
     label: 'Checkbox',
     value: false,
     onChange: (error, value, whisper) => { console.info(`Checkbox OnChange: ${value}`) }
 };
+
+const configurableTextInput = (
+    incomingOnChange: (error: Error | undefined, param: any, whisper: Whisper) => void,
+    label?: string,
+    value?: string,
+    tooltip?: string
+): TextInput => ({
+    type: whisper.WhisperComponentType.TextInput,
+    label: label,
+    value: value,
+    tooltip: tooltip,
+    onChange: incomingOnChange,
+});
 
 const confirmOrDeny = (
     resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -66,6 +62,40 @@ const confirmOrDeny = (
         }
     ];
 
+const updateWithConfirmation = (
+    resolve: (value: boolean | PromiseLike<boolean>) => void,
+    reject: (reason?: any) => void,
+    updateWhisperComponents: Array<Components>,
+): Button => ({
+    type: whisper.WhisperComponentType.Button,
+    label: 'Update',
+    onClick: (error: Error | undefined, incomingWhisper: Whisper) => {
+        if (error) {
+            incomingWhisper.close(error => { console.error(error) });
+            console.error(error);
+            reject(error);
+        }
+        incomingWhisper.update({
+            label: 'Update Whisper',
+            components: [
+                ...updateWhisperComponents,
+                ...confirmOrDeny(
+                    resolve,
+                    reject,
+                    'Did the TextInput update properly?',
+                    'TextInput failed to update',
+                    incomingWhisper)
+            ]
+        }, (error) => {
+            if (error) {
+                console.error(error);
+                incomingWhisper.close(error => console.error(error));
+                reject(error);
+            }
+        });
+    }
+});
+
 export const basicWhisperUpdate = (): Promise<boolean> =>
     new Promise(async (resolve, reject) => {
         try {
@@ -73,41 +103,15 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
                 label: 'First Whisper',
                 onClose: () => { },
                 components: [
-                    textInput,
-                    markdown,
-                    checkbox,
-                    {
-                        type: whisper.WhisperComponentType.Button,
-                        label: 'Update',
-                        onClick: (error, incomingWhisper) => {
-                            if (error) {
-                                incomingWhisper.close(error => { console.error(error) });
-                                console.error(error);
-                                reject(error);
-                            }
-                            incomingWhisper.update({
-                                label: 'Update Whisper',
-                                components: [
-                                    textInput,
-                                    markdown,
-                                    checkbox,
-                                    textInputTwo,
-                                    ...confirmOrDeny(
-                                        resolve,
-                                        reject,
-                                        'Did the TextInput update properly?',
-                                        'TextInput failed to update',
-                                        incomingWhisper)
-                                ]
-                            }, (error) => {
-                                if (error) {
-                                    console.error(error);
-                                    incomingWhisper.close(error => console.error(error));
-                                    reject(error);
-                                }
-                            });
-                        }
-                    }
+                    configurableTextInput(() => { }, 'Text Input', '', 'myTooltip'),
+                    markdownComponent,
+                    checkboxComponent,
+                    updateWithConfirmation(resolve, reject, [
+                        configurableTextInput(() => { }, 'Text Input', '', 'myTooltip'),
+                        markdownComponent,
+                        checkboxComponent,
+                        configurableTextInput(() => { }, 'Text Input Two', ''),
+                    ])
                 ],
             });
         } catch (error) {
@@ -152,35 +156,7 @@ export const updateCollapseState = (): Promise<boolean> =>
                         type: whisper.WhisperComponentType.Markdown,
                         body: 'Expand the collapse box and Update.'
                     },
-                    {
-                        type: whisper.WhisperComponentType.Button,
-                        label: 'Update',
-                        onClick: (error, incomingWhisper) => {
-                            if (error) {
-                                console.error(error);
-                                reject(error);
-                            }
-                            incomingWhisper.update({
-                                label: 'Update Whisper',
-                                components: [
-                                    collapseBox,
-                                    ...confirmOrDeny(
-                                        resolve,
-                                        reject,
-                                        'Did the second CollapseBox stay expanded?',
-                                        'CollapseBox did not render properly after update',
-                                        incomingWhisper
-                                    ),
-                                ]
-                            }, (error) => {
-                                if (error) {
-                                    console.error(error);
-                                    incomingWhisper.close(error => console.error(error));
-                                    reject(error);
-                                }
-                            });
-                        },
-                    }
+                    updateWithConfirmation(resolve, reject, [collapseBox])
                 ]
             });
         } catch (error) {
@@ -196,28 +172,21 @@ export const updateOnChange = (): Promise<boolean> =>
                 label: 'Update onChange events',
                 onClose: () => { },
                 components: [
-                    {
-                        type: whisper.WhisperComponentType.TextInput,
-                        label: 'Enter 1',
-                        onChange: (error, value, incomingWhisper) => {
+                    configurableTextInput(
+                        (error, value, incomingWhisper) => {
                             if (value === '1') {
                                 incomingWhisper.update({
                                     label: 'Whisper Updated',
                                     components: [
-                                        {
-                                            type: whisper.WhisperComponentType.TextInput,
-                                            label: 'Enter 2',
-                                            value: '',
-                                            onChange: (error, value, incomingWhisper) => {
-                                                if (value === '2') {
-                                                    incomingWhisper.close(error => { console.error(error) });
-                                                    resolve(true)
-                                                } else {
-                                                    incomingWhisper.close(error => { console.error(error) });
-                                                    reject(new Error('User did not enter required value.'));
-                                                }
+                                        configurableTextInput((error, value, incomingWhisper) => {
+                                            if (value === '2') {
+                                                incomingWhisper.close(error => { console.error(error) });
+                                                resolve(true)
+                                            } else {
+                                                incomingWhisper.close(error => { console.error(error) });
+                                                reject(new Error('User did not enter required value.'));
                                             }
-                                        }
+                                        }, 'Enter 2', '')
                                     ]
                                 }, (error) => {
                                     if (error) {
@@ -230,8 +199,8 @@ export const updateOnChange = (): Promise<boolean> =>
                                 incomingWhisper.close(error => { console.error(error) });
                                 reject(new Error('User did not enter required value.'));
                             }
-                        }
-                    }
+                        }, 'Enter 1'
+                    )
                 ]
             })
         } catch (error) {
