@@ -35,7 +35,6 @@
   @include desktop() {
     padding: 64px 0;
   }
-
 }
 
 .downloadItem {
@@ -88,7 +87,8 @@
 }
 
 .sectionHeroBackground {
-  background: $oliveSecondary3 url('../assets/images/olive-soft-glow-bottom.png') no-repeat center bottom/100% 100%;
+  background: $oliveSecondary3 url('../assets/images/olive-soft-glow-bottom.png') no-repeat center
+    bottom/100% 100%;
   color: white;
 }
 
@@ -194,7 +194,6 @@
   @include breakPoint(padding-bottom, 24px+24px+16px, 12px+12px+16px);
   position: relative;
 }
-
 
 .guideTitle {
   margin: 0;
