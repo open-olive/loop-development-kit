@@ -919,9 +919,9 @@ export const testClickableBox = (): Promise<boolean> =>
         {
           alignment: whisper.Alignment.SpaceEvenly,
           direction: whisper.Direction.Horizontal,
-          /* onClick: () => {
+          onClick: () => {
             console.debug('The toggles...they do nothing');
-          }, */
+          },
           children: [
             {
               body: `Don't click me`,
@@ -935,11 +935,146 @@ export const testClickableBox = (): Promise<boolean> =>
           direction: whisper.Direction.Horizontal,
           onClick: () => {
             resolve(true);
+            form.close((error) => console.error(error));
           },
           children: [
             {
               body: `Click me`,
               type: whisper.WhisperComponentType.Markdown,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+      ],
+    };
+
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+  });
+
+export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    let form: whisper.Whisper;
+    const config: whisper.NewWhisper = {
+      label: 'Nested Clickable Box Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          body: 'Click the text below',
+          type: whisper.WhisperComponentType.Markdown,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          onClick: () => {
+            reject(new Error('Outer element clicked'));
+            form.close((error) => console.error(error));
+          },
+          children: [
+            {
+              alignment: whisper.Alignment.SpaceEvenly,
+              direction: whisper.Direction.Horizontal,
+              onClick: () => {
+                resolve(true);
+                form.close((error) => console.error(error));
+              },
+              children: [
+                {
+                  body: `Click these words`,
+                  type: whisper.WhisperComponentType.Markdown,
+                },
+              ],
+              type: whisper.WhisperComponentType.Box,
+            },
+            {
+              alignment: whisper.Alignment.SpaceEvenly,
+              direction: whisper.Direction.Horizontal,
+              children: [
+                {
+                  body: `Don't click here`,
+                  type: whisper.WhisperComponentType.Markdown,
+                },
+              ],
+              type: whisper.WhisperComponentType.Box,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+      ],
+    };
+
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+  });
+
+export const testClickableBoxNestingButtons = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    let form: whisper.Whisper;
+    const config: whisper.NewWhisper = {
+      label: 'Nested Button in Clickable Box ',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          body: 'Click the button',
+          type: whisper.WhisperComponentType.Markdown,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          onClick: () => {
+            reject(new Error('Outer element clicked'));
+            form.close((error) => console.error(error));
+          },
+          children: [
+            {
+              label: `Click me`,
+              onClick: () => {
+                resolve(true);
+                form.close((error) => console.error(error));
+              },
+              type: whisper.WhisperComponentType.Button,
+            },
+          ],
+          type: whisper.WhisperComponentType.Box,
+        },
+      ],
+    };
+
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+  });
+
+export const testClickableBoxNestingLinks = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    let form: whisper.Whisper;
+    const config: whisper.NewWhisper = {
+      label: 'Nested Links in Clickable Box ',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          body: 'Click the link',
+          type: whisper.WhisperComponentType.Markdown,
+        },
+        {
+          alignment: whisper.Alignment.SpaceEvenly,
+          direction: whisper.Direction.Horizontal,
+          onClick: () => {
+            reject(new Error('Outer element clicked'));
+            form.close((error) => console.error(error));
+          },
+          children: [
+            {
+              type: whisper.WhisperComponentType.Link,
+              textAlign: whisper.TextAlign.Left,
+              onClick: () => {
+                form.close((error) => console.log(error));
+                resolve(true);
+              },
+              text: `Click this link`,
+              style: whisper.Urgency.None,
             },
           ],
           type: whisper.WhisperComponentType.Box,
