@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils';
-import * as whisper from '.';
-import { Direction, JustifyContent, WhisperComponentType } from '.';
+import * as whisper from './types';
+import { create } from './index';
 
 describe('Whisper', () => {
   beforeEach(() => {
@@ -20,10 +20,10 @@ describe('Whisper', () => {
             type: whisper.WhisperComponentType.Markdown,
           },
           {
-            justifyContent: JustifyContent.Center,
+            justifyContent: whisper.JustifyContent.Center,
             children: [],
-            direction: Direction.Horizontal,
-            type: WhisperComponentType.Box,
+            direction: whisper.Direction.Horizontal,
+            type: whisper.WhisperComponentType.Box,
           },
         ],
         label: 'Test',
@@ -37,21 +37,21 @@ describe('Whisper', () => {
             type: whisper.WhisperComponentType.Markdown,
           },
           {
-            alignment: JustifyContent.Center,
+            alignment: whisper.JustifyContent.Center,
             children: [],
-            direction: Direction.Horizontal,
-            type: WhisperComponentType.Box,
+            direction: whisper.Direction.Horizontal,
+            type: whisper.WhisperComponentType.Box,
           },
         ],
         label: 'Test',
         onClose: expectedClose,
       };
 
-      const expected: whisper.Whisper = {
-        close: (c: (r: Error | undefined) => void) => {
+      const expected: OliveHelps.Whisper = {
+        close: (c: (r: Error | undefined, value: undefined) => void) => {
           console.log(c);
         },
-        update: (w: whisper.NewWhisper) => {
+        update: (w: OliveHelps.NewWhisper) => {
           console.log(w);
         },
         id: '1',
@@ -63,13 +63,37 @@ describe('Whisper', () => {
         callback(undefined, expected as any),
       );
 
-      const actual = whisper.create(newWhisper);
+      const actual = create(newWhisper);
       expect(oliveHelps.whisper.create).toHaveBeenCalledWith(expectedWhisper, expect.any(Function));
       return expect(actual).resolves.toStrictEqual({
         close: expected.close,
         update: expect.any(Function),
-        id: '1'
+        id: '1',
       });
+    });
+    it('wraps calls to update', async () => {
+      const newWhisper: whisper.NewWhisper = {
+        components: [
+          {
+            body: 'Test',
+            id: '1',
+            type: whisper.WhisperComponentType.Markdown,
+          },
+        ],
+        label: 'Test',
+        onClose: jest.fn(),
+      };
+      const internalResponse: OliveHelps.Whisper = {
+        close: jest.fn(),
+        update: jest.fn(),
+        id: '1',
+      };
+      mocked(oliveHelps.whisper.create).mockImplementationOnce((_, callback) => {
+        callback(undefined, internalResponse);
+      });
+      const returnedExternal = await create(newWhisper);
+      returnedExternal.update(newWhisper);
+      expect(internalResponse.update).toHaveBeenCalled();
     });
   });
 });
