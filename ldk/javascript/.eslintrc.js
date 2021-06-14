@@ -21,7 +21,7 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error'],
+    '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
   },
   overrides: [
     {
