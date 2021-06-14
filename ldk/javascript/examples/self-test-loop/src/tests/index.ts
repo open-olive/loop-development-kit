@@ -258,7 +258,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
                 label: `No`,
                 onClick: () => {
                   form.close((error) => console.error(error));
-                  reject(Error);
+                  reject(false);
                 },
                 type: whisper.WhisperComponentType.Button,
               },
