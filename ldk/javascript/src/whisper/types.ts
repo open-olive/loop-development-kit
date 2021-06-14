@@ -258,8 +258,6 @@ export type Component = ChildComponents | CollapseBox | Box | DeprecatedBox;
 
 export type BoxChildComponent = ChildComponents | Box | DeprecatedBox;
 
-export type CollapseBoxChildComponent = ChildComponents;
-
 export interface NewWhisper {
   components: Array<Component>;
   label: string;
