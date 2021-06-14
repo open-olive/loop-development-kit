@@ -6,7 +6,6 @@ import {
   Components,
   Markdown,
   TextInput,
-  UpdateWhisper,
   Whisper,
 } from '@oliveai/ldk/dist/whisper';
 
@@ -83,6 +82,8 @@ const updateWithConfirmation = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
   reject: (reason?: any) => void,
   updateWhisperComponents: Array<Components>,
+  prompt: string,
+  rejectReason?: string,
 ): Button => ({
   type: whisper.WhisperComponentType.Button,
   label: 'Update',
@@ -99,13 +100,7 @@ const updateWithConfirmation = (
         label: 'Update Whisper',
         components: [
           ...updateWhisperComponents,
-          ...confirmOrDeny(
-            resolve,
-            reject,
-            'Did the TextInput update properly?',
-            'TextInput failed to update',
-            incomingWhisper,
-          ),
+          ...confirmOrDeny(resolve, reject, prompt, rejectReason, incomingWhisper),
         ],
       },
       (error) => {
@@ -124,18 +119,28 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       whisper.create({
-        label: 'First Whisper',
+        label: 'Basic Whisper Update',
         onClose: () => {},
         components: [
           configurableTextInput(() => {}, 'Text Input', '', 'myTooltip'),
           markdownComponent,
           checkboxComponent,
-          updateWithConfirmation(resolve, reject, [
-            configurableTextInput(() => {}, 'Text Input', '', 'myTooltip'),
-            markdownComponent,
-            checkboxComponent,
-            configurableTextInput(() => {}, 'Text Input Two', ''),
-          ]),
+          {
+            type: whisper.WhisperComponentType.Markdown,
+            body: 'Press Update.',
+          },
+          updateWithConfirmation(
+            resolve,
+            reject,
+            [
+              configurableTextInput(() => {}, 'Text Input', '', 'myTooltip'),
+              markdownComponent,
+              checkboxComponent,
+              configurableTextInput(() => {}, 'Text Input Two', ''),
+            ],
+            'Did the whisper update correctly? (no state will persist)', // TODO: State persistence across update is an upcoming feature.
+            'User selected update failed.',
+          ),
         ],
       });
     } catch (error) {
@@ -170,7 +175,7 @@ export const updateCollapseState = (): Promise<boolean> =>
       };
 
       whisper.create({
-        label: 'First Whisper',
+        label: 'Update Collapse State',
         onClose: () => {},
         components: [
           collapseBox,
@@ -178,7 +183,13 @@ export const updateCollapseState = (): Promise<boolean> =>
             type: whisper.WhisperComponentType.Markdown,
             body: 'Expand the collapse box and Update.',
           },
-          updateWithConfirmation(resolve, reject, [collapseBox]),
+          updateWithConfirmation(
+            resolve,
+            reject,
+            [collapseBox],
+            'Did the CollapseBox stay expanded?',
+            'User selected update failed.',
+          ),
         ],
       });
     } catch (error) {
