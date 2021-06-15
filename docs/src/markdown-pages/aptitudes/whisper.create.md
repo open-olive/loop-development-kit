@@ -16,6 +16,12 @@ The following component types are available:
 * ListPair - This component shows a two column view of information typically used for lists of information.
 * Markdown - Renders a message as Markdown.
     * Markdown syntax for the Markdown Component Type is defined by to the [CommonMark](https://commonmark.org/) specification. 
+    * Tip: if using a Template Literal for specifying markdown `body`, it should be noted that whitespace will be preserved when rendering markdown. As a consequence of this, markdown specified with tab whitespace (spaces, tabs, etc.) at the beginning of a line will **not** be interpreted as markdown. One way to avoid this situation, is to use a regular expression replacement function with Template Literals like `.replace(/(\n)\s+/g, '$1')` to replace all line breaks followed by whitespace with only a line break. For example:
+    ```
+    `A paragraph with *emphasis* and **strong importance**.
+        > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
+    `.replace(/(\n)\s+/g, '$1')
+    ```
 * Message - This component shows a banner in the whisper that functions as a call to action to the user.
 * Number - The text input field allows the user to provide a number within the parameters provided.
 * Password - The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.

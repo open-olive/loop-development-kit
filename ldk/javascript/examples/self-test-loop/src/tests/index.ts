@@ -197,10 +197,10 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
               | - | - |
               | Row 1 Col 1 | Row 1 Col 2 |
               | Row 2 Col 1 | Row 2 Col 2 |
-              `,
+              `.replace(/(\n)\s+/g, '$1'),
             type: whisper.WhisperComponentType.Markdown,
           },
-          {
+         {
             label: `${options[0]}  
             line one
             line two 100.0%`,
