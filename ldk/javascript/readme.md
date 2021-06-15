@@ -122,7 +122,10 @@ An Aptitude Name.
 ### Loop Examples
 Examples are provided in the `ldk/javascript/examples/` directory. These examples include more information about creating and building Loops.
 
-## Loading a Local Loop Into Olive Helps
+### VSCode Extension
+If you prefer to use VSCode, you can install our [VSCode extension](https://marketplace.visualstudio.com/items?itemName=Olive-AI.vscode-loop-development-kit) to generate boilerplate code for Olive Helps Loops.
+
+### Loading a Local Loop Into Olive Helps
 Once you have generated the Loop using the above steps into your `./dist/loop.js` directory, you can now load it into Olive Helps to test.
 
 - Open up Olive Helps and authenticate
