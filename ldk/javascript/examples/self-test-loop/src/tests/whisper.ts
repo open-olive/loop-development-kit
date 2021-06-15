@@ -585,7 +585,7 @@ export const numberInputs = (): Promise<boolean> =>
     });
   });
 
-  export const testNetworkAndListComponents = (): Promise<boolean> =>
+export const testNetworkAndListComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
 
