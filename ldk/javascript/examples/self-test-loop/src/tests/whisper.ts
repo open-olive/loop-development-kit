@@ -1,4 +1,4 @@
-import { clipboard, whisper } from '@oliveai/ldk';
+import { clipboard, whisper, network } from '@oliveai/ldk';
 
 import { Alignment, Direction, ButtonStyle, Urgency } from '@oliveai/ldk/dist/whisper';
 
@@ -306,8 +306,7 @@ Some text on the right
 
       setTimeout(() => {
         form.close(() => {});
-      }, 10000)
-
+      }, 10000);
     } catch (error) {
       console.error(error);
 
@@ -584,6 +583,110 @@ export const numberInputs = (): Promise<boolean> =>
         resolve(true);
       }, 5000);
     });
+  });
+
+  export const testNetworkAndListComponents = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    const url = `https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1`;
+
+    network
+      .httpRequest({
+        url,
+        method: 'GET',
+      })
+      .then((response: network.HTTPResponse) => {
+        console.debug('Network call succeeded, emitting list whisper', url);
+        return network.decode(response.body);
+      })
+      .then((decodedValue) => {
+        const { results } = JSON.parse(decodedValue);
+        const [recallItem] = results;
+
+        setTimeout(() => {
+          resolve(true);
+        }, 5000);
+
+        const config: whisper.NewWhisper = {
+          label: 'Latest FDA Food Recall',
+          onClose: () => {
+            console.debug('closed');
+          },
+          components: [
+            {
+              body: recallItem.product_description,
+              header: recallItem.recalling_firm,
+              style: whisper.Urgency.None,
+              type: whisper.WhisperComponentType.Message,
+            },
+            {
+              type: whisper.WhisperComponentType.Divider,
+            },
+            {
+              copyable: true,
+              label: 'Reason',
+              style: whisper.Urgency.None,
+              type: whisper.WhisperComponentType.ListPair,
+              value: recallItem.reason_for_recall,
+            },
+            {
+              copyable: true,
+              label: 'Distribution',
+              style: whisper.Urgency.None,
+              type: whisper.WhisperComponentType.ListPair,
+              value: recallItem.distribution_pattern,
+            },
+            {
+              copyable: true,
+              label: 'Quantity',
+              style: whisper.Urgency.None,
+              type: whisper.WhisperComponentType.ListPair,
+              value: recallItem.product_quantity,
+            },
+            {
+              copyable: true,
+              label: 'Codes',
+              style: whisper.Urgency.None,
+              type: whisper.WhisperComponentType.ListPair,
+              value: recallItem.code_info,
+            },
+            {
+              label: 'Expand',
+              open: false,
+              children: [
+                {
+                  copyable: true,
+                  label: 'Recall Type',
+                  style: whisper.Urgency.None,
+                  type: whisper.WhisperComponentType.ListPair,
+                  value: recallItem.voluntary_mandated,
+                },
+                {
+                  copyable: true,
+                  label: 'Product type',
+                  style: whisper.Urgency.None,
+                  type: whisper.WhisperComponentType.ListPair,
+                  value: recallItem.product_type,
+                },
+                {
+                  copyable: true,
+                  label: 'Classification',
+                  style: whisper.Urgency.None,
+                  type: whisper.WhisperComponentType.ListPair,
+                  value: recallItem.classification,
+                },
+              ],
+              type: whisper.WhisperComponentType.CollapseBox,
+            },
+          ],
+        };
+
+        whisper.create(config).then((form: whisper.Whisper) => {
+          setTimeout(() => {
+            form.close((error) => console.error(error));
+            resolve(true);
+          }, 2000);
+        });
+      });
   });
 
 export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
