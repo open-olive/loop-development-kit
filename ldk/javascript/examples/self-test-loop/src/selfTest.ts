@@ -7,29 +7,20 @@ import { LoopTest } from './testingFixtures/loopTest';
 import {
   activeWindowTest,
   allWindowTest,
-  buttonWhisper,
   charTest,
   charStreamTest,
   clipboardStream,
   clipboardWriteAndQuery,
   cursorPosition,
   hotkeyTest,
-  linkWhisper,
   listenActiveWindowTest,
-  listPairWhisperCopyableValue,
-  listPairWhisperCopyableLabel,
   networkHTTP,
   networkHTTPS,
   networkWebSocket,
   processStream,
   processQuery,
-  simpleFormWhisper,
   numberInputs,
-  initialValueSelectAndRadioWhispers,
   streamCursorPosition,
-  testClickableWhisper,
-  testBoxInTheBox,
-  testMarkdownWhisper,
   vaultReadWrite,
   testNetworkAndListComponents,
   queryDirectory,
@@ -43,6 +34,19 @@ import {
   dirExists,
   fileExists,
 } from './tests';
+
+import {
+  testBoxInTheBox,
+  buttonWhisper,
+  linkWhisper,
+  listPairWhisperCopyableValue,
+  listPairWhisperCopyableLabel,
+  simpleFormWhisper,
+  initialValueSelectAndRadioWhispers,
+  testClickableWhisper,
+  testMarkdownWhisper,
+  tooltips,
+} from './tests/whisper';
 
 const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Clipboard Aptitude', [
@@ -208,6 +212,12 @@ const testConfig: { [key: string]: TestGroup } = {
       initialValueSelectAndRadioWhispers,
       10000,
       `No action required`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - multiple components tooltip test',
+      tooltips,
+      20000,
+      `Hover on each component to see a tooltip`,
     ),
   ]),
   window: new TestGroup('Window Aptitude', [

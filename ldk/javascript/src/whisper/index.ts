@@ -123,6 +123,7 @@ export declare type Button = WhisperComponent<WhisperComponentType.Button> & {
   label: string;
   onClick: WhisperHandler;
   size?: ButtonSize;
+  tooltip?: string;
 };
 
 export declare type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> & {
@@ -157,6 +158,7 @@ export declare type ListPair = WhisperComponent<WhisperComponentType.ListPair> &
 
 export declare type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   body: string;
+  tooltip?: string;
 };
 
 export declare type Message = WhisperComponent<WhisperComponentType.Message> & {
@@ -164,6 +166,7 @@ export declare type Message = WhisperComponent<WhisperComponentType.Message> & {
   header?: string;
   style?: Urgency;
   textAlign?: TextAlign;
+  tooltip?: string;
 };
 
 export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
