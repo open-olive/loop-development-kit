@@ -47,6 +47,7 @@ import {
   testMarkdownWhisper,
   tooltips,
 } from './tests/whisper';
+import { basicWhisperUpdate, updateCollapseState, updateOnChange } from './tests/whisper-update';
 
 const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Clipboard Aptitude', [
@@ -218,6 +219,26 @@ const testConfig: { [key: string]: TestGroup } = {
       tooltips,
       20000,
       `Hover on each component to see a tooltip`,
+    ),
+  ]),
+  whisperUpdate: new TestGroup('Whisper Updates', [
+    new LoopTest(
+      'Whisper Update - Basic Whisper Update',
+      basicWhisperUpdate,
+      20000,
+      `Did the whisper update correctly?`,
+    ),
+    new LoopTest(
+      'Whisper Update - Collapse State Across Update',
+      updateCollapseState,
+      20000,
+      `Did the whisper update correctly?`,
+    ),
+    new LoopTest(
+      'Whisper Update - OnChange Across Update',
+      updateOnChange,
+      20000,
+      `Did the whisper update correctly?`,
     ),
   ]),
   window: new TestGroup('Window Aptitude', [
