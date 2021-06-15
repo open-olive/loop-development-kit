@@ -200,7 +200,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
               `.replace(/(\n)\s+/g, '$1'),
             type: whisper.WhisperComponentType.Markdown,
           },
-         {
+          {
             label: `${options[0]}  
             line one
             line two 100.0%`,
