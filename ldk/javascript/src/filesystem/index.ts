@@ -161,7 +161,10 @@ export interface Filesystem {
   join(segments: string[]): Promise<string>;
 
   /**
+   * Opens a file using the default tool for the extension provided in the
+   * path parameter
    *
+   * @param path - a string providing the path to the file to open
    */
   open(path: string): Promise<void>;
 }
