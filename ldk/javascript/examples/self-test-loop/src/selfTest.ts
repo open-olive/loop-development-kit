@@ -42,6 +42,8 @@ import {
   listenDir,
   dirExists,
   fileExists,
+  testOpenFile,
+  testOpenFileDoesNotExist,
 } from './tests';
 
 const testConfig: { [key: string]: TestGroup } = {
@@ -267,6 +269,18 @@ const testConfig: { [key: string]: TestGroup } = {
       fileExists,
       10000,
       'Checking for file existence...',
+    ),
+    new LoopTest(
+      'File Aptitude - Open File',
+      testOpenFile,
+      10000,
+      'Opening a file with the default tool...',
+    ),
+    new LoopTest(
+      `File Aptitude - Open File Doesn't Exist`,
+      testOpenFileDoesNotExist,
+      10000,
+      `Attempting to open a file that doesn't exist...`,
     ),
   ]),
 };
