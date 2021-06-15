@@ -635,7 +635,7 @@ export const tooltips = (): Promise<boolean> =>
           },
           {
             type: whisper.WhisperComponentType.Message,
-            header: "Message Header",
+            header: 'Message Header',
             body: `Hover to see tooltip`,
             style: Urgency.Success,
             tooltip: 'Tooltip for Message',
