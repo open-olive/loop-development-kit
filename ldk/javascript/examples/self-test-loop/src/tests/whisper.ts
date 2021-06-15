@@ -303,6 +303,11 @@ Some text on the right
           },
         ],
       });
+
+      setTimeout(() => {
+        form.close(() => {});
+      }, 10000)
+
     } catch (error) {
       console.error(error);
 
