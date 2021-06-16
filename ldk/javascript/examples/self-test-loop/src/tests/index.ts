@@ -184,8 +184,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         },
         components: [
           {
-            body:
-`A paragraph with *emphasis* and **strong importance**.
+            body: `A paragraph with *emphasis* and **strong importance**.
 > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
 
 * Lists
