@@ -21,8 +21,6 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
       | Row 1 Col 1 | Row 1 Col 2 |
       | Row 2 Col 1 | Row 2 Col 2 |`;
 
-    console.info(markdown);
-
     var form: whisper.Whisper;
     whisper
       .create({
