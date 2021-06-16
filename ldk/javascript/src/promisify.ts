@@ -35,7 +35,7 @@ export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
   map: Mapper<TInternalOut, TExternalOut>,
   arg: OliveHelps.ReadableWithParam<TParam, TInternalOut>,
 ): Promise<TExternalOut> {
-  return promisifyMappedBothWithParams(param, x => x, map, arg);
+  return promisifyMappedBothWithParams(param, (x) => x, map, arg);
 }
 
 function promiseResolver<T>(
