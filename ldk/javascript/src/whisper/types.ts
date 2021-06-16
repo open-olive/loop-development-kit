@@ -244,7 +244,7 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
 
 export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   /**
-   * @deprecated - use justifyContent instead.
+   * @deprecated - use {@link Box.justifyContent} instead.
    */
   alignment: JustifyContent;
   children: Array<ChildComponents>;
@@ -258,6 +258,10 @@ export type Box = WhisperComponent<WhisperComponentType.Box> & {
 };
 
 export type Component = ChildComponents | CollapseBox | Box | DeprecatedBox;
+/**
+ * @deprecated - Use {@link Component} instead.
+ */
+export type Components = Component;
 
 export type BoxChildComponent = ChildComponents | Box | DeprecatedBox;
 
