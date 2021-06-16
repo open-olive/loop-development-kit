@@ -184,20 +184,20 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         },
         components: [
           {
-            body: `A paragraph with *emphasis* and **strong importance**.
-              > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
+            body:
+`A paragraph with *emphasis* and **strong importance**.
+> A block quote with ~strikethrough~ and a URL: https://oliveai.com/
 
-              * Lists
-              * [ ] todo
-              * [x] done
+* Lists
+* [ ] todo
+* [x] done
 
-              A table:
+A table:
 
-              | Table Header 1 | Table header 2 |
-              | - | - |
-              | Row 1 Col 1 | Row 1 Col 2 |
-              | Row 2 Col 1 | Row 2 Col 2 |
-              `.replace(/(\n)\s+/g, '$1'),
+| Table Header 1 | Table header 2 |
+| - | - |
+| Row 1 Col 1 | Row 1 Col 2 |
+| Row 2 Col 1 | Row 2 Col 2 |`,
             type: whisper.WhisperComponentType.Markdown,
           },
           {
