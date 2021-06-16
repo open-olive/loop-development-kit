@@ -313,6 +313,7 @@ declare namespace OliveHelps {
     label: string;
     onClick: WhisperHandler;
     size?: ButtonSize;
+    tooltip?: string;
   };
 
   type Checkbox = Component<WhisperComponentType.Checkbox> & {
@@ -347,6 +348,7 @@ declare namespace OliveHelps {
 
   type Markdown = Component<WhisperComponentType.Markdown> & {
     body: string;
+    tooltip?: string;
   };
 
   type Message = Component<WhisperComponentType.Message> & {
@@ -354,6 +356,7 @@ declare namespace OliveHelps {
     header?: string;
     style?: Urgency;
     textAlign?: TextAlign;
+    tooltip?: string;
   };
 
   type NumberInput = Component<WhisperComponentType.Number> & {
