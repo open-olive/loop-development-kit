@@ -126,6 +126,7 @@ export type Button = WhisperComponent<WhisperComponentType.Button> & {
   label: string;
   onClick: WhisperHandler;
   size?: ButtonSize;
+  tooltip?: string;
 };
 
 export type Checkbox = WhisperComponent<WhisperComponentType.Checkbox> & {
@@ -160,6 +161,7 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
 
 export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   body: string;
+  tooltip?: string;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
@@ -167,6 +169,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   header?: string;
   style?: Urgency;
   textAlign?: TextAlign;
+  tooltip?: string;
 };
 
 export type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
