@@ -1,6 +1,6 @@
 import { TextDecoder } from 'text-encoding-shim';
-import { HTTPResponse, Socket, HTTPRequest } from '../network';
-import { mapToUint8Array, mapToBinaryData } from './mapper';
+import { HTTPResponse, Socket, HTTPRequest } from './index';
+import { mapToUint8Array, mapToBinaryData } from '../utils/mapper';
 
 export const mapToHttpResponse = (response: OliveHelps.HTTPResponse): HTTPResponse => ({
   statusCode: response.statusCode,

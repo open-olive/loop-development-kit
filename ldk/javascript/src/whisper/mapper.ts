@@ -7,7 +7,7 @@ import {
   WhisperComponentType,
 } from './types';
 
-export function convertToInternalChildComponent(
+export function mapToInternalChildComponent(
   component: BoxChildComponent,
 ): OliveHelps.ChildComponents {
   switch (component.type) {
@@ -15,28 +15,28 @@ export function convertToInternalChildComponent(
       return {
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         direction: component.direction,
-        children: component.children.map(convertToInternalChildComponent),
+        children: component.children.map(mapToInternalChildComponent),
         type: WhisperComponentType.Box,
       };
     case WhisperComponentType.Button:
       return {
         ...component,
         onClick: (error, whisper) => {
-          component.onClick(error, convertToExternalWhisper(whisper));
+          component.onClick(error, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.Button;
     case WhisperComponentType.Checkbox:
       return {
         ...component,
         onChange: (error, param, whisper) => {
-          component.onChange(error, param, convertToExternalWhisper(whisper));
+          component.onChange(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.Checkbox;
     case WhisperComponentType.Email:
       return {
         ...component,
         onChange: (error, param, whisper) => {
-          component.onChange(error, param, convertToExternalWhisper(whisper));
+          component.onChange(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.Email;
     case WhisperComponentType.Link: {
@@ -45,7 +45,7 @@ export function convertToInternalChildComponent(
         return {
           ...component,
           onClick: (error, whisper) => {
-            onClick(error, convertToExternalWhisper(whisper));
+            onClick(error, mapToExternalWhisper(whisper));
           },
         } as OliveHelps.Link;
       }
@@ -60,42 +60,42 @@ export function convertToInternalChildComponent(
       return {
         ...component,
         onChange: (error, param, whisper) => {
-          component.onChange(error, param, convertToExternalWhisper(whisper));
+          component.onChange(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.NumberInput;
     case WhisperComponentType.Password:
       return {
         ...component,
         onChange: (error, param, whisper) => {
-          component.onChange(error, param, convertToExternalWhisper(whisper));
+          component.onChange(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.Password;
     case WhisperComponentType.RadioGroup:
       return {
         ...component,
         onSelect: (error, param, whisper) => {
-          component.onSelect(error, param, convertToExternalWhisper(whisper));
+          component.onSelect(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.RadioGroup;
     case WhisperComponentType.Select:
       return {
         ...component,
         onSelect: (error, param, whisper) => {
-          component.onSelect(error, param, convertToExternalWhisper(whisper));
+          component.onSelect(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.Select;
     case WhisperComponentType.Telephone:
       return {
         ...component,
         onChange: (error, param, whisper) => {
-          component.onChange(error, param, convertToExternalWhisper(whisper));
+          component.onChange(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.Telephone;
     case WhisperComponentType.TextInput:
       return {
         ...component,
         onChange: (error, param, whisper) => {
-          component.onChange(error, param, convertToExternalWhisper(whisper));
+          component.onChange(error, param, mapToExternalWhisper(whisper));
         },
       } as OliveHelps.TextInput;
     default:
@@ -103,43 +103,43 @@ export function convertToInternalChildComponent(
   }
 }
 
-export function convertToInternalComponent(component: Component): OliveHelps.Components {
+export function mapToInternalComponent(component: Component): OliveHelps.Components {
   switch (component.type) {
     case WhisperComponentType.CollapseBox:
       return {
         label: component.label,
         open: component.open,
-        children: component.children.map(convertToInternalChildComponent),
+        children: component.children.map(mapToInternalChildComponent),
         type: WhisperComponentType.CollapseBox,
       };
     default:
-      return convertToInternalChildComponent(component);
+      return mapToInternalChildComponent(component);
   }
 }
 
-export function convertToInternalWhisper(whisper: UpdateWhisper): OliveHelps.UpdateWhisper;
-export function convertToInternalWhisper(whisper: NewWhisper): OliveHelps.NewWhisper;
-export function convertToInternalWhisper(
+export function mapToInternalWhisper(whisper: UpdateWhisper): OliveHelps.UpdateWhisper;
+export function mapToInternalWhisper(whisper: NewWhisper): OliveHelps.NewWhisper;
+export function mapToInternalWhisper(
   whisper: NewWhisper | UpdateWhisper,
 ): OliveHelps.NewWhisper | OliveHelps.UpdateWhisper {
   return 'onClose' in whisper
     ? {
         label: whisper.label,
         onClose: whisper.onClose,
-        components: whisper.components.map(convertToInternalComponent),
+        components: whisper.components.map(mapToInternalComponent),
       }
     : {
         label: whisper.label,
-        components: whisper.components.map(convertToInternalComponent),
+        components: whisper.components.map(mapToInternalComponent),
       };
 }
 
-export function convertToExternalWhisper(whisper: OliveHelps.Whisper): Whisper {
+export function mapToExternalWhisper(whisper: OliveHelps.Whisper): Whisper {
   return {
     id: whisper.id,
     close: whisper.close,
     update(updateWhisper: UpdateWhisper, cb): void {
-      whisper.update(convertToInternalWhisper(updateWhisper), cb);
+      whisper.update(mapToInternalWhisper(updateWhisper), cb);
     },
   };
 }
