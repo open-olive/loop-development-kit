@@ -40,15 +40,17 @@ export class LdkForm {
     children?.forEach((child: any) => {
       if (this.isOnChangeInput(child)) {
         const incomingOnChange = child.onChange;
+
+        // eslint-disable-next-line no-param-reassign
         child.onChange = (error: Error | undefined, param: string, whisper: Whisper) => {
-          // eslint-disable-line no-param-reassign
           this.componentState.set(child.name, param);
           incomingOnChange(error, param, whisper);
         };
       } else if (this.isOnSelectInput(child)) {
         const incomingOnSelect = child.onSelect;
+
+        // eslint-disable-next-line no-param-reassign
         child.onSelect = (error: Error | undefined, param: string, whisper: Whisper) => {
-          // eslint-disable-line no-param-reassign
           this.componentState.set(child.name, param);
           incomingOnSelect(error, param, whisper);
         };
