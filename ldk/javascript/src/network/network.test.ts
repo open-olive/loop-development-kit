@@ -110,7 +110,7 @@ describe('Network', () => {
   describe('webSocket', () => {
     it('passed in callback function to olive helps', () => {
       const socketConfiguration: network.SocketConfiguration = {
-        url: "url"
+        url: 'url',
       };
 
       network.webSocketConnect(socketConfiguration);
@@ -128,7 +128,7 @@ describe('Network', () => {
       });
 
       const actual = network.webSocketConnect({
-        url: "url"
+        url: 'url',
       });
 
       return expect(actual).rejects.toBe(exception);

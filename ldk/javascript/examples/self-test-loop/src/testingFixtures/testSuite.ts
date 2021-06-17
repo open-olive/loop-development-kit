@@ -41,34 +41,40 @@ export default class TestSuite {
     };
 
     var listWhisper: whisper.Whisper;
-    whisper.create({
-      label: 'Self Test Loop - Results',
-      onClose: () => {
-        console.log('closed Results');
-      },
-      components: elements,
-    }).then((whisper: whisper.Whisper) => listWhisper = whisper);
+    whisper
+      .create({
+        label: 'Self Test Loop - Results',
+        onClose: () => {
+          console.log('closed Results');
+        },
+        components: elements,
+      })
+      .then((whisper: whisper.Whisper) => (listWhisper = whisper));
 
     var markdownWhisper: whisper.Whisper;
-    whisper.create({
-      label: 'Self Test Loop - Results',
-      onClose: () => {
-        console.log('closed Results');
-      },
-      components: [
-        {
-          body: `Press "Ctrl + /" to bring back up the original whisper`,
-          type: whisper.WhisperComponentType.Markdown,
+    whisper
+      .create({
+        label: 'Self Test Loop - Results',
+        onClose: () => {
+          console.log('closed Results');
         },
-      ],
-    }).then((whisper: whisper.Whisper) => markdownWhisper = whisper);
+        components: [
+          {
+            body: `Press "Ctrl + /" to bring back up the original whisper`,
+            type: whisper.WhisperComponentType.Markdown,
+          },
+        ],
+      })
+      .then((whisper: whisper.Whisper) => (markdownWhisper = whisper));
 
     var keyboardListener: Cancellable;
-    keyboard.listenHotkey(hotkeys, (pressed) => {
-      listWhisper.close(error => console.error(error));
-      markdownWhisper.close(error => console.error(error));
-      keyboardListener.cancel();
-    }).then((cancellable: Cancellable) => keyboardListener = cancellable);
+    keyboard
+      .listenHotkey(hotkeys, (pressed) => {
+        listWhisper.close((error) => console.error(error));
+        markdownWhisper.close((error) => console.error(error));
+        keyboardListener.cancel();
+      })
+      .then((cancellable: Cancellable) => (keyboardListener = cancellable));
     return true;
   }
 }

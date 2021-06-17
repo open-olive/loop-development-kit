@@ -1,0 +1,18 @@
+name: Prettier
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  prettier-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: npm set audit false
+      - run: npm ci
+      - run: npm run prettier:all:check

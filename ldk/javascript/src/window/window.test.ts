@@ -143,7 +143,7 @@ describe('Window', () => {
         returnCb({} as any);
         listenerCb(undefined, windowAllEvent);
       });
-      
+
       await window.listenAll(callback);
 
       expect(callback).toHaveBeenCalledWith(windowAllEvent);

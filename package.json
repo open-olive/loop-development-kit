@@ -5,7 +5,6 @@
   "main": "index.js",
   "private": true,
   "workspaces": [
-    "ldk/node",
     "docs",
     "ldk/javascript"
   ],
@@ -13,13 +12,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "precommit:node": "cd ldk/node && npm run build && git add dist",
-    "prettier:all": "prettier --write '**/*.{js,jsx,ts,tsx,json,scss}'"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit:node"
-    }
+    "prettier:all:write": "prettier --write '**/*.{js,jsx,ts,tsx,json,scss}'",
+    "prettier:all:check": "prettier --check '**/*.{js,jsx,ts,tsx,json,scss}'"
   },
   "devDependencies": {
     "husky": "4.3.6",

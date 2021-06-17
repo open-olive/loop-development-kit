@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
-import { graphql, useStaticQuery } from "gatsby";
-import Img from "gatsby-image";
+import React, { useMemo } from 'react';
+import { graphql, useStaticQuery } from 'gatsby';
+import Img from 'gatsby-image';
 
 export interface ImageProps {
   src: string;
@@ -12,9 +12,7 @@ export interface ImageProps {
 export const Image: React.FunctionComponent<ImageProps> = ({ src, ...rest }) => {
   const data = useStaticQuery(graphql`
     query {
-      images: allFile(
-        filter: { internal: { mediaType: { regex: "/image/" } } }
-      ) {
+      images: allFile(filter: { internal: { mediaType: { regex: "/image/" } } }) {
         edges {
           node {
             relativePath
@@ -33,17 +31,17 @@ export const Image: React.FunctionComponent<ImageProps> = ({ src, ...rest }) => 
 
   const match = useMemo<any>(
     () => data.images.edges.find((data: any) => src === data.node.relativePath),
-    [data, src]
+    [data, src],
   );
 
   if (!match) {
-    console.log("Returning null", src);
+    console.log('Returning null', src);
     return null;
   }
 
-  const {node} = match;
+  const { node } = match;
 
-  if (node.extension === "svg" || !node.childImageSharp) {
+  if (node.extension === 'svg' || !node.childImageSharp) {
     return <img src={node.publicURL} {...rest} />;
   }
 

@@ -7,28 +7,20 @@ import { LoopTest } from './testingFixtures/loopTest';
 import {
   activeWindowTest,
   allWindowTest,
-  buttonWhisper,
   charTest,
   charStreamTest,
   clipboardStream,
   clipboardWriteAndQuery,
   cursorPosition,
   hotkeyTest,
-  linkWhisper,
   listenActiveWindowTest,
   networkHTTP,
   networkHTTPS,
   networkWebSocket,
   processStream,
   processQuery,
-  simpleFormWhisper,
-  numberInputs,
-  initialValueSelectAndRadioWhispers,
   streamCursorPosition,
-  testClickableWhisper,
-  testMarkdownWhisper,
   vaultReadWrite,
-  testNetworkAndListComponents,
   queryDirectory,
   createAndDeleteFile,
   userJWTTest,
@@ -40,6 +32,22 @@ import {
   dirExists,
   fileExists,
 } from './tests';
+
+import {
+  testBoxInTheBox,
+  buttonWhisper,
+  linkWhisper,
+  numberInputs,
+  testNetworkAndListComponents,
+  listPairWhisperCopyableValue,
+  listPairWhisperCopyableLabel,
+  simpleFormWhisper,
+  initialValueSelectAndRadioWhispers,
+  testClickableWhisper,
+  testMarkdownWhisper,
+  tooltips,
+} from './tests/whisper';
+import { basicWhisperUpdate, updateCollapseState, updateOnChange } from './tests/whisper-update';
 
 const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Clipboard Aptitude', [
@@ -163,6 +171,12 @@ const testConfig: { [key: string]: TestGroup } = {
       'Click the 5th option',
     ),
     new LoopTest(
+      'Whisper Aptitude - Box in the box',
+      testBoxInTheBox,
+      10000,
+      'Verify that box in the box rendered correctly',
+    ),
+    new LoopTest(
       'Whisper Aptitude - External Links',
       linkWhisper,
       10000,
@@ -173,6 +187,18 @@ const testConfig: { [key: string]: TestGroup } = {
       testNetworkAndListComponents,
       5000,
       'No action required',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - ListPair Copyable Value',
+      listPairWhisperCopyableValue,
+      10000,
+      'Click the ListPair value to copy its text',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - ListPair Copyable Label',
+      listPairWhisperCopyableLabel,
+      10000,
+      'Click the ListPair label to copy its text',
     ),
     new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
     new LoopTest(
@@ -187,6 +213,32 @@ const testConfig: { [key: string]: TestGroup } = {
       initialValueSelectAndRadioWhispers,
       10000,
       `No action required`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - multiple components tooltip test',
+      tooltips,
+      20000,
+      `Hover on each component to see a tooltip`,
+    ),
+  ]),
+  whisperUpdate: new TestGroup('Whisper Updates', [
+    new LoopTest(
+      'Whisper Update - Basic Whisper Update',
+      basicWhisperUpdate,
+      20000,
+      `Did the whisper update correctly?`,
+    ),
+    new LoopTest(
+      'Whisper Update - Collapse State Across Update',
+      updateCollapseState,
+      20000,
+      `Did the whisper update correctly?`,
+    ),
+    new LoopTest(
+      'Whisper Update - OnChange Across Update',
+      updateOnChange,
+      20000,
+      `Did the whisper update correctly?`,
     ),
   ]),
   window: new TestGroup('Window Aptitude', [
@@ -251,7 +303,7 @@ const testConfig: { [key: string]: TestGroup } = {
 };
 
 export default class SelfTestLoop {
-  start(): void {
+  async start(): Promise<void> {
     console.log('Starting Self Test...');
     const hotkeys = {
       key: '/',
@@ -259,10 +311,11 @@ export default class SelfTestLoop {
     };
 
     try {
-      this.openTestGroups();
-      keyboard.listenHotkey(hotkeys, (pressed: boolean) => {
+      let testGroupsWhisper = await this.openTestGroups();
+      keyboard.listenHotkey(hotkeys, async (pressed: boolean) => {
         if (pressed) {
-          this.openTestGroups();
+          testGroupsWhisper.close((error) => console.log(error));
+          testGroupsWhisper = await this.openTestGroups();
         }
       });
     } catch (e) {
@@ -270,7 +323,7 @@ export default class SelfTestLoop {
     }
   }
 
-  openTestGroups(): void {
+  async openTestGroups(): Promise<whisper.Whisper> {
     let allTests = [] as LoopTest[];
     // eslint-disable-next-line
     const clickableElements: any[] = [];
@@ -342,7 +395,7 @@ export default class SelfTestLoop {
       style: whisper.Urgency.None,
     });
 
-    whisper.create({
+    return await whisper.create({
       label: 'Self Test Loop',
       onClose: () => {
         console.log('closed Self Test whisper');

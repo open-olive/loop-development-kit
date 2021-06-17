@@ -16,6 +16,12 @@ The following component types are available:
 * ListPair - This component shows a two column view of information typically used for lists of information.
 * Markdown - Renders a message as Markdown.
     * Markdown syntax for the Markdown Component Type is defined by to the [CommonMark](https://commonmark.org/) specification. 
+    * Tip: if using a Template Literal for specifying markdown `body`, leading spaces (including those suggested by code indentation) will be treated as spaces by markdown. As a consequence of this, markdown specified with tab whitespace (spaces, tabs, etc.) at the beginning of a line will **not** be rendered as markdown. One way to avoid this situation, is to use a library like `stripIndent` from the [common-tags library](https://www.npmjs.com/package/common-tags#stripindent). For example:
+    ```
+    stripIndent`
+      A paragraph with *emphasis* and **strong importance**.
+      > A block quote with ~strikethrough~ and a URL: https://oliveai.com/`;
+    ```
 * Message - This component shows a banner in the whisper that functions as a call to action to the user.
 * Number - The text input field allows the user to provide a number within the parameters provided.
 * Password - The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
