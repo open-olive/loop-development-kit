@@ -299,7 +299,7 @@ declare namespace OliveHelps {
     close: Readable<undefined>;
     update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
-  
+
   interface Component<T extends WhisperComponentType> {
     id?: string;
     type: T;

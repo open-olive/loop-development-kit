@@ -40,7 +40,7 @@ describe('Whisper', () => {
               },
             ],
             onSubmit: jest.fn(),
-            type: whisper.WhisperComponentType.Form
+            type: whisper.WhisperComponentType.Form,
           },
         ],
         label: expectedLabel,
@@ -57,12 +57,12 @@ describe('Whisper', () => {
           {
             label: 'Submit',
             onClick: expect.any(Function),
-            type: whisper.WhisperComponentType.Button
-          }
+            type: whisper.WhisperComponentType.Button,
+          },
         ],
         label: expectedLabel,
         onClose: expectedCloseFunction,
-      }
+      };
 
       whisper.create(formWhisper);
 
@@ -87,7 +87,7 @@ describe('Whisper', () => {
               },
             ],
             onSubmit: jest.fn(),
-            type: whisper.WhisperComponentType.Form
+            type: whisper.WhisperComponentType.Form,
           },
           {
             children: [
@@ -98,7 +98,7 @@ describe('Whisper', () => {
               },
             ],
             onSubmit: jest.fn(),
-            type: whisper.WhisperComponentType.Form
+            type: whisper.WhisperComponentType.Form,
           },
         ],
         label: expectedLabel,
@@ -115,7 +115,7 @@ describe('Whisper', () => {
           {
             label: 'Submit',
             onClick: expect.any(Function),
-            type: whisper.WhisperComponentType.Button
+            type: whisper.WhisperComponentType.Button,
           },
           {
             label: 'TestTelephoneInput',
@@ -125,12 +125,12 @@ describe('Whisper', () => {
           {
             label: 'Submit',
             onClick: expect.any(Function),
-            type: whisper.WhisperComponentType.Button
+            type: whisper.WhisperComponentType.Button,
           },
         ],
         label: expectedLabel,
         onClose: expectedCloseFunction,
-      }
+      };
 
       whisper.create(twoFormWhisper);
 

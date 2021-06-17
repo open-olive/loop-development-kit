@@ -63,8 +63,8 @@ export enum WhisperComponentType {
    */
   TextInput = 'textInput',
   /**
-   * A form component allows for child component values to be read during a submit event. 
-   * 
+   * A form component allows for child component values to be read during a submit event.
+   *
    * For each child component, a unique 'name' property must be provided. Duplicate child component names will yield updated values for last provided component.
    */
   Form = 'form',
