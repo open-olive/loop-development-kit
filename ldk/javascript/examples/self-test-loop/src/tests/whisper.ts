@@ -1,10 +1,26 @@
 import { clipboard, whisper, network } from '@oliveai/ldk';
 
 import { Alignment, Direction, ButtonStyle, Urgency } from '@oliveai/ldk/dist/whisper';
+import { stripIndent } from 'common-tags';
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const options = ['M12.01', 'M00.123'];
+    const markdown = stripIndent`
+      A paragraph with *emphasis* and **strong importance**.
+      > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
+
+      * Lists
+      * [ ] todo
+      * [x] done
+
+      A table:
+
+      | Table Header 1 | Table header 2 |
+      | - | - |
+      | Row 1 Col 1 | Row 1 Col 2 |
+      | Row 2 Col 1 | Row 2 Col 2 |`;
+
     var form: whisper.Whisper;
     whisper
       .create({
@@ -14,20 +30,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         },
         components: [
           {
-            body: `A paragraph with *emphasis* and **strong importance**.
-              > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
-
-              * Lists
-              * [ ] todo
-              * [x] done
-
-              A table:
-
-              | Table Header 1 | Table header 2 |
-              | - | - |
-              | Row 1 Col 1 | Row 1 Col 2 |
-              | Row 2 Col 1 | Row 2 Col 2 |
-              `,
+            body: markdown,
             type: whisper.WhisperComponentType.Markdown,
           },
           {
@@ -190,40 +193,40 @@ export const testBoxInTheBox = (): Promise<boolean> =>
           },
           {
             type: whisper.WhisperComponentType.Markdown,
-            body: `
-|||
-|:---|:---|
-|**Video Visit**||
-|ADHD/Learning Problems|Allergies|
-|Anxiety|Asthma|
-|Cold/Sore Throat|Depression|
-|Diaper Rash|F/U Dementia|
-|F/U Diabetes/DM|F/U Imaging Results|
-|F/U Labs|F/U Parkinsons|
-|F/U Thyroid|Fatigue|
-|Flu Symptoms|GWA (Medicare)|
-|Headache|Insomnia|
-|||
-|||
-|||
-|||
-|**In-Person Only**||
-|Back Pain|Earache|
-|F/U Hypertension/Blood Pressure|TB Test|
-|||
-|||
-|||
-|||
-|**OB Video Visit**||
-|Contraceptive Consults|F/U Labs/Tests/Ultrasounds|
-|Infertility Consults|Post-Partum Appointments (Scheduled By Office)|
+            body: stripIndent`
+              |||
+              |:---|:---|
+              |**Video Visit**||
+              |ADHD/Learning Problems|Allergies|
+              |Anxiety|Asthma|
+              |Cold/Sore Throat|Depression|
+              |Diaper Rash|F/U Dementia|
+              |F/U Diabetes/DM|F/U Imaging Results|
+              |F/U Labs|F/U Parkinsons|
+              |F/U Thyroid|Fatigue|
+              |Flu Symptoms|GWA (Medicare)|
+              |Headache|Insomnia|
+              |||
+              |||
+              |||
+              |||
+              |**In-Person Only**||
+              |Back Pain|Earache|
+              |F/U Hypertension/Blood Pressure|TB Test|
+              |||
+              |||
+              |||
+              |||
+              |**OB Video Visit**||
+              |Contraceptive Consults|F/U Labs/Tests/Ultrasounds|
+              |Infertility Consults|Post-Partum Appointments (Scheduled By Office)|
             `,
           },
           {
             type: whisper.WhisperComponentType.Markdown,
-            body: `
-# Box in the Box Example
-`,
+            body: stripIndent`
+              # Box in the Box Example
+              `,
           },
           {
             type: whisper.WhisperComponentType.Box,
@@ -237,11 +240,11 @@ export const testBoxInTheBox = (): Promise<boolean> =>
                 children: [
                   {
                     type: whisper.WhisperComponentType.Markdown,
-                    body: `
-**Header Left**
+                    body: stripIndent`
+                      **Header Left**
 
-Some text on the left
-`,
+                      Some text on the left
+                      `,
                   },
                   {
                     type: whisper.WhisperComponentType.TextInput,
@@ -259,11 +262,11 @@ Some text on the left
                 children: [
                   {
                     type: whisper.WhisperComponentType.Markdown,
-                    body: `
-**Header Right**
+                    body: stripIndent`
+                      **Header Right**
 
-Some text on the right
-`,
+                      Some text on the right
+                      `,
                   },
                   {
                     type: whisper.WhisperComponentType.TextInput,
@@ -758,9 +761,9 @@ export const tooltips = (): Promise<boolean> =>
           },
           {
             type: whisper.WhisperComponentType.Markdown,
-            body: `
-# Are all tooltips rendered?
-`,
+            body: stripIndent`
+              # Are all tooltips rendered?
+              `,
           },
           {
             type: whisper.WhisperComponentType.Box,
