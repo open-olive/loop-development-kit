@@ -1,15 +1,27 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
-import * as mapper from '../utils/mapper';
+import * as mapper from './mapper';
 import { Cancellable } from '../cancellable';
-import { promisifyMappedWithParam } from '../promisify';
+import { promisifyMappedBothWithParams, promisifyMappedWithParam } from '../promisify';
 
 /**
  * The HTTP Request configuration.
  */
 export interface HTTPRequest {
-  body?: Uint8Array;
+  /**
+   * Request Body to send to the provided url
+   */
+  body?: string | Uint8Array;
+  /**
+   * Collection of request headers
+   */
   headers?: Record<string, string[]>;
+  /**
+   * Request method type
+   */
   method: string;
+  /**
+   * Endpoint url
+   */
   url: string;
 }
 
@@ -38,7 +50,7 @@ export type CallbackError = (error: Error | undefined) => void;
  */
 export interface SocketConfiguration {
   /**
-   * Websocket server endpoint url: '{schema}://{host}:{port}' - schema could be ws or wss
+   * Websocket server endpoint url: '{schema}://{host}:{port}' - schema should be wss
    */
   url: string;
   /**
@@ -122,14 +134,9 @@ export interface Network {
 }
 
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  const bodyData = request.body ? [...request.body] : undefined;
-  return promisifyMappedWithParam(
-    {
-      body: bodyData,
-      headers: request.headers,
-      method: request.method,
-      url: request.url,
-    },
+  return promisifyMappedBothWithParams(
+    request,
+    mapper.mapToHttpRequest,
     mapper.mapToHttpResponse,
     oliveHelps.network.httpRequest,
   );

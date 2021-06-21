@@ -7,9 +7,8 @@ import { buildBabelConfig, buildOptimization, buildWebpackConfig } from './share
 // Suppressing rule as we intentionally want a dynamic require.
 // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-dynamic-require
 const ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
-
-const baseBabelConfig: webpack.RuleSetRule = buildBabelConfig(false);
-const optimization = buildOptimization(true);
+const baseBabelConfig: webpack.RuleSetRule = buildBabelConfig(true);
+const optimization = buildOptimization(false);
 const buildPath = path.join(process.cwd(), 'dist');
 
 const config: webpack.Configuration = buildWebpackConfig(

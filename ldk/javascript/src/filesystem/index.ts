@@ -61,9 +61,9 @@ export interface WriteFileParams {
    */
   path: string;
   /**
-   * byte array data
+   * file data
    */
-  data: Uint8Array;
+  data: string | Uint8Array;
   /**
    * indicates if file should be overwritten or appended with the provided data
    */
@@ -156,7 +156,7 @@ export interface Filesystem {
    * Join returns an empty string. On Windows, the result will only be a UNC path if the first non-empty element is a UNC path.
    *
    * @param segments - an array of path segments to join
-   * @returns - a single path seperated with an OS specific Separator
+   * @returns - a single path separated with an OS specific Separator
    */
   join(segments: string[]): Promise<string>;
 }
@@ -213,11 +213,9 @@ export function writeFile({
   writeOperation,
   writeMode,
 }: WriteFileParams): Promise<void> {
-  // converting to a simplified array to satisfy sidekick contract as goja has major issues with regular Uint8Array
-  const simplifiedArray = [...data];
   return promisifyWithFourParams(
     path,
-    simplifiedArray,
+    mapper.mapToBinaryData(data),
     writeOperation,
     writeMode,
     oliveHelps.filesystem.writeFile,

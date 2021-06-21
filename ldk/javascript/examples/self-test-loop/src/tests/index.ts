@@ -251,14 +251,14 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
             type: whisper.WhisperComponentType.RadioGroup,
           },
           {
-            alignment: whisper.Alignment.SpaceEvenly,
+            justifyContent: whisper.JustifyContent.SpaceEvenly,
             direction: whisper.Direction.Horizontal,
             children: [
               {
                 label: `No`,
                 onClick: () => {
                   form.close((error) => console.error(error));
-                  reject(true);
+                  reject(false);
                 },
                 type: whisper.WhisperComponentType.Button,
               },
@@ -1099,7 +1099,7 @@ export const buttonWhisper = (): Promise<boolean> =>
           type: whisper.WhisperComponentType.Markdown,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
+          justifyContent: whisper.JustifyContent.SpaceEvenly,
           direction: whisper.Direction.Horizontal,
           onClick: () => {
             console.log('Whats up');
@@ -1131,7 +1131,7 @@ export const buttonWhisper = (): Promise<boolean> =>
           type: whisper.WhisperComponentType.Box,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
+          justifyContent: whisper.JustifyContent.SpaceEvenly,
           direction: whisper.Direction.Horizontal,
           children: [
             {
@@ -1590,70 +1590,3 @@ export const uiGlobalSearchTest = (): Promise<boolean> =>
       }
     }).then((cancellable: Cancellable) => (uiStream = cancellable));
   });
-
-/*
-export const formWhisper = (host: HostServices): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    host.whisper.formWhisper(
-      {
-        submitButton: 'Submit',
-        cancelButton: 'Cancel',
-        label: 'Form Whisper Test',
-        markdown: 'Type in the value "Stonks"',
-        inputs: {
-          topic: {
-            type: 'text',
-            value: 'Blah',
-            label: 'What can you not explain?',
-            tooltip: '',
-            order: 1,
-          },
-          radioButton: {
-            type: 'radio',
-            value: 'red',
-            label: 'Please select color',
-            options: ["green", "red", "blue"],
-            tooltip: '',
-            order: 2,
-          },
-          selectDropDown: {
-            type: 'select',
-            value: 'red',
-            label: 'Please select color',
-            options: ["green", "red", "blue"],
-            tooltip: '',
-            order: 3,
-          },
-        },
-      },
-      (e, response) => {
-        // TODO: calling stop here seems to break things, unsure why
-        if (e !== null) {
-          // form.stop();
-          reject(e);
-        }
-
-        if (typeof response === 'undefined') {
-          // form.stop();
-          reject(new Error('Form response is undefined'));
-        }
-
-        const updateEvent = response as WhisperFormUpdateEvent;
-        const submitEvent = response as WhisperFormSubmitEvent;
-
-        if (updateEvent.type === 'update') {
-          logger.debug(JSON.stringify(updateEvent));
-        } else if (
-          submitEvent.type === 'submit' &&
-          submitEvent.submitted &&
-          submitEvent.outputs.topic === 'Stonks'
-        ) {
-          logger.debug(JSON.stringify(submitEvent));
-          // form.stop();
-          resolve(true);
-        }
-      },
-    );
-  });
-
-  */
