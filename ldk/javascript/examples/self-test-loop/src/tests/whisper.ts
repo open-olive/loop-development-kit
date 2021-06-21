@@ -854,7 +854,7 @@ export const onBlurTest = (): Promise<boolean> =>
               }
               console.debug('Received telephone onBlur event');
               resolverMap.set('Telephone', true);
-              
+
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
                 createdWhisper.close(() => {});
@@ -872,7 +872,7 @@ export const onBlurTest = (): Promise<boolean> =>
               }
               console.debug('Received email onBlur event');
               resolverMap.set('Email', true);
-              
+
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
               }
@@ -889,7 +889,7 @@ export const onBlurTest = (): Promise<boolean> =>
               }
               console.debug('Received number onBlur event');
               resolverMap.set('Number', true);
-              
+
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
                 createdWhisper.close(() => {});
@@ -907,7 +907,7 @@ export const onBlurTest = (): Promise<boolean> =>
               }
               console.debug('Received password onBlur event');
               resolverMap.set('Password', true);
-              
+
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
                 createdWhisper.close(() => {});
