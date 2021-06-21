@@ -117,11 +117,13 @@ declare namespace OliveHelps {
   }
 
   //-- Process
-  enum ProcessAction {
-    Unknown = 0,
-    Started = 1,
-    Stopped = 2,
-  }
+  /**
+   * Unknown = 0, Started = 1, Stopped = 2
+   */
+  type ProcessActionUnknown = 0;
+  type ProcessActionStarted = 1;
+  type ProcessActionStopped = 2;
+  type ProcessAction = ProcessActionUnknown | ProcessActionStarted | ProcessActionStopped;
 
   interface ProcessEvent {
     processInfo: ProcessInfo;
@@ -153,10 +155,9 @@ declare namespace OliveHelps {
     subprotocols?: Array<string>;
   }
 
-  enum MessageType {
-    text = 1,
-    binary = 2,
-  }
+  type MessageTypeText = 1;
+  type MessageTypeBinary = 2;
+  type MessageType = MessageTypeText | MessageTypeBinary;
 
   interface Socket {
     writeMessage(
@@ -238,67 +239,42 @@ declare namespace OliveHelps {
     create: ReadableWithParam<NewWhisper, Whisper>;
   }
 
-  enum WhisperComponentType {
-    Box = 'box',
-    Button = 'button',
-    Checkbox = 'checkbox',
-    CollapseBox = 'collapseBox',
-    Divider = 'divider',
-    Email = 'email',
-    Link = 'link',
-    ListPair = 'listPair',
-    Markdown = 'markdown',
-    Message = 'message',
-    Number = 'number',
-    Password = 'password',
-    RadioGroup = 'radioGroup',
-    Select = 'select',
-    Telephone = 'telephone',
-    TextInput = 'textInput',
-  }
+  type WhisperComponentType =
+    | 'box'
+    | 'button'
+    | 'checkbox'
+    | 'collapseBox'
+    | 'divider'
+    | 'email'
+    | 'link'
+    | 'listPair'
+    | 'markdown'
+    | 'message'
+    | 'number'
+    | 'password'
+    | 'radioGroup'
+    | 'select'
+    | 'telephone'
+    | 'textInput';
 
-  enum Urgency {
-    Error = 'error',
-    None = 'none',
-    Success = 'success',
-    Warning = 'warning',
-  }
+  type Urgency = 'error' | 'none' | 'success' | 'warning';
 
-  enum Alignment {
-    Center = 'center',
-    Left = 'left',
-    Right = 'right',
-    SpaceAround = 'space_around',
-    SpaceEvenly = 'space_evenly',
-  }
+  type Alignment = 'center' | 'left' | 'right' | 'space_around' | 'space_evenly';
 
-  enum ButtonSize {
-    Large = 'large',
-    Small = 'small',
-  }
+  type ButtonSize = 'large' | 'small';
 
-  enum ButtonStyle {
-    Primary = 'primary',
-    Secondary = 'secondary',
-    Text = 'text',
-  }
+  type ButtonStyle = 'primary' | 'secondary' | 'text';
 
-  enum Direction {
-    Horizontal = 'horizontal',
-    Vertical = 'vertical',
-  }
+  type Direction = 'horizontal' | 'vertical';
 
-  enum TextAlign {
-    Center = 'center',
-    Left = 'left',
-    Right = 'right',
-  }
+  type TextAlign = 'center' | 'left' | 'right';
 
   interface Whisper {
     id: string;
     close: Readable<undefined>;
     update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
+
   interface Component<T extends WhisperComponentType> {
     id?: string;
     type: T;
@@ -307,7 +283,7 @@ declare namespace OliveHelps {
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
   type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
 
-  type Button = Component<WhisperComponentType.Button> & {
+  type Button = Component<'button'> & {
     buttonStyle?: ButtonStyle;
     disabled?: boolean;
     label: string;
@@ -316,14 +292,14 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
-  type Checkbox = Component<WhisperComponentType.Checkbox> & {
+  type Checkbox = Component<'checkbox'> & {
     label: string;
     tooltip?: string;
     value: boolean;
     onChange: WhisperHandlerWithParam<boolean>;
   };
 
-  type Email = Component<WhisperComponentType.Email> & {
+  type Email = Component<'email'> & {
     label: string;
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
@@ -331,7 +307,7 @@ declare namespace OliveHelps {
     onBlur?: (error: Error | undefined) => void;
   };
 
-  type Link = Component<WhisperComponentType.Link> & {
+  type Link = Component<'link'> & {
     href?: string;
     text: string;
     onClick?: WhisperHandler;
@@ -339,7 +315,7 @@ declare namespace OliveHelps {
     textAlign?: TextAlign;
   };
 
-  type ListPair = Component<WhisperComponentType.ListPair> & {
+  type ListPair = Component<'listPair'> & {
     copyable: boolean;
     labelCopyable?: boolean;
     label: string;
@@ -347,12 +323,12 @@ declare namespace OliveHelps {
     style: Urgency;
   };
 
-  type Markdown = Component<WhisperComponentType.Markdown> & {
+  type Markdown = Component<'markdown'> & {
     body: string;
     tooltip?: string;
   };
 
-  type Message = Component<WhisperComponentType.Message> & {
+  type Message = Component<'message'> & {
     body?: string;
     header?: string;
     style?: Urgency;
@@ -360,7 +336,7 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
-  type NumberInput = Component<WhisperComponentType.Number> & {
+  type NumberInput = Component<'number'> & {
     label: string;
     onChange: WhisperHandlerWithParam<number>;
     value?: number;
@@ -371,7 +347,7 @@ declare namespace OliveHelps {
     onBlur?: (error: Error | undefined) => void;
   };
 
-  type Password = Component<WhisperComponentType.Password> & {
+  type Password = Component<'password'> & {
     label: string;
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
@@ -379,13 +355,13 @@ declare namespace OliveHelps {
     onBlur?: (error: Error | undefined) => void;
   };
 
-  type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
+  type RadioGroup = Component<'radioGroup'> & {
     onSelect: WhisperHandlerWithParam<number>;
     options: string[];
     selected?: number;
   };
 
-  type Select = Component<WhisperComponentType.Select> & {
+  type Select = Component<'select'> & {
     label: string;
     options: string[];
     onSelect: WhisperHandlerWithParam<number>;
@@ -393,7 +369,7 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
-  type Telephone = Component<WhisperComponentType.Telephone> & {
+  type Telephone = Component<'telephone'> & {
     label: string;
     onChange: WhisperHandlerWithParam<string>;
     // pattern?: RegExp; TODO: Implement this
@@ -402,7 +378,7 @@ declare namespace OliveHelps {
     onBlur?: (error: Error | undefined) => void;
   };
 
-  type TextInput = Component<WhisperComponentType.TextInput> & {
+  type TextInput = Component<'textInput'> & {
     label: string;
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
@@ -410,15 +386,15 @@ declare namespace OliveHelps {
     onBlur?: (error: Error | undefined) => void;
   };
 
-  type Divider = Component<WhisperComponentType.Divider>;
+  type Divider = Component<'divider'>;
 
-  type CollapseBox = Component<WhisperComponentType.CollapseBox> & {
+  type CollapseBox = Component<'collapseBox'> & {
     children: Array<ChildComponents>;
     label?: string;
     open: boolean;
   };
 
-  type Box = Component<WhisperComponentType.Box> & {
+  type Box = Component<'box'> & {
     alignment: Alignment;
     children: Array<ChildComponents>;
     direction: Direction;
@@ -441,7 +417,7 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput;
 
-  type Components = Box | ChildComponents | CollapseBox;
+  type Components = ChildComponents | CollapseBox;
 
   interface NewWhisper {
     label: string;
@@ -469,10 +445,9 @@ declare namespace OliveHelps {
 
   type WriteMode = number;
 
-  enum WriteOperation {
-    overwrite = 1,
-    append = 2,
-  }
+  type WriteOperationOverwrite = 1;
+  type WriteOperationAppend = 2;
+  type WriteOperation = WriteOperationOverwrite | WriteOperationAppend;
 
   //-- Filesystem
   interface Filesystem {

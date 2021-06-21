@@ -1,7 +1,7 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
-import * as mapper from '../utils/network.mapper';
+import * as mapper from './mapper';
 import { Cancellable } from '../cancellable';
-import { promisifyMappedWithParam } from '../promisify';
+import { promisifyMappedBothWithParams, promisifyMappedWithParam } from '../promisify';
 
 /**
  * The HTTP Request configuration.
@@ -134,8 +134,9 @@ export interface Network {
 }
 
 export function httpRequest(request: HTTPRequest): Promise<HTTPResponse> {
-  return promisifyMappedWithParam(
-    mapper.mapToHttpRequest(request),
+  return promisifyMappedBothWithParams(
+    request,
+    mapper.mapToHttpRequest,
     mapper.mapToHttpResponse,
     oliveHelps.network.httpRequest,
   );
