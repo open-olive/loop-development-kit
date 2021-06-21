@@ -138,6 +138,7 @@ export declare type Email = WhisperComponent<WhisperComponentType.Email> & {
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export declare type Link = WhisperComponent<WhisperComponentType.Link> & {
@@ -177,6 +178,7 @@ export declare type NumberInput = WhisperComponent<WhisperComponentType.Number> 
   min?: number;
   step?: number;
   tooltip?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export declare type Password = WhisperComponent<WhisperComponentType.Password> & {
@@ -184,6 +186,7 @@ export declare type Password = WhisperComponent<WhisperComponentType.Password> &
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export declare type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
@@ -203,9 +206,9 @@ export declare type Select = WhisperComponent<WhisperComponentType.Select> & {
 export declare type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
   label: string;
   onChange: WhisperHandlerWithParam<string>;
-  // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
@@ -213,6 +216,7 @@ export declare type TextInput = WhisperComponent<WhisperComponentType.TextInput>
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export declare type Divider = WhisperComponent<WhisperComponentType.Divider>;

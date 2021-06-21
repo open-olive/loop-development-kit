@@ -328,6 +328,7 @@ declare namespace OliveHelps {
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
+    onBlur?: (error: Error | undefined) => void;
   };
 
   type Link = Component<WhisperComponentType.Link> & {
@@ -367,6 +368,7 @@ declare namespace OliveHelps {
     min?: number;
     step?: number;
     tooltip?: string;
+    onBlur?: (error: Error | undefined) => void;
   };
 
   type Password = Component<WhisperComponentType.Password> & {
@@ -374,6 +376,7 @@ declare namespace OliveHelps {
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
+    onBlur?: (error: Error | undefined) => void;
   };
 
   type RadioGroup = Component<WhisperComponentType.RadioGroup> & {
@@ -396,6 +399,7 @@ declare namespace OliveHelps {
     // pattern?: RegExp; TODO: Implement this
     tooltip?: string;
     value?: string;
+    onBlur?: (error: Error | undefined) => void;
   };
 
   type TextInput = Component<WhisperComponentType.TextInput> & {
@@ -403,6 +407,7 @@ declare namespace OliveHelps {
     onChange: WhisperHandlerWithParam<string>;
     tooltip?: string;
     value?: string;
+    onBlur?: (error: Error | undefined) => void;
   };
 
   type Divider = Component<WhisperComponentType.Divider>;
