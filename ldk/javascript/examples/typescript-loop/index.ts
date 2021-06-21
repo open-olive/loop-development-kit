@@ -1,5 +1,5 @@
 import { clipboard, whisper } from '@oliveai/ldk';
-import { WhisperComponentType } from '@oliveai/ldk/dist/whisper/types';
+import { WhisperComponentType } from '@oliveai/ldk/src/whisper/types';
 
 const clipboardListenAndWhisper = () => {
   clipboard.listen(true, (incomingText: string) => {
