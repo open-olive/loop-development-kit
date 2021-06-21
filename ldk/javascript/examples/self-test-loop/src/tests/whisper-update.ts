@@ -7,16 +7,19 @@ import {
   Markdown,
   TextInput,
   Whisper,
-} from '@oliveai/ldk/dist/whisper';
+  WhisperComponentType,
+  Alignment,
+  Direction,
+} from '@oliveai/ldk/dist/whisper/types';
 
 //** Reusable Components */
 const markdownComponent: Markdown = {
-  type: whisper.WhisperComponentType.Markdown,
+  type: WhisperComponentType.Markdown,
   body: '**Test Markdown**',
 };
 
 const checkboxComponent: Checkbox = {
-  type: whisper.WhisperComponentType.Checkbox,
+  type: WhisperComponentType.Checkbox,
   label: 'Checkbox',
   value: false,
   onChange: (error, value, whisper) => {
@@ -30,7 +33,7 @@ const configurableTextInput = (
   value?: string,
   tooltip?: string,
 ): TextInput => ({
-  type: whisper.WhisperComponentType.TextInput,
+  type: WhisperComponentType.TextInput,
   label: label,
   value: value,
   tooltip: tooltip,
@@ -42,19 +45,19 @@ const confirmOrDeny = (
   reject: (reason?: any) => void,
   prompt: string,
   rejectReason?: any,
-  incomingWhisper?: whisper.Whisper,
+  incomingWhisper?: Whisper,
 ): Array<Components> => [
   {
-    type: whisper.WhisperComponentType.Message,
+    type: WhisperComponentType.Message,
     body: prompt,
   },
   {
-    type: whisper.WhisperComponentType.Box,
-    alignment: whisper.Alignment.SpaceAround,
-    direction: whisper.Direction.Horizontal,
+    type: WhisperComponentType.Box,
+    alignment: Alignment.SpaceAround,
+    direction: Direction.Horizontal,
     children: [
       {
-        type: whisper.WhisperComponentType.Button,
+        type: WhisperComponentType.Button,
         label: 'Yes',
         onClick: () => {
           incomingWhisper?.close((error) => {
@@ -64,7 +67,7 @@ const confirmOrDeny = (
         },
       },
       {
-        type: whisper.WhisperComponentType.Button,
+        type: WhisperComponentType.Button,
         label: 'No',
         onClick: () => {
           incomingWhisper?.close((error) => {
@@ -85,7 +88,7 @@ const updateWithConfirmation = (
   prompt: string,
   rejectReason?: string,
 ): Button => ({
-  type: whisper.WhisperComponentType.Button,
+  type: WhisperComponentType.Button,
   label: 'Update',
   onClick: (error: Error | undefined, incomingWhisper: Whisper) => {
     if (error) {
@@ -126,7 +129,7 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
           markdownComponent,
           checkboxComponent,
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: 'Press Update.',
           },
           updateWithConfirmation(
@@ -154,13 +157,13 @@ export const updateCollapseState = (): Promise<boolean> =>
     try {
       const checkboxes: ChildComponents[] = [
         {
-          type: whisper.WhisperComponentType.Checkbox,
+          type: WhisperComponentType.Checkbox,
           label: 'cb1',
           value: false,
           onChange: () => {},
         },
         {
-          type: whisper.WhisperComponentType.Checkbox,
+          type: WhisperComponentType.Checkbox,
           label: 'cb2',
           value: false,
           onChange: () => {},
@@ -168,7 +171,7 @@ export const updateCollapseState = (): Promise<boolean> =>
       ];
 
       const collapseBox: Components = {
-        type: whisper.WhisperComponentType.CollapseBox,
+        type: WhisperComponentType.CollapseBox,
         children: [...checkboxes],
         label: 'first CollapseBox',
         open: false,
@@ -180,7 +183,7 @@ export const updateCollapseState = (): Promise<boolean> =>
         components: [
           collapseBox,
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: 'Expand the collapse box and Update.',
           },
           updateWithConfirmation(

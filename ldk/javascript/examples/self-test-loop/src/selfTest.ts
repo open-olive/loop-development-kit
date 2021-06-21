@@ -1,4 +1,5 @@
 import { keyboard, whisper } from '@oliveai/ldk';
+import { Whisper, WhisperComponentType, TextAlign, Urgency } from '@oliveai/ldk/dist/whisper/types';
 
 import TestSuite from './testingFixtures/testSuite';
 import TestGroup from './testingFixtures/testGroup';
@@ -323,7 +324,7 @@ export default class SelfTestLoop {
     }
   }
 
-  async openTestGroups(): Promise<whisper.Whisper> {
+  async openTestGroups(): Promise<Whisper> {
     let allTests = [] as LoopTest[];
     // eslint-disable-next-line
     const clickableElements: any[] = [];
@@ -331,13 +332,13 @@ export default class SelfTestLoop {
     for (let i = 0; i < keys.length; i += 1) {
       const group: TestGroup = testConfig[keys[i]];
       clickableElements.push({
-        type: whisper.WhisperComponentType.Link,
-        textAlign: whisper.TextAlign.Left,
+        type: WhisperComponentType.Link,
+        textAlign: TextAlign.Left,
         onClick: () => {
           const suite = new TestSuite(group.getTests());
           suite.start().then(() => {
             console.log('🎉 Group Done!');
-            var form: whisper.Whisper;
+            var form: Whisper;
             whisper
               .create({
                 label: 'Testing Complete',
@@ -347,31 +348,31 @@ export default class SelfTestLoop {
                 components: [
                   {
                     body: `All tests for ${group.getId()} have been run`,
-                    type: whisper.WhisperComponentType.Markdown,
+                    type: WhisperComponentType.Markdown,
                   },
                 ],
               })
-              .then((whisper: whisper.Whisper) => (form = whisper));
+              .then((whisper: Whisper) => (form = whisper));
             setTimeout(() => {
               form.close((error) => console.error(error));
             }, 5000);
           });
         },
         text: `---${group.getId()}`,
-        style: whisper.Urgency.None,
+        style: Urgency.None,
       });
       allTests = allTests.concat(testConfig[keys[i]].getTests());
     }
 
     clickableElements.push({
-      type: whisper.WhisperComponentType.Link,
-      textAlign: whisper.TextAlign.Left,
+      type: WhisperComponentType.Link,
+      textAlign: TextAlign.Left,
       onClick: () => {
         const suite = new TestSuite(allTests);
 
         suite.start().then(() => {
           console.info('🎉 Done!');
-          var prompt: whisper.Whisper;
+          var prompt: Whisper;
           whisper
             .create({
               label: 'Testing Complete',
@@ -381,18 +382,18 @@ export default class SelfTestLoop {
               components: [
                 {
                   body: 'All tests have been run',
-                  type: whisper.WhisperComponentType.Markdown,
+                  type: WhisperComponentType.Markdown,
                 },
               ],
             })
-            .then((whisper: whisper.Whisper) => (prompt = whisper));
+            .then((whisper: Whisper) => (prompt = whisper));
           setTimeout(() => {
             prompt.close((error) => console.error(error));
           }, 5000);
         });
       },
       text: 'Run All Tests',
-      style: whisper.Urgency.None,
+      style: Urgency.None,
     });
 
     return await whisper.create({

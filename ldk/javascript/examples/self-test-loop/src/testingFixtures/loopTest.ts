@@ -1,4 +1,5 @@
 import { whisper } from '@oliveai/ldk';
+import { Whisper, WhisperComponentType } from '@oliveai/ldk/dist/whisper/types';
 
 export enum Status {
   PASS = 'pass',
@@ -51,7 +52,7 @@ export class LoopTest {
   private async testWrapper(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
-        var prompt: whisper.Whisper;
+        var prompt: Whisper;
         whisper
           .create({
             label: this.id,
@@ -61,11 +62,11 @@ export class LoopTest {
             components: [
               {
                 body: this.promptMarkdown,
-                type: whisper.WhisperComponentType.Markdown,
+                type: WhisperComponentType.Markdown,
               },
             ],
           })
-          .then((whisper: whisper.Whisper) => (prompt = whisper));
+          .then((whisper: Whisper) => (prompt = whisper));
 
         this.timeout = setTimeout(() => {
           prompt.close((error) => console.error(error));

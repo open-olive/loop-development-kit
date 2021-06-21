@@ -1,5 +1,6 @@
 import { keyboard, whisper } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import { Whisper, WhisperComponentType, Urgency } from '@oliveai/ldk/dist/whisper/types';
 
 import { LoopTest } from './loopTest';
 
@@ -21,16 +22,16 @@ export default class TestSuite {
           copyable: false,
           label: `${test.getId()}`,
           value: test.getStatus(),
-          style: whisper.Urgency.None,
-          type: whisper.WhisperComponentType.ListPair,
+          style: Urgency.None,
+          type: WhisperComponentType.ListPair,
         });
       } catch (err) {
         elements.push({
           copyable: false,
           label: `${test.getId()}`,
           value: test.getStatus(),
-          style: whisper.Urgency.Error,
-          type: whisper.WhisperComponentType.ListPair,
+          style: Urgency.Error,
+          type: WhisperComponentType.ListPair,
         });
       }
     }
@@ -40,7 +41,7 @@ export default class TestSuite {
       control: true,
     };
 
-    var listWhisper: whisper.Whisper;
+    var listWhisper: Whisper;
     whisper
       .create({
         label: 'Self Test Loop - Results',
@@ -49,9 +50,9 @@ export default class TestSuite {
         },
         components: elements,
       })
-      .then((whisper: whisper.Whisper) => (listWhisper = whisper));
+      .then((whisper: Whisper) => (listWhisper = whisper));
 
-    var markdownWhisper: whisper.Whisper;
+    var markdownWhisper: Whisper;
     whisper
       .create({
         label: 'Self Test Loop - Results',
@@ -61,11 +62,11 @@ export default class TestSuite {
         components: [
           {
             body: `Press "Ctrl + /" to bring back up the original whisper`,
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
           },
         ],
       })
-      .then((whisper: whisper.Whisper) => (markdownWhisper = whisper));
+      .then((whisper: Whisper) => (markdownWhisper = whisper));
 
     var keyboardListener: Cancellable;
     keyboard

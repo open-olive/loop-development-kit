@@ -247,7 +247,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
    * @deprecated - use {@link Box.justifyContent} instead.
    */
   alignment: JustifyContent;
-  children: Array<ChildComponents>;
+  children: Array<BoxChildComponent>;
   direction: Direction;
 };
 
