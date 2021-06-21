@@ -2,6 +2,8 @@ import { promisifyMappedBothWithParams } from '../promisify';
 import { mapToExternalWhisper, mapToInternalWhisper } from './mapper';
 import { NewWhisper, Whisper } from './types';
 
+export * from './types';
+
 export interface WhisperAptitude {
   /**
    * Adds a new whisper to Olive Helps based on the configuration provided.
