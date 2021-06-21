@@ -240,6 +240,7 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
   label?: string;
   open: boolean;
+  onClick?: WhisperHandlerWithParam<boolean>;
 };
 
 export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {

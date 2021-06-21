@@ -809,3 +809,73 @@ export const tooltips = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+export const collapseBoxOnClick = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    let resolutions = {
+      expand: false,
+      collapse: false,
+    };
+    let bothResolved = () => {
+      return resolutions.expand && resolutions.collapse;
+    };
+
+    let form: whisper.Whisper;
+    const config: whisper.NewWhisper = {
+      label: 'Expand / Collapse OnClick Callback Test',
+      components: [
+        {
+          type: whisper.WhisperComponentType.CollapseBox,
+          open: false,
+          label: 'Expand me!',
+          onClick: (error, open) => {
+            if (open) {
+              resolutions.expand = true;
+              if (bothResolved()) {
+                form.close((error) => console.error(error));
+                resolve(true);
+              }
+            } else {
+              if (resolutions.expand) {
+                return;
+              }
+              reject('CollapseBox should have reported open as true');
+            }
+          },
+          children: [
+            {
+              type: whisper.WhisperComponentType.Markdown,
+              body: 'Good job!',
+            },
+          ],
+        },
+        {
+          type: whisper.WhisperComponentType.CollapseBox,
+          open: true,
+          label: 'Collapse me!',
+          onClick: (error, open) => {
+            if (!open) {
+              resolutions.collapse = true;
+              if (bothResolved()) {
+                form.close((error) => console.error(error));
+                resolve(true);
+              }
+            } else {
+              if (resolutions.collapse) {
+                return;
+              }
+              reject('CollapseBox should have reported open as false');
+            }
+          },
+          children: [
+            {
+              type: whisper.WhisperComponentType.Markdown,
+              body: 'Being hidden is my destiny!',
+            },
+          ],
+        },
+      ],
+    };
+
+    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+  });

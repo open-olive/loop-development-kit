@@ -46,6 +46,7 @@ import {
   testClickableWhisper,
   testMarkdownWhisper,
   tooltips,
+  collapseBoxOnClick,
 } from './tests/whisper';
 import { basicWhisperUpdate, updateCollapseState, updateOnChange } from './tests/whisper-update';
 
@@ -219,6 +220,12 @@ const testConfig: { [key: string]: TestGroup } = {
       tooltips,
       20000,
       `Hover on each component to see a tooltip`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - CollapseBox OnClick',
+      collapseBoxOnClick,
+      10000,
+      'Click both CollapseBoxes',
     ),
   ]),
   whisperUpdate: new TestGroup('Whisper Updates', [
