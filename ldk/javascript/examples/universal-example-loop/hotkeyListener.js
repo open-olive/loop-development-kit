@@ -1,8 +1,9 @@
 import { whisper, keyboard } from '@oliveai/ldk';
+import { WhisperComponentType } from '@oliveai/ldk/dist/whisper/types';
 // eslint-disable-next-line import/no-named-as-default
 import Patient from './Patient';
 
-const { TextInput, Telephone, Email, Button, Select } = whisper.WhisperComponentType;
+const { TextInput, Telephone, Email, Button, Select } = WhisperComponentType;
 const hotkeys = {
   key: 'n',
   control: true,

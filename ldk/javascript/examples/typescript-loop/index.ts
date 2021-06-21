@@ -1,4 +1,5 @@
 import { clipboard, whisper } from '@oliveai/ldk';
+import { WhisperComponentType } from '@oliveai/ldk/dist/whisper/types';
 
 const clipboardListenAndWhisper = () => {
   clipboard.listen(true, (incomingText: string) => {
@@ -10,7 +11,7 @@ const clipboardListenAndWhisper = () => {
       components: [
         {
           body: `Got Clipboard Text: ${incomingText}`,
-          type: whisper.WhisperComponentType.Markdown,
+          type: WhisperComponentType.Markdown,
         },
       ],
     });

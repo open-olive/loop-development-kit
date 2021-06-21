@@ -1,7 +1,8 @@
 import { ui, whisper, filesystem, network } from '@oliveai/ldk';
 import { Patient, patientInfoFileName } from './Patient';
+import { WhisperComponentType } from '@oliveai/ldk/dist/whisper/types';
 
-const { Message, Link, Markdown } = whisper.WhisperComponentType;
+const { Message, Link, Markdown } = WhisperComponentType;
 
 const emitResultWhisper = async (patients) => {
   const searchResults = [];
