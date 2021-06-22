@@ -735,7 +735,6 @@ export const tooltips = (): Promise<boolean> =>
       const createdWhisper = await whisper.create({
         label: 'Tooltip Whisper',
         onClose: () => {
-          ``;
           console.debug('whisper closed');
         },
         components: [
@@ -809,3 +808,132 @@ export const tooltips = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+export const onBlurTest = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Text', false],
+      ['Number', false],
+      ['Telephone', false],
+      ['Password', false],
+      ['Email', false],
+    ]);
+    try {
+      const createdWhisper = await whisper.create({
+        label: 'OnBlur Whisper',
+        onClose: () => {
+          console.debug('whisper closed');
+        },
+        components: [
+          {
+            type: whisper.WhisperComponentType.TextInput,
+            label: 'Text onBlur',
+            onChange: () => {},
+            onBlur: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received text onBlur event');
+              resolverMap.set('Text', true);
+
+              if (areAllOnBlurResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Telephone,
+            label: 'Telephone onBlur',
+            onChange: () => {},
+            onBlur: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received telephone onBlur event');
+              resolverMap.set('Telephone', true);
+
+              if (areAllOnBlurResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Email,
+            label: 'Email onBlur',
+            onChange: () => {},
+            onBlur: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received email onBlur event');
+              resolverMap.set('Email', true);
+
+              if (areAllOnBlurResolved(resolverMap)) {
+                resolve(true);
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Number,
+            label: 'Number onBlur',
+            onChange: () => {},
+            onBlur: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received number onBlur event');
+              resolverMap.set('Number', true);
+
+              if (areAllOnBlurResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Password,
+            label: 'Password onBlur',
+            onChange: () => {},
+            onBlur: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received password onBlur event');
+              resolverMap.set('Password', true);
+
+              if (areAllOnBlurResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+        ],
+      });
+
+      setTimeout(() => {
+        createdWhisper.close(() => {});
+      }, 10000);
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+const areAllOnBlurResolved = (resolverMap: Map<string, boolean>) => {
+  let result = true;
+  resolverMap.forEach((value) => {
+    if (!value) {
+      result = false;
+      return;
+    }
+  });
+
+  return result;
+};
