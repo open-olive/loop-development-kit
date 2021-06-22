@@ -50,6 +50,7 @@ import {
   testClickableBoxNestingLinks,
   testMarkdownWhisper,
   tooltips,
+  onBlurTest,
 } from './tests/whisper';
 import { basicWhisperUpdate, updateCollapseState, updateOnChange } from './tests/whisper-update';
 
@@ -247,6 +248,12 @@ const testConfig: { [key: string]: TestGroup } = {
       tooltips,
       20000,
       `Hover on each component to see a tooltip`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - onBlur test',
+      onBlurTest,
+      10000,
+      `Focus on each field and exit out`,
     ),
   ]),
   whisperUpdate: new TestGroup('Whisper Updates', [
