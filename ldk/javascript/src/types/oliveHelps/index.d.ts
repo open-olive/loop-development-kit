@@ -398,6 +398,7 @@ declare namespace OliveHelps {
     alignment: Alignment;
     children: Array<ChildComponents>;
     direction: Direction;
+    onClick?: WhisperHandler;
   };
 
   type ChildComponents =

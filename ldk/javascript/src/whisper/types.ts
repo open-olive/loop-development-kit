@@ -254,12 +254,14 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   alignment: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
+  onClick?: WhisperHandler;
 };
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
   justifyContent: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
+  onClick?: WhisperHandler;
 };
 
 export type Component = ChildComponents | CollapseBox | Box | DeprecatedBox;
