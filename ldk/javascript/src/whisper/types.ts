@@ -141,6 +141,7 @@ export type Email = WhisperComponent<WhisperComponentType.Email> & {
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export type Link = WhisperComponent<WhisperComponentType.Link> & {
@@ -180,6 +181,7 @@ export type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
   min?: number;
   step?: number;
   tooltip?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export type Password = WhisperComponent<WhisperComponentType.Password> & {
@@ -187,6 +189,7 @@ export type Password = WhisperComponent<WhisperComponentType.Password> & {
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
@@ -209,6 +212,7 @@ export type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
   // pattern?: RegExp; TODO: Implement this
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
@@ -216,6 +220,7 @@ export type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
   onChange: WhisperHandlerWithParam<string>;
   tooltip?: string;
   value?: string;
+  onBlur?: (error: Error | undefined) => void;
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
