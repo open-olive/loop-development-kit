@@ -12,6 +12,19 @@ export function mapToInternalChildComponent(
 ): OliveHelps.ChildComponents {
   switch (component.type) {
     case WhisperComponentType.Box:
+      // eslint-disable-next-line
+      const { onClick } = component;
+      if (onClick) {
+        return {
+          alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
+          direction: component.direction,
+          children: component.children.map(mapToInternalChildComponent),
+          type: WhisperComponentType.Box,
+          onClick: (error, whisper) => {
+            onClick(error, mapToExternalWhisper(whisper));
+          },
+        } as OliveHelps.Box;
+      }
       return {
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         direction: component.direction,
@@ -40,6 +53,7 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.Email;
     case WhisperComponentType.Link: {
+      // eslint-disable-next-line
       const { onClick } = component;
       if (onClick) {
         return {
