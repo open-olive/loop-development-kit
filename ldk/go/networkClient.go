@@ -25,7 +25,7 @@ type HTTPRequest struct {
 	Method    string
 	Body      []byte
 	Headers   map[string][]string
-	TimeoutMs *int
+	TimeoutMs *int32
 }
 
 func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTTPResponse, error) {
@@ -43,7 +43,7 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 		Method:    req.Method,
 		Body:      req.Body,
 		Headers:   reqHeaders,
-		TimeoutMs: req.TimeoutMs,
+		TimeoutMs: *req.TimeoutMs,
 	})
 
 	if err != nil {
