@@ -3,7 +3,6 @@ package proto;
 option go_package = "./;proto";
 
 import "session.proto";
-import "google/protobuf/wrappers.proto";
 
 service Network {
     rpc HTTPRequest (HTTPRequestMsg) returns (HTTPResponseMsg);
@@ -19,7 +18,6 @@ message HTTPRequestMsg {
     string method = 3;
     bytes body = 4;
     map <string, HTTPHeader> headers = 5;
-    google.protobuf.Int64Value timeoutMs = 6;
 }
 
 message HTTPResponseMsg {

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/open-olive/loop-development-kit/ldk/go/v2/proto"
-	"google.golang.org/protobuf/types/known/wrapperspb"
 )
 
 // NetworkClient is the client used by the NetworkService
@@ -38,18 +37,13 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 		}
 	}
 
-	httpRequestMsg := &proto.HTTPRequestMsg{
+	resp, err := n.client.HTTPRequest(ctx, &proto.HTTPRequestMsg{
 		Session:   n.session.ToProto(),
 		Url:       req.URL,
 		Method:    req.Method,
 		Body:      req.Body,
 		Headers:   reqHeaders,
-	}
-	if req.TimeoutMs != nil {
-		httpRequestMsg.TimeoutMs = wrapperspb.Int64(int64(*req.TimeoutMs))
-	}
-
-	resp, err := n.client.HTTPRequest(ctx, httpRequestMsg)
+	})
 	if err != nil {
 		return nil, err
 	}
