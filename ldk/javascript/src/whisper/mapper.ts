@@ -120,6 +120,19 @@ export function mapToInternalChildComponent(
 export function mapToInternalComponent(component: Component): OliveHelps.Components {
   switch (component.type) {
     case WhisperComponentType.CollapseBox:
+      // eslint-disable-next-line
+      const { onClick } = component;
+      if (onClick) {
+        return {
+          label: component.label,
+          open: component.open,
+          children: component.children.map(mapToInternalChildComponent),
+          type: WhisperComponentType.CollapseBox,
+          onClick: (error: Error, param: boolean, whisper: OliveHelps.Whisper) => {
+            onClick(error, param, mapToExternalWhisper(whisper));
+          },
+        } as OliveHelps.CollapseBox;
+      }
       return {
         label: component.label,
         open: component.open,
