@@ -18,6 +18,7 @@ message HTTPRequestMsg {
     string method = 3;
     bytes body = 4;
     map <string, HTTPHeader> headers = 5;
+    int32 timeoutMs = 6;
 }
 
 message HTTPResponseMsg {

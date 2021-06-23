@@ -21,10 +21,11 @@ type HTTPResponse struct {
 
 // HTTPRequest is the structure received from HttpRequest
 type HTTPRequest struct {
-	URL     string
-	Method  string
-	Body    []byte
-	Headers map[string][]string
+	URL       string
+	Method    string
+	Body      []byte
+	Headers   map[string][]string
+	TimeoutMs *int
 }
 
 func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTTPResponse, error) {
@@ -37,11 +38,12 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 	}
 
 	resp, err := n.client.HTTPRequest(ctx, &proto.HTTPRequestMsg{
-		Session: n.session.ToProto(),
-		Url:     req.URL,
-		Method:  req.Method,
-		Body:    req.Body,
-		Headers: reqHeaders,
+		Session:   n.session.ToProto(),
+		Url:       req.URL,
+		Method:    req.Method,
+		Body:      req.Body,
+		Headers:   reqHeaders,
+		TimeoutMs: req.TimeoutMs,
 	})
 
 	if err != nil {

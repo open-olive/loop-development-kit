@@ -76,11 +76,12 @@ type HTTPRequestMsg struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Session *Session               `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
-	Url     string                 `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
-	Method  string                 `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
-	Body    []byte                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
-	Headers map[string]*HTTPHeader `protobuf:"bytes,5,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	Session   *Session               `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
+	Url       string                 `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+	Method    string                 `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
+	Body      []byte                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
+	Headers   map[string]*HTTPHeader `protobuf:"bytes,5,rep,name=headers,proto3" json:"headers,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	TimeoutMs int                    `protobuf:"bytes, 6, req, name=timeoutMs, proto3" json:"timeoutMs,omitempty"  `
 }
 
 func (x *HTTPRequestMsg) Reset() {
