@@ -152,14 +152,12 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.Telephone;
     case WhisperComponentType.TextInput:
-      // console.info(`mapping TextInput. id: ${component.id}, value: ${component.value}`);
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
       }
       return {
         ...component,
         onChange: (error, param, whisper) => {
-          // console.info(`TextInput onChange. id: ${component.id}, value: ${param}`);
           if (component.id) {
             stateMap.set(component.id, param);
           }
@@ -192,7 +190,6 @@ export function mapToInternalWhisper(
   whisper: NewWhisper | UpdateWhisper,
   stateMap: StateMap,
 ): OliveHelps.NewWhisper | OliveHelps.UpdateWhisper {
-  // console.info(`mapToInternalWhisper ${JSON.stringify(whisper)}`);
   return 'onClose' in whisper
     ? {
         label: whisper.label,

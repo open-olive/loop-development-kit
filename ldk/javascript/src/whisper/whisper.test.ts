@@ -69,8 +69,10 @@ describe('Whisper', () => {
         close: expected.close,
         update: expect.any(Function),
         id: '1',
+        componentState: expect.any(Map),
       });
     });
+
     it('wraps calls to update', async () => {
       const newWhisper: whisper.NewWhisper = {
         components: [
@@ -94,6 +96,128 @@ describe('Whisper', () => {
       const returnedExternal = await create(newWhisper);
       returnedExternal.update(newWhisper);
       expect(internalResponse.update).toHaveBeenCalled();
+    });
+
+    describe('component state', () => {
+      it('initializes when given component ids', async () => {
+        const textInputId = 'myTextInput';
+        const expectedValue = 'expected';
+
+        const newWhisper: whisper.NewWhisper = {
+          components: [
+            {
+              type: whisper.WhisperComponentType.TextInput,
+              label: 'myTextInput',
+              value: expectedValue,
+              id: textInputId,
+              onChange: jest.fn(),
+            },
+          ],
+          label: 'Test',
+          onClose: jest.fn(),
+        };
+
+        const internalResponse: OliveHelps.Whisper = {
+          close: jest.fn(),
+          update: jest.fn(),
+          id: '1',
+        };
+        mocked(oliveHelps.whisper.create).mockImplementationOnce((_, callback) => {
+          callback(undefined, internalResponse);
+        });
+
+        const actualWhisper = await create(newWhisper);
+
+        expect(actualWhisper.componentState.get(textInputId)).toBe(expectedValue);
+      });
+
+      it('does not initialize when given component id with no value', async () => {
+        const textInputId = 'myTextInput';
+        const newWhisper: whisper.NewWhisper = {
+          components: [
+            {
+              type: whisper.WhisperComponentType.TextInput,
+              label: 'myTextInput',
+              id: textInputId,
+              onChange: jest.fn(),
+            },
+          ],
+          label: 'Test',
+          onClose: jest.fn(),
+        };
+
+        const internalResponse: OliveHelps.Whisper = {
+          close: jest.fn(),
+          update: jest.fn(),
+          id: '1',
+        };
+        mocked(oliveHelps.whisper.create).mockImplementationOnce((_, callback) => {
+          callback(undefined, internalResponse);
+        });
+
+        const actualWhisper = await create(newWhisper);
+
+        expect(actualWhisper.componentState.get(textInputId)).toBeUndefined();
+      });
+
+      it('is empty given no component ids', async () => {
+        const newWhisper: whisper.NewWhisper = {
+          components: [
+            {
+              type: whisper.WhisperComponentType.TextInput,
+              label: 'myTextInput',
+              onChange: jest.fn(),
+            },
+          ],
+          label: 'Test',
+          onClose: jest.fn(),
+        };
+
+        const internalResponse: OliveHelps.Whisper = {
+          close: jest.fn(),
+          update: jest.fn(),
+          id: '1',
+        };
+        mocked(oliveHelps.whisper.create).mockImplementationOnce((_, callback) => {
+          callback(undefined, internalResponse);
+        });
+
+        const actualWhisper = await create(newWhisper);
+
+        expect(actualWhisper.componentState.keys.length).toBe(0);
+      });
+    });
+
+    it('updates upon change', async () => {
+      const textInputId = 'myTextInput';
+      const textInputComponent: whisper.TextInput = {
+        type: whisper.WhisperComponentType.TextInput,
+        id: textInputId,
+        label: 'myTextInput',
+        onChange: jest.fn(),
+      };
+
+      const newWhisper: whisper.NewWhisper = {
+        components: [textInputComponent],
+        label: 'Test',
+        onClose: jest.fn(),
+      };
+
+      const internalResponse: OliveHelps.Whisper = {
+        close: jest.fn(),
+        update: jest.fn(),
+        id: '1',
+      };
+      mocked(oliveHelps.whisper.create).mockImplementationOnce((_, callback) => {
+        callback(undefined, internalResponse);
+      });
+
+      const actualWhisper = await create(newWhisper);
+
+      const expectedOnChangeValue = 'myNewValue';
+      textInputComponent.onChange(undefined, expectedOnChangeValue, actualWhisper);
+
+      expect(actualWhisper.componentState.get(textInputId)).toBe(expectedOnChangeValue);
     });
   });
 });
