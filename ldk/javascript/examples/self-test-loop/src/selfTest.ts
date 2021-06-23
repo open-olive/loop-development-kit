@@ -50,6 +50,7 @@ import {
   testClickableBoxNestingLinks,
   testMarkdownWhisper,
   tooltips,
+  collapseBoxOnClick,
   onBlurTest,
 } from './tests/whisper';
 import { basicWhisperUpdate, updateCollapseState, updateOnChange } from './tests/whisper-update';
@@ -254,6 +255,12 @@ const testConfig: { [key: string]: TestGroup } = {
       onBlurTest,
       10000,
       `Focus on each field and exit out`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - CollapseBox OnClick',
+      collapseBoxOnClick,
+      10000,
+      'Click both CollapseBoxes',
     ),
   ]),
   whisperUpdate: new TestGroup('Whisper Updates', [
