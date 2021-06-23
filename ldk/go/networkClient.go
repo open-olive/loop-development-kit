@@ -26,7 +26,7 @@ type HTTPRequest struct {
 	Method    string
 	Body      []byte
 	Headers   map[string][]string
-	TimeoutMs *int64
+	TimeoutMs *int
 }
 
 func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTTPResponse, error) {
@@ -46,7 +46,7 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 		Headers:   reqHeaders,
 	}
 	if req.TimeoutMs != nil {
-		httpRequestMsg.TimeoutMs = wrapperspb.Int64(*req.TimeoutMs)
+		httpRequestMsg.TimeoutMs = wrapperspb.Int64(int64(*req.TimeoutMs))
 	}
 
 	resp, err := n.client.HTTPRequest(ctx, httpRequestMsg)
