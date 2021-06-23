@@ -3,9 +3,8 @@ import {
   Button,
   Checkbox,
   ChildComponents,
-  Components,
+  Component,
   Markdown,
-  TextInput,
   Whisper,
 } from '@oliveai/ldk/dist/whisper';
 
@@ -24,33 +23,20 @@ const checkboxComponent: Checkbox = {
   },
 };
 
-const configurableTextInput = (
-  incomingOnChange: (error: Error | undefined, param: any, whisper: Whisper) => void,
-  label?: string,
-  value?: string,
-  tooltip?: string,
-): TextInput => ({
-  type: whisper.WhisperComponentType.TextInput,
-  label: label,
-  value: value,
-  tooltip: tooltip,
-  onChange: incomingOnChange,
-});
-
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
   reject: (reason?: any) => void,
   prompt: string,
   rejectReason?: any,
   incomingWhisper?: whisper.Whisper,
-): Array<Components> => [
+): Array<Component> => [
   {
     type: whisper.WhisperComponentType.Message,
     body: prompt,
   },
   {
     type: whisper.WhisperComponentType.Box,
-    alignment: whisper.Alignment.SpaceAround,
+    alignment: whisper.JustifyContent.SpaceAround,
     direction: whisper.Direction.Horizontal,
     children: [
       {
@@ -81,7 +67,7 @@ const confirmOrDeny = (
 const updateWithConfirmation = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
   reject: (reason?: any) => void,
-  updateWhisperComponents: Array<Components>,
+  updateWhisperComponents: Array<Component>,
   prompt: string,
   rejectReason?: string,
 ): Button => ({
@@ -114,6 +100,12 @@ const updateWithConfirmation = (
   },
 });
 
+const logMap = (map: Map<string, string | boolean | number>) => {
+  Array.from(map.entries()).forEach((entry) =>
+    console.log('Key: ' + entry[0] + ' Value: ' + entry[1]),
+  );
+};
+
 //** Tests */
 export const basicWhisperUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -122,9 +114,15 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
         label: 'Basic Whisper Update',
         onClose: () => {},
         components: [
-          configurableTextInput(() => {}, 'Text Input', '', 'myTooltip'),
-          markdownComponent,
-          checkboxComponent,
+          {
+            type: whisper.WhisperComponentType.TextInput,
+            label: 'Text Input',
+            id: 'myTextInput1',
+            onChange: (error, param, whisper) => {
+              console.info(logMap(whisper.componentState));
+            },
+            tooltip: 'myTooltip',
+          },
           {
             type: whisper.WhisperComponentType.Markdown,
             body: 'Press Update.',
@@ -133,12 +131,17 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
             resolve,
             reject,
             [
-              configurableTextInput(() => {}, 'Text Input', '', 'myTooltip'),
-              markdownComponent,
-              checkboxComponent,
-              configurableTextInput(() => {}, 'Text Input Two', ''),
+              {
+                type: whisper.WhisperComponentType.TextInput,
+                label: 'Text Input 2',
+                id: 'myTextInput1',
+                onChange: (error, param, whisper) => {
+                  console.info(logMap(whisper.componentState));
+                },
+                tooltip: 'myTooltip',
+              },
             ],
-            'Did the whisper update correctly? (no state will persist)', // TODO: State persistence across update is an upcoming feature.
+            'Did the whisper update correctly? (state will persist)', // TODO: State persistence across update is an upcoming feature.
             'User selected update failed.',
           ),
         ],
@@ -167,7 +170,7 @@ export const updateCollapseState = (): Promise<boolean> =>
         },
       ];
 
-      const collapseBox: Components = {
+      const collapseBox: Component = {
         type: whisper.WhisperComponentType.CollapseBox,
         children: [...checkboxes],
         label: 'first CollapseBox',
@@ -205,46 +208,55 @@ export const updateOnChange = (): Promise<boolean> =>
         label: 'Update onChange events',
         onClose: () => {},
         components: [
-          configurableTextInput((error, value, incomingWhisper) => {
-            if (value === '1') {
-              incomingWhisper.update(
-                {
-                  label: 'Whisper Updated',
-                  components: [
-                    configurableTextInput(
-                      (error, value, incomingWhisper) => {
-                        if (value === '2') {
-                          incomingWhisper.close((error) => {
-                            console.error(error);
-                          });
-                          resolve(true);
-                        } else {
-                          incomingWhisper.close((error) => {
-                            console.error(error);
-                          });
-                          reject(new Error('User did not enter required value.'));
-                        }
+          {
+            type: whisper.WhisperComponentType.TextInput,
+            label: 'Enter 1',
+            id: 'myTextInput1',
+            onChange: (error, value, incomingWhisper) => {
+              if (value === '1') {
+                incomingWhisper.update(
+                  {
+                    label: 'Whisper Updated',
+                    components: [
+                      {
+                        type: whisper.WhisperComponentType.TextInput,
+                        label: 'Enter 2',
+                        id: 'myTextInput2',
+                        value: '',
+                        onChange: (error, value, incomingWhisper) => {
+                          if (value === '2') {
+                            incomingWhisper.close((error) => {
+                              console.error(error);
+                            });
+                            resolve(true);
+                          } else {
+                            incomingWhisper.close((error) => {
+                              console.error(error);
+                            });
+                            reject(new Error('User did not enter required value.'));
+                          }
+                        },
                       },
-                      'Enter 2',
-                      '',
-                    ),
-                  ],
-                },
-                (error) => {
-                  if (error) {
-                    console.error(error);
-                    incomingWhisper.close((error) => console.error(error));
-                    reject(error);
-                  }
-                },
-              );
-            } else {
-              incomingWhisper.close((error) => {
-                console.error(error);
-              });
-              reject(new Error('User did not enter required value.'));
-            }
-          }, 'Enter 1'),
+                    ],
+                  },
+                  (error) => {
+                    if (error) {
+                      console.error(error);
+                      incomingWhisper.close((error) => console.error(error));
+                      reject(error);
+                    }
+                  },
+                );
+              } else {
+                incomingWhisper.close((error) => {
+                  console.error(error);
+                });
+                reject(new Error('User did not enter required value.'));
+              }
+            },
+            value: '',
+            tooltip: 'myTooltip',
+          },
         ],
       });
     } catch (error) {

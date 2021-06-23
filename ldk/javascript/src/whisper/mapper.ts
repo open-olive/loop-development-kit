@@ -43,16 +43,28 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.Button;
     case WhisperComponentType.Checkbox:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value);
+      }
       return {
         ...component,
         onChange: (error, param, whisper) => {
+           if (component.id) {
+            stateMap.set(component.id, param);
+          }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.Checkbox;
     case WhisperComponentType.Email:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value);
+      }
       return {
         ...component,
         onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.Email;
@@ -75,37 +87,67 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Message:
       return component;
     case WhisperComponentType.Number:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value);
+      }
       return {
         ...component,
         onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.NumberInput;
     case WhisperComponentType.Password:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value);
+      }
       return {
         ...component,
         onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.Password;
     case WhisperComponentType.RadioGroup:
+      if (component.id && component.selected) {
+        stateMap.set(component.id, component.selected);
+      }
       return {
         ...component,
         onSelect: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
           component.onSelect(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.RadioGroup;
     case WhisperComponentType.Select:
+      if (component.id && component.selected) {
+        stateMap.set(component.id, component.selected);
+      }
       return {
         ...component,
         onSelect: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
           component.onSelect(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.Select;
     case WhisperComponentType.Telephone:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value);
+      }
       return {
         ...component,
         onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.Telephone;
@@ -144,8 +186,8 @@ export function mapToInternalComponent(component: Component, stateMap: StateMap)
   }
 }
 
-// export function mapToInternalWhisper(whisper: UpdateWhisper, stateMap: StateMap): OliveHelps.UpdateWhisper;
 export function mapToInternalWhisper(whisper: NewWhisper, stateMap: StateMap): OliveHelps.NewWhisper;
+export function mapToInternalWhisper(whisper: UpdateWhisper, stateMap: StateMap): OliveHelps.UpdateWhisper;
 export function mapToInternalWhisper(
   whisper: NewWhisper | UpdateWhisper,
   stateMap: StateMap,
@@ -169,7 +211,7 @@ export function mapToExternalWhisper(whisper: OliveHelps.Whisper, stateMap: Stat
     close: whisper.close,
     componentState: stateMap,
     update(updateWhisper: UpdateWhisper, cb): void {
-      whisper.update(mapToInternalWhisper((updateWhisper as any), stateMap), cb); // TODO: any cast...
+      whisper.update(mapToInternalWhisper(updateWhisper, stateMap), cb); // TODO: any cast...
     },
   };
 }
