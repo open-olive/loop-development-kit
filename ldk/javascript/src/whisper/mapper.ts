@@ -227,7 +227,7 @@ export function mapToExternalWhisper(whisper: OliveHelps.Whisper, stateMap: Stat
     close: whisper.close,
     componentState: stateMap,
     update(updateWhisper: UpdateWhisper, cb): void {
-      whisper.update(mapToInternalWhisper(updateWhisper, stateMap), cb); // TODO: any cast...
+      whisper.update(mapToInternalWhisper(updateWhisper, stateMap), cb);
     },
   };
 }

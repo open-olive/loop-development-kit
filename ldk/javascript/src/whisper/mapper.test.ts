@@ -45,5 +45,40 @@ describe('mapper', () => {
 
       expect(stateMap.get(textInputId)).toBeUndefined();
     });
+
+    it('forwards calls to provided onChange after updating component state', () => {
+      const textInputId = 'myTextInput';
+      const textInputOnChange = jest.fn();
+
+      const textInputComponent: whisper.TextInput = {
+        type: whisper.WhisperComponentType.TextInput,
+        label: 'myTextInput',
+        id: textInputId,
+        onChange: textInputOnChange,
+      };
+
+      const stateMap = new Map();
+      const mappedComponent = mapToInternalChildComponent(textInputComponent, stateMap);
+
+      const expectedOnChangeValue = 'myNewValue';
+      const expectedError = undefined;
+      const expectedWhisper = {
+        id: '',
+        close: jest.fn(),
+        componentState: stateMap,
+        update: expect.any(Function),
+      };
+      (mappedComponent as OliveHelps.TextInput).onChange(
+        expectedError,
+        expectedOnChangeValue,
+        expectedWhisper,
+      );
+
+      expect(textInputOnChange).toHaveBeenCalledWith(
+        expectedError,
+        expectedOnChangeValue,
+        expectedWhisper,
+      );
+    });
   });
 });
