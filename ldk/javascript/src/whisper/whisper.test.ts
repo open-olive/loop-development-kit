@@ -187,37 +187,5 @@ describe('Whisper', () => {
         expect(actualWhisper.componentState.keys.length).toBe(0);
       });
     });
-
-    it('updates upon change', async () => {
-      const textInputId = 'myTextInput';
-      const textInputComponent: whisper.TextInput = {
-        type: whisper.WhisperComponentType.TextInput,
-        id: textInputId,
-        label: 'myTextInput',
-        onChange: jest.fn(),
-      };
-
-      const newWhisper: whisper.NewWhisper = {
-        components: [textInputComponent],
-        label: 'Test',
-        onClose: jest.fn(),
-      };
-
-      const internalResponse: OliveHelps.Whisper = {
-        close: jest.fn(),
-        update: jest.fn(),
-        id: '1',
-      };
-      mocked(oliveHelps.whisper.create).mockImplementationOnce((_, callback) => {
-        callback(undefined, internalResponse);
-      });
-
-      const actualWhisper = await create(newWhisper);
-
-      const expectedOnChangeValue = 'myNewValue';
-      textInputComponent.onChange(undefined, expectedOnChangeValue, actualWhisper);
-
-      expect(actualWhisper.componentState.get(textInputId)).toBe(expectedOnChangeValue);
-    });
   });
 });
