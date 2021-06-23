@@ -15,10 +15,21 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  return promisifyMappedBothWithParams(
-    whisper,
-    mapToInternalWhisper,
-    mapToExternalWhisper,
-    oliveHelps.whisper.create,
-  );
+  const stateMap = new Map();
+  return new Promise((resolve, reject) => {
+    try {
+      oliveHelps.whisper.create(
+        mapToInternalWhisper(whisper, stateMap),
+        (error: Error | undefined, internalWhisper: OliveHelps.Whisper) => {
+          if (error) {
+            reject(error);
+          }
+          const externalWhisper = mapToExternalWhisper(internalWhisper, stateMap);
+          resolve(externalWhisper);
+        },
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
 }
