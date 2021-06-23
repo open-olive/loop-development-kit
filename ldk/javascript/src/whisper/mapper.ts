@@ -21,7 +21,9 @@ export function mapToInternalChildComponent(
           id: component.id,
           alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
           direction: component.direction,
-          children: component.children.map((component) => mapToInternalChildComponent(component, stateMap)),
+          children: component.children.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
           type: WhisperComponentType.Box,
           onClick: (error, whisper) => {
             onClick(error, mapToExternalWhisper(whisper, stateMap));
@@ -32,7 +34,9 @@ export function mapToInternalChildComponent(
         id: component.id,
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         direction: component.direction,
-        children: component.children.map((component) => mapToInternalChildComponent(component, stateMap)),
+        children: component.children.map((childComponent) =>
+          mapToInternalChildComponent(childComponent, stateMap),
+        ),
         type: WhisperComponentType.Box,
       };
     case WhisperComponentType.Button:
@@ -49,7 +53,7 @@ export function mapToInternalChildComponent(
       return {
         ...component,
         onChange: (error, param, whisper) => {
-           if (component.id) {
+          if (component.id) {
             stateMap.set(component.id, param);
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
@@ -169,14 +173,19 @@ export function mapToInternalChildComponent(
   }
 }
 
-export function mapToInternalComponent(component: Component, stateMap: StateMap): OliveHelps.Components {
+export function mapToInternalComponent(
+  component: Component,
+  stateMap: StateMap,
+): OliveHelps.Components {
   switch (component.type) {
     case WhisperComponentType.CollapseBox:
       return {
         id: component.id,
         label: component.label,
         open: component.open,
-        children: component.children.map((component) => mapToInternalChildComponent(component, stateMap)),
+        children: component.children.map((childComponent) =>
+          mapToInternalChildComponent(childComponent, stateMap),
+        ),
         type: WhisperComponentType.CollapseBox,
       };
     default:
@@ -184,8 +193,14 @@ export function mapToInternalComponent(component: Component, stateMap: StateMap)
   }
 }
 
-export function mapToInternalWhisper(whisper: NewWhisper, stateMap: StateMap): OliveHelps.NewWhisper;
-export function mapToInternalWhisper(whisper: UpdateWhisper, stateMap: StateMap): OliveHelps.UpdateWhisper;
+export function mapToInternalWhisper(
+  whisper: NewWhisper,
+  stateMap: StateMap,
+): OliveHelps.NewWhisper;
+export function mapToInternalWhisper(
+  whisper: UpdateWhisper,
+  stateMap: StateMap,
+): OliveHelps.UpdateWhisper;
 export function mapToInternalWhisper(
   whisper: NewWhisper | UpdateWhisper,
   stateMap: StateMap,
@@ -194,11 +209,15 @@ export function mapToInternalWhisper(
     ? {
         label: whisper.label,
         onClose: whisper.onClose,
-        components: whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
+        components: whisper.components.map((component) =>
+          mapToInternalComponent(component, stateMap),
+        ),
       }
     : {
         label: whisper.label,
-        components: whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
+        components: whisper.components.map((component) =>
+          mapToInternalComponent(component, stateMap),
+        ),
       };
 }
 

@@ -620,10 +620,10 @@ export const simpleFormWhisper = (): Promise<boolean> =>
           id: 'dummySubmitButton',
           label: 'Dummy Submit',
           onClick: (error: Error, whisper: whisper.Whisper) => {
-            whisper.componentState.forEach((value: any, key: string) => console.info(key, value)); 
+            whisper.componentState.forEach((value: any, key: string) => console.info(key, value));
           },
-          type: whisper.WhisperComponentType.Button
-        }
+          type: whisper.WhisperComponentType.Button,
+        },
       ],
     };
 

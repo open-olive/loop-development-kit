@@ -43,7 +43,7 @@ describe('mapper', () => {
         update: jest.fn(),
       });
 
-      expect(stateMap.get(textInputId)).toBeUndefined;
+      expect(stateMap.get(textInputId)).toBeUndefined();
     });
   });
 });
