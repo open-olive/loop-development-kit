@@ -56,15 +56,12 @@ jobs:
       
       # Build javascript-loop example
       - run: |
-          cd examples/javascript-loop
-          npm i && npm run build
+          cd examples/javascript-loop | npm i && npm run build
 
       # Build typescript-loop example
       - run: |
-          cd examples/typescript-loop
-          npm i && npm run build
+          cd examples/typescript-loop | npm i && npm run build
 
       # Build universal-example-loop example
       - run: |
-          cd examples/universal-example-loop
-          npm i && npm run build
+          cd examples/universal-example-loop | npm i && npm run build
