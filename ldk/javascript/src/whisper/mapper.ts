@@ -120,7 +120,7 @@ export function mapToInternalChildComponent(
 export function mapToInternalComponent(component: Component): OliveHelps.Components {
   switch (component.type) {
     case WhisperComponentType.CollapseBox:
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-case-declarations
       const { onClick } = component;
       if (onClick) {
         return {
