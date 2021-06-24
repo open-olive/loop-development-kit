@@ -52,7 +52,12 @@ import {
   tooltips,
   onBlurTest,
 } from './tests/whisper';
-import { basicWhisperUpdate, updateCollapseState, updateOnChange } from './tests/whisper-update';
+import {
+  basicWhisperUpdate,
+  updateCollapseState,
+  updateOnChange,
+  whisperStateOnChange,
+} from './tests/whisper-update';
 
 const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Clipboard Aptitude', [
@@ -274,6 +279,12 @@ const testConfig: { [key: string]: TestGroup } = {
       updateOnChange,
       20000,
       `Did the whisper update correctly?`,
+    ),
+    new LoopTest(
+      'Whisper Update - Automated OnChange',
+      whisperStateOnChange,
+      20000,
+      `Detecting changes across updates - No action needed.`,
     ),
   ]),
   window: new TestGroup('Window Aptitude', [

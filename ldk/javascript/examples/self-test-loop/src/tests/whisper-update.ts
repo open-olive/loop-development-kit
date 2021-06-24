@@ -1,27 +1,14 @@
 import { whisper } from '@oliveai/ldk';
 import {
   Button,
-  Checkbox,
   ChildComponents,
   Component,
-  Markdown,
+  NumberInput,
+  Select,
+  TextInput,
   Whisper,
+  WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper';
-
-//** Reusable Components */
-const markdownComponent: Markdown = {
-  type: whisper.WhisperComponentType.Markdown,
-  body: '**Test Markdown**',
-};
-
-const checkboxComponent: Checkbox = {
-  type: whisper.WhisperComponentType.Checkbox,
-  label: 'Checkbox',
-  value: false,
-  onChange: (error, value, whisper) => {
-    console.info(`Checkbox OnChange: ${value}`);
-  },
-};
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -263,4 +250,67 @@ export const updateOnChange = (): Promise<boolean> =>
       console.error(error);
       console.error(error.message);
     }
+  });
+
+export const whisperStateOnChange = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const inputValue = 'testInput';
+    const selectValue = 1;
+    const numberValue = 5;
+
+    const numberInput: NumberInput = {
+      type: WhisperComponentType.Number,
+      label: 'NumberInput',
+      onChange: (error, param, incomingWhisper) => {
+        if (param === numberValue) {
+          resolve(true);
+        } else {
+          reject(new Error('did not get correct onChange value'));
+        }
+      },
+    };
+
+    const selectInput: Select = {
+      type: WhisperComponentType.Select,
+      label: 'Select',
+      options: ['red', 'blue'],
+      onSelect: (error, param, incomingWhisper) => {
+        if (param === selectValue) {
+          incomingWhisper.update({
+            label: 'second update',
+            components: [],
+          });
+          numberInput.onChange(undefined, numberValue, incomingWhisper);
+        } else {
+          reject(new Error('did not get correct onChange value'));
+        }
+      },
+    };
+
+    const textInput: TextInput = {
+      type: whisper.WhisperComponentType.TextInput,
+      label: 'Text Input',
+      id: 'myTextInput1',
+      onChange: (error, param, incomingWhisper) => {
+        if (param === inputValue) {
+          incomingWhisper.update({
+            label: 'first update',
+            components: [selectInput],
+          });
+          selectInput.onSelect(undefined, selectValue, incomingWhisper);
+        } else {
+          reject(new Error('did not get correct onChange value'));
+        }
+      },
+      tooltip: 'myTooltip',
+    };
+
+    try {
+      const createdWhisper = await whisper.create({
+        label: 'Whisper State onChange',
+        onClose: () => {},
+        components: [textInput],
+      });
+      textInput.onChange(undefined, inputValue, createdWhisper);
+    } catch (error) {}
   });
