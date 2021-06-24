@@ -38,11 +38,11 @@ func (n *NetworkClient) HTTPRequest(ctx context.Context, req *HTTPRequest) (*HTT
 	}
 
 	resp, err := n.client.HTTPRequest(ctx, &proto.HTTPRequestMsg{
-		Session:   n.session.ToProto(),
-		Url:       req.URL,
-		Method:    req.Method,
-		Body:      req.Body,
-		Headers:   reqHeaders,
+		Session: n.session.ToProto(),
+		Url:     req.URL,
+		Method:  req.Method,
+		Body:    req.Body,
+		Headers: reqHeaders,
 	})
 	if err != nil {
 		return nil, err

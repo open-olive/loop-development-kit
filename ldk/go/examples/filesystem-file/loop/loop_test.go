@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	"github.com/open-olive/loop-development-kit/ldk/go/examples/filesystem-file/loop"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	ldktest "github.com/open-olive/loop-development-kit/ldk/go/v2/ldk-test"
 )
 

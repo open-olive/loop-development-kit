@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	loop "github.com/open-olive/loop-development-kit/ldk/go/examples/whisper-confirm/loop"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	ldktest "github.com/open-olive/loop-development-kit/ldk/go/v2/ldk-test"
 )
 
