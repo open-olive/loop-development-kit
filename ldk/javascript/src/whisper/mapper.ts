@@ -21,6 +21,7 @@ export function mapToInternalChildComponent(
           id: component.id,
           alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
           direction: component.direction,
+          key: component.key,
           children: component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),
           ),
@@ -34,6 +35,7 @@ export function mapToInternalChildComponent(
         id: component.id,
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         direction: component.direction,
+        key: component.key,
         children: component.children.map((childComponent) =>
           mapToInternalChildComponent(childComponent, stateMap),
         ),
@@ -185,6 +187,7 @@ export function mapToInternalComponent(
         return {
           label: component.label,
           open: component.open,
+          key: component.key,
           children: component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),
           ),
@@ -198,6 +201,7 @@ export function mapToInternalComponent(
         id: component.id,
         label: component.label,
         open: component.open,
+        key: component.key,
         children: component.children.map((childComponent) =>
           mapToInternalChildComponent(childComponent, stateMap),
         ),

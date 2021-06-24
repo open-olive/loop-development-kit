@@ -121,6 +121,10 @@ export type WhisperHandlerWithParam<T> = (
 export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
   type: T;
+  /**
+   * The key is used to maintain the object state. The component's key must be unique among its sibling components.
+   */
+  key?: string;
 }
 
 export type Button = WhisperComponent<WhisperComponentType.Button> & {

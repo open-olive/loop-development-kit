@@ -279,6 +279,7 @@ declare namespace OliveHelps {
   interface Component<T extends WhisperComponentType> {
     id?: string;
     type: T;
+    key?: string;
   }
 
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
