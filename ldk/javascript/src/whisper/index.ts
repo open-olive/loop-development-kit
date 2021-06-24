@@ -1,4 +1,3 @@
-import { promisifyMappedBothWithParams } from '../promisify';
 import { mapToExternalWhisper, mapToInternalWhisper } from './mapper';
 import { NewWhisper, Whisper } from './types';
 
@@ -15,10 +14,21 @@ export interface WhisperAptitude {
 }
 
 export function create(whisper: NewWhisper): Promise<Whisper> {
-  return promisifyMappedBothWithParams(
-    whisper,
-    mapToInternalWhisper,
-    mapToExternalWhisper,
-    oliveHelps.whisper.create,
-  );
+  const stateMap = new Map();
+
+  return new Promise((resolve, reject) => {
+    try {
+      oliveHelps.whisper.create(
+        mapToInternalWhisper(whisper, stateMap),
+        (error: Error | undefined, internalWhisper: OliveHelps.Whisper) => {
+          if (error) {
+            reject(error);
+          }
+          resolve(mapToExternalWhisper(internalWhisper, stateMap));
+        },
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
 }

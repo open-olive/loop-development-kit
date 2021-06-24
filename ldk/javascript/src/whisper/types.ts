@@ -102,10 +102,13 @@ export enum Urgency {
   Warning = 'warning',
 }
 
+export type StateMap = Map<string, string | boolean | number>;
+
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
   update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
+  componentState: StateMap;
 }
 
 export type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
@@ -245,6 +248,7 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
   label?: string;
   open: boolean;
+  onClick?: WhisperHandlerWithParam<boolean>;
 };
 
 export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {

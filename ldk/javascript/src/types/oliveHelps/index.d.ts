@@ -393,6 +393,7 @@ declare namespace OliveHelps {
     children: Array<ChildComponents>;
     label?: string;
     open: boolean;
+    onClick?: WhisperHandlerWithParam<boolean>;
   };
 
   type Box = Component<'box'> & {
