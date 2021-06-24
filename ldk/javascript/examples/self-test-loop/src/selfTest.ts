@@ -283,7 +283,7 @@ const testConfig: { [key: string]: TestGroup } = {
     new LoopTest(
       'Whisper Update - Automated OnChange',
       whisperStateOnChange,
-      20000,
+      5000,
       `Detecting changes across updates - No action needed.`,
     ),
   ]),

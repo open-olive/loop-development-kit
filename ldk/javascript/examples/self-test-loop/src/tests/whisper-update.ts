@@ -3,12 +3,15 @@ import {
   Button,
   ChildComponents,
   Component,
+  Direction,
+  JustifyContent,
   NumberInput,
   Select,
+  StateMap,
   TextInput,
   Whisper,
   WhisperComponentType,
-} from '@oliveai/ldk/dist/whisper';
+} from '@oliveai/ldk/dist/whisper/types';
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -22,12 +25,12 @@ const confirmOrDeny = (
     body: prompt,
   },
   {
-    type: whisper.WhisperComponentType.Box,
-    alignment: whisper.JustifyContent.SpaceAround,
-    direction: whisper.Direction.Horizontal,
+    type: WhisperComponentType.Box,
+    alignment: JustifyContent.SpaceAround,
+    direction: Direction.Horizontal,
     children: [
       {
-        type: whisper.WhisperComponentType.Button,
+        type: WhisperComponentType.Button,
         label: 'Yes',
         onClick: () => {
           incomingWhisper?.close((error) => {
@@ -37,7 +40,7 @@ const confirmOrDeny = (
         },
       },
       {
-        type: whisper.WhisperComponentType.Button,
+        type: WhisperComponentType.Button,
         label: 'No',
         onClick: () => {
           incomingWhisper?.close((error) => {
@@ -58,7 +61,7 @@ const updateWithConfirmation = (
   prompt: string,
   rejectReason?: string,
 ): Button => ({
-  type: whisper.WhisperComponentType.Button,
+  type: WhisperComponentType.Button,
   label: 'Update',
   onClick: (error: Error | undefined, incomingWhisper: Whisper) => {
     if (error) {
@@ -87,7 +90,7 @@ const updateWithConfirmation = (
   },
 });
 
-const logMap = (map: Map<string, string | boolean | number>) => {
+const logMap = (map: StateMap) => {
   Array.from(map.entries()).forEach((entry) =>
     console.log('Key: ' + entry[0] + ' Value: ' + entry[1]),
   );
@@ -102,7 +105,7 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
         onClose: () => {},
         components: [
           {
-            type: whisper.WhisperComponentType.TextInput,
+            type: WhisperComponentType.TextInput,
             label: 'Text Input',
             id: 'myTextInput1',
             onChange: (error, param, whisper) => {
@@ -111,7 +114,7 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
             tooltip: 'myTooltip',
           },
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: 'Press Update.',
           },
           updateWithConfirmation(
@@ -119,7 +122,7 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
             reject,
             [
               {
-                type: whisper.WhisperComponentType.TextInput,
+                type: WhisperComponentType.TextInput,
                 label: 'Text Input 2',
                 id: 'myTextInput1',
                 onChange: (error, param, whisper) => {
@@ -144,13 +147,13 @@ export const updateCollapseState = (): Promise<boolean> =>
     try {
       const checkboxes: ChildComponents[] = [
         {
-          type: whisper.WhisperComponentType.Checkbox,
+          type: WhisperComponentType.Checkbox,
           label: 'cb1',
           value: false,
           onChange: () => {},
         },
         {
-          type: whisper.WhisperComponentType.Checkbox,
+          type: WhisperComponentType.Checkbox,
           label: 'cb2',
           value: false,
           onChange: () => {},
@@ -158,7 +161,7 @@ export const updateCollapseState = (): Promise<boolean> =>
       ];
 
       const collapseBox: Component = {
-        type: whisper.WhisperComponentType.CollapseBox,
+        type: WhisperComponentType.CollapseBox,
         children: [...checkboxes],
         label: 'first CollapseBox',
         open: false,
@@ -170,7 +173,7 @@ export const updateCollapseState = (): Promise<boolean> =>
         components: [
           collapseBox,
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: 'Expand the collapse box and Update.',
           },
           updateWithConfirmation(
@@ -196,7 +199,7 @@ export const updateOnChange = (): Promise<boolean> =>
         onClose: () => {},
         components: [
           {
-            type: whisper.WhisperComponentType.TextInput,
+            type: WhisperComponentType.TextInput,
             label: 'Enter 1',
             id: 'myTextInput1',
             onChange: (error, value, incomingWhisper) => {
@@ -206,7 +209,7 @@ export const updateOnChange = (): Promise<boolean> =>
                     label: 'Whisper Updated',
                     components: [
                       {
-                        type: whisper.WhisperComponentType.TextInput,
+                        type: WhisperComponentType.TextInput,
                         label: 'Enter 2',
                         id: 'myTextInput2',
                         value: '',
@@ -281,6 +284,7 @@ export const whisperStateOnChange = (): Promise<boolean> =>
             components: [],
           });
           numberInput.onChange(undefined, numberValue, incomingWhisper);
+          incomingWhisper.close((error) => console.error(error));
         } else {
           reject(new Error('did not get correct onChange value'));
         }
@@ -288,7 +292,7 @@ export const whisperStateOnChange = (): Promise<boolean> =>
     };
 
     const textInput: TextInput = {
-      type: whisper.WhisperComponentType.TextInput,
+      type: WhisperComponentType.TextInput,
       label: 'Text Input',
       id: 'myTextInput1',
       onChange: (error, param, incomingWhisper) => {
@@ -298,6 +302,7 @@ export const whisperStateOnChange = (): Promise<boolean> =>
             components: [selectInput],
           });
           selectInput.onSelect(undefined, selectValue, incomingWhisper);
+          incomingWhisper.close((error) => console.error(error));
         } else {
           reject(new Error('did not get correct onChange value'));
         }
