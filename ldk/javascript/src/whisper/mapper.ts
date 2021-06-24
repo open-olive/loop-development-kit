@@ -185,10 +185,12 @@ export function mapToInternalComponent(
         return {
           label: component.label,
           open: component.open,
-          children: component.children.map(mapToInternalChildComponent),
+          children: component.children.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
           type: WhisperComponentType.CollapseBox,
           onClick: (error: Error, param: boolean, whisper: OliveHelps.Whisper) => {
-            onClick(error, param, mapToExternalWhisper(whisper));
+            onClick(error, param, mapToExternalWhisper(whisper, stateMap));
           },
         } as OliveHelps.CollapseBox;
       }
