@@ -46,20 +46,20 @@ jobs:
       
       # Build selfTestLoop example
       - run: |
-          cd ./ldk/javascript/examples/self-test-loop
+          cd ./examples/self-test-loop
           npm i && npm run build
       
       # Build javascript-loop example
       - run: |
-          cd ./ldk/javascript/examples/javascript-loop
+          cd ./examples/javascript-loop
           npm i && npm run build
 
       # Build typescript-loop example
       - run: |
-          cd ./ldk/javascript/examples/typescript-loop
+          cd ./examples/typescript-loop
           npm i && npm run build
 
       # Build universal-example-loop example
       - run: |
-          cd ./ldk/javascript/examples/universal-example-loop
+          cd ./examples/universal-example-loop
           npm i && npm run build
