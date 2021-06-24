@@ -20,7 +20,6 @@ async function getTestFolderPath(): Promise<string> {
   return testFolderPath;
 }
 
-
 export const queryDirectory = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const dirPath = `${await getTestFolderPath()}`;

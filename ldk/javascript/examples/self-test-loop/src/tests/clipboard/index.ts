@@ -32,5 +32,7 @@ export const clipboardStream = (): Promise<boolean> =>
           resolve(true);
         }
       })
-      .then((cancellable: Cancellable) => {stream = cancellable});
+      .then((cancellable: Cancellable) => {
+        stream = cancellable;
+      });
   });
