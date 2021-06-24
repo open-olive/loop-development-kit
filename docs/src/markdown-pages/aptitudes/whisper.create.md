@@ -29,3 +29,51 @@ The following component types are available:
 * Select - A selected value of -1 indicates that nothing is selected.
 * Telephone - The text input field allows the user to provide a telephone number.
 * TextInput - The text input field allows the user to provide text information. The text can be pre-populated by the loop
+
+## Whisper Component State
+Provided on each newly created whisper is `componentState` property that is of `type StateMap = Map<string, string | boolean | number>`.
+
+When any of the following user editable components are assigned a **unique** `id` property, state will be tracked upon user interaction on `componentState`:
+
+* Checkbox
+* Email
+* Number
+* Password
+* RadioGroup
+* Select
+* Telephone
+* TextInput
+
+If `id` properties are not provided, component state will not be tracked. If duplicate component `id` properties are sent, then only the most recently assigned `id` will be tracked.
+
+`componentState` is returned as part of the whisper object during `onClick`, `onChange` events and with `whisper.Create()`.
+
+For example:
+
+```
+const textInputId = '123';
+
+const myWhisper = await whisper.create({
+  label: "Component State Whisper",
+  onClose: () => {},
+  components: [
+    {
+      type: WhisperComponentType.TextInput,
+      id: textInputId,
+      label: "Text Input",
+      onChange: (
+          error: Error | undefined,
+          value: string,
+          whisper: Whisper
+      ) => {
+        console.log(whisper.componentState.get(textInputId));
+      }
+    }
+  ],
+});
+
+myWhisper.componentState.forEach((value: any, key: string) => console.log(key, value));
+```
+
+### Component State Across Whisper Updates
+If a whisper update is performed, all previously tracked component state will also persist. If new components are added to the update whisper, they will follow the rules for initial component state. If it is no longer desired to keep component state across a whisper update, then new component `id` properties should be assigned.
