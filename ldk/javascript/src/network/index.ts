@@ -23,8 +23,8 @@ export interface HTTPRequest {
    * Endpoint url
    */
   url: string;
-    /**
-   * HttpRequest timeout 
+  /**
+   * HttpRequest timeout
    */
   timeoutMs?: number;
 }
