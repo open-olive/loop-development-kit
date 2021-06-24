@@ -526,31 +526,145 @@ export const listPairWhisperCopyableLabel = (): Promise<boolean> =>
     }, 5000);
   });
 
-// TODO: This requires a submit button at some point
 export const simpleFormWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
+    const textInput = 'myTextInput';
+    const emailInput = 'myEmailInput';
+    const selectInput = 'mySelectInput';
     let form: whisper.Whisper;
+
     const config: whisper.NewWhisper = {
-      label: 'Link Test',
+      label: 'Form Whisper',
       onClose: () => {
         console.debug('closed');
       },
       components: [
         {
-          body: `Enter in 'Stonks' in the field`,
-          type: WhisperComponentType.Markdown,
+          id: textInput,
+          label: `Enter 'a'`,
+          onChange: () => {
+            // do nothing.
+          },
+          tooltip: 'a?',
+          type: WhisperComponentType.TextInput,
         },
         {
-          label: `What can't you explain?`,
-          onChange: (error, value) => {
-            if (value === 'Stonks') {
+          id: emailInput,
+          label: 'Enter a@b',
+          onChange: () => {
+            // do nothing.
+          },
+          type: WhisperComponentType.Email,
+        },
+        {
+          id: selectInput,
+          label: `Select 'blue'`,
+          onSelect: () => {
+            // do nothing.
+          },
+          options: ['red', 'blue'],
+          type: WhisperComponentType.Select,
+        },
+        {
+          id: 'mySubmitButton',
+          label: 'Submit',
+          onClick: (error: Error, onClickWhisper: whisper.Whisper) => {
+            onClickWhisper.componentState.forEach((value: string|number|boolean, key: string) => console.info(key, value));
+            if (
+              onClickWhisper.componentState.get(textInput) === 'a' &&
+              onClickWhisper.componentState.get(emailInput) === 'a@b' &&
+              onClickWhisper.componentState.get(selectInput) === 1
+            ) {
               form.close((e) => console.error(e));
               resolve(true);
+            } else {
+              form.close((e) => console.error(e));
+              reject(new Error('Please enter correct form values.'));
             }
           },
-          tooltip: 'Stonks?',
-          value: '',
+          type: WhisperComponentType.Button,
+        },
+        {
+          type: WhisperComponentType.Divider,
+        },
+        {
+          header: 'Form render test. Take no action.',
+          type: WhisperComponentType.Message,
+        },
+        {
+          label: `Second Text Input`,
+          onChange: () => {
+            // do nothing.
+          },
+          value: 'My Initial Value',
+          id: 'myTextInputTwo',
           type: WhisperComponentType.TextInput,
+        },
+        {
+          label: `Select 'blue'`,
+          onSelect: () => {
+            // do nothing.
+          },
+          options: ['red', 'blue'],
+          id: 'mySelectInputTwo',
+          type: WhisperComponentType.Select,
+        },
+        {
+          onSelect: () => {
+            // do nothing.
+          },
+          options: ['option1', 'option2'],
+          id: 'myRadioGroup',
+          type: WhisperComponentType.RadioGroup,
+        },
+        {
+          label: 'Check a box',
+          value: true,
+          onChange: () => {
+            // do nothing.
+          },
+          id: 'myCheckbox',
+          type: WhisperComponentType.Checkbox,
+        },
+        {
+          label: 'Enter an email',
+          onChange: () => {
+            // do nothing.
+          },
+          id: 'myEmail',
+          type: WhisperComponentType.Email,
+        },
+        {
+          label: 'Enter a number',
+          onChange: () => {
+            // do nothing.
+          },
+          id: 'myNumber',
+          type: WhisperComponentType.Number,
+        },
+        {
+          label: 'Enter a password',
+          onChange: () => {
+            // do nothing.
+          },
+          id: 'myPassword',
+          type: WhisperComponentType.Password,
+        },
+        {
+          label: 'Enter a telephone',
+          onChange: () => {
+            // do nothing.
+          },
+          id: 'myTelephone',
+          type: WhisperComponentType.Telephone,
+        },
+        {
+          id: 'dummySubmitButton',
+          label: 'Dummy Submit',
+          onClick: (error: Error, onClickWhisper: whisper.Whisper) => {
+            onClickWhisper.componentState.forEach((value: string|number|boolean, key: string) => console.info(key, value));
+          },
+          type: WhisperComponentType.Button,
         },
       ],
     };

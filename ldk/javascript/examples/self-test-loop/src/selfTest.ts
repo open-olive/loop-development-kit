@@ -254,6 +254,12 @@ const testConfig: { [key: string]: TestGroup } = {
       20000,
       `Did the whisper update correctly?`,
     ),
+    new LoopTest(
+      'Whisper Update - Automated OnChange',
+      whisperUpdateTests.whisperStateOnChange,
+      5000,
+      `Detecting changes across updates - No action needed.`,
+    ),
   ]),
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
