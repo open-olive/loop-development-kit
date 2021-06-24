@@ -569,7 +569,9 @@ export const simpleFormWhisper = (): Promise<boolean> =>
           id: 'mySubmitButton',
           label: 'Submit',
           onClick: (error: Error, onClickWhisper: whisper.Whisper) => {
-            onClickWhisper.componentState.forEach((value: string|number|boolean, key: string) => console.info(key, value));
+            onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
+              console.info(key, value),
+            );
             if (
               onClickWhisper.componentState.get(textInput) === 'a' &&
               onClickWhisper.componentState.get(emailInput) === 'a@b' &&
@@ -662,7 +664,9 @@ export const simpleFormWhisper = (): Promise<boolean> =>
           id: 'dummySubmitButton',
           label: 'Dummy Submit',
           onClick: (error: Error, onClickWhisper: whisper.Whisper) => {
-            onClickWhisper.componentState.forEach((value: string|number|boolean, key: string) => console.info(key, value));
+            onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
+              console.info(key, value),
+            );
           },
           type: WhisperComponentType.Button,
         },
