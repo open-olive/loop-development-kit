@@ -1,6 +1,14 @@
 import { clipboard, whisper, network } from '@oliveai/ldk';
 
-import { Alignment, Direction, ButtonStyle, Urgency } from '@oliveai/ldk/dist/whisper';
+import {
+  JustifyContent,
+  Direction,
+  ButtonStyle,
+  Urgency,
+  WhisperComponentType,
+  TextAlign,
+  ButtonSize,
+} from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
@@ -21,7 +29,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
       | Row 1 Col 1 | Row 1 Col 2 |
       | Row 2 Col 1 | Row 2 Col 2 |`;
 
-    var form: whisper.Whisper;
+    let form: whisper.Whisper;
     whisper
       .create({
         label: 'Markdown whisper Test',
@@ -31,17 +39,17 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         components: [
           {
             body: markdown,
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
           },
           {
             label: `${options[0]}  
             line one
             line two 100.0%`,
             value: false,
-            onChange: (error, value) => {
+            onChange: () => {
               console.debug(`selected value: ${options[0]}`);
             },
-            type: whisper.WhisperComponentType.Checkbox,
+            type: WhisperComponentType.Checkbox,
           },
           {
             label: `${options[1]}  
@@ -51,7 +59,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
             onChange: () => {
               console.debug(`selected value: ${options[1]}`);
             },
-            type: whisper.WhisperComponentType.Checkbox,
+            type: WhisperComponentType.Checkbox,
           },
           {
             label: `Single Line Example that is extremely 
@@ -60,14 +68,18 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
             long extremely long extremely long extremely long extremely 
             long extremely long extremely long`,
             value: false,
-            onChange: () => {},
-            type: whisper.WhisperComponentType.Checkbox,
+            onChange: () => {
+              // do nothing.
+            },
+            type: WhisperComponentType.Checkbox,
           },
           {
             label: `normal label with no surprises`,
             value: false,
-            onChange: () => {},
-            type: whisper.WhisperComponentType.Checkbox,
+            onChange: () => {
+              // do nothing.
+            },
+            type: WhisperComponentType.Checkbox,
           },
           {
             onSelect: (selected) => {
@@ -81,19 +93,19 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
               line 2`,
             ],
             selected: 0,
-            type: whisper.WhisperComponentType.RadioGroup,
+            type: WhisperComponentType.RadioGroup,
           },
           {
-            alignment: whisper.Alignment.SpaceEvenly,
-            direction: whisper.Direction.Horizontal,
+            alignment: JustifyContent.SpaceEvenly,
+            direction: Direction.Horizontal,
             children: [
               {
                 label: `No`,
                 onClick: () => {
                   form.close((error) => console.error(error));
-                  reject(true);
+                  reject(new Error());
                 },
-                type: whisper.WhisperComponentType.Button,
+                type: WhisperComponentType.Button,
               },
               {
                 label: `Yes`,
@@ -101,19 +113,21 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
                   form.close((error) => console.error(error));
                   resolve(true);
                 },
-                type: whisper.WhisperComponentType.Button,
+                type: WhisperComponentType.Button,
               },
             ],
-            type: whisper.WhisperComponentType.Box,
+            type: WhisperComponentType.Box,
           },
         ],
       })
-      .then((whisper: whisper.Whisper) => (form = whisper));
+      .then((formWhisper: whisper.Whisper) => {
+        form = formWhisper;
+      });
   });
 
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    var form: whisper.Whisper;
+    let form: whisper.Whisper;
     whisper
       .create({
         label: 'Internal Link Test',
@@ -123,57 +137,59 @@ export const testClickableWhisper = (): Promise<boolean> =>
         components: [
           {
             body: 'Select Option 5',
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
           },
           {
-            type: whisper.WhisperComponentType.Link,
-            textAlign: whisper.TextAlign.Left,
+            type: WhisperComponentType.Link,
+            textAlign: TextAlign.Left,
             onClick: () => {
               console.debug('wrong');
             },
             text: `Option 1`,
-            style: whisper.Urgency.None,
+            style: Urgency.None,
           },
           {
-            type: whisper.WhisperComponentType.Link,
-            textAlign: whisper.TextAlign.Left,
+            type: WhisperComponentType.Link,
+            textAlign: TextAlign.Left,
             onClick: () => {
               console.debug('wrong');
             },
             text: `Option 2`,
-            style: whisper.Urgency.None,
+            style: Urgency.None,
           },
           {
-            type: whisper.WhisperComponentType.Link,
-            textAlign: whisper.TextAlign.Left,
+            type: WhisperComponentType.Link,
+            textAlign: TextAlign.Left,
             onClick: () => {
               console.debug('wrong');
             },
             text: `Option 3`,
-            style: whisper.Urgency.None,
+            style: Urgency.None,
           },
           {
-            type: whisper.WhisperComponentType.Link,
-            textAlign: whisper.TextAlign.Left,
+            type: WhisperComponentType.Link,
+            textAlign: TextAlign.Left,
             onClick: () => {
               console.debug('wrong');
             },
             text: `Option 4`,
-            style: whisper.Urgency.None,
+            style: Urgency.None,
           },
           {
-            type: whisper.WhisperComponentType.Link,
-            textAlign: whisper.TextAlign.Left,
+            type: WhisperComponentType.Link,
+            textAlign: TextAlign.Left,
             onClick: () => {
               form.close((error) => console.log(error));
               resolve(true);
             },
             text: `Option 5`,
-            style: whisper.Urgency.None,
+            style: Urgency.None,
           },
         ],
       })
-      .then((whisper: whisper.Whisper) => (form = whisper));
+      .then((whisperForm: whisper.Whisper) => {
+        form = whisperForm;
+      });
   });
 
 export const testBoxInTheBox = (): Promise<boolean> =>
@@ -186,13 +202,13 @@ export const testBoxInTheBox = (): Promise<boolean> =>
         },
         components: [
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: `
 # Markdown Example
 `,
           },
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: stripIndent`
               |||
               |:---|:---|
@@ -223,23 +239,23 @@ export const testBoxInTheBox = (): Promise<boolean> =>
             `,
           },
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: stripIndent`
               # Box in the Box Example
               `,
           },
           {
-            type: whisper.WhisperComponentType.Box,
-            alignment: Alignment.Center,
+            type: WhisperComponentType.Box,
+            alignment: JustifyContent.Center,
             direction: Direction.Horizontal,
             children: [
               {
-                type: whisper.WhisperComponentType.Box,
-                alignment: Alignment.Left,
+                type: WhisperComponentType.Box,
+                alignment: JustifyContent.Left,
                 direction: Direction.Vertical,
                 children: [
                   {
-                    type: whisper.WhisperComponentType.Markdown,
+                    type: WhisperComponentType.Markdown,
                     body: stripIndent`
                       **Header Left**
 
@@ -247,7 +263,7 @@ export const testBoxInTheBox = (): Promise<boolean> =>
                       `,
                   },
                   {
-                    type: whisper.WhisperComponentType.TextInput,
+                    type: WhisperComponentType.TextInput,
                     label: 'Left Input',
                     onChange: (value) => {
                       console.debug(`Input value changed: ${value}`);
@@ -256,12 +272,12 @@ export const testBoxInTheBox = (): Promise<boolean> =>
                 ],
               },
               {
-                type: whisper.WhisperComponentType.Box,
-                alignment: Alignment.Right,
+                type: WhisperComponentType.Box,
+                alignment: JustifyContent.Right,
                 direction: Direction.Vertical,
                 children: [
                   {
-                    type: whisper.WhisperComponentType.Markdown,
+                    type: WhisperComponentType.Markdown,
                     body: stripIndent`
                       **Header Right**
 
@@ -269,7 +285,7 @@ export const testBoxInTheBox = (): Promise<boolean> =>
                       `,
                   },
                   {
-                    type: whisper.WhisperComponentType.TextInput,
+                    type: WhisperComponentType.TextInput,
                     label: 'Right Input',
                     onChange: (value) => {
                       console.debug(`Input value changed: ${value}`);
@@ -280,12 +296,12 @@ export const testBoxInTheBox = (): Promise<boolean> =>
             ],
           },
           {
-            type: whisper.WhisperComponentType.Box,
-            alignment: Alignment.Left,
+            type: WhisperComponentType.Box,
+            alignment: JustifyContent.Left,
             direction: Direction.Horizontal,
             children: [
               {
-                type: whisper.WhisperComponentType.Button,
+                type: WhisperComponentType.Button,
                 buttonStyle: ButtonStyle.Primary,
                 label: 'Press if Rendered',
                 onClick: () => {
@@ -294,12 +310,12 @@ export const testBoxInTheBox = (): Promise<boolean> =>
                 },
               },
               {
-                type: whisper.WhisperComponentType.Button,
+                type: WhisperComponentType.Button,
                 buttonStyle: ButtonStyle.Secondary,
                 label: 'Press if NOT Rendered',
                 onClick: () => {
                   form.close((error) => console.log(error));
-                  reject(false);
+                  reject(new Error('Markdown is not rendered correctly'));
                 },
               },
             ],
@@ -308,7 +324,9 @@ export const testBoxInTheBox = (): Promise<boolean> =>
       });
 
       setTimeout(() => {
-        form.close(() => {});
+        form.close(() => {
+          // do nothing.
+        });
       }, 10000);
     } catch (error) {
       console.error(error);
@@ -319,7 +337,7 @@ export const testBoxInTheBox = (): Promise<boolean> =>
 
 export const buttonWhisper = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    var form: whisper.Whisper;
+    let form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Button Test',
       onClose: () => {
@@ -328,25 +346,25 @@ export const buttonWhisper = (): Promise<boolean> =>
       components: [
         {
           body: 'Click the correct button',
-          type: whisper.WhisperComponentType.Markdown,
+          type: WhisperComponentType.Markdown,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
-          direction: whisper.Direction.Horizontal,
+          alignment: JustifyContent.SpaceEvenly,
+          direction: Direction.Horizontal,
           children: [
             {
               buttonStyle: whisper.ButtonStyle.Secondary,
               label: `Don't click me`,
               onClick: () => console.debug(`Why'd you do that?`),
-              type: whisper.WhisperComponentType.Button,
-              size: whisper.ButtonSize.Large,
+              type: WhisperComponentType.Button,
+              size: ButtonSize.Large,
             },
             {
               buttonStyle: whisper.ButtonStyle.Text,
               label: `Me neither`,
               onClick: () => console.debug(`Why'd you do that?`),
-              type: whisper.WhisperComponentType.Button,
-              size: whisper.ButtonSize.Small,
+              type: WhisperComponentType.Button,
+              size: ButtonSize.Small,
             },
             {
               label: `Click me`,
@@ -354,14 +372,14 @@ export const buttonWhisper = (): Promise<boolean> =>
                 form.close((error) => console.error(error));
                 resolve(true);
               },
-              type: whisper.WhisperComponentType.Button,
+              type: WhisperComponentType.Button,
             },
           ],
-          type: whisper.WhisperComponentType.Box,
+          type: WhisperComponentType.Box,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
-          direction: whisper.Direction.Horizontal,
+          alignment: JustifyContent.SpaceEvenly,
+          direction: Direction.Horizontal,
           children: [
             {
               label: `Disabled Primary`,
@@ -370,8 +388,8 @@ export const buttonWhisper = (): Promise<boolean> =>
                 form.close((error) => console.error(error));
                 reject(new Error(`Shouldn't be able to click disabled button`));
               },
-              type: whisper.WhisperComponentType.Button,
-              size: whisper.ButtonSize.Large,
+              type: WhisperComponentType.Button,
+              size: ButtonSize.Large,
             },
             {
               label: `Disabled Secondary`,
@@ -381,8 +399,8 @@ export const buttonWhisper = (): Promise<boolean> =>
                 form.close((error) => console.error(error));
                 reject(new Error(`Shouldn't be able to click disabled button`));
               },
-              type: whisper.WhisperComponentType.Button,
-              size: whisper.ButtonSize.Large,
+              type: WhisperComponentType.Button,
+              size: ButtonSize.Large,
             },
             {
               label: `Disabled Text`,
@@ -392,16 +410,18 @@ export const buttonWhisper = (): Promise<boolean> =>
                 form.close((error) => console.error(error));
                 reject(new Error(`Shouldn't be able to click disabled button`));
               },
-              type: whisper.WhisperComponentType.Button,
-              size: whisper.ButtonSize.Large,
+              type: WhisperComponentType.Button,
+              size: ButtonSize.Large,
             },
           ],
-          type: whisper.WhisperComponentType.Box,
+          type: WhisperComponentType.Box,
         },
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
+    });
   });
 
 export const linkWhisper = (): Promise<boolean> =>
@@ -414,14 +434,14 @@ export const linkWhisper = (): Promise<boolean> =>
       components: [
         {
           body: 'Click the link below',
-          type: whisper.WhisperComponentType.Markdown,
+          type: WhisperComponentType.Markdown,
         },
         {
-          type: whisper.WhisperComponentType.Link,
-          textAlign: whisper.TextAlign.Left,
+          type: WhisperComponentType.Link,
+          textAlign: TextAlign.Left,
           href: 'https://www.google.com',
           text: 'https://www.google.com',
-          style: whisper.Urgency.None,
+          style: Urgency.None,
         },
       ],
     };
@@ -444,7 +464,7 @@ export const listPairWhisperCopyableValue = (): Promise<boolean> =>
       },
       components: [
         {
-          type: whisper.WhisperComponentType.ListPair,
+          type: WhisperComponentType.ListPair,
           label: 'I am Mr. Label',
           value: copyableText,
           copyable: true,
@@ -479,7 +499,7 @@ export const listPairWhisperCopyableLabel = (): Promise<boolean> =>
       },
       components: [
         {
-          type: whisper.WhisperComponentType.ListPair,
+          type: WhisperComponentType.ListPair,
           label: copyableText,
           value: 'I am Mr. Value',
           labelCopyable: true,
@@ -511,7 +531,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     const textInput = 'myTextInput';
     const emailInput = 'myEmailInput';
     const selectInput = 'mySelectInput';
-    var form: whisper.Whisper;
+    let form: whisper.Whisper;
 
     const config: whisper.NewWhisper = {
       label: 'Form Whisper',
@@ -522,122 +542,150 @@ export const simpleFormWhisper = (): Promise<boolean> =>
         {
           id: textInput,
           label: `Enter 'a'`,
-          onChange: (error, value) => {},
+          onChange: () => {
+            // do nothing.
+          },
           tooltip: 'a?',
-          type: whisper.WhisperComponentType.TextInput,
+          type: WhisperComponentType.TextInput,
         },
         {
           id: emailInput,
           label: 'Enter a@b',
-          onChange: (error, value) => {},
-          type: whisper.WhisperComponentType.Email,
+          onChange: () => {
+            // do nothing.
+          },
+          type: WhisperComponentType.Email,
         },
         {
           id: selectInput,
           label: `Select 'blue'`,
-          onSelect: (error, value) => {},
+          onSelect: () => {
+            // do nothing.
+          },
           options: ['red', 'blue'],
-          type: whisper.WhisperComponentType.Select,
+          type: WhisperComponentType.Select,
         },
         {
           id: 'mySubmitButton',
           label: 'Submit',
-          onClick: (error: Error, whisper: whisper.Whisper) => {
-            whisper.componentState.forEach((value: any, key: string) => console.info(key, value));
+          onClick: (error: Error, onClickWhisper: whisper.Whisper) => {
+            onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
+              console.info(key, value),
+            );
             if (
-              whisper.componentState.get(textInput) === 'a' &&
-              whisper.componentState.get(emailInput) === 'a@b' &&
-              whisper.componentState.get(selectInput) === 1
+              onClickWhisper.componentState.get(textInput) === 'a' &&
+              onClickWhisper.componentState.get(emailInput) === 'a@b' &&
+              onClickWhisper.componentState.get(selectInput) === 1
             ) {
-              form.close((error) => console.error(error));
+              form.close((e) => console.error(e));
               resolve(true);
             } else {
-              form.close((error) => console.error(error));
+              form.close((e) => console.error(e));
               reject(new Error('Please enter correct form values.'));
             }
           },
-          type: whisper.WhisperComponentType.Button,
+          type: WhisperComponentType.Button,
         },
         {
-          type: whisper.WhisperComponentType.Divider,
+          type: WhisperComponentType.Divider,
         },
         {
           header: 'Form render test. Take no action.',
-          type: whisper.WhisperComponentType.Message,
+          type: WhisperComponentType.Message,
         },
         {
           label: `Second Text Input`,
-          onChange: (error: any, value: any) => {},
+          onChange: () => {
+            // do nothing.
+          },
           value: 'My Initial Value',
           id: 'myTextInputTwo',
-          type: whisper.WhisperComponentType.TextInput,
+          type: WhisperComponentType.TextInput,
         },
         {
           label: `Select 'blue'`,
-          onSelect: (error, value) => {},
+          onSelect: () => {
+            // do nothing.
+          },
           options: ['red', 'blue'],
           id: 'mySelectInputTwo',
-          type: whisper.WhisperComponentType.Select,
+          type: WhisperComponentType.Select,
         },
         {
-          onSelect: (error, value) => {},
+          onSelect: () => {
+            // do nothing.
+          },
           options: ['option1', 'option2'],
           id: 'myRadioGroup',
-          type: whisper.WhisperComponentType.RadioGroup,
+          type: WhisperComponentType.RadioGroup,
         },
         {
           label: 'Check a box',
           value: true,
-          onChange: (error, value) => {},
+          onChange: () => {
+            // do nothing.
+          },
           id: 'myCheckbox',
-          type: whisper.WhisperComponentType.Checkbox,
+          type: WhisperComponentType.Checkbox,
         },
         {
           label: 'Enter an email',
-          onChange: (error, value) => {},
+          onChange: () => {
+            // do nothing.
+          },
           id: 'myEmail',
-          type: whisper.WhisperComponentType.Email,
+          type: WhisperComponentType.Email,
         },
         {
           label: 'Enter a number',
-          onChange: (error, value) => {},
+          onChange: () => {
+            // do nothing.
+          },
           id: 'myNumber',
-          type: whisper.WhisperComponentType.Number,
+          type: WhisperComponentType.Number,
         },
         {
           label: 'Enter a password',
-          onChange: (error, value) => {},
+          onChange: () => {
+            // do nothing.
+          },
           id: 'myPassword',
-          type: whisper.WhisperComponentType.Password,
+          type: WhisperComponentType.Password,
         },
         {
           label: 'Enter a telephone',
-          onChange: (error, value) => {},
+          onChange: () => {
+            // do nothing.
+          },
           id: 'myTelephone',
-          type: whisper.WhisperComponentType.Telephone,
+          type: WhisperComponentType.Telephone,
         },
         {
           id: 'dummySubmitButton',
           label: 'Dummy Submit',
-          onClick: (error: Error, whisper: whisper.Whisper) => {
-            whisper.componentState.forEach((value: any, key: string) => console.info(key, value));
+          onClick: (error: Error, onClickWhisper: whisper.Whisper) => {
+            onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
+              console.info(key, value),
+            );
           },
-          type: whisper.WhisperComponentType.Button,
+          type: WhisperComponentType.Button,
         },
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
+    });
   });
 
 export const numberInputs = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    var form: whisper.Whisper;
+    let form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Number Test',
       components: [
         {
-          type: whisper.WhisperComponentType.Number,
+          type: WhisperComponentType.Number,
           label: 'No min, max 10, step 1',
           max: 10,
           step: 1,
@@ -645,12 +693,12 @@ export const numberInputs = (): Promise<boolean> =>
           onChange: (newValue) => console.log(`New number: ${newValue}`),
         },
         {
-          type: whisper.WhisperComponentType.Number,
+          type: WhisperComponentType.Number,
           label: 'No optional fields',
           onChange: (newValue) => console.log(`New number: ${newValue}`),
         },
         {
-          type: whisper.WhisperComponentType.Number,
+          type: WhisperComponentType.Number,
           label: 'All optional fields',
           value: 0,
           min: 0,
@@ -660,7 +708,7 @@ export const numberInputs = (): Promise<boolean> =>
           onChange: (newValue) => console.log(`New number: ${newValue}`),
         },
         {
-          type: whisper.WhisperComponentType.Telephone,
+          type: WhisperComponentType.Telephone,
           label: 'label',
           onChange: (value) => console.log(`Telephone is changed: ${value}`),
           tooltip: 'tooltip',
@@ -671,8 +719,8 @@ export const numberInputs = (): Promise<boolean> =>
         console.log('close');
       },
     };
-    whisper.create(config).then((whisper: whisper.Whisper) => {
-      form = whisper;
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
       setTimeout(() => {
         form.close((error) => console.error(error));
         resolve(true);
@@ -710,38 +758,38 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
             {
               body: recallItem.product_description,
               header: recallItem.recalling_firm,
-              style: whisper.Urgency.None,
-              type: whisper.WhisperComponentType.Message,
+              style: Urgency.None,
+              type: WhisperComponentType.Message,
             },
             {
-              type: whisper.WhisperComponentType.Divider,
+              type: WhisperComponentType.Divider,
             },
             {
               copyable: true,
               label: 'Reason',
-              style: whisper.Urgency.None,
-              type: whisper.WhisperComponentType.ListPair,
+              style: Urgency.None,
+              type: WhisperComponentType.ListPair,
               value: recallItem.reason_for_recall,
             },
             {
               copyable: true,
               label: 'Distribution',
-              style: whisper.Urgency.None,
-              type: whisper.WhisperComponentType.ListPair,
+              style: Urgency.None,
+              type: WhisperComponentType.ListPair,
               value: recallItem.distribution_pattern,
             },
             {
               copyable: true,
               label: 'Quantity',
-              style: whisper.Urgency.None,
-              type: whisper.WhisperComponentType.ListPair,
+              style: Urgency.None,
+              type: WhisperComponentType.ListPair,
               value: recallItem.product_quantity,
             },
             {
               copyable: true,
               label: 'Codes',
-              style: whisper.Urgency.None,
-              type: whisper.WhisperComponentType.ListPair,
+              style: Urgency.None,
+              type: WhisperComponentType.ListPair,
               value: recallItem.code_info,
             },
             {
@@ -751,26 +799,26 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
                 {
                   copyable: true,
                   label: 'Recall Type',
-                  style: whisper.Urgency.None,
-                  type: whisper.WhisperComponentType.ListPair,
+                  style: Urgency.None,
+                  type: WhisperComponentType.ListPair,
                   value: recallItem.voluntary_mandated,
                 },
                 {
                   copyable: true,
                   label: 'Product type',
-                  style: whisper.Urgency.None,
-                  type: whisper.WhisperComponentType.ListPair,
+                  style: Urgency.None,
+                  type: WhisperComponentType.ListPair,
                   value: recallItem.product_type,
                 },
                 {
                   copyable: true,
                   label: 'Classification',
-                  style: whisper.Urgency.None,
-                  type: whisper.WhisperComponentType.ListPair,
+                  style: Urgency.None,
+                  type: WhisperComponentType.ListPair,
                   value: recallItem.classification,
                 },
               ],
-              type: whisper.WhisperComponentType.CollapseBox,
+              type: WhisperComponentType.CollapseBox,
             },
           ],
         };
@@ -798,7 +846,7 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
           onSelect: (error, selected) => {
             console.log(`${selected} has been selected!`);
           },
-          type: whisper.WhisperComponentType.Select,
+          type: WhisperComponentType.Select,
           selected: 2,
           tooltip: 'Select a color tooltip',
         },
@@ -808,7 +856,7 @@ export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
           },
           options: ['dog', 'cat', 'snake'],
           selected: 1,
-          type: whisper.WhisperComponentType.RadioGroup,
+          type: WhisperComponentType.RadioGroup,
         },
       ],
     };
@@ -831,59 +879,69 @@ export const tooltips = (): Promise<boolean> =>
         },
         components: [
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: `Hover to see tooltip`,
             tooltip: 'Tooltip for Markdown',
           },
           {
-            type: whisper.WhisperComponentType.Message,
+            type: WhisperComponentType.Message,
             header: 'Message Header',
             body: `Hover to see tooltip`,
             style: Urgency.Success,
             tooltip: 'Tooltip for Message',
-            textAlign: whisper.TextAlign.Left,
+            textAlign: TextAlign.Left,
           },
           {
-            type: whisper.WhisperComponentType.Button,
+            type: WhisperComponentType.Button,
             label: 'Hover to see tooltip',
-            onClick: () => {},
+            onClick: () => {
+              // do nothing.
+            },
             tooltip: 'Tooltip for Button',
             disabled: true,
           },
           {
-            type: whisper.WhisperComponentType.Markdown,
+            type: WhisperComponentType.Markdown,
             body: stripIndent`
               # Are all tooltips rendered?
               `,
           },
           {
-            type: whisper.WhisperComponentType.Box,
-            alignment: Alignment.Left,
+            type: WhisperComponentType.Box,
+            alignment: JustifyContent.Left,
             direction: Direction.Horizontal,
             children: [
               {
-                type: whisper.WhisperComponentType.Button,
+                type: WhisperComponentType.Button,
                 label: 'Yes',
-                onClick: (error, whisper) => {
+                onClick: (error, onClickWhisper) => {
                   if (error) {
                     console.error(error);
-                    whisper.close(() => {});
+                    onClickWhisper.close(() => {
+                      // do nothing.
+                    });
                     reject(error);
                   }
-                  whisper.close(() => {});
+                  onClickWhisper.close(() => {
+                    // do nothing.
+                  });
                   resolve(true);
                 },
               },
               {
-                type: whisper.WhisperComponentType.Button,
+                type: WhisperComponentType.Button,
                 label: 'No',
-                onClick: (error, whisper) => {
+                onClick: (error, onClickWhisper) => {
                   if (error) {
                     console.error(error);
-                    whisper.close(() => {});
+                    onClickWhisper.close(() => {
+                      // do nothing.
+                    });
                     reject(error);
                   }
-                  whisper.close(() => {});
+                  onClickWhisper.close(() => {
+                    // do nothing.
+                  });
                   reject(new Error('Tooltips were not correctly rendered'));
                 },
               },
@@ -893,7 +951,9 @@ export const tooltips = (): Promise<boolean> =>
       });
 
       setTimeout(() => {
-        createdWhisper.close(() => {});
+        createdWhisper.close(() => {
+          // do nothing.
+        });
       }, 20000);
     } catch (error) {
       console.error(error);
@@ -912,25 +972,25 @@ export const testClickableBox = (): Promise<boolean> =>
       components: [
         {
           body: 'Click the correct button',
-          type: whisper.WhisperComponentType.Markdown,
+          type: WhisperComponentType.Markdown,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
-          direction: whisper.Direction.Horizontal,
+          alignment: JustifyContent.SpaceEvenly,
+          direction: Direction.Horizontal,
           onClick: () => {
             console.debug('The toggles...they do nothing');
           },
           children: [
             {
               body: `Don't click me`,
-              type: whisper.WhisperComponentType.Markdown,
+              type: WhisperComponentType.Markdown,
             },
           ],
-          type: whisper.WhisperComponentType.Box,
+          type: WhisperComponentType.Box,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
-          direction: whisper.Direction.Horizontal,
+          alignment: JustifyContent.SpaceEvenly,
+          direction: Direction.Horizontal,
           onClick: () => {
             resolve(true);
             form.close((error) => console.error(error));
@@ -938,15 +998,17 @@ export const testClickableBox = (): Promise<boolean> =>
           children: [
             {
               body: `Click me`,
-              type: whisper.WhisperComponentType.Markdown,
+              type: WhisperComponentType.Markdown,
             },
           ],
-          type: whisper.WhisperComponentType.Box,
+          type: WhisperComponentType.Box,
         },
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
+    });
   });
 
 export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
@@ -960,19 +1022,19 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
       components: [
         {
           body: 'Click the text below',
-          type: whisper.WhisperComponentType.Markdown,
+          type: WhisperComponentType.Markdown,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
-          direction: whisper.Direction.Horizontal,
+          alignment: JustifyContent.SpaceEvenly,
+          direction: Direction.Horizontal,
           onClick: () => {
             reject(new Error('Outer element clicked'));
             form.close((error) => console.error(error));
           },
           children: [
             {
-              alignment: whisper.Alignment.SpaceEvenly,
-              direction: whisper.Direction.Horizontal,
+              alignment: JustifyContent.SpaceEvenly,
+              direction: Direction.Horizontal,
               onClick: () => {
                 resolve(true);
                 form.close((error) => console.error(error));
@@ -980,29 +1042,31 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
               children: [
                 {
                   body: `Click these words`,
-                  type: whisper.WhisperComponentType.Markdown,
+                  type: WhisperComponentType.Markdown,
                 },
               ],
-              type: whisper.WhisperComponentType.Box,
+              type: WhisperComponentType.Box,
             },
             {
-              alignment: whisper.Alignment.SpaceEvenly,
-              direction: whisper.Direction.Horizontal,
+              alignment: JustifyContent.SpaceEvenly,
+              direction: Direction.Horizontal,
               children: [
                 {
                   body: `Don't click here`,
-                  type: whisper.WhisperComponentType.Markdown,
+                  type: WhisperComponentType.Markdown,
                 },
               ],
-              type: whisper.WhisperComponentType.Box,
+              type: WhisperComponentType.Box,
             },
           ],
-          type: whisper.WhisperComponentType.Box,
+          type: WhisperComponentType.Box,
         },
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
+    });
   });
 
 export const testClickableBoxNestingButtons = (): Promise<boolean> =>
@@ -1016,11 +1080,11 @@ export const testClickableBoxNestingButtons = (): Promise<boolean> =>
       components: [
         {
           body: 'Click the button',
-          type: whisper.WhisperComponentType.Markdown,
+          type: WhisperComponentType.Markdown,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
-          direction: whisper.Direction.Horizontal,
+          alignment: JustifyContent.SpaceEvenly,
+          direction: Direction.Horizontal,
           onClick: () => {
             reject(new Error('Outer element clicked'));
             form.close((error) => console.error(error));
@@ -1032,15 +1096,17 @@ export const testClickableBoxNestingButtons = (): Promise<boolean> =>
                 resolve(true);
                 form.close((error) => console.error(error));
               },
-              type: whisper.WhisperComponentType.Button,
+              type: WhisperComponentType.Button,
             },
           ],
-          type: whisper.WhisperComponentType.Box,
+          type: WhisperComponentType.Box,
         },
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
+    });
   });
 
 export const testClickableBoxNestingLinks = (): Promise<boolean> =>
@@ -1054,34 +1120,47 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
       components: [
         {
           body: 'Click the link',
-          type: whisper.WhisperComponentType.Markdown,
+          type: WhisperComponentType.Markdown,
         },
         {
-          alignment: whisper.Alignment.SpaceEvenly,
-          direction: whisper.Direction.Horizontal,
+          alignment: JustifyContent.SpaceEvenly,
+          direction: Direction.Horizontal,
           onClick: () => {
             reject(new Error('Outer element clicked'));
             form.close((error) => console.error(error));
           },
           children: [
             {
-              type: whisper.WhisperComponentType.Link,
-              textAlign: whisper.TextAlign.Left,
+              type: WhisperComponentType.Link,
+              textAlign: TextAlign.Left,
               onClick: () => {
                 form.close((error) => console.log(error));
                 resolve(true);
               },
               text: `Click this link`,
-              style: whisper.Urgency.None,
+              style: Urgency.None,
             },
           ],
-          type: whisper.WhisperComponentType.Box,
+          type: WhisperComponentType.Box,
         },
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
+    });
   });
+
+const areAllOnBlurResolved = (resolverMap: Map<string, boolean>) => {
+  let result = true;
+  resolverMap.forEach((value) => {
+    if (!value) {
+      result = false;
+    }
+  });
+
+  return result;
+};
 
 export const onBlurTest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -1100,9 +1179,11 @@ export const onBlurTest = (): Promise<boolean> =>
         },
         components: [
           {
-            type: whisper.WhisperComponentType.TextInput,
+            type: WhisperComponentType.TextInput,
             label: 'Text onBlur',
-            onChange: () => {},
+            onChange: () => {
+              // do nothing.
+            },
             onBlur: (error) => {
               if (error) {
                 console.error(error);
@@ -1113,14 +1194,18 @@ export const onBlurTest = (): Promise<boolean> =>
 
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
-                createdWhisper.close(() => {});
+                createdWhisper.close(() => {
+                  // do nothing.
+                });
               }
             },
           },
           {
-            type: whisper.WhisperComponentType.Telephone,
+            type: WhisperComponentType.Telephone,
             label: 'Telephone onBlur',
-            onChange: () => {},
+            onChange: () => {
+              // do nothing.
+            },
             onBlur: (error) => {
               if (error) {
                 console.error(error);
@@ -1131,14 +1216,18 @@ export const onBlurTest = (): Promise<boolean> =>
 
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
-                createdWhisper.close(() => {});
+                createdWhisper.close(() => {
+                  // do nothing.
+                });
               }
             },
           },
           {
-            type: whisper.WhisperComponentType.Email,
+            type: WhisperComponentType.Email,
             label: 'Email onBlur',
-            onChange: () => {},
+            onChange: () => {
+              // do nothing.
+            },
             onBlur: (error) => {
               if (error) {
                 console.error(error);
@@ -1153,9 +1242,11 @@ export const onBlurTest = (): Promise<boolean> =>
             },
           },
           {
-            type: whisper.WhisperComponentType.Number,
+            type: WhisperComponentType.Number,
             label: 'Number onBlur',
-            onChange: () => {},
+            onChange: () => {
+              // do nothing.
+            },
             onBlur: (error) => {
               if (error) {
                 console.error(error);
@@ -1166,14 +1257,18 @@ export const onBlurTest = (): Promise<boolean> =>
 
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
-                createdWhisper.close(() => {});
+                createdWhisper.close(() => {
+                  // do nothing.
+                });
               }
             },
           },
           {
-            type: whisper.WhisperComponentType.Password,
+            type: WhisperComponentType.Password,
             label: 'Password onBlur',
-            onChange: () => {},
+            onChange: () => {
+              // do nothing.
+            },
             onBlur: (error) => {
               if (error) {
                 console.error(error);
@@ -1184,7 +1279,9 @@ export const onBlurTest = (): Promise<boolean> =>
 
               if (areAllOnBlurResolved(resolverMap)) {
                 resolve(true);
-                createdWhisper.close(() => {});
+                createdWhisper.close(() => {
+                  // do nothing.
+                });
               }
             },
           },
@@ -1192,7 +1289,9 @@ export const onBlurTest = (): Promise<boolean> =>
       });
 
       setTimeout(() => {
-        createdWhisper.close(() => {});
+        createdWhisper.close(() => {
+          // do nothing.
+        });
       }, 10000);
     } catch (error) {
       console.error(error);
@@ -1200,78 +1299,64 @@ export const onBlurTest = (): Promise<boolean> =>
     }
   });
 
-const areAllOnBlurResolved = (resolverMap: Map<string, boolean>) => {
-  let result = true;
-  resolverMap.forEach((value) => {
-    if (!value) {
-      result = false;
-      return;
-    }
-  });
-
-  return result;
-};
-
 export const collapseBoxOnClick = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
-    let resolutions = {
+    const resolutions = {
       expand: false,
       collapse: false,
     };
-    let bothResolved = () => {
-      return resolutions.expand && resolutions.collapse;
-    };
+    const bothResolved = () => resolutions.expand && resolutions.collapse;
 
     let form: whisper.Whisper;
     const config: whisper.NewWhisper = {
       label: 'Expand / Collapse OnClick Callback Test',
       components: [
         {
-          type: whisper.WhisperComponentType.CollapseBox,
+          type: WhisperComponentType.CollapseBox,
           open: false,
           label: 'Expand me!',
           onClick: (error, open) => {
             if (open) {
               resolutions.expand = true;
               if (bothResolved()) {
-                form.close((error) => console.error(error));
+                form.close((e) => console.error(e));
                 resolve(true);
               }
             } else {
               if (resolutions.expand) {
                 return;
               }
-              reject('CollapseBox should have reported open as true');
+              reject(new Error('CollapseBox should have reported open as true'));
             }
           },
           children: [
             {
-              type: whisper.WhisperComponentType.Markdown,
+              type: WhisperComponentType.Markdown,
               body: 'Good job!',
             },
           ],
         },
         {
-          type: whisper.WhisperComponentType.CollapseBox,
+          type: WhisperComponentType.CollapseBox,
           open: true,
           label: 'Collapse me!',
           onClick: (error, open) => {
             if (!open) {
               resolutions.collapse = true;
               if (bothResolved()) {
-                form.close((error) => console.error(error));
+                form.close((e) => console.error(e));
                 resolve(true);
               }
             } else {
               if (resolutions.collapse) {
                 return;
               }
-              reject('CollapseBox should have reported open as false');
+              reject(new Error('CollapseBox should have reported open as false'));
             }
           },
           children: [
             {
-              type: whisper.WhisperComponentType.Markdown,
+              type: WhisperComponentType.Markdown,
               body: 'Being hidden is my destiny!',
             },
           ],
@@ -1279,5 +1364,7 @@ export const collapseBoxOnClick = (): Promise<boolean> =>
       ],
     };
 
-    whisper.create(config).then((whisper: whisper.Whisper) => (form = whisper));
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
+    });
   });

@@ -4,73 +4,30 @@ import TestSuite from './testingFixtures/testSuite';
 import TestGroup from './testingFixtures/testGroup';
 import { LoopTest } from './testingFixtures/loopTest';
 
-import {
-  activeWindowTest,
-  allWindowTest,
-  charTest,
-  charStreamTest,
-  clipboardStream,
-  clipboardWriteAndQuery,
-  cursorPosition,
-  hotkeyTest,
-  listenActiveWindowTest,
-  networkHTTP,
-  networkHTTPS,
-  networkWebSocket,
-  processStream,
-  processQuery,
-  streamCursorPosition,
-  vaultReadWrite,
-  queryDirectory,
-  createAndDeleteFile,
-  userJWTTest,
-  uiSearchTest,
-  uiGlobalSearchTest,
-  updateAndReadFile,
-  listenFile,
-  listenDir,
-  dirExists,
-  fileExists,
-} from './tests';
-
-import {
-  testBoxInTheBox,
-  buttonWhisper,
-  linkWhisper,
-  numberInputs,
-  testNetworkAndListComponents,
-  listPairWhisperCopyableValue,
-  listPairWhisperCopyableLabel,
-  simpleFormWhisper,
-  initialValueSelectAndRadioWhispers,
-  testClickableWhisper,
-  testClickableBox,
-  testClickableBoxNestingBoxes,
-  testClickableBoxNestingButtons,
-  testClickableBoxNestingLinks,
-  testMarkdownWhisper,
-  tooltips,
-  collapseBoxOnClick,
-  onBlurTest,
-} from './tests/whisper';
-import {
-  basicWhisperUpdate,
-  updateCollapseState,
-  updateOnChange,
-  whisperStateOnChange,
-} from './tests/whisper-update';
+import * as clipboardTests from './tests/clipboard';
+import * as cursorTests from './tests/cursor';
+import * as filesystemTests from './tests/filesystem';
+import * as keyboardTests from './tests/keyboard';
+import * as networkTests from './tests/network';
+import * as processTests from './tests/process';
+import * as uiTests from './tests/ui';
+import * as userTests from './tests/user';
+import * as vaultTests from './tests/vault';
+import * as whisperTests from './tests/whisper';
+import * as whisperUpdateTests from './tests/whisper/whisper-update';
+import * as windowTests from './tests/window';
 
 const testConfig: { [key: string]: TestGroup } = {
   clipboard: new TestGroup('Clipboard Aptitude', [
     new LoopTest(
       'Clipboard Aptitude - Write And Query Test',
-      clipboardWriteAndQuery,
+      clipboardTests.clipboardWriteAndQuery,
       10000,
       'Copying value to clipboard and reading it back',
     ),
     new LoopTest(
       'Clipboard Aptitude - Clipboard Stream',
-      clipboardStream,
+      clipboardTests.clipboardStream,
       10000,
       'Copying the value "LDKThxBai" the the clipboard',
     ),
@@ -78,13 +35,13 @@ const testConfig: { [key: string]: TestGroup } = {
   cursor: new TestGroup('Cursor Aptitude', [
     new LoopTest(
       'Cursor Aptitude - Position Test',
-      cursorPosition,
+      cursorTests.cursorPosition,
       10000,
       'Querying cursor position...',
     ),
     new LoopTest(
       'Cursor Aptitude - Stream Position Test',
-      streamCursorPosition,
+      cursorTests.streamCursorPosition,
       10000,
       'Move your cursor around...',
     ),
@@ -92,19 +49,19 @@ const testConfig: { [key: string]: TestGroup } = {
   keyboard: new TestGroup('Keyboard Aptitude', [
     new LoopTest(
       'Keyboard Aptitude - Hotkey Test',
-      hotkeyTest,
+      keyboardTests.hotkeyTest,
       10000,
       'Press Ctrl+A to test the hotkey functionality.',
     ),
     new LoopTest(
       'Keyboard Aptitude - Char Stream Test',
-      charStreamTest,
+      keyboardTests.charStreamTest,
       10000,
       'Type the word "Olive"',
     ),
     new LoopTest(
       'Keyboard Aptitude - Char Test',
-      charTest,
+      keyboardTests.charTest,
       10000,
       'Type the letter "F" to pay respects...and test the individual character test',
     ),
@@ -112,19 +69,19 @@ const testConfig: { [key: string]: TestGroup } = {
   network: new TestGroup('Network Aptitude', [
     new LoopTest(
       'Network Aptitude - HTTPS test',
-      networkHTTPS,
+      networkTests.networkHTTPS,
       5000,
       'Calling a public HTTPS API. Should succeed.',
     ),
     new LoopTest(
       'Network Aptitude - HTTP test',
-      networkHTTP,
+      networkTests.networkHTTP,
       5000,
       'Calling a public HTTP API. Should fail',
     ),
     new LoopTest(
       'Network Aptitude - WebSocket test',
-      networkWebSocket,
+      networkTests.networkWebSocket,
       20000,
       'Sending/receiving data to websocket should pass.',
     ),
@@ -132,13 +89,13 @@ const testConfig: { [key: string]: TestGroup } = {
   process: new TestGroup('Process Aptitude', [
     new LoopTest(
       'Process Aptitude - Query processes',
-      processQuery,
+      processTests.processQuery,
       10000,
       'Querying what processes are running on the computer...',
     ),
     new LoopTest(
       'Process Aptitude - Stream processes',
-      processStream,
+      processTests.processStream,
       10000,
       'Streaming info on what processes are running on the computer...',
     ),
@@ -146,24 +103,24 @@ const testConfig: { [key: string]: TestGroup } = {
   ui: new TestGroup('UI Aptitude', [
     new LoopTest(
       'UI Aptitude - Listen Search',
-      uiSearchTest,
+      uiTests.uiSearchTest,
       10000,
       'Click the magnifying lens at the top of the panel and search "for life"',
     ),
     new LoopTest(
       'UI Aptitude - Listen Global Search',
-      uiGlobalSearchTest,
+      uiTests.uiGlobalSearchTest,
       10000,
       'Press CMD + O and search "for meaning"',
     ),
   ]),
   user: new TestGroup('User Aptitude', [
-    new LoopTest('User Aptitude - JWT', userJWTTest, 10000, 'No action required'),
+    new LoopTest('User Aptitude - JWT', userTests.userJWTTest, 10000, 'No action required'),
   ]),
   vault: new TestGroup('Vault Aptitude', [
     new LoopTest(
       'Vault Aptitude - Write / Read from vault',
-      vaultReadWrite,
+      vaultTests.vaultReadWrite,
       10000,
       'Writing value to vault then reading it back.',
     ),
@@ -171,99 +128,109 @@ const testConfig: { [key: string]: TestGroup } = {
   whispers: new TestGroup('Whisper Aptitude', [
     new LoopTest(
       'Whisper Aptitude - Markdown whisper',
-      testMarkdownWhisper,
+      whisperTests.testMarkdownWhisper,
       20000,
       'Did markdown rendered properly?',
     ),
     new LoopTest(
       'Whisper Aptitude - Internal Links',
-      testClickableWhisper,
+      whisperTests.testClickableWhisper,
       10000,
       'Click the 5th option',
     ),
     new LoopTest(
       'Whisper Aptitude - Box in the box',
-      testBoxInTheBox,
+      whisperTests.testBoxInTheBox,
       10000,
       'Verify that box in the box rendered correctly',
     ),
     new LoopTest(
       'Whisper Aptitude - External Links',
-      linkWhisper,
+      whisperTests.linkWhisper,
       10000,
       'Click the link in the whisper',
     ),
     new LoopTest(
       'Whisper Aptitude - Network and List Items',
-      testNetworkAndListComponents,
+      whisperTests.testNetworkAndListComponents,
       5000,
       'No action required',
     ),
     new LoopTest(
       'Whisper Aptitude - Clickable Boxes',
-      testClickableBox,
+      whisperTests.testClickableBox,
       10000,
       'Click the correct box',
     ),
     new LoopTest(
       'Whisper Aptitude - Nested Clickable Boxes',
-      testClickableBoxNestingBoxes,
+      whisperTests.testClickableBoxNestingBoxes,
       10000,
       'Click the correct text',
     ),
     new LoopTest(
       'Whisper Aptitude - Nested Clickable Buttons',
-      testClickableBoxNestingButtons,
+      whisperTests.testClickableBoxNestingButtons,
       10000,
       'Click the button',
     ),
     new LoopTest(
       'Whisper Aptitude - Nested Clickable Links',
-      testClickableBoxNestingLinks,
+      whisperTests.testClickableBoxNestingLinks,
       10000,
       'Click the link',
     ),
-    new LoopTest('Whisper Aptitude - Button Whisper', buttonWhisper, 10000, 'Click the 3rd button'),
+    new LoopTest(
+      'Whisper Aptitude - Button Whisper',
+      whisperTests.buttonWhisper,
+      10000,
+      'Click the 3rd button',
+    ),
     new LoopTest(
       'Whisper Aptitude - ListPair Copyable Value',
-      listPairWhisperCopyableValue,
+      whisperTests.listPairWhisperCopyableValue,
       10000,
       'Click the ListPair value to copy its text',
     ),
     new LoopTest(
       'Whisper Aptitude - ListPair Copyable Label',
-      listPairWhisperCopyableLabel,
+      whisperTests.listPairWhisperCopyableLabel,
       10000,
       'Click the ListPair label to copy its text',
     ),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
-      simpleFormWhisper,
+      whisperTests.simpleFormWhisper,
       10000,
       `Enter 'Stonks' into the field`,
     ),
-    new LoopTest('Whisper Aptitude - Number Inputs', numberInputs, 10000, `No action required`),
+    new LoopTest(
+      'Whisper Aptitude - Number Inputs',
+      whisperTests.numberInputs,
+      10000,
+      `No action required`,
+    ),
     new LoopTest(
       'Whisper Aptitude - Initial Value for Select and Radio',
-      initialValueSelectAndRadioWhispers,
+      whisperTests.initialValueSelectAndRadioWhispers,
       10000,
       `No action required`,
     ),
     new LoopTest(
       'Whisper Aptitude - multiple components tooltip test',
-      tooltips,
+      whisperTests.tooltips,
       20000,
       `Hover on each component to see a tooltip`,
     ),
     new LoopTest(
       'Whisper Aptitude - onBlur test',
-      onBlurTest,
+      whisperTests.onBlurTest,
       10000,
       `Focus on each field and exit out`,
     ),
     new LoopTest(
       'Whisper Aptitude - CollapseBox OnClick',
-      collapseBoxOnClick,
+      whisperTests.collapseBoxOnClick,
       10000,
       'Click both CollapseBoxes',
     ),
@@ -271,25 +238,25 @@ const testConfig: { [key: string]: TestGroup } = {
   whisperUpdate: new TestGroup('Whisper Updates', [
     new LoopTest(
       'Whisper Update - Basic Whisper Update',
-      basicWhisperUpdate,
+      whisperUpdateTests.basicWhisperUpdate,
       20000,
       `Did the whisper update correctly?`,
     ),
     new LoopTest(
       'Whisper Update - Collapse State Across Update',
-      updateCollapseState,
+      whisperUpdateTests.updateCollapseState,
       20000,
       `Did the whisper update correctly?`,
     ),
     new LoopTest(
       'Whisper Update - OnChange Across Update',
-      updateOnChange,
+      whisperUpdateTests.updateOnChange,
       20000,
       `Did the whisper update correctly?`,
     ),
     new LoopTest(
       'Whisper Update - Automated OnChange',
-      whisperStateOnChange,
+      whisperUpdateTests.whisperStateOnChange,
       5000,
       `Detecting changes across updates - No action needed.`,
     ),
@@ -297,19 +264,19 @@ const testConfig: { [key: string]: TestGroup } = {
   window: new TestGroup('Window Aptitude', [
     new LoopTest(
       'Window Aptitude - Active Window Test',
-      activeWindowTest,
+      windowTests.activeWindowTest,
       10000,
       'Make window active...',
     ),
     new LoopTest(
       'Window Aptitude - All Window Test',
-      allWindowTest,
+      windowTests.allWindowTest,
       10000,
       'Getting all windows...',
     ),
     new LoopTest(
       'Window Aptitude - Listen Active Window Test',
-      listenActiveWindowTest,
+      windowTests.listenActiveWindowTest,
       10000,
       'Listening to active windows, please change active window...',
     ),
@@ -317,38 +284,43 @@ const testConfig: { [key: string]: TestGroup } = {
   file: new TestGroup('File Aptitude', [
     new LoopTest(
       'File Aptitude - Query File Directory',
-      queryDirectory,
+      filesystemTests.queryDirectory,
       10000,
       'Querying root directory to look for newly created "file.json"...',
     ),
     new LoopTest(
       'File Aptitude - Create and Delete File',
-      createAndDeleteFile,
+      filesystemTests.createAndDeleteFile,
       10000,
       'Trying to create then delete "test.txt"',
     ),
     new LoopTest(
       'File Aptitude - Update and read a file',
-      updateAndReadFile,
+      filesystemTests.updateAndReadFile,
       15000,
       'Trying to create, update, then read the text in "test.txt" before deleting',
     ),
     new LoopTest(
       'File Aptitude - Listen File',
-      listenFile,
+      filesystemTests.listenFile,
       10000,
       'Monitoring for file changes...',
     ),
-    new LoopTest('File Aptitude - Listen Dir', listenDir, 10000, 'Monitoring for dir change...'),
+    new LoopTest(
+      'File Aptitude - Listen Dir',
+      filesystemTests.listenDir,
+      10000,
+      'Monitoring for dir change...',
+    ),
     new LoopTest(
       'File Aptitude - Dir Exists',
-      dirExists,
+      filesystemTests.dirExists,
       10000,
       'Checking for directory existence...',
     ),
     new LoopTest(
       'File Aptitude - File Exists',
-      fileExists,
+      filesystemTests.fileExists,
       10000,
       'Checking for file existence...',
     ),
@@ -378,8 +350,8 @@ export default class SelfTestLoop {
 
   async openTestGroups(): Promise<whisper.Whisper> {
     let allTests = [] as LoopTest[];
-    // eslint-disable-next-line
-    const clickableElements: any[] = [];
+
+    const clickableElements: whisper.Component[] = [];
     const keys = Object.keys(testConfig);
     for (let i = 0; i < keys.length; i += 1) {
       const group: TestGroup = testConfig[keys[i]];
@@ -390,7 +362,7 @@ export default class SelfTestLoop {
           const suite = new TestSuite(group.getTests());
           suite.start().then(() => {
             console.log('🎉 Group Done!');
-            var form: whisper.Whisper;
+            let form: whisper.Whisper;
             whisper
               .create({
                 label: 'Testing Complete',
@@ -404,7 +376,9 @@ export default class SelfTestLoop {
                   },
                 ],
               })
-              .then((whisper: whisper.Whisper) => (form = whisper));
+              .then((whisperForm: whisper.Whisper) => {
+                form = whisperForm;
+              });
             setTimeout(() => {
               form.close((error) => console.error(error));
             }, 5000);
@@ -424,7 +398,7 @@ export default class SelfTestLoop {
 
         suite.start().then(() => {
           console.info('🎉 Done!');
-          var prompt: whisper.Whisper;
+          let prompt: whisper.Whisper;
           whisper
             .create({
               label: 'Testing Complete',
@@ -438,7 +412,9 @@ export default class SelfTestLoop {
                 },
               ],
             })
-            .then((whisper: whisper.Whisper) => (prompt = whisper));
+            .then((whisperForm: whisper.Whisper) => {
+              prompt = whisperForm;
+            });
           setTimeout(() => {
             prompt.close((error) => console.error(error));
           }, 5000);
@@ -448,7 +424,7 @@ export default class SelfTestLoop {
       style: whisper.Urgency.None,
     });
 
-    return await whisper.create({
+    return whisper.create({
       label: 'Self Test Loop',
       onClose: () => {
         console.log('closed Self Test whisper');
