@@ -211,6 +211,12 @@ const testConfig: { [key: string]: TestGroup } = {
       `No action required`,
     ),
     new LoopTest(
+      'Whisper Aptitude - Float Number Inputs',
+      whisperTests.floatNumberInputs,
+      20000,
+      `Enter 0.6 in the input field`,
+    ),
+    new LoopTest(
       'Whisper Aptitude - Initial Value for Select and Radio',
       whisperTests.initialValueSelectAndRadioWhispers,
       10000,
