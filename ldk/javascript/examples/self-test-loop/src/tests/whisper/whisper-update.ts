@@ -109,9 +109,8 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
             type: WhisperComponentType.TextInput,
             label: 'Text Input',
             id: 'myTextInput1',
-            onChange: (error, param, onChangeWhisper) => {
-              console.info(logMap(onChangeWhisper.componentState));
-            },
+            key: 'textinput1',
+            onChange: (error, param, onChangeWhisper) => logMap(onChangeWhisper.componentState),
             tooltip: 'myTooltip',
           },
           {
@@ -123,16 +122,21 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
             reject,
             [
               {
+                type: WhisperComponentType.Markdown,
+                body: 'MARKDOWN WARNING',
+                key: 'warning',
+              },
+              {
                 type: WhisperComponentType.TextInput,
                 label: 'Text Input 2',
                 id: 'myTextInput1',
-                onChange: (error, param, onChangeWhisper) => {
-                  console.info(logMap(onChangeWhisper.componentState));
-                },
+                key: 'textinput1',
+                // TODO: Figure out what state to persist, probably need to retain focus.
+                onChange: (error, param, onChangeWhisper) => logMap(onChangeWhisper.componentState),
                 tooltip: 'myTooltip',
               },
             ],
-            'Did the whisper update correctly? (state will persist)', // TODO: State persistence across update is an upcoming feature.
+            'Did the whisper update correctly? (state will persist)',
             'User selected update failed.',
           ),
         ],
@@ -151,6 +155,7 @@ export const updateCollapseState = (): Promise<boolean> =>
           type: WhisperComponentType.Checkbox,
           label: 'cb1',
           value: false,
+          key: 'c1',
           onChange: () => {
             // do nothing.
           },
@@ -159,6 +164,7 @@ export const updateCollapseState = (): Promise<boolean> =>
           type: WhisperComponentType.Checkbox,
           label: 'cb2',
           value: false,
+          key: 'c2',
           onChange: () => {
             // do nothing.
           },
@@ -170,6 +176,7 @@ export const updateCollapseState = (): Promise<boolean> =>
         children: [...checkboxes],
         label: 'first CollapseBox',
         open: false,
+        key: 'collapse',
       };
 
       whisper.create({
@@ -186,7 +193,16 @@ export const updateCollapseState = (): Promise<boolean> =>
           updateWithConfirmation(
             resolve,
             reject,
-            [collapseBox],
+            [
+              {
+                type: WhisperComponentType.Message,
+                header: 'New Message',
+              },
+              {
+                ...collapseBox,
+                open: true,
+              },
+            ],
             'Did the CollapseBox stay expanded?',
             'User selected update failed.',
           ),
