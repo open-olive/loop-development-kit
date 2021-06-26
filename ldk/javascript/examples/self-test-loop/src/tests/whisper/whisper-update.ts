@@ -54,6 +54,22 @@ const confirmOrDeny = (
   },
 ];
 
+const createConfirmOrDenyWithPromise = (
+  prompt: string,
+  rejectReason?: string,
+): { promise: Promise<boolean>; button: Component[] } => {
+  let outerResolve;
+  let outerReject;
+  const promise = new Promise<boolean>((resolve, reject) => {
+    outerResolve = resolve;
+    outerReject = reject;
+  });
+  return {
+    promise,
+    button: confirmOrDeny(outerResolve, outerReject, prompt, rejectReason),
+  };
+};
+
 const updateWithConfirmation = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
   reject: (reason?: Error) => void,
@@ -179,32 +195,37 @@ export const updateCollapseState = (): Promise<boolean> =>
         key: 'collapse',
       };
 
-      whisper.create({
+      const firstConfirm = createConfirmOrDenyWithPromise(
+        'Expand the Collapse Box and click Yes',
+        'User clicked no',
+      );
+      const testWhisper = await whisper.create({
         label: 'Update Collapse State',
         onClose: () => {
           // do nothing.
         },
+        components: [collapseBox, ...firstConfirm.button],
+      });
+      await firstConfirm.promise;
+      const secondUpdate = createConfirmOrDenyWithPromise(
+        'Did the CollapseBox stay expanded?',
+        'User selected update failed.',
+      );
+      await testWhisper.update({
+        label: 'Update Collapse State',
+        components: [{ ...collapseBox, open: true }, ...secondUpdate.button],
+      });
+      await secondUpdate.promise;
+      testWhisper.update({
+        label: 'Update Collapse State',
         components: [
           collapseBox,
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Expand the collapse box and Update.',
-          },
-          updateWithConfirmation(
+          ...confirmOrDeny(
             resolve,
             reject,
-            [
-              {
-                type: WhisperComponentType.Message,
-                header: 'New Message',
-              },
-              {
-                ...collapseBox,
-                open: true,
-              },
-            ],
-            'Did the CollapseBox stay expanded?',
-            'User selected update failed.',
+            'Did the collapse box go back to collapsed?',
+            'Collapse box did not obey state change',
+            testWhisper,
           ),
         ],
       });
@@ -227,6 +248,7 @@ export const updateOnChange = (): Promise<boolean> =>
             type: WhisperComponentType.TextInput,
             label: 'Enter 1',
             id: 'myTextInput1',
+            key: 'input',
             onChange: (error, value, incomingWhisper) => {
               if (value === '1') {
                 incomingWhisper.update(
@@ -234,9 +256,15 @@ export const updateOnChange = (): Promise<boolean> =>
                     label: 'Whisper Updated',
                     components: [
                       {
+                        type: WhisperComponentType.Markdown,
+                        body:
+                          'Enter in 2 below if the text input retained focus, anything else otherwise',
+                      },
+                      {
                         type: WhisperComponentType.TextInput,
                         label: 'Enter 2',
                         id: 'myTextInput2',
+                        key: 'input',
                         value: '',
                         onChange: (error, value, incomingWhisper) => {
                           if (value === '2') {
