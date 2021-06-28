@@ -13,6 +13,7 @@ export const mapToHttpRequest = (request: HTTPRequest): OliveHelps.HTTPRequest =
   headers: request.headers,
   method: request.method,
   url: request.url,
+  timeoutMs: request.timeoutMs,
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

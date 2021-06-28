@@ -178,6 +178,7 @@ declare namespace OliveHelps {
     headers?: Record<string, string[]>;
     method: string;
     url: string;
+    timeoutMs?: number;
   }
 
   interface HTTPResponse {
