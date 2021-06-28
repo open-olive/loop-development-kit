@@ -8,6 +8,22 @@ import {
   WhisperComponentType,
 } from './types';
 
+function throwForDuplicateKeys<T extends { key?: string }>(components: T[]): T[] {
+  const keySet = new Set<string>();
+  components.forEach((item) => {
+    if (item.key === undefined) {
+      return;
+    }
+    if (keySet.has(item.key)) {
+      throw new Error(
+        `Duplicate Key ${item.key} encountered, provided keys must be unique among its siblings`,
+      );
+    }
+    keySet.add(item.key);
+  });
+  return components;
+}
+
 export function mapToInternalChildComponent(
   component: BoxChildComponent,
   stateMap: StateMap,
@@ -21,8 +37,11 @@ export function mapToInternalChildComponent(
           id: component.id,
           alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
           direction: component.direction,
-          children: component.children.map((childComponent) =>
-            mapToInternalChildComponent(childComponent, stateMap),
+          key: component.key,
+          children: throwForDuplicateKeys(
+            component.children.map((childComponent) =>
+              mapToInternalChildComponent(childComponent, stateMap),
+            ),
           ),
           type: WhisperComponentType.Box,
           onClick: (error, whisper) => {
@@ -34,8 +53,11 @@ export function mapToInternalChildComponent(
         id: component.id,
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         direction: component.direction,
-        children: component.children.map((childComponent) =>
-          mapToInternalChildComponent(childComponent, stateMap),
+        key: component.key,
+        children: throwForDuplicateKeys(
+          component.children.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
         ),
         type: WhisperComponentType.Box,
       };
@@ -185,8 +207,11 @@ export function mapToInternalComponent(
         return {
           label: component.label,
           open: component.open,
-          children: component.children.map((childComponent) =>
-            mapToInternalChildComponent(childComponent, stateMap),
+          key: component.key,
+          children: throwForDuplicateKeys(
+            component.children.map((childComponent) =>
+              mapToInternalChildComponent(childComponent, stateMap),
+            ),
           ),
           type: WhisperComponentType.CollapseBox,
           onClick: (error: Error, param: boolean, whisper: OliveHelps.Whisper) => {
@@ -198,8 +223,11 @@ export function mapToInternalComponent(
         id: component.id,
         label: component.label,
         open: component.open,
-        children: component.children.map((childComponent) =>
-          mapToInternalChildComponent(childComponent, stateMap),
+        key: component.key,
+        children: throwForDuplicateKeys(
+          component.children.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
         ),
         type: WhisperComponentType.CollapseBox,
       };
@@ -224,14 +252,14 @@ export function mapToInternalWhisper(
     ? {
         label: whisper.label,
         onClose: whisper.onClose,
-        components: whisper.components.map((component) =>
-          mapToInternalComponent(component, stateMap),
+        components: throwForDuplicateKeys(
+          whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
         ),
       }
     : {
         label: whisper.label,
-        components: whisper.components.map((component) =>
-          mapToInternalComponent(component, stateMap),
+        components: throwForDuplicateKeys(
+          whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
         ),
       };
 }
