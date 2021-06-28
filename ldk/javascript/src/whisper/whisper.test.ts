@@ -72,7 +72,7 @@ describe('Whisper', () => {
         componentState: expect.any(Map),
       });
     });
-    it('Throws if it encounters a duplicate key', async() => {
+    it('Throws if it encounters a duplicate key', async () => {
       const expectedClose = jest.fn();
       const newWhisper: whisper.NewWhisper = {
         components: [
@@ -95,7 +95,6 @@ describe('Whisper', () => {
 
       expect(() => create(newWhisper)).rejects.toEqual(expect.any(Error));
       expect(oliveHelps.whisper.create).not.toHaveBeenCalled();
-
     });
 
     it('wraps calls to update', async () => {
