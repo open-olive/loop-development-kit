@@ -1151,17 +1151,6 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
     });
   });
 
-const areAllOnBlurResolved = (resolverMap: Map<string, boolean>) => {
-  let result = true;
-  resolverMap.forEach((value) => {
-    if (!value) {
-      result = false;
-    }
-  });
-
-  return result;
-};
-
 export const onBlurTest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const resolverMap = new Map([
@@ -1192,7 +1181,7 @@ export const onBlurTest = (): Promise<boolean> =>
               console.debug('Received text onBlur event');
               resolverMap.set('Text', true);
 
-              if (areAllOnBlurResolved(resolverMap)) {
+              if (areAllResolved(resolverMap)) {
                 resolve(true);
                 createdWhisper.close(() => {
                   // do nothing.
@@ -1214,7 +1203,7 @@ export const onBlurTest = (): Promise<boolean> =>
               console.debug('Received telephone onBlur event');
               resolverMap.set('Telephone', true);
 
-              if (areAllOnBlurResolved(resolverMap)) {
+              if (areAllResolved(resolverMap)) {
                 resolve(true);
                 createdWhisper.close(() => {
                   // do nothing.
@@ -1236,7 +1225,7 @@ export const onBlurTest = (): Promise<boolean> =>
               console.debug('Received email onBlur event');
               resolverMap.set('Email', true);
 
-              if (areAllOnBlurResolved(resolverMap)) {
+              if (areAllResolved(resolverMap)) {
                 resolve(true);
               }
             },
@@ -1255,7 +1244,7 @@ export const onBlurTest = (): Promise<boolean> =>
               console.debug('Received number onBlur event');
               resolverMap.set('Number', true);
 
-              if (areAllOnBlurResolved(resolverMap)) {
+              if (areAllResolved(resolverMap)) {
                 resolve(true);
                 createdWhisper.close(() => {
                   // do nothing.
@@ -1277,7 +1266,7 @@ export const onBlurTest = (): Promise<boolean> =>
               console.debug('Received password onBlur event');
               resolverMap.set('Password', true);
 
-              if (areAllOnBlurResolved(resolverMap)) {
+              if (areAllResolved(resolverMap)) {
                 resolve(true);
                 createdWhisper.close(() => {
                   // do nothing.
@@ -1298,6 +1287,135 @@ export const onBlurTest = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+export const onFocusTest = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Text', false],
+      ['Number', false],
+      ['Telephone', false],
+      ['Password', false],
+      ['Email', false],
+    ]);
+    try {
+      const createdWhisper = await whisper.create({
+        label: 'OnFocus Whisper',
+        onClose: () => {
+          console.debug('whisper closed');
+        },
+        components: [
+          {
+            type: whisper.WhisperComponentType.TextInput,
+            label: 'Text onFocus',
+            onChange: () => {},
+            onFocus: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received text onFocus event');
+              resolverMap.set('Text', true);
+
+              if (areAllResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Telephone,
+            label: 'Telephone onFocus',
+            onChange: () => {},
+            onFocus: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received telephone onFocus event');
+              resolverMap.set('Telephone', true);
+
+              if (areAllResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Email,
+            label: 'Email onFocus',
+            onChange: () => {},
+            onFocus: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received email onFocus event');
+              resolverMap.set('Email', true);
+
+              if (areAllResolved(resolverMap)) {
+                resolve(true);
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Number,
+            label: 'Number onFocus',
+            onChange: () => {},
+            onFocus: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received number onFocus event');
+              resolverMap.set('Number', true);
+
+              if (areAllResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+          {
+            type: whisper.WhisperComponentType.Password,
+            label: 'Password onFocus',
+            onChange: () => {},
+            onFocus: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              console.debug('Received password onFocus event');
+              resolverMap.set('Password', true);
+
+              if (areAllResolved(resolverMap)) {
+                resolve(true);
+                createdWhisper.close(() => {});
+              }
+            },
+          },
+        ],
+      });
+
+      setTimeout(() => {
+        createdWhisper.close(() => {});
+      }, 10000);
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+const areAllResolved = (resolverMap: Map<string, boolean>) => {
+  let result = true;
+  resolverMap.forEach((value) => {
+    if (!value) {
+      result = false;
+      return;
+    }
+  });
+
+  return result;
+};
 
 export const collapseBoxOnClick = (): Promise<boolean> =>
   new Promise((resolve, reject) => {

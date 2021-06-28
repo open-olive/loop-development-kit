@@ -229,6 +229,12 @@ const testConfig: { [key: string]: TestGroup } = {
       `Focus on each field and exit out`,
     ),
     new LoopTest(
+      'Whisper Aptitude - onFocus test',
+      whisperTests.onFocusTest,
+      10000,
+      `Focus on each field`,
+    ),
+    new LoopTest(
       'Whisper Aptitude - CollapseBox OnClick',
       whisperTests.collapseBoxOnClick,
       10000,
