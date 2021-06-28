@@ -690,12 +690,12 @@ export const numberInputs = (): Promise<boolean> =>
           max: 10,
           step: 1,
           tooltip: 'A tooltip',
-          onChange: (newValue) => console.log(`New number: ${newValue}`),
+          onChange: (error, newValue) => console.log(`New number: ${newValue}`),
         },
         {
           type: WhisperComponentType.Number,
           label: 'No optional fields',
-          onChange: (newValue) => console.log(`New number: ${newValue}`),
+          onChange: (error, newValue) => console.log(`New number: ${newValue}`),
         },
         {
           type: WhisperComponentType.Number,
@@ -703,9 +703,9 @@ export const numberInputs = (): Promise<boolean> =>
           value: 0,
           min: 0,
           max: 10,
-          step: 1,
+          step: 0.1,
           tooltip: 'A tooltip',
-          onChange: (newValue) => console.log(`New number: ${newValue}`),
+          onChange: (error, newValue) => console.log(`New number: ${newValue}`),
         },
         {
           type: WhisperComponentType.Telephone,
@@ -725,6 +725,34 @@ export const numberInputs = (): Promise<boolean> =>
         form.close((error) => console.error(error));
         resolve(true);
       }, 5000);
+    });
+  });
+
+export const floatNumberInputs = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    let form: whisper.Whisper;
+    const config: whisper.NewWhisper = {
+      label: 'Number Test',
+      components: [
+        {
+          type: WhisperComponentType.Number,
+          label: 'Change to 0.6',
+          max: 5.5,
+          step: 0.1,
+          onChange: (error, newValue) => {
+            if (newValue === 0.6) {
+              resolve(true);
+              form.close((inner) => console.error(inner));
+            }
+          },
+        },
+      ],
+      onClose: () => {
+        console.log('close');
+      },
+    };
+    whisper.create(config).then((whisperForm: whisper.Whisper) => {
+      form = whisperForm;
     });
   });
 
