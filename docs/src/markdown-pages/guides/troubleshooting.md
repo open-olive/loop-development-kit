@@ -44,4 +44,4 @@ If your Loop is failing in this way, please check the Olive Helps log as specifi
 
 ### Check For Polyfills 
 
-We've already included polyfills in the LDK directly and adding other polyfills should be avoided. If you add other polyfills, the conflicting polyfills may cause problems, and we should check for polyfills as part of standard troubleshooting.
+We've already included polyfills in the LDK directly and adding other polyfills should be avoided. If you add other polyfills, the conflicting polyfills may cause problems, and we should check for polyfills as part of standard troubleshooting. Please check polyfills at `docs/package-lock.json`.
