@@ -72,6 +72,30 @@ describe('Whisper', () => {
         componentState: expect.any(Map),
       });
     });
+    it('Throws if it encounters a duplicate key', async () => {
+      const expectedClose = jest.fn();
+      const newWhisper: whisper.NewWhisper = {
+        components: [
+          {
+            body: 'Test',
+            id: '1',
+            type: whisper.WhisperComponentType.Markdown,
+            key: 'a',
+          },
+          {
+            body: 'Test',
+            id: '1',
+            type: whisper.WhisperComponentType.Markdown,
+            key: 'a',
+          },
+        ],
+        label: 'Test',
+        onClose: expectedClose,
+      };
+
+      expect(() => create(newWhisper)).rejects.toEqual(expect.any(Error));
+      expect(oliveHelps.whisper.create).not.toHaveBeenCalled();
+    });
 
     it('wraps calls to update', async () => {
       const newWhisper: whisper.NewWhisper = {

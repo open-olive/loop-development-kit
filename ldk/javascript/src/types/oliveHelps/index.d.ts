@@ -178,6 +178,7 @@ declare namespace OliveHelps {
     headers?: Record<string, string[]>;
     method: string;
     url: string;
+    timeoutMs?: number;
   }
 
   interface HTTPResponse {
@@ -278,6 +279,7 @@ declare namespace OliveHelps {
   interface Component<T extends WhisperComponentType> {
     id?: string;
     type: T;
+    key?: string;
   }
 
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
@@ -305,6 +307,7 @@ declare namespace OliveHelps {
     tooltip?: string;
     value?: string;
     onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
   };
 
   type Link = Component<'link'> & {
@@ -345,6 +348,7 @@ declare namespace OliveHelps {
     step?: number;
     tooltip?: string;
     onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
   };
 
   type Password = Component<'password'> & {
@@ -353,6 +357,7 @@ declare namespace OliveHelps {
     tooltip?: string;
     value?: string;
     onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
   };
 
   type RadioGroup = Component<'radioGroup'> & {
@@ -376,6 +381,7 @@ declare namespace OliveHelps {
     tooltip?: string;
     value?: string;
     onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
   };
 
   type TextInput = Component<'textInput'> & {
@@ -384,6 +390,7 @@ declare namespace OliveHelps {
     tooltip?: string;
     value?: string;
     onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
   };
 
   type Divider = Component<'divider'>;

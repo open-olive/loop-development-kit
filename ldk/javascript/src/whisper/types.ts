@@ -121,6 +121,10 @@ export type WhisperHandlerWithParam<T> = (
 export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
   type: T;
+  /**
+   * The key is used to maintain the object state. The component's key must be unique among its sibling components.
+   */
+  key?: string;
 }
 
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
@@ -145,6 +149,7 @@ export type Email = WhisperComponent<WhisperComponentType.Email> & {
   tooltip?: string;
   value?: string;
   onBlur?: (error: Error | undefined) => void;
+  onFocus?: (error: Error | undefined) => void;
 };
 
 export type Link = WhisperComponent<WhisperComponentType.Link> & {
@@ -185,6 +190,7 @@ export type NumberInput = WhisperComponent<WhisperComponentType.Number> & {
   step?: number;
   tooltip?: string;
   onBlur?: (error: Error | undefined) => void;
+  onFocus?: (error: Error | undefined) => void;
 };
 
 export type Password = WhisperComponent<WhisperComponentType.Password> & {
@@ -193,6 +199,7 @@ export type Password = WhisperComponent<WhisperComponentType.Password> & {
   tooltip?: string;
   value?: string;
   onBlur?: (error: Error | undefined) => void;
+  onFocus?: (error: Error | undefined) => void;
 };
 
 export type RadioGroup = WhisperComponent<WhisperComponentType.RadioGroup> & {
@@ -216,6 +223,7 @@ export type Telephone = WhisperComponent<WhisperComponentType.Telephone> & {
   tooltip?: string;
   value?: string;
   onBlur?: (error: Error | undefined) => void;
+  onFocus?: (error: Error | undefined) => void;
 };
 
 export type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
@@ -224,6 +232,7 @@ export type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
   tooltip?: string;
   value?: string;
   onBlur?: (error: Error | undefined) => void;
+  onFocus?: (error: Error | undefined) => void;
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;

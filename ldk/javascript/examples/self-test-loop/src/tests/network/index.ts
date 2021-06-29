@@ -15,6 +15,7 @@ export const networkHTTPS = (): Promise<boolean> =>
       .httpRequest({
         url,
         method: 'GET',
+        timeoutMs: 10000,
       })
       .then((response: network.HTTPResponse) => {
         if (response.statusCode === 200) {
