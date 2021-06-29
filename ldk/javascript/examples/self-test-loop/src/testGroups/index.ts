@@ -1,5 +1,11 @@
 import { whisper } from '@oliveai/ldk';
-import { Component, WhisperComponentType, Whisper, TextAlign, Urgency } from '@oliveai/ldk/dist/whisper/types';
+import {
+  Component,
+  WhisperComponentType,
+  Whisper,
+  TextAlign,
+  Urgency,
+} from '@oliveai/ldk/dist/whisper/types';
 
 import TestSuite from '../testingFixtures/testSuite';
 import { LoopTest } from '../testingFixtures/loopTest';
@@ -22,7 +28,7 @@ const emitGroupDoneWhisper = async (group: TestGroup) => {
   setTimeout(() => {
     form.close((error) => console.error(error));
   }, 5000);
-}
+};
 
 const emitTestingCompleteWhisper = async () => {
   const prompt = await whisper.create({
@@ -40,7 +46,7 @@ const emitTestingCompleteWhisper = async () => {
   setTimeout(() => {
     prompt.close((error) => console.error(error));
   }, 5000);
-}
+};
 
 export const openTestGroups = async (): Promise<Whisper> => {
   let allTests = [] as LoopTest[];

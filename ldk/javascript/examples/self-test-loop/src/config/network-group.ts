@@ -3,7 +3,8 @@ import { LoopTest } from '../testingFixtures/loopTest';
 
 import * as networkTests from '../tests/network';
 
-export const networkTestGroup = (): TestGroup => new TestGroup('Network Aptitude', [
+export const networkTestGroup = (): TestGroup =>
+  new TestGroup('Network Aptitude', [
     new LoopTest(
       'Network Aptitude - HTTPS test',
       networkTests.networkHTTPS,

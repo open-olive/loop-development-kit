@@ -3,7 +3,8 @@ import { LoopTest } from '../testingFixtures/loopTest';
 
 import * as vaultTests from '../tests/vault';
 
-export const vaultTestGroup = (): TestGroup => new TestGroup('Vault Aptitude', [
+export const vaultTestGroup = (): TestGroup =>
+  new TestGroup('Vault Aptitude', [
     new LoopTest(
       'Vault Aptitude - Write / Read from vault',
       vaultTests.vaultReadWrite,

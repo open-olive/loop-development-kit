@@ -1181,16 +1181,16 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
     });
   });
 
-  const areAllResolved = (resolverMap: Map<string, boolean>) => {
-    let result = true;
-    resolverMap.forEach((value) => {
-      if (!value) {
-        result = false;
-      }
-    });
-  
-    return result;
-  };
+const areAllResolved = (resolverMap: Map<string, boolean>) => {
+  let result = true;
+  resolverMap.forEach((value) => {
+    if (!value) {
+      result = false;
+    }
+  });
+
+  return result;
+};
 
 export const onBlurTest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
