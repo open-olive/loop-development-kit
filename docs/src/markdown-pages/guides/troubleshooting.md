@@ -41,3 +41,7 @@ If you're not able to add a Local Loop successfully, that means that the compile
 run in the directory you selected. Often this is a runtime issue where the program fails to evaluate your Loop successfully. 
 
 If your Loop is failing in this way, please check the Olive Helps log as specified above.
+
+### Check For Polyfills 
+
+We've already included polyfills in the LDK directly and adding other polyfills should be avoided. If you add other polyfills, the conflicting polyfills may cause problems, and we should check for polyfills as part of standard troubleshooting. Please check polyfills at `docs/package-lock.json`.
