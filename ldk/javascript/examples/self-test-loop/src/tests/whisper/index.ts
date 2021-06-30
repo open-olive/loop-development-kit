@@ -1479,6 +1479,17 @@ export const collapseBoxOnClick = (): Promise<boolean> =>
       label: 'Expand / Collapse OnClick Callback Test',
       components: [
         {
+          type: WhisperComponentType.Markdown,
+          body: 'Markdown outside CollapseBox',
+        },
+        {
+          type: WhisperComponentType.Divider,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Markdown outside CollapseBox',
+        },
+        {
           type: WhisperComponentType.CollapseBox,
           open: false,
           label: 'Expand me!',
@@ -1500,6 +1511,16 @@ export const collapseBoxOnClick = (): Promise<boolean> =>
             {
               type: WhisperComponentType.Markdown,
               body: 'Good job!',
+            },
+            {
+              type: WhisperComponentType.Divider,
+            },
+            {
+              type: WhisperComponentType.Markdown,
+              body: 'Good job!',
+            },
+            {
+              type: WhisperComponentType.Divider,
             },
           ],
         },
