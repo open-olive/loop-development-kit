@@ -21,10 +21,11 @@ export const testWriteAndRead = (): Promise<boolean> =>
 export const testListen = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
+      console.log('Registering clipboard listener.');
       const listener = await clipboard.listen(true, (clipboardText) => {
         console.log(`Received clipboard text: ${clipboardText}`);
+        listener.cancel();
         if (clipboardText === 'LDKThxBai') {
-          listener.cancel();
           resolve(true);
         }
         reject(new Error('Incorrect value detected'));

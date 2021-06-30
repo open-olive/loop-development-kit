@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { whisper } from '@oliveai/ldk';
 
 export enum Status {
@@ -70,7 +71,7 @@ export class LoopTest {
             reject(new Error('Timeout - Too much time has passed'));
           }, this.timeoutTime);
         }
-        await this.methodToExecute()
+        this.methodToExecute()
           .then((response) => {
             clearTimeout(this.timeout);
             prompt.close((error) => console.error(error));

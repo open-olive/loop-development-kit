@@ -16,7 +16,6 @@ export const testSecuredHttpRequest = (): Promise<boolean> =>
       const response = await network.httpRequest({
         url,
         method: 'GET',
-        timeoutMs: 10000,
       });
 
       if (response.statusCode === 200) {
@@ -42,6 +41,33 @@ export const testUnsecuredHttpRequest = (): Promise<boolean> =>
       reject(new Error('Should not have succeeded'));
     } catch (error) {
       resolve(true);
+    }
+  });
+
+export const testHttpRequestTimeout = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const url = 'https://httpstat.us/200?sleep=2000';
+      const response = await network.httpRequest({
+        url,
+        method: 'GET',
+        timeoutMs: 3000,
+      });
+      if (response.statusCode === 200) {
+        try {
+          await network.httpRequest({
+            url,
+            method: 'GET',
+            timeoutMs: 1000,
+          });
+          reject(new Error('Timeout error was not received'));
+        } catch (error) {
+          resolve(true);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+      reject(e);
     }
   });
 

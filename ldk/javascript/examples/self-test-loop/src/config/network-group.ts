@@ -18,6 +18,12 @@ export const networkTestGroup = (): TestGroup =>
       'Calling a public HTTP API. Should fail',
     ),
     new LoopTest(
+      'Network Aptitude - Timeout test',
+      networkTests.testHttpRequestTimeout,
+      5000,
+      'Custom timeout should pass',
+    ),
+    new LoopTest(
       'Network Aptitude - WebSocket test',
       networkTests.testWebsocketConnection,
       20000,
