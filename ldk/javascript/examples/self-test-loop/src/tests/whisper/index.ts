@@ -206,7 +206,9 @@ export const testBoxInTheBox = (): Promise<boolean> =>
           {
             type: WhisperComponentType.Markdown,
             body: `
-# Markdown Example
+# H1 Markdown Example 
+## H2 Markdown Example 
+### H3 Markdown Example 
 `,
           },
           {
