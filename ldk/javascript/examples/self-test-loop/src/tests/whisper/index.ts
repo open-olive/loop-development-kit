@@ -856,6 +856,9 @@ export const testDefaultValueForSelectAndRadio = (): Promise<boolean> =>
                 console.error(error);
                 reject(error);
               }
+              form.close(() => {
+                // do nothing.
+              });
               resolve(true);
             },
           },
@@ -863,9 +866,11 @@ export const testDefaultValueForSelectAndRadio = (): Promise<boolean> =>
       });
 
       setTimeout(() => {
-        form.close((error) => console.error(error));
+        form.close(() => {
+          // do nothing.
+        });
         reject(new Error(`test didn't resolved in provided time frame`));
-      }, 5000);
+      }, 10000);
     } catch (e) {
       console.error(e);
       reject(e);

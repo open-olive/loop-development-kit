@@ -83,7 +83,7 @@ const emitTestGroupWhisper = async (group: TestGroup): Promise<Whisper> => {
 
   return whisper.create({
     components,
-    label: `Tests for the '${group.getId()}' group.`,
+    label: `Tests for the '${group.getId()}' group`,
   });
 };
 
