@@ -1,20 +1,22 @@
 import { keyboard } from '@oliveai/ldk';
 import { openTestGroups } from './testGroups';
+import WhisperCloser from './testingFixtures/WhisperCloser';
 
 export default class SelfTestLoop {
   async start(): Promise<void> {
     console.log('Starting Self Test...');
+    const whisperCloser = new WhisperCloser();
     const hotkeys = {
       key: '/',
       control: true,
     };
 
     try {
-      let testGroupsWhisper = await openTestGroups();
+      whisperCloser.addWhisperToClose(await openTestGroups(whisperCloser));
       keyboard.listenHotkey(hotkeys, async (pressed: boolean) => {
         if (pressed) {
-          testGroupsWhisper.close((error) => console.log(error));
-          testGroupsWhisper = await openTestGroups();
+          whisperCloser.closeAllWhispers();
+          whisperCloser.addWhisperToClose(await openTestGroups(whisperCloser));
         }
       });
     } catch (e) {

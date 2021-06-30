@@ -108,16 +108,10 @@ export const whisperTestGroup = (): TestGroup =>
       `Hover on each component to see a tooltip`,
     ),
     new LoopTest(
-      'Whisper Aptitude - onBlur test',
-      whisperTests.onBlurTest,
+      'Whisper Aptitude - onBlur/onFocus test',
+      whisperTests.onBlurFocusTest,
       10000,
       `Focus on each field and exit out`,
-    ),
-    new LoopTest(
-      'Whisper Aptitude - onFocus test',
-      whisperTests.onFocusTest,
-      10000,
-      `Focus on each field`,
     ),
     new LoopTest(
       'Whisper Aptitude - CollapseBox OnClick',

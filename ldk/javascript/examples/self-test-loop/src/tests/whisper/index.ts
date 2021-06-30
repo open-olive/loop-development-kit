@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { clipboard, whisper, network } from '@oliveai/ldk';
 
 import {
@@ -427,7 +428,7 @@ export const buttonWhisper = (): Promise<boolean> =>
   });
 
 export const linkWhisper = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     const config: NewWhisper = {
       label: 'External Link Test',
       onClose: () => {
@@ -731,9 +732,8 @@ export const numberInputs = (): Promise<boolean> =>
   });
 
 export const floatNumberInputs = (): Promise<boolean> =>
-  new Promise((resolve) => {
-    let form: Whisper;
-    const config: NewWhisper = {
+  new Promise(async (resolve) => {
+    const form = await whisper.create({
       label: 'Number Test',
       components: [
         {
@@ -744,7 +744,7 @@ export const floatNumberInputs = (): Promise<boolean> =>
           onChange: (error, newValue) => {
             if (newValue === 0.6) {
               resolve(true);
-              form.close((inner) => console.error(inner));
+              form.close((e) => console.error(e));
             }
           },
         },
@@ -752,9 +752,6 @@ export const floatNumberInputs = (): Promise<boolean> =>
       onClose: () => {
         console.log('close');
       },
-    };
-    whisper.create(config).then((whisperForm: Whisper) => {
-      form = whisperForm;
     });
   });
 
@@ -992,7 +989,7 @@ export const tooltips = (): Promise<boolean> =>
   });
 
 export const testClickableBox = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve) => {
     let form: Whisper;
     const config: NewWhisper = {
       label: 'Clickable Box Test',
@@ -1192,15 +1189,44 @@ const areAllResolved = (resolverMap: Map<string, boolean>) => {
   return result;
 };
 
-export const onBlurTest = (): Promise<boolean> =>
+const onActionWrapper = (
+  error: Error,
+  actionType: string,
+  resolverMap: Map<string, boolean>,
+  createdWhisper: Whisper,
+  resolve: (value: boolean) => void,
+  reject: (reason?: Error) => void,
+) => {
+  if (error) {
+    console.error(error);
+    reject(error);
+  }
+  console.debug(`Received ${actionType} event`);
+  resolverMap.set(actionType, true);
+
+  if (areAllResolved(resolverMap)) {
+    resolve(true);
+    createdWhisper.close(() => {
+      // do nothing.
+    });
+  }
+};
+
+export const onBlurFocusTest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const resolverMap = new Map([
-      ['Text', false],
-      ['Number', false],
-      ['Telephone', false],
-      ['Password', false],
-      ['Email', false],
+      ['BlurText', false],
+      ['FocusText', false],
+      ['BlurNumber', false],
+      ['FocusNumber', false],
+      ['BlurTelephone', false],
+      ['FocusTelephone', false],
+      ['BlurPassword', false],
+      ['FocusPassword', false],
+      ['BlurEmail', false],
+      ['FocusEmail', false],
     ]);
+
     try {
       const createdWhisper = await whisper.create({
         label: 'OnBlur Whisper',
@@ -1214,20 +1240,11 @@ export const onBlurTest = (): Promise<boolean> =>
             onChange: () => {
               // do nothing.
             },
-            onBlur: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received text onBlur event');
-              resolverMap.set('Text', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
+            onBlur: (error: Error) => {
+              onActionWrapper(error, 'BlurText', resolverMap, createdWhisper, resolve, reject);
+            },
+            onFocus: (error: Error) => {
+              onActionWrapper(error, 'FocusText', resolverMap, createdWhisper, resolve, reject);
             },
           },
           {
@@ -1237,19 +1254,17 @@ export const onBlurTest = (): Promise<boolean> =>
               // do nothing.
             },
             onBlur: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received telephone onBlur event');
-              resolverMap.set('Telephone', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
+              onActionWrapper(error, 'BlurTelephone', resolverMap, createdWhisper, resolve, reject);
+            },
+            onFocus: (error: Error) => {
+              onActionWrapper(
+                error,
+                'FocusTelephone',
+                resolverMap,
+                createdWhisper,
+                resolve,
+                reject,
+              );
             },
           },
           {
@@ -1259,16 +1274,10 @@ export const onBlurTest = (): Promise<boolean> =>
               // do nothing.
             },
             onBlur: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received email onBlur event');
-              resolverMap.set('Email', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-              }
+              onActionWrapper(error, 'BlurEmail', resolverMap, createdWhisper, resolve, reject);
+            },
+            onFocus: (error: Error) => {
+              onActionWrapper(error, 'FocusEmail', resolverMap, createdWhisper, resolve, reject);
             },
           },
           {
@@ -1278,19 +1287,10 @@ export const onBlurTest = (): Promise<boolean> =>
               // do nothing.
             },
             onBlur: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received number onBlur event');
-              resolverMap.set('Number', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
+              onActionWrapper(error, 'BlurNumber', resolverMap, createdWhisper, resolve, reject);
+            },
+            onFocus: (error: Error) => {
+              onActionWrapper(error, 'FocusNumber', resolverMap, createdWhisper, resolve, reject);
             },
           },
           {
@@ -1300,156 +1300,10 @@ export const onBlurTest = (): Promise<boolean> =>
               // do nothing.
             },
             onBlur: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received password onBlur event');
-              resolverMap.set('Password', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
+              onActionWrapper(error, 'BlurPassword', resolverMap, createdWhisper, resolve, reject);
             },
-          },
-        ],
-      });
-
-      setTimeout(() => {
-        createdWhisper.close(() => {
-          // do nothing.
-        });
-      }, 10000);
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
-
-export const onFocusTest = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    const resolverMap = new Map([
-      ['Text', false],
-      ['Number', false],
-      ['Telephone', false],
-      ['Password', false],
-      ['Email', false],
-    ]);
-    try {
-      const createdWhisper = await whisper.create({
-        label: 'OnFocus Whisper',
-        onClose: () => {
-          console.debug('whisper closed');
-        },
-        components: [
-          {
-            type: WhisperComponentType.TextInput,
-            label: 'Text onFocus',
-            onChange: () => {
-              // do nothing.
-            },
-            onFocus: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received text onFocus event');
-              resolverMap.set('Text', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
-            },
-          },
-          {
-            type: WhisperComponentType.Telephone,
-            label: 'Telephone onFocus',
-            onChange: () => {
-              // do nothing.
-            },
-            onFocus: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received telephone onFocus event');
-              resolverMap.set('Telephone', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
-            },
-          },
-          {
-            type: WhisperComponentType.Email,
-            label: 'Email onFocus',
-            onChange: () => {
-              // do nothing.
-            },
-            onFocus: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received email onFocus event');
-              resolverMap.set('Email', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-              }
-            },
-          },
-          {
-            type: WhisperComponentType.Number,
-            label: 'Number onFocus',
-            onChange: () => {
-              // do nothing.
-            },
-            onFocus: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received number onFocus event');
-              resolverMap.set('Number', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
-            },
-          },
-          {
-            type: WhisperComponentType.Password,
-            label: 'Password onFocus',
-            onChange: () => {
-              // do nothing.
-            },
-            onFocus: (error) => {
-              if (error) {
-                console.error(error);
-                reject(error);
-              }
-              console.debug('Received password onFocus event');
-              resolverMap.set('Password', true);
-
-              if (areAllResolved(resolverMap)) {
-                resolve(true);
-                createdWhisper.close(() => {
-                  // do nothing.
-                });
-              }
+            onFocus: (error: Error) => {
+              onActionWrapper(error, 'FocusPassword', resolverMap, createdWhisper, resolve, reject);
             },
           },
         ],

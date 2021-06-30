@@ -5,12 +5,16 @@ import {
   Whisper,
   TextAlign,
   Urgency,
+  JustifyContent,
+  Direction,
+  BoxChildComponent,
 } from '@oliveai/ldk/dist/whisper/types';
 
 import TestSuite from '../testingFixtures/testSuite';
 import { LoopTest } from '../testingFixtures/loopTest';
 import { testConfig } from '../config';
 import TestGroup from '../testingFixtures/testGroup';
+import WhisperCloser from '../testingFixtures/WhisperCloser';
 
 const emitGroupDoneWhisper = async (group: TestGroup) => {
   const form = await whisper.create({
@@ -48,26 +52,66 @@ const emitTestingCompleteWhisper = async () => {
   }, 5000);
 };
 
-export const openTestGroups = async (): Promise<Whisper> => {
+const getTestLinkComponent = (group: TestGroup): BoxChildComponent => ({
+  type: WhisperComponentType.Link,
+  textAlign: TextAlign.Left,
+  onClick: async () => {
+    const suite = new TestSuite(group.getTests());
+    await suite.start();
+    console.log('🎉 Group Done!');
+    await emitGroupDoneWhisper(group);
+  },
+  text: `---${group.getId()}`,
+  style: Urgency.None,
+});
+
+const emitTestGroupWhisper = async (group: TestGroup): Promise<Whisper> => {
+  const components: Component[] = [];
+  group.getTests().forEach((test) => {
+    components.push({
+      type: WhisperComponentType.Link,
+      textAlign: TextAlign.Left,
+      onClick: async () => {
+        test.setTimeoutTime(null);
+        const suite = new TestSuite([test]);
+        await suite.start();
+      },
+      text: `---${test.getId()}`,
+      style: Urgency.None,
+    });
+  });
+
+  return whisper.create({
+    components,
+    label: `Tests for the '${group.getId()}' group.`,
+  });
+};
+
+const getExpandLinkComponent = (group: TestGroup, whisperCloser: WhisperCloser): BoxChildComponent => ({
+  type: WhisperComponentType.Link,
+  textAlign: TextAlign.Right,
+  onClick: async () => {
+    whisperCloser.addWhisperToClose(await emitTestGroupWhisper(group));
+  },
+  text: `Expand Group >`,
+  style: Urgency.None,
+});
+
+export const openTestGroups = async (whisperCloser: WhisperCloser): Promise<Whisper> => {
   let allTests = [] as LoopTest[];
 
   const clickableElements: Component[] = [];
   const keys = Object.keys(testConfig);
   for (let i = 0; i < keys.length; i += 1) {
-    const group: TestGroup = testConfig[keys[i]];
+    const group = testConfig[keys[i]];
     clickableElements.push({
-      type: WhisperComponentType.Link,
-      textAlign: TextAlign.Left,
-      onClick: async () => {
-        const suite = new TestSuite(group.getTests());
-        await suite.start();
-        console.log('🎉 Group Done!');
-        await emitGroupDoneWhisper(group);
-      },
-      text: `---${group.getId()}`,
-      style: Urgency.None,
+      type: WhisperComponentType.Box,
+      justifyContent: JustifyContent.SpaceAround,
+      direction: Direction.Horizontal,
+      children: [getTestLinkComponent(group), getExpandLinkComponent(group, whisperCloser)],
     });
-    allTests = allTests.concat(testConfig[keys[i]].getTests());
+
+    allTests = allTests.concat(group.getTests());
   }
 
   clickableElements.push({
