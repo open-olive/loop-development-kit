@@ -1,5 +1,5 @@
 import { keyboard } from '@oliveai/ldk';
-import { openTestGroups } from './testGroups';
+import { emitTestWhisper } from './testingFixtures/testWhisper';
 import WhisperCloser from './testingFixtures/WhisperCloser';
 
 export default class SelfTestLoop {
@@ -12,11 +12,11 @@ export default class SelfTestLoop {
     };
 
     try {
-      whisperCloser.addWhisperToClose(await openTestGroups(whisperCloser));
+      whisperCloser.addWhisperToClose(await emitTestWhisper(whisperCloser));
       keyboard.listenHotkey(hotkeys, async (pressed: boolean) => {
         if (pressed) {
-          whisperCloser.closeAllWhispers();
-          whisperCloser.addWhisperToClose(await openTestGroups(whisperCloser));
+          whisperCloser.run();
+          whisperCloser.addWhisperToClose(await emitTestWhisper(whisperCloser));
         }
       });
     } catch (e) {

@@ -1,53 +1,53 @@
 import { keyboard } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
-export const charTest = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    let keyboardStream: Cancellable;
+export const testListenCharacter = (): Promise<boolean> =>
+  new Promise((resolve) => {
+    let keyboardListener: Cancellable;
     keyboard
       .listenCharacter((char) => {
         console.debug('Character pressed', 'response', char);
         if (char === 'f' || char === 'F') {
-          keyboardStream.cancel();
+          keyboardListener.cancel();
           resolve(true);
         }
       })
       .then((cancellable: Cancellable) => {
-        keyboardStream = cancellable;
+        keyboardListener = cancellable;
       });
   });
 
-export const charStreamTest = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
-    let keyboardStream: Cancellable;
+export const testListenText = (): Promise<boolean> =>
+  new Promise((resolve) => {
+    let keyboardListener: Cancellable;
     keyboard
       .listenText((text) => {
         console.debug('Characters pressed', 'response', text);
         if (text === 'Olive') {
-          keyboardStream.cancel();
+          keyboardListener.cancel();
           resolve(true);
         }
       })
       .then((cancellable: Cancellable) => {
-        keyboardStream = cancellable;
+        keyboardListener = cancellable;
       });
   });
 
-export const hotkeyTest = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testListenHotkey = (): Promise<boolean> =>
+  new Promise((resolve) => {
     const hotkeys = {
       key: 'a',
       control: true,
     };
 
-    let keyboardStream: Cancellable;
+    let keyboardListener: Cancellable;
     keyboard
       .listenHotkey(hotkeys, (pressed) => {
         console.debug('Hotkey pressed', 'response', pressed);
-        keyboardStream.cancel();
+        keyboardListener.cancel();
         resolve(true);
       })
       .then((cancellable: Cancellable) => {
-        keyboardStream = cancellable;
+        keyboardListener = cancellable;
       });
   });

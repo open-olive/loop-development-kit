@@ -1,9 +1,10 @@
+/* eslint-disable no-async-promise-executor */
 import { network } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 import * as testUtils from '../../testUtils';
 
-export const networkHTTPS = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testSecuredHttpRequest = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
     const url =
       'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
 
@@ -11,46 +12,40 @@ export const networkHTTPS = (): Promise<boolean> =>
       reject(new Error('Network http request did not finish in the appropriate timespan.'));
     }, 5000);
 
-    network
-      .httpRequest({
+    try {
+      const response = await network.httpRequest({
         url,
         method: 'GET',
         timeoutMs: 10000,
-      })
-      .then((response: network.HTTPResponse) => {
-        if (response.statusCode === 200) {
-          resolve(true);
-        } else {
-          reject(new Error(`Network http request failed with code: ${response.statusCode}`));
-        }
-      })
-      .catch((e) => {
-        console.debug(JSON.stringify(e));
-        reject(e);
       });
+
+      if (response.statusCode === 200) {
+        resolve(true);
+      } else {
+        reject(new Error(`Network http request failed with code: ${response.statusCode}`));
+      }
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
-export const networkHTTP = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testUnsecuredHttpRequest = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
     const url = 'http://catalog.data.gov/api/3/';
     setTimeout(() => {
       reject(new Error('Network http request did not finish in the appropriate time span.'));
     }, 5000);
 
-    network
-      .httpRequest({
-        url,
-        method: 'GET',
-      })
-      .then(() => {
-        reject(new Error('Should not have succeeded'));
-      })
-      .catch(() => {
-        resolve(true);
-      });
+    try {
+      await network.httpRequest({ url, method: 'GET' });
+      reject(new Error('Should not have succeeded'));
+    } catch (error) {
+      resolve(true);
+    }
   });
 
-export const networkWebSocket = (): Promise<boolean> =>
+export const testWebsocketConnection = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const url = 'wss://html5rocks.websocket.org/echo';
     const testData = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);

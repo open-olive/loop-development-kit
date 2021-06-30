@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { whisper } from '@oliveai/ldk';
 import {
   Button,
@@ -95,11 +96,11 @@ const updateWithConfirmation = (
           ...confirmOrDeny(resolve, reject, prompt, rejectReason, incomingWhisper),
         ],
       },
-      (error) => {
-        if (error) {
-          console.error(error);
+      (err) => {
+        if (err) {
+          console.error(err);
           incomingWhisper.close((e) => console.error(e));
-          reject(error);
+          reject(err);
         }
       },
     );
@@ -112,7 +113,7 @@ const logMap = (map: StateMap) => {
   });
 };
 
-export const basicWhisperUpdate = (): Promise<boolean> =>
+export const testWhisperUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       whisper.create({
@@ -163,7 +164,7 @@ export const basicWhisperUpdate = (): Promise<boolean> =>
     }
   });
 
-export const updateCollapseState = (): Promise<boolean> =>
+export const testUpdateCollapseState = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const checkboxes: ChildComponents[] = [
@@ -235,7 +236,7 @@ export const updateCollapseState = (): Promise<boolean> =>
     }
   });
 
-export const updateOnChange = (): Promise<boolean> =>
+export const testUpdateOnChange = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       whisper.create({
@@ -282,11 +283,11 @@ export const updateOnChange = (): Promise<boolean> =>
                       },
                     ],
                   },
-                  (error) => {
-                    if (error) {
-                      console.error(error);
+                  (err) => {
+                    if (err) {
+                      console.error(err);
                       incomingWhisper.close((e) => console.error(e));
-                      reject(error);
+                      reject(err);
                     }
                   },
                 );
@@ -308,7 +309,7 @@ export const updateOnChange = (): Promise<boolean> =>
     }
   });
 
-export const whisperStateOnChange = (): Promise<boolean> =>
+export const testWhisperStateOnChange = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const inputValue = 'testInput';
     const selectValue = 1;

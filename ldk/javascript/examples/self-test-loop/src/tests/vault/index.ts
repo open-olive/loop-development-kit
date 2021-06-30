@@ -1,6 +1,6 @@
 import { vault } from '@oliveai/ldk';
 
-export const vaultReadWrite = (): Promise<boolean> =>
+export const testWriteReadRemove = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const value = 'Do I exist?';
     vault.write('testKey', value).then(() => {

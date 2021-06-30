@@ -195,7 +195,7 @@ export const testClickableWhisper = (): Promise<boolean> =>
       });
   });
 
-export const testBoxInTheBox = (): Promise<boolean> =>
+export const testBoxInBox = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const form = await whisper.create({
@@ -204,43 +204,6 @@ export const testBoxInTheBox = (): Promise<boolean> =>
           console.debug('closed');
         },
         components: [
-          {
-            type: WhisperComponentType.Markdown,
-            body: `
-# Markdown Example
-`,
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: stripIndent`
-              |||
-              |:---|:---|
-              |**Video Visit**||
-              |ADHD/Learning Problems|Allergies|
-              |Anxiety|Asthma|
-              |Cold/Sore Throat|Depression|
-              |Diaper Rash|F/U Dementia|
-              |F/U Diabetes/DM|F/U Imaging Results|
-              |F/U Labs|F/U Parkinsons|
-              |F/U Thyroid|Fatigue|
-              |Flu Symptoms|GWA (Medicare)|
-              |Headache|Insomnia|
-              |||
-              |||
-              |||
-              |||
-              |**In-Person Only**||
-              |Back Pain|Earache|
-              |F/U Hypertension/Blood Pressure|TB Test|
-              |||
-              |||
-              |||
-              |||
-              |**OB Video Visit**||
-              |Contraceptive Consults|F/U Labs/Tests/Ultrasounds|
-              |Infertility Consults|Post-Partum Appointments (Scheduled By Office)|
-            `,
-          },
           {
             type: WhisperComponentType.Markdown,
             body: stripIndent`
@@ -338,7 +301,7 @@ export const testBoxInTheBox = (): Promise<boolean> =>
     }
   });
 
-export const buttonWhisper = (): Promise<boolean> =>
+export const testClickableButton = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     let form: Whisper;
     const config: NewWhisper = {
@@ -427,7 +390,7 @@ export const buttonWhisper = (): Promise<boolean> =>
     });
   });
 
-export const linkWhisper = (): Promise<boolean> =>
+export const testClickableLink = (): Promise<boolean> =>
   new Promise((resolve) => {
     const config: NewWhisper = {
       label: 'External Link Test',
@@ -457,7 +420,7 @@ export const linkWhisper = (): Promise<boolean> =>
     });
   });
 
-export const listPairWhisperCopyableValue = (): Promise<boolean> =>
+export const testListPairWithCopyableValue = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const copyableText = 'Click me to copy the value text';
     const config: NewWhisper = {
@@ -492,7 +455,7 @@ export const listPairWhisperCopyableValue = (): Promise<boolean> =>
     }, 5000);
   });
 
-export const listPairWhisperCopyableLabel = (): Promise<boolean> =>
+export const testListPairWithCopyableLabel = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const copyableText = 'Click me to copy the label text';
     const config: NewWhisper = {
@@ -529,7 +492,7 @@ export const listPairWhisperCopyableLabel = (): Promise<boolean> =>
     }, 5000);
   });
 
-export const simpleFormWhisper = (): Promise<boolean> =>
+export const testFormComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const textInput = 'myTextInput';
     const emailInput = 'myEmailInput';
@@ -681,7 +644,7 @@ export const simpleFormWhisper = (): Promise<boolean> =>
     });
   });
 
-export const numberInputs = (): Promise<boolean> =>
+export const testNumberInputs = (): Promise<boolean> =>
   new Promise((resolve) => {
     let form: Whisper;
     const config: NewWhisper = {
@@ -731,7 +694,7 @@ export const numberInputs = (): Promise<boolean> =>
     });
   });
 
-export const floatNumberInputs = (): Promise<boolean> =>
+export const testFloatNumberInputs = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     const form = await whisper.create({
       label: 'Number Test',
@@ -859,44 +822,57 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
       });
   });
 
-export const initialValueSelectAndRadioWhispers = (): Promise<boolean> =>
-  new Promise((resolve) => {
-    const config: NewWhisper = {
-      label: 'Default Values Test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          label: 'Select a color',
-          options: ['green', 'red', 'blue'],
-          onSelect: (error, selected) => {
-            console.log(`${selected} has been selected!`);
-          },
-          type: WhisperComponentType.Select,
-          selected: 2,
-          tooltip: 'Select a color tooltip',
+export const testDefaultValueForSelectAndRadio = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const form = await whisper.create({
+        label: 'Default Values Test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          onSelect: (selected) => {
-            console.log(`${selected} has been selected!`);
+        components: [
+          {
+            type: WhisperComponentType.Select,
+            label: 'Default value: red',
+            options: ['green', 'red', 'blue'],
+            onSelect: () => {
+              // do nothing.
+            },
+            selected: 1,
           },
-          options: ['dog', 'cat', 'snake'],
-          selected: 1,
-          type: WhisperComponentType.RadioGroup,
-        },
-      ],
-    };
+          {
+            type: WhisperComponentType.RadioGroup,
+            onSelect: () => {
+              // do nothing.
+            },
+            options: ['dog', 'cat', 'snake'],
+            selected: 1,
+          },
+          {
+            type: WhisperComponentType.Button,
+            label: 'Are default values selected?',
+            onClick: (error) => {
+              if (error) {
+                console.error(error);
+                reject(error);
+              }
+              resolve(true);
+            },
+          },
+        ],
+      });
 
-    whisper.create(config).then((form: Whisper) => {
       setTimeout(() => {
         form.close((error) => console.error(error));
-        resolve(true);
+        reject(new Error(`test didn't resolved in provided time frame`));
       }, 5000);
-    });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
-export const tooltips = (): Promise<boolean> =>
+export const testTooltips = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const createdWhisper = await whisper.create({
@@ -1212,7 +1188,7 @@ const onActionWrapper = (
   }
 };
 
-export const onBlurFocusTest = (): Promise<boolean> =>
+export const testOnBlurAndOnFocus = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const resolverMap = new Map([
       ['BlurText', false],
@@ -1320,7 +1296,7 @@ export const onBlurFocusTest = (): Promise<boolean> =>
     }
   });
 
-export const collapseBoxOnClick = (): Promise<boolean> =>
+export const testCollapseBoxOnClick = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const resolutions = {
       expand: false,

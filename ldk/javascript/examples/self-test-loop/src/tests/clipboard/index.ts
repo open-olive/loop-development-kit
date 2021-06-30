@@ -1,7 +1,7 @@
 import { clipboard } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
-export const clipboardWriteAndQuery = (): Promise<boolean> =>
+export const testWriteAndRead = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const string = 'Im in yr loop, writing to yr clipboard';
     clipboard
@@ -22,8 +22,8 @@ export const clipboardWriteAndQuery = (): Promise<boolean> =>
       });
   });
 
-export const clipboardStream = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testListen = (): Promise<boolean> =>
+  new Promise((resolve) => {
     let stream: Cancellable;
     clipboard
       .listen(true, (response) => {

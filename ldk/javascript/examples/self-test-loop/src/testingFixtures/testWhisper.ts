@@ -10,11 +10,11 @@ import {
   BoxChildComponent,
 } from '@oliveai/ldk/dist/whisper/types';
 
-import TestSuite from '../testingFixtures/testSuite';
-import { LoopTest } from '../testingFixtures/loopTest';
+import TestSuite from './testSuite';
+import { LoopTest } from './loopTest';
 import { testConfig } from '../config';
-import TestGroup from '../testingFixtures/testGroup';
-import WhisperCloser from '../testingFixtures/WhisperCloser';
+import TestGroup from './testGroup';
+import WhisperCloser from './WhisperCloser';
 
 const emitGroupDoneWhisper = async (group: TestGroup) => {
   const form = await whisper.create({
@@ -100,7 +100,7 @@ const getExpandLinkComponent = (
   style: Urgency.None,
 });
 
-export const openTestGroups = async (whisperCloser: WhisperCloser): Promise<Whisper> => {
+export const emitTestWhisper = async (whisperCloser: WhisperCloser): Promise<Whisper> => {
   let allTests = [] as LoopTest[];
 
   const clickableElements: Component[] = [];

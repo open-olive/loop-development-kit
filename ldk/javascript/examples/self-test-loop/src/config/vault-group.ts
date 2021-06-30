@@ -6,8 +6,8 @@ import * as vaultTests from '../tests/vault';
 export const vaultTestGroup = (): TestGroup =>
   new TestGroup('Vault Aptitude', [
     new LoopTest(
-      'Vault Aptitude - Write / Read from vault',
-      vaultTests.vaultReadWrite,
+      'Vault AptitestWriteReadRemove Read from vault',
+      vaultTests.testWriteReadRemove,
       10000,
       'Writing value to vault then reading it back.',
     ),

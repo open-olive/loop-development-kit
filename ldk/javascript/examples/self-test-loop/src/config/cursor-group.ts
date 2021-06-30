@@ -7,13 +7,13 @@ export const cursorTestGroup = (): TestGroup =>
   new TestGroup('Cursor Aptitude', [
     new LoopTest(
       'Cursor Aptitude - Position Test',
-      cursorTests.cursorPosition,
+      cursorTests.testPosition,
       10000,
       'Querying cursor position...',
     ),
     new LoopTest(
       'Cursor Aptitude - Stream Position Test',
-      cursorTests.streamCursorPosition,
+      cursorTests.testListenPosition,
       10000,
       'Move your cursor around...',
     ),

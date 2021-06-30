@@ -7,13 +7,13 @@ export const clipboardTestGroup = (): TestGroup =>
   new TestGroup('Clipboard Aptitude', [
     new LoopTest(
       'Clipboard Aptitude - Write And Query Test',
-      clipboardTests.clipboardWriteAndQuery,
+      clipboardTests.testWriteAndRead,
       10000,
       'Copying value to clipboard and reading it back',
     ),
     new LoopTest(
       'Clipboard Aptitude - Clipboard Stream',
-      clipboardTests.clipboardStream,
+      clipboardTests.testListen,
       10000,
       'Copying the value "LDKThxBai" the the clipboard',
     ),

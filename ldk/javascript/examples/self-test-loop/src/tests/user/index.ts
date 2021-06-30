@@ -1,6 +1,6 @@
 import { user } from '@oliveai/ldk';
 
-export const userJWTTest = (): Promise<boolean> =>
+export const testJwt = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     user.jwt().then((token) => {
       if (token) {

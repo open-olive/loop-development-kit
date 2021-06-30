@@ -1,4 +1,3 @@
-import { keyboard } from '@oliveai/ldk';
 import { Whisper } from '@oliveai/ldk/dist/whisper';
 
 export default class WhisperCloser {
@@ -8,7 +7,7 @@ export default class WhisperCloser {
     this.whispersToClose.push(whisper);
   }
 
-  closeAllWhispers(): void {
+  run(): void {
     this.whispersToClose.forEach((whisper) => {
       whisper.close((error) => {
         console.log(error);

@@ -1,7 +1,7 @@
 import { cursor } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
-export const cursorPosition = (): Promise<boolean> =>
+export const testPosition = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     cursor
       .position()
@@ -17,8 +17,8 @@ export const cursorPosition = (): Promise<boolean> =>
       });
   });
 
-export const streamCursorPosition = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testListenPosition = (): Promise<boolean> =>
+  new Promise((resolve) => {
     let i = 0;
     let cursorPositionStream: Cancellable;
     cursor

@@ -2,7 +2,7 @@ import { process } from '@oliveai/ldk';
 
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
-export const processQuery = (): Promise<boolean> =>
+export const testProcess = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     process
       .all()
@@ -17,8 +17,8 @@ export const processQuery = (): Promise<boolean> =>
       });
   });
 
-export const processStream = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testListenAll = (): Promise<boolean> =>
+  new Promise((resolve) => {
     let cancellableStream: Cancellable;
     process
       .listenAll((response) => {
