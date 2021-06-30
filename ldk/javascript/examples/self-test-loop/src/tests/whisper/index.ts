@@ -31,11 +31,7 @@ const resolveOnClick = (
   resolve(true);
 };
 
-const rejectOnClick = (
-  error: Error,
-  whisperToClose: Whisper,
-  reject: (reason?: Error) => void,
-) => () => {
+const rejectOnClick = (error: Error, whisperToClose: Whisper, reject: (reason?: Error) => void) => {
   if (error) {
     console.error(error);
     reject(error);
@@ -49,6 +45,8 @@ const rejectOnClick = (
 const resolveRejectButtons = (
   resolve: (value: boolean) => void,
   reject: (reason?: Error) => void,
+  resolveButtonText?: string | undefined,
+  rejectButtonText?: string | undefined,
 ): Component => ({
   type: WhisperComponentType.Box,
   justifyContent: JustifyContent.SpaceEvenly,
@@ -56,14 +54,14 @@ const resolveRejectButtons = (
   children: [
     {
       type: WhisperComponentType.Button,
-      label: `Incorrect`,
+      label: rejectButtonText || `Incorrect`,
       onClick: (error: Error, onClickWhisper: Whisper) => {
         rejectOnClick(error, onClickWhisper, reject);
       },
     },
     {
       type: WhisperComponentType.Button,
-      label: `Looks Good`,
+      label: resolveButtonText || `Looks Good`,
       onClick: (error: Error, onClickWhisper: Whisper) => {
         resolveOnClick(error, onClickWhisper, resolve, reject);
       },
@@ -399,14 +397,8 @@ export const testClickableLink = (): Promise<boolean> =>
             href: 'https://www.google.com',
             text: 'https://www.google.com',
             style: Urgency.None,
-            onClick: (error: Error, onClickWhisper: Whisper) => {
-              if (error) {
-                console.error(error);
-              }
-              onClickWhisper.close((e) => console.error(e));
-              resolve(true);
-            },
           },
+          resolveRejectButtons(resolve, reject, 'Url opened in browser', 'Url failed to open'),
         ],
       });
     } catch (error) {
@@ -418,6 +410,10 @@ export const testClickableLink = (): Promise<boolean> =>
 export const testListPairWithCopyableValue = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const copyableText = 'Click me to copy the value text';
+
+    // reset clipboard value
+    await clipboard.write('');
+
     const createdWhisper = await whisper.create({
       label: 'List Pair Test',
       onClose: () => {
@@ -444,12 +440,15 @@ export const testListPairWithCopyableValue = (): Promise<boolean> =>
       } else {
         reject(new Error('Incorrect value detected'));
       }
-    });
+    }, 5000);
   });
 
 export const testListPairWithCopyableLabel = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const copyableText = 'Click me to copy the label text';
+
+    // reset clipboard value
+    await clipboard.write('');
 
     const createdWhisper = await whisper.create({
       label: 'List Pair Test',

@@ -36,16 +36,12 @@ export const testQueryingDirectory = (): Promise<boolean> =>
       .then((response) => {
         for (let i = 0; i < response.length; i += 1) {
           if (response[i].name === 'file.json' && !response[i].isDir) {
-            setTimeout(() => {
-              resolve(true);
-            }, 1500);
+            resolve(true);
           }
         }
       })
       .catch((error) => {
-        setTimeout(() => {
-          reject(error);
-        }, 1500);
+        reject(error);
       })
       .finally(async () => {
         await filesystem.remove(`${dirPath}/file.json`);
@@ -93,54 +89,52 @@ export const testWriteAndReadFile = (): Promise<boolean> =>
     const filePath = `${await getTestFolderPath()}/test.txt`;
     const writeMode = 0o755;
 
-    setTimeout(() => {
-      network
-        .encode(testString)
-        .then((encodedValue) => {
-          filesystem
-            .writeFile({
-              path: filePath,
-              data: encodedValue,
-              writeOperation: filesystem.WriteOperation.overwrite,
-              writeMode,
-            })
-            .then(() => {
-              console.debug('Write successful');
-              console.debug(encodedValue);
+    network
+      .encode(testString)
+      .then((encodedValue) => {
+        filesystem
+          .writeFile({
+            path: filePath,
+            data: encodedValue,
+            writeOperation: filesystem.WriteOperation.overwrite,
+            writeMode,
+          })
+          .then(() => {
+            console.debug('Write successful');
+            console.debug(encodedValue);
 
-              filesystem
-                .readFile(filePath)
-                .then((readEncodedValue) => {
-                  console.debug(readEncodedValue);
-                  network
-                    .decode(readEncodedValue)
-                    .then((decodedText) => {
-                      console.debug(decodedText);
-                      if (decodedText === testString) {
-                        resolve(true);
-                      } else {
-                        reject(new Error('File contents were incorrect'));
-                      }
-                    })
-                    .catch((error) => {
-                      reject(error);
-                    });
-                })
-                .catch((error) => {
-                  reject(error);
-                })
-                .finally(() => {
-                  filesystem.remove(filePath);
-                });
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    }, 1000);
+            filesystem
+              .readFile(filePath)
+              .then((readEncodedValue) => {
+                console.debug(readEncodedValue);
+                network
+                  .decode(readEncodedValue)
+                  .then((decodedText) => {
+                    console.debug(decodedText);
+                    if (decodedText === testString) {
+                      resolve(true);
+                    } else {
+                      reject(new Error('File contents were incorrect'));
+                    }
+                  })
+                  .catch((error) => {
+                    reject(error);
+                  });
+              })
+              .catch((error) => {
+                reject(error);
+              })
+              .finally(() => {
+                filesystem.remove(filePath);
+              });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 
 export const testListenFile = (): Promise<boolean> =>

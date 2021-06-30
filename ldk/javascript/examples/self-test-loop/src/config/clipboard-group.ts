@@ -6,7 +6,7 @@ import * as clipboardTests from '../tests/clipboard';
 export const clipboardTestGroup = (): TestGroup =>
   new TestGroup('Clipboard Aptitude', [
     new LoopTest(
-      'Clipboard Aptitude - Write And Query Test',
+      'Clipboard Aptitude - Write And Read Test',
       clipboardTests.testWriteAndRead,
       10000,
       'Copying value to clipboard and reading it back',

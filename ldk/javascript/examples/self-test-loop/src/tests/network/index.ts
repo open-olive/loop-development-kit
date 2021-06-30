@@ -9,7 +9,7 @@ export const testSecuredHttpRequest = (): Promise<boolean> =>
       'https://api.fda.gov/food/enforcement.json?search=report_date:[20210101+TO+20210401]&limit=1';
 
     setTimeout(() => {
-      reject(new Error('Network http request did not finish in the appropriate timespan.'));
+      reject(new Error('Network http request did not finish in the appropriate time span.'));
     }, 5000);
 
     try {

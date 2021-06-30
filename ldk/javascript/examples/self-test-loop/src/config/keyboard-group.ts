@@ -12,14 +12,14 @@ export const keyboardTestGroup = (): TestGroup =>
       'Press Ctrl+A to test the hotkey functionality.',
     ),
     new LoopTest(
-      'Keyboard Aptitude - Char Stream Test',
-      keyboardTests.testListenCharacter,
+      'Keyboard Aptitude - Text Stream Test',
+      keyboardTests.testListenText,
       10000,
       'Type the word "Olive"',
     ),
     new LoopTest(
       'Keyboard Aptitude - Char Test',
-      keyboardTests.testListenText,
+      keyboardTests.testListenCharacter,
       10000,
       'Type the letter "F" to pay respects...and test the individual character test',
     ),

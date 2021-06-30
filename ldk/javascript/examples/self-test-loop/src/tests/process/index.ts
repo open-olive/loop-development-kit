@@ -8,9 +8,7 @@ export const testProcess = (): Promise<boolean> =>
       .all()
       .then((processList) => {
         console.debug(JSON.stringify(processList[0].pid));
-        setTimeout(() => {
-          resolve(true);
-        }, 1000);
+        resolve(true);
       })
       .catch((error) => {
         reject(error);
