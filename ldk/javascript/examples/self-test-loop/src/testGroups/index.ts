@@ -87,7 +87,10 @@ const emitTestGroupWhisper = async (group: TestGroup): Promise<Whisper> => {
   });
 };
 
-const getExpandLinkComponent = (group: TestGroup, whisperCloser: WhisperCloser): BoxChildComponent => ({
+const getExpandLinkComponent = (
+  group: TestGroup,
+  whisperCloser: WhisperCloser,
+): BoxChildComponent => ({
   type: WhisperComponentType.Link,
   textAlign: TextAlign.Right,
   onClick: async () => {
