@@ -68,14 +68,14 @@ export const whisperTestGroup = (): TestGroup =>
     new LoopTest(
       'Whisper Aptitude - ListPair Copyable Value',
       whisperTests.testListPairWithCopyableValue,
-      10000,
-      'Click the ListPair value to copy its text',
+      6000,
+      'Click the ListPair value to copy its text within 5 min time frame',
     ),
     new LoopTest(
       'Whisper Aptitude - ListPair Copyable Label',
       whisperTests.testListPairWithCopyableLabel,
-      10000,
-      'Click the ListPair label to copy its text',
+      6000,
+      'Click the ListPair label to copy its text within 5 min time frame',
     ),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
