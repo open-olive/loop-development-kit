@@ -1,8 +1,8 @@
 import { ui } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
-export const uiSearchTest = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testListenSearchbar = (): Promise<boolean> =>
+  new Promise((resolve) => {
     let uiStream: Cancellable;
     ui.listenSearchbar((value) => {
       if (value.toLowerCase() === 'for life') {
@@ -14,8 +14,8 @@ export const uiSearchTest = (): Promise<boolean> =>
     });
   });
 
-export const uiGlobalSearchTest = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testListenGlobalSearch = (): Promise<boolean> =>
+  new Promise((resolve) => {
     let uiStream: Cancellable;
     ui.listenGlobalSearch((value) => {
       if (value.toLowerCase() === 'for meaning') {

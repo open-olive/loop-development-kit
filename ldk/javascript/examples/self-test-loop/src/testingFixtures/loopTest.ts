@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { whisper } from '@oliveai/ldk';
 
 export enum Status {
@@ -17,7 +18,7 @@ export class LoopTest {
     // Do nothing
   }, 0);
 
-  private timeoutTime: number;
+  private timeoutTime?: number;
 
   private promptMarkdown: string;
 
@@ -49,28 +50,27 @@ export class LoopTest {
   }
 
   private async testWrapper(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       try {
-        var prompt: whisper.Whisper;
-        whisper
-          .create({
-            label: this.id,
-            onClose: () => {
-              console.log('closed prompt');
+        const prompt = await whisper.create({
+          label: this.id,
+          onClose: () => {
+            console.log('closed prompt');
+          },
+          components: [
+            {
+              body: this.promptMarkdown,
+              type: whisper.WhisperComponentType.Markdown,
             },
-            components: [
-              {
-                body: this.promptMarkdown,
-                type: whisper.WhisperComponentType.Markdown,
-              },
-            ],
-          })
-          .then((whisper: whisper.Whisper) => (prompt = whisper));
+          ],
+        });
 
-        this.timeout = setTimeout(() => {
-          prompt.close((error) => console.error(error));
-          reject(new Error('Timeout - Too much time has passed'));
-        }, this.timeoutTime);
+        if (this.timeoutTime) {
+          this.timeout = setTimeout(() => {
+            prompt.close((error) => console.error(error));
+            reject(new Error('Timeout - Too much time has passed'));
+          }, this.timeoutTime);
+        }
         this.methodToExecute()
           .then((response) => {
             clearTimeout(this.timeout);
@@ -79,7 +79,7 @@ export class LoopTest {
           })
           .catch((error) => {
             clearTimeout(this.timeout);
-            prompt.close((error) => console.error(error));
+            prompt.close((e) => console.error(e));
             reject(error);
           });
       } catch (e) {
@@ -94,5 +94,9 @@ export class LoopTest {
 
   public getId(): string {
     return this.id;
+  }
+
+  public setTimeoutTime(timeoutTime?: number): void {
+    this.timeoutTime = timeoutTime;
   }
 }

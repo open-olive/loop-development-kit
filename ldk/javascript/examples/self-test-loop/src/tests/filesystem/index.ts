@@ -1,3 +1,4 @@
+/* eslint-disable no-async-promise-executor */
 import { filesystem, network } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
@@ -20,7 +21,7 @@ async function getTestFolderPath(): Promise<string> {
   return testFolderPath;
 }
 
-export const queryDirectory = (): Promise<boolean> =>
+export const testQueryingDirectory = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const dirPath = `${await getTestFolderPath()}`;
     const writeMode = 0o755;
@@ -35,23 +36,19 @@ export const queryDirectory = (): Promise<boolean> =>
       .then((response) => {
         for (let i = 0; i < response.length; i += 1) {
           if (response[i].name === 'file.json' && !response[i].isDir) {
-            setTimeout(() => {
-              resolve(true);
-            }, 1500);
+            resolve(true);
           }
         }
       })
       .catch((error) => {
-        setTimeout(() => {
-          reject(error);
-        }, 1500);
+        reject(error);
       })
       .finally(async () => {
         await filesystem.remove(`${dirPath}/file.json`);
       });
   });
 
-export const createAndDeleteFile = (): Promise<boolean> =>
+export const testWriteAndRemoveFile = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const filePath = `${await getTestFolderPath()}/test.txt`;
     const writeMode = 0o755;
@@ -59,96 +56,88 @@ export const createAndDeleteFile = (): Promise<boolean> =>
     network
       .encode('some text')
       .then((encodedValue) => {
-        setTimeout(() => {
-          filesystem
-            .writeFile({
-              path: filePath,
-              data: encodedValue,
-              writeOperation: filesystem.WriteOperation.overwrite,
-              writeMode,
-            })
-            .then(() => {
-              filesystem
-                .remove(filePath)
-                .then(() => {
-                  setTimeout(() => {
-                    resolve(true);
-                  }, 1500);
-                })
-                .catch((error) => {
-                  setTimeout(() => {
-                    reject(error);
-                  }, 1500);
-                });
-            })
-            .catch((error) => {
-              console.error('write file failed');
-              reject(error);
-            });
-        }, 500);
+        filesystem
+          .writeFile({
+            path: filePath,
+            data: encodedValue,
+            writeOperation: filesystem.WriteOperation.overwrite,
+            writeMode,
+          })
+          .then(() => {
+            filesystem
+              .remove(filePath)
+              .then(() => {
+                resolve(true);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          })
+          .catch((error) => {
+            console.error('write file failed');
+            reject(error);
+          });
       })
       .catch((error) => {
         reject(error);
       });
   });
 
-export const updateAndReadFile = (): Promise<boolean> =>
+export const testWriteAndReadFile = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const testString = 'Im in yr loop, writing to yr clipboard';
     const filePath = `${await getTestFolderPath()}/test.txt`;
     const writeMode = 0o755;
 
-    setTimeout(() => {
-      network
-        .encode(testString)
-        .then((encodedValue) => {
-          filesystem
-            .writeFile({
-              path: filePath,
-              data: encodedValue,
-              writeOperation: filesystem.WriteOperation.overwrite,
-              writeMode,
-            })
-            .then(() => {
-              console.debug('Write successful');
-              console.debug(encodedValue);
+    network
+      .encode(testString)
+      .then((encodedValue) => {
+        filesystem
+          .writeFile({
+            path: filePath,
+            data: encodedValue,
+            writeOperation: filesystem.WriteOperation.overwrite,
+            writeMode,
+          })
+          .then(() => {
+            console.debug('Write successful');
+            console.debug(encodedValue);
 
-              filesystem
-                .readFile(filePath)
-                .then((readEncodedValue) => {
-                  console.debug(readEncodedValue);
-                  network
-                    .decode(readEncodedValue)
-                    .then((decodedText) => {
-                      console.debug(decodedText);
-                      if (decodedText === testString) {
-                        resolve(true);
-                      } else {
-                        reject(new Error('File contents were incorrect'));
-                      }
-                    })
-                    .catch((error) => {
-                      reject(error);
-                    });
-                })
-                .catch((error) => {
-                  reject(error);
-                })
-                .finally(() => {
-                  filesystem.remove(filePath);
-                });
-            })
-            .catch((error) => {
-              reject(error);
-            });
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    }, 1000);
+            filesystem
+              .readFile(filePath)
+              .then((readEncodedValue) => {
+                console.debug(readEncodedValue);
+                network
+                  .decode(readEncodedValue)
+                  .then((decodedText) => {
+                    console.debug(decodedText);
+                    if (decodedText === testString) {
+                      resolve(true);
+                    } else {
+                      reject(new Error('File contents were incorrect'));
+                    }
+                  })
+                  .catch((error) => {
+                    reject(error);
+                  });
+              })
+              .catch((error) => {
+                reject(error);
+              })
+              .finally(() => {
+                filesystem.remove(filePath);
+              });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      })
+      .catch((error) => {
+        reject(error);
+      });
   });
 
-export const listenFile = (): Promise<boolean> =>
+export const testListenFile = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const filePath = `${await getTestFolderPath()}/test_listenFile.txt`;
     const writeMode = 0o755;
@@ -156,7 +145,7 @@ export const listenFile = (): Promise<boolean> =>
     let listenFileCancelable: Cancellable;
 
     setTimeout(() => {
-      reject(new Error('ListenFile test didnt passed within allowed timeframe'));
+      reject(new Error(`ListenFile test didn't passed within allowed time frame`));
     }, 3000);
 
     filesystem
@@ -211,7 +200,7 @@ export const listenFile = (): Promise<boolean> =>
       });
   });
 
-export const listenDir = (): Promise<boolean> =>
+export const testListenDir = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
     const dirPath = `${await getTestFolderPath()}`;
@@ -263,7 +252,7 @@ export const listenDir = (): Promise<boolean> =>
       });
   });
 
-export const dirExists = (): Promise<boolean> =>
+export const testDirExists = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const destination = `${await getTestFolderPath()}/test-tmp-dir`;
     const writeMode = 0o755;
@@ -278,7 +267,7 @@ export const dirExists = (): Promise<boolean> =>
     });
   });
 
-export const fileExists = (): Promise<boolean> =>
+export const testFileExists = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
     const writeMode = 0o755;

@@ -7,19 +7,25 @@ export const networkTestGroup = (): TestGroup =>
   new TestGroup('Network Aptitude', [
     new LoopTest(
       'Network Aptitude - HTTPS test',
-      networkTests.networkHTTPS,
+      networkTests.testSecuredHttpRequest,
       5000,
       'Calling a public HTTPS API. Should succeed.',
     ),
     new LoopTest(
       'Network Aptitude - HTTP test',
-      networkTests.networkHTTP,
+      networkTests.testUnsecuredHttpRequest,
       5000,
       'Calling a public HTTP API. Should fail',
     ),
     new LoopTest(
+      'Network Aptitude - Timeout test',
+      networkTests.testHttpRequestTimeout,
+      5000,
+      'Custom timeout should pass',
+    ),
+    new LoopTest(
       'Network Aptitude - WebSocket test',
-      networkTests.networkWebSocket,
+      networkTests.testWebsocketConnection,
       20000,
       'Sending/receiving data to websocket should pass.',
     ),

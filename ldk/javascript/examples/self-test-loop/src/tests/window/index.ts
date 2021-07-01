@@ -1,8 +1,8 @@
 import { window } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
-export const listenActiveWindowTest = (): Promise<boolean> =>
-  new Promise((resolve, reject) => {
+export const testListenActiveWindow = (): Promise<boolean> =>
+  new Promise((resolve) => {
     let activeWindowStream: Cancellable;
     window
       .listenActiveWindow((response) => {
@@ -17,7 +17,7 @@ export const listenActiveWindowTest = (): Promise<boolean> =>
       });
   });
 
-export const activeWindowTest = (): Promise<boolean> =>
+export const testActiveWindow = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     window
       .activeWindow()
@@ -30,7 +30,7 @@ export const activeWindowTest = (): Promise<boolean> =>
       });
   });
 
-export const allWindowTest = (): Promise<boolean> =>
+export const testWindowAll = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     window
       .all()

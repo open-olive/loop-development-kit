@@ -7,25 +7,25 @@ export const whisperUpdateTestGroup = (): TestGroup =>
   new TestGroup('Whisper Updates', [
     new LoopTest(
       'Whisper Update - Basic Whisper Update',
-      whisperUpdateTests.basicWhisperUpdate,
+      whisperUpdateTests.testWhisperUpdate,
       20000,
       `Did the whisper update correctly?`,
     ),
     new LoopTest(
       'Whisper Update - Collapse State Across Update',
-      whisperUpdateTests.updateCollapseState,
+      whisperUpdateTests.testUpdateCollapseState,
       20000,
       `Did the whisper update correctly?`,
     ),
     new LoopTest(
       'Whisper Update - OnChange Across Update',
-      whisperUpdateTests.updateOnChange,
+      whisperUpdateTests.testUpdateOnChange,
       20000,
       `Did the whisper update correctly?`,
     ),
     new LoopTest(
       'Whisper Update - Automated OnChange',
-      whisperUpdateTests.whisperStateOnChange,
+      whisperUpdateTests.testWhisperStateOnChange,
       5000,
       `Detecting changes across updates - No action needed.`,
     ),
