@@ -1,7 +1,7 @@
 import { Cancellable } from '../cancellable';
 
 export enum FieldType {
-	// TODO: Add all field types
+  // TODO: Add all field types
 	standard = 'standard',
 	stemmer = 'stemmer'
 }
