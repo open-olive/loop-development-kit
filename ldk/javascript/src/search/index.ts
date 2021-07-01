@@ -16,6 +16,7 @@ export interface Field {
   *  the name of the field that will be used instead of the default name of the field (if provided)
   */
 	displayName?: string;
+	
 	/**
   *  
   */
