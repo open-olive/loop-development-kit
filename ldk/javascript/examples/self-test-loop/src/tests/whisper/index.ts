@@ -74,6 +74,9 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
     const options = ['M12.01', 'M00.123'];
     const markdown = stripIndent`
       A paragraph with *emphasis* and **strong importance**.
+      # H1 Markdown Example 
+      ## H2 Markdown Example 
+      ### H3 Markdown Example 
       > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
 
       * Lists
