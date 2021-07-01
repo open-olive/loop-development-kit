@@ -68,7 +68,6 @@ export interface Index {
   * @returns A Promise resolving with the search results as a string
   */
 	search(term: string): Promise<string>;
-
 	/**
   * Executes a search with the using a query string to search over the data.
   *
@@ -76,7 +75,6 @@ export interface Index {
   * @returns A Promise resolving with the search results as a string  
   */
 	queryStringSearch(queryString: string): Promise<string>;
-
 	/**
   * Executes a search with the using a query string to search over the data.
   *
@@ -101,7 +99,6 @@ export interface Search {
   * @returns A Promise resolving with the an Index object.
   */
 	createIndex(name: string, documents: Document[], config: Config): Promise<Index>;
-
 	/**
   * Opens an existing search index with the provided configuration.
   *
