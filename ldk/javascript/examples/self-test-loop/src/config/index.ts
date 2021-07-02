@@ -8,6 +8,7 @@ import { networkTestGroup } from './network-group';
 import { processTestGroup } from './process-group';
 import { uiTestGroup } from './ui-group';
 import { userTestGroup } from './user-group';
+import { systemTestGroup } from './system-group';
 import { vaultTestGroup } from './vault-group';
 import { whisperTestGroup } from './whisper-group';
 import { whisperUpdateTestGroup } from './whisper-update-group';
@@ -21,6 +22,7 @@ export const testConfig: { [key: string]: TestGroup } = {
   keyboard: keyboardTestGroup(),
   network: networkTestGroup(),
   process: processTestGroup(),
+  system: systemTestGroup(),
   ui: uiTestGroup(),
   user: userTestGroup(),
   vault: vaultTestGroup(),
