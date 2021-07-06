@@ -36,150 +36,97 @@ const validateButton = (
 export const testComponentsValidation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      // const componentIds = new ComponentIds();
-      // console.log(componentIds.textInputId);
-      // const formLabel = 'Simple Form';
-      // const components: Component[] = [
-      //   {
-      //     type: WhisperComponentType.TextInput,
-      //     label: `Input 'valid'`,
-      //     id: componentIds.textInputId,
-      //     key: componentIds.textInputId,
-      //     onChange: () => {
-      //       // do nothing.
-      //     },
-      //   },
-      //   {
-      //     type: WhisperComponentType.Password,
-      //     label: 'Password (9 char)',
-      //     id: componentIds.passwordInputId,
-      //     key: componentIds.passwordInputId,
-      //     onChange: () => {
-      //       // do nothing.
-      //     },
-      //   },
-      //   {
-      //     type: WhisperComponentType.Telephone,
-      //     label: 'Valid Phone',
-      //     id: componentIds.telephoneInputId,
-      //     key: componentIds.telephoneInputId,
-      //     onChange: () => {
-      //       // do nothing.
-      //     },
-      //   },
-      //   {
-      //     type: WhisperComponentType.Number,
-      //     label: `Number '999'`,
-      //     id: componentIds.numberInputId,
-      //     key: componentIds.numberInputId,
-      //     onChange: () => {
-      //       // do nothing.
-      //     },
-      //   },
-      //   {
-      //     type: WhisperComponentType.Email,
-      //     label: `Valid Email`,
-      //     id: componentIds.emailInputId,
-      //     key: componentIds.emailInputId,
-      //     onChange: () => {
-      //       // do nothing.
-      //     },
-      //   },
-      //   {
-      //     type: WhisperComponentType.RadioGroup,
-      //     id: componentIds.radioInputId,
-      //     key: componentIds.radioInputId,
-      //     options: ['Option 1', 'Option 2'],
-      //     onSelect: () => {
-      //       // do nothing.
-      //     },
-      //   },
-      //   {
-      //     type: WhisperComponentType.Checkbox,
-      //     id: componentIds.checkboxInputId,
-      //     key: componentIds.checkboxInputId,
-      //     label: 'Check required',
-      //     onChange: () => {
-      //       // do nothing.
-      //     },
-      //     value: false,
-      //   },
-      //   {
-      //     type: WhisperComponentType.Select,
-      //     id: componentIds.dropdownInputId,
-      //     key: componentIds.dropdownInputId,
-      //     label: 'Selected value required',
-      //     onSelect: () => {
-      //       // do nothing.
-      //     },
-      //     options: ['Option 1', 'Option 2'],
-      //   },
-      // ];
+      const componentIds = new ComponentIds();
+      console.log(componentIds.textInputId);
+      const formLabel = 'Simple Form';
+      const components: Component[] = [
+        {
+          type: WhisperComponentType.TextInput,
+          label: `Input 'valid'`,
+          id: componentIds.textInputId,
+          key: componentIds.textInputId,
+          onChange: () => {
+            // do nothing.
+          },
+        },
+        {
+          type: WhisperComponentType.Password,
+          label: 'Password (9 char)',
+          id: componentIds.passwordInputId,
+          key: componentIds.passwordInputId,
+          onChange: () => {
+            // do nothing.
+          },
+        },
+        {
+          type: WhisperComponentType.Telephone,
+          label: 'Valid Phone',
+          id: componentIds.telephoneInputId,
+          key: componentIds.telephoneInputId,
+          onChange: () => {
+            // do nothing.
+          },
+        },
+        {
+          type: WhisperComponentType.Number,
+          label: `Number '999'`,
+          id: componentIds.numberInputId,
+          key: componentIds.numberInputId,
+          onChange: () => {
+            // do nothing.
+          },
+        },
+        {
+          type: WhisperComponentType.Email,
+          label: `Valid Email`,
+          id: componentIds.emailInputId,
+          key: componentIds.emailInputId,
+          onChange: () => {
+            // do nothing.
+          },
+        },
+        {
+          type: WhisperComponentType.RadioGroup,
+          id: componentIds.radioInputId,
+          key: componentIds.radioInputId,
+          options: ['Option 1', 'Option 2'],
+          onSelect: () => {
+            // do nothing.
+          },
+        },
+        {
+          type: WhisperComponentType.Checkbox,
+          id: componentIds.checkboxInputId,
+          key: componentIds.checkboxInputId,
+          label: 'Check required',
+          onChange: () => {
+            // do nothing.
+          },
+          value: false,
+        },
+        {
+          type: WhisperComponentType.Select,
+          id: componentIds.dropdownInputId,
+          key: componentIds.dropdownInputId,
+          label: 'Selected value required',
+          onSelect: () => {
+            // do nothing.
+          },
+          options: ['Option 1', 'Option 2'],
+        },
+      ];
 
-      // whisper.create({
-      //   label: formLabel,
-      //   onClose: () => {
-      //     // do nothing.
-      //   },
-      //   components: [...components, validateButton(formLabel, components, componentIds, resolve, reject)],
-      // });
-
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      testUpdate();
+      whisper.create({
+        label: formLabel,
+        onClose: () => {
+          // do nothing.
+        },
+        components: [
+          ...components,
+          validateButton(formLabel, components, componentIds, resolve, reject),
+        ],
+      });
     } catch (error) {
       console.error(error);
     }
   });
-
-const testUpdate = () => {
-  const components: Component[] = [
-    {
-      type: WhisperComponentType.RadioGroup,
-      id: 'radioInputId',
-      key: 'radioInputId',
-      options: ['Option 1', 'Option 2'],
-      onSelect: () => {
-        // do nothing.
-      },
-    },
-    {
-      type: WhisperComponentType.Checkbox,
-      id: 'checkboxInputId',
-      key: 'checkboxInputId',
-      label: 'Check required',
-      onChange: () => {
-        // do nothing.
-      },
-      value: false,
-    },
-    {
-      type: WhisperComponentType.Select,
-      id: 'dropdownInputId',
-      key: 'dropdownInputId',
-      label: 'Selected value required',
-      onSelect: () => {
-        // do nothing.
-      },
-      options: ['Option 1', 'Option 2'],
-    },
-  ];
-  whisper.create({
-    label: 'formLabel',
-    onClose: () => {
-      // do nothing.
-    },
-    components: [
-      ...components,
-      {
-        type: WhisperComponentType.Button,
-        label: 'Update',
-        onClick: (_error: Error, onClickWhisper: whisper.Whisper) => {
-          onClickWhisper.update({
-            label: 'formLabel',
-            components,
-          });
-        },
-      },
-    ],
-  });
-};
