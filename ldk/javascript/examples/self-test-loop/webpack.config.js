@@ -1,7 +1,7 @@
 /* eslint-disable */
 const path = require('path');
 const merge = require('webpack-merge');
-const ldkConfig = require('@oliveai/ldk/dist/webpack/config');
+const ldkConfig = require('@oliveai/ldk/dist/webpack/config.development');
 /* eslint-disable */
 
 const merged = merge.merge(ldkConfig.default, {

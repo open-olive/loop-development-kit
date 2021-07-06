@@ -11,11 +11,13 @@ import { userTestGroup } from './user-group';
 import { vaultTestGroup } from './vault-group';
 import { whisperTestGroup } from './whisper-group';
 import { whisperUpdateTestGroup } from './whisper-update-group';
+import { whisperValidationTestGroup } from './whisper-validation-group';
 import { windowTestGroup } from './window-group';
 
 export const testConfig: { [key: string]: TestGroup } = {
   clipboard: clipboardTestGroup(),
   cursor: cursorTestGroup(),
+  file: filesystemTestGroup(),
   keyboard: keyboardTestGroup(),
   network: networkTestGroup(),
   process: processTestGroup(),
@@ -24,6 +26,6 @@ export const testConfig: { [key: string]: TestGroup } = {
   vault: vaultTestGroup(),
   whispers: whisperTestGroup(),
   whisperUpdate: whisperUpdateTestGroup(),
+  whisperValidation: whisperValidationTestGroup(),
   window: windowTestGroup(),
-  file: filesystemTestGroup(),
 };

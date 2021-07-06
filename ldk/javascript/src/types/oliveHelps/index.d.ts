@@ -4,6 +4,20 @@ declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
+  interface Aptitudes {
+    clipboard: Clipboard;
+    whisper: WhisperService;
+    filesystem: Filesystem;
+    cursor: Cursor;
+    keyboard: Keyboard;
+    network: Network;
+    process: Process;
+    ui: UI;
+    user: User;
+    vault: Vault;
+    window: Window;
+  }
+
   interface Cancellable {
     cancel(): void;
   }
@@ -37,20 +51,6 @@ declare namespace OliveHelps {
     callback: Callback<TOut>,
     returnCb: ReturnCallback,
   ) => void;
-
-  interface Aptitudes {
-    clipboard: Clipboard;
-    whisper: WhisperService;
-    filesystem: Filesystem;
-    cursor: Cursor;
-    keyboard: Keyboard;
-    network: Network;
-    process: Process;
-    ui: UI;
-    user: User;
-    vault: Vault;
-    window: Window;
-  }
 
   interface User {
     jwt: Readable<string>;
@@ -235,11 +235,53 @@ declare namespace OliveHelps {
     includeOliveHelpsEvents(enabled: boolean): void;
   }
 
-  //-- Whisper
-  interface WhisperService {
-    create: ReadableWithParam<NewWhisper, Whisper>;
+  //-- Filesystem
+  interface FileInfo {
+    name: string;
+    size: number;
+    mode: string;
+    modTime: string;
+    isDir: boolean;
   }
 
+  interface FileEvent {
+    action: string;
+    info: FileInfo;
+  }
+
+  type WriteMode = number;
+
+  type WriteOperationOverwrite = 1;
+  type WriteOperationAppend = 2;
+  type WriteOperation = WriteOperationOverwrite | WriteOperationAppend;
+
+  interface Filesystem {
+    copy: ReadableWithTwoParams<string, string, void>;
+
+    dir: ReadableWithParam<string, FileInfo[]>;
+
+    exists: ReadableWithParam<string, boolean>;
+
+    listenDir: ListenableWithParam<string, FileEvent>;
+
+    listenFile: ListenableWithParam<string, FileEvent>;
+
+    makeDir: ReadableWithTwoParams<string, WriteMode, void>;
+
+    move: ReadableWithTwoParams<string, string, void>;
+
+    readFile: ReadableWithParam<string, ArrayBuffer>;
+
+    remove: ReadableWithParam<string, void>;
+
+    stat: ReadableWithParam<string, FileInfo>;
+
+    writeFile: ReadableWithFourParams<string, Array<number>, WriteOperation, WriteMode, void>;
+
+    join: ReadableWithParam<string[], string>;
+  }
+
+  //-- Whisper
   type WhisperComponentType =
     | 'box'
     | 'button'
@@ -282,6 +324,20 @@ declare namespace OliveHelps {
     key?: string;
   }
 
+  interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {
+    label: string;
+    tooltip?: string;
+    validationError?: string;
+    value?: T2;
+    onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
+    onChange: WhisperHandlerWithParam<T2>;
+  }
+
+  interface SelectComponent<T extends WhisperComponentType> extends Component<T> {
+    validationError?: string;
+  }
+
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
   type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
 
@@ -292,22 +348,6 @@ declare namespace OliveHelps {
     onClick: WhisperHandler;
     size?: ButtonSize;
     tooltip?: string;
-  };
-
-  type Checkbox = Component<'checkbox'> & {
-    label: string;
-    tooltip?: string;
-    value: boolean;
-    onChange: WhisperHandlerWithParam<boolean>;
-  };
-
-  type Email = Component<'email'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
   };
 
   type Link = Component<'link'> & {
@@ -339,58 +379,39 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
-  type NumberInput = Component<'number'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<number>;
-    value?: number;
+  type Email = InputComponent<'email', string>;
+
+  type Password = InputComponent<'password', string>;
+
+  type Telephone = InputComponent<'telephone', string>;
+
+  type TextInput = InputComponent<'textInput', string>;
+
+  type NumberInput = InputComponent<'number', number> & {
     max?: number;
     min?: number;
     step?: number;
-    tooltip?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
   };
 
-  type Password = Component<'password'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-  };
-
-  type RadioGroup = Component<'radioGroup'> & {
+  type RadioGroup = SelectComponent<'radioGroup'> & {
     onSelect: WhisperHandlerWithParam<number>;
     options: string[];
     selected?: number;
   };
 
-  type Select = Component<'select'> & {
+  type Checkbox = SelectComponent<'checkbox'> & {
+    label: string;
+    tooltip?: string;
+    value: boolean;
+    onChange: WhisperHandlerWithParam<boolean>;
+  };
+
+  type Select = SelectComponent<'select'> & {
     label: string;
     options: string[];
     onSelect: WhisperHandlerWithParam<number>;
     selected?: number;
     tooltip?: string;
-  };
-
-  type Telephone = Component<'telephone'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    // pattern?: RegExp; TODO: Implement this
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-  };
-
-  type TextInput = Component<'textInput'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
   };
 
   type Divider = Component<'divider'>;
@@ -439,49 +460,7 @@ declare namespace OliveHelps {
     components: Array<Components>;
   }
 
-  interface FileInfo {
-    name: string;
-    size: number;
-    mode: string;
-    modTime: string;
-    isDir: boolean;
-  }
-
-  interface FileEvent {
-    action: string;
-    info: FileInfo;
-  }
-
-  type WriteMode = number;
-
-  type WriteOperationOverwrite = 1;
-  type WriteOperationAppend = 2;
-  type WriteOperation = WriteOperationOverwrite | WriteOperationAppend;
-
-  //-- Filesystem
-  interface Filesystem {
-    copy: ReadableWithTwoParams<string, string, void>;
-
-    dir: ReadableWithParam<string, FileInfo[]>;
-
-    exists: ReadableWithParam<string, boolean>;
-
-    listenDir: ListenableWithParam<string, FileEvent>;
-
-    listenFile: ListenableWithParam<string, FileEvent>;
-
-    makeDir: ReadableWithTwoParams<string, WriteMode, void>;
-
-    move: ReadableWithTwoParams<string, string, void>;
-
-    readFile: ReadableWithParam<string, ArrayBuffer>;
-
-    remove: ReadableWithParam<string, void>;
-
-    stat: ReadableWithParam<string, FileInfo>;
-
-    writeFile: ReadableWithFourParams<string, Array<number>, WriteOperation, WriteMode, void>;
-
-    join: ReadableWithParam<string[], string>;
+  interface WhisperService {
+    create: ReadableWithParam<NewWhisper, Whisper>;
   }
 }
