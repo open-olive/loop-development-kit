@@ -9,6 +9,6 @@ export const whisperValidationTestGroup = (): TestGroup =>
       'Whisper Validation - Basic Form Validation',
       whisperValidationTests.testComponentsValidation,
       20000,
-      `Did form validation worked?`,
+      `Did the form validate?`,
     ),
   ]);
