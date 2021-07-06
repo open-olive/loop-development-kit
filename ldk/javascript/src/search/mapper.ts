@@ -16,17 +16,19 @@ export const mapToFields = (fields: OliveHelps.Field[]): Field[] => {
 	return fields.map((f) => mapToField(f));
 };
 
-export const mapToDocument = (document: OliveHelps.Document): Document => ({
+export const mapToDocument = (document: Document): OliveHelps.Document => ({
 	name: document.name,
 	data: document.data,
 	fields: document.fields ? mapToFields(document.fields) : undefined
 });
 
-export const mapToDocuments = (documents: OliveHelps.Document[]): Document[] => {
-	return documents.map((d) => mapToDocument(d));
+export const mapToDocuments = (documents: Document[]): OliveHelps.Document[] => {
+	const docs: OliveHelps.Document[] = [];
+	documents.forEach((d) => docs.push(mapToDocument(d)));
+	return docs;
 };
 
-export const mapToConfig = (config: OliveHelps.Config): Config => ({
+export const mapToConfig = (config: Config): OliveHelps.Config => ({
 	sortBy: config.sortBy,
 	searchSize: config.searchSize,
 	exactMatchThreshold: config.exactMatchThreshold,

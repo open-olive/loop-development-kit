@@ -1,4 +1,4 @@
-import { promisify } from '../promisify';
+import { promisify, promisifyMappedWithTwoParams, promisifyMappedWithThreeParams } from '../promisify';
 import * as mapper from './mapper';
 
 export enum FieldType {
@@ -110,12 +110,15 @@ export interface Search {
 }
 
 export function createIndex(name: string, documents: Document[], config: Config): Promise<Index> {
-	return new Promise<Index>((resolve, reject) => {
-		try {
-		} catch (e) {
-			console.error(e);
-		}
-	});
+	return promisifyMappedWithThreeParams(
+		name,
+		documents,
+		mapper.mapToDocuments,
+		config,
+		mapper.mapToConfig,
+		mapper.mapToIndex,
+		oliveHelps.search.createIndex
+	);
 }
 export function openIndex(name: string, config: Config): Promise<Index> {
 	return new Promise<Index>((resolve, reject) => {

@@ -197,6 +197,7 @@ declare namespace OliveHelps {
 		openIndex: ReadableWithTwoParams<string, Config, Index>;
 		exists: Readable<boolean>;
 	}
+
 	interface Index {
 		search(term: string, callback: (error: Error | undefined) => void): string;
 		queryStringSearch(queryString: string, callback: (error: Error | undefined) => void): string;
