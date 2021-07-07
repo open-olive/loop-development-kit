@@ -58,6 +58,12 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
+  /**
+   * The text input field allows the user to provide Date and Time information.
+   *
+   * The field can be pre-populated by the loop.
+   */
+  DateTimeInput = 'dateTimeInput',
 }
 
 export enum JustifyContent {
@@ -100,6 +106,12 @@ export enum Urgency {
   None = 'none',
   Success = 'success',
   Warning = 'warning',
+}
+
+export enum DateTimeType {
+  Date = 'date',
+  Time = 'time',
+  DateTime = 'dateTime',
 }
 
 export type StateMap = Map<string, string | boolean | number>;
@@ -235,6 +247,20 @@ export type TextInput = WhisperComponent<WhisperComponentType.TextInput> & {
   onFocus?: (error: Error | undefined) => void;
 };
 
+export type DateValue = {
+  Day: number;
+};
+
+export type DateTimeInput = WhisperComponent<WhisperComponentType.DateTimeInput> & {
+  label: string;
+  dateTimeType: DateTimeType;
+  tooltip?: string;
+  value?: Date;
+  onChange: WhisperHandlerWithParam<string>;
+  onBlur?: (error: Error | undefined) => void;
+  onFocus?: (error: Error | undefined) => void;
+};
+
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
@@ -251,7 +277,8 @@ export type ChildComponents =
   | RadioGroup
   | Select
   | Telephone
-  | TextInput;
+  | TextInput
+  | DateTimeInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;

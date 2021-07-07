@@ -256,7 +256,8 @@ declare namespace OliveHelps {
     | 'radioGroup'
     | 'select'
     | 'telephone'
-    | 'textInput';
+    | 'textInput'
+    | 'dateTimeInput';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -269,6 +270,8 @@ declare namespace OliveHelps {
   type Direction = 'horizontal' | 'vertical';
 
   type TextAlign = 'center' | 'left' | 'right';
+
+  type DateTimeType = 'date' | 'time' | 'date_time';
 
   interface Whisper {
     id: string;
@@ -393,6 +396,16 @@ declare namespace OliveHelps {
     onFocus?: (error: Error | undefined) => void;
   };
 
+  type DateTimeInput = Component<'dateTimeInput'> & {
+    label: string;
+    dateTimeType: DateTimeType;
+    tooltip?: string;
+    value?: string;
+    onChange: WhisperHandlerWithParam<string>;
+    onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
+  };
+
   type Divider = Component<'divider'>;
 
   type CollapseBox = Component<'collapseBox'> & {
@@ -424,7 +437,8 @@ declare namespace OliveHelps {
     | RadioGroup
     | Select
     | Telephone
-    | TextInput;
+    | TextInput
+    | DateTimeInput;
 
   type Components = ChildComponents | CollapseBox;
 

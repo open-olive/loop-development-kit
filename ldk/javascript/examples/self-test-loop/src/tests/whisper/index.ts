@@ -12,6 +12,7 @@ import {
   Whisper,
   NewWhisper,
   Component,
+  DateTimeType,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 
@@ -1262,4 +1263,59 @@ export const testCollapseBoxOnClick = (): Promise<boolean> =>
         },
       ],
     });
+  });
+
+export const testDateTime = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Date', false],
+      ['Time', false],
+      ['DateTime', false],
+    ]);
+    try {
+      await whisper.create({
+        label: 'Pick date and time',
+        components: [
+          {
+            type: WhisperComponentType.DateTimeInput,
+            label: 'Date',
+            dateTimeType: DateTimeType.Date,
+            onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+              if (param) {
+                onActionWrapper(error, 'Date', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            tooltip: 'Date picker',
+            value: new Date(),
+          },
+          {
+            type: WhisperComponentType.DateTimeInput,
+            label: 'Time',
+            dateTimeType: DateTimeType.Time,
+            onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+              if (param) {
+                onActionWrapper(error, 'Time', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            tooltip: 'Time picker',
+            value: new Date(),
+          },
+          {
+            type: WhisperComponentType.DateTimeInput,
+            label: 'Date and Time',
+            dateTimeType: DateTimeType.DateTime,
+            onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+              if (param) {
+                onActionWrapper(error, 'DateTime', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            tooltip: 'Date/Time picker',
+            value: new Date(),
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
   });
