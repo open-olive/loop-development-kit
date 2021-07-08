@@ -1,6 +1,5 @@
 /* eslint-disable no-async-promise-executor */
 import { clipboard, whisper, network } from '@oliveai/ldk';
-
 import {
   JustifyContent,
   Direction,
@@ -15,60 +14,7 @@ import {
   DateTimeType,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-
-const resolveOnClick = (
-  error: Error,
-  whisperToClose: Whisper,
-  resolve: (value: boolean) => void,
-  reject: (reason?: Error) => void,
-) => {
-  if (error) {
-    console.error(error);
-    reject(error);
-  }
-  whisperToClose.close(() => {
-    // do nothing.
-  });
-  resolve(true);
-};
-
-const rejectOnClick = (error: Error, whisperToClose: Whisper, reject: (reason?: Error) => void) => {
-  if (error) {
-    console.error(error);
-    reject(error);
-  }
-  whisperToClose.close(() => {
-    // do nothing.
-  });
-  reject(new Error('Not rendered correctly.'));
-};
-
-const resolveRejectButtons = (
-  resolve: (value: boolean) => void,
-  reject: (reason?: Error) => void,
-  resolveButtonText?: string | undefined,
-  rejectButtonText?: string | undefined,
-): Component => ({
-  type: WhisperComponentType.Box,
-  justifyContent: JustifyContent.SpaceEvenly,
-  direction: Direction.Horizontal,
-  children: [
-    {
-      type: WhisperComponentType.Button,
-      label: rejectButtonText || `Incorrect`,
-      onClick: (error: Error, onClickWhisper: Whisper) => {
-        rejectOnClick(error, onClickWhisper, reject);
-      },
-    },
-    {
-      type: WhisperComponentType.Button,
-      label: resolveButtonText || `Looks Good`,
-      onClick: (error: Error, onClickWhisper: Whisper) => {
-        resolveOnClick(error, onClickWhisper, resolve, reject);
-      },
-    },
-  ],
-});
+import { resolveRejectButtons } from './utils';
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
