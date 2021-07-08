@@ -302,6 +302,7 @@ declare namespace OliveHelps {
     | 'checkbox'
     | 'collapseBox'
     | 'divider'
+    | 'dropZone'
     | 'email'
     | 'link'
     | 'listPair'
@@ -366,6 +367,10 @@ declare namespace OliveHelps {
     size?: ButtonSize;
     tooltip?: string;
   };
+
+  type DropZone = Component<'dropZone'> & {
+    onClick: WhisperHandlerWithParam<any>;
+  }
 
   type Link = Component<'link'> & {
     href?: string;
@@ -459,6 +464,7 @@ declare namespace OliveHelps {
     | Button
     | Checkbox
     | Divider
+    | DropZone
     | Email
     | Link
     | ListPair

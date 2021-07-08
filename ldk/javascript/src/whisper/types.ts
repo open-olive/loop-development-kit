@@ -64,6 +64,10 @@ export enum WhisperComponentType {
    * The field can be pre-populated by the loop.
    */
   DateTimeInput = 'dateTimeInput',
+  /**
+   * The dropzone component allows the Loop to receive
+   */
+  DropZone = 'dropZone',
 }
 
 export enum JustifyContent {
@@ -233,12 +237,17 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   tooltip?: string;
 };
 
+export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
+  onDrop: WhisperHandlerWithParam<FileDropEvent>;
+}
+
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
   | Button
   | Checkbox
   | Divider
+  | DropZone
   | Email
   | Link
   | ListPair
@@ -293,4 +302,8 @@ export interface NewWhisper {
 export interface UpdateWhisper {
   label?: string;
   components: Array<Component>;
+}
+
+export interface FileDropEvent {
+  path: string;
 }
