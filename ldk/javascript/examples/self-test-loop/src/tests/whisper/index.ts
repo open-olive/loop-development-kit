@@ -1282,6 +1282,7 @@ export const testDateTime = (): Promise<boolean> =>
             dateTimeType: DateTimeType.Date,
             onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
               if (param) {
+                console.debug(`Date picker value received: ${param}`);
                 onActionWrapper(error, 'Date', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
@@ -1294,6 +1295,7 @@ export const testDateTime = (): Promise<boolean> =>
             dateTimeType: DateTimeType.Time,
             onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
               if (param) {
+                console.debug(`Time picker value received: ${param}`);
                 onActionWrapper(error, 'Time', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
@@ -1306,6 +1308,7 @@ export const testDateTime = (): Promise<boolean> =>
             dateTimeType: DateTimeType.DateTime,
             onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
               if (param) {
+                console.debug(`DateTime picker value received: ${param}`);
                 onActionWrapper(error, 'DateTime', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
