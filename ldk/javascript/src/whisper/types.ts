@@ -133,7 +133,8 @@ export interface WhisperComponent<T extends WhisperComponentType> {
   key?: string;
 }
 
-interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2> extends WhisperComponent<T1> {
+interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
+  extends WhisperComponent<T1> {
   label: string;
   tooltip?: string;
   validationError?: string;
@@ -188,7 +189,7 @@ export enum DateTimeType {
   DateTime = 'dateTime',
 }
 export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, Date, string> & {
-  dateTimeType: DateTimeType,
+  dateTimeType: DateTimeType;
   min?: Date;
   max?: Date;
 };

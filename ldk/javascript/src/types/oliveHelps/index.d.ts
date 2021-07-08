@@ -424,7 +424,7 @@ declare namespace OliveHelps {
   };
 
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {
-    dateTimeType: DateTimeType,
+    dateTimeType: DateTimeType;
     value?: string;
     min?: string;
     max?: string;
