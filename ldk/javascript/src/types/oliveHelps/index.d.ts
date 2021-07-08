@@ -12,6 +12,7 @@ declare namespace OliveHelps {
     keyboard: Keyboard;
     network: Network;
     process: Process;
+    system: System;
     ui: UI;
     user: User;
     vault: Vault;
@@ -140,6 +141,11 @@ declare namespace OliveHelps {
     all: Readable<ProcessInfo[]>;
 
     listenAll: Listenable<ProcessEvent>;
+  }
+
+  //-- System
+  interface System {
+    operatingSystem: Readable<string>;
   }
 
   //-- Network
