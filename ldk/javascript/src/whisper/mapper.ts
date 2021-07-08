@@ -190,7 +190,6 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.TextInput;
-    // TODO: collapse common logic
     case WhisperComponentType.DateTimeInput:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value.toISOString());
@@ -198,6 +197,8 @@ export function mapToInternalChildComponent(
       return {
         ...component,
         value: component.value?.toISOString(),
+        max: component.max?.toISOString(),
+        min: component.min?.toISOString(),
         onChange: (error, param, whisper) => {
           if (component.id) {
             stateMap.set(component.id, param);

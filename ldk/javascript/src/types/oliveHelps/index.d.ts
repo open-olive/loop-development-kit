@@ -401,6 +401,8 @@ declare namespace OliveHelps {
     dateTimeType: DateTimeType;
     tooltip?: string;
     value?: string;
+    min?: string;
+    max?: string;
     onChange: WhisperHandlerWithParam<string>;
     onBlur?: (error: Error | undefined) => void;
     onFocus?: (error: Error | undefined) => void;

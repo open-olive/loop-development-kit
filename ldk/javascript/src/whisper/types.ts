@@ -256,6 +256,8 @@ export type DateTimeInput = WhisperComponent<WhisperComponentType.DateTimeInput>
   dateTimeType: DateTimeType;
   tooltip?: string;
   value?: Date;
+  min?: Date;
+  max?: Date;
   onChange: WhisperHandlerWithParam<string>;
   onBlur?: (error: Error | undefined) => void;
   onFocus?: (error: Error | undefined) => void;

@@ -1272,48 +1272,74 @@ export const testDateTime = (): Promise<boolean> =>
       ['Time', false],
       ['DateTime', false],
     ]);
+    const eightInTheMorning = new Date();
+    eightInTheMorning.setHours(8, 0);
+    const fourThirtyInTheEvening = new Date();
+    eightInTheMorning.setHours(16, 30);
     try {
+      const components: Component[] = [
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'dateId',
+          id: 'dateId',
+          label: 'Date',
+          dateTimeType: DateTimeType.Date,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`Date picker value received: ${param}`);
+              onActionWrapper(error, 'Date', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Date picker',
+          value: new Date(),
+          min: new Date(2017, 1, 1),
+          max: new Date(2024, 12, 31),
+        },
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'timeId',
+          id: 'timeId',
+          label: 'Time',
+          dateTimeType: DateTimeType.Time,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`Time picker value received: ${param}`);
+              onActionWrapper(error, 'Time', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Time picker',
+          value: new Date(),
+          min: eightInTheMorning,
+          max: fourThirtyInTheEvening,
+        },
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'dateTimeId',
+          id: 'dateTimeId',
+          label: 'Date and Time',
+          dateTimeType: DateTimeType.DateTime,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`DateTime picker value received: ${param}`);
+              onActionWrapper(error, 'DateTime', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Date/Time picker',
+          value: new Date(),
+        },
+      ];
       await whisper.create({
         label: 'Pick date and time',
         components: [
+          ...components,
           {
-            type: WhisperComponentType.DateTimeInput,
-            label: 'Date',
-            dateTimeType: DateTimeType.Date,
-            onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
-              if (param) {
-                console.debug(`Date picker value received: ${param}`);
-                onActionWrapper(error, 'Date', resolverMap, onChangeWhisper, resolve, reject);
-              }
+            type: WhisperComponentType.Button,
+            label: 'Update',
+            onClick: (error: Error, onClickWhisper: Whisper) => {
+              onClickWhisper.update({
+                components,
+              });
             },
-            tooltip: 'Date picker',
-            value: new Date(),
-          },
-          {
-            type: WhisperComponentType.DateTimeInput,
-            label: 'Time',
-            dateTimeType: DateTimeType.Time,
-            onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
-              if (param) {
-                console.debug(`Time picker value received: ${param}`);
-                onActionWrapper(error, 'Time', resolverMap, onChangeWhisper, resolve, reject);
-              }
-            },
-            tooltip: 'Time picker',
-            value: new Date(),
-          },
-          {
-            type: WhisperComponentType.DateTimeInput,
-            label: 'Date and Time',
-            dateTimeType: DateTimeType.DateTime,
-            onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
-              if (param) {
-                console.debug(`DateTime picker value received: ${param}`);
-                onActionWrapper(error, 'DateTime', resolverMap, onChangeWhisper, resolve, reject);
-              }
-            },
-            tooltip: 'Date/Time picker',
-            value: new Date(),
           },
         ],
       });
