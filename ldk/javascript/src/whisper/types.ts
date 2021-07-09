@@ -58,6 +58,10 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
+  /**
+   * The section title field allows the user to provide section title information.
+   */
+  SectionTitle = 'sectionTitle',
 }
 
 export enum JustifyContent {
@@ -219,6 +223,11 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   tooltip?: string;
 };
 
+export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
+  body: string;
+  textAlign?: TextAlign;
+};
+
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
@@ -235,7 +244,8 @@ export type ChildComponents =
   | RadioGroup
   | Select
   | Telephone
-  | TextInput;
+  | TextInput
+  | SectionTitle;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;

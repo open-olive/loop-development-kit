@@ -119,4 +119,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Click both CollapseBoxes',
     ),
+    new LoopTest(
+      'Whisper Aptitude - SectionTitle',
+      whisperTests.testSectionTitle,
+      10000,
+      'Did SectionTitle render properly?',
+    ),
   ]);

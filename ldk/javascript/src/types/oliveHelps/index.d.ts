@@ -304,7 +304,8 @@ declare namespace OliveHelps {
     | 'radioGroup'
     | 'select'
     | 'telephone'
-    | 'textInput';
+    | 'textInput'
+    | 'sectionTitle';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -420,6 +421,11 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
+  type SectionTitle = Component<'sectionTitle'> & {
+    body: string;
+    textalign?: TextAlign;
+  };
+
   type Divider = Component<'divider'>;
 
   type CollapseBox = Component<'collapseBox'> & {
@@ -451,7 +457,8 @@ declare namespace OliveHelps {
     | RadioGroup
     | Select
     | Telephone
-    | TextInput;
+    | TextInput
+    | SectionTitle;
 
   type Components = ChildComponents | CollapseBox;
 

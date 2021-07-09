@@ -1208,3 +1208,32 @@ export const testCollapseBoxOnClick = (): Promise<boolean> =>
       ],
     });
   });
+
+export const testSectionTitle = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Section Title',
+        components: [
+          {
+            body: 'section Title in center',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Center,
+          },
+          {
+            body: 'section Title on the left',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Left,
+          },
+          {
+            body: '* section Title on the right with h1',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Right,
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
