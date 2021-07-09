@@ -1,6 +1,11 @@
 /* eslint-disable no-async-promise-executor */
 import { whisper } from '@oliveai/ldk';
-import { WhisperComponentType, Whisper, Component, DateTimeType } from '@oliveai/ldk/dist/whisper/types';
+import {
+  WhisperComponentType,
+  Whisper,
+  Component,
+  DateTimeType,
+} from '@oliveai/ldk/dist/whisper/types';
 import { resolveRejectButtons } from './utils';
 import { validateForm } from './validation';
 import ComponentIds from './validation/componentIds';
@@ -122,8 +127,8 @@ export const testComponentsValidation = (): Promise<boolean> =>
           label: 'Choose 08/20/2020',
           onChange: () => {
             // do nothing.
-          }
-        }
+          },
+        },
       ];
 
       whisper.create({
