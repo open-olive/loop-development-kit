@@ -9,6 +9,7 @@ import {
   RadioGroup,
   Checkbox,
   Select,
+  DateTimeInput,
 } from '@oliveai/ldk/dist/whisper/types';
 import ComponentIds from './componentIds';
 
@@ -71,7 +72,6 @@ export const validateForm = (
         }
         break;
       case componentIds.radioInputId:
-        console.log(`radioInput: ${componentStateValue}`);
         if (componentStateValue === undefined) {
           const validatedComponent = component as RadioGroup;
           validatedComponent.validationError = `Please choose an option`;
@@ -81,7 +81,6 @@ export const validateForm = (
         }
         break;
       case componentIds.checkboxInputId:
-        console.log(`checkboxInput: ${componentStateValue}`);
         if (componentStateValue === undefined || !(componentStateValue as boolean)) {
           const validatedComponent = component as Checkbox;
           validatedComponent.validationError = `Please select the checkbox`;
@@ -91,10 +90,19 @@ export const validateForm = (
         }
         break;
       case componentIds.dropdownInputId:
-        console.log(`selectInput: ${componentStateValue}`);
         if (componentStateValue === undefined) {
           const validatedComponent = component as Select;
           validatedComponent.validationError = `Please select an option`;
+          validatedComponents.push(validatedComponent);
+        } else {
+          validatedComponents.push(component);
+        }
+        break;
+      case componentIds.dateInputId:
+        console.log(`dateInput: ${componentStateValue}`);
+        if (!componentStateValue || (componentStateValue as string) !== '2020-08-20') {
+          const validatedComponent = component as DateTimeInput;
+          validatedComponent.validationError = `Please select a valid date`;
           validatedComponents.push(validatedComponent);
         } else {
           validatedComponents.push(component);

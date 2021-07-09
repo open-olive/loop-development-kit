@@ -17,6 +17,8 @@ export default class ComponentIds {
 
   dropdownInputId: string;
 
+  dateInputId: string;
+
   constructor() {
     this.textInputId = newGuid();
     this.passwordInputId = newGuid();
@@ -26,5 +28,6 @@ export default class ComponentIds {
     this.radioInputId = newGuid();
     this.checkboxInputId = newGuid();
     this.dropdownInputId = newGuid();
+    this.dateInputId = newGuid();
   }
 }
