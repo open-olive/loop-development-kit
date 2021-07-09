@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "webpack",
-    "build-ldk": "cd ../.. && npm i && rm -rf dist && tsc && && npm unpublish @oliveai/ldk -f --registry http://localhost:4873 && npm publish --registry http://localhost:4873",
+    "build-ldk": "cd ../.. && npm i && rm -rf dist && tsc && npm unpublish @oliveai/ldk -f --registry http://localhost:4873 && npm publish --registry http://localhost:4873",
     "build-all": "npm run build-ldk && npm i && npm run build"
   },
   "keywords": [],
@@ -58,7 +58,7 @@
   "dependencies": {
     "@babel/runtime": "7.13.10",
     "@babel/runtime-corejs2": "7.13.10",
-    "@oliveai/ldk": "3.1.0",
+    "@oliveai/ldk": "3.2.0",
     "babel-runtime": "6.26.0",
     "chance": "1.1.7",
     "common-tags": "^1.8.0",
