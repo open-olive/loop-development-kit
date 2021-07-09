@@ -1218,10 +1218,7 @@ export const testDateTime = (): Promise<boolean> =>
       ['Time', false],
       ['DateTime', false],
     ]);
-    const eightInTheMorning = new Date();
-    eightInTheMorning.setHours(8, 0);
-    const fourThirtyInTheEvening = new Date();
-    eightInTheMorning.setHours(16, 30);
+
     try {
       const components: Component[] = [
         {
@@ -1237,7 +1234,6 @@ export const testDateTime = (): Promise<boolean> =>
             }
           },
           tooltip: 'Date picker',
-          value: new Date(),
           min: new Date(2017, 1, 1),
           max: new Date(2024, 12, 31),
         },
@@ -1254,9 +1250,6 @@ export const testDateTime = (): Promise<boolean> =>
             }
           },
           tooltip: 'Time picker',
-          value: new Date(),
-          min: eightInTheMorning,
-          max: fourThirtyInTheEvening,
         },
         {
           type: WhisperComponentType.DateTimeInput,
@@ -1272,6 +1265,8 @@ export const testDateTime = (): Promise<boolean> =>
           },
           tooltip: 'Date/Time picker',
           value: new Date(),
+          min: new Date(2020, 1, 1),
+          max: new Date(2022, 12, 31),
         },
       ];
       await whisper.create({
