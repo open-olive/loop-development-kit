@@ -1234,8 +1234,9 @@ export const testDateTime = (): Promise<boolean> =>
             }
           },
           tooltip: 'Date picker',
-          min: new Date(2017, 1, 1),
-          max: new Date(2024, 12, 31),
+          min: new Date(2020, 0, 1),
+          value: new Date(2021, 0, 1),
+          max: new Date(2022, 11, 31),
         },
         {
           type: WhisperComponentType.DateTimeInput,
@@ -1250,6 +1251,7 @@ export const testDateTime = (): Promise<boolean> =>
             }
           },
           tooltip: 'Time picker',
+          value: new Date(0, 0, 0, 14, 30),
         },
         {
           type: WhisperComponentType.DateTimeInput,
@@ -1264,9 +1266,9 @@ export const testDateTime = (): Promise<boolean> =>
             }
           },
           tooltip: 'Date/Time picker',
-          value: new Date(),
-          min: new Date(2020, 1, 1),
-          max: new Date(2022, 12, 31),
+          min: new Date(2020, 0, 1),
+          value: new Date(2021, 4, 5),
+          max: new Date(2022, 11, 31),
         },
       ];
       await whisper.create({
