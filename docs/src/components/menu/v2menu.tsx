@@ -14,10 +14,20 @@ const Links: React.FunctionComponent<LinksProps> = (props) => (
         LDK
       </a>
     </li>
-    <li className={props.itemClass}>
+    <li
+      className={props.itemClass}
+      onClick={() => {
+        window.gtag('event', 'Design System clicked', { value: 0 });
+      }}
+    >
       <a href="https://coda.io/@olive-helps-design/design-system">Design system</a>
     </li>
-    <li className={props.itemClass}>
+    <li
+      className={props.itemClass}
+      onClick={() => {
+        window.gtag('event', 'Support Page click', { value: 0 });
+      }}
+    >
       <a href="https://github.com/open-olive/loop-development-kit/issues">Support</a>
     </li>
   </ul>

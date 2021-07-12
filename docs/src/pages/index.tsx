@@ -13,6 +13,12 @@ import { getAptitudeDataFromQuery, IAllAptitudeQuery, IAllFileQuery } from '../q
 import { V2Menu } from '../components/menu/v2menu';
 import { Image } from '../components/image';
 
+declare global {
+  interface Window {
+    gtag: any;
+  }
+}
+
 interface LanguageBlockProps {
   language: string;
   repoURL: string;
@@ -90,10 +96,20 @@ export default function Home(
           Loop Library to become a Loop Author and get building.
         </p>
         <div className={styles.downloadCollection}>
-          <article className={styles.downloadItem}>
+          <article
+            className={styles.downloadItem}
+            onClick={() => {
+              window.gtag('event', 'Windows Donwload', { value: 0 });
+            }}
+          >
             <a href={downloadWindowsUrl}>Windows</a>
           </article>
-          <article className={styles.downloadItem}>
+          <article
+            className={styles.downloadItem}
+            onClick={() => {
+              window.gtag('event', 'Mac Donwload', { value: 0 });
+            }}
+          >
             <a href={downloadMacUrl}>Mac</a>
           </article>
         </div>
@@ -114,7 +130,12 @@ export default function Home(
         <p className={styles.sectionDescription}>
           Create beautiful Loops that seamlessly integrated with Olive Helps.
         </p>
-        <p className={styles.sectionDescription}>
+        <p
+          className={styles.sectionDescription}
+          onClick={() => {
+            window.gtag('event', 'Design System clicked', { value: 0 });
+          }}
+        >
           <a
             href="https://coda.io/@olive-helps-design/design-system"
             target="_blank"
@@ -132,7 +153,11 @@ export default function Home(
           <p className={styles.needHelpSubtext}>
             Submit a request or email your Olive Helps developer contact for further assistance.
           </p>
-          <div>
+          <div
+            onClick={() => {
+              window.gtag('event', 'Support Page click', { value: 0 });
+            }}
+          >
             <a
               href="https://github.com/open-olive/loop-development-kit/issues"
               className={styles.button}
