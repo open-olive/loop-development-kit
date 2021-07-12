@@ -112,6 +112,13 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Markdown:
     case WhisperComponentType.Message:
       return component;
+    case WhisperComponentType.DropZone:
+      return {
+        ...component,
+        onDrop: (error, param, whisper) => {
+          component.onDrop(error, param, mapToExternalWhisper(whisper, stateMap))
+        }
+      };
     case WhisperComponentType.Number:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -207,7 +214,7 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.DateTimeInput;
     default:
-      throw new Error('Unexpected component type');
+      throw new Error(`Unexpected component type: ${(component as any)?.type}`);
   }
 }
 

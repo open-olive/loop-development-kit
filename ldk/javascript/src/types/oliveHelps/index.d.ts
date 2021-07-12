@@ -369,7 +369,7 @@ declare namespace OliveHelps {
   };
 
   type DropZone = Component<'dropZone'> & {
-    onClick: WhisperHandlerWithParam<any>;
+    onDrop: WhisperHandlerWithParam<any>;
   }
 
   type Link = Component<'link'> & {
