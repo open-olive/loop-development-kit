@@ -99,7 +99,11 @@ export default function Home(
           <article
             className={styles.downloadItem}
             onClick={() => {
-              window.gtag('event', 'Windows Donwload', { value: 0 });
+              window.gtag('event', 'Download Olive Helps', {
+                event_category: 'Downloads',
+                event_label: 'Windows',
+                value: 0,
+              });
             }}
           >
             <a href={downloadWindowsUrl}>Windows</a>
@@ -107,7 +111,11 @@ export default function Home(
           <article
             className={styles.downloadItem}
             onClick={() => {
-              window.gtag('event', 'Mac Donwload', { value: 0 });
+              window.gtag('event', 'Download Olive Helps', {
+                event_category: 'Downloads',
+                event_label: 'Mac',
+                value: 0,
+              });
             }}
           >
             <a href={downloadMacUrl}>Mac</a>
@@ -133,7 +141,11 @@ export default function Home(
         <p
           className={styles.sectionDescription}
           onClick={() => {
-            window.gtag('event', 'Design System clicked', { value: 0 });
+            window.gtag('event', 'Link out', {
+              event_category: 'Navigation',
+              event_label: 'Design System',
+              value: 0,
+            });
           }}
         >
           <a
@@ -155,7 +167,11 @@ export default function Home(
           </p>
           <div
             onClick={() => {
-              window.gtag('event', 'Support Page click', { value: 0 });
+              window.gtag('event', 'Link out', {
+                event_category: 'Navigation',
+                event_label: 'Support',
+                value: 0,
+              });
             }}
           >
             <a

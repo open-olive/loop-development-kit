@@ -17,7 +17,11 @@ const Links: React.FunctionComponent<LinksProps> = (props) => (
     <li
       className={props.itemClass}
       onClick={() => {
-        window.gtag('event', 'Design System clicked', { value: 0 });
+        window.gtag('event', 'Link out', {
+          event_category: 'Navigation',
+          event_label: 'Design System',
+          value: 0,
+        });
       }}
     >
       <a href="https://coda.io/@olive-helps-design/design-system">Design system</a>
@@ -25,7 +29,11 @@ const Links: React.FunctionComponent<LinksProps> = (props) => (
     <li
       className={props.itemClass}
       onClick={() => {
-        window.gtag('event', 'Support Page click', { value: 0 });
+        window.gtag('event', 'Link out', {
+          event_category: 'Navigation',
+          event_label: 'Support',
+          value: 0,
+        });
       }}
     >
       <a href="https://github.com/open-olive/loop-development-kit/issues">Support</a>
