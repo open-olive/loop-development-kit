@@ -190,6 +190,22 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.TextInput;
+    case WhisperComponentType.DateTimeInput:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value.toISOString());
+      }
+      return {
+        ...component,
+        value: component.value?.toISOString(),
+        max: component.max?.toISOString(),
+        min: component.min?.toISOString(),
+        onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
+          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+        },
+      } as OliveHelps.DateTimeInput;
     default:
       throw new Error('Unexpected component type');
   }
