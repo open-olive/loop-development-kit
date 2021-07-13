@@ -99,7 +99,6 @@ export const validateForm = (
         }
         break;
       case componentIds.dateInputId:
-        console.log(`dateInput: ${componentStateValue}`);
         if (!componentStateValue || (componentStateValue as string) !== '2020-08-20') {
           const validatedComponent = component as DateTimeInput;
           validatedComponent.validationError = `Please select a valid date`;

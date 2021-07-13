@@ -108,6 +108,12 @@ export enum Urgency {
   Warning = 'warning',
 }
 
+export enum DateTimeType {
+  Date = 'date',
+  Time = 'time',
+  DateTime = 'date_time',
+}
+
 export type StateMap = Map<string, string | boolean | number>;
 
 export interface Whisper {
@@ -183,11 +189,6 @@ export type Telephone = InputComponent<WhisperComponentType.Telephone, string>;
 
 export type TextInput = InputComponent<WhisperComponentType.TextInput, string>;
 
-export enum DateTimeType {
-  Date = 'date',
-  Time = 'time',
-  DateTime = 'dateTime',
-}
 export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, Date, string> & {
   dateTimeType: DateTimeType;
   min?: Date;
