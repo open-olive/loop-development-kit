@@ -1,7 +1,4 @@
-import {
-  Component,
-  StateMap,
-} from '@oliveai/ldk/dist/whisper/types';
+import { Component, StateMap } from '@oliveai/ldk/dist/whisper/types';
 import ComponentIds from './componentIds';
 import { getSubmitButton, init } from './componentsInitializer';
 import { validateFormComponent } from './validation';
@@ -34,16 +31,17 @@ export default class Form {
 
   validate(componentState: StateMap): void {
     this.components.forEach((component) => {
-      const componentValue = componentState.get(component.id);
-      const componentValidationResponse = validateFormComponent(
-        component,
-        this.componentIds,
-        componentValue,
-      );
       if (component.id) {
+        const componentValue = componentState.get(component.id);
+        const componentValidationResponse = validateFormComponent(
+          component,
+          this.componentIds,
+          componentValue,
+        );
+
         this.components.set(component.id, componentValidationResponse.validatedComponent);
+        this.formValidity.set(component.id, componentValidationResponse.valid);
       }
-      this.formValidity.set(component.id, componentValidationResponse.valid);
     });
   }
 
@@ -52,6 +50,10 @@ export default class Form {
       this.components.get(componentId),
       this.componentIds,
       value,
+    );
+
+    console.log(
+      `Validation for componentId: ${componentId}, valid: ${componentValidationResponse.valid}`,
     );
 
     this.components.set(componentId, componentValidationResponse.validatedComponent);
