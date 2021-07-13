@@ -10,6 +10,8 @@ import {
   ButtonSize,
   Whisper,
   NewWhisper,
+  Component,
+  DateTimeType,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { resolveRejectButtons } from './utils';
@@ -1207,4 +1209,85 @@ export const testCollapseBoxOnClick = (): Promise<boolean> =>
         },
       ],
     });
+  });
+
+export const testDateTime = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Date', false],
+      ['Time', false],
+      ['DateTime', false],
+    ]);
+
+    try {
+      const components: Component[] = [
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'dateId',
+          id: 'dateId',
+          label: 'Date',
+          dateTimeType: DateTimeType.Date,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`Date picker value received: ${param}`);
+              onActionWrapper(error, 'Date', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Date picker',
+          min: new Date(2020, 0, 1),
+          value: new Date(2021, 0, 1),
+          max: new Date(2022, 11, 31),
+        },
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'timeId',
+          id: 'timeId',
+          label: 'Time',
+          dateTimeType: DateTimeType.Time,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`Time picker value received: ${param}`);
+              onActionWrapper(error, 'Time', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Time picker',
+          value: new Date(0, 0, 0, 14, 30),
+        },
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'dateTimeId',
+          id: 'dateTimeId',
+          label: 'Date and Time',
+          dateTimeType: DateTimeType.DateTime,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`DateTime picker value received: ${param}`);
+              onActionWrapper(error, 'DateTime', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Date/Time picker',
+          min: new Date(2020, 0, 1),
+          value: new Date(2021, 4, 5),
+          max: new Date(2022, 11, 31),
+        },
+      ];
+      await whisper.create({
+        label: 'Pick date and time',
+        components: [
+          ...components,
+          {
+            type: WhisperComponentType.Button,
+            label: 'Update',
+            onClick: (error: Error, onClickWhisper: Whisper) => {
+              onClickWhisper.update({
+                components,
+              });
+            },
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
   });
