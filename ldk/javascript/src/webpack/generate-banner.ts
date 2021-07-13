@@ -19,6 +19,7 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
       keyboard: ldkSettings.ldk.permissions.keyboard || undefined,
       network: ldkSettings.ldk.permissions.network || undefined,
       process: ldkSettings.ldk.permissions.process || undefined,
+      system: ldkSettings.ldk.permissions.system || undefined,
       ui: ldkSettings.ldk.permissions.ui || undefined,
       user: ldkSettings.ldk.permissions.user || undefined,
       vault: ldkSettings.ldk.permissions.vault || undefined,

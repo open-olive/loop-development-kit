@@ -129,7 +129,7 @@ Examples
 <br>
 
 #### Filesystem Permission:
-Any filesystem path. Supports path wildcards.
+Any filesystem path. Supports path wildcards. All filesystem permissions include access to the Loop's working folder by default.
 ```json
 "ldk": {
   "filesystem": {
@@ -146,7 +146,14 @@ Examples
 |-----------|
 | "/some/path/something.txt" |
 | "/Users/ldkuser/Desktop/*" |
-<br>
+
+If your Loop only needs access to the Loop's working folder, provide an empty object:
+
+```json
+"ldk": {
+  "filesystem": {}
+}
+```
 
 #### Aptitude Permission:
 An Aptitude Name.
