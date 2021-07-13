@@ -81,12 +81,22 @@ export default function Home(
           <Link className={styles.button} to="guides/getting-started">
             Get started
           </Link>
-          <a
-            className={[styles.buttonInverse, styles.buttonArrow].join(' ')}
-            href="https://www.npmjs.com/package/@oliveai/ldk"
+          <span
+            onClick={() => {
+              window.gtag('event', 'Link out', {
+                event_category: 'Navigation',
+                event_label: 'NPM',
+                value: 0,
+              });
+            }}
           >
-            Access the LDK
-          </a>
+            <a
+              className={[styles.buttonInverse, styles.buttonArrow].join(' ')}
+              href="https://www.npmjs.com/package/@oliveai/ldk"
+            >
+              Access the LDK
+            </a>
+          </span>
         </div>
       </PageHeader>
       <Section sectionClassName={styles.sectionHeroBackground}>
