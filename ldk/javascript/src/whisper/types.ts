@@ -62,7 +62,7 @@ export enum WhisperComponentType {
    * The section title field allows the user to provide section title information.
    */
   SectionTitle = 'sectionTitle',
-   /* The text input field allows the user to provide Date and Time information.
+  /* The text input field allows the user to provide Date and Time information.
    *
    * The field can be pre-populated by the loop.
    */

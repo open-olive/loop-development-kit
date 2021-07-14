@@ -428,7 +428,7 @@ declare namespace OliveHelps {
     body: string;
     textalign?: TextAlign;
   };
-  
+
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {
     dateTimeType: DateTimeType;
     value?: string;
