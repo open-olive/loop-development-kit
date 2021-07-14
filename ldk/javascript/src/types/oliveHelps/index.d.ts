@@ -369,7 +369,13 @@ declare namespace OliveHelps {
   };
 
   type DropZone = Component<'dropZone'> & {
-    onDrop: WhisperHandlerWithParam<any>;
+    accept?: string[];
+    label: string;
+    limit?: number;
+    noun?: string;
+    onDrop: WhisperHandlerWithParam<FileDropEvent>;
+    tooltip?: string;
+    validationError?: string;
   }
 
   type Link = Component<'link'> & {
@@ -493,5 +499,10 @@ declare namespace OliveHelps {
 
   interface WhisperService {
     create: ReadableWithParam<NewWhisper, Whisper>;
+  }
+
+  interface FileDropEvent {
+    // TODO: Update in HELPS-854.
+    path: string;
   }
 }
