@@ -119,4 +119,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Click both CollapseBoxes',
     ),
+    new LoopTest(
+      'Whisper Aptitude - DateTime',
+      whisperTests.testDateTime,
+      10000,
+      'Pick date and time values',
+    ),
   ]);
