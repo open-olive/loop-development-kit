@@ -21,6 +21,7 @@ export default class Form {
       [this.componentIds.patientEntryId, true],
       [this.componentIds.patientPhoneId, true],
       [this.componentIds.patientNameId, true],
+      [this.componentIds.patientVisitDateId, true],
     ]);
     this.components = initialize(this);
   }
