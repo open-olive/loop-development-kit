@@ -62,6 +62,11 @@ export enum WhisperComponentType {
    * The section title field allows the user to provide section title information.
    */
   SectionTitle = 'sectionTitle',
+   /* The text input field allows the user to provide Date and Time information.
+   *
+   * The field can be pre-populated by the loop.
+   */
+  DateTimeInput = 'dateTimeInput',
 }
 
 export enum JustifyContent {
@@ -106,10 +111,11 @@ export enum Urgency {
   Warning = 'warning',
 }
 
-export type Validation = {
-  triggered: boolean;
-  message?: string;
-};
+export enum DateTimeType {
+  Date = 'date',
+  Time = 'time',
+  DateTime = 'date_time',
+}
 
 export type StateMap = Map<string, string | boolean | number>;
 
@@ -136,14 +142,15 @@ export interface WhisperComponent<T extends WhisperComponentType> {
   key?: string;
 }
 
-interface InputComponent<T1 extends WhisperComponentType, T2> extends WhisperComponent<T1> {
+interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
+  extends WhisperComponent<T1> {
   label: string;
   tooltip?: string;
   validationError?: string;
   value?: T2;
   onBlur?: (error: Error | undefined) => void;
   onFocus?: (error: Error | undefined) => void;
-  onChange: WhisperHandlerWithParam<T2>;
+  onChange: WhisperHandlerWithParam<T3>;
 }
 
 interface SelectComponent<T extends WhisperComponentType> extends WhisperComponent<T> {
@@ -184,6 +191,12 @@ export type Password = InputComponent<WhisperComponentType.Password, string>;
 export type Telephone = InputComponent<WhisperComponentType.Telephone, string>;
 
 export type TextInput = InputComponent<WhisperComponentType.TextInput, string>;
+
+export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, Date, string> & {
+  dateTimeType: DateTimeType;
+  min?: Date;
+  max?: Date;
+};
 
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
@@ -246,6 +259,7 @@ export type ChildComponents =
   | Telephone
   | TextInput
   | SectionTitle;
+  | DateTimeInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;

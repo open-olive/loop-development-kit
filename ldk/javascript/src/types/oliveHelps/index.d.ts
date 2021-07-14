@@ -305,7 +305,8 @@ declare namespace OliveHelps {
     | 'select'
     | 'telephone'
     | 'textInput'
-    | 'sectionTitle';
+    | 'sectionTitle'
+    | 'dateTimeInput';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -318,6 +319,8 @@ declare namespace OliveHelps {
   type Direction = 'horizontal' | 'vertical';
 
   type TextAlign = 'center' | 'left' | 'right';
+
+  type DateTimeType = 'date' | 'time' | 'date_time';
 
   interface Whisper {
     id: string;
@@ -425,6 +428,13 @@ declare namespace OliveHelps {
     body: string;
     textalign?: TextAlign;
   };
+  
+  type DateTimeInput = InputComponent<'dateTimeInput', string> & {
+    dateTimeType: DateTimeType;
+    value?: string;
+    min?: string;
+    max?: string;
+  };
 
   type Divider = Component<'divider'>;
 
@@ -459,6 +469,7 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput
     | SectionTitle;
+    | DateTimeInput;
 
   type Components = ChildComponents | CollapseBox;
 

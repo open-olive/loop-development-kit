@@ -125,4 +125,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Did SectionTitle render properly?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - DateTime',
+      whisperTests.testDateTime,
+      10000,
+      'Pick date and time values',
+    ),
   ]);
