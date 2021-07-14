@@ -376,7 +376,7 @@ declare namespace OliveHelps {
     onDrop: WhisperHandlerWithParam<FileDropEvent>;
     tooltip?: string;
     validationError?: string;
-  }
+  };
 
   type Link = Component<'link'> & {
     href?: string;

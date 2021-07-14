@@ -245,7 +245,7 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
   onDrop: WhisperHandlerWithParam<FileDropEvent>;
   tooltip?: string;
   validationError?: string;
-}
+};
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
