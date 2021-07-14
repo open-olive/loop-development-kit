@@ -468,7 +468,7 @@ declare namespace OliveHelps {
     | Select
     | Telephone
     | TextInput
-    | SectionTitle;
+    | SectionTitle
     | DateTimeInput;
 
   type Components = ChildComponents | CollapseBox;
