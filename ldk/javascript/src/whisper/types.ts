@@ -114,6 +114,10 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+export interface LayoutOptions {
+  flex: string;
+}
+
 export type StateMap = Map<string, string | boolean | number>;
 
 export interface Whisper {
@@ -270,9 +274,11 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 };
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
-  justifyContent: JustifyContent;
   children: Array<BoxChildComponent>;
+  childrenRatios?: string[];
   direction: Direction;
+  justifyContent: JustifyContent;
+  layout?: LayoutOptions;
   onClick?: WhisperHandler;
 };
 

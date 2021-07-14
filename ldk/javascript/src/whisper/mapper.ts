@@ -47,6 +47,8 @@ export function mapToInternalChildComponent(
           onClick: (error, whisper) => {
             onClick(error, mapToExternalWhisper(whisper, stateMap));
           },
+          childrenRatios: 'childrenRatios' in component ? component.childrenRatios : ["0"],
+          layout: 'layout' in component ? component.layout : {flex:"0"}
         } as OliveHelps.Box;
       }
       return {
@@ -60,7 +62,9 @@ export function mapToInternalChildComponent(
           ),
         ),
         type: WhisperComponentType.Box,
-      };
+        childrenRatios: 'childrenRatios' in component ? component.childrenRatios : ["0"],
+        layout: 'layout' in component ? component.layout : {flex:"0"}
+      } as OliveHelps.Box;
     case WhisperComponentType.Button:
       return {
         ...component,
