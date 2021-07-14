@@ -1,6 +1,6 @@
 import { Component, StateMap } from '@oliveai/ldk/dist/whisper/types';
 import ComponentIds from './componentIds';
-import { getSubmitButton, init } from './componentsInitializer';
+import { getSubmitButton, initialize } from './componentsInitializer';
 import { validateFormComponent } from './validation';
 
 export default class Form {
@@ -13,16 +13,16 @@ export default class Form {
   constructor() {
     this.componentIds = new ComponentIds();
     this.formValidity = new Map([
-      [this.componentIds.checkboxInputId, true],
-      [this.componentIds.dropdownInputId, true],
-      [this.componentIds.emailInputId, true],
-      [this.componentIds.numberInputId, true],
-      [this.componentIds.passwordInputId, true],
-      [this.componentIds.radioInputId, true],
-      [this.componentIds.telephoneInputId, true],
-      [this.componentIds.textInputId, true],
+      [this.componentIds.patientConcentId, true],
+      [this.componentIds.patientPainLevelId, true],
+      [this.componentIds.patientEmailId, true],
+      [this.componentIds.patientAgeId, true],
+      [this.componentIds.patientSsnId, true],
+      [this.componentIds.patientEntryId, true],
+      [this.componentIds.patientPhoneId, true],
+      [this.componentIds.patientNameId, true],
     ]);
-    this.components = init(this);
+    this.components = initialize(this);
   }
 
   getComponents(): Component[] {

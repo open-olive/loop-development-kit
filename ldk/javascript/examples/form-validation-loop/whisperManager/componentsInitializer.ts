@@ -1,4 +1,9 @@
-import { Component, Whisper, WhisperComponentType } from '@oliveai/ldk/dist/whisper/types';
+import {
+  Component,
+  DateTimeType,
+  Whisper,
+  WhisperComponentType,
+} from '@oliveai/ldk/dist/whisper/types';
 import Form from './form';
 
 const componentActionHandler = (
@@ -13,104 +18,139 @@ const componentActionHandler = (
   });
 };
 
-export const init = (form: Form): Map<string, Component> =>
+export const initialize = (form: Form): Map<string, Component> =>
   new Map([
     [
-      form.componentIds.textInputId,
+      form.componentIds.patientNameId,
       {
         type: WhisperComponentType.TextInput,
-        label: `Input 'valid'`,
-        id: form.componentIds.textInputId,
-        key: form.componentIds.textInputId,
+        label: `Name *`,
+        id: form.componentIds.patientNameId,
+        key: form.componentIds.patientNameId,
         onChange: (_error: Error, param: string, onChangeWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.textInputId, onChangeWhisper);
+          componentActionHandler(form, param, form.componentIds.patientNameId, onChangeWhisper);
         },
       },
     ],
     [
-      form.componentIds.passwordInputId,
+      form.componentIds.patientVisitDateId,
+      {
+        type: WhisperComponentType.DateTimeInput,
+        dateTimeType: DateTimeType.DateTime,
+        label: `Date of Visit *`,
+        id: form.componentIds.patientVisitDateId,
+        key: form.componentIds.patientVisitDateId,
+        onChange: (_error: Error, param: string, onChangeWhisper: Whisper) => {
+          componentActionHandler(
+            form,
+            param,
+            form.componentIds.patientVisitDateId,
+            onChangeWhisper,
+          );
+        },
+        min: new Date(2021, 0, 1),
+        max: new Date(2022, 11, 31),
+      },
+    ],
+    [
+      form.componentIds.patientSsnId,
       {
         type: WhisperComponentType.Password,
-        label: 'Password (9 char)',
-        id: form.componentIds.passwordInputId,
-        key: form.componentIds.passwordInputId,
+        label: 'Last 4 SSN *',
+        id: form.componentIds.patientSsnId,
+        key: form.componentIds.patientSsnId,
         onChange: (_error: Error, param: string, onChangeWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.passwordInputId, onChangeWhisper);
+          componentActionHandler(form, param, form.componentIds.patientSsnId, onChangeWhisper);
         },
       },
     ],
     [
-      form.componentIds.telephoneInputId,
+      form.componentIds.patientPhoneId,
       {
         type: WhisperComponentType.Telephone,
-        label: 'Valid Phone',
-        id: form.componentIds.telephoneInputId,
-        key: form.componentIds.telephoneInputId,
+        label: 'Phone *',
+        id: form.componentIds.patientPhoneId,
+        key: form.componentIds.patientPhoneId,
         onChange: (_error: Error, param: string, onChangeWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.telephoneInputId, onChangeWhisper);
+          componentActionHandler(form, param, form.componentIds.patientPhoneId, onChangeWhisper);
         },
       },
     ],
     [
-      form.componentIds.numberInputId,
+      form.componentIds.patientAgeId,
       {
         type: WhisperComponentType.Number,
-        label: `Number '999'`,
-        id: form.componentIds.numberInputId,
-        key: form.componentIds.numberInputId,
+        label: `Age *`,
+        id: form.componentIds.patientAgeId,
+        key: form.componentIds.patientAgeId,
         onChange: (_error: Error, param: number, onChangeWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.numberInputId, onChangeWhisper);
+          componentActionHandler(form, param, form.componentIds.patientAgeId, onChangeWhisper);
         },
       },
     ],
     [
-      form.componentIds.emailInputId,
+      form.componentIds.patientEmailId,
       {
         type: WhisperComponentType.Email,
-        label: `Valid Email`,
-        id: form.componentIds.emailInputId,
-        key: form.componentIds.emailInputId,
+        label: `Email *`,
+        id: form.componentIds.patientEmailId,
+        key: form.componentIds.patientEmailId,
         onChange: (_error: Error, param: string, onChangeWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.emailInputId, onChangeWhisper);
+          componentActionHandler(form, param, form.componentIds.patientEmailId, onChangeWhisper);
         },
       },
     ],
     [
-      form.componentIds.radioInputId,
+      'patientEntryLabel',
+      {
+        type: WhisperComponentType.Markdown,
+        body: '## Patient transportation *:',
+      },
+    ],
+    [
+      form.componentIds.patientEntryId,
       {
         type: WhisperComponentType.RadioGroup,
-        id: form.componentIds.radioInputId,
-        key: form.componentIds.radioInputId,
-        options: ['Option 1', 'Option 2'],
+        id: form.componentIds.patientEntryId,
+        key: form.componentIds.patientEntryId,
+        options: ['Walk in', 'Assisted', 'On stretcher'],
         onSelect: (_error: Error, param: number, onSelectWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.radioInputId, onSelectWhisper);
+          // TODO: activate on select validation after the component value bug is fixed HELPS-837
+          // componentActionHandler(form, param, form.componentIds.patientEntryId, onSelectWhisper);
         },
       },
     ],
     [
-      form.componentIds.checkboxInputId,
+      form.componentIds.patientConcentId,
       {
         type: WhisperComponentType.Checkbox,
-        id: form.componentIds.checkboxInputId,
-        key: form.componentIds.checkboxInputId,
-        label: 'Check required',
+        id: form.componentIds.patientConcentId,
+        key: form.componentIds.patientConcentId,
+        label: 'Concent for check-in',
         onChange: (_error: Error, param: boolean, onChangeWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.checkboxInputId, onChangeWhisper);
+          // TODO: activate on change validation after the component value bug is fixed HELPS-837
+          // componentActionHandler(form, param, form.componentIds.patientConcentId, onChangeWhisper);
         },
         value: false,
       },
     ],
     [
-      form.componentIds.dropdownInputId,
+      form.componentIds.patientPainLevelId,
       {
         type: WhisperComponentType.Select,
-        id: form.componentIds.dropdownInputId,
-        key: form.componentIds.dropdownInputId,
-        label: 'Selected value required',
+        id: form.componentIds.patientPainLevelId,
+        key: form.componentIds.patientPainLevelId,
+        label: 'Patient pain level',
         onSelect: (_error: Error, param: number, onSelectWhisper: Whisper) => {
-          componentActionHandler(form, param, form.componentIds.dropdownInputId, onSelectWhisper);
+          // TODO: activate on select validation after the component value bug is fixed HELPS-837
+          // componentActionHandler(
+          //   form,
+          //   param,
+          //   form.componentIds.patientPainLevelId,
+          //   onSelectWhisper,
+          // );
         },
-        options: ['Option 1', 'Option 2'],
+        options: ['No pain', 'Low', 'Moderate', 'High'],
       },
     ],
   ]);

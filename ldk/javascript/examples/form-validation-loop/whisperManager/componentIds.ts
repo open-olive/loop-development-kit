@@ -1,30 +1,33 @@
 import { newGuid } from '../utils';
 
 export default class ComponentIds {
-  textInputId: string;
+  patientNameId: string;
 
-  passwordInputId: string;
+  patientVisitDateId: string;
 
-  telephoneInputId: string;
+  patientSsnId: string;
 
-  numberInputId: string;
+  patientPhoneId: string;
 
-  emailInputId: string;
+  patientAgeId: string;
 
-  radioInputId: string;
+  patientEmailId: string;
 
-  checkboxInputId: string;
+  patientEntryId: string;
 
-  dropdownInputId: string;
+  patientConcentId: string;
+
+  patientPainLevelId: string;
 
   constructor() {
-    this.textInputId = newGuid();
-    this.passwordInputId = newGuid();
-    this.telephoneInputId = newGuid();
-    this.numberInputId = newGuid();
-    this.emailInputId = newGuid();
-    this.radioInputId = newGuid();
-    this.checkboxInputId = newGuid();
-    this.dropdownInputId = newGuid();
+    this.patientNameId = newGuid();
+    this.patientVisitDateId = newGuid();
+    this.patientSsnId = newGuid();
+    this.patientPhoneId = newGuid();
+    this.patientAgeId = newGuid();
+    this.patientEmailId = newGuid();
+    this.patientEntryId = newGuid();
+    this.patientConcentId = newGuid();
+    this.patientPainLevelId = newGuid();
   }
 }

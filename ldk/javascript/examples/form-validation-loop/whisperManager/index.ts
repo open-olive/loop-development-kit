@@ -5,7 +5,7 @@ export const emitFormWhisper = async (): Promise<void> => {
   const form = new Form();
 
   await whisper.create({
-    label: 'Form Example',
+    label: 'Patient entry',
     onClose: () => {
       // do nothing.
     },
