@@ -29,4 +29,10 @@ export const whisperUpdateTestGroup = (): TestGroup =>
       5000,
       `Detecting changes across updates - No action needed.`,
     ),
+    new LoopTest(
+      'Whisper Update - Non Text Inputs',
+      whisperUpdateTests.testNonTextInputs,
+      5000,
+      `Click button to attempt to update label`,
+    ),
   ]);

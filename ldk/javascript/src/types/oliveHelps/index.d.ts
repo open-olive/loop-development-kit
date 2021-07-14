@@ -411,7 +411,7 @@ declare namespace OliveHelps {
   type Checkbox = SelectComponent<'checkbox'> & {
     label: string;
     tooltip?: string;
-    value: boolean;
+    value?: boolean;
     onChange: WhisperHandlerWithParam<boolean>;
   };
 
