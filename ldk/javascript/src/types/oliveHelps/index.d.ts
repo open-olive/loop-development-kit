@@ -57,6 +57,10 @@ declare namespace OliveHelps {
     jwt: Readable<string>;
   }
 
+  interface LayoutOptions {
+    flex: string,
+  }
+
   //-- Window
   interface Window {
     activeWindow: Readable<WindowInfo>;
@@ -432,7 +436,9 @@ declare namespace OliveHelps {
   type Box = Component<'box'> & {
     alignment: Alignment;
     children: Array<ChildComponents>;
+    childrenRatios?: string[];
     direction: Direction;
+    layout?: LayoutOptions;
     onClick?: WhisperHandler;
   };
 
