@@ -258,7 +258,7 @@ export type ChildComponents =
   | Select
   | Telephone
   | TextInput
-  | SectionTitle;
+  | SectionTitle
   | DateTimeInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
