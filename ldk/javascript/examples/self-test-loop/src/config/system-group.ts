@@ -7,7 +7,7 @@ export const systemTestGroup = (): TestGroup =>
   new TestGroup('System Aptitude', [
     new LoopTest(
       'System Aptitude - Operating System',
-      systemTests.operatingSystemTest,
+      systemTests.testOperatingSystem,
       5000,
       `Checking the host's OS...`,
     ),

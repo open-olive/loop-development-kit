@@ -1,8 +1,6 @@
-import { system, whisper } from '@oliveai/ldk';
+import { system } from '@oliveai/ldk';
 
-import { Cancellable } from '@oliveai/ldk/dist/cancellable';
-
-export const operatingSystemTest = (): Promise<boolean> =>
+export const testOperatingSystem = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     system
       .operatingSystem()
