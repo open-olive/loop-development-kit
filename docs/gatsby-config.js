@@ -1,3 +1,6 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
 const Path = require('path');
 
 /**
@@ -66,6 +69,22 @@ module.exports = {
             },
           },
         ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        // You can add multiple tracking ids and a pageview event will be fired for all of them.
+        trackingIds: ['UA-43021817-17'],
+        // This object gets passed directly to the gtag config command
+        // This config will be shared across all trackingIds
+        gtagConfig: {
+          appName: 'Developer Hub',
+          appVersion: 'v2',
+          dimension1: process.env.GA_ENV,
+        },
+        // This object is used for configuration specific to this plugin
+        pluginConfig: {},
       },
     },
   ],
