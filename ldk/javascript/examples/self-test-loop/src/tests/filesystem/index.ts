@@ -139,117 +139,96 @@ export const testWriteAndReadFile = (): Promise<boolean> =>
 
 export const testListenFile = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const filePath = `${await getTestFolderPath()}/test_listenFile.txt`;
-    const writeMode = 0o755;
-    console.info('listening to file changes');
-    let listenFileCancelable: Cancellable;
+    try {
+      const filePath = `${await getTestFolderPath()}/test_listenFile.txt`;
+      let createResolved = false;
+      let removeResolved = false;
 
-    setTimeout(() => {
-      reject(new Error(`ListenFile test didn't passed within allowed time frame`));
-    }, 3000);
+      console.info('listening to file changes');
+      setTimeout(() => {
+        reject(new Error(`ListenFile test didn't passed within allowed time frame`));
+      }, 3000);
 
-    filesystem
-      .writeFile({
+      await filesystem.writeFile({
         path: filePath,
         data: new Uint8Array(),
         writeOperation: filesystem.WriteOperation.overwrite,
-        writeMode,
-      })
-      .then(() => {
-        console.debug('Write file for listening successful');
-        filesystem
-          .listenFile(filePath, async (response) => {
-            if (response) {
-              console.debug(`Received file action: ${response.action}`);
-              console.debug(`${response.info.modTime}`);
-
-              listenFileCancelable.cancel();
-              await filesystem.remove(filePath);
-              resolve(true);
-            } else {
-              reject(new Error('File info is not received'));
-            }
-          })
-          .then((cancellable: Cancellable) => {
-            listenFileCancelable = cancellable;
-            console.debug('writing file we listen to');
-            network
-              .encode('Listen to file text')
-              .then((encodedValue) => {
-                filesystem
-                  .writeFile({
-                    path: filePath,
-                    data: encodedValue,
-                    writeOperation: filesystem.WriteOperation.append,
-                    writeMode,
-                  })
-                  .catch((error) => {
-                    reject(error);
-                  });
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      })
-      .catch((error) => {
-        reject(error);
+        writeMode: 0o755,
       });
+
+      const listenFileCancelable: Cancellable = await filesystem.listenFile(
+        filePath,
+        (fileEvent) => {
+          if (fileEvent) {
+            console.debug(`Received file action: ${fileEvent.action}`);
+            if (fileEvent.action === 'Create') {
+              createResolved = true;
+            }
+            if (fileEvent.action === 'Remove') {
+              removeResolved = true;
+            }
+            if (createResolved && removeResolved) {
+              listenFileCancelable.cancel();
+              resolve(true);
+            }
+          } else {
+            reject(new Error('File info is not received'));
+          }
+        },
+      );
+      await filesystem.writeFile({
+        path: filePath,
+        data: 'Listen to file text',
+        writeOperation: filesystem.WriteOperation.append,
+        writeMode: 0o755,
+      });
+      await filesystem.remove(filePath);
+    } catch (error) {
+      reject(error);
+    }
   });
 
 export const testListenDir = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
-    const dirPath = `${await getTestFolderPath()}`;
-    const writeMode = 0o755;
-    let listenDirCancellable: Cancellable;
-    console.info('listening to directory changes');
+    try {
+      const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
+      const dirPath = `${await getTestFolderPath()}`;
+      let createResolved = false;
+      let removeResolved = false;
 
-    setTimeout(() => {
-      reject(new Error('ListenDir test did not pass within allowed time frame'));
-    }, 3000);
+      console.info('listening to directory changes');
+      setTimeout(() => {
+        reject(new Error('ListenDir test did not pass within allowed time frame'));
+      }, 3000);
 
-    console.debug('Write file for listening successful');
-    filesystem
-      .listenDir(dirPath, async (response) => {
-        if (response) {
-          console.info(`Received file action in directory: ${response.action}`);
-          console.info(`${response.info.modTime}`);
-
-          listenDirCancellable.cancel();
-          await filesystem.remove(filePath);
-          resolve(true);
+      const listenDirCancellable: Cancellable = await filesystem.listenDir(dirPath, (fileEvent) => {
+        if (fileEvent) {
+          console.info(`Received file action in directory: ${fileEvent.action}`);
+          if (fileEvent.action === 'Create') {
+            createResolved = true;
+          }
+          if (fileEvent.action === 'Remove') {
+            removeResolved = true;
+          }
+          if (createResolved && removeResolved) {
+            listenDirCancellable.cancel();
+            resolve(true);
+          }
         } else {
           reject(new Error('File action is not received'));
         }
-      })
-      .then((cancellable) => {
-        listenDirCancellable = cancellable;
-        console.info('writing file we listen to');
-        network
-          .encode('Listen to dir text')
-          .then((encodedValue) => {
-            filesystem
-              .writeFile({
-                path: filePath,
-                data: encodedValue,
-                writeOperation: filesystem.WriteOperation.overwrite,
-                writeMode,
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      })
-      .catch((error) => {
-        reject(error);
       });
+
+      await filesystem.writeFile({
+        path: filePath,
+        data: 'listen to dir text',
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode: 0o755,
+      });
+      await filesystem.remove(filePath);
+    } catch (error) {
+      reject(error);
+    }
   });
 
 export const testDirExists = (): Promise<boolean> =>
