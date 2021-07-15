@@ -1,3 +1,6 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
 const Path = require('path');
 
 /**
@@ -78,7 +81,7 @@ module.exports = {
         gtagConfig: {
           appName: 'Developer Hub',
           appVersion: 'v2',
-          dimension1: 'dev',
+          dimension1: process.env.GA_ENV,
         },
         // This object is used for configuration specific to this plugin
         pluginConfig: {},
