@@ -1,5 +1,5 @@
 /* eslint-disable no-async-promise-executor */
-import { filesystem, network } from '@oliveai/ldk';
+import { filesystem, network, whisper } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 let testFolderPath: string;
@@ -141,7 +141,7 @@ export const testListenFile = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const filePath = `${await getTestFolderPath()}/test_listenFile.txt`;
-      let createResolved = false;
+      let writeResolved = false;
       let removeResolved = false;
 
       console.debug('listening to file changes');
@@ -161,13 +161,13 @@ export const testListenFile = (): Promise<boolean> =>
         (fileEvent: filesystem.FileEvent) => {
           if (fileEvent) {
             console.debug(`Received file action: ${fileEvent.action}`);
-            if (fileEvent.action === 'Create') {
-              createResolved = true;
+            if (fileEvent.action === 'Write') {
+              writeResolved = true;
             }
             if (fileEvent.action === 'Remove') {
               removeResolved = true;
             }
-            if (createResolved && removeResolved) {
+            if (writeResolved && removeResolved) {
               listenFileCancelable.cancel();
               resolve(true);
             }
