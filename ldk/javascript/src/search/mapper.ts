@@ -36,7 +36,7 @@ export const mapToConfig = (config: Config): OliveHelps.Config => ({
 });
 
 export const mapToIndex = (index: OliveHelps.Index): Index => ({
-	search: (term: string) =>
+	search: (term: string): Promise<string> =>
 		new Promise<string>((resolve, reject) => {
 			try {
 				const results = index.search(term, (error: Error | undefined) => {
@@ -51,7 +51,7 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 				handleCaughtError(reject, e, 'search');
 			}
 		}),
-	queryStringSearch: (queryString: string) =>
+	queryStringSearch: (queryString: string): Promise<string> =>
 		new Promise<string>((resolve, reject) => {
 			try {
 				const results = index.queryStringSearch(queryString, (error: Error | undefined) => {
@@ -66,7 +66,7 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 				handleCaughtError(reject, e, 'queryStringSearch');
 			}
 		}),
-	update: (documents: OliveHelps.Document[], config: OliveHelps.Config) =>
+	update: (documents: OliveHelps.Document[], config: OliveHelps.Config): Promise<void> =>
 		new Promise<void>((resolve, reject) => {
 			try {
 				index.update(documents, config, (error: Error | undefined) => {
@@ -81,7 +81,7 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 				handleCaughtError(reject, e, 'update');
 			}
 		}),
-	delete: () =>
+	delete: (): Promise<void> =>
 		new Promise<void>((resolve, reject) => {
 			try {
 				index.delete((error: Error | undefined) => {

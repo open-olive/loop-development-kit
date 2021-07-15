@@ -193,7 +193,7 @@ declare namespace OliveHelps {
 
 	//--Search
 	interface Search {
-		createIndex: ReadableWithThreeParams<string, Document[], Config, Index>;
+		createIndex: ReadableWithThreeParams<string, Array<Document>, Config, Index>;
 		openIndex: ReadableWithTwoParams<string, Config, Index>;
 		exists: Readable<boolean>;
 	}
@@ -201,28 +201,28 @@ declare namespace OliveHelps {
 	interface Index {
 		search(term: string, callback: (error: Error | undefined) => void): string;
 		queryStringSearch(queryString: string, callback: (error: Error | undefined) => void): string;
-		update(documents: Document[], config: Config, callback: (error: Error | undefined) => void): void;
+		update(documents: Array<Document>, config: Config, callback: (error: Error | undefined) => void): void;
 		delete(callback: (error: Error | undefined) => void): void;
 	}
 
-	interface Config {
+	type Config = {
 		sortBy?: string[];
 		searchSize?: number;
 		exactMatchThreshold?: number;
 		beginsWithSearch?: boolean;
-	}
+	};
 
-	interface Document {
+	type Document = {
 		name: string;
 		data: string;
-		fields?: Field[];
-	}
+		fields?: Array<Field>;
+	};
 
-	interface Field {
+	type Field = {
 		name: string;
 		displayName?: string;
 		type?: FieldType;
-	}
+	};
 
 	type FieldType = 'standard' | 'stemmer';
 
