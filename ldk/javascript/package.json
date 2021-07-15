@@ -1,6 +1,6 @@
 {
   "name": "@oliveai/ldk",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The Loop Development Kit for Olive Helps.",
   "author": "Olive",
   "copyright": "Copyright 2021 Olive",
@@ -23,7 +23,8 @@
     "test-coverage": "jest --collectCoverage",
     "test-watch": "jest --watchAll",
     "lint": "./node_modules/.bin/eslint . --max-warnings 0 --ext .js,.ts",
-    "doc": "rm -rf docs && mkdir -p docs && ./node_modules/.bin/typedoc --options typedoc.json"
+    "doc": "rm -rf docs && mkdir -p docs && ./node_modules/.bin/typedoc --options typedoc.json",
+    "publish-local": "npm unpublish @oliveai/ldk -f --registry http://localhost:4873 && npm publish --registry http://localhost:4873"
   },
   "repository": {
     "type": "git",

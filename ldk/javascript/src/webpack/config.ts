@@ -1,96 +1,22 @@
 import * as webpack from 'webpack';
 import * as path from 'path';
-import Terser from 'terser-webpack-plugin';
-import { generateBanner } from './generate-banner';
-import { LdkSettings } from './ldk-settings'; // Need to dynamically refer to Loop's package.json
+import { LdkSettings } from './ldk-settings';
+import { buildBabelConfig, buildOptimization, buildWebpackConfig } from './shared';
 
+// Need to dynamically refer to Loop's package.json
 // Suppressing rule as we intentionally want a dynamic require.
 // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-dynamic-require
 const ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
 
-const config: webpack.Configuration = {
-  target: ['web', 'es5'],
-  output: {
-    path: path.join(process.cwd(), 'dist'),
-    filename: 'loop.js',
-  },
-  mode: 'production',
-  plugins: [
-    new webpack.BannerPlugin({
-      banner: generateBanner(ldkSettings),
-      raw: true,
-    }),
-  ],
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new Terser({
-        terserOptions: {
-          format: {
-            comments: /---BEGIN-LOOP-JSON-BASE64---/i,
-          },
-        },
-        extractComments: false,
-      }),
-    ],
-  },
-  resolve: {
-    extensions: ['.ts', '.js'],
-  },
-  module: {
-    rules: [
-      {
-        test: /\.ts$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              sourceType: 'unambiguous',
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    useBuiltIns: 'entry',
-                    corejs: '3.11',
-                  },
-                ],
-              ],
-              plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
-            },
-          },
-          { loader: 'ts-loader' },
-        ],
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.m?js$/,
-        // exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            sourceType: 'unambiguous',
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  useBuiltIns: 'entry',
-                  corejs: '3.11',
-                },
-              ],
-            ],
-            plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
-          },
-        },
-      },
-    ],
-  },
-  externals: {
-    oliveHelps: '_',
-  },
-  performance: {
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000,
-  },
-};
+const baseBabelConfig: webpack.RuleSetRule = buildBabelConfig(false);
+const optimization = buildOptimization(true);
+const buildPath = path.join(process.cwd(), 'dist');
+
+const config: webpack.Configuration = buildWebpackConfig(
+  buildPath,
+  baseBabelConfig,
+  optimization,
+  ldkSettings,
+);
 
 export default config;

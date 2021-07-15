@@ -14,8 +14,9 @@ on:
   pull_request:
 
 jobs:
-  build:
 
+  build:
+    
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,6 +24,7 @@ jobs:
         node-version: [ 10.x, 12.x, 14.x ]
 
     steps:
+      
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -35,3 +37,31 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm run doc
+
+  build-examples:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      
+      # Build selfTestLoop example
+      - run: | 
+          cd examples/self-test-loop | npm i && npm run build
+      
+      # Build javascript-loop example
+      - run: |
+          cd examples/javascript-loop | npm i && npm run build
+
+      # Build typescript-loop example
+      - run: |
+          cd examples/typescript-loop | npm i && npm run build
+
+      # Build universal-example-loop example
+      - run: |
+          cd examples/universal-example-loop | npm i && npm run build

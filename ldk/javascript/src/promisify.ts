@@ -8,14 +8,15 @@ function handleCaughtError(reject: (reason?: any) => void, error: Error) {
   reject(error);
 }
 
-export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
-  param: TParam,
+export function promisifyMappedBothWithParams<TParamIn, TParamOut, TInternalOut, TExternalOut>(
+  param: TParamIn,
+  paramMap: Mapper<TParamIn, TParamOut>,
   map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ReadableWithParam<TParam, TInternalOut>,
+  arg: OliveHelps.ReadableWithParam<TParamOut, TInternalOut>,
 ): Promise<TExternalOut> {
   return new Promise((resolve, reject) => {
     try {
-      arg(param, (error, value) => {
+      arg(paramMap(param), (error, value) => {
         if (error) {
           console.error(`Received error on result: ${error.message}`);
           reject(error);
@@ -27,6 +28,14 @@ export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
       handleCaughtError(reject, e);
     }
   });
+}
+
+export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
+  param: TParam,
+  map: Mapper<TInternalOut, TExternalOut>,
+  arg: OliveHelps.ReadableWithParam<TParam, TInternalOut>,
+): Promise<TExternalOut> {
+  return promisifyMappedBothWithParams(param, (x) => x, map, arg);
 }
 
 function promiseResolver<T>(

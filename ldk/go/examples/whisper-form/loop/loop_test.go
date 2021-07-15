@@ -9,8 +9,8 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	loop "github.com/open-olive/loop-development-kit/ldk/go/examples/whisper-form/loop"
+	ldk "github.com/open-olive/loop-development-kit/ldk/go/v2"
 	ldktest "github.com/open-olive/loop-development-kit/ldk/go/v2/ldk-test"
 )
 
