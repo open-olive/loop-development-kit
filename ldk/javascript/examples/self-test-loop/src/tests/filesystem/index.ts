@@ -293,3 +293,63 @@ export const testFileExists = (): Promise<boolean> =>
         });
     });
   });
+
+export const testOpenFile = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `test.txt`;
+    const writeMode = 0o755;
+
+    network
+      .encode('some text')
+      .then((encodedValue) => {
+        setTimeout(() => {
+          filesystem
+            .writeFile({
+              path: filePath,
+              data: encodedValue,
+              writeOperation: filesystem.WriteOperation.overwrite,
+              writeMode: writeMode,
+            })
+            .then(() => {
+              filesystem.openWithDefaultApplication(filePath).then(() => {
+                setTimeout(() => {
+                  filesystem
+                    .remove(filePath)
+                    .then(() => {
+                      setTimeout(() => {
+                        resolve(true);
+                      }, 1500);
+                    })
+                    .catch((error) => {
+                      setTimeout(() => {
+                        reject(error);
+                      }, 1500);
+                    });
+                }, 3000);
+              });
+            })
+            .catch((error) => {
+              console.error('write file failed');
+              reject(error);
+            });
+        }, 500);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+
+export const testOpenFileDoesNotExist = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `nofile.txt`;
+
+    filesystem
+      .openWithDefaultApplication(filePath)
+      .then(() => {
+        // Resolves even when file not found
+        reject(new Error("Shouldn't get a success here"));
+      })
+      .catch((e) => {
+        resolve(true);
+      });
+  });

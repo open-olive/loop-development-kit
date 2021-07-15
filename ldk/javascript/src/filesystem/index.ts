@@ -166,7 +166,7 @@ export interface Filesystem {
    *
    * @param path - a string providing the path to the file to open
    */
-  open(path: string): Promise<void>;
+  openWithDefaultApplication(path: string): Promise<void>;
 }
 
 export function copy(source: string, destination: string): Promise<void> {
@@ -234,6 +234,6 @@ export function join(segments: string[]): Promise<string> {
   return promisifyWithParam(segments, oliveHelps.filesystem.join);
 }
 
-export function open(path: string): Promise<void> {
-  return promisifyWithParam(path, oliveHelps.filesystem.open);
+export function openWithDefaultApplication(path: string): Promise<void> {
+  return promisifyWithParam(path, oliveHelps.filesystem.openWithDefaultApplication);
 }
