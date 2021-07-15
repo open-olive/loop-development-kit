@@ -1,78 +1,16 @@
 import {
-  promisifyListenableWithParam,
   promisifyWithFourParams,
   promisifyWithParam,
   promisifyWithTwoParams,
   promisifyMappedWithParam,
+  promisifyMappedListenableWithParam,
 } from '../promisify';
 import { Cancellable } from '../cancellable';
 import * as mapper from '../utils/mapper';
+import { mapToFileEvent } from './mapper';
+import { FileInfo, FileEvent, RemovedFileEvent, WriteMode, WriteFileParams } from './types';
 
-/**
- * An object containing file data.
- */
-export interface FileInfo {
-  /**
-   * The file name, not including path.
-   */
-  name: string;
-  /**
-   * The file size in bytes.
-   */
-  size: number;
-  /**
-   * The access permissions for the file.
-   */
-  mode: string;
-  /**
-   * The last updated time, if present.
-   */
-  modTime: string;
-  /**
-   * Whether the entry is a directory.
-   */
-  isDir: boolean;
-}
-
-/**
- * An object representing an action and the file details which action were applied to.
- */
-export interface FileEvent {
-  action: string;
-  info: FileInfo;
-}
-
-/**
- * An object representing the action to execute while writing to the file system
- */
-export enum WriteOperation {
-  overwrite = 1,
-  append = 2,
-}
-
-/**
- * Represents file mode and permission bits
- */
-export type WriteMode = number;
-
-export interface WriteFileParams {
-  /**
-   * path to the file location to be written
-   */
-  path: string;
-  /**
-   * file data
-   */
-  data: string | Uint8Array;
-  /**
-   * indicates if file should be overwritten or appended with the provided data
-   */
-  writeOperation: WriteOperation;
-  /**
-   * file mode and permission bits. Should be provided as octal value (ex. 0o755, 0o777, ...)
-   */
-  writeMode: WriteMode;
-}
+export * from './types';
 
 /**
  * The FileSystem interfaces provides access to the ability to read, write, delete files.
@@ -103,7 +41,10 @@ export interface Filesystem {
    * @param path - path of directory to listen.
    * @param callback - the callback function that's called when a file in the directory changes.
    */
-  listenDir(path: string, callback: (fileEvent: FileEvent) => void): Promise<Cancellable>;
+  listenDir(
+    path: string,
+    callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+  ): Promise<Cancellable>;
 
   /**
    * Listen changes to a specific file.
@@ -111,7 +52,10 @@ export interface Filesystem {
    * @param path - path of file to listen.
    * @param callback - the callback function called when the file changes.
    */
-  listenFile(path: string, callback: (fileEvent: FileEvent) => void): Promise<Cancellable>;
+  listenFile(
+    path: string,
+    callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+  ): Promise<Cancellable>;
 
   /**
    * Makes a directory at the specified location.
@@ -175,16 +119,26 @@ export function exists(path: string): Promise<boolean> {
 
 export function listenDir(
   path: string,
-  callback: (fileEvent: FileEvent) => void,
+  callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
 ): Promise<Cancellable> {
-  return promisifyListenableWithParam(path, callback, oliveHelps.filesystem.listenDir);
+  return promisifyMappedListenableWithParam(
+    path,
+    mapToFileEvent,
+    callback,
+    oliveHelps.filesystem.listenDir,
+  );
 }
 
 export function listenFile(
   path: string,
-  callback: (fileEvent: FileEvent) => void,
+  callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
 ): Promise<Cancellable> {
-  return promisifyListenableWithParam(path, callback, oliveHelps.filesystem.listenFile);
+  return promisifyMappedListenableWithParam(
+    path,
+    mapToFileEvent,
+    callback,
+    oliveHelps.filesystem.listenFile,
+  );
 }
 
 export function makeDir(destination: string, writeMode: WriteMode): Promise<void> {

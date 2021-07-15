@@ -47,4 +47,10 @@ export const filesystemTestGroup = (): TestGroup =>
       10000,
       'Checking for file existence...',
     ),
+    new LoopTest(
+      'File Aptitude - File Stat',
+      filesystemTests.testFileStat,
+      5000,
+      'Checking for file info being returned...',
+    ),
   ]);

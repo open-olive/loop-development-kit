@@ -1,5 +1,6 @@
 /* eslint-disable no-async-promise-executor */
-import { filesystem, network, whisper } from '@oliveai/ldk';
+import { filesystem, network } from '@oliveai/ldk';
+import { WriteOperation, FileEvent, RemovedFileEvent } from '@oliveai/ldk/dist/filesystem/types';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 let testFolderPath: string;
@@ -28,7 +29,7 @@ export const testQueryingDirectory = (): Promise<boolean> =>
     await filesystem.writeFile({
       path: `${dirPath}/file.json`,
       data: new Uint8Array([102, 85]),
-      writeOperation: filesystem.WriteOperation.overwrite,
+      writeOperation: WriteOperation.overwrite,
       writeMode,
     });
     filesystem
@@ -60,7 +61,7 @@ export const testWriteAndRemoveFile = (): Promise<boolean> =>
           .writeFile({
             path: filePath,
             data: encodedValue,
-            writeOperation: filesystem.WriteOperation.overwrite,
+            writeOperation: WriteOperation.overwrite,
             writeMode,
           })
           .then(() => {
@@ -96,7 +97,7 @@ export const testWriteAndReadFile = (): Promise<boolean> =>
           .writeFile({
             path: filePath,
             data: encodedValue,
-            writeOperation: filesystem.WriteOperation.overwrite,
+            writeOperation: WriteOperation.overwrite,
             writeMode,
           })
           .then(() => {
@@ -152,15 +153,15 @@ export const testListenFile = (): Promise<boolean> =>
       await filesystem.writeFile({
         path: filePath,
         data: new Uint8Array(),
-        writeOperation: filesystem.WriteOperation.overwrite,
+        writeOperation: WriteOperation.overwrite,
         writeMode: 0o755,
       });
 
       const listenFileCancelable: Cancellable = await filesystem.listenFile(
         filePath,
-        (fileEvent: filesystem.FileEvent) => {
+        (fileEvent: FileEvent | RemovedFileEvent) => {
           if (fileEvent) {
-            console.debug(`Received file action: ${fileEvent.action}`);
+            console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
             if (fileEvent.action === 'Write') {
               writeResolved = true;
             }
@@ -203,9 +204,9 @@ export const testListenDir = (): Promise<boolean> =>
 
       const listenDirCancellable: Cancellable = await filesystem.listenDir(
         dirPath,
-        (fileEvent: filesystem.FileEvent) => {
+        (fileEvent: FileEvent | RemovedFileEvent) => {
           if (fileEvent) {
-            console.debug(`Received file action in directory: ${fileEvent.action}`);
+            console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
             if (fileEvent.action === 'Create') {
               createResolved = true;
             }
@@ -225,7 +226,7 @@ export const testListenDir = (): Promise<boolean> =>
       await filesystem.writeFile({
         path: filePath,
         data: 'listen to dir text',
-        writeOperation: filesystem.WriteOperation.overwrite,
+        writeOperation: WriteOperation.overwrite,
         writeMode: 0o755,
       });
       await filesystem.remove(filePath);
@@ -258,7 +259,7 @@ export const testFileExists = (): Promise<boolean> =>
         .writeFile({
           path: filePath,
           data: encodedValue,
-          writeOperation: filesystem.WriteOperation.overwrite,
+          writeOperation: WriteOperation.overwrite,
           writeMode,
         })
         .then(() => {
@@ -274,4 +275,26 @@ export const testFileExists = (): Promise<boolean> =>
           reject(error);
         });
     });
+  });
+
+export const testFileStat = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const filePath = `${await getTestFolderPath()}/test_stat.txt`;
+      await filesystem.writeFile({
+        path: filePath,
+        data: 'some file text',
+        writeOperation: WriteOperation.overwrite,
+        writeMode: 0o755,
+      });
+      const fileInfo = await filesystem.stat(filePath);
+      if (fileInfo) {
+        await filesystem.remove(filePath);
+        resolve(true);
+      } else {
+        reject(new Error('Could not check if directory exists'));
+      }
+    } catch (error) {
+      reject(error);
+    }
   });
