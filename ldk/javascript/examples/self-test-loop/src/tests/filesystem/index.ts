@@ -144,7 +144,7 @@ export const testListenFile = (): Promise<boolean> =>
       let createResolved = false;
       let removeResolved = false;
 
-      console.info('listening to file changes');
+      console.debug('listening to file changes');
       setTimeout(() => {
         reject(new Error(`ListenFile test didn't passed within allowed time frame`));
       }, 3000);
@@ -158,7 +158,7 @@ export const testListenFile = (): Promise<boolean> =>
 
       const listenFileCancelable: Cancellable = await filesystem.listenFile(
         filePath,
-        (fileEvent) => {
+        (fileEvent: filesystem.FileEvent) => {
           if (fileEvent) {
             console.debug(`Received file action: ${fileEvent.action}`);
             if (fileEvent.action === 'Create') {
@@ -172,7 +172,7 @@ export const testListenFile = (): Promise<boolean> =>
               resolve(true);
             }
           } else {
-            reject(new Error('File info is not received'));
+            reject(new Error('File event is not received'));
           }
         },
       );
@@ -196,28 +196,31 @@ export const testListenDir = (): Promise<boolean> =>
       let createResolved = false;
       let removeResolved = false;
 
-      console.info('listening to directory changes');
+      console.debug('listening to directory changes');
       setTimeout(() => {
         reject(new Error('ListenDir test did not pass within allowed time frame'));
       }, 3000);
 
-      const listenDirCancellable: Cancellable = await filesystem.listenDir(dirPath, (fileEvent) => {
-        if (fileEvent) {
-          console.info(`Received file action in directory: ${fileEvent.action}`);
-          if (fileEvent.action === 'Create') {
-            createResolved = true;
+      const listenDirCancellable: Cancellable = await filesystem.listenDir(
+        dirPath,
+        (fileEvent: filesystem.FileEvent) => {
+          if (fileEvent) {
+            console.debug(`Received file action in directory: ${fileEvent.action}`);
+            if (fileEvent.action === 'Create') {
+              createResolved = true;
+            }
+            if (fileEvent.action === 'Remove') {
+              removeResolved = true;
+            }
+            if (createResolved && removeResolved) {
+              listenDirCancellable.cancel();
+              resolve(true);
+            }
+          } else {
+            reject(new Error('File event is not received'));
           }
-          if (fileEvent.action === 'Remove') {
-            removeResolved = true;
-          }
-          if (createResolved && removeResolved) {
-            listenDirCancellable.cancel();
-            resolve(true);
-          }
-        } else {
-          reject(new Error('File action is not received'));
-        }
-      });
+        },
+      );
 
       await filesystem.writeFile({
         path: filePath,
