@@ -319,7 +319,7 @@ export const testFileStat = (): Promise<boolean> =>
         await filesystem.remove(filePath);
         resolve(true);
       } else {
-        reject(new Error('Could not check if directory exists'));
+        reject(new Error('Din't got file info'));
       }
     } catch (error) {
       reject(error);
