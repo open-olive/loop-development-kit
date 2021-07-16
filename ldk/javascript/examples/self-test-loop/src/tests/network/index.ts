@@ -86,12 +86,13 @@ export const testHttpRequestBlock = (): Promise<boolean> =>
           timeoutMs: 5000,
         })
         .then(() => {
-          console.debug(`Should not get here. Test should timeout or resolve before getting a response`);
+          console.debug(
+            `Should not get here. Test should timeout or resolve before getting a response`,
+          );
           reject(new Error());
         });
-        console.debug(`Http request didn't blocked`);
-        resolve(true);
-
+      console.debug(`Http request didn't blocked`);
+      resolve(true);
     } catch (e) {
       console.error(e);
       reject(e);
