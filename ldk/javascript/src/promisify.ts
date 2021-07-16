@@ -144,3 +144,24 @@ export function promisifyListenableWithParam<TParam, TOut>(
     }
   });
 }
+
+export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExternalOut>(
+  param: TParam,
+  map: Mapper<TInternalOut, TExternalOut>,
+  cb: (v: TExternalOut) => void,
+  arg: OliveHelps.ListenableWithParam<TParam, TInternalOut>,
+): Promise<Cancellable> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(
+        param,
+        handleListenerCallback((value) => cb(map(value))),
+        (obj) => {
+          resolve(obj);
+        },
+      );
+    } catch (e) {
+      handleCaughtError(reject, e);
+    }
+  });
+}
