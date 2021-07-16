@@ -141,9 +141,13 @@ export const testWriteAndReadFile = (): Promise<boolean> =>
 export const testListenFile = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      const filePath = `${await getTestFolderPath()}/test_listenFile.txt`;
-      let writeResolved = false;
-      let removeResolved = false;
+      const testFolder = `${await getTestFolderPath()}/listenFileTest`;
+      await filesystem.makeDir(testFolder, 0o755);
+      const fileName = `test_listenFile.txt`;
+      const filePath = `${testFolder}/${fileName}`;
+
+      let writeFileResolved = false;
+      let removeFileResolved = false;
 
       console.debug('listening to file changes');
       setTimeout(() => {
@@ -162,13 +166,18 @@ export const testListenFile = (): Promise<boolean> =>
         (fileEvent: FileEvent | RemovedFileEvent) => {
           if (fileEvent) {
             console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-            if (fileEvent.action === 'Write') {
-              writeResolved = true;
+            if (fileEvent.action === 'Write' && fileEvent.info.name === fileName) {
+              console.info('Create PASSED!');
+              writeFileResolved = true;
             }
-            if (fileEvent.action === 'Remove') {
-              removeResolved = true;
+            if (
+              fileEvent.action === 'Remove' &&
+              (fileEvent as RemovedFileEvent).name === fileName
+            ) {
+              console.info('Remove file PASSED!');
+              removeFileResolved = true;
             }
-            if (writeResolved && removeResolved) {
+            if (writeFileResolved && removeFileResolved) {
               listenFileCancelable.cancel();
               resolve(true);
             }
@@ -184,6 +193,10 @@ export const testListenFile = (): Promise<boolean> =>
         writeMode: 0o755,
       });
       await filesystem.remove(filePath);
+      // waiting for 1 sec before deleting folder to allow all events to propagate properly
+      setTimeout(async () => {
+        await filesystem.remove(testFolder);
+      }, 1000);
     } catch (error) {
       reject(error);
     }
@@ -192,10 +205,14 @@ export const testListenFile = (): Promise<boolean> =>
 export const testListenDir = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      const filePath = `${await getTestFolderPath()}/test_listenDir.txt`;
-      const dirPath = `${await getTestFolderPath()}`;
-      let createResolved = false;
-      let removeResolved = false;
+      const dirName = `listenDirTest`;
+      const testFolder = `${await getTestFolderPath()}/${dirName}`;
+      await filesystem.makeDir(testFolder, 0o755);
+      const fileName = `test_listenFile.txt`;
+      const filePath = `${testFolder}/${fileName}`;
+      let createFileResolved = false;
+      let removeFileResolved = false;
+      let removeDirResolved = false;
 
       console.debug('listening to directory changes');
       setTimeout(() => {
@@ -203,17 +220,23 @@ export const testListenDir = (): Promise<boolean> =>
       }, 3000);
 
       const listenDirCancellable: Cancellable = await filesystem.listenDir(
-        dirPath,
+        testFolder,
         (fileEvent: FileEvent | RemovedFileEvent) => {
           if (fileEvent) {
             console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-            if (fileEvent.action === 'Create') {
-              createResolved = true;
+            if (fileEvent.action === 'Create' && fileEvent.info.name === fileName) {
+              createFileResolved = true;
             }
-            if (fileEvent.action === 'Remove') {
-              removeResolved = true;
+            if (
+              fileEvent.action === 'Remove' &&
+              (fileEvent as RemovedFileEvent).name === fileName
+            ) {
+              removeFileResolved = true;
             }
-            if (createResolved && removeResolved) {
+            if (fileEvent.action === 'Remove' && (fileEvent as RemovedFileEvent).name === dirName) {
+              removeDirResolved = true;
+            }
+            if (createFileResolved && removeFileResolved && removeDirResolved) {
               listenDirCancellable.cancel();
               resolve(true);
             }
@@ -230,6 +253,10 @@ export const testListenDir = (): Promise<boolean> =>
         writeMode: 0o755,
       });
       await filesystem.remove(filePath);
+      // waiting for 1 sec before deleting folder to allow all events to propagate properly
+      setTimeout(async () => {
+        await filesystem.remove(testFolder);
+      }, 1000);
     } catch (error) {
       reject(error);
     }
