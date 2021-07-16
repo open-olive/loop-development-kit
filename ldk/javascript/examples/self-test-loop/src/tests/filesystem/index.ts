@@ -308,7 +308,7 @@ export const testOpenFile = (): Promise<boolean> =>
               path: filePath,
               data: encodedValue,
               writeOperation: filesystem.WriteOperation.overwrite,
-              writeMode: writeMode,
+              writeMode,
             })
             .then(() => {
               filesystem.openWithDefaultApplication(filePath).then(() => {
@@ -352,4 +352,12 @@ export const testOpenFileDoesNotExist = (): Promise<boolean> =>
       .catch((e) => {
         resolve(true);
       });
+  });
+
+export const testOpenDirectory = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `/`;
+    filesystem.openWithDefaultApplication(filePath).then(() => {
+      // Opens hopefully
+    });
   });

@@ -54,6 +54,12 @@ export const filesystemTestGroup = (): TestGroup =>
       'Attempting to open file...',
     ),
     new LoopTest(
+      'File Aptitude - Open Directory',
+      filesystemTests.testOpenDirectory,
+      10000,
+      'Attempting to open directory...',
+    ),
+    new LoopTest(
       'File Aptitude - Open File Does Not Exists',
       filesystemTests.testOpenFileDoesNotExist,
       10000,
