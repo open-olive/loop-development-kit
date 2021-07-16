@@ -167,14 +167,12 @@ export const testListenFile = (): Promise<boolean> =>
           if (fileEvent) {
             console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
             if (fileEvent.action === 'Write' && fileEvent.info.name === fileName) {
-              console.info('Create PASSED!');
               writeFileResolved = true;
             }
             if (
               fileEvent.action === 'Remove' &&
               (fileEvent as RemovedFileEvent).name === fileName
             ) {
-              console.info('Remove file PASSED!');
               removeFileResolved = true;
             }
             if (writeFileResolved && removeFileResolved) {
@@ -193,10 +191,7 @@ export const testListenFile = (): Promise<boolean> =>
         writeMode: 0o755,
       });
       await filesystem.remove(filePath);
-      // waiting for 1 sec before deleting folder to allow all events to propagate properly
-      setTimeout(async () => {
-        await filesystem.remove(testFolder);
-      }, 1000);
+      await filesystem.remove(testFolder);
     } catch (error) {
       reject(error);
     }
@@ -253,10 +248,7 @@ export const testListenDir = (): Promise<boolean> =>
         writeMode: 0o755,
       });
       await filesystem.remove(filePath);
-      // waiting for 1 sec before deleting folder to allow all events to propagate properly
-      setTimeout(async () => {
-        await filesystem.remove(testFolder);
-      }, 1000);
+      await filesystem.remove(testFolder);
     } catch (error) {
       reject(error);
     }
@@ -319,7 +311,7 @@ export const testFileStat = (): Promise<boolean> =>
         await filesystem.remove(filePath);
         resolve(true);
       } else {
-        reject(new Error('Din't got file info'));
+        reject(new Error(`Din not received file info`));
       }
     } catch (error) {
       reject(error);
