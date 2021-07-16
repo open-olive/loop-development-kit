@@ -65,6 +65,36 @@ export function buildWebpackConfig(
     module: {
       rules: [
         {
+          test: /\.(jsx)$/,
+          use: [{
+            loader: 'babel-loader',
+            options: {
+              sourceType: 'unambiguous',
+              cacheDirectory: true,
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'entry',
+                    corejs: '3.11',
+                  },
+                ],
+              ],
+              plugins: [
+                '@babel/plugin-transform-destructuring',
+                '@babel/plugin-transform-runtime',
+                [
+                  "@babel/plugin-transform-react-jsx",
+                  {
+                    "runtime": "automatic",
+                    "importSource": "@oliveai/ldk/dist" // loads @oliveai/ldk/dist/jsx-runtime
+                  }
+                ]
+              ],
+            },
+          }],
+        },
+        {
           test: /\.ts$/,
           use: [{ ...baseBabelConfig }, { loader: 'ts-loader' }],
         },
