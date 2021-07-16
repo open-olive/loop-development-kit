@@ -164,23 +164,19 @@ export const testListenFile = (): Promise<boolean> =>
       const listenFileCancelable: Cancellable = await filesystem.listenFile(
         filePath,
         (fileEvent: FileEvent | RemovedFileEvent) => {
-          if (fileEvent) {
-            console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-            if (fileEvent.action === 'Write' && fileEvent.info.name === fileName) {
-              writeFileResolved = true;
-            }
-            if (
-              fileEvent.action === 'Remove' &&
-              (fileEvent as RemovedFileEvent).name === fileName
-            ) {
-              removeFileResolved = true;
-            }
-            if (writeFileResolved && removeFileResolved) {
-              listenFileCancelable.cancel();
-              resolve(true);
-            }
-          } else {
+          if (!fileEvent) {
             reject(new Error('File event is not received'));
+          }
+          console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
+          if (fileEvent.action === 'Write' && fileEvent.info.name === fileName) {
+            writeFileResolved = true;
+          }
+          if (fileEvent.action === 'Remove' && (fileEvent as RemovedFileEvent).name === fileName) {
+            removeFileResolved = true;
+          }
+          if (writeFileResolved && removeFileResolved) {
+            listenFileCancelable.cancel();
+            resolve(true);
           }
         },
       );
@@ -217,26 +213,22 @@ export const testListenDir = (): Promise<boolean> =>
       const listenDirCancellable: Cancellable = await filesystem.listenDir(
         testFolder,
         (fileEvent: FileEvent | RemovedFileEvent) => {
-          if (fileEvent) {
-            console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-            if (fileEvent.action === 'Create' && fileEvent.info.name === fileName) {
-              createFileResolved = true;
-            }
-            if (
-              fileEvent.action === 'Remove' &&
-              (fileEvent as RemovedFileEvent).name === fileName
-            ) {
-              removeFileResolved = true;
-            }
-            if (fileEvent.action === 'Remove' && (fileEvent as RemovedFileEvent).name === dirName) {
-              removeDirResolved = true;
-            }
-            if (createFileResolved && removeFileResolved && removeDirResolved) {
-              listenDirCancellable.cancel();
-              resolve(true);
-            }
-          } else {
+          if (!fileEvent) {
             reject(new Error('File event is not received'));
+          }
+          console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
+          if (fileEvent.action === 'Create' && fileEvent.info.name === fileName) {
+            createFileResolved = true;
+          }
+          if (fileEvent.action === 'Remove' && (fileEvent as RemovedFileEvent).name === fileName) {
+            removeFileResolved = true;
+          }
+          if (fileEvent.action === 'Remove' && (fileEvent as RemovedFileEvent).name === dirName) {
+            removeDirResolved = true;
+          }
+          if (createFileResolved && removeFileResolved && removeDirResolved) {
+            listenDirCancellable.cancel();
+            resolve(true);
           }
         },
       );
