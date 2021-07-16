@@ -74,7 +74,7 @@ export const testHttpRequestTimeout = (): Promise<boolean> =>
 export const testHttpRequestBlock = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     try {
-      const url = 'https://httpstat.us/200?sleep=5000';
+      const url = 'https://httpstat.us/200?sleep=4000';
       setTimeout(() => {
         console.debug(`Http request blocked which caused a timeout`);
         reject(new Error(`Test didn't resolved in the appropriate time frame`));
@@ -86,9 +86,12 @@ export const testHttpRequestBlock = (): Promise<boolean> =>
           timeoutMs: 5000,
         })
         .then(() => {
-          console.debug(`Http request didn't blocked`);
-          resolve(true);
+          console.debug(`Should not get here. Test should timeout or resolve before getting a response`);
+          reject(new Error());
         });
+        console.debug(`Http request didn't blocked`);
+        resolve(true);
+
     } catch (e) {
       console.error(e);
       reject(e);
