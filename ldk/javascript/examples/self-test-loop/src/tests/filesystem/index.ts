@@ -356,8 +356,13 @@ export const testOpenFileDoesNotExist = (): Promise<boolean> =>
 
 export const testOpenDirectory = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const filePath = `/`;
-    filesystem.openWithDefaultApplication(filePath).then(() => {
-      // Opens hopefully
-    });
+    const filePath = ``;
+    filesystem
+      .openWithDefaultApplication(filePath)
+      .then(() => {
+        resolve(true);
+      })
+      .catch((e) => {
+        reject(new Error("Couldn't open the directory"));
+      });
   });
