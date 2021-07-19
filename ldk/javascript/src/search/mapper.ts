@@ -12,9 +12,7 @@ export const mapToField = (field: OliveHelps.Field): Field => ({
 	type: field.type as FieldType
 });
 
-export const mapToFields = (fields: OliveHelps.Field[]): Field[] => {
-	return fields.map((f) => mapToField(f));
-};
+export const mapToFields = (fields: OliveHelps.Field[]): Field[] => fields.map((f) => mapToField(f));
 
 export const mapToDocument = (document: Document): OliveHelps.Document => ({
 	name: document.name,
@@ -43,7 +41,6 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 					if (error) {
 						console.error(`Received error on result: ${error.message}`);
 						reject(error);
-						return;
 					}
 				});
 				resolve(results);
@@ -58,7 +55,6 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 					if (error) {
 						console.error(`Received error on result: ${error.message}`);
 						reject(error);
-						return;
 					}
 				});
 				resolve(results);
@@ -73,7 +69,6 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 					if (error) {
 						console.error(`Received error on result: ${error.message}`);
 						reject(error);
-						return;
 					}
 				});
 				resolve();
@@ -88,7 +83,6 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 					if (error) {
 						console.error(`Received error on result: ${error.message}`);
 						reject(error);
-						return;
 					}
 				});
 				resolve();
