@@ -162,7 +162,8 @@ export interface Filesystem {
 
   /**
    * Opens a file using the default tool for the extension provided in the
-   * path parameter
+   * path parameter, including directories. Limited to .csv, .doc, .docx,
+   * .pdf, .txt, .xls, .xlsx
    *
    * @param path - a string providing the path to the file to open
    */
