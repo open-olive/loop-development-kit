@@ -8,7 +8,14 @@ import {
 import { Cancellable } from '../cancellable';
 import * as mapper from '../utils/mapper';
 import { mapToFileEvent } from './mapper';
-import { FileInfo, FileEvent, RemovedFileEvent, WriteMode, WriteFileParams } from './types';
+import {
+  FileInfo,
+  FileEvent,
+  RenamedFileEvent,
+  RemovedFileEvent,
+  WriteMode,
+  WriteFileParams,
+} from './types';
 
 export * from './types';
 
@@ -43,7 +50,7 @@ export interface Filesystem {
    */
   listenDir(
     path: string,
-    callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+    callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
   ): Promise<Cancellable>;
 
   /**
@@ -54,7 +61,7 @@ export interface Filesystem {
    */
   listenFile(
     path: string,
-    callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+    callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
   ): Promise<Cancellable>;
 
   /**
@@ -119,7 +126,7 @@ export function exists(path: string): Promise<boolean> {
 
 export function listenDir(
   path: string,
-  callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+  callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
 ): Promise<Cancellable> {
   return promisifyMappedListenableWithParam(
     path,
@@ -131,7 +138,7 @@ export function listenDir(
 
 export function listenFile(
   path: string,
-  callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+  callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
 ): Promise<Cancellable> {
   return promisifyMappedListenableWithParam(
     path,

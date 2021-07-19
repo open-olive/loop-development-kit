@@ -41,6 +41,14 @@ export interface RemovedFileEvent {
 }
 
 /**
+ * An object representing a file renamed action and the file name which action were applied to.
+ */
+export interface RenamedFileEvent {
+  action: 'Rename';
+  name: string;
+}
+
+/**
  * An object representing the action to execute while writing to the file system
  */
 export enum WriteOperation {
