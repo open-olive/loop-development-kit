@@ -221,11 +221,14 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
 };
 
 export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
+  copyable?: boolean;
   body: string;
   tooltip?: string;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
+  copyable?: boolean;
+  headerCopyable?: boolean;
   body?: string;
   header?: string;
   style?: Urgency;

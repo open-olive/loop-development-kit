@@ -69,13 +69,31 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - ListPair Copyable Value',
       whisperTests.testListPairWithCopyableValue,
       6000,
-      'Click the ListPair value to copy its text within 5 min time frame',
+      'Click the ListPair value to copy its text within alloted time',
     ),
     new LoopTest(
       'Whisper Aptitude - ListPair Copyable Label',
       whisperTests.testListPairWithCopyableLabel,
       6000,
-      'Click the ListPair label to copy its text within 5 min time frame',
+      'Click the ListPair label to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Markdown Value',
+      whisperTests.testMarkdownWithCopyableValue,
+      6000,
+      'Click the Markdown value to copy its text within alloted time'
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Message Value',
+      whisperTests.testMessageWithCopyableValue,
+      6000,
+      'Click the Message value to copy its text within alloted time'
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Message Header',
+      whisperTests.testMessageHeaderWithCopyableValue,
+      6000,
+      'Click the Message Header to copy its text within alloted time'
     ),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
