@@ -115,12 +115,12 @@ export enum DateTimeType {
 }
 
 export enum MarkdownWhisperCopyMode {
-  BodyCopyable = 'bodyCopyable',
+  Body = 'body',
 }
 
 export enum MessageWhisperCopyMode {
-  BodyCopyable = 'bodyCopyable',
-  HeaderCopyable = 'headerCopyable',
+  Body = 'body',
+  Header = 'header',
 }
 
 export type StateMap = Map<string, string | boolean | number>;

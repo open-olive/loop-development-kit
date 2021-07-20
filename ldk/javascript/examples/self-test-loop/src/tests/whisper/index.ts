@@ -448,7 +448,7 @@ export const testMarkdownWithCopyableBody = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Markdown,
-          copyable: MarkdownWhisperCopyMode.BodyCopyable,
+          copyable: MarkdownWhisperCopyMode.Body,
           body: copyableText,
         },
       ],
@@ -482,7 +482,7 @@ export const testMessageWithCopyableBody = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Message,
-          copyable: MessageWhisperCopyMode.BodyCopyable,
+          copyable: MessageWhisperCopyMode.Body,
           body: copyableText,
         },
       ],
@@ -517,7 +517,7 @@ export const testMessageWithCopyableHeader = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Message,
           header: copyableText,
-          copyable: MessageWhisperCopyMode.HeaderCopyable,
+          copyable: MessageWhisperCopyMode.Header,
           body: 'do not copy me',
         },
       ],
