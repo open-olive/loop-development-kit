@@ -107,9 +107,9 @@ export const testWebsocketConnection = (): Promise<boolean> =>
     let textTestPassed = false;
     let binaryTestPassed = false;
 
-    setTimeout(() => {
-      reject(new Error('Network websocket test did not finish in the appropriate time span.'));
-    }, 20000);
+    // setTimeout(() => {
+    //   reject(new Error('Network websocket test did not finish in the appropriate time span.'));
+    // }, 20000);
 
     const socketConfiguration: network.SocketConfiguration = {
       url,
@@ -137,23 +137,24 @@ export const testWebsocketConnection = (): Promise<boolean> =>
           return;
         }
         if (message) {
-          if (typeof message === 'string') {
-            if (message === testText) {
-              console.debug(`Received text data`);
-              textTestPassed = true;
-              if (binaryTestPassed) {
-                resolve(true);
-                await testUtils.finalizeWebsocketTest(cancellable, socket);
-              }
-            }
-          } else if (JSON.stringify(message) === JSON.stringify(testData)) {
-            console.debug(`Received binary data`);
-            binaryTestPassed = true;
-            if (textTestPassed) {
-              resolve(true);
-              await testUtils.finalizeWebsocketTest(cancellable, socket);
-            }
-          }
+          console.debug(`Received message ${JSON.stringify(message)}`);
+          // if (typeof message === 'string') {
+          //   if (message === testText) {
+          //     console.debug(`Received text data`);
+          //     textTestPassed = true;
+          //     if (binaryTestPassed) {
+          //       resolve(true);
+          //       await testUtils.finalizeWebsocketTest(cancellable, socket);
+          //     }
+          //   }
+          // } else if (JSON.stringify(message) === JSON.stringify(testData)) {
+          //   console.debug(`Received binary data`);
+          //   binaryTestPassed = true;
+          //   if (textTestPassed) {
+          //     resolve(true);
+          //     await testUtils.finalizeWebsocketTest(cancellable, socket);
+          //   }
+          // }
         }
       });
       // send text
