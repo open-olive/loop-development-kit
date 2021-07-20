@@ -115,8 +115,7 @@ export const initialize = (form: Form): Map<string, Component> =>
         key: form.componentIds.patientEntryId,
         options: ['Walk in', 'Assisted', 'On stretcher'],
         onSelect: (_error: Error, param: number, onSelectWhisper: Whisper) => {
-          // TODO: activate on select validation after the component value bug is fixed HELPS-837
-          // componentActionHandler(form, param, form.componentIds.patientEntryId, onSelectWhisper);
+          componentActionHandler(form, param, form.componentIds.patientEntryId, onSelectWhisper);
         },
       },
     ],
@@ -128,10 +127,8 @@ export const initialize = (form: Form): Map<string, Component> =>
         key: form.componentIds.patientConcentId,
         label: 'Concent for check-in',
         onChange: (_error: Error, param: boolean, onChangeWhisper: Whisper) => {
-          // TODO: activate on change validation after the component value bug is fixed HELPS-837
-          // componentActionHandler(form, param, form.componentIds.patientConcentId, onChangeWhisper);
+          componentActionHandler(form, param, form.componentIds.patientConcentId, onChangeWhisper);
         },
-        value: false,
       },
     ],
     [
@@ -142,13 +139,12 @@ export const initialize = (form: Form): Map<string, Component> =>
         key: form.componentIds.patientPainLevelId,
         label: 'Patient pain level',
         onSelect: (_error: Error, param: number, onSelectWhisper: Whisper) => {
-          // TODO: activate on select validation after the component value bug is fixed HELPS-837
-          // componentActionHandler(
-          //   form,
-          //   param,
-          //   form.componentIds.patientPainLevelId,
-          //   onSelectWhisper,
-          // );
+          componentActionHandler(
+            form,
+            param,
+            form.componentIds.patientPainLevelId,
+            onSelectWhisper,
+          );
         },
         options: ['No pain', 'Low', 'Moderate', 'High'],
       },
