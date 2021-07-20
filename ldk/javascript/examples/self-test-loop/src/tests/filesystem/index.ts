@@ -299,70 +299,48 @@ export const testOpenFile = (): Promise<boolean> =>
     const filePath = `test.txt`;
     const writeMode = 0o755;
 
-    network
-      .encode('some text')
-      .then((encodedValue) => {
-        setTimeout(() => {
-          filesystem
-            .writeFile({
-              path: filePath,
-              data: encodedValue,
-              writeOperation: filesystem.WriteOperation.overwrite,
-              writeMode,
-            })
-            .then(() => {
-              filesystem.openWithDefaultApplication(filePath).then(() => {
-                setTimeout(() => {
-                  filesystem
-                    .remove(filePath)
-                    .then(() => {
-                      setTimeout(() => {
-                        resolve(true);
-                      }, 1500);
-                    })
-                    .catch((error) => {
-                      setTimeout(() => {
-                        reject(error);
-                      }, 1500);
-                    });
-                }, 3000);
-              });
-            })
-            .catch((error) => {
-              console.error('write file failed');
-              reject(error);
-            });
-        }, 500);
-      })
-      .catch((error) => {
-        reject(error);
+    try {
+      await filesystem.writeFile({
+        path: filePath,
+        data: 'some text',
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode,
       });
+      await filesystem.openWithDefaultApplication(filePath);
+      sleep(2000);
+      await filesystem.remove(filePath);
+      resolve(true);
+    } catch (error) {
+      reject(error);
+    }
   });
 
 export const testOpenFileDoesNotExist = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const filePath = `nofile.txt`;
-
-    filesystem
-      .openWithDefaultApplication(filePath)
-      .then(() => {
-        // Resolves even when file not found
-        reject(new Error("Shouldn't get a success here"));
-      })
-      .catch((e) => {
-        resolve(true);
-      });
+    try {
+      await filesystem.openWithDefaultApplication(filePath);
+      reject(new Error("Shouldn't get a success here"));
+    } catch (error) {
+      resolve(true);
+    }
   });
 
 export const testOpenDirectory = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const filePath = ``;
-    filesystem
-      .openWithDefaultApplication(filePath)
-      .then(() => {
-        resolve(true);
-      })
-      .catch((e) => {
-        reject(new Error("Couldn't open the directory"));
-      });
+    try {
+      await filesystem.openWithDefaultApplication(filePath);
+      resolve(true);
+    } catch (error) {
+      reject(new Error("Couldn't open the directory"));
+    }
   });
+
+function sleep(milliseconds: number) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
