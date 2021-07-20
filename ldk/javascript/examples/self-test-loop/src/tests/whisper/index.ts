@@ -12,6 +12,8 @@ import {
   NewWhisper,
   Component,
   DateTimeType,
+  MessageWhisperCopyMode,
+  MarkdownWhisperCopyMode,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { resolveRejectButtons } from './utils';
@@ -430,9 +432,10 @@ export const testListPairWithCopyableLabel = (): Promise<boolean> =>
     }, 5000);
   });
 
-export const testMarkdownWithCopyableValue = (): Promise<boolean> =>
+export const testMarkdownWithCopyableBody = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const copyableText = '**Click me** to copy the Markdown value text';
+    const expectedCopiedText = `<p><strong>Click me</strong> to copy the Markdown value text</p>`;
 
     // reset clipboard value
     await clipboard.write('');
@@ -445,7 +448,7 @@ export const testMarkdownWithCopyableValue = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Markdown,
-          copyable: true,
+          copyable: MarkdownWhisperCopyMode.BodyCopyable,
           body: copyableText,
         },
       ],
@@ -453,7 +456,7 @@ export const testMarkdownWithCopyableValue = (): Promise<boolean> =>
 
     setTimeout(async () => {
       const response = await clipboard.read();
-      if (response === copyableText) {
+      if (response === expectedCopiedText) {
         createdWhisper.close(() => {
           // do nothing.
         });
@@ -464,7 +467,7 @@ export const testMarkdownWithCopyableValue = (): Promise<boolean> =>
     }, 5000);
   });
 
-export const testMessageWithCopyableValue = (): Promise<boolean> =>
+export const testMessageWithCopyableBody = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const copyableText = 'Click me to copy the Message value text';
 
@@ -479,7 +482,7 @@ export const testMessageWithCopyableValue = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Message,
-          copyable: true,
+          copyable: MessageWhisperCopyMode.BodyCopyable,
           body: copyableText,
         },
       ],
@@ -498,7 +501,7 @@ export const testMessageWithCopyableValue = (): Promise<boolean> =>
     }, 5000);
   });
 
-export const testMessageHeaderWithCopyableValue = (): Promise<boolean> =>
+export const testMessageWithCopyableHeader = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const copyableText = 'Click me to copy the Message Header text';
 
@@ -514,8 +517,7 @@ export const testMessageHeaderWithCopyableValue = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Message,
           header: copyableText,
-          copyable: false,
-          headerCopyable: true,
+          copyable: MessageWhisperCopyMode.HeaderCopyable,
           body: 'do not copy me',
         },
       ],

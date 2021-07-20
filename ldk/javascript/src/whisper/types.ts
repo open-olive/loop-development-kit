@@ -114,6 +114,15 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+export enum MarkdownWhisperCopyMode {
+  BodyCopyable = 'bodyCopyable',
+}
+
+export enum MessageWhisperCopyMode {
+  BodyCopyable = 'bodyCopyable',
+  HeaderCopyable = 'headerCopyable',
+}
+
 export type StateMap = Map<string, string | boolean | number>;
 
 export interface Whisper {
@@ -221,14 +230,13 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
 };
 
 export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
-  copyable?: boolean;
+  copyable?: MarkdownWhisperCopyMode;
   body: string;
   tooltip?: string;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
-  copyable?: boolean;
-  headerCopyable?: boolean;
+  copyable?: MessageWhisperCopyMode;
   body?: string;
   header?: string;
   style?: Urgency;

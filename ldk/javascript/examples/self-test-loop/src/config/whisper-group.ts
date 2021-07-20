@@ -79,21 +79,21 @@ export const whisperTestGroup = (): TestGroup =>
     ),
     new LoopTest(
       'Whisper Aptitude - Copyable Markdown Value',
-      whisperTests.testMarkdownWithCopyableValue,
+      whisperTests.testMarkdownWithCopyableBody,
       6000,
-      'Click the Markdown value to copy its text within alloted time'
+      'Click the Markdown value to copy its text within alloted time',
     ),
     new LoopTest(
-      'Whisper Aptitude - Copyable Message Value',
-      whisperTests.testMessageWithCopyableValue,
+      'Whisper Aptitude - Copyable Message Body',
+      whisperTests.testMessageWithCopyableBody,
       6000,
-      'Click the Message value to copy its text within alloted time'
+      'Click the Message value to copy its text within alloted time',
     ),
     new LoopTest(
       'Whisper Aptitude - Copyable Message Header',
-      whisperTests.testMessageHeaderWithCopyableValue,
+      whisperTests.testMessageWithCopyableHeader,
       6000,
-      'Click the Message Header to copy its text within alloted time'
+      'Click the Message Header to copy its text within alloted time',
     ),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
