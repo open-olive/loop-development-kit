@@ -199,8 +199,11 @@ declare namespace OliveHelps {
 	}
 
 	interface Index {
-		search(term: string, callback: (error: Error | undefined) => void): SearchResult;
-		queryStringSearch(queryString: string, callback: (error: Error | undefined) => void): SearchResult;
+		search(term: string, callback: (error: Error | undefined, searchResult: SearchResult) => void): void;
+		queryStringSearch(
+			queryString: string,
+			callback: (error: Error | undefined, searchResult: SearchResult) => void
+		): void;
 		update(documents: Array<Document>, config: Config, callback: (error: Error | undefined) => void): void;
 		delete(callback: (error: Error | undefined) => void): void;
 	}

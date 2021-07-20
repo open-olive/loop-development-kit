@@ -42,13 +42,13 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 	search: (term: string): Promise<SearchResult> =>
 		new Promise<SearchResult>((resolve, reject) => {
 			try {
-				const results = index.search(term, (error: Error | undefined) => {
+				index.search(term, (error: Error | undefined, searchResult: SearchResult) => {
 					if (error) {
 						console.error(`Received error on result: ${error.message}`);
 						reject(error);
 					}
+					resolve(searchResult);
 				});
-				resolve(results);
 			} catch (e) {
 				handleCaughtError(reject, e, 'search');
 			}
@@ -56,13 +56,13 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 	queryStringSearch: (queryString: string): Promise<SearchResult> =>
 		new Promise<SearchResult>((resolve, reject) => {
 			try {
-				const results = index.queryStringSearch(queryString, (error: Error | undefined) => {
+				index.queryStringSearch(queryString, (error: Error | undefined, searchResult: SearchResult) => {
 					if (error) {
 						console.error(`Received error on result: ${error.message}`);
 						reject(error);
 					}
+					resolve(searchResult);
 				});
-				resolve(results);
 			} catch (e) {
 				handleCaughtError(reject, e, 'queryStringSearch');
 			}
