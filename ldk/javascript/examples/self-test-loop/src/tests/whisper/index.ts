@@ -58,11 +58,6 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
           type: WhisperComponentType.Checkbox,
         },
         {
-          body: 'section Title in center',
-          textAlign: TextAlign.Center,
-          type: WhisperComponentType.SectionTitle,
-        },
-        {
           label: `${options[1]}  
             this is a longer line one, it was known for being long 
             99.2 %`,
@@ -1233,9 +1228,16 @@ export const testSectionTitle = (): Promise<boolean> =>
             textAlign: TextAlign.Left,
           },
           {
-            body: '* section Title on the right with h1',
+            body: 'section Title on the right(white)',
             type: WhisperComponentType.SectionTitle,
             textAlign: TextAlign.Right,
+            backgroundStyle: 'white',
+          },
+          {
+            body: 'section Title in center(grey)',
+            textAlign: TextAlign.Center,
+            type: WhisperComponentType.SectionTitle,
+            backgroundStyle: 'grey',
           },
         ],
       });

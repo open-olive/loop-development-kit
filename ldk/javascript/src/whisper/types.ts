@@ -239,6 +239,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
 export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
   body: string;
   textAlign?: TextAlign;
+  backgroundStyle?: string;
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;

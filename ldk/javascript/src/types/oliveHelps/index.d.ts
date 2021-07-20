@@ -426,7 +426,8 @@ declare namespace OliveHelps {
 
   type SectionTitle = Component<'sectionTitle'> & {
     body: string;
-    textalign?: TextAlign;
+    textAlign?: TextAlign;
+    backgroundStyle?: string;
   };
 
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {
