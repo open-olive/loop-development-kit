@@ -199,8 +199,8 @@ declare namespace OliveHelps {
 	}
 
 	interface Index {
-		search(term: string, callback: (error: Error | undefined) => void): string;
-		queryStringSearch(queryString: string, callback: (error: Error | undefined) => void): string;
+		search(term: string, callback: (error: Error | undefined) => void): SearchResult;
+		queryStringSearch(queryString: string, callback: (error: Error | undefined) => void): SearchResult;
 		update(documents: Array<Document>, config: Config, callback: (error: Error | undefined) => void): void;
 		delete(callback: (error: Error | undefined) => void): void;
 	}
@@ -226,6 +226,10 @@ declare namespace OliveHelps {
 
 	type FieldType = 'standard' | 'stemmer';
 
+	interface SearchResult {
+		data: string;
+		total: number;
+	}
 	//--Keyboard
 	interface Keyboard {
 		listenHotkey: ListenableWithParam<Hotkey, boolean>;

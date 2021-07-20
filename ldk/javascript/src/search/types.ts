@@ -52,3 +52,14 @@ export interface Config {
    */
 	beginsWithSearch?: boolean;
 }
+
+export interface SearchResult {
+	/**
+   * Search result data in a stringified state 
+   */
+	data: string;
+	/**
+   * Total number of results found 
+   */
+	total: number;
+}

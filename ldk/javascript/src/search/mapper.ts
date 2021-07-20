@@ -1,4 +1,4 @@
-import { Config, Index, Document, Field, FieldType } from './index';
+import { Config, Index, Document, Field, FieldType, SearchResult } from './index';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: string): void => {
@@ -13,6 +13,11 @@ export const mapToField = (field: OliveHelps.Field): Field => ({
 });
 
 export const mapToFields = (fields: OliveHelps.Field[]): Field[] => fields.map((f) => mapToField(f));
+
+export const mapToSearchResult = (searchResult: OliveHelps.SearchResult): SearchResult => ({
+	data: searchResult.data,
+	total: searchResult.total
+});
 
 export const mapToDocument = (document: Document): OliveHelps.Document => ({
 	name: document.name,
@@ -34,8 +39,8 @@ export const mapToConfig = (config: Config): OliveHelps.Config => ({
 });
 
 export const mapToIndex = (index: OliveHelps.Index): Index => ({
-	search: (term: string): Promise<string> =>
-		new Promise<string>((resolve, reject) => {
+	search: (term: string): Promise<SearchResult> =>
+		new Promise<SearchResult>((resolve, reject) => {
 			try {
 				const results = index.search(term, (error: Error | undefined) => {
 					if (error) {
@@ -48,8 +53,8 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 				handleCaughtError(reject, e, 'search');
 			}
 		}),
-	queryStringSearch: (queryString: string): Promise<string> =>
-		new Promise<string>((resolve, reject) => {
+	queryStringSearch: (queryString: string): Promise<SearchResult> =>
+		new Promise<SearchResult>((resolve, reject) => {
 			try {
 				const results = index.queryStringSearch(queryString, (error: Error | undefined) => {
 					if (error) {

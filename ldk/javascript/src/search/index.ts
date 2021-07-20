@@ -1,6 +1,6 @@
 import { promisify, promisifyMappedWithTwoParams, promisifyMappedWithThreeParams } from '../promisify';
 import * as mapper from './mapper';
-import { Document, Config } from './types';
+import { Document, Config, SearchResult } from './types';
 
 export * from './types';
 
@@ -10,14 +10,14 @@ export interface Index {
    * @param term - The term that will be used to search over the index.
    * @returns A Promise resolving with the search results as a string
    */
-	search(term: string): Promise<string>;
+	search(term: string): Promise<SearchResult>;
 	/**
    * Executes a search with the using a query string to search over the data.
    *
    * @param queryString - The query string that will be used to search over the index.
    * @returns A Promise resolving with the search results as a string  
    */
-	queryStringSearch(queryString: string): Promise<string>;
+	queryStringSearch(queryString: string): Promise<SearchResult>;
 	/**
    * Executes a search with the using a query string to search over the data.
 	 * 
