@@ -43,7 +43,7 @@ declare namespace OliveHelps {
     param3: TParam3,
     param4: TParam4,
     callback: Callback<TOut>,
-  ) => void;
+  ) => void; 
 
   type Listenable<T> = (callback: Callback<T>, returnCb: ReturnCallback) => void;
 
@@ -55,10 +55,6 @@ declare namespace OliveHelps {
 
   interface User {
     jwt: Readable<string>;
-  }
-
-  interface LayoutOptions {
-    flex: string,
   }
 
   //-- Window
@@ -325,6 +321,10 @@ declare namespace OliveHelps {
 
   type DateTimeType = 'date' | 'time' | 'date_time';
 
+  interface LayoutOptions {
+    flex?: string,
+  }
+
   interface Whisper {
     id: string;
     close: Readable<undefined>;
@@ -335,6 +335,7 @@ declare namespace OliveHelps {
     id?: string;
     type: T;
     key?: string;
+    layout?: LayoutOptions;
   }
 
   interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {
@@ -446,9 +447,7 @@ declare namespace OliveHelps {
   type Box = Component<'box'> & {
     alignment: Alignment;
     children: Array<ChildComponents>;
-    childrenRatios?: string[];
     direction: Direction;
-    layout?: LayoutOptions;
     onClick?: WhisperHandler;
   };
 
