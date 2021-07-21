@@ -2,7 +2,7 @@
 name: "JWT"
 links_js: "jwt"
 ---
-Receive a [JWT](https://jwt.io) identifying the currently logged in Olive Helps user.
+Receive a [JWT](https://jwt.io) identifying the currently logged in Olive Helps user. The email claim is only returned when the includeEmail parameter is true.
 
 ### JWT Claims
 The claims in the JWT are as follows:
@@ -14,7 +14,7 @@ Standard Claims:
 
 Additional Claims:
 * `azp` (Authorized Party): contains the LoopID of the Loop which requested the JWT.
-* `email`: contains the email address of the current Olive Helps user.
+* `email`: contains the email address of the current Olive Helps user. This claim is not included by default, but can be requested by passing true as the value of the includeEmail parameter.
 
 
 ### JWT Signing

@@ -71,6 +71,34 @@ export const testHttpRequestTimeout = (): Promise<boolean> =>
     }
   });
 
+export const testHttpRequestBlock = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    try {
+      const url = 'https://httpstat.us/200?sleep=4000';
+      setTimeout(() => {
+        console.debug(`Http request blocked which caused a timeout`);
+        reject(new Error(`Test didn't resolved in the appropriate time frame`));
+      }, 2000);
+      network
+        .httpRequest({
+          url,
+          method: 'GET',
+          timeoutMs: 5000,
+        })
+        .then(() => {
+          console.debug(
+            `Should not get here. Test should timeout or resolve before getting a response`,
+          );
+          reject(new Error());
+        });
+      console.debug(`Http request didn't blocked`);
+      resolve(true);
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });
+
 export const testWebsocketConnection = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const url = 'wss://html5rocks.websocket.org/echo';

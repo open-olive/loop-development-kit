@@ -30,6 +30,10 @@ declare namespace OliveHelps {
   type Readable<T> = (callback: Callback<T>) => void;
 
   type ReadableWithParam<TParam, TOut> = (param: TParam, callback: Callback<TOut>) => void;
+  type ReadableWithParamAfterCallback<TOut, TParam> = (
+    callback: Callback<TOut>,
+    param: TParam,
+  ) => void;
 
   type ReadableWithTwoParams<TParam1, TParam2, TOut> = (
     param: TParam1,
@@ -53,8 +57,12 @@ declare namespace OliveHelps {
     returnCb: ReturnCallback,
   ) => void;
 
+  //-- User
+  interface JWTConfig {
+    includeEmail?: boolean;
+  }
   interface User {
-    jwt: Readable<string>;
+    jwt: ReadableWithParamAfterCallback<string, JWTConfig>;
   }
 
   //-- Window
@@ -412,7 +420,7 @@ declare namespace OliveHelps {
   type Checkbox = SelectComponent<'checkbox'> & {
     label: string;
     tooltip?: string;
-    value: boolean;
+    value?: boolean;
     onChange: WhisperHandlerWithParam<boolean>;
   };
 

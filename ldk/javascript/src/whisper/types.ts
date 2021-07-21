@@ -160,7 +160,7 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
   label: string;
   tooltip?: string;
-  value: boolean;
+  value?: boolean;
   onChange: WhisperHandlerWithParam<boolean>;
 };
 
