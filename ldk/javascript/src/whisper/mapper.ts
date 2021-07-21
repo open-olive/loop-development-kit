@@ -35,8 +35,8 @@ export function mapToInternalChildComponent(
         ...component,
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         children: throwForDuplicateKeys(
-          component.children.map(
-            (childComponent) => mapToInternalChildComponent(childComponent, stateMap),
+          component.children.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
           ),
         ),
         type: WhisperComponentType.Box,
@@ -81,7 +81,8 @@ export function mapToInternalChildComponent(
       return {
         ...component,
         onClick: onClick
-          ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap)) : undefined,
+          ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
+          : undefined,
       } as OliveHelps.Link;
     }
     case WhisperComponentType.Divider:
@@ -202,7 +203,9 @@ export function mapToInternalComponent(
           open: component.open,
           key: component.key,
           children: throwForDuplicateKeys(
-            component.children.map((childComponent) => mapToInternalChildComponent(childComponent, stateMap)),
+            component.children.map((childComponent) =>
+              mapToInternalChildComponent(childComponent, stateMap),
+            ),
           ),
           type: WhisperComponentType.CollapseBox,
           onClick: (error: Error, param: boolean, whisper: OliveHelps.Whisper) => {
@@ -216,7 +219,9 @@ export function mapToInternalComponent(
         open: component.open,
         key: component.key,
         children: throwForDuplicateKeys(
-          component.children.map((childComponent) => mapToInternalChildComponent(childComponent, stateMap)),
+          component.children.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
         ),
         type: WhisperComponentType.CollapseBox,
       };
@@ -226,31 +231,31 @@ export function mapToInternalComponent(
 }
 
 export function mapToInternalWhisper(
-              whisper: NewWhisper,
-              stateMap: StateMap,
-              ): OliveHelps.NewWhisper;
+  whisper: NewWhisper,
+  stateMap: StateMap,
+): OliveHelps.NewWhisper;
 export function mapToInternalWhisper(
-                whisper: UpdateWhisper,
-                stateMap: StateMap,
-                ): OliveHelps.UpdateWhisper;
+  whisper: UpdateWhisper,
+  stateMap: StateMap,
+): OliveHelps.UpdateWhisper;
 export function mapToInternalWhisper(
   whisper: NewWhisper | UpdateWhisper,
   stateMap: StateMap,
 ): OliveHelps.NewWhisper | OliveHelps.UpdateWhisper {
   return 'onClose' in whisper
     ? {
-      label: whisper.label,
-      onClose: whisper.onClose,
-      components: throwForDuplicateKeys(
-        whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
-      ),
-    }
+        label: whisper.label,
+        onClose: whisper.onClose,
+        components: throwForDuplicateKeys(
+          whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
+        ),
+      }
     : {
-      label: whisper.label,
-      components: throwForDuplicateKeys(
-        whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
-      ),
-    };
+        label: whisper.label,
+        components: throwForDuplicateKeys(
+          whisper.components.map((component) => mapToInternalComponent(component, stateMap)),
+        ),
+      };
 }
 
 export function mapToExternalWhisper(whisper: OliveHelps.Whisper, stateMap: StateMap): Whisper {

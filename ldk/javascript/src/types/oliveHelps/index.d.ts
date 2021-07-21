@@ -43,7 +43,7 @@ declare namespace OliveHelps {
     param3: TParam3,
     param4: TParam4,
     callback: Callback<TOut>,
-  ) => void; 
+  ) => void;
 
   type Listenable<T> = (callback: Callback<T>, returnCb: ReturnCallback) => void;
 
@@ -322,7 +322,7 @@ declare namespace OliveHelps {
   type DateTimeType = 'date' | 'time' | 'date_time';
 
   interface LayoutOptions {
-    flex?: string,
+    flex?: string;
   }
 
   interface Whisper {
