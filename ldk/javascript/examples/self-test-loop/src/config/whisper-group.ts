@@ -24,6 +24,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Verify that box in the box rendered correctly',
     ),
     new LoopTest(
+      'Whisper Aptitude - AlignItem in Box',
+      whisperTests.testAlignItems,
+      10000,
+      'Verify that contents of the box are aligned correctly',
+    ),
+    new LoopTest(
       'Whisper Aptitude - External Links',
       whisperTests.testClickableLink,
       10000,
