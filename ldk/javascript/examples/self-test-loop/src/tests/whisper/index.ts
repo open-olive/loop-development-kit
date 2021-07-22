@@ -12,6 +12,8 @@ import {
   NewWhisper,
   Component,
   DateTimeType,
+  MessageWhisperCopyMode,
+  MarkdownWhisperCopyMode,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { resolveRejectButtons } from './utils';
@@ -413,6 +415,110 @@ export const testListPairWithCopyableLabel = (): Promise<boolean> =>
           labelCopyable: true,
           copyable: false,
           style: Urgency.None,
+        },
+      ],
+    });
+
+    setTimeout(async () => {
+      const response = await clipboard.read();
+      if (response === copyableText) {
+        createdWhisper.close(() => {
+          // do nothing.
+        });
+        resolve(true);
+      } else {
+        reject(new Error('Incorrect value detected'));
+      }
+    }, 5000);
+  });
+
+export const testMarkdownWithCopyableBody = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const copyableText = '**Click me** to copy the Markdown value text';
+    const expectedCopiedText = `<p><strong>Click me</strong> to copy the Markdown value text</p>`;
+
+    // reset clipboard value
+    await clipboard.write('');
+
+    const createdWhisper = await whisper.create({
+      label: 'Copyable Markdown Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          copyable: MarkdownWhisperCopyMode.Body,
+          body: copyableText,
+        },
+      ],
+    });
+
+    setTimeout(async () => {
+      const response = await clipboard.read();
+      if (response === expectedCopiedText) {
+        createdWhisper.close(() => {
+          // do nothing.
+        });
+        resolve(true);
+      } else {
+        reject(new Error('Incorrect value detected'));
+      }
+    }, 5000);
+  });
+
+export const testMessageWithCopyableBody = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const copyableText = 'Click me to copy the Message value text';
+
+    // reset clipboard value
+    await clipboard.write('');
+
+    const createdWhisper = await whisper.create({
+      label: 'Copyable Markdown Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          copyable: MessageWhisperCopyMode.Body,
+          body: copyableText,
+        },
+      ],
+    });
+
+    setTimeout(async () => {
+      const response = await clipboard.read();
+      if (response === copyableText) {
+        createdWhisper.close(() => {
+          // do nothing.
+        });
+        resolve(true);
+      } else {
+        reject(new Error('Incorrect value detected'));
+      }
+    }, 5000);
+  });
+
+export const testMessageWithCopyableHeader = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const copyableText = 'Click me to copy the Message Header text';
+
+    // reset clipboard value
+    await clipboard.write('');
+
+    const createdWhisper = await whisper.create({
+      label: 'Copyable Markdown Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          header: copyableText,
+          copyable: MessageWhisperCopyMode.Header,
+          body: 'do not copy me',
         },
       ],
     });

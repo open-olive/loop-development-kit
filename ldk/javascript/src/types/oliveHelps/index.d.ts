@@ -384,11 +384,13 @@ declare namespace OliveHelps {
   };
 
   type Markdown = Component<'markdown'> & {
+    copyable?: 'body';
     body: string;
     tooltip?: string;
   };
 
   type Message = Component<'message'> & {
+    copyable?: 'body' | 'header';
     body?: string;
     header?: string;
     style?: Urgency;
