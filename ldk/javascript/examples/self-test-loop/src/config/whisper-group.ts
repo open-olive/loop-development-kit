@@ -36,6 +36,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Verify that box in the box rendered correctly',
     ),
     new LoopTest(
+      'Whisper Aptitude - AlignItem in Box',
+      whisperTests.testAlignItems,
+      10000,
+      'Verify that contents of the box are aligned correctly',
+    ),
+    new LoopTest(
       'Whisper Aptitude - External Links',
       whisperTests.testClickableLink,
       10000,
@@ -81,13 +87,31 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - ListPair Copyable Value',
       whisperTests.testListPairWithCopyableValue,
       6000,
-      'Click the ListPair value to copy its text within 5 min time frame',
+      'Click the ListPair value to copy its text within alloted time',
     ),
     new LoopTest(
       'Whisper Aptitude - ListPair Copyable Label',
       whisperTests.testListPairWithCopyableLabel,
       6000,
-      'Click the ListPair label to copy its text within 5 min time frame',
+      'Click the ListPair label to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Markdown Value',
+      whisperTests.testMarkdownWithCopyableBody,
+      6000,
+      'Click the Markdown value to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Message Body',
+      whisperTests.testMessageWithCopyableBody,
+      6000,
+      'Click the Message value to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Message Header',
+      whisperTests.testMessageWithCopyableHeader,
+      6000,
+      'Click the Message Header to copy its text within alloted time',
     ),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',

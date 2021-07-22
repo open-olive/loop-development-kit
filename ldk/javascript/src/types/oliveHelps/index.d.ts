@@ -30,6 +30,10 @@ declare namespace OliveHelps {
   type Readable<T> = (callback: Callback<T>) => void;
 
   type ReadableWithParam<TParam, TOut> = (param: TParam, callback: Callback<TOut>) => void;
+  type ReadableWithParamAfterCallback<TOut, TParam> = (
+    callback: Callback<TOut>,
+    param: TParam,
+  ) => void;
 
   type ReadableWithTwoParams<TParam1, TParam2, TOut> = (
     param: TParam1,
@@ -53,8 +57,12 @@ declare namespace OliveHelps {
     returnCb: ReturnCallback,
   ) => void;
 
+  //-- User
+  interface JWTConfig {
+    includeEmail?: boolean;
+  }
   interface User {
-    jwt: Readable<string>;
+    jwt: ReadableWithParamAfterCallback<string, JWTConfig>;
   }
 
   //-- Window
@@ -309,7 +317,17 @@ declare namespace OliveHelps {
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
-  type Alignment = 'center' | 'left' | 'right' | 'space_around' | 'space_evenly';
+  type Alignment =
+    | 'center'
+    | 'flex-end'
+    | 'flex-start'
+    | 'left'
+    | 'right'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly';
+
+  type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
 
   type ButtonSize = 'large' | 'small';
 
@@ -381,11 +399,13 @@ declare namespace OliveHelps {
   };
 
   type Markdown = Component<'markdown'> & {
+    copyable?: 'body';
     body: string;
     tooltip?: string;
   };
 
   type Message = Component<'message'> & {
+    copyable?: 'body' | 'header';
     body?: string;
     header?: string;
     style?: Urgency;
@@ -416,7 +436,7 @@ declare namespace OliveHelps {
   type Checkbox = SelectComponent<'checkbox'> & {
     label: string;
     tooltip?: string;
-    value: boolean;
+    value?: boolean;
     onChange: WhisperHandlerWithParam<boolean>;
   };
 
@@ -445,6 +465,7 @@ declare namespace OliveHelps {
   };
 
   type Box = Component<'box'> & {
+    alignItems?: AlignItems;
     alignment: Alignment;
     children: Array<ChildComponents>;
     direction: Direction;

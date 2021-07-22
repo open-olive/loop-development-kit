@@ -68,10 +68,20 @@ export enum WhisperComponentType {
 
 export enum JustifyContent {
   Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
   Left = 'left',
   Right = 'right',
-  SpaceAround = 'space_around',
-  SpaceEvenly = 'space_evenly',
+  SpaceAround = 'space-around',
+  SpaceBetween = 'space-between',
+  SpaceEvenly = 'space-evenly',
+}
+
+export enum AlignItems {
+  Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
+  Stretch = 'stretch',
 }
 
 /**
@@ -114,6 +124,14 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+export enum MarkdownWhisperCopyMode {
+  Body = 'body',
+}
+
+export enum MessageWhisperCopyMode {
+  Body = 'body',
+  Header = 'header',
+}
 export interface LayoutOptions {
   flex?: string;
 }
@@ -163,7 +181,7 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
   label: string;
   tooltip?: string;
-  value: boolean;
+  value?: boolean;
   onChange: WhisperHandlerWithParam<boolean>;
 };
 
@@ -227,11 +245,13 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
 };
 
 export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
+  copyable?: MarkdownWhisperCopyMode;
   body: string;
   tooltip?: string;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
+  copyable?: MessageWhisperCopyMode;
   body?: string;
   header?: string;
   style?: Urgency;
@@ -270,6 +290,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   /**
    * @deprecated - use {@link Box.justifyContent} instead.
    */
+  alignItems?: AlignItems;
   alignment: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
@@ -277,6 +298,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 };
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
+  alignItems?: AlignItems;
   children: Array<BoxChildComponent>;
   direction: Direction;
   justifyContent: JustifyContent;

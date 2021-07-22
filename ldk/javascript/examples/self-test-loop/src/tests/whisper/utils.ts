@@ -44,7 +44,7 @@ export const resolveRejectButtons = (
   rejectButtonText?: string | undefined,
 ): Component => ({
   type: WhisperComponentType.Box,
-  justifyContent: JustifyContent.SpaceEvenly,
+  justifyContent: JustifyContent.SpaceBetween,
   direction: Direction.Horizontal,
   children: [
     {
