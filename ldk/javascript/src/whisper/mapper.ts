@@ -1,4 +1,5 @@
 import {
+  Box,
   BoxChildComponent,
   Component,
   NewWhisper,
@@ -31,9 +32,11 @@ export function mapToInternalChildComponent(
   const onClick = 'onClick' in component ? component.onClick : null;
   switch (component.type) {
     case WhisperComponentType.Box:
+      // eslint-disable-next-line no-case-declarations
+      const { justifyContent, ...otherProps } = component as Box;
       return {
-        ...component,
-        alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
+        ...otherProps,
+        alignment: 'justifyContent' in component ? justifyContent : component.alignment,
         children: throwForDuplicateKeys(
           component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),
