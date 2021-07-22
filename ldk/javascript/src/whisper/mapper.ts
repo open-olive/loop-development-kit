@@ -196,35 +196,20 @@ export function mapToInternalComponent(
   switch (component.type) {
     case WhisperComponentType.CollapseBox:
       // eslint-disable-next-line no-case-declarations
-      const { onClick } = component;
-      if (onClick) {
-        return {
-          label: component.label,
-          open: component.open,
-          key: component.key,
-          children: throwForDuplicateKeys(
-            component.children.map((childComponent) =>
-              mapToInternalChildComponent(childComponent, stateMap),
-            ),
-          ),
-          type: WhisperComponentType.CollapseBox,
-          onClick: (error: Error, param: boolean, whisper: OliveHelps.Whisper) => {
-            onClick(error, param, mapToExternalWhisper(whisper, stateMap));
-          },
-        } as OliveHelps.CollapseBox;
-      }
+      const onClick = 'onClick' in component ? component.onClick : null;
       return {
-        id: component.id,
-        label: component.label,
-        open: component.open,
-        key: component.key,
+        ...component,
         children: throwForDuplicateKeys(
           component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),
           ),
         ),
         type: WhisperComponentType.CollapseBox,
-      };
+        onClick: onClick
+          ? (error, param, whisper) =>
+              onClick(error, param, mapToExternalWhisper(whisper, stateMap))
+          : undefined,
+      } as OliveHelps.CollapseBox;
     default:
       return mapToInternalChildComponent(component, stateMap);
   }

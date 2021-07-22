@@ -242,6 +242,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
+  | Box
   | Button
   | Checkbox
   | Divider
@@ -282,13 +283,13 @@ export type Box = WhisperComponent<WhisperComponentType.Box> & {
   onClick?: WhisperHandler;
 };
 
-export type Component = ChildComponents | CollapseBox | Box | DeprecatedBox;
+export type Component = ChildComponents | CollapseBox | DeprecatedBox;
 /**
  * @deprecated - Use {@link Component} instead.
  */
 export type Components = Component;
 
-export type BoxChildComponent = ChildComponents | Box | DeprecatedBox;
+export type BoxChildComponent = ChildComponents | DeprecatedBox;
 
 export interface NewWhisper {
   components: Array<Component>;
