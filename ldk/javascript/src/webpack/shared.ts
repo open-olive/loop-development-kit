@@ -2,6 +2,7 @@ import * as webpack from 'webpack';
 import Terser from 'terser-webpack-plugin';
 import { LdkSettings } from './ldk-settings';
 import { generateBanner } from './generate-banner';
+import { buildBabelPlugins, buildBabelPreset } from './babel-config';
 
 export function buildBabelConfig(cache: boolean): webpack.RuleSetRule {
   return {
@@ -9,16 +10,8 @@ export function buildBabelConfig(cache: boolean): webpack.RuleSetRule {
     options: {
       sourceType: 'unambiguous',
       cacheDirectory: cache,
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            useBuiltIns: 'entry',
-            corejs: '3.11',
-          },
-        ],
-      ],
-      plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
+      presets: buildBabelPreset(),
+      plugins: buildBabelPlugins(),
     },
   };
 }
@@ -71,26 +64,8 @@ export function buildWebpackConfig(
             options: {
               sourceType: 'unambiguous',
               cacheDirectory: true,
-              presets: [
-                [
-                  '@babel/preset-env',
-                  {
-                    useBuiltIns: 'entry',
-                    corejs: '3.11',
-                  },
-                ],
-              ],
-              plugins: [
-                '@babel/plugin-transform-destructuring',
-                '@babel/plugin-transform-runtime',
-                [
-                  "@babel/plugin-transform-react-jsx",
-                  {
-                    "runtime": "automatic",
-                    "importSource": "@oliveai/ldk/dist" // loads @oliveai/ldk/dist/jsx-runtime
-                  }
-                ]
-              ],
+              presets: buildBabelPreset(),
+              plugins: buildBabelPlugins(true),
             },
           }],
         },
