@@ -32,12 +32,11 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Box:
       // eslint-disable-next-line
       const { onClick } = component;
+      console.log(component.alignItems);
       if (onClick) {
         return {
-          id: component.id,
+          ...component,
           alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
-          direction: component.direction,
-          key: component.key,
           children: throwForDuplicateKeys(
             component.children.map((childComponent) =>
               mapToInternalChildComponent(childComponent, stateMap),
@@ -51,6 +50,7 @@ export function mapToInternalChildComponent(
       }
       return {
         id: component.id,
+        alignItems: component.alignItems,
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         direction: component.direction,
         key: component.key,

@@ -29,7 +29,7 @@ const confirmOrDeny = (
   },
   {
     type: WhisperComponentType.Box,
-    alignment: JustifyContent.SpaceAround,
+    alignment: JustifyContent.SpaceBetween,
     direction: Direction.Horizontal,
     children: [
       {

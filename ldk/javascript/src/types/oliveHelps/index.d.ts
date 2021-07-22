@@ -317,7 +317,17 @@ declare namespace OliveHelps {
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
-  type Alignment = 'center' | 'left' | 'right' | 'space_around' | 'space_evenly';
+  type Alignment =
+    | 'center'
+    | 'flex-end'
+    | 'flex-start'
+    | 'left'
+    | 'right'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly';
+
+  type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
 
   type ButtonSize = 'large' | 'small';
 
@@ -450,6 +460,7 @@ declare namespace OliveHelps {
   };
 
   type Box = Component<'box'> & {
+    alignItems?: AlignItems;
     alignment: Alignment;
     children: Array<ChildComponents>;
     direction: Direction;

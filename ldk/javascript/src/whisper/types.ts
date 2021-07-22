@@ -68,10 +68,20 @@ export enum WhisperComponentType {
 
 export enum JustifyContent {
   Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
   Left = 'left',
   Right = 'right',
-  SpaceAround = 'space_around',
-  SpaceEvenly = 'space_evenly',
+  SpaceAround = 'space-around',
+  SpaceBetween = 'space-between',
+  SpaceEvenly = 'space-evenly',
+}
+
+export enum AlignItems {
+  Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
+  Stretch = 'stretch',
 }
 
 /**
@@ -274,6 +284,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   /**
    * @deprecated - use {@link Box.justifyContent} instead.
    */
+  alignItems?: AlignItems;
   alignment: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
@@ -281,6 +292,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 };
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
+  alignItems?: AlignItems;
   justifyContent: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
