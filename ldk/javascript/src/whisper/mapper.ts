@@ -35,11 +35,8 @@ export function mapToInternalChildComponent(
       console.log(component.alignItems);
       if (onClick) {
         return {
-          id: component.id,
-          alignItems: component.alignItems,
+          ...component,
           alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
-          direction: component.direction,
-          key: component.key,
           children: throwForDuplicateKeys(
             component.children.map((childComponent) =>
               mapToInternalChildComponent(childComponent, stateMap),
