@@ -1,6 +1,66 @@
-import { ReactNode } from "react";
-import { ChildComponents } from "./types";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ReactElement, ReactFragment, ReactNode, ReactNodeArray } from "react";
+import * as JSXComponents from '../components';
+import { Component, Markdown, WhisperComponentType } from './types';
 
-export function jsxMapper(nodes: ReactNode): Array<ChildComponents> {
-  return []
+export function jsxMapper(nodes: ReactNode): Array<Component> {
+  if (nodes === null || nodes === false || nodes === true || nodes === undefined) {
+    return [];
+  }
+  if (typeof nodes === 'string' || typeof nodes === 'number') {
+    return [buildMarkdown(nodes)];
+  }
+  if (Object.keys(nodes).length === 0 && nodes.constructor === Object) {
+    return [];
+  }
+  if (isReactFragment(nodes)) {
+    return []
+  };
+  if (isReactElement(nodes)) {
+    return [convertElement(nodes)];
+  }
+  return [];
+}
+
+function buildMarkdown(body: string | number): Markdown {
+  return {
+    type: WhisperComponentType.Markdown,
+    body: body.toString(),
+  };
+}
+
+function isDiscardableValue(nodes: ReactNode): nodes is null | boolean | undefined {
+  return nodes === null || nodes === false || nodes === true || nodes === undefined;
+}
+
+function isReactFragment(nodes: ReactNode): nodes is ReactNodeArray {
+  if (isDiscardableValue(nodes)) {
+    return false
+  }
+  return (nodes as any).type === Symbol.for('react.fragment');
+}
+
+function isReactElement(nodes: ReactNode): nodes is ReactElement {
+  if (isDiscardableValue(nodes)) {
+    return false;
+  }
+  const objectKeys = Object.keys(nodes);
+  return ['key', 'ref', 'type', 'props'].every((key) => objectKeys.includes(key));
+}
+
+function convertElement(component: ReactElement): Component {
+  if (component.type === JSXComponents.Markdown) {
+    const initialValue: Markdown = {
+      type: WhisperComponentType.Markdown,
+      body: component.props.children,
+      copyable: component.props.copyable,
+      tooltip: component.props.tooltip,
+    };
+    if (component.key) {
+      initialValue.key =
+        typeof component.key === 'number' ? component.key.toString() : component.key;
+    }
+    return initialValue as Markdown;
+  }
+  throw new Error(`Unexpected type ${component.type.toString()}`);
 }
