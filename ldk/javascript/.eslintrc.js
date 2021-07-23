@@ -30,7 +30,7 @@ module.exports = {
         'import/extensions': ['off'],
         'no-console': 'off',
       },
-      files: ['**/*.ts'],
+      files: ['**/*.ts','**/*.tsx'],
     },
   ],
 };
