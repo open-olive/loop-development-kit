@@ -29,7 +29,7 @@ function clipboardListenAndWhisper() {
           this is a block of text from a markdown component4
         </Markdown>
       </Box>
-      <Box direction={Direction.Horizontal} alignment={JustifyContent.SpaceEvenly}>
+      <Box direction={Direction.Horizontal} alignment={JustifyContent.SpaceEvenly} flex={1}>
         <Button
           buttonStyle={ButtonStyle.Secondary}
           label="Don't click me"

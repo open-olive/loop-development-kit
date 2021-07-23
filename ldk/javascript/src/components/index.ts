@@ -6,6 +6,10 @@ export interface Components {
   Box(props: any): any // eslint-disable-line
 }
 
+// TODO: Update component functions so they include props and return a React component (is React component the right type?)
+// TODO: Test that JSX components are correctly transformed into the right component hierarchy, including function calls.
+// TODO: Think about how we could support component hooks.
+
 const processChildren = (children: any) => children ? {components: Array.isArray(children) ? children : [children]} : {}; // eslint-disable-line
 
 export function Whisper(props: any): void { // eslint-disable-line

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export enum WhisperComponentType {
   /**
    * A container component for formatting other components.
@@ -351,12 +353,12 @@ export type Components = Component;
 export type BoxChildComponent = ChildComponents | DeprecatedBox;
 
 export interface NewWhisper {
-  components: Array<Component>;
+  components: Array<Component> | ReactNode;
   label: string;
   onClose?: () => void;
 }
 
 export interface UpdateWhisper {
   label?: string;
-  components: Array<Component>;
+  components: Array<Component> | ReactNode;
 }

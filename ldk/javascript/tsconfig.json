@@ -9,7 +9,8 @@
     "rootDir": "src",
     "declaration": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types", "src/types"]
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "jsx": "react-jsx",
   },
   "exclude": [
     "node_modules",
