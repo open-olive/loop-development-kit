@@ -1,4 +1,6 @@
-import { create, WhisperComponentType } from '../whisper';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ReactNode } from "react";
+import { create, MarkdownProps, WhisperComponentType } from "../whisper";
 
 export interface Components {
   Whisper(props: any): void // eslint-disable-line
@@ -79,7 +81,7 @@ export function ListPair(props: any): any { // eslint-disable-line
   };
 }
 
-export function Markdown(props: any): any { // eslint-disable-line
+export function Markdown(props: MarkdownProps & { children: ReactNode }): any { // eslint-disable-line
   return {
     body: props.children,
     type: WhisperComponentType.Markdown,
