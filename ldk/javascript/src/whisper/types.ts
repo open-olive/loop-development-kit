@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactNode } from 'react';
 
 export enum WhisperComponentType {
@@ -241,10 +242,13 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   style: Urgency;
 };
 
-export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
+export type MarkdownProps = {
   copyable?: MarkdownWhisperCopyMode;
-  body: string;
   tooltip?: string;
+};
+
+export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & MarkdownProps & {
+  body: string;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
@@ -310,12 +314,12 @@ export type Components = Component;
 export type BoxChildComponent = ChildComponents | Box | DeprecatedBox;
 
 export interface NewWhisper {
-  components: Array<Component> | ReactNode;
+  components: Array<Component>;
   label: string;
   onClose?: () => void;
 }
 
 export interface UpdateWhisper {
   label?: string;
-  components: Array<Component> | ReactNode;
+  components: Array<Component>;
 }

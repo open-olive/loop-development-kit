@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { ReactElement, ReactFragment, ReactNode, ReactNodeArray } from "react";
+import { ReactElement, ReactNode, ReactNodeArray, ReactPortal } from "react";
 import * as JSXComponents from '../components';
-import { Component, Markdown, WhisperComponentType } from './types';
+import { Button, Component, Markdown, WhisperComponentType } from './types';
 
-export function jsxMapper(nodes: ReactNode): Array<Component> {
+export function jsxMapper(nodes: ReactNode, topLevel = false): Array<Component> {
   if (nodes === null || nodes === false || nodes === true || nodes === undefined) {
     return [];
   }
@@ -14,8 +14,9 @@ export function jsxMapper(nodes: ReactNode): Array<Component> {
     return [];
   }
   if (isReactFragment(nodes)) {
-    return []
-  };
+    return nodes.props.children?.map(convertElement) ?? [];
+
+  }
   if (isReactElement(nodes)) {
     return [convertElement(nodes)];
   }
@@ -33,9 +34,9 @@ function isDiscardableValue(nodes: ReactNode): nodes is null | boolean | undefin
   return nodes === null || nodes === false || nodes === true || nodes === undefined;
 }
 
-function isReactFragment(nodes: ReactNode): nodes is ReactNodeArray {
+function isReactFragment(nodes: ReactNode): nodes is ReactPortal {
   if (isDiscardableValue(nodes)) {
-    return false
+    return false;
   }
   return (nodes as any).type === Symbol.for('react.fragment');
 }
@@ -51,16 +52,28 @@ function isReactElement(nodes: ReactNode): nodes is ReactElement {
 function convertElement(component: ReactElement): Component {
   if (component.type === JSXComponents.Markdown) {
     const initialValue: Markdown = {
+      ...component.props,
       type: WhisperComponentType.Markdown,
       body: component.props.children,
-      copyable: component.props.copyable,
-      tooltip: component.props.tooltip,
     };
-    if (component.key) {
+    delete (initialValue as any).children;
+    if (component.key != null) {
       initialValue.key =
         typeof component.key === 'number' ? component.key.toString() : component.key;
     }
     return initialValue as Markdown;
+  }
+  if (component.type === JSXComponents.Button) {
+    const output: Button = {
+      ...component.props,
+      type: WhisperComponentType.Button,
+      label: component.props.children,
+    };
+    delete (output as any).children;
+    if (component.key != null) {
+      output.key = typeof component.key === 'number' ? component.key.toString() : component.key;
+    }
+    return output as Button;
   }
   throw new Error(`Unexpected type ${component.type.toString()}`);
 }
