@@ -1,7 +1,30 @@
+// Can be used to specify (and force) type of field that will be mapped in the index but if none is chosen it will
+// be automatically chosen based on the data passed in
 export enum FieldType {
-	// TODO: Add all field types
+	/**
+   * Standard Filter is not case senstive and filters out english stop workds
+   */
 	standard = 'standard',
-	stemmer = 'stemmer'
+	/**
+	 * Stemmer Filter ignores case but implements the porter stemmer and snowball stemmer filter
+	 */
+	stemmer = 'stemmer',
+	/**
+	 * Simple Filter only ignores case 
+	 */
+	simple = 'simple',
+	/**
+	 * Numeric Filter is used to map numeric only fields 
+	 */
+	numeric = 'numeric',
+	/**
+	 * Boolean Filter is used to map boolean or (1,0) only fields 
+	 */
+	boolean = 'boolean',
+	/**
+	 * Datatime Filter is used to map datetime fields and support most major time standards
+	 */
+	datetime = 'datetime'
 }
 
 export type Field = {

@@ -227,7 +227,7 @@ declare namespace OliveHelps {
 		type?: FieldType;
 	};
 
-	type FieldType = 'standard' | 'stemmer';
+	type FieldType = 'standard' | 'stemmer' | 'simple' | 'numeric' | 'boolean' | 'datetime';
 
 	interface SearchResult {
 		data: string;

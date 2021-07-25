@@ -6,13 +6,15 @@ const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: s
 	reject(error);
 };
 
-export const mapToField = (field: OliveHelps.Field): Field => ({
+export const mapToField = (field: Field): OliveHelps.Field => ({
 	name: field.name,
 	displayName: field.displayName,
-	type: field.type as FieldType
+	type: mapToFieldType(field.type)
 });
 
-export const mapToFields = (fields: OliveHelps.Field[]): Field[] => fields.map((f) => mapToField(f));
+export const mapToFieldType = (type: FieldType | undefined): OliveHelps.FieldType => type as OliveHelps.FieldType;
+
+export const mapToFields = (fields: Field[]): OliveHelps.Field[] => fields.map((f) => mapToField(f));
 
 export const mapToSearchResult = (searchResult: OliveHelps.SearchResult): SearchResult => ({
 	data: searchResult.data,
@@ -67,10 +69,10 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
 				handleCaughtError(reject, e, 'queryStringSearch');
 			}
 		}),
-	update: (documents: OliveHelps.Document[], config: OliveHelps.Config): Promise<void> =>
+	update: (documents: Document[], config: Config): Promise<void> =>
 		new Promise<void>((resolve, reject) => {
 			try {
-				index.update(documents, config, (error: Error | undefined) => {
+				index.update(mapToDocuments(documents), config, (error: Error | undefined) => {
 					if (error) {
 						console.error(`Received error on result: ${error.message}`);
 						reject(error);
