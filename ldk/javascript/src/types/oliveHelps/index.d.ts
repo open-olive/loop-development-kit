@@ -330,6 +330,8 @@ declare namespace OliveHelps {
 
   type DateTimeType = 'date' | 'time' | 'date_time';
 
+  type Color = 'white' | 'grey';
+
   interface Whisper {
     id: string;
     close: Readable<undefined>;
@@ -435,7 +437,7 @@ declare namespace OliveHelps {
   type SectionTitle = Component<'sectionTitle'> & {
     body: string;
     textAlign?: TextAlign;
-    backgroundStyle?: string;
+    backgroundStyle?: Color;
   };
 
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {

@@ -117,6 +117,11 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+export enum Color {
+  Grey = 'grey',
+  White = 'white',
+}
+
 export type StateMap = Map<string, string | boolean | number>;
 
 export interface Whisper {
@@ -239,7 +244,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
 export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
   body: string;
   textAlign?: TextAlign;
-  backgroundStyle?: string;
+  backgroundStyle?: Color;
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;

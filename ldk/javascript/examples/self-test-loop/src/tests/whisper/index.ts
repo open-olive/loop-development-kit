@@ -12,8 +12,9 @@ import {
   NewWhisper,
   Component,
   DateTimeType,
+  Color,
 } from '@oliveai/ldk/dist/whisper/types';
-import { stripIndent } from 'common-tags';
+import { commaListsOr, stripIndent } from 'common-tags';
 import { resolveRejectButtons } from './utils';
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
@@ -1231,13 +1232,13 @@ export const testSectionTitle = (): Promise<boolean> =>
             body: 'section Title on the right(white)',
             type: WhisperComponentType.SectionTitle,
             textAlign: TextAlign.Right,
-            backgroundStyle: 'white',
+            backgroundStyle: Color.White,
           },
           {
             body: 'section Title in center(grey)',
             textAlign: TextAlign.Center,
             type: WhisperComponentType.SectionTitle,
-            backgroundStyle: 'grey',
+            backgroundStyle: Color.Grey,
           },
         ],
       });
