@@ -47,6 +47,10 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
       },
       components: [
         {
+          type: WhisperComponentType.Icon,
+          name: 'star',
+        },
+        {
           body: markdown,
           type: WhisperComponentType.Markdown,
         },

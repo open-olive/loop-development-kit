@@ -313,7 +313,8 @@ declare namespace OliveHelps {
     | 'select'
     | 'telephone'
     | 'textInput'
-    | 'dateTimeInput';
+    | 'dateTimeInput'
+    | 'icon';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -450,6 +451,13 @@ declare namespace OliveHelps {
     max?: string;
   };
 
+  type IconSize = 'small' | 'medium' | 'large'
+
+  type Icon = Component<'icon'> & {
+    name: string;
+    size?: IconSize;
+  }
+
   type Divider = Component<'divider'>;
 
   type CollapseBox = Component<'collapseBox'> & {
@@ -483,7 +491,8 @@ declare namespace OliveHelps {
     | Select
     | Telephone
     | TextInput
-    | DateTimeInput;
+    | DateTimeInput
+    | Icon;
 
   type Components = ChildComponents | CollapseBox;
 

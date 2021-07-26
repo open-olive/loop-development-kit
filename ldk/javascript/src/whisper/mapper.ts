@@ -206,6 +206,8 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.DateTimeInput;
+    case WhisperComponentType.Icon:
+      return component;
     default:
       throw new Error('Unexpected component type');
   }
