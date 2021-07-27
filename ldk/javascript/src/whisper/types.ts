@@ -242,9 +242,10 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
   label: string;
   limit?: number;
   noun?: string;
-  onDrop: WhisperHandlerWithParam<FileDropEvent>;
+  onDrop: WhisperHandlerWithParam<File>;
   tooltip?: string;
   validationError?: string;
+  value?: File[];
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
@@ -310,7 +311,7 @@ export interface UpdateWhisper {
   components: Array<Component>;
 }
 
-export interface FileDropEvent {
-  // TODO: Replace type in HELPS-854
+export interface File {
   path: string;
+  size: number;
 }
