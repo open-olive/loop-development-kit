@@ -1,7 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { network } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
-import * as testUtils from '../../testUtils';
 
 export const testSecuredHttpRequest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -117,42 +116,36 @@ export const testWebsocketConnection = (): Promise<boolean> =>
     };
 
     try {
-      console.debug('Stating websocket connect');
       const socket = await network.webSocketConnect(socketConfiguration);
-      console.debug('Websocket successfully connected');
-      socket.setCloseHandler((error, code, text) => {
-        if (error) {
-          console.error(`OnCloseHandler received error:`);
-          console.error(error);
+      console.info('Websocket successfully connected');
 
-          return;
+      socket.setCloseHandler(async (error, code, text) => {
+        if (error) {
+          console.error(error);
+          reject(error);
         }
-
         console.info(`Received on close code: ${code}. ${text}`);
+        if (textTestPassed && binaryTestPassed) {
+          resolve(true);
+        }
       });
-      const cancellable: Cancellable = await socket.setMessageHandler(async (error, message) => {
+      const cancellable = await socket.setMessageHandler(async (error, message) => {
         if (error) {
           console.error(error);
-
-          return;
+          reject(error);
         }
         if (message) {
+          console.info(`Received message: ${JSON.stringify(message)}`);
           if (typeof message === 'string') {
             if (message === testText) {
-              console.debug(`Received text data`);
               textTestPassed = true;
-              if (binaryTestPassed) {
-                resolve(true);
-                await testUtils.finalizeWebsocketTest(cancellable, socket);
-              }
             }
           } else if (JSON.stringify(message) === JSON.stringify(testData)) {
-            console.debug(`Received binary data`);
             binaryTestPassed = true;
-            if (textTestPassed) {
-              resolve(true);
-              await testUtils.finalizeWebsocketTest(cancellable, socket);
-            }
+          }
+          if (textTestPassed && binaryTestPassed) {
+            console.info(`Received all messages. Cancelling message listener.`);
+            cancellable.cancel();
           }
         }
       });
@@ -160,6 +153,10 @@ export const testWebsocketConnection = (): Promise<boolean> =>
       await socket.writeMessage(testText);
       // send binary
       await socket.writeMessage(testData);
+      // close socket
+      setTimeout(async () => {
+        await socket.close();
+      }, 2000);
     } catch (error) {
       console.error(`Error received while testing websocket: ${error.message}`);
       reject(error);
