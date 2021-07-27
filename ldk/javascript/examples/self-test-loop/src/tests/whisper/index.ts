@@ -14,10 +14,51 @@ import {
   DateTimeType,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
+  IconSize,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { AlignItems, Alignment } from '../../../../../dist/whisper';
 import { resolveRejectButtons } from './utils';
+
+export const testIconLayout = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Icon Whisper Layout Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Icon,
+              name: 'call',
+              size: IconSize.Large
+            },
+            {
+              type: WhisperComponentType.Markdown,
+              body: `**Primary**  
+              415-514-5410`
+            },
+            {
+              type: WhisperComponentType.Markdown,
+              body: `**Secondary**  
+              415-514-5420`
+            },
+            {
+              type: WhisperComponentType.Markdown,
+              body: `**Secondary**  
+              415-514-5200`
+            }, 
+          ]
+        },
+        resolveRejectButtons(resolve, reject),
+      ]
+    });
+  });
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -46,10 +87,6 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
         console.debug('closed');
       },
       components: [
-        {
-          type: WhisperComponentType.Icon,
-          name: 'star',
-        },
         {
           body: markdown,
           type: WhisperComponentType.Markdown,
@@ -1435,6 +1472,7 @@ export const testAlignItems = (): Promise<boolean> =>
               ],
             },
           ],
+          
         },
         {
           body: 'Are the items above aligned?',

@@ -137,6 +137,12 @@ export enum MessageWhisperCopyMode {
   Header = 'header',
 }
 
+export enum IconSize {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large'
+}
+
 export type StateMap = Map<string, string | boolean | number>;
 
 export interface Whisper {
@@ -257,12 +263,6 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   textAlign?: TextAlign;
   tooltip?: string;
 };
-
-export enum IconSize {
-  Small = 'small',
-  Medium = 'medium',
-  Large = 'large'
-}
 
 type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   name: string;

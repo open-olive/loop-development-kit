@@ -149,4 +149,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Pick date and time values',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Icon Rendering',
+      whisperTests.testIconLayout,
+      10000,
+      'Did the icon render correctly?'
+    )
   ]);
