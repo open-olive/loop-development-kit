@@ -15,9 +15,9 @@ import {
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   Color,
+  AlignItems,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { AlignItems, Alignment } from '../../../../../dist/whisper';
 import { resolveRejectButtons } from './utils';
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
