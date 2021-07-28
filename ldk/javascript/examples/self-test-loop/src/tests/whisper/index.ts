@@ -14,6 +14,7 @@ import {
   DateTimeType,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
+  Color,
   AlignItems,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
@@ -1316,6 +1317,43 @@ export const testCollapseBoxOnClick = (): Promise<boolean> =>
         },
       ],
     });
+  });
+
+export const testSectionTitle = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did Section Title render correctly?',
+        components: [
+          {
+            body: 'section Title in center',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Center,
+          },
+          {
+            body: 'section Title on the left',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Left,
+          },
+          {
+            body: 'section Title on the right(white)',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Right,
+            backgroundStyle: Color.White,
+          },
+          {
+            body: 'section Title in center(grey)',
+            textAlign: TextAlign.Center,
+            type: WhisperComponentType.SectionTitle,
+            backgroundStyle: Color.Grey,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
   });
 
 export const testDateTime = (): Promise<boolean> =>
