@@ -51,7 +51,7 @@ export interface Search {
 	/**
    * Verifies an search index exists with the provided name.
    *
-   * @param name- The unique name of the Search Index.
+   * @param name - The unique name of the Search Index.
    * @returns returns true if the index existes with the specified name
    */
 	exists(name: string, config: Config): Promise<boolean>;

@@ -1,88 +1,86 @@
-// Can be used to specify (and force) type of field that will be mapped in the index but if none is chosen it will
-// be automatically chosen based on the data passed in
 export enum FieldType {
-  /**
+	/**
    * Standard Filter is not case sensitve filters out english stop words
    */
-  standard = 'standard',
-  /**
+	standard = 'standard',
+	/**
    * Stemmer Filter ignores case but implements the porter stemmer and snowball stemmer filter
    */
-  stemmer = 'stemmer',
-  /**
+	stemmer = 'stemmer',
+	/**
    * Simple Filter only ignores case
    */
-  simple = 'simple',
-  /**
+	simple = 'simple',
+	/**
    * Numeric Filter is used to map numeric only fields
    */
-  numeric = 'numeric',
-  /**
+	numeric = 'numeric',
+	/**
    * Boolean Filter is used to map boolean or (1,0) only fields
    */
-  boolean = 'boolean',
-  /**
+	boolean = 'boolean',
+	/**
    * Datatime Filter is used to map datetime fields and support most major time standards
    */
-  datetime = 'datetime',
+	datetime = 'datetime'
 }
 
 export type Field = {
-  /**
+	/**
    * The name of the field
    */
-  name: string;
-  /**
+	name: string;
+	/**
    * The name of the field that will be used instead of the default name of the field (if provided)
    */
-  displayName?: string;
-  /**
+	displayName?: string;
+	/**
    * The type of mapping for the field
    */
-  type?: FieldType;
+	type?: FieldType;
 };
 
 export type Document = {
-  /**
+	/**
    * The name of the document
    */
-  name: string;
-  /**
+	name: string;
+	/**
    * The data for the document that will be indexed and searched over
    */
-  data: string;
-  /**
+	data: string;
+	/**
    * The list of fields with the field specific configurations
    */
-  fields?: Array<Field>;
+	fields?: Array<Field>;
 };
 
 export interface Config {
-  /**
+	/**
    * The list of fields to sort the results by
    */
-  sortBy?: string[];
-  /**
+	sortBy?: string[];
+	/**
    * Limit the size of the search results. Default is 100, max is 300
    */
-  searchSize?: number;
-  /**
+	searchSize?: number;
+	/**
    * number of characters per word to that will always trigger an exact match search versus a fuzzy search
    */
-  exactMatchThreshold?: number;
-  /**
+	exactMatchThreshold?: number;
+	/**
    * add the ability to do a prefix search along with the fuzzy search. Default is true.
    */
-  beginsWithSearch?: boolean;
+	beginsWithSearch?: boolean;
 }
 
 export interface SearchResult {
-  /**
+	/**
    * Search result data in a stringified state
    */
-  data: string;
-  /**
+	data: string;
+	/**
    * Total number of results found
    */
-  total: number;
+	total: number;
 }
