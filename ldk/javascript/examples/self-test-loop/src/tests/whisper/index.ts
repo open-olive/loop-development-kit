@@ -1323,7 +1323,7 @@ export const testSectionTitle = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await whisper.create({
-        label: 'Section Title',
+        label: 'Did Section Title render correctly?',
         components: [
           {
             body: 'section Title in center',
@@ -1347,6 +1347,7 @@ export const testSectionTitle = (): Promise<boolean> =>
             type: WhisperComponentType.SectionTitle,
             backgroundStyle: Color.Grey,
           },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
         ],
       });
     } catch (error) {
