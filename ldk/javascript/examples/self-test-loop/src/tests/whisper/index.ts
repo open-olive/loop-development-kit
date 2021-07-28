@@ -1,17 +1,18 @@
 /* eslint-disable no-async-promise-executor */
-import { clipboard, whisper, network } from '@oliveai/ldk';
+import { clipboard, network, whisper } from '@oliveai/ldk';
 import {
-  JustifyContent,
-  Direction,
-  ButtonStyle,
-  Urgency,
-  WhisperComponentType,
-  TextAlign,
+  Button,
   ButtonSize,
-  Whisper,
-  NewWhisper,
+  ButtonStyle,
   Component,
   DateTimeType,
+  Direction,
+  JustifyContent,
+  NewWhisper,
+  TextAlign,
+  Urgency,
+  Whisper,
+  WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { resolveRejectButtons } from './utils';
@@ -243,6 +244,93 @@ export const testBoxInBox = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+export const testDropzone = async (): Promise<boolean> => {
+  const dropZone: whisper.DropZone = {
+    type: WhisperComponentType.DropZone,
+    onDrop: () => {},
+    label: 'File Components',
+    key: 'drop',
+  };
+  const onDropAction = new Promise<whisper.File[]>((resolve, reject) => {
+    dropZone.onDrop = (error, param) => {
+      if (error) {
+        reject(error);
+      }
+      if (param) {
+        resolve(param);
+      }
+    };
+  });
+  const testWhisper = await whisper.create({
+    label: 'Dropzone Test',
+    components: [
+      {
+        type: WhisperComponentType.Markdown,
+        body: 'Select and drop a file onto the dropzone box below.',
+      },
+      dropZone,
+    ],
+  });
+  const droppedFiles = await onDropAction;
+  const fileData = droppedFiles
+    .map((file) => `Path: ${file.path}, Size: ${file.size}`)
+    .join('\n\n');
+
+  function createAcceptButtons(): {
+    acceptButton: Button;
+    rejectButton: Button;
+    acceptResult: Promise<boolean>;
+  } {
+    const acceptButton: whisper.Button = {
+      type: WhisperComponentType.Button,
+      label: 'Yes',
+      onClick: () => {},
+    };
+    const rejectButton: whisper.Button = {
+      type: WhisperComponentType.Button,
+      label: 'No',
+      onClick: () => {},
+    };
+    const acceptResult = new Promise<boolean>((resolve, reject) => {
+      rejectButton.onClick = (error) => {
+        reject(error);
+      };
+      acceptButton.onClick = (error) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(true);
+      };
+    });
+    return { acceptButton, rejectButton, acceptResult };
+  }
+
+  const acceptFileData = createAcceptButtons();
+  await testWhisper.update({
+    components: [
+      {
+        type: WhisperComponentType.Markdown,
+        body: `Are these the files you selected?\n\n${fileData}`,
+      },
+      dropZone,
+      acceptFileData.acceptButton,
+      acceptFileData.rejectButton,
+    ],
+  });
+  await acceptFileData.acceptResult;
+
+  const filesWereCleared = createAcceptButtons();
+  await testWhisper.update({
+    components: [
+      { type: WhisperComponentType.Markdown, body: 'Are the files gone now?' },
+      { ...dropZone, value: [] },
+      filesWereCleared.acceptButton,
+      filesWereCleared.rejectButton,
+    ],
+  });
+  return filesWereCleared.acceptResult;
+};
 
 export const testClickableButton = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {

@@ -14,7 +14,7 @@ import TestSuite from './testSuite';
 import { LoopTest } from './loopTest';
 import { testConfig } from '../config';
 import TestGroup from './testGroup';
-import WhisperCloser from './WhisperCloser';
+import WhisperCloser from './whisperCloser';
 
 const emitGroupDoneWhisper = async (group: TestGroup) => {
   const form = await whisper.create({

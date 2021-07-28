@@ -125,4 +125,5 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Pick date and time values',
     ),
+    new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
   ]);

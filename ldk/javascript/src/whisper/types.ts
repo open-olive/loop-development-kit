@@ -242,7 +242,7 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
   label: string;
   limit?: number;
   noun?: string;
-  onDrop: WhisperHandlerWithParam<File>;
+  onDrop: WhisperHandlerWithParam<File[]>;
   tooltip?: string;
   validationError?: string;
   value?: File[];

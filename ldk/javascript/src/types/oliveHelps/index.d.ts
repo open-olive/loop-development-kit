@@ -373,7 +373,7 @@ declare namespace OliveHelps {
     label: string;
     limit?: number;
     noun?: string;
-    onDrop: WhisperHandlerWithParam<File>;
+    onDrop: WhisperHandlerWithParam<File[]>;
     value?: File[];
     tooltip?: string;
     validationError?: string;
