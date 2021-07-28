@@ -1,6 +1,5 @@
 /* eslint-disable no-async-promise-executor */
 import { network } from '@oliveai/ldk';
-import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 export const testSecuredHttpRequest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
