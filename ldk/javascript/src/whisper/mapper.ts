@@ -32,12 +32,11 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Box:
       // eslint-disable-next-line
       const { onClick } = component;
+      console.log(component.alignItems);
       if (onClick) {
         return {
-          id: component.id,
+          ...component,
           alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
-          direction: component.direction,
-          key: component.key,
           children: throwForDuplicateKeys(
             component.children.map((childComponent) =>
               mapToInternalChildComponent(childComponent, stateMap),
@@ -51,6 +50,7 @@ export function mapToInternalChildComponent(
       }
       return {
         id: component.id,
+        alignItems: component.alignItems,
         alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
         direction: component.direction,
         key: component.key,
@@ -111,6 +111,7 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.ListPair:
     case WhisperComponentType.Markdown:
     case WhisperComponentType.Message:
+    case WhisperComponentType.SectionTitle:
       return component;
     case WhisperComponentType.Number:
       if (component.id && component.value) {
@@ -190,6 +191,22 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.TextInput;
+    case WhisperComponentType.DateTimeInput:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value.toISOString());
+      }
+      return {
+        ...component,
+        value: component.value?.toISOString(),
+        max: component.max?.toISOString(),
+        min: component.min?.toISOString(),
+        onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
+          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+        },
+      } as OliveHelps.DateTimeInput;
     default:
       throw new Error('Unexpected component type');
   }

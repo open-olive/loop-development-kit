@@ -1,12 +1,12 @@
-import { whisper } from '..';
+import { WhisperComponentType, TextInput } from './types';
 import { mapToInternalChildComponent } from './mapper';
 
 describe('mapper', () => {
   describe('mapToInternalChildComponent', () => {
     it('updates stateMap upon change', async () => {
       const textInputId = 'myTextInput';
-      const textInputComponent: whisper.TextInput = {
-        type: whisper.WhisperComponentType.TextInput,
+      const textInputComponent: TextInput = {
+        type: WhisperComponentType.TextInput,
         id: textInputId,
         label: 'myTextInput',
         onChange: jest.fn(),
@@ -27,8 +27,8 @@ describe('mapper', () => {
 
     it('does not update stateMap upon change given no component id', async () => {
       const textInputId = 'myTextInput';
-      const textInputComponent: whisper.TextInput = {
-        type: whisper.WhisperComponentType.TextInput,
+      const textInputComponent: TextInput = {
+        type: WhisperComponentType.TextInput,
         label: 'myTextInput',
         onChange: jest.fn(),
       };
@@ -50,8 +50,8 @@ describe('mapper', () => {
       const textInputId = 'myTextInput';
       const textInputOnChange = jest.fn();
 
-      const textInputComponent: whisper.TextInput = {
-        type: whisper.WhisperComponentType.TextInput,
+      const textInputComponent: TextInput = {
+        type: WhisperComponentType.TextInput,
         label: 'myTextInput',
         id: textInputId,
         onChange: textInputOnChange,

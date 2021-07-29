@@ -9,13 +9,25 @@ describe('User', () => {
   });
 
   describe('jwt', () => {
-    it('returns a promise with the token', () => {
+    it('returns a promise with the token when jwtConfig is unset', () => {
       const jwt = 'jwt';
       mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
 
       const actual = user.jwt();
 
-      expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function));
+      expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {});
+      return expect(actual).resolves.toBe(jwt);
+    });
+
+    it('returns a promise with the token when jwtConfig is present', () => {
+      const jwt = 'jwt';
+      mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
+
+      const actual = user.jwt({ includeEmail: true });
+
+      expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
+        includeEmail: true,
+      });
       return expect(actual).resolves.toBe(jwt);
     });
 

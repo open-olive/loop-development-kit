@@ -1,0 +1,46 @@
+{
+  "name": "typescript-loop-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --entry ./index.ts --config ./node_modules/@oliveai/ldk/dist/webpack/config.js",
+    "build-ldk": "cd ../.. && npm i && rm -rf dist && npm run build",
+    "build-all": "npm run build-ldk && npm i && npm run build"
+  },
+  "author": "LDK Team",
+  "license": "ISC",
+  "ldk": {
+    "permissions": {
+      "whisper": {}
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "7.13.10",
+    "@babel/plugin-transform-async-to-generator": "7.13.0",
+    "@babel/plugin-transform-destructuring": "7.13.0",
+    "@babel/plugin-transform-runtime": "7.13.10",
+    "@babel/preset-env": "7.13.12",
+    "@types/common-tags": "^1.8.0",
+    "@types/terser-webpack-plugin": "^5.0.3",
+    "babel-loader": "8.2.2",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4",
+    "webpack": "5.28.0",
+    "webpack-cli": "4.5.0",
+    "webpack-merge": "^5.7.3"
+  },
+  "dependencies": {
+    "@babel/runtime": "7.13.10",
+    "@babel/runtime-corejs2": "7.13.10",
+    "@oliveai/ldk": "file:../..",
+    "babel-runtime": "6.26.0",
+    "chance": "1.1.7",
+    "common-tags": "^1.8.0",
+    "core-js": "3.10.1",
+    "es6-promise": "4.2.8",
+    "ts-node": "^9.1.1",
+    "xlsx": "0.16.9"
+  }
+}

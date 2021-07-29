@@ -122,6 +122,19 @@ export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
   });
 }
 
+export function promisifyWithParamAfterCallback<TParam, TOut>(
+  param: TParam,
+  arg: OliveHelps.ReadableWithParamAfterCallback<TOut, TParam>,
+): Promise<TOut> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(promiseResolver(resolve, reject), param);
+    } catch (e) {
+      handleCaughtError(reject, e);
+    }
+  });
+}
+
 export function promisifyWithParam<TParam, TOut>(
   param: TParam,
   arg: OliveHelps.ReadableWithParam<TParam, TOut>,
@@ -198,6 +211,27 @@ export function promisifyListenableWithParam<TParam, TOut>(
       arg(param, handleListenerCallback(cb), (obj) => {
         resolve(obj);
       });
+    } catch (e) {
+      handleCaughtError(reject, e);
+    }
+  });
+}
+
+export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExternalOut>(
+  param: TParam,
+  map: Mapper<TInternalOut, TExternalOut>,
+  cb: (v: TExternalOut) => void,
+  arg: OliveHelps.ListenableWithParam<TParam, TInternalOut>,
+): Promise<Cancellable> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(
+        param,
+        handleListenerCallback((value) => cb(map(value))),
+        (obj) => {
+          resolve(obj);
+        },
+      );
     } catch (e) {
       handleCaughtError(reject, e);
     }

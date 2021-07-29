@@ -6,6 +6,7 @@ import * as keyboard from './keyboard';
 import * as network from './network';
 import * as process from './process';
 import * as search from './search';
+import * as system from './system';
 import * as ui from './ui';
 import * as user from './user';
 import * as vault from './vault';
@@ -21,6 +22,7 @@ const _filesystem: filesystem.Filesystem = filesystem;
 const _network: network.Network = network;
 const _process: process.Process = process;
 const _search: search.Search = search;
+const _system: system.System = system;
 const _ui: ui.UI = ui;
 const _user: user.User = user;
 const _vault: vault.Vault = vault;
@@ -35,7 +37,7 @@ export {
   keyboard,
   network,
   process,
-  search,
+  system,
   ui,
   user,
   vault,
