@@ -28,4 +28,17 @@ const _whisper: whisper.WhisperAptitude = whisper;
 const _window: window.Window = window;
 /* eslint-enable */
 
-export { clipboard, cursor, filesystem, keyboard, network, process, search, ui, user, vault, whisper, window };
+export {
+  clipboard,
+  cursor,
+  filesystem,
+  keyboard,
+  network,
+  process,
+  search,
+  ui,
+  user,
+  vault,
+  whisper,
+  window,
+};
