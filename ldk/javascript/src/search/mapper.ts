@@ -18,8 +18,7 @@ export const mapToFields = (fields: Field[]): OliveHelps.Field[] =>
   fields.map((f) => mapToField(f));
 
 export const mapToSearchResult = (searchResult: OliveHelps.SearchResult): SearchResult => ({
-  data: searchResult.data,
-  total: searchResult.total,
+  ...searchResult,
 });
 
 export const mapToDocument = (document: Document): OliveHelps.Document => ({
@@ -35,10 +34,7 @@ export const mapToDocuments = (documents: Document[]): OliveHelps.Document[] => 
 };
 
 export const mapToConfig = (config: Config): OliveHelps.Config => ({
-  sortBy: config.sortBy,
-  searchSize: config.searchSize,
-  exactMatchThreshold: config.exactMatchThreshold,
-  beginsWithSearch: config.beginsWithSearch,
+  ...config,
 });
 
 export const mapToIndex = (index: OliveHelps.Index): Index => ({
