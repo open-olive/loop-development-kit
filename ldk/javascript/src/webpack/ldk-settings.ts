@@ -2,47 +2,47 @@
 export interface LdkAptitude {}
 
 export interface LdkValue {
-	value: string;
+  value: string;
 }
 
 export interface LdkFilesystem {
-	pathGlobs: LdkValue[];
+  pathGlobs: LdkValue[];
 }
 
 export interface LdkNetwork {
-	urlDomains: LdkValue[];
+  urlDomains: LdkValue[];
 }
 
 export interface LdkPermissions {
-	clipboard: LdkAptitude;
+  clipboard: LdkAptitude;
 
-	cursor: LdkAptitude;
+  cursor: LdkAptitude;
 
-	filesystem: LdkFilesystem;
+  filesystem: LdkFilesystem;
 
-	keyboard: LdkAptitude;
+  keyboard: LdkAptitude;
 
-	network: LdkNetwork;
+  network: LdkNetwork;
 
-	process: LdkAptitude;
+  process: LdkAptitude;
 
-	search: LdkAptitude;
+  search: LdkAptitude;
 
-	ui: LdkAptitude;
+  ui: LdkAptitude;
 
-	user: LdkAptitude;
+  user: LdkAptitude;
 
-	vault: LdkAptitude;
+  vault: LdkAptitude;
 
-	whisper: LdkAptitude;
+  whisper: LdkAptitude;
 
-	window: LdkAptitude;
+  window: LdkAptitude;
 }
 
 export interface Ldk {
-	permissions: LdkPermissions;
+  permissions: LdkPermissions;
 }
 
 export interface LdkSettings {
-	ldk: Ldk;
+  ldk: Ldk;
 }
