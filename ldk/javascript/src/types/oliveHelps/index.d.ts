@@ -340,6 +340,10 @@ declare namespace OliveHelps {
 
   type DateTimeType = 'date' | 'time' | 'date_time';
 
+  type IconSize = 'small' | 'medium' | 'large' | 'x-large';
+
+  type IconColor = 'black' | 'grey' | 'white' | 'whisper-strip';
+
   interface Whisper {
     id: string;
     close: Readable<undefined>;
@@ -451,11 +455,11 @@ declare namespace OliveHelps {
     max?: string;
   };
 
-  type IconSize = 'small' | 'medium' | 'large'
-
   type Icon = Component<'icon'> & {
     name: string;
     size?: IconSize;
+    color?: IconColor;
+    onClick: WhisperHandler;
   }
 
   type Divider = Component<'divider'>;

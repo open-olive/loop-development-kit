@@ -140,7 +140,15 @@ export enum MessageWhisperCopyMode {
 export enum IconSize {
   Small = 'small',
   Medium = 'medium',
-  Large = 'large'
+  Large = 'large',
+  XLarge = 'x-large',
+}
+
+export enum IconColor {
+  Black = 'black',
+  Grey = 'grey',
+  White = 'white',
+  WhisperStrip = 'whisper-strip',
 }
 
 export type StateMap = Map<string, string | boolean | number>;
@@ -267,7 +275,9 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
 type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   name: string;
   size?: IconSize;
-}
+  color?: IconColor;
+  onClick: WhisperHandler;
+};
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 

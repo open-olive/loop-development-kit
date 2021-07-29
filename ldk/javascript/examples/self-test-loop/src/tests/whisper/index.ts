@@ -36,7 +36,8 @@ export const testIconLayout = (): Promise<boolean> =>
             {
               type: WhisperComponentType.Icon,
               name: 'call',
-              size: IconSize.Large
+              size: IconSize.XLarge,
+              onClick: () => { console.info('ICON CLICKED')}
             },
             {
               type: WhisperComponentType.Markdown,
