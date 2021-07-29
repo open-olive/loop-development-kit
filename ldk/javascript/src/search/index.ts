@@ -23,9 +23,9 @@ export interface Index {
    */
   queryStringSearch(queryString: string): Promise<SearchResult>;
   /**
-   * Executes a search with the using a query string to search over the data.
+   * Updates the data and configuration for the data
    *
-   * @param documents - The date that will be indexed and searchable
+   * @param documents - The data that will be indexed and searchable
    * @param config - The configuration object defines how the index will preform certain searches
    */
   update(documents: Document[], config: Config): Promise<void>;
