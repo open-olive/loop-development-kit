@@ -40,7 +40,8 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'call',
               size: IconSize.XLarge,
-              onClick: () => { console.info('ICON CLICKED')}
+              onClick: () => { console.info('Call Clicked')},
+              tooltip: 'Phone a friend'
             },
             {
               type: WhisperComponentType.Markdown,
@@ -57,6 +58,38 @@ export const testIconLayout = (): Promise<boolean> =>
               body: `**Secondary**  
               415-514-5200`
             }, 
+          ]
+        },
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Icon,
+              name: 'article',
+              size: IconSize.Small,
+              onClick: () => { console.info('Article Clicked')},
+              tooltip: 'Article Tooltip'
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'emoji_emotions',
+              size: IconSize.Medium,
+              onClick: () => { console.info('Emoji Emotions Clicked')},
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'fingerprint',
+              size: IconSize.Large,
+              onClick: () => { console.info('Fingerprint Clicked')},
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'pets',
+              size: IconSize.XLarge,
+              onClick: () => { console.info('Pets Clicked')},
+            }
           ]
         },
         resolveRejectButtons(resolve, reject),

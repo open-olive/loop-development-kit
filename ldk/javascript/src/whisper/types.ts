@@ -277,6 +277,7 @@ type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   size?: IconSize;
   color?: IconColor;
   onClick?: WhisperHandler;
+  tooltip?: string;
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;

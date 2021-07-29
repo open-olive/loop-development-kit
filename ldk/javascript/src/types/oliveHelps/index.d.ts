@@ -460,6 +460,7 @@ declare namespace OliveHelps {
     size?: IconSize;
     color?: IconColor;
     onClick?: WhisperHandler;
+    tooltip?: string;
   }
 
   type Divider = Component<'divider'>;
