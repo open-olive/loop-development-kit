@@ -7,31 +7,31 @@ const permissionsErrorMessage = `Please add a "ldk" object to your package.json 
 See README for more information.`;
 
 export function generateMetadata(ldkSettings: LdkSettings): string {
-	if (!ldkSettings || !ldkSettings.ldk || Object.keys(ldkSettings.ldk).length === 0) {
-		throw new Error(permissionsErrorMessage);
-	}
-	const json = JSON.stringify({
-		oliveHelpsContractVersion: '0.1.2',
-		permissions: {
-			clipboard: ldkSettings.ldk.permissions.clipboard || undefined,
-			cursor: ldkSettings.ldk.permissions.cursor || undefined,
-			filesystem: ldkSettings.ldk.permissions.filesystem || undefined,
-			keyboard: ldkSettings.ldk.permissions.keyboard || undefined,
-			network: ldkSettings.ldk.permissions.network || undefined,
-			process: ldkSettings.ldk.permissions.process || undefined,
-			search: ldkSettings.ldk.permissions.search || undefined,
-			ui: ldkSettings.ldk.permissions.ui || undefined,
-			user: ldkSettings.ldk.permissions.user || undefined,
-			vault: ldkSettings.ldk.permissions.vault || undefined,
-			whisper: ldkSettings.ldk.permissions.whisper || undefined,
-			window: ldkSettings.ldk.permissions.window || undefined
-		}
-	});
-	return Buffer.from(json).toString('base64');
+  if (!ldkSettings || !ldkSettings.ldk || Object.keys(ldkSettings.ldk).length === 0) {
+    throw new Error(permissionsErrorMessage);
+  }
+  const json = JSON.stringify({
+    oliveHelpsContractVersion: '0.1.2',
+    permissions: {
+      clipboard: ldkSettings.ldk.permissions.clipboard || undefined,
+      cursor: ldkSettings.ldk.permissions.cursor || undefined,
+      filesystem: ldkSettings.ldk.permissions.filesystem || undefined,
+      keyboard: ldkSettings.ldk.permissions.keyboard || undefined,
+      network: ldkSettings.ldk.permissions.network || undefined,
+      process: ldkSettings.ldk.permissions.process || undefined,
+      search: ldkSettings.ldk.permissions.search || undefined,
+      ui: ldkSettings.ldk.permissions.ui || undefined,
+      user: ldkSettings.ldk.permissions.user || undefined,
+      vault: ldkSettings.ldk.permissions.vault || undefined,
+      whisper: ldkSettings.ldk.permissions.whisper || undefined,
+      window: ldkSettings.ldk.permissions.window || undefined,
+    },
+  });
+  return Buffer.from(json).toString('base64');
 }
 
 export function generateBanner(ldkSettings: LdkSettings): string {
-	return `
+  return `
 /*
 ---BEGIN-LOOP-JSON-BASE64---
 ${generateMetadata(ldkSettings)}
