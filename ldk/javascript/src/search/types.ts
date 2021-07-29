@@ -1,5 +1,3 @@
-import { ObjectType } from 'typescript';
-
 export enum FieldType {
 	/**
    * Standard Filter is not case sensitive filters out english stop words

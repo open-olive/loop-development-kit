@@ -1,6 +1,5 @@
-import { mocked } from 'ts-jest/utils';
 import * as search from '.';
-import { FieldType, SearchResult } from './types';
+import { FieldType } from './types';
 
 describe('Search', () => {
 	beforeEach(() => {
@@ -25,7 +24,7 @@ describe('Search', () => {
 				{
 					name: 'test',
 					data: 'data',
-					fields: fields
+					fields
 				}
 			];
 			const config: search.Config = { searchSize: 10 };

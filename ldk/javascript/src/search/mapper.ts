@@ -6,13 +6,12 @@ const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: s
 	reject(error);
 };
 
+export const mapToFieldType = (type: FieldType | undefined): OliveHelps.FieldType => type as OliveHelps.FieldType;
 export const mapToField = (field: Field): OliveHelps.Field => ({
 	name: field.name,
 	displayName: field.displayName,
 	type: mapToFieldType(field.type)
 });
-
-export const mapToFieldType = (type: FieldType | undefined): OliveHelps.FieldType => type as OliveHelps.FieldType;
 
 export const mapToFields = (fields: Field[]): OliveHelps.Field[] => fields.map((f) => mapToField(f));
 
