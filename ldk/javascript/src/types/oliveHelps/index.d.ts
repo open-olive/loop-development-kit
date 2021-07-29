@@ -314,7 +314,8 @@ declare namespace OliveHelps {
     | 'telephone'
     | 'textInput'
     | 'dateTimeInput'
-    | 'icon';
+    | 'icon'
+    | 'sectionTitle';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -343,6 +344,8 @@ declare namespace OliveHelps {
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
   type IconColor = 'black' | 'grey' | 'white' | 'whisper-strip';
+  
+  type Color = 'white' | 'grey';
 
   interface Whisper {
     id: string;
@@ -448,6 +451,12 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
+  type SectionTitle = Component<'sectionTitle'> & {
+    body: string;
+    textAlign?: TextAlign;
+    backgroundStyle?: Color;
+  };
+
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {
     dateTimeType: DateTimeType;
     value?: string;
@@ -497,7 +506,8 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput
     | DateTimeInput
-    | Icon;
+    | Icon
+    | SectionTitle;
 
   type Components = ChildComponents | CollapseBox;
 

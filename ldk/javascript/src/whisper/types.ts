@@ -59,7 +59,10 @@ export enum WhisperComponentType {
    */
   TextInput = 'textInput',
   /**
-   * The text input field allows the user to provide Date and Time information.
+   * The section title field allows the user to provide section title information.
+   */
+  SectionTitle = 'sectionTitle',
+  /* The text input field allows the user to provide Date and Time information.
    *
    * The field can be pre-populated by the loop.
    */
@@ -128,6 +131,10 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+export enum Color {
+  Grey = 'grey',
+  White = 'white',
+}
 export enum MarkdownWhisperCopyMode {
   Body = 'body',
 }
@@ -272,12 +279,18 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   tooltip?: string;
 };
 
-type Icon = WhisperComponent<WhisperComponentType.Icon> & {
+export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   name: string;
   size?: IconSize;
   color?: IconColor;
   onClick?: WhisperHandler;
   tooltip?: string;
+};
+
+export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
+  body: string;
+  textAlign?: TextAlign;
+  backgroundStyle?: Color;
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
@@ -298,7 +311,8 @@ export type ChildComponents =
   | Telephone
   | TextInput
   | DateTimeInput
-  | Icon;
+  | Icon
+  | SectionTitle;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;

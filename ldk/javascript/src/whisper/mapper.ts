@@ -110,6 +110,7 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.ListPair:
     case WhisperComponentType.Markdown:
     case WhisperComponentType.Message:
+    case WhisperComponentType.SectionTitle:
       return component;
     case WhisperComponentType.Number:
       if (component.id && component.value) {
