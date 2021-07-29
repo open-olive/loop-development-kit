@@ -230,7 +230,7 @@ declare namespace OliveHelps {
 	type FieldType = 'standard' | 'stemmer' | 'simple' | 'numeric' | 'boolean' | 'datetime';
 
 	interface SearchResult {
-		data: string;
+		data: Array<any>;
 		total: number;
 	}
 	//--Keyboard
