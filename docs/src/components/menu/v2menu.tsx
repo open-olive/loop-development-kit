@@ -9,15 +9,42 @@ interface LinksProps {
 
 const Links: React.FunctionComponent<LinksProps> = (props) => (
   <ul className={props.listClass}>
-    <li className={props.itemClass}>
+    <li
+      className={props.itemClass}
+      onClick={() => {
+        window.gtag('event', 'Link out', {
+          event_category: 'Navigation',
+          event_label: 'Github Pages',
+          value: 0,
+        });
+      }}
+    >
       <a href="https://open-olive.github.io/loop-development-kit/ldk/javascript/" target="_blank">
         LDK
       </a>
     </li>
-    <li className={props.itemClass}>
+    <li
+      className={props.itemClass}
+      onClick={() => {
+        window.gtag('event', 'Link out', {
+          event_category: 'Navigation',
+          event_label: 'Design System',
+          value: 0,
+        });
+      }}
+    >
       <a href="https://coda.io/@olive-helps-design/design-system">Design system</a>
     </li>
-    <li className={props.itemClass}>
+    <li
+      className={props.itemClass}
+      onClick={() => {
+        window.gtag('event', 'Link out', {
+          event_category: 'Navigation',
+          event_label: 'Support',
+          value: 0,
+        });
+      }}
+    >
       <a href="https://github.com/open-olive/loop-development-kit/issues">Support</a>
     </li>
   </ul>

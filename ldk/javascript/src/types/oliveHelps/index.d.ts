@@ -4,6 +4,21 @@ declare module 'fastestsmallesttextencoderdecoder';
 declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
+  interface Aptitudes {
+    clipboard: Clipboard;
+    whisper: WhisperService;
+    filesystem: Filesystem;
+    cursor: Cursor;
+    keyboard: Keyboard;
+    network: Network;
+    process: Process;
+    system: System;
+    ui: UI;
+    user: User;
+    vault: Vault;
+    window: Window;
+  }
+
   interface Cancellable {
     cancel(): void;
   }
@@ -15,6 +30,10 @@ declare namespace OliveHelps {
   type Readable<T> = (callback: Callback<T>) => void;
 
   type ReadableWithParam<TParam, TOut> = (param: TParam, callback: Callback<TOut>) => void;
+  type ReadableWithParamAfterCallback<TOut, TParam> = (
+    callback: Callback<TOut>,
+    param: TParam,
+  ) => void;
 
   type ReadableWithTwoParams<TParam1, TParam2, TOut> = (
     param: TParam1,
@@ -59,9 +78,12 @@ declare namespace OliveHelps {
     vault: Vault;
     window: Window;
   }
-
+  //-- User
+  interface JWTConfig {
+    includeEmail?: boolean;
+  }
   interface User {
-    jwt: Readable<string>;
+    jwt: ReadableWithParamAfterCallback<string, JWTConfig>;
   }
 
   //-- Window
@@ -148,6 +170,11 @@ declare namespace OliveHelps {
     all: Readable<ProcessInfo[]>;
 
     listenAll: Listenable<ProcessEvent>;
+  }
+
+  //-- System
+  interface System {
+    operatingSystem: Readable<string>;
   }
 
   //-- Network
@@ -292,210 +319,7 @@ declare namespace OliveHelps {
     includeOliveHelpsEvents(enabled: boolean): void;
   }
 
-  //-- Whisper
-  interface WhisperService {
-    create: ReadableWithParam<NewWhisper, Whisper>;
-  }
-
-  type WhisperComponentType =
-    | 'box'
-    | 'button'
-    | 'checkbox'
-    | 'collapseBox'
-    | 'divider'
-    | 'email'
-    | 'link'
-    | 'listPair'
-    | 'markdown'
-    | 'message'
-    | 'number'
-    | 'password'
-    | 'radioGroup'
-    | 'select'
-    | 'telephone'
-    | 'textInput';
-
-  type Urgency = 'error' | 'none' | 'success' | 'warning';
-
-  type Alignment = 'center' | 'left' | 'right' | 'space_around' | 'space_evenly';
-
-  type ButtonSize = 'large' | 'small';
-
-  type ButtonStyle = 'primary' | 'secondary' | 'text';
-
-  type Direction = 'horizontal' | 'vertical';
-
-  type TextAlign = 'center' | 'left' | 'right';
-
-  interface Whisper {
-    id: string;
-    close: Readable<undefined>;
-    update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
-  }
-
-  interface Component<T extends WhisperComponentType> {
-    id?: string;
-    type: T;
-    key?: string;
-  }
-
-  type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
-  type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
-
-  type Button = Component<'button'> & {
-    buttonStyle?: ButtonStyle;
-    disabled?: boolean;
-    label: string;
-    onClick: WhisperHandler;
-    size?: ButtonSize;
-    tooltip?: string;
-  };
-
-  type Checkbox = Component<'checkbox'> & {
-    label: string;
-    tooltip?: string;
-    value: boolean;
-    onChange: WhisperHandlerWithParam<boolean>;
-  };
-
-  type Email = Component<'email'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-  };
-
-  type Link = Component<'link'> & {
-    href?: string;
-    text: string;
-    onClick?: WhisperHandler;
-    style?: Urgency;
-    textAlign?: TextAlign;
-  };
-
-  type ListPair = Component<'listPair'> & {
-    copyable: boolean;
-    labelCopyable?: boolean;
-    label: string;
-    value: string;
-    style: Urgency;
-  };
-
-  type Markdown = Component<'markdown'> & {
-    body: string;
-    tooltip?: string;
-  };
-
-  type Message = Component<'message'> & {
-    body?: string;
-    header?: string;
-    style?: Urgency;
-    textAlign?: TextAlign;
-    tooltip?: string;
-  };
-
-  type NumberInput = Component<'number'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<number>;
-    value?: number;
-    max?: number;
-    min?: number;
-    step?: number;
-    tooltip?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-  };
-
-  type Password = Component<'password'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-  };
-
-  type RadioGroup = Component<'radioGroup'> & {
-    onSelect: WhisperHandlerWithParam<number>;
-    options: string[];
-    selected?: number;
-  };
-
-  type Select = Component<'select'> & {
-    label: string;
-    options: string[];
-    onSelect: WhisperHandlerWithParam<number>;
-    selected?: number;
-    tooltip?: string;
-  };
-
-  type Telephone = Component<'telephone'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    // pattern?: RegExp; TODO: Implement this
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-  };
-
-  type TextInput = Component<'textInput'> & {
-    label: string;
-    onChange: WhisperHandlerWithParam<string>;
-    tooltip?: string;
-    value?: string;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-  };
-
-  type Divider = Component<'divider'>;
-
-  type CollapseBox = Component<'collapseBox'> & {
-    children: Array<ChildComponents>;
-    label?: string;
-    open: boolean;
-    onClick?: WhisperHandlerWithParam<boolean>;
-  };
-
-  type Box = Component<'box'> & {
-    alignment: Alignment;
-    children: Array<ChildComponents>;
-    direction: Direction;
-    onClick?: WhisperHandler;
-  };
-
-  type ChildComponents =
-    | Box
-    | Button
-    | Checkbox
-    | Divider
-    | Email
-    | Link
-    | ListPair
-    | Markdown
-    | Message
-    | NumberInput
-    | Password
-    | RadioGroup
-    | Select
-    | Telephone
-    | TextInput;
-
-  type Components = ChildComponents | CollapseBox;
-
-  interface NewWhisper {
-    label: string;
-    components: Array<Components>;
-    onClose?: () => void;
-  }
-
-  interface UpdateWhisper {
-    label?: string;
-    components: Array<Components>;
-  }
-
+  //-- Filesystem
   interface FileInfo {
     name: string;
     size: number;
@@ -515,7 +339,6 @@ declare namespace OliveHelps {
   type WriteOperationAppend = 2;
   type WriteOperation = WriteOperationOverwrite | WriteOperationAppend;
 
-  //-- Filesystem
   interface Filesystem {
     copy: ReadableWithTwoParams<string, string, void>;
 
@@ -540,5 +363,222 @@ declare namespace OliveHelps {
     writeFile: ReadableWithFourParams<string, Array<number>, WriteOperation, WriteMode, void>;
 
     join: ReadableWithParam<string[], string>;
+  }
+
+  //-- Whisper
+  type WhisperComponentType =
+    | 'box'
+    | 'button'
+    | 'checkbox'
+    | 'collapseBox'
+    | 'divider'
+    | 'email'
+    | 'link'
+    | 'listPair'
+    | 'markdown'
+    | 'message'
+    | 'number'
+    | 'password'
+    | 'radioGroup'
+    | 'select'
+    | 'telephone'
+    | 'textInput'
+    | 'sectionTitle'
+    | 'dateTimeInput';
+
+  type Urgency = 'error' | 'none' | 'success' | 'warning';
+
+  type Alignment =
+    | 'center'
+    | 'flex-end'
+    | 'flex-start'
+    | 'left'
+    | 'right'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly';
+
+  type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
+
+  type ButtonSize = 'large' | 'small';
+
+  type ButtonStyle = 'primary' | 'secondary' | 'text';
+
+  type Direction = 'horizontal' | 'vertical';
+
+  type TextAlign = 'center' | 'left' | 'right';
+
+  type DateTimeType = 'date' | 'time' | 'date_time';
+
+  type Color = 'white' | 'grey';
+
+  interface Whisper {
+    id: string;
+    close: Readable<undefined>;
+    update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
+  }
+
+  interface Component<T extends WhisperComponentType> {
+    id?: string;
+    type: T;
+    key?: string;
+  }
+
+  interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {
+    label: string;
+    tooltip?: string;
+    validationError?: string;
+    value?: T2;
+    onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
+    onChange: WhisperHandlerWithParam<T2>;
+  }
+
+  interface SelectComponent<T extends WhisperComponentType> extends Component<T> {
+    validationError?: string;
+  }
+
+  type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
+  type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
+
+  type Button = Component<'button'> & {
+    buttonStyle?: ButtonStyle;
+    disabled?: boolean;
+    label: string;
+    onClick: WhisperHandler;
+    size?: ButtonSize;
+    tooltip?: string;
+  };
+
+  type Link = Component<'link'> & {
+    href?: string;
+    text: string;
+    onClick?: WhisperHandler;
+    style?: Urgency;
+    textAlign?: TextAlign;
+  };
+
+  type ListPair = Component<'listPair'> & {
+    copyable: boolean;
+    labelCopyable?: boolean;
+    label: string;
+    value: string;
+    style: Urgency;
+  };
+
+  type Markdown = Component<'markdown'> & {
+    copyable?: 'body';
+    body: string;
+    tooltip?: string;
+  };
+
+  type Message = Component<'message'> & {
+    copyable?: 'body' | 'header';
+    body?: string;
+    header?: string;
+    style?: Urgency;
+    textAlign?: TextAlign;
+    tooltip?: string;
+  };
+
+  type Email = InputComponent<'email', string>;
+
+  type Password = InputComponent<'password', string>;
+
+  type Telephone = InputComponent<'telephone', string>;
+
+  type TextInput = InputComponent<'textInput', string>;
+
+  type NumberInput = InputComponent<'number', number> & {
+    max?: number;
+    min?: number;
+    step?: number;
+  };
+
+  type RadioGroup = SelectComponent<'radioGroup'> & {
+    onSelect: WhisperHandlerWithParam<number>;
+    options: string[];
+    selected?: number;
+  };
+
+  type Checkbox = SelectComponent<'checkbox'> & {
+    label: string;
+    tooltip?: string;
+    value?: boolean;
+    onChange: WhisperHandlerWithParam<boolean>;
+  };
+
+  type Select = SelectComponent<'select'> & {
+    label: string;
+    options: string[];
+    onSelect: WhisperHandlerWithParam<number>;
+    selected?: number;
+    tooltip?: string;
+  };
+
+  type SectionTitle = Component<'sectionTitle'> & {
+    body: string;
+    textAlign?: TextAlign;
+    backgroundStyle?: Color;
+  };
+
+  type DateTimeInput = InputComponent<'dateTimeInput', string> & {
+    dateTimeType: DateTimeType;
+    value?: string;
+    min?: string;
+    max?: string;
+  };
+
+  type Divider = Component<'divider'>;
+
+  type CollapseBox = Component<'collapseBox'> & {
+    children: Array<ChildComponents>;
+    label?: string;
+    open: boolean;
+    onClick?: WhisperHandlerWithParam<boolean>;
+  };
+
+  type Box = Component<'box'> & {
+    alignItems?: AlignItems;
+    alignment: Alignment;
+    children: Array<ChildComponents>;
+    direction: Direction;
+    onClick?: WhisperHandler;
+  };
+
+  type ChildComponents =
+    | Box
+    | Button
+    | Checkbox
+    | Divider
+    | Email
+    | Link
+    | ListPair
+    | Markdown
+    | Message
+    | NumberInput
+    | Password
+    | RadioGroup
+    | Select
+    | Telephone
+    | TextInput
+    | SectionTitle
+    | DateTimeInput;
+
+  type Components = ChildComponents | CollapseBox;
+
+  interface NewWhisper {
+    label: string;
+    components: Array<Components>;
+    onClose?: () => void;
+  }
+
+  interface UpdateWhisper {
+    label?: string;
+    components: Array<Components>;
+  }
+
+  interface WhisperService {
+    create: ReadableWithParam<NewWhisper, Whisper>;
   }
 }

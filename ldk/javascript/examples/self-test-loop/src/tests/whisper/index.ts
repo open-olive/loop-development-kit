@@ -1,6 +1,5 @@
 /* eslint-disable no-async-promise-executor */
 import { clipboard, whisper, network } from '@oliveai/ldk';
-
 import {
   JustifyContent,
   Direction,
@@ -12,62 +11,14 @@ import {
   Whisper,
   NewWhisper,
   Component,
+  DateTimeType,
+  MessageWhisperCopyMode,
+  MarkdownWhisperCopyMode,
+  Color,
+  AlignItems,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-
-const resolveOnClick = (
-  error: Error,
-  whisperToClose: Whisper,
-  resolve: (value: boolean) => void,
-  reject: (reason?: Error) => void,
-) => {
-  if (error) {
-    console.error(error);
-    reject(error);
-  }
-  whisperToClose.close(() => {
-    // do nothing.
-  });
-  resolve(true);
-};
-
-const rejectOnClick = (error: Error, whisperToClose: Whisper, reject: (reason?: Error) => void) => {
-  if (error) {
-    console.error(error);
-    reject(error);
-  }
-  whisperToClose.close(() => {
-    // do nothing.
-  });
-  reject(new Error('Not rendered correctly.'));
-};
-
-const resolveRejectButtons = (
-  resolve: (value: boolean) => void,
-  reject: (reason?: Error) => void,
-  resolveButtonText?: string | undefined,
-  rejectButtonText?: string | undefined,
-): Component => ({
-  type: WhisperComponentType.Box,
-  justifyContent: JustifyContent.SpaceEvenly,
-  direction: Direction.Horizontal,
-  children: [
-    {
-      type: WhisperComponentType.Button,
-      label: rejectButtonText || `Incorrect`,
-      onClick: (error: Error, onClickWhisper: Whisper) => {
-        rejectOnClick(error, onClickWhisper, reject);
-      },
-    },
-    {
-      type: WhisperComponentType.Button,
-      label: resolveButtonText || `Looks Good`,
-      onClick: (error: Error, onClickWhisper: Whisper) => {
-        resolveOnClick(error, onClickWhisper, resolve, reject);
-      },
-    },
-  ],
-});
+import { resolveRejectButtons } from './utils';
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -310,7 +261,7 @@ export const testClickableButton = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceEvenly,
+          alignment: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           children: [
             {
@@ -339,7 +290,7 @@ export const testClickableButton = (): Promise<boolean> =>
           type: WhisperComponentType.Box,
         },
         {
-          alignment: JustifyContent.SpaceEvenly,
+          alignment: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           children: [
             {
@@ -466,6 +417,110 @@ export const testListPairWithCopyableLabel = (): Promise<boolean> =>
           labelCopyable: true,
           copyable: false,
           style: Urgency.None,
+        },
+      ],
+    });
+
+    setTimeout(async () => {
+      const response = await clipboard.read();
+      if (response === copyableText) {
+        createdWhisper.close(() => {
+          // do nothing.
+        });
+        resolve(true);
+      } else {
+        reject(new Error('Incorrect value detected'));
+      }
+    }, 5000);
+  });
+
+export const testMarkdownWithCopyableBody = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const copyableText = '**Click me** to copy the Markdown value text';
+    const expectedCopiedText = `<p><strong>Click me</strong> to copy the Markdown value text</p>`;
+
+    // reset clipboard value
+    await clipboard.write('');
+
+    const createdWhisper = await whisper.create({
+      label: 'Copyable Markdown Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          copyable: MarkdownWhisperCopyMode.Body,
+          body: copyableText,
+        },
+      ],
+    });
+
+    setTimeout(async () => {
+      const response = await clipboard.read();
+      if (response === expectedCopiedText) {
+        createdWhisper.close(() => {
+          // do nothing.
+        });
+        resolve(true);
+      } else {
+        reject(new Error('Incorrect value detected'));
+      }
+    }, 5000);
+  });
+
+export const testMessageWithCopyableBody = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const copyableText = 'Click me to copy the Message value text';
+
+    // reset clipboard value
+    await clipboard.write('');
+
+    const createdWhisper = await whisper.create({
+      label: 'Copyable Markdown Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          copyable: MessageWhisperCopyMode.Body,
+          body: copyableText,
+        },
+      ],
+    });
+
+    setTimeout(async () => {
+      const response = await clipboard.read();
+      if (response === copyableText) {
+        createdWhisper.close(() => {
+          // do nothing.
+        });
+        resolve(true);
+      } else {
+        reject(new Error('Incorrect value detected'));
+      }
+    }, 5000);
+  });
+
+export const testMessageWithCopyableHeader = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const copyableText = 'Click me to copy the Message Header text';
+
+    // reset clipboard value
+    await clipboard.write('');
+
+    const createdWhisper = await whisper.create({
+      label: 'Copyable Markdown Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          header: copyableText,
+          copyable: MessageWhisperCopyMode.Header,
+          body: 'do not copy me',
         },
       ],
     });
@@ -887,7 +942,7 @@ export const testClickableBox = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Box,
-          alignment: JustifyContent.SpaceEvenly,
+          alignment: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: () => {
             console.debug('The toggles...they do nothing');
@@ -901,7 +956,7 @@ export const testClickableBox = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Box,
-          alignment: JustifyContent.SpaceEvenly,
+          alignment: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             resolve(true);
@@ -931,7 +986,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceEvenly,
+          alignment: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -939,7 +994,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
           },
           children: [
             {
-              alignment: JustifyContent.SpaceEvenly,
+              alignment: JustifyContent.SpaceBetween,
               direction: Direction.Horizontal,
               onClick: (error: Error, onClickWhisper: Whisper) => {
                 onClickWhisper.close((e) => console.error(e));
@@ -954,7 +1009,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
               type: WhisperComponentType.Box,
             },
             {
-              alignment: JustifyContent.SpaceEvenly,
+              alignment: JustifyContent.SpaceBetween,
               direction: Direction.Horizontal,
               children: [
                 {
@@ -984,7 +1039,7 @@ export const testClickableBoxNestingButtons = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceEvenly,
+          alignment: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -1019,7 +1074,7 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceEvenly,
+          alignment: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -1260,6 +1315,166 @@ export const testCollapseBoxOnClick = (): Promise<boolean> =>
             },
           ],
         },
+      ],
+    });
+  });
+
+export const testSectionTitle = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did Section Title render correctly?',
+        components: [
+          {
+            body: 'section Title in center',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Center,
+          },
+          {
+            body: 'section Title on the left',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Left,
+          },
+          {
+            body: 'section Title on the right(white)',
+            type: WhisperComponentType.SectionTitle,
+            textAlign: TextAlign.Right,
+            backgroundStyle: Color.White,
+          },
+          {
+            body: 'section Title in center(grey)',
+            textAlign: TextAlign.Center,
+            type: WhisperComponentType.SectionTitle,
+            backgroundStyle: Color.Grey,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testDateTime = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Date', false],
+      ['Time', false],
+      ['DateTime', false],
+    ]);
+
+    try {
+      const components: Component[] = [
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'dateId',
+          id: 'dateId',
+          label: 'Date',
+          dateTimeType: DateTimeType.Date,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`Date picker value received: ${param}`);
+              onActionWrapper(error, 'Date', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Date picker',
+          min: new Date(2020, 0, 1),
+          value: new Date(2021, 0, 1),
+          max: new Date(2022, 11, 31),
+        },
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'timeId',
+          id: 'timeId',
+          label: 'Time',
+          dateTimeType: DateTimeType.Time,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`Time picker value received: ${param}`);
+              onActionWrapper(error, 'Time', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Time picker',
+          value: new Date(0, 0, 0, 14, 30),
+        },
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'dateTimeId',
+          id: 'dateTimeId',
+          label: 'Date and Time',
+          dateTimeType: DateTimeType.DateTime,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`DateTime picker value received: ${param}`);
+              onActionWrapper(error, 'DateTime', resolverMap, onChangeWhisper, resolve, reject);
+            }
+          },
+          tooltip: 'Date/Time picker',
+          min: new Date(2020, 0, 1),
+          value: new Date(2021, 4, 5),
+          max: new Date(2022, 11, 31),
+        },
+      ];
+      await whisper.create({
+        label: 'Pick date and time',
+        components: [
+          ...components,
+          {
+            type: WhisperComponentType.Button,
+            label: 'Update',
+            onClick: (error: Error, onClickWhisper: Whisper) => {
+              onClickWhisper.update({
+                components,
+              });
+            },
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testAlignItems = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const markdown = stripIndent`![](data:image/gif;base64,R0lGODlhFAAUAPAAAP///wAAACH5BAADAAAAIf8LTkVUU0NBUEUyLjADAQAAACwAAAAAFAAUAAACEYSPqcvtD6OctNqLs968+68VACH5BAADAAAALAAAAAAUABQAAAIRhI+py+0Po5y02ouz3rz7rxUAIfkEAAMAAAAsAAAAABQAFAAAAhGEj6nL7Q+jnLTai7PevPuvFQAh+QQAAwAAACwAAAAAFAAUAIH9/f7+/v///v////8CEZyPqcvtD6OctNqLs968+68VACH5BAADAAAALAAAAAAUABQAgvn2//v5//38//79/////wAAAAAAAAAAAAMVSLrc/jDKSau9OOu9QeBgKI5kaRIJACH5BAADAAAALAAAAAAUABQAgu7n//Lt//n3//v5/////wAAAAAAAAAAAAMXSLrc/jDKSau9OGsthgbBJo5kaZ5olAAAIfkEAAMAAAAsAAAAABQAFACC3Mz/5Nf/8ev/9O//////AAAAAAAAAAAAAxdIutz+MMpJq704ay2GBsEmjmRpnmiUAAAh+QQAAwAAACwAAAAAFAAUAILApP/LtP/h0//m2//9/P/+/f////8AAAADF2i63P4wykmrvThrLYYGwUZsZGmeaHolACH5BAADAAAALAAAAAAUABQAg51w/6mC/8Km/8qy//by//j0//v5//38//7+/////wAAAAAAAAAAAAAAAAAAAAAAAAQbMMlJq7046827/2AoisIQGkAgEsTovnAsz18EACH5BAADAAAALAAAAAAUABQAg3g6/4FI/5Rj/5xw/+HT/+XZ/+jd//Dp//by//j1//n3//79///+/////wAAAAAAAAQfsMlJq7046827/2AIJkl4CAMCGkBwhEQhznRt37gdAQAh+QQAAwAAACwAAAAAFAAUAIRkHf9nIf9sKv9wMP+6m/+/of/BpP/MtP/Mtf/Ww//Yxv/by//07//39P/7+f/9/P////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFJSAkjmRpnmiqrmzrvnD8OsoSH8KQwAYQHDAGodCQGY/IpHKJDAEAIfkEAAMAAAAsAAAAABQAFACEYRn/iVP/i1f/jFf/kV//lGT/mmz/mm3/nXH/07//2cj/3tD/5Nf/9/P/+PX/+vf//Pr//fz//f3/////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) `;
+
+    await whisper.create({
+      label: 'Markdown whisper Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Box,
+          alignItems: AlignItems.Center,
+          justifyContent: JustifyContent.Left,
+          direction: Direction.Horizontal,
+          children: [
+            {
+              body: markdown,
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              type: WhisperComponentType.Box,
+              alignment: JustifyContent.Center,
+              direction: Direction.Vertical,
+              children: [
+                {
+                  body: 'Copied',
+                  type: WhisperComponentType.Markdown,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          body: 'Are the items above aligned?',
+          type: WhisperComponentType.Markdown,
+        },
+        resolveRejectButtons(resolve, reject),
       ],
     });
   });

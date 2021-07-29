@@ -24,6 +24,12 @@ export const networkTestGroup = (): TestGroup =>
       'Custom timeout should pass',
     ),
     new LoopTest(
+      'Network Aptitude - HTTP block test',
+      networkTests.testHttpRequestBlock,
+      5000,
+      'HTTP call should not block',
+    ),
+    new LoopTest(
       'Network Aptitude - WebSocket test',
       networkTests.testWebsocketConnection,
       20000,

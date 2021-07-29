@@ -109,7 +109,7 @@ export const emitTestWhisper = async (whisperCloser: WhisperCloser): Promise<Whi
     const group = testConfig[keys[i]];
     clickableElements.push({
       type: WhisperComponentType.Box,
-      justifyContent: JustifyContent.SpaceAround,
+      justifyContent: JustifyContent.SpaceBetween,
       direction: Direction.Horizontal,
       children: [getTestLinkComponent(group), getExpandLinkComponent(group, whisperCloser)],
     });
