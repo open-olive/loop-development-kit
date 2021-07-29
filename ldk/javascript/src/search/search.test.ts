@@ -11,7 +11,7 @@ describe('Search', () => {
   });
 
   describe('createIndex', () => {
-    it('createIndex returns a promise result with expected index', () => {
+    it('returns a promise result with expected index', () => {
       const indexName = 'testIndex';
       const fields: search.Field[] = [
         {
@@ -38,7 +38,7 @@ describe('Search', () => {
     });
   });
   describe('openIndex', () => {
-    it('openIndex returns a promise result with expected index', () => {
+    it('returns a promise result with expected index', () => {
       const indexName = 'testIndex';
       const config: search.Config = { searchSize: 10 };
       search.openIndex(indexName, config);
@@ -50,7 +50,7 @@ describe('Search', () => {
     });
   });
   describe('exists', () => {
-    it('exists returns a promise result with expected index', () => {
+    it('returns a promise result with expected boolean', () => {
       const indexName = 'testIndex';
       search.exists(indexName);
       return expect(oliveHelps.search.exists).toBeCalledWith(indexName, expect.any(Function));
