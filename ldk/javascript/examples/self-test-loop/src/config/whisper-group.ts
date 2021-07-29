@@ -153,6 +153,6 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - Icon Rendering',
       whisperTests.testIconLayout,
       10000,
-      'Did the icon render correctly?'
-    )
+      'Did the icon render correctly?',
+    ),
   ]);

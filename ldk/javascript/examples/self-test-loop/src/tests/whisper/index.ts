@@ -21,7 +21,6 @@ import { stripIndent } from 'common-tags';
 import { AlignItems, Alignment } from '../../../../../dist/whisper';
 import { resolveRejectButtons } from './utils';
 
-
 //TODO: Add component state icon click test...
 
 export const testIconLayout = (): Promise<boolean> =>
@@ -41,25 +40,27 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'call',
               size: IconSize.XLarge,
-              onClick: () => { console.info('Call Clicked')},
-              tooltip: 'Phone a friend'
+              onClick: () => {
+                console.info('Call Clicked');
+              },
+              tooltip: 'Phone a friend',
             },
             {
               type: WhisperComponentType.Markdown,
               body: `**Primary**  
-              415-514-5410`
+              415-514-5410`,
             },
             {
               type: WhisperComponentType.Markdown,
               body: `**Secondary**  
-              415-514-5420`
+              415-514-5420`,
             },
             {
               type: WhisperComponentType.Markdown,
               body: `**Secondary**  
-              415-514-5200`
-            }, 
-          ]
+              415-514-5200`,
+            },
+          ],
         },
         {
           type: WhisperComponentType.Box,
@@ -71,34 +72,42 @@ export const testIconLayout = (): Promise<boolean> =>
               name: 'article',
               size: IconSize.Small,
               color: IconColor.Black,
-              onClick: () => { console.info('Article Clicked')},
-              tooltip: 'Article Tooltip'
+              onClick: () => {
+                console.info('Article Clicked');
+              },
+              tooltip: 'Article Tooltip',
             },
             {
               type: WhisperComponentType.Icon,
               name: 'emoji_emotions',
               size: IconSize.Medium,
               color: IconColor.Grey,
-              onClick: () => { console.info('Emoji Emotions Clicked')},
+              onClick: () => {
+                console.info('Emoji Emotions Clicked');
+              },
             },
             {
               type: WhisperComponentType.Icon,
               name: 'fingerprint',
               size: IconSize.Large,
               color: IconColor.Black,
-              onClick: () => { console.info('Fingerprint Clicked')},
+              onClick: () => {
+                console.info('Fingerprint Clicked');
+              },
             },
             {
               type: WhisperComponentType.Icon,
               name: 'pets',
               size: IconSize.XLarge,
               color: IconColor.WhisperStrip,
-              onClick: () => { console.info('Pets Clicked')},
-            }
-          ]
+              onClick: () => {
+                console.info('Pets Clicked');
+              },
+            },
+          ],
         },
         resolveRejectButtons(resolve, reject),
-      ]
+      ],
     });
   });
 
@@ -1514,7 +1523,6 @@ export const testAlignItems = (): Promise<boolean> =>
               ],
             },
           ],
-          
         },
         {
           body: 'Are the items above aligned?',

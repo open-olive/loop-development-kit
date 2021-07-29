@@ -65,7 +65,7 @@ export enum WhisperComponentType {
    */
   DateTimeInput = 'dateTimeInput',
   /**
-   * 
+   *
    */
   Icon = 'icon',
 }
