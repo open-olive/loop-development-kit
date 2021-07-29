@@ -32,7 +32,6 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Box:
       // eslint-disable-next-line
       const { onClick } = component;
-      console.log(component.alignItems);
       if (onClick) {
         return {
           ...component,
@@ -207,12 +206,15 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.DateTimeInput;
     case WhisperComponentType.Icon:
-      return {
-        ...component,
-        onClick: (error, whisper) => {
-          component.onClick(error, mapToExternalWhisper(whisper, stateMap));
-        },
-      } as OliveHelps.Icon
+      if (onClick) {
+        return {
+          ...component,
+          onClick: (error, whisper) => {
+            onClick(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Icon;
+      }
+      return component as OliveHelps.Icon;
     default:
       throw new Error('Unexpected component type');
   }

@@ -459,7 +459,7 @@ declare namespace OliveHelps {
     name: string;
     size?: IconSize;
     color?: IconColor;
-    onClick: WhisperHandler;
+    onClick?: WhisperHandler;
   }
 
   type Divider = Component<'divider'>;

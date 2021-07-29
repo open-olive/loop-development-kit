@@ -20,6 +20,9 @@ import { stripIndent } from 'common-tags';
 import { AlignItems, Alignment } from '../../../../../dist/whisper';
 import { resolveRejectButtons } from './utils';
 
+
+//TODO: Add component state icon click test...
+
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     await whisper.create({
