@@ -195,7 +195,7 @@ declare namespace OliveHelps {
 	interface Search {
 		createIndex: ReadableWithThreeParams<string, Array<Document>, Config, Index>;
 		openIndex: ReadableWithTwoParams<string, Config, Index>;
-		exists: Readable<boolean>;
+		exists: ReadableWithParam<string, boolean>;
 	}
 
 	interface Index {

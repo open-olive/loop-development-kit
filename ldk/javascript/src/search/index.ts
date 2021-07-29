@@ -1,4 +1,4 @@
-import { promisify, promisifyMappedWithTwoParams, promisifyMappedWithThreeParams } from '../promisify';
+import { promisifyMappedWithTwoParams, promisifyMappedWithThreeParams, promisifyWithParam } from '../promisify';
 import * as mapper from './mapper';
 import { Document, Config, SearchResult } from './types';
 
@@ -54,7 +54,7 @@ export interface Search {
    * @param name - The unique name of the Search Index.
    * @returns returns true if the index exists with the specified name
    */
-	exists(name: string, config: Config): Promise<boolean>;
+	exists(name: string): Promise<boolean>;
 }
 
 export function createIndex(name: string, documents: Array<Document>, config: Config): Promise<Index> {
@@ -77,6 +77,6 @@ export function openIndex(name: string, config: Config): Promise<Index> {
 		oliveHelps.search.openIndex
 	);
 }
-export function exists(): Promise<boolean> {
-	return promisify(oliveHelps.search.exists);
+export function exists(name: string): Promise<boolean> {
+	return promisifyWithParam(name, oliveHelps.search.exists);
 }

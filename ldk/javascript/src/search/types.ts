@@ -80,8 +80,8 @@ export interface SearchResult {
 	/**
    * Search result data comes in as an array of objects
    */
-	data: Array<any>;
-	/**
+	data: Array<{ [key: string]: string }>;
+	/*
    * Total number of results found
    */
 	total: number;
