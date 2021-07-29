@@ -10,7 +10,7 @@ describe('Search', () => {
     };
   });
 
-  describe('Search Interface', () => {
+  describe('createIndex', () => {
     it('createIndex returns a promise result with expected index', () => {
       const indexName = 'testIndex';
       const fields: search.Field[] = [
@@ -36,7 +36,8 @@ describe('Search', () => {
         expect.any(Function),
       );
     });
-
+  });
+  describe('openIndex', () => {
     it('openIndex returns a promise result with expected index', () => {
       const indexName = 'testIndex';
       const config: search.Config = { searchSize: 10 };
@@ -47,7 +48,8 @@ describe('Search', () => {
         expect.any(Function),
       );
     });
-
+  });
+  describe('exists', () => {
     it('exists returns a promise result with expected index', () => {
       const indexName = 'testIndex';
       search.exists(indexName);
