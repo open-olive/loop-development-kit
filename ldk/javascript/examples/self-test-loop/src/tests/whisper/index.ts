@@ -15,6 +15,7 @@ import {
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   IconSize,
+  IconColor,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { AlignItems, Alignment } from '../../../../../dist/whisper';
@@ -69,6 +70,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'article',
               size: IconSize.Small,
+              color: IconColor.Black,
               onClick: () => { console.info('Article Clicked')},
               tooltip: 'Article Tooltip'
             },
@@ -76,18 +78,21 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'emoji_emotions',
               size: IconSize.Medium,
+              color: IconColor.Grey,
               onClick: () => { console.info('Emoji Emotions Clicked')},
             },
             {
               type: WhisperComponentType.Icon,
               name: 'fingerprint',
               size: IconSize.Large,
+              color: IconColor.Black,
               onClick: () => { console.info('Fingerprint Clicked')},
             },
             {
               type: WhisperComponentType.Icon,
               name: 'pets',
               size: IconSize.XLarge,
+              color: IconColor.WhisperStrip,
               onClick: () => { console.info('Pets Clicked')},
             }
           ]
