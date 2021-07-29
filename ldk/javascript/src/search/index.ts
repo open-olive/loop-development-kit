@@ -53,7 +53,7 @@ export interface Search {
    */
   openIndex(name: string, config: Config): Promise<Index>;
   /**
-   * Verifies an search index exists with the provided name.
+   * Verifies a search index exists with the provided name.
    *
    * @param name - The unique name of the Search Index.
    * @returns returns true if the index exists with the specified name
