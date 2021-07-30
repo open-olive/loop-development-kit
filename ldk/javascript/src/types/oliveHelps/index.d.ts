@@ -345,6 +345,10 @@ declare namespace OliveHelps {
 
   type Color = 'white' | 'grey' | 'black' | 'whisper-strip';
 
+  interface LayoutOptions {
+    flex?: string;
+  }
+
   interface Whisper {
     id: string;
     close: Readable<undefined>;
@@ -355,6 +359,7 @@ declare namespace OliveHelps {
     id?: string;
     type: T;
     key?: string;
+    layout?: LayoutOptions;
   }
 
   interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {

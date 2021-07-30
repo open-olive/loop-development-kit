@@ -147,6 +147,9 @@ export enum MessageWhisperCopyMode {
   Body = 'body',
   Header = 'header',
 }
+export interface LayoutOptions {
+  flex?: string;
+}
 
 export enum IconSize {
   Small = 'small',
@@ -175,9 +178,11 @@ export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
   type: T;
   /**
-   * The key is used to maintain the object state. The component's key must be unique among its sibling components.
+   * The key is used to maintain the object state.
+   * The component's key must be unique among its sibling components.
    */
   key?: string;
+  layout?: LayoutOptions;
 }
 
 interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
@@ -293,6 +298,7 @@ export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> &
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
+  | Box
   | Button
   | Checkbox
   | Divider
@@ -331,19 +337,19 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignItems?: AlignItems;
-  justifyContent: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
+  justifyContent: JustifyContent;
   onClick?: WhisperHandler;
 };
 
-export type Component = ChildComponents | CollapseBox | Box | DeprecatedBox;
+export type Component = ChildComponents | CollapseBox | DeprecatedBox;
 /**
  * @deprecated - Use {@link Component} instead.
  */
 export type Components = Component;
 
-export type BoxChildComponent = ChildComponents | Box | DeprecatedBox;
+export type BoxChildComponent = ChildComponents | DeprecatedBox;
 
 export interface NewWhisper {
   components: Array<Component>;

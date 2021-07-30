@@ -1567,3 +1567,103 @@ export const testAlignItems = (): Promise<boolean> =>
       ],
     });
   });
+
+export const testFlexProperties = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Flex Properties Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Is the button below cropped?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: whisper.Direction.Horizontal,
+            justifyContent: whisper.JustifyContent.Right,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Checkbox,
+                label:
+                  'M47.817  \n' +
+                  'Spondylosis without myelopathy or radiculopathy, lumbosacral region  \n' +
+                  '**71.3** %',
+                value: false,
+                layout: {
+                  flex: '1',
+                },
+                onChange: () => console.log('toggle checkbox'),
+              },
+              {
+                type: whisper.WhisperComponentType.Button,
+                label: 'Copy',
+                size: whisper.ButtonSize.Small,
+                buttonStyle: whisper.ButtonStyle.Secondary,
+                onClick: () => console.log('clicked button'),
+              },
+            ],
+          },
+          resolveRejectButtons(resolve, reject, 'Looks good', 'It is cropped'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testFlex = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Flex Properties Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Do the button and link take up equal space?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.CollapseBox,
+            open: true,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Box,
+                direction: whisper.Direction.Horizontal,
+                justifyContent: whisper.JustifyContent.SpaceAround,
+                onClick: () => console.log('click the box'),
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Button,
+                    label: 'test',
+                    layout: {
+                      flex: '1',
+                    },
+                    onClick: () => console.log('Click the Button'),
+                  },
+                  {
+                    type: whisper.WhisperComponentType.Link,
+                    href: 'https://www.oliveai.com',
+                    text: 'Test link',
+                    layout: {
+                      flex: '1',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
