@@ -343,7 +343,7 @@ declare namespace OliveHelps {
   interface LayoutOptions {
     flex?: string;
   }
-  
+
   type Color = 'white' | 'grey';
 
   interface Whisper {
