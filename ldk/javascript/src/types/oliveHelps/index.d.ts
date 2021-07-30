@@ -313,6 +313,7 @@ declare namespace OliveHelps {
     | 'select'
     | 'telephone'
     | 'textInput'
+    | 'sectionTitle'
     | 'dateTimeInput';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
@@ -342,6 +343,8 @@ declare namespace OliveHelps {
   interface LayoutOptions {
     flex?: string;
   }
+  
+  type Color = 'white' | 'grey';
 
   interface Whisper {
     id: string;
@@ -448,6 +451,12 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
+  type SectionTitle = Component<'sectionTitle'> & {
+    body: string;
+    textAlign?: TextAlign;
+    backgroundStyle?: Color;
+  };
+
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {
     dateTimeType: DateTimeType;
     value?: string;
@@ -488,6 +497,7 @@ declare namespace OliveHelps {
     | Select
     | Telephone
     | TextInput
+    | SectionTitle
     | DateTimeInput;
 
   type Components = ChildComponents | CollapseBox;
