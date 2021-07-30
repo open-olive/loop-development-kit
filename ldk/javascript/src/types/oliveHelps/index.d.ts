@@ -230,20 +230,10 @@ declare namespace OliveHelps {
   }
 
   interface Index {
-    search(
-      term: string,
-      callback: (error: Error | undefined, searchResult: SearchResult) => void,
-    ): void;
-    queryStringSearch(
-      queryString: string,
-      callback: (error: Error | undefined, searchResult: SearchResult) => void,
-    ): void;
-    update(
-      documents: Array<Document>,
-      config: Config,
-      callback: (error: Error | undefined) => void,
-    ): void;
-    delete(callback: (error: Error | undefined) => void): void;
+    search: ReadableWithParam<string, SearchResult>;
+    queryStringSearch: ReadableWithParam<string, SearchResult>;
+    update: ReadableWithTwoParams<Array<Document>, Config, void>;
+    delete: Readable<void>;
   }
 
   type Config = {

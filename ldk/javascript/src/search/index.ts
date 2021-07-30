@@ -69,21 +69,13 @@ export function createIndex(
   return promisifyMappedWithThreeParams(
     name,
     documents,
-    mapper.mapToDocuments,
     config,
-    mapper.mapToConfig,
     mapper.mapToIndex,
     oliveHelps.search.createIndex,
   );
 }
 export function openIndex(name: string, config: Config): Promise<Index> {
-  return promisifyMappedWithTwoParams(
-    name,
-    config,
-    mapper.mapToConfig,
-    mapper.mapToIndex,
-    oliveHelps.search.openIndex,
-  );
+  return promisifyMappedWithTwoParams(name, config, mapper.mapToIndex, oliveHelps.search.openIndex);
 }
 export function exists(name: string): Promise<boolean> {
   return promisifyWithParam(name, oliveHelps.search.exists);

@@ -37,6 +37,7 @@ export {
   keyboard,
   network,
   process,
+  search,
   system,
   ui,
   user,

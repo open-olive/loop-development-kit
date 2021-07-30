@@ -8,65 +8,6 @@ function handleCaughtError(reject: (reason?: any) => void, error: Error) {
   reject(error);
 }
 
-export function promisifyMappedWithThreeParams<
-  TParam1,
-  TParam2In,
-  TParam2Out,
-  TParam3In,
-  TParam3Out,
-  TInternalOut,
-  TExternalOut
->(
-  param1: TParam1,
-  param2: TParam2In,
-  param2Map: Mapper<TParam2In, TParam2Out>,
-  param3: TParam3In,
-  param3Map: Mapper<TParam3In, TParam3Out>,
-  map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ReadableWithThreeParams<TParam1, TParam2Out, TParam3Out, TInternalOut>,
-): Promise<TExternalOut> {
-  return new Promise((resolve, reject) => {
-    try {
-      arg(param1, param2Map(param2), param3Map(param3), (error, value) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(map(value));
-      });
-    } catch (e) {
-      handleCaughtError(reject, e);
-    }
-  });
-}
-
-export function promisifyMappedWithTwoParams<
-  TParam1,
-  TParam2In,
-  TParam2Out,
-  TInternalOut,
-  TExternalOut
->(
-  param1: TParam1,
-  param2: TParam2In,
-  param2Map: Mapper<TParam2In, TParam2Out>,
-  map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ReadableWithTwoParams<TParam1, TParam2Out, TInternalOut>,
-): Promise<TExternalOut> {
-  return new Promise((resolve, reject) => {
-    try {
-      arg(param1, param2Map(param2), (error, value) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(map(value));
-      });
-    } catch (e) {
-      handleCaughtError(reject, e);
-    }
-  });
-}
 export function promisifyMappedBothWithParams<TParamIn, TParamOut, TInternalOut, TExternalOut>(
   param: TParamIn,
   paramMap: Mapper<TParamIn, TParamOut>,
@@ -85,6 +26,54 @@ export function promisifyMappedBothWithParams<TParamIn, TParamOut, TInternalOut,
       });
     } catch (e) {
       handleCaughtError(reject, e);
+    }
+  });
+}
+
+export function promisifyMappedWithTwoParams<TParam1, TParam2, TInternalOut, TExternalOut>(
+  param1: TParam1,
+  param2: TParam2,
+  map: Mapper<TInternalOut, TExternalOut>,
+  arg: OliveHelps.ReadableWithTwoParams<TParam1, TParam2, TInternalOut>,
+): Promise<TExternalOut> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param1, param2, (error, value) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(map(value));
+      });
+    } catch (e) {
+      handleCaughtError(reject, e as Error);
+    }
+  });
+}
+export function promisifyMappedWithThreeParams<
+  TParam1,
+  TParam2,
+  TParam3,
+  TInternalOut,
+  TExternalOut
+>(
+  param1: TParam1,
+  param2: TParam2,
+  param3: TParam3,
+  map: Mapper<TInternalOut, TExternalOut>,
+  arg: OliveHelps.ReadableWithThreeParams<TParam1, TParam2, TParam3, TInternalOut>,
+): Promise<TExternalOut> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param1, param2, param3, (error, value) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(map(value));
+      });
+    } catch (e) {
+      handleCaughtError(reject, e as Error);
     }
   });
 }
