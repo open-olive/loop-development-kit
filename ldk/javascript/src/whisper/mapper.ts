@@ -207,11 +207,12 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.DateTimeInput;
     case WhisperComponentType.Icon:
-      if (onClick) {
+      const onIconClick = component.onClick; 
+      if (onIconClick) {
         return {
           ...component,
           onClick: (error, whisper) => {
-            onClick(error, mapToExternalWhisper(whisper, stateMap));
+            onIconClick(error, mapToExternalWhisper(whisper, stateMap));
           },
         } as OliveHelps.Icon;
       }
