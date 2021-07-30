@@ -1,4 +1,4 @@
-import { Config, Index, Document, Field, FieldType, SearchResult } from './index';
+import { Config, Index, Document, SearchResult } from './index';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: string): void => {
