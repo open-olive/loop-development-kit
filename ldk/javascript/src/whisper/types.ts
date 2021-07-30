@@ -68,7 +68,7 @@ export enum WhisperComponentType {
    */
   DateTimeInput = 'dateTimeInput',
   /**
-   *
+   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
    */
   Icon = 'icon',
 }
@@ -131,12 +131,14 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+// COLOR TBD...
 export enum Color {
   Grey = 'grey',
   White = 'white',
   Black = 'black',
   WhisperStrip = 'whisper-strip',
 }
+
 export enum MarkdownWhisperCopyMode {
   Body = 'body',
 }
