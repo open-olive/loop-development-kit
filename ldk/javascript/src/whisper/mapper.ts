@@ -207,7 +207,8 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.DateTimeInput;
     case WhisperComponentType.Icon:
-      const onIconClick = component.onClick; 
+      // eslint-disable-next-line
+      const onIconClick = component.onClick;
       if (onIconClick) {
         return {
           ...component,
