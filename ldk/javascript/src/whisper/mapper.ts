@@ -108,10 +108,46 @@ export function mapToInternalChildComponent(
       return component as OliveHelps.Link;
     }
     case WhisperComponentType.Divider:
-    case WhisperComponentType.ListPair:
-    case WhisperComponentType.Markdown:
-    case WhisperComponentType.Message:
       return component;
+    case WhisperComponentType.ListPair: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, param, whisper) => {
+            onCopy(error, param, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.ListPair;
+      }
+      return component as OliveHelps.ListPair;
+    }
+    case WhisperComponentType.Message: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, whisper) => {
+            onCopy(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Message;
+      }
+      return component as OliveHelps.Message;
+    }
+    case WhisperComponentType.Markdown: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, whisper) => {
+            onCopy(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Markdown;
+      }
+      return component as OliveHelps.Markdown;
+    }
     case WhisperComponentType.Number:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);

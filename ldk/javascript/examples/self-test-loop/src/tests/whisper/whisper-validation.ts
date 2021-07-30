@@ -5,6 +5,9 @@ import {
   Whisper,
   Component,
   DateTimeType,
+  MarkdownWhisperCopyMode,
+  MessageWhisperCopyMode,
+  Urgency,
 } from '@oliveai/ldk/dist/whisper/types';
 import { resolveRejectButtons } from './utils';
 import { validateForm } from './validation';
@@ -127,6 +130,55 @@ export const testComponentsValidation = (): Promise<boolean> =>
           label: 'Choose 08/20/2020',
           onChange: () => {
             // do nothing.
+          },
+        },
+      ];
+
+      whisper.create({
+        label: formLabel,
+        onClose: () => {
+          // do nothing.
+        },
+        components: [
+          ...components,
+          validateButton(formLabel, components, componentIds, resolve, reject),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+export const testOnCopy = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const componentIds = new ComponentIds();
+      const formLabel = 'Simple Form';
+      const components: Component[] = [
+        {
+          type: WhisperComponentType.Markdown,
+          body: `Some stuff in here`,
+          copyable: MarkdownWhisperCopyMode.Body,
+          onCopy: () => {
+            console.log('sup');
+          },
+        },
+        {
+          type: WhisperComponentType.ListPair,
+          label: `This is the label`,
+          value: 'this is the value',
+          copyable: true,
+          style: Urgency.None,
+          onCopy: (type) => {
+            return console.log(type);
+          },
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: `This is the message body`,
+          copyable: MessageWhisperCopyMode.Body,
+          onCopy: () => {
+            return console.log('dude');
           },
         },
       ];
