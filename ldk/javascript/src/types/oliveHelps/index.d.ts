@@ -340,6 +340,10 @@ declare namespace OliveHelps {
 
   type DateTimeType = 'date' | 'time' | 'date_time';
 
+  interface LayoutOptions {
+    flex?: string;
+  }
+
   type Color = 'white' | 'grey';
 
   interface Whisper {
@@ -352,6 +356,7 @@ declare namespace OliveHelps {
     id?: string;
     type: T;
     key?: string;
+    layout?: LayoutOptions;
   }
 
   interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {
