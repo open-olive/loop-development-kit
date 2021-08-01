@@ -12,8 +12,7 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
       try {
         index.search(term, (error: Error | undefined, searchResult: SearchResult) => {
           if (error) {
-            console.error(`Received error on result: ${error.message}`);
-            reject(error);
+            handleCaughtError(reject, error, 'search');
           }
           resolve(searchResult);
         });
@@ -28,8 +27,7 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
           queryString,
           (error: Error | undefined, searchResult: SearchResult) => {
             if (error) {
-              console.error(`Received error on result: ${error.message}`);
-              reject(error);
+              handleCaughtError(reject, error, 'queryStringSearch');
             }
             resolve(searchResult);
           },
@@ -43,8 +41,7 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
       try {
         index.update(documents, config, (error: Error | undefined) => {
           if (error) {
-            console.error(`Received error on result: ${error.message}`);
-            reject(error);
+            handleCaughtError(reject, error, 'update');
           }
         });
         resolve();
@@ -57,8 +54,7 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
       try {
         index.delete((error: Error | undefined) => {
           if (error) {
-            console.error(`Received error on result: ${error.message}`);
-            reject(error);
+            handleCaughtError(reject, error, 'delete');
           }
         });
         resolve();
