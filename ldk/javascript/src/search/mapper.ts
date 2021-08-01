@@ -43,8 +43,8 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
           if (error) {
             handleCaughtError(reject, error, 'update');
           }
+          resolve();
         });
-        resolve();
       } catch (e) {
         handleCaughtError(reject, e, 'update');
       }
@@ -56,8 +56,8 @@ export const mapToIndex = (index: OliveHelps.Index): Index => ({
           if (error) {
             handleCaughtError(reject, error, 'delete');
           }
+          resolve();
         });
-        resolve();
       } catch (e) {
         handleCaughtError(reject, e, 'delete');
       }
