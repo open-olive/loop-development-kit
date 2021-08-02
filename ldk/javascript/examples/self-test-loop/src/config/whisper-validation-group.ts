@@ -11,10 +11,4 @@ export const whisperValidationTestGroup = (): TestGroup =>
       20000,
       `Did the form validate?`,
     ),
-    new LoopTest(
-      'Whisper Validation - Basic Form Validation',
-      whisperValidationTests.testOnCopy,
-      20000,
-      `Do a copy`,
-    ),
   ]);

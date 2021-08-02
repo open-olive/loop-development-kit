@@ -149,4 +149,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Pick date and time values',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Test onCopy',
+      whisperTests.testOnCopy,
+      20000,
+      `Test onCopy for Markdow,  ListPair, and Message. Copy one of each.`,
+    ),
   ]);
