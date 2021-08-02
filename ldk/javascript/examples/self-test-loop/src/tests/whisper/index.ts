@@ -1,7 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { clipboard, network, whisper } from '@oliveai/ldk';
 import {
-  Button,
   ButtonSize,
   ButtonStyle,
   Component,
@@ -278,32 +277,17 @@ export const testDropzone = async (): Promise<boolean> => {
     .join('\n\n');
 
   function createAcceptButtons(): {
-    acceptButton: Button;
-    rejectButton: Button;
+    component: Component;
     acceptResult: Promise<boolean>;
   } {
-    const acceptButton: whisper.Button = {
-      type: WhisperComponentType.Button,
-      label: 'Yes',
-      onClick: () => {},
-    };
-    const rejectButton: whisper.Button = {
-      type: WhisperComponentType.Button,
-      label: 'No',
-      onClick: () => {},
-    };
+    let resolveHandler;
+    let rejectHandler;
     const acceptResult = new Promise<boolean>((resolve, reject) => {
-      rejectButton.onClick = (error) => {
-        reject(error);
-      };
-      acceptButton.onClick = (error) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(true);
-      };
+      resolveHandler = resolve;
+      rejectHandler = reject;
     });
-    return { acceptButton, rejectButton, acceptResult };
+    const component = resolveRejectButtons(resolveHandler, rejectHandler);
+    return { component, acceptResult };
   }
 
   const acceptFileData = createAcceptButtons();
@@ -314,8 +298,7 @@ export const testDropzone = async (): Promise<boolean> => {
         body: `Are these the files you selected?\n\n${fileData}`,
       },
       dropZone,
-      acceptFileData.acceptButton,
-      acceptFileData.rejectButton,
+      acceptFileData.component,
     ],
   });
   await acceptFileData.acceptResult;
@@ -325,8 +308,7 @@ export const testDropzone = async (): Promise<boolean> => {
     components: [
       { type: WhisperComponentType.Markdown, body: 'Are the files gone now?' },
       { ...dropZone, value: [] },
-      filesWereCleared.acceptButton,
-      filesWereCleared.rejectButton,
+      filesWereCleared.component,
     ],
   });
   return filesWereCleared.acceptResult;
