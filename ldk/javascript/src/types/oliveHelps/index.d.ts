@@ -343,10 +343,6 @@ declare namespace OliveHelps {
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
-  type Color = 'white' | 'grey';
-
-  type IconColor = 'black' | 'whisper-strip' | Color;
-
   interface LayoutOptions {
     flex?: string;
   }
@@ -459,7 +455,7 @@ declare namespace OliveHelps {
   type SectionTitle = Component<'sectionTitle'> & {
     body: string;
     textAlign?: TextAlign;
-    backgroundStyle?: Color;
+    backgroundStyle?: 'white' | 'grey';
   };
 
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {
@@ -472,7 +468,7 @@ declare namespace OliveHelps {
   type Icon = Component<'icon'> & {
     name: string;
     size?: IconSize;
-    color?: IconColor;
+    color?: 'black' | 'whisper-strip' | 'white' | 'grey';
     onClick?: WhisperHandler;
     tooltip?: string;
   };

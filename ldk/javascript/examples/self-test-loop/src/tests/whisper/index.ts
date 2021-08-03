@@ -16,7 +16,6 @@ import {
   MarkdownWhisperCopyMode,
   IconSize,
   Color,
-  IconColor,
   AlignItems,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
@@ -70,7 +69,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'article',
               size: IconSize.Small,
-              color: IconColor.Black,
+              color: Color.Black,
               onClick: () => {
                 console.info('Article Clicked');
               },
@@ -80,7 +79,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'emoji_emotions',
               size: IconSize.Medium,
-              color: IconColor.Grey,
+              color: Color.Grey,
               onClick: () => {
                 console.info('Emoji Emotions Clicked');
               },
@@ -89,7 +88,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'fingerprint',
               size: IconSize.Large,
-              color: IconColor.Black,
+              color: Color.Black,
               onClick: () => {
                 console.info('Fingerprint Clicked');
               },
@@ -98,7 +97,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'pets',
               size: IconSize.XLarge,
-              color: IconColor.WhisperStrip,
+              color: Color.WhisperStrip,
               onClick: () => {
                 console.info('Pets Clicked');
               },
@@ -1435,7 +1434,7 @@ export const testSectionTitle = (): Promise<boolean> =>
             body: 'section Title in center(grey)',
             textAlign: TextAlign.Center,
             type: WhisperComponentType.SectionTitle,
-            backgroundStyle: Color.Grey,
+            backgroundStyle: Color.Grey
           },
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
         ],
