@@ -6,6 +6,18 @@ import * as whisperTests from '../tests/whisper';
 export const whisperTestGroup = (): TestGroup =>
   new TestGroup('Whisper Aptitude', [
     new LoopTest(
+      'Whisper Aptitude - Flex property whisper',
+      whisperTests.testFlex,
+      20000,
+      'Click the right button',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Flex property whisper',
+      whisperTests.testFlexProperties,
+      20000,
+      'Click the right button',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Markdown whisper',
       whisperTests.testMarkdownWhisper,
       20000,
@@ -142,6 +154,12 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testCollapseBoxOnClick,
       10000,
       'Click both CollapseBoxes',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - SectionTitle',
+      whisperTests.testSectionTitle,
+      10000,
+      'Did SectionTitle render properly?',
     ),
     new LoopTest(
       'Whisper Aptitude - DateTime',

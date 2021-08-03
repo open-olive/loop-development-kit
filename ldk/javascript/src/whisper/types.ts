@@ -59,7 +59,10 @@ export enum WhisperComponentType {
    */
   TextInput = 'textInput',
   /**
-   * The text input field allows the user to provide Date and Time information.
+   * The section title field allows the user to provide section title information.
+   */
+  SectionTitle = 'sectionTitle',
+  /* The text input field allows the user to provide Date and Time information.
    *
    * The field can be pre-populated by the loop.
    */
@@ -124,6 +127,10 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+export enum Color {
+  Grey = 'grey',
+  White = 'white',
+}
 export enum MarkdownWhisperCopyMode {
   Body = 'body',
 }
@@ -131,6 +138,9 @@ export enum MarkdownWhisperCopyMode {
 export enum MessageWhisperCopyMode {
   Body = 'body',
   Header = 'header',
+}
+export interface LayoutOptions {
+  flex?: string;
 }
 
 export type StateMap = Map<string, string | boolean | number>;
@@ -153,9 +163,11 @@ export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
   type: T;
   /**
-   * The key is used to maintain the object state. The component's key must be unique among its sibling components.
+   * The key is used to maintain the object state.
+   * The component's key must be unique among its sibling components.
    */
   key?: string;
+  layout?: LayoutOptions;
 }
 
 interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
@@ -257,9 +269,16 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   tooltip?: string;
 };
 
+export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
+  body: string;
+  textAlign?: TextAlign;
+  backgroundStyle?: Color;
+};
+
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
+  | Box
   | Button
   | Checkbox
   | Divider
@@ -274,6 +293,7 @@ export type ChildComponents =
   | Select
   | Telephone
   | TextInput
+  | SectionTitle
   | DateTimeInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
@@ -296,19 +316,19 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignItems?: AlignItems;
-  justifyContent: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
+  justifyContent: JustifyContent;
   onClick?: WhisperHandler;
 };
 
-export type Component = ChildComponents | CollapseBox | Box | DeprecatedBox;
+export type Component = ChildComponents | CollapseBox | DeprecatedBox;
 /**
  * @deprecated - Use {@link Component} instead.
  */
 export type Components = Component;
 
-export type BoxChildComponent = ChildComponents | Box | DeprecatedBox;
+export type BoxChildComponent = ChildComponents | DeprecatedBox;
 
 export interface NewWhisper {
   components: Array<Component>;

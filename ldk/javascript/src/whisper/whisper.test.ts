@@ -40,6 +40,7 @@ describe('Whisper', () => {
             alignment: whisper.JustifyContent.Center,
             children: [],
             direction: whisper.Direction.Horizontal,
+            onClick: undefined,
             type: whisper.WhisperComponentType.Box,
           },
         ],
