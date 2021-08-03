@@ -131,10 +131,14 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
-// COLOR TBD...
 export enum Color {
   Grey = 'grey',
   White = 'white',
+}
+
+export enum IconColor {
+  White = 'white',
+  Grey = 'grey',
   Black = 'black',
   WhisperStrip = 'whisper-strip',
 }
@@ -284,7 +288,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   name: string;
   size?: IconSize;
-  color?: Color;
+  color?: IconColor;
   onClick?: WhisperHandler;
   tooltip?: string;
 };

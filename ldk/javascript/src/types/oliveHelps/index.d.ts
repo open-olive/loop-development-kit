@@ -343,7 +343,9 @@ declare namespace OliveHelps {
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
-  type Color = 'white' | 'grey' | 'black' | 'whisper-strip';
+  type Color = 'white' | 'grey';
+
+  type IconColor = 'black' | 'whisper-strip' | Color
 
   interface LayoutOptions {
     flex?: string;
@@ -470,7 +472,7 @@ declare namespace OliveHelps {
   type Icon = Component<'icon'> & {
     name: string;
     size?: IconSize;
-    color?: Color;
+    color?: IconColor;
     onClick?: WhisperHandler;
     tooltip?: string;
   };
