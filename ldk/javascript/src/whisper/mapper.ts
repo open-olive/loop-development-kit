@@ -93,6 +93,8 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Markdown:
     case WhisperComponentType.Message:
     case WhisperComponentType.SectionTitle:
+    case WhisperComponentType.RichTextEditor:
+      // TODO: configure richtexteditor return value
       return component;
     case WhisperComponentType.Number:
       if (component.id && component.value) {

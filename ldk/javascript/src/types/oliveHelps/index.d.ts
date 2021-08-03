@@ -314,7 +314,8 @@ declare namespace OliveHelps {
     | 'telephone'
     | 'textInput'
     | 'sectionTitle'
-    | 'dateTimeInput';
+    | 'dateTimeInput'
+    | 'richTextEditor';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -464,6 +465,12 @@ declare namespace OliveHelps {
     max?: string;
   };
 
+  type RichTextEditor = Component<'richTextEditor'> & {
+    onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
+    onChange?: WhisperHandlerWithParam<string>;
+  };
+
   type Divider = Component<'divider'>;
 
   type CollapseBox = Component<'collapseBox'> & {
@@ -498,7 +505,8 @@ declare namespace OliveHelps {
     | Telephone
     | TextInput
     | SectionTitle
-    | DateTimeInput;
+    | DateTimeInput
+    | RichTextEditor;
 
   type Components = ChildComponents | CollapseBox;
 

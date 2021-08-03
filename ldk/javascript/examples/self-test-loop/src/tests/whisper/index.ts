@@ -1578,3 +1578,22 @@ export const testFlex = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+
+  export const testRichTextEditor = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did RichText Editor function correctly?',
+        components: [
+          {
+            type: WhisperComponentType.RichTextEditor,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });

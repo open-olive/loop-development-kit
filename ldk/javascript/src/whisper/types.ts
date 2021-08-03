@@ -67,6 +67,11 @@ export enum WhisperComponentType {
    * The field can be pre-populated by the loop.
    */
   DateTimeInput = 'dateTimeInput',
+  /* The richText Editor allow users to use RichText Editor on Olive Helps
+   *
+   * The field can be pre-populated by the loop.
+   */
+  RichTextEditor = 'richTextEditor',
 }
 
 export enum JustifyContent {
@@ -272,6 +277,11 @@ export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> &
   backgroundStyle?: Color;
 };
 
+export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEditor> & {
+  onBlur?: (error: Error | undefined) => void;
+  onFocus?: (error: Error | undefined) => void;
+  onChange?: WhisperHandlerWithParam<string>;
+};
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
@@ -291,7 +301,8 @@ export type ChildComponents =
   | Telephone
   | TextInput
   | SectionTitle
-  | DateTimeInput;
+  | DateTimeInput
+  | RichTextEditor;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
