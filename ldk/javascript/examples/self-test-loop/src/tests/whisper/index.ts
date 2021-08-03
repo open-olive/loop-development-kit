@@ -1434,7 +1434,7 @@ export const testSectionTitle = (): Promise<boolean> =>
             body: 'section Title in center(grey)',
             textAlign: TextAlign.Center,
             type: WhisperComponentType.SectionTitle,
-            backgroundStyle: Color.Grey
+            backgroundStyle: Color.Grey,
           },
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
         ],
