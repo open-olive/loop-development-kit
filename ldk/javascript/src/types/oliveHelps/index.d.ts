@@ -345,7 +345,7 @@ declare namespace OliveHelps {
 
   type Color = 'white' | 'grey';
 
-  type IconColor = 'black' | 'whisper-strip' | Color
+  type IconColor = 'black' | 'whisper-strip' | Color;
 
   interface LayoutOptions {
     flex?: string;
