@@ -164,7 +164,7 @@ export const whisperTestGroup = (): TestGroup =>
     new LoopTest(
       'Whisper Aptitude - DateTime',
       whisperTests.testDateTime,
-      10000,
-      'Pick date and time values',
+      20000,
+      'Pick new date and time values',
     ),
   ]);
