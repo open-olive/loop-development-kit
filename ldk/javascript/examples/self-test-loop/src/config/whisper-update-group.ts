@@ -41,4 +41,10 @@ export const whisperUpdateTestGroup = (): TestGroup =>
       10000,
       `Interact with components and then click the button`,
     ),
+    new LoopTest(
+      'Whisper Update - Icon With Component State',
+      whisperUpdateTests.testIconUpdates,
+      10000,
+      `Check box and update`,
+    ),
   ]);

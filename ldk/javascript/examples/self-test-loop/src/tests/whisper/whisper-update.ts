@@ -6,6 +6,8 @@ import {
   ChildComponents,
   Component,
   Direction,
+  Icon,
+  IconSize,
   JustifyContent,
   NumberInput,
   RadioGroup,
@@ -498,4 +500,67 @@ export const testNonTextInputsWithValue = (): Promise<boolean> =>
     });
     await secondUpdate.promise;
     resolve(true);
+  });
+
+export const testIconUpdates = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    let whisperUpdated = false;
+
+    const checkbox: Checkbox = {
+      label: 'Check this box and click update...',
+      key: 'Checkbox',
+      id: 'myCheckbox',
+      onChange: () => {
+        // do nothing.
+      },
+      type: WhisperComponentType.Checkbox,
+    };
+
+    const phoneIcon: Icon = {
+      type: WhisperComponentType.Icon,
+      name: 'touch_app',
+      key: 'myPhoneKey',
+      size: IconSize.XLarge,
+      onClick: (error, whisper) => {
+        if (whisper.componentState.get(checkbox.id) && whisperUpdated) {
+          resolve(true);
+          whisper.close((error) => {
+            console.error(error);
+          });
+        }
+        reject('Icon update caused checkbox state failure.');
+        whisper.close((error) => {
+          console.error(error);
+        });
+      },
+      tooltip: 'Touch App',
+    };
+
+    await whisper.create({
+      label: 'Icon Whisper Layout Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        phoneIcon,
+        checkbox,
+        {
+          type: WhisperComponentType.Button,
+          label: 'Update',
+          onClick: (error: Error, incomingWhisper: Whisper) => {
+            whisperUpdated = true;
+            incomingWhisper.update({
+              components: [
+                checkbox,
+                phoneIcon,
+                {
+                  type: WhisperComponentType.Message,
+                  body: 'Click the touch icon',
+                },
+              ],
+            });
+          },
+        },
+      ],
+    });
   });
