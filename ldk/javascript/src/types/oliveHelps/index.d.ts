@@ -373,7 +373,8 @@ declare namespace OliveHelps {
     label: string;
     limit?: number;
     noun?: string;
-    onDrop: WhisperHandlerWithParam<FileDropEvent>;
+    onDrop: WhisperHandlerWithParam<File[]>;
+    value?: File[];
     tooltip?: string;
     validationError?: string;
   };
@@ -501,8 +502,8 @@ declare namespace OliveHelps {
     create: ReadableWithParam<NewWhisper, Whisper>;
   }
 
-  interface FileDropEvent {
-    // TODO: Update in HELPS-854.
+  interface File {
     path: string;
+    size: number;
   }
 }
