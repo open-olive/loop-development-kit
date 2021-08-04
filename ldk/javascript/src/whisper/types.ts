@@ -300,8 +300,10 @@ export type ChildComponents =
   | Box
   | Button
   | Checkbox
+  | DateTimeInput
   | Divider
   | Email
+  | Icon
   | Link
   | ListPair
   | Markdown
@@ -310,11 +312,9 @@ export type ChildComponents =
   | Password
   | RadioGroup
   | Select
+  | SectionTitle
   | Telephone
-  | TextInput
-  | DateTimeInput
-  | Icon
-  | SectionTitle;
+  | TextInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;

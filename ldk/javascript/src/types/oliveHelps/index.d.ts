@@ -301,8 +301,10 @@ declare namespace OliveHelps {
     | 'button'
     | 'checkbox'
     | 'collapseBox'
+    | 'dateTimeInput'
     | 'divider'
     | 'email'
+    | 'icon'
     | 'link'
     | 'listPair'
     | 'markdown'
@@ -311,11 +313,9 @@ declare namespace OliveHelps {
     | 'password'
     | 'radioGroup'
     | 'select'
+    | 'sectionTitle'
     | 'telephone'
-    | 'textInput'
-    | 'dateTimeInput'
-    | 'icon'
-    | 'sectionTitle';
+    | 'textInput';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
