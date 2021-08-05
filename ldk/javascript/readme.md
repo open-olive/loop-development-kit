@@ -111,12 +111,14 @@ Permissions are declared inside of the Loop `package.json` root within a `ldk/pe
 Any domain URL reference. Supports domain wildcards.
 ```json
 "ldk": {
-  "network": {
-    "urlDomains": [
-      {
-        "value": string
-      }
-    ]
+  "permissions": {
+    "network": {
+      "urlDomains": [
+        {
+          "value": string
+        }
+      ]
+    }
   }
 }
 ```
@@ -132,12 +134,14 @@ Examples
 Any filesystem path. Supports path wildcards. All filesystem permissions include access to the Loop's working folder by default.
 ```json
 "ldk": {
-  "filesystem": {
-    "pathGlobs": [
-      {
-        "value": string
-      }
-    ]
+  "permissions": {
+    "filesystem": {
+      "pathGlobs": [
+        {
+          "value": string
+        }
+      ]
+    }
   }
 }
 ```
@@ -151,9 +155,41 @@ If your Loop only needs access to the Loop's working folder, provide an empty ob
 
 ```json
 "ldk": {
-  "filesystem": {}
+  "permissions": {
+    "filesystem": {}
+  }
 }
 ```
+<br>
+
+#### User Permission:
+Any optional claims which your Loop needs to use. At this time, there is only one supported optional claim: `email`.
+```json
+"ldk": {
+  "permissions": {
+    "user": {
+      "optionalClaims": [
+        {
+          "value": string
+        }
+      ]
+    }
+  }
+}
+```
+Examples
+| Value |
+|-----------|
+| "email" |
+
+If your Loop only needs access to the [default set of JWT claims](https://oliveai.dev/app/aptitudes/user#jwt-claims), provide an empty object:
+
+```json
+"ldk": {
+  "user": {}
+}
+```
+<br>
 
 #### Aptitude Permission:
 An Aptitude Name.
@@ -166,7 +202,7 @@ An Aptitude Name.
 | Valid Options |||
 |-----------|---------|---------|
 "clipboard" | "cursor" | "keyboard"
-"process"  | "ui" | "user"
+"process"  | "ui" | "system"
 "vault" | "whisper" | "window"
 <br>
 
