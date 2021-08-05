@@ -130,7 +130,11 @@ export function mapToInternalChildComponent(
                 });
               }),
           });
-          component.onDrop(error, param.map(callbackHandler), mapToExternalWhisper(whisper, stateMap));
+          component.onDrop(
+            error,
+            param.map(callbackHandler),
+            mapToExternalWhisper(whisper, stateMap),
+          );
         },
       };
     case WhisperComponentType.Number:
