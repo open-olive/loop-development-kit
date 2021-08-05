@@ -123,7 +123,9 @@ export type StateMap = Map<string, string | boolean | number>;
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
+
   update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
+
   componentState: StateMap;
 }
 
@@ -314,4 +316,5 @@ export interface UpdateWhisper {
 export interface File {
   path: string;
   size: number;
+  readFile(): Promise<Uint8Array>;
 }

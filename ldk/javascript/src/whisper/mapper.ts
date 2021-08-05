@@ -6,6 +6,7 @@ import {
   UpdateWhisper,
   Whisper,
   WhisperComponentType,
+  File,
 } from './types';
 
 function throwForDuplicateKeys<T extends { key?: string }>(components: T[]): T[] {
@@ -116,7 +117,20 @@ export function mapToInternalChildComponent(
       return {
         ...component,
         onDrop: (error, param, whisper) => {
-          component.onDrop(error, param, mapToExternalWhisper(whisper, stateMap));
+          const callbackHandler: (file: OliveHelps.File) => File = (file: OliveHelps.File) => ({
+            path: file.path,
+            size: file.size,
+            readFile: () =>
+              new Promise<Uint8Array>((resolve, reject) => {
+                file.readFile((readError, buffer) => {
+                  if (error) {
+                    return reject(readError);
+                  }
+                  return resolve(new Uint8Array(buffer));
+                });
+              }),
+          });
+          component.onDrop(error, param.map(callbackHandler), mapToExternalWhisper(whisper, stateMap));
         },
       };
     case WhisperComponentType.Number:
