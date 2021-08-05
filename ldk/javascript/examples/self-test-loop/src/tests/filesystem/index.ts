@@ -143,11 +143,9 @@ export const testListenRemoveFile = (): Promise<boolean> =>
               StringOptions.IgnoreCase,
             )
           ) {
-            console.debug(`Remove file resolved`);
             removeFileResolved = true;
           }
           if (writeFileResolved && removeFileResolved) {
-            console.debug(`Test resolved`);
             listenFileCancelable.cancel();
             resolve(true);
           }
@@ -262,14 +260,12 @@ export const testListenDir = (): Promise<boolean> =>
             fileEvent.action === 'Create' &&
             areStringsEqual(fileEvent.info.name, fileName, StringOptions.IgnoreCase)
           ) {
-            console.info(`Create file resolved`);
             createFileResolved = true;
           }
           if (
             fileEvent.action === 'Create' &&
             areStringsEqual(fileEvent.info.name, fileNameMoved, StringOptions.IgnoreCase)
           ) {
-            console.info(`CreateRenamed file resolved`);
             createRenameFileResolved = true;
           }
           if (
@@ -280,7 +276,6 @@ export const testListenDir = (): Promise<boolean> =>
               StringOptions.IgnoreCase,
             )
           ) {
-            console.info(`Rename file resolved`);
             renameFileResolved = true;
           }
           if (
@@ -291,14 +286,12 @@ export const testListenDir = (): Promise<boolean> =>
               StringOptions.IgnoreCase,
             )
           ) {
-            console.info(`Remove file resolved`);
             removeFileResolved = true;
           }
           if (
             fileEvent.action === 'Remove' &&
             areStringsEqual((fileEvent as RemovedFileEvent).name, dirName, StringOptions.IgnoreCase)
           ) {
-            console.info(`Remove Dir resolved`);
             removeDirResolved = true;
           }
           if (
