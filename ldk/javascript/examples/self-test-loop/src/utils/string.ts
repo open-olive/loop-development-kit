@@ -2,7 +2,7 @@ export enum StringOptions {
   IgnoreCase,
 }
 
-// TODO: Required as windows filesystem create converts file path to lower case. Remove after sidekick is fixed. Ian is working on it.
+// TODO: Required as windows filesystem create converts file path to lower case. Remove after sidekick is fixed - HELPS-1040.
 export const areStringsEqual = (
   param1: string,
   param2: string,
