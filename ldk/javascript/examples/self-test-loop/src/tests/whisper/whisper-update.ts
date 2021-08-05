@@ -131,7 +131,8 @@ export const testWhisperUpdate = (): Promise<boolean> =>
             label: 'Text Input',
             id: 'myTextInput1',
             key: 'textinput1',
-            onChange: (_error: Error, _param: string, onChangeWhisper: Whisper) => logMap(onChangeWhisper.componentState),
+            onChange: (_error: Error, _param: string, onChangeWhisper: Whisper) =>
+              logMap(onChangeWhisper.componentState),
             tooltip: 'myTooltip',
           },
           {
@@ -153,7 +154,8 @@ export const testWhisperUpdate = (): Promise<boolean> =>
                 id: 'myTextInput1',
                 key: 'textinput1',
                 // TODO: Figure out what state to persist, probably need to retain focus.
-                onChange: (error: Error, _param: string, onChangeWhisper: Whisper) => logMap(onChangeWhisper.componentState),
+                onChange: (error: Error, _param: string, onChangeWhisper: Whisper) =>
+                  logMap(onChangeWhisper.componentState),
                 tooltip: 'myTooltip',
               },
             ],

@@ -129,10 +129,20 @@ export const testListenRemoveFile = (): Promise<boolean> =>
             reject(new Error('File event is not received'));
           }
           console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-          if (fileEvent.action === 'Write' && areStringsEqual(fileEvent.info.name, fileName, StringOptions.IgnoreCase)) {
+          if (
+            fileEvent.action === 'Write' &&
+            areStringsEqual(fileEvent.info.name, fileName, StringOptions.IgnoreCase)
+          ) {
             writeFileResolved = true;
           }
-          if (fileEvent.action === 'Remove' && areStringsEqual((fileEvent as RemovedFileEvent).name, fileName, StringOptions.IgnoreCase)) {
+          if (
+            fileEvent.action === 'Remove' &&
+            areStringsEqual(
+              (fileEvent as RemovedFileEvent).name,
+              fileName,
+              StringOptions.IgnoreCase,
+            )
+          ) {
             console.debug(`Remove file resolved`);
             removeFileResolved = true;
           }
@@ -191,7 +201,14 @@ export const testListenRenameFile = (): Promise<boolean> =>
             reject(new Error('File event is not received'));
           }
           console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-          if (fileEvent.action === 'Rename' && areStringsEqual((fileEvent as RenamedFileEvent).name, fileName, StringOptions.IgnoreCase)) {
+          if (
+            fileEvent.action === 'Rename' &&
+            areStringsEqual(
+              (fileEvent as RenamedFileEvent).name,
+              fileName,
+              StringOptions.IgnoreCase,
+            )
+          ) {
             renameFileResolved = true;
           }
           if (renameFileResolved) {
@@ -241,26 +258,46 @@ export const testListenDir = (): Promise<boolean> =>
             reject(new Error('File event is not received'));
           }
           console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-          if (fileEvent.action === 'Create' && areStringsEqual(fileEvent.info.name, fileName, StringOptions.IgnoreCase)) {
+          if (
+            fileEvent.action === 'Create' &&
+            areStringsEqual(fileEvent.info.name, fileName, StringOptions.IgnoreCase)
+          ) {
             console.info(`Create file resolved`);
             createFileResolved = true;
           }
-          if (fileEvent.action === 'Create' && areStringsEqual(fileEvent.info.name, fileNameMoved, StringOptions.IgnoreCase)) {
+          if (
+            fileEvent.action === 'Create' &&
+            areStringsEqual(fileEvent.info.name, fileNameMoved, StringOptions.IgnoreCase)
+          ) {
             console.info(`CreateRenamed file resolved`);
             createRenameFileResolved = true;
           }
-          if (fileEvent.action === 'Rename' && areStringsEqual((fileEvent as RenamedFileEvent).name, fileName, StringOptions.IgnoreCase)) {
+          if (
+            fileEvent.action === 'Rename' &&
+            areStringsEqual(
+              (fileEvent as RenamedFileEvent).name,
+              fileName,
+              StringOptions.IgnoreCase,
+            )
+          ) {
             console.info(`Rename file resolved`);
             renameFileResolved = true;
           }
           if (
             fileEvent.action === 'Remove' &&
-            areStringsEqual((fileEvent as RemovedFileEvent).name, fileNameMoved, StringOptions.IgnoreCase)
+            areStringsEqual(
+              (fileEvent as RemovedFileEvent).name,
+              fileNameMoved,
+              StringOptions.IgnoreCase,
+            )
           ) {
             console.info(`Remove file resolved`);
             removeFileResolved = true;
           }
-          if (fileEvent.action === 'Remove' && areStringsEqual((fileEvent as RemovedFileEvent).name, dirName, StringOptions.IgnoreCase)) {
+          if (
+            fileEvent.action === 'Remove' &&
+            areStringsEqual((fileEvent as RemovedFileEvent).name, dirName, StringOptions.IgnoreCase)
+          ) {
             console.info(`Remove Dir resolved`);
             removeDirResolved = true;
           }
