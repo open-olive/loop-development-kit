@@ -10,12 +10,11 @@ import {
   NumberInput,
   RadioGroup,
   Select,
-  StateMap,
   TextInput,
   Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
-import WhisperCloser from '../../testingFixtures/WhisperCloser';
+import { logMap } from './utils';
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -110,12 +109,6 @@ const updateWithConfirmation = (
     );
   },
 });
-
-const logMap = (map: StateMap) => {
-  Array.from(map.entries()).forEach((entry) => {
-    console.log(`Key: ${entry[0]} Value: ${entry[1]}`);
-  });
-};
 
 export const testWhisperUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -256,7 +249,7 @@ export const testUpdateOnChange = (): Promise<boolean> =>
             label: 'Enter 1',
             id: 'myTextInput1',
             key: 'input',
-            onChange: (error: Error, value: string, incomingWhisper: Whisper) => {
+            onChange: (_error: Error, value: string, incomingWhisper: Whisper) => {
               if (value === '1') {
                 incomingWhisper.update(
                   {
@@ -273,14 +266,14 @@ export const testUpdateOnChange = (): Promise<boolean> =>
                         id: 'myTextInput2',
                         key: 'input',
                         value: '',
-                        onChange: (_error: Error, value: string, incomingWhisper: Whisper) => {
-                          if (value === '12') {
-                            incomingWhisper.close((e: Error) => {
+                        onChange: (_err: Error, param: string, onChangeWhisper: Whisper) => {
+                          if (param === '12') {
+                            onChangeWhisper.close((e: Error) => {
                               console.error(e);
                             });
                             resolve(true);
                           } else {
-                            incomingWhisper.close((e: Error) => {
+                            onChangeWhisper.close((e: Error) => {
                               console.error(e);
                             });
                             reject(new Error('User did not enter required value.'));
@@ -386,122 +379,126 @@ export const testWhisperStateOnChange = (): Promise<boolean> =>
 
 export const testNonTextInputs = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const selectValue = 1;
+    try {
+      const checkbox: Checkbox = {
+        label: 'Check this box',
+        key: 'Checkbox',
+        onChange: () => {
+          // do nothing.
+        },
+        id: 'myCheckbox',
+        type: WhisperComponentType.Checkbox,
+      };
 
-    const checkbox: Checkbox = {
-      label: 'Check this box',
-      key: 'Checkbox',
-      onChange: () => {
-        // do nothing.
-      },
-      id: 'myCheckbox',
-      type: WhisperComponentType.Checkbox,
-    };
+      const radioButton: RadioGroup = {
+        type: WhisperComponentType.RadioGroup,
+        id: 'radioInputId',
+        key: 'radioInputId',
+        options: ['Select this option', 'Select other option'],
+        onSelect: () => {
+          // do nothing.
+        },
+      };
 
-    const radioButton: RadioGroup = {
-      type: WhisperComponentType.RadioGroup,
-      id: 'radioInputId',
-      key: 'radioInputId',
-      options: ['Select this option', 'Select other option'],
-      onSelect: () => {
-        // do nothing.
-      },
-    };
+      const selectInput: Select = {
+        type: WhisperComponentType.Select,
+        label: 'Select blue',
+        key: 'Select',
+        options: ['red', 'blue'],
+        onSelect: () => {
+          // do nothing
+        },
+      };
 
-    const selectInput: Select = {
-      type: WhisperComponentType.Select,
-      label: 'Select blue',
-      key: 'Select',
-      options: ['red', 'blue'],
-      onSelect: () => {
-        // do nothing
-      },
-    };
-
-    const firstConfirm = createConfirmOrDenyWithPromise(
-      'Interact with each component and click yes',
-      'User clicked no',
-    );
-    const testWhisper = await whisper.create({
-      label: 'Test Non Text Inputs State Update',
-      onClose: () => {
-        // do nothing.
-      },
-      components: [checkbox, radioButton, selectInput, ...firstConfirm.button],
-    });
-    await firstConfirm.promise;
-    const secondUpdate = createConfirmOrDenyWithPromise(
-      'Did the components maintain their value?',
-      'User selected update failed.',
-      testWhisper,
-    );
-    await testWhisper.update({
-      label: 'Updated Whisper label :o',
-      components: [checkbox, radioButton, selectInput, ...secondUpdate.button],
-    });
-    await secondUpdate.promise;
-    resolve(true);
+      const firstConfirm = createConfirmOrDenyWithPromise(
+        'Interact with each component and click yes',
+        'User clicked no',
+      );
+      const testWhisper = await whisper.create({
+        label: 'Test Non Text Inputs State Update',
+        onClose: () => {
+          // do nothing.
+        },
+        components: [checkbox, radioButton, selectInput, ...firstConfirm.button],
+      });
+      await firstConfirm.promise;
+      const secondUpdate = createConfirmOrDenyWithPromise(
+        'Did the components maintain their value?',
+        'User selected update failed.',
+        testWhisper,
+      );
+      await testWhisper.update({
+        label: 'Updated Whisper label :o',
+        components: [checkbox, radioButton, selectInput, ...secondUpdate.button],
+      });
+      await secondUpdate.promise;
+      resolve(true);
+    } catch (e) {
+      reject(e);
+    }
   });
 
 export const testNonTextInputsWithValue = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const selectValue = 1;
+    try {
+      const checkbox: Checkbox = {
+        label: 'Check this box',
+        key: 'Checkbox',
+        onChange: () => {
+          // do nothing.
+        },
+        id: 'myCheckbox',
+        type: WhisperComponentType.Checkbox,
+      };
 
-    const checkbox: Checkbox = {
-      label: 'Check this box',
-      key: 'Checkbox',
-      onChange: () => {
-        // do nothing.
-      },
-      id: 'myCheckbox',
-      type: WhisperComponentType.Checkbox,
-    };
+      const radioButton: RadioGroup = {
+        type: WhisperComponentType.RadioGroup,
+        id: 'radioInputId',
+        key: 'radioInputId',
+        options: ['Select this option', 'Select other option'],
+        onSelect: () => {
+          // do nothing.
+        },
+      };
 
-    const radioButton: RadioGroup = {
-      type: WhisperComponentType.RadioGroup,
-      id: 'radioInputId',
-      key: 'radioInputId',
-      options: ['Select this option', 'Select other option'],
-      onSelect: () => {
-        // do nothing.
-      },
-    };
+      const selectInput: Select = {
+        type: WhisperComponentType.Select,
+        label: 'Select blue',
+        key: 'Select',
+        options: ['red', 'blue'],
+        onSelect: () => {
+          // do nothing
+        },
+      };
 
-    const selectInput: Select = {
-      type: WhisperComponentType.Select,
-      label: 'Select blue',
-      key: 'Select',
-      options: ['red', 'blue'],
-      onSelect: () => {
-        // do nothing
-      },
-    };
+      const firstConfirm = createConfirmOrDenyWithPromise(
+        'Interact with each component and click yes',
+        'User clicked no',
+      );
+      const testWhisper = await whisper.create({
+        label: 'Test Non Text Inputs State Update',
+        onClose: () => {
+          // do nothing.
+        },
+        components: [checkbox, radioButton, selectInput, ...firstConfirm.button],
+      });
+      await firstConfirm.promise;
+      const secondUpdate = createConfirmOrDenyWithPromise(
+        'Did the components change their value?',
+        'User selected update failed.',
+        testWhisper,
+      );
+      checkbox.value = false;
+      radioButton.selected = 1;
+      selectInput.selected = 0;
 
-    const firstConfirm = createConfirmOrDenyWithPromise(
-      'Interact with each component and click yes',
-      'User clicked no',
-    );
-    const testWhisper = await whisper.create({
-      label: 'Test Non Text Inputs State Update',
-      onClose: () => {
-        // do nothing.
-      },
-      components: [checkbox, radioButton, selectInput, ...firstConfirm.button],
-    });
-    await firstConfirm.promise;
-    const secondUpdate = createConfirmOrDenyWithPromise(
-      'Did the components change their value?',
-      'User selected update failed.',
-      testWhisper,
-    );
-    checkbox.value = false;
-    radioButton.selected = 1;
-    selectInput.selected = 0;
-
-    await testWhisper.update({
-      label: 'Updated Whisper label :o',
-      components: [checkbox, radioButton, selectInput, ...secondUpdate.button],
-    });
-    await secondUpdate.promise;
-    resolve(true);
+      await testWhisper.update({
+        label: 'Updated Whisper label :o',
+        components: [checkbox, radioButton, selectInput, ...secondUpdate.button],
+      });
+      await secondUpdate.promise;
+      resolve(true);
+    } catch (e) {
+      reject(e);
+    }
   });
