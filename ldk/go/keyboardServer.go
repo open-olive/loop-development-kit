@@ -104,6 +104,8 @@ func (k *KeyboardServer) KeyboardCharacterStream(req *proto.KeyboardCharacterStr
 		return err
 	}
 
+	includeOliveHelpsTraffic := req.IncludeOliveHelpsTraffic
+
 	handler := func(r rune, err error) {
 		var errText string
 		if err != nil {
@@ -122,7 +124,10 @@ func (k *KeyboardServer) KeyboardCharacterStream(req *proto.KeyboardCharacterStr
 	go func() {
 		err := k.Impl.ListenCharacter(
 			context.WithValue(stream.Context(), Session{}, session),
-			handler,
+			KeyboardListenCharacterConfiguration{
+				Handler:                  handler,
+				IncludeOliveHelpsTraffic: includeOliveHelpsTraffic,
+			},
 		)
 		// TODO: Fix this when we refactor to sidekick
 		if err != nil {

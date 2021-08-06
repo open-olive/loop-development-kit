@@ -78,7 +78,7 @@ func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandl
 }
 
 // ListenCharacter will call the handler for each character typed on the keyboard
-func (k *KeyboardClient) ListenCharacter(ctx context.Context, handler ListenCharacterHandler) error {
+func (k *KeyboardClient) ListenCharacter(ctx context.Context, keyboardListenCharacterConfiguration KeyboardListenCharacterConfiguration) error {
 	stream, err := k.client.KeyboardCharacterStream(ctx, &proto.KeyboardCharacterStreamRequest{
 		Session: k.session.ToProto(),
 	})
@@ -93,7 +93,7 @@ func (k *KeyboardClient) ListenCharacter(ctx context.Context, handler ListenChar
 				break
 			}
 			if err != nil {
-				handler(0, err)
+				keyboardListenCharacterConfiguration.Handler(0, err)
 				return
 			}
 
@@ -102,7 +102,7 @@ func (k *KeyboardClient) ListenCharacter(ctx context.Context, handler ListenChar
 			}
 			// get first rune...
 			for _, v := range resp.GetText() {
-				handler(v, err)
+				keyboardListenCharacterConfiguration.Handler(v, err)
 				break
 			}
 		}

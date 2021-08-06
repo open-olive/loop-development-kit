@@ -6,12 +6,17 @@ import "context"
 type KeyboardService interface {
 	ListenHotkey(context.Context, Hotkey, ListenHotkeyHandler) error
 	ListenText(context.Context, ListenTextHandler) error
-	ListenCharacter(context.Context, ListenCharacterHandler) error
+	ListenCharacter(context.Context, KeyboardListenCharacterConfiguration) error
 }
 
 type Hotkey struct {
 	Key       rune
 	Modifiers KeyModifier
+}
+
+type KeyboardListenCharacterConfiguration struct {
+	Handler                  ListenCharacterHandler
+	IncludeOliveHelpsTraffic bool
 }
 
 // This function takes the hotkey param (which is understood to be the actual hotkey combination provided by the

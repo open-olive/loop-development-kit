@@ -54,6 +54,7 @@ message KeyboardTextStreamResponse {
 
 message KeyboardCharacterStreamRequest {
     Session session = 1;
+    bool IncludeOliveHelpsTraffic = 2;
 }
 
 message KeyboardCharacterStreamResponse {
