@@ -1,4 +1,5 @@
 import 'core-js';
+import * as browser from './browser';
 import * as clipboard from './clipboard';
 import * as cursor from './cursor';
 import * as filesystem from './filesystem';
@@ -12,7 +13,9 @@ import * as vault from './vault';
 import * as whisper from './whisper';
 import * as window from './window'; // These are provided to validate that the aptitude object meets the interface contract.
 
-/* eslint-disable */ const _clipboard: clipboard.Clipboard = clipboard;
+/* eslint-disable */
+const _browser: browser.Browser = browser;
+const _clipboard: clipboard.Clipboard = clipboard;
 const _cursor: cursor.Cursor = cursor;
 const _keyboard: keyboard.Keyboard = keyboard;
 const _filesystem: filesystem.Filesystem = filesystem;
@@ -27,6 +30,7 @@ const _window: window.Window = window;
 /* eslint-enable */
 
 export {
+  browser,
   clipboard,
   cursor,
   filesystem,

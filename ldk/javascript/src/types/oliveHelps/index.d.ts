@@ -5,6 +5,7 @@ declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
   interface Aptitudes {
+    browser: Browser;
     clipboard: Clipboard;
     whisper: WhisperService;
     filesystem: Filesystem;
@@ -56,6 +57,25 @@ declare namespace OliveHelps {
     callback: Callback<TOut>,
     returnCb: ReturnCallback,
   ) => void;
+
+  //-- Browser
+  interface Browser {
+    listenNavigation: Listenable<NavigationDetails>;
+
+    listenTextSelection: Listenable<string>;
+
+    openTab: ReadableWithParam<string, string>;
+
+    openWindow: ReadableWithParam<string, string>;
+  }
+
+  interface NavigationDetails {
+    frameId: number;
+    parentFrameId: number;
+    tabId: number;
+    timestamp: number;
+    url: string;
+  }
 
   //-- User
   interface JWTConfig {

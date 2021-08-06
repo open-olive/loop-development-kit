@@ -21,6 +21,7 @@ describe('Generate Banner', () => {
   const ldkSettings: LdkSettings = {
     ldk: {
       permissions: {
+        browser: {},
         clipboard: {},
         cursor: {},
         filesystem: { pathGlobs: [{ value: '/my/path' }] },
@@ -42,6 +43,7 @@ describe('Generate Banner', () => {
     const expected = {
       oliveHelpsContractVersion: '0.1.2',
       permissions: {
+        browser: {},
         clipboard: {},
         cursor: {},
         filesystem: { pathGlobs: [{ value: '/my/path' }] },

@@ -13,6 +13,7 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
   const json = JSON.stringify({
     oliveHelpsContractVersion: '0.1.2',
     permissions: {
+      browser: ldkSettings.ldk.permissions.browser || undefined,
       clipboard: ldkSettings.ldk.permissions.clipboard || undefined,
       cursor: ldkSettings.ldk.permissions.cursor || undefined,
       filesystem: ldkSettings.ldk.permissions.filesystem || undefined,
