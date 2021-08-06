@@ -59,4 +59,10 @@ export const filesystemTestGroup = (): TestGroup =>
       5000,
       'Checking for file info being returned...',
     ),
+    new LoopTest(
+      'File Aptitude - File Unzip',
+      filesystemTests.testFileUnzip,
+      5000,
+      'Checking for file to be unzipped...',
+    ),
   ]);

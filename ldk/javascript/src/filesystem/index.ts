@@ -110,6 +110,13 @@ export interface Filesystem {
    * @returns - a single path separated with an OS specific Separator
    */
   join(segments: string[]): Promise<string>;
+
+  /**
+   * Unzips sourced file to a specified directory.
+   * @param zipFilePath - path to the file to unzip. File has to have .zip extension.
+   * @param outputDirPath - path to the output directory. If unzipped file already exist in the output directory, the file will be overwritten.
+   */
+  unzip(zipFilePath: string, outputDirPath: string): Promise<void>;
 }
 
 export function copy(source: string, destination: string): Promise<void> {
@@ -185,4 +192,8 @@ export function writeFile({
 
 export function join(segments: string[]): Promise<string> {
   return promisifyWithParam(segments, oliveHelps.filesystem.join);
+}
+
+export function unzip(zipFilePath: string, outputDirPath: string): Promise<void> {
+  return promisifyWithTwoParams(zipFilePath, outputDirPath, oliveHelps.filesystem.unzip);
 }
