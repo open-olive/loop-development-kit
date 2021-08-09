@@ -277,7 +277,11 @@ export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> &
   backgroundStyle?: Color;
 };
 
-export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEditor>;
+export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEditor> & {
+  onBlur?: (error: Error | undefined) => void;
+  onChange: WhisperHandlerWithParam<string>;
+  onFocus?: (error: Error | undefined) => void;
+};
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =

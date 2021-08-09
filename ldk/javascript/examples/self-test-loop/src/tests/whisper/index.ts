@@ -1588,6 +1588,9 @@ export const testFlex = (): Promise<boolean> =>
         components: [
           {
             type: WhisperComponentType.RichTextEditor,
+            onChange: (value) => {
+              console.debug(`Input value changed: ${value}`);
+            },
           },
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
         ],

@@ -465,7 +465,11 @@ declare namespace OliveHelps {
     max?: string;
   };
 
-  type RichTextEditor = Component<'richTextEditor'>;
+  type RichTextEditor = Component<'richTextEditor'> & {
+    onBlur?: (error: Error | undefined) => void;
+    onChange: WhisperHandlerWithParam<string>;
+    onFocus?: (error: Error | undefined) => void;
+  };
 
   type Divider = Component<'divider'>;
 
