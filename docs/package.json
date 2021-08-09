@@ -20,6 +20,7 @@
     "gatsby": "^3.5.0",
     "gatsby-image": "^3.6.0",
     "gatsby-plugin-gatsby-cloud": "^2.6.1",
+    "gatsby-plugin-google-gtag": "^3.8.0",
     "gatsby-plugin-sass": "^4.2.0",
     "gatsby-plugin-sharp": "^3.6.0",
     "gatsby-remark-autolink-headers": "^3.2.0",

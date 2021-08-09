@@ -1,44 +1,19 @@
 {
-  "name": "self-test-loop",
+  "name": "typescript-loop-example",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "build": "webpack",
-    "build-ldk": "cd ../.. && npm i && rm -rf dist && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --entry ./index.ts --config ./node_modules/@oliveai/ldk/dist/webpack/config.js",
+    "build-ldk": "cd ../.. && npm i && rm -rf dist && npm run build",
     "build-all": "npm run build-ldk && npm i && npm run build"
   },
-  "keywords": [],
-  "author": "",
+  "author": "LDK Team",
+  "license": "ISC",
   "ldk": {
     "permissions": {
-      "clipboard": {},
-      "cursor": {},
-      "network": {
-        "urlDomains": [
-          {
-            "value": "html5rocks.websocket.org"
-          },
-          {
-            "value": "api.fda.gov"
-          },
-          {
-            "value": "catalog.data.gov"
-          },
-          {
-            "value": "httpstat.us"
-          }
-        ]
-      },
-      "filesystem": {},
-      "process": {},
-      "ui": {},
-      "user": {},
-      "system": {},
-      "keyboard": {},
-      "whisper": {},
-      "vault": {},
-      "window": {}
+      "whisper": {}
     }
   },
   "devDependencies": {
@@ -66,6 +41,6 @@
     "core-js": "3.10.1",
     "es6-promise": "4.2.8",
     "ts-node": "^9.1.1",
-    "xlsx": "^0.17.0"
+    "xlsx": "0.16.9"
   }
 }
