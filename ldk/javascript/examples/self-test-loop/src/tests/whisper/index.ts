@@ -1579,8 +1579,7 @@ export const testFlex = (): Promise<boolean> =>
     }
   });
 
-
-  export const testRichTextEditor = (): Promise<boolean> =>
+export const testRichTextEditor = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await whisper.create({

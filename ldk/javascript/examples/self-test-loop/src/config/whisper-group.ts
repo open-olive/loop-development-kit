@@ -173,5 +173,4 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Is RichTextEditor working correctly?',
     ),
-
   ]);
