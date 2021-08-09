@@ -16,6 +16,7 @@ describe('Filesystem', () => {
       stat: jest.fn(),
       writeFile: jest.fn(),
       join: jest.fn(),
+      openWithDefaultApplication: jest.fn(),
     };
   });
 

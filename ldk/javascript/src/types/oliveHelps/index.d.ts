@@ -293,6 +293,8 @@ declare namespace OliveHelps {
     writeFile: ReadableWithFourParams<string, Array<number>, WriteOperation, WriteMode, void>;
 
     join: ReadableWithParam<string[], string>;
+
+    openWithDefaultApplication: ReadableWithParam<string, void>;
   }
 
   //-- Whisper
