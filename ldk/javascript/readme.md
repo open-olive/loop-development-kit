@@ -84,6 +84,8 @@ In order to ensure your Loop is executing in a secure manner, you must declare w
 
 Permissions are declared inside of the Loop `package.json` root within a `ldk/permissions` json object.
 
+The included LDK Webpack configuration allows Loop authors to configure alternate permissions for different development environments. See the [Permissions Configuration guide](https://oliveai.dev/guides/permissions-configuration) on the Olive Helps Developer Hub for more information.
+
 ```json
 "ldk": {
   "permissions": {
@@ -169,6 +171,8 @@ An Aptitude Name.
 "process"  | "ui" | "user"
 "vault" | "whisper" | "window"
 <br>
+
+
 
 ## Loop Examples
 Examples are provided in the `ldk/javascript/examples/` directory. These examples include more information about creating and building Loops.
