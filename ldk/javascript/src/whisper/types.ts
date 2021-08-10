@@ -281,6 +281,8 @@ export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEdito
   onBlur?: (error: Error | undefined) => void;
   onChange: WhisperHandlerWithParam<string>;
   onFocus?: (error: Error | undefined) => void;
+  tooltip?: string;
+  validationError?: string;
 };
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 

@@ -469,6 +469,8 @@ declare namespace OliveHelps {
     onBlur?: (error: Error | undefined) => void;
     onChange: WhisperHandlerWithParam<string>;
     onFocus?: (error: Error | undefined) => void;
+    tooltip?: string;
+    validationError?: string;
   };
 
   type Divider = Component<'divider'>;
