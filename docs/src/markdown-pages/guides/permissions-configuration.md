@@ -12,7 +12,7 @@ These configuration files should be named according to this pattern: `ldk-config
 
 Per-environment configs can be activated by setting the `LDK_CONFIG` environment variable when running the Loop transpilation process. For example, running `LDK_CONFIG=dev npm run build` will load the configuration in `ldk-config.dev.json`.
 
-The permissions you declare in the `ldk` configuration section of your Loop's `package.json` are considered the "base" permissions config. For Aptitudes which require specific configuration (namely, the Network and Filesystem Aptitudes), any configuration in the environment specific config file will **replace** any values for these permissions in the base configuration. Running the build with no value for `LDK_CONFIG` set will result in only the base configuration being applied.
+The permissions you declare in the `ldk` configuration section of your Loop's `package.json` are considered the "base" permissions config. For Aptitudes which require specific configuration (namely, the Network and Filesystem Aptitudes), any configuration in the environment specific config file will **override** any values for these permissions in the base configuration. Running the build with no value for `LDK_CONFIG` set will result in only the base configuration being applied.
 
 ## Example
 As an example of this feature, consider the following two configurations:
