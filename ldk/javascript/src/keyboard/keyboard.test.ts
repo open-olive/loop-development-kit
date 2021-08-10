@@ -8,6 +8,7 @@ describe('Keyboard', () => {
       listenHotkey: jest.fn(),
       listenText: jest.fn(),
       listenCharacter: jest.fn(),
+      includeOliveHelpsEvents: jest.fn()
     };
   });
 
@@ -41,6 +42,7 @@ describe('Keyboard', () => {
     });
   });
 
+  //TODO: Add test for includeOliveHelpsEvents
   describe('listenText', () => {
     it('calls olive helps with given callback function', async () => {
       const callback = jest.fn();

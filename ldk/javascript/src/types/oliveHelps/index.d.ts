@@ -208,6 +208,8 @@ declare namespace OliveHelps {
     listenText: Listenable<string>;
 
     listenCharacter: Listenable<string>;
+
+    includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   interface Hotkey {

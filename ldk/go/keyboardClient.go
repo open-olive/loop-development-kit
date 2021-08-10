@@ -48,7 +48,7 @@ func (k *KeyboardClient) ListenHotkey(ctx context.Context, hotkey Hotkey, handle
 }
 
 // ListenText will call the handler when a chunk of text has been captured from the keyboard
-func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandler) error {
+func (k *KeyboardClient) ListenText(ctx context.Context, keyboardListenTextConfiguration KeyboardListenTextConfiguration) error {
 	stream, err := k.client.KeyboardTextStream(ctx, &proto.KeyboardTextStreamRequest{
 		Session: k.session.ToProto(),
 	})
@@ -63,14 +63,14 @@ func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandl
 				break
 			}
 			if err != nil {
-				handler("", err)
+				keyboardListenTextConfiguration.Handler("", err)
 				return
 			}
 
 			if resp.GetError() != "" {
 				err = errors.New(resp.GetError())
 			}
-			handler(resp.GetText(), err)
+			keyboardListenTextConfiguration.Handler(resp.GetText(), err)
 		}
 	}()
 
@@ -78,7 +78,7 @@ func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandl
 }
 
 // ListenCharacter will call the handler for each character typed on the keyboard
-func (k *KeyboardClient) ListenCharacter(ctx context.Context, keyboardListenCharacterConfiguration KeyboardListenCharacterConfiguration) error {
+func (k *KeyboardClient) ListenCharacter(ctx context.Context, handler ListenCharacterHandler) error {
 	stream, err := k.client.KeyboardCharacterStream(ctx, &proto.KeyboardCharacterStreamRequest{
 		Session: k.session.ToProto(),
 	})
@@ -93,7 +93,7 @@ func (k *KeyboardClient) ListenCharacter(ctx context.Context, keyboardListenChar
 				break
 			}
 			if err != nil {
-				keyboardListenCharacterConfiguration.Handler(0, err)
+				handler(0, err)
 				return
 			}
 
@@ -102,7 +102,7 @@ func (k *KeyboardClient) ListenCharacter(ctx context.Context, keyboardListenChar
 			}
 			// get first rune...
 			for _, v := range resp.GetText() {
-				keyboardListenCharacterConfiguration.Handler(v, err)
+				handler(v, err)
 				break
 			}
 		}

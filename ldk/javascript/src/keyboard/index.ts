@@ -29,9 +29,13 @@ export interface Keyboard {
   /**
    * Calls callback function when text is detected from the clipboard.
    *
+   * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus
    * @param callback - The callback function called when text is detected from the clipboard.
    */
-  listenText(callback: (text: string) => void): Promise<Cancellable>;
+  listenText(
+    callback: (text: string) => void,
+    includeOliveHelpsEvents: boolean,
+  ): Promise<Cancellable>;
 
   /**
    * Calls callback function when a character is detected from the clipboard.
@@ -48,7 +52,11 @@ export function listenHotkey(
   return promisifyListenableWithParam(hotkey, callback, oliveHelps.keyboard.listenHotkey);
 }
 
-export function listenText(callback: (text: string) => void): Promise<Cancellable> {
+export function listenText(
+  callback: (text: string) => void,
+  includeOliveHelpsEvents: boolean = false,
+): Promise<Cancellable> {
+  oliveHelps.keyboard.includeOliveHelpsEvents(includeOliveHelpsEvents);
   return promisifyListenable(callback, oliveHelps.keyboard.listenText);
 }
 

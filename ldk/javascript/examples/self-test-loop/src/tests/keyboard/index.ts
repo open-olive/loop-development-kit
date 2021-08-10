@@ -15,12 +15,12 @@ export const testListenCharacter = (): Promise<boolean> =>
 export const testListenText = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     const listener = await keyboard.listenText((text) => {
-      console.debug('Text received', 'response', text);
+      console.info('Text received', 'response', text);
       if (text === 'Olive') {
         listener.cancel();
         resolve(true);
       }
-    });
+    }, true);
   });
 
 export const testListenHotkey = (): Promise<boolean> =>
