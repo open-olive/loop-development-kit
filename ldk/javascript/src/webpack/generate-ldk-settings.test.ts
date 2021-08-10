@@ -62,7 +62,7 @@ describe('Merge LDK Settings', () => {
     expect(mergedSettings).toEqual(expectedSettings);
   });
 
-  it('keys present in the base config exist in merged output', () => {
+  it('preserves keys from base config in merged output', () => {
     // Have to force any type here to allow mergeLdkSettings to accept this shape
     // eslint-disable-next-line
     const overrideSettings: any = {

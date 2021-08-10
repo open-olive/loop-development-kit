@@ -21,13 +21,17 @@ export function generateLdkSettings(): LdkSettings {
   let ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
 
   if (process.env.LDK_CONFIG !== undefined) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-dynamic-require,global-require
-    const ldkOverrides: LdkSettings = require(path.join(
-      process.cwd(),
-      `/ldk-config.${process.env.LDK_CONFIG}.json`,
-    ));
-
-    ldkSettings = mergeLdkSettings(ldkSettings, ldkOverrides);
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-dynamic-require,global-require
+      const ldkOverrides: LdkSettings = require(path.join(
+        process.cwd(),
+        `/ldk-config.${process.env.LDK_CONFIG}.json`,
+      ));
+      ldkSettings = mergeLdkSettings(ldkSettings, ldkOverrides);
+    } catch (err) {
+      console.error(`Failed to load environment config for LDK_CONFIG=${process.env.LDK_CONFIG}.`);
+      console.error(err.message);
+    }
   }
 
   return ldkSettings;
