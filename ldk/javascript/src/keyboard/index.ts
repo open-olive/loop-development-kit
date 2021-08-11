@@ -29,7 +29,7 @@ export interface Keyboard {
   /**
    * Calls callback function when text is detected from the clipboard.
    *
-   * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus
+   * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus. Disabled by default.
    * @param callback - The callback function called when text is detected from the clipboard.
    */
   listenText(
