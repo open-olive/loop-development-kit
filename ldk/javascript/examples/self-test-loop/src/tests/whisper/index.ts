@@ -1589,9 +1589,6 @@ export const testRichTextEditor = (): Promise<boolean> =>
           id: 'RTE1',
           key: 'RTE1',
           type: WhisperComponentType.RichTextEditor,
-          layout: {
-            flex: '1',
-          },
           onBlur: () => {
             console.debug(`On blur called`);
           },
