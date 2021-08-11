@@ -370,6 +370,28 @@ export const testFileExists = (): Promise<boolean> =>
     });
   });
 
+export const testOpenFile = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `test.txt`;
+    const writeMode = 0o755;
+
+    try {
+      await filesystem.writeFile({
+        path: filePath,
+        data: 'some text',
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode,
+      });
+      await filesystem.openWithDefaultApplication(filePath);
+      setTimeout(async () => {
+        await filesystem.remove(filePath);
+        resolve(true);
+      }, 2000);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const testFileStat = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -425,5 +447,27 @@ export const testFileUnzip = (): Promise<boolean> =>
       await filesystem.remove(textFilePath);
     } catch (error) {
       reject(error);
+    }
+  });
+
+export const testOpenFileDoesNotExist = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `nofile.txt`;
+    try {
+      await filesystem.openWithDefaultApplication(filePath);
+      reject(new Error("Shouldn't get a success here"));
+    } catch (error) {
+      resolve(true);
+    }
+  });
+
+export const testOpenDirectory = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = ``;
+    try {
+      await filesystem.openWithDefaultApplication(filePath);
+      resolve(true);
+    } catch (error) {
+      reject(new Error("Couldn't open the directory"));
     }
   });
