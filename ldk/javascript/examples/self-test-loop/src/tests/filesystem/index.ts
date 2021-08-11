@@ -8,6 +8,7 @@ import {
 } from '@oliveai/ldk/dist/filesystem/types';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 import { areStringsEqual, StringOptions } from '../../utils/string';
+import * as zipFile from './zipFile';
 
 let testFolderPath: string;
 
@@ -408,6 +409,42 @@ export const testFileStat = (): Promise<boolean> =>
       } else {
         reject(new Error(`Din not received file info`));
       }
+    } catch (error) {
+      reject(error);
+    }
+  });
+
+export const testFileUnzip = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const dirPath = `${await getTestFolderPath()}`;
+      const zipFilePath = `${dirPath}/test_zip.zip`;
+      const textFilePath = `${dirPath}/test_zip.txt`;
+      const writeMode = 0o755;
+      const writeOperation = WriteOperation.overwrite;
+
+      // Create a zip file
+      await filesystem.writeFile({
+        path: zipFilePath,
+        data: zipFile.data,
+        writeOperation,
+        writeMode,
+      });
+
+      // Unzip file
+      await filesystem.unzip(zipFilePath, dirPath);
+
+      // Assert
+      const fileInfo = await filesystem.stat(textFilePath);
+      if (fileInfo) {
+        resolve(true);
+      } else {
+        reject(new Error(`Unzipped file not found.`));
+      }
+
+      // Cleanup
+      await filesystem.remove(zipFilePath);
+      await filesystem.remove(textFilePath);
     } catch (error) {
       reject(error);
     }
