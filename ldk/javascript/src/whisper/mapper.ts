@@ -123,7 +123,7 @@ export function mapToInternalChildComponent(
             readFile: () =>
               new Promise<Uint8Array>((resolve, reject) => {
                 file.readFile((readError, buffer) => {
-                  if (error) {
+                  if (readError) {
                     return reject(readError);
                   }
                   return resolve(new Uint8Array(buffer));
