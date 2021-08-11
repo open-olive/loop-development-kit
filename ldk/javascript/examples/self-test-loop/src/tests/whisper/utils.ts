@@ -4,6 +4,7 @@ import {
   WhisperComponentType,
   Whisper,
   Component,
+  StateMap,
 } from '@oliveai/ldk/dist/whisper/types';
 
 export const resolveOnClick = (
@@ -73,3 +74,9 @@ export const newGuid = (): string =>
 
     return v.toString(16);
   });
+
+export const logMap = (map: StateMap): void => {
+  Array.from(map.entries()).forEach((entry) => {
+    console.log(`Key: ${entry[0]} Value: ${entry[1]}`);
+  });
+};

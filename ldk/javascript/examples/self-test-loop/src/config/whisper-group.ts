@@ -164,8 +164,14 @@ export const whisperTestGroup = (): TestGroup =>
     new LoopTest(
       'Whisper Aptitude - DateTime',
       whisperTests.testDateTime,
+      20000,
+      'Pick new date and time values',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Icon Rendering',
+      whisperTests.testIconLayout,
       10000,
-      'Pick date and time values',
+      'Did the icon render correctly?',
     ),
     new LoopTest(
       'Whisper Aptitude - Test onCopy',

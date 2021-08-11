@@ -293,6 +293,10 @@ declare namespace OliveHelps {
     writeFile: ReadableWithFourParams<string, Array<number>, WriteOperation, WriteMode, void>;
 
     join: ReadableWithParam<string[], string>;
+
+    unzip: ReadableWithTwoParams<string, string, void>;
+
+    openWithDefaultApplication: ReadableWithParam<string, void>;
   }
 
   //-- Whisper
@@ -301,8 +305,10 @@ declare namespace OliveHelps {
     | 'button'
     | 'checkbox'
     | 'collapseBox'
+    | 'dateTimeInput'
     | 'divider'
     | 'email'
+    | 'icon'
     | 'link'
     | 'listPair'
     | 'markdown'
@@ -311,10 +317,9 @@ declare namespace OliveHelps {
     | 'password'
     | 'radioGroup'
     | 'select'
-    | 'telephone'
-    | 'textInput'
     | 'sectionTitle'
-    | 'dateTimeInput';
+    | 'telephone'
+    | 'textInput';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -340,11 +345,11 @@ declare namespace OliveHelps {
 
   type DateTimeType = 'date' | 'time' | 'date_time';
 
+  type IconSize = 'small' | 'medium' | 'large' | 'x-large';
+
   interface LayoutOptions {
     flex?: string;
   }
-
-  type Color = 'white' | 'grey';
 
   interface Whisper {
     id: string;
@@ -457,7 +462,7 @@ declare namespace OliveHelps {
   type SectionTitle = Component<'sectionTitle'> & {
     body: string;
     textAlign?: TextAlign;
-    backgroundStyle?: Color;
+    backgroundStyle?: 'white' | 'grey';
   };
 
   type DateTimeInput = InputComponent<'dateTimeInput', string> & {
@@ -465,6 +470,14 @@ declare namespace OliveHelps {
     value?: string;
     min?: string;
     max?: string;
+  };
+
+  type Icon = Component<'icon'> & {
+    name: string;
+    size?: IconSize;
+    color?: 'black' | 'whisper-strip' | 'white' | 'grey';
+    onClick?: WhisperHandler;
+    tooltip?: string;
   };
 
   type Divider = Component<'divider'>;
@@ -500,8 +513,9 @@ declare namespace OliveHelps {
     | Select
     | Telephone
     | TextInput
-    | SectionTitle
-    | DateTimeInput;
+    | DateTimeInput
+    | Icon
+    | SectionTitle;
 
   type Components = ChildComponents | CollapseBox;
 

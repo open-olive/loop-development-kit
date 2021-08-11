@@ -54,9 +54,33 @@ export const filesystemTestGroup = (): TestGroup =>
       'Checking for file existence...',
     ),
     new LoopTest(
+      'File Aptitude - Open File',
+      filesystemTests.testOpenFile,
+      10000,
+      'Attempting to open file...',
+    ),
+    new LoopTest(
+      'File Aptitude - Open Directory',
+      filesystemTests.testOpenDirectory,
+      10000,
+      'Attempting to open directory...',
+    ),
+    new LoopTest(
+      'File Aptitude - Open File Does Not Exists',
+      filesystemTests.testOpenFileDoesNotExist,
+      10000,
+      'Trying to open a file that does not exist',
+    ),
+    new LoopTest(
       'File Aptitude - File Stat',
       filesystemTests.testFileStat,
       5000,
       'Checking for file info being returned...',
+    ),
+    new LoopTest(
+      'File Aptitude - File Unzip',
+      filesystemTests.testFileUnzip,
+      5000,
+      'Checking for file to be unzipped...',
     ),
   ]);
