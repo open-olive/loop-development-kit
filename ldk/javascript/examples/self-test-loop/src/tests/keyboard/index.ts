@@ -23,6 +23,23 @@ export const testListenText = (): Promise<boolean> =>
     }, true);
   });
 
+export const testListenTextIgnoreOliveHelpsTraffic = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const listenerIgnoreOH = await keyboard.listenText((text) => {
+      reject('Should not allow Olive Helps traffic');
+      listenerIgnoreOH.cancel();
+      listenerAllowOH.cancel();
+    }, false);
+
+    const listenerAllowOH = await keyboard.listenText((text) => {
+      if (text === 'f' || text === 'F') {
+        listenerAllowOH.cancel();
+        listenerIgnoreOH.cancel();
+        resolve(true);
+      }
+    }, true);
+  });
+
 export const testListenHotkey = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     const hotkeys = {

@@ -23,4 +23,10 @@ export const keyboardTestGroup = (): TestGroup =>
       10000,
       'Type the letter "F" to pay respects...and test the individual character test',
     ),
+    new LoopTest(
+      'Keyboard Aptitude - Disable Olive Helps Traffic',
+      keyboardTests.testListenTextIgnoreOliveHelpsTraffic,
+      10000,
+      'Keep Olive Helps open, type the letter "F"',
+    ),
   ]);
