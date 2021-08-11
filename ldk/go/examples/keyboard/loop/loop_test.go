@@ -13,8 +13,8 @@ import (
 func TestController(t *testing.T) {
 	sidekick := &ldktest.Sidekick{
 		KeyboardService: &ldktest.KeyboardService{
-			ListenTextf: func(ctx context.Context, cb ldk.ListenTextHandler) error {
-				cb("Some keyboard text", nil)
+			ListenTextf: func(ctx context.Context, configuration ldk.KeyboardListenTextConfiguration) error {
+				configuration.Handler("Some keyboard text", nil)
 
 				return nil
 			},
