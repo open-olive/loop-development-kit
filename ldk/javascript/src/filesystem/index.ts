@@ -114,7 +114,7 @@ export interface Filesystem {
   /**
    * Unzips sourced file to a specified directory.
    * @param zipFilePath - path to the file to unzip. File has to have .zip extension.
-   * @param outputDirPath - path to the output directory. If unzipped file already exist in the output directory, the file will be overwritten.
+   * @param outputDirPath - path to the output directory. If the unzipped file already exists in the output directory, the file will be overwritten.
    */
   unzip(zipFilePath: string, outputDirPath: string): Promise<void>;
 
