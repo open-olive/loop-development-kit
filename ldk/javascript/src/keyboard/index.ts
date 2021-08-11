@@ -54,7 +54,7 @@ export function listenHotkey(
 
 export function listenText(
   callback: (text: string) => void,
-  includeOliveHelpsEvents: boolean = false,
+  includeOliveHelpsEvents = false,
 ): Promise<Cancellable> {
   oliveHelps.keyboard.includeOliveHelpsEvents(includeOliveHelpsEvents);
   return promisifyListenable(callback, oliveHelps.keyboard.listenText);
