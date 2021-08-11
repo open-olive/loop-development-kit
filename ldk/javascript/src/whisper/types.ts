@@ -262,9 +262,10 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
   tooltip?: string;
   validationError?: string;
   /**
-   * The value property can be used to update the list of files selected, including dropping them. If the value property
-   * is null or undefined, the existing selection will remain as-is. To deselect all the files, set it to an empty
-   * array.
+   * This field can be used to re-order and remove selected files from the component.
+   *
+   * If the value property is null or undefined, the existing selection will remain as-is. To deselect all the files,
+   * set it to an empty array.
    *
    * You cannot add a file to the selection via this interface. The component will ignore any files provided it
    * currently does not have selected.
