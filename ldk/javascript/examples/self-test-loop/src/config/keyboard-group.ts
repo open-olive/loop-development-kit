@@ -27,6 +27,6 @@ export const keyboardTestGroup = (): TestGroup =>
       'Keyboard Aptitude - Disable Olive Helps Traffic',
       keyboardTests.testListenTextIgnoreOliveHelpsTraffic,
       10000,
-      'Keep Olive Helps open, type the letter "F"',
+      'Keep Olive Helps open, type the letter "S"',
     ),
   ]);

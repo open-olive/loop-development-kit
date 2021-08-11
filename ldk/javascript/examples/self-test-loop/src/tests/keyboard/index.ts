@@ -32,7 +32,7 @@ export const testListenTextIgnoreOliveHelpsTraffic = (): Promise<boolean> =>
     }, false);
 
     const listenerAllowOH = await keyboard.listenText((text) => {
-      if (text === 'f' || text === 'F') {
+      if (text === 's' || text === 'S') {
         listenerAllowOH.cancel();
         listenerIgnoreOH.cancel();
         resolve(true);
