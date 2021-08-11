@@ -186,7 +186,7 @@ export interface WhisperComponent<T extends WhisperComponentType> {
 
 interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
   extends WhisperComponent<T1> {
-  label: string;
+  label?: string;
   tooltip?: string;
   validationError?: string;
   value?: T2;
@@ -200,7 +200,7 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
 }
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
-  label: string;
+  label?: string;
   tooltip?: string;
   value?: boolean;
   onChange: WhisperHandlerWithParam<boolean>;
@@ -213,7 +213,7 @@ export type RadioGroup = SelectComponent<WhisperComponentType.RadioGroup> & {
 };
 
 export type Select = SelectComponent<WhisperComponentType.Select> & {
-  label: string;
+  label?: string;
   options: string[];
   onSelect: WhisperHandlerWithParam<number>;
   selected?: number;
@@ -243,7 +243,7 @@ export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, D
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
-  label: string;
+  label?: string;
   onClick: WhisperHandler;
   size?: ButtonSize;
   tooltip?: string;
