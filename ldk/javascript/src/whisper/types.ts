@@ -67,11 +67,14 @@ export enum WhisperComponentType {
    * The field can be pre-populated by the loop.
    */
   DateTimeInput = 'dateTimeInput',
-  /* The richText Editor allow users to use RichText Editor on Olive Helps
-   *
-   * The field can be pre-populated by the loop.
+  /**
+   *  The richText Editor allow users to use RichText Editor on Olive Helps
    */
   RichTextEditor = 'richTextEditor',
+  /**
+   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
+   */
+  Icon = 'icon',
 }
 
 export enum JustifyContent {
@@ -135,7 +138,10 @@ export enum DateTimeType {
 export enum Color {
   Grey = 'grey',
   White = 'white',
+  Black = 'black',
+  WhisperStrip = 'whisper-strip',
 }
+
 export enum MarkdownWhisperCopyMode {
   Body = 'body',
 }
@@ -146,6 +152,13 @@ export enum MessageWhisperCopyMode {
 }
 export interface LayoutOptions {
   flex?: string;
+}
+
+export enum IconSize {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  XLarge = 'x-large',
 }
 
 export type StateMap = Map<string, string | boolean | number>;
@@ -271,10 +284,18 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   tooltip?: string;
 };
 
+export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
+  name: string;
+  size?: IconSize;
+  color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip;
+  onClick?: WhisperHandler;
+  tooltip?: string;
+};
+
 export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
   body: string;
   textAlign?: TextAlign;
-  backgroundStyle?: Color;
+  backgroundStyle?: Color.Grey | Color.White;
 };
 
 export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEditor> & {
@@ -290,8 +311,10 @@ export type ChildComponents =
   | Box
   | Button
   | Checkbox
+  | DateTimeInput
   | Divider
   | Email
+  | Icon
   | Link
   | ListPair
   | Markdown
@@ -300,11 +323,11 @@ export type ChildComponents =
   | Password
   | RadioGroup
   | Select
-  | Telephone
-  | TextInput
   | SectionTitle
   | DateTimeInput
-  | RichTextEditor;
+  | RichTextEditor
+  | Telephone
+  | TextInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;

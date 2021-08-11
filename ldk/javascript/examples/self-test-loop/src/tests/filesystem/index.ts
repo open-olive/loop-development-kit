@@ -7,6 +7,7 @@ import {
   RemovedFileEvent,
 } from '@oliveai/ldk/dist/filesystem/types';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import { areStringsEqual, StringOptions } from '../../utils/string';
 
 let testFolderPath: string;
 
@@ -128,10 +129,20 @@ export const testListenRemoveFile = (): Promise<boolean> =>
             reject(new Error('File event is not received'));
           }
           console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-          if (fileEvent.action === 'Write' && fileEvent.info.name === fileName) {
+          if (
+            fileEvent.action === 'Write' &&
+            areStringsEqual(fileEvent.info.name, fileName, StringOptions.IgnoreCase)
+          ) {
             writeFileResolved = true;
           }
-          if (fileEvent.action === 'Remove' && (fileEvent as RemovedFileEvent).name === fileName) {
+          if (
+            fileEvent.action === 'Remove' &&
+            areStringsEqual(
+              (fileEvent as RemovedFileEvent).name,
+              fileName,
+              StringOptions.IgnoreCase,
+            )
+          ) {
             removeFileResolved = true;
           }
           if (writeFileResolved && removeFileResolved) {
@@ -188,7 +199,14 @@ export const testListenRenameFile = (): Promise<boolean> =>
             reject(new Error('File event is not received'));
           }
           console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-          if (fileEvent.action === 'Rename' && (fileEvent as RenamedFileEvent).name === fileName) {
+          if (
+            fileEvent.action === 'Rename' &&
+            areStringsEqual(
+              (fileEvent as RenamedFileEvent).name,
+              fileName,
+              StringOptions.IgnoreCase,
+            )
+          ) {
             renameFileResolved = true;
           }
           if (renameFileResolved) {
@@ -238,22 +256,42 @@ export const testListenDir = (): Promise<boolean> =>
             reject(new Error('File event is not received'));
           }
           console.debug(`Received file event: ${JSON.stringify(fileEvent)}`);
-          if (fileEvent.action === 'Create' && fileEvent.info.name === fileName) {
+          if (
+            fileEvent.action === 'Create' &&
+            areStringsEqual(fileEvent.info.name, fileName, StringOptions.IgnoreCase)
+          ) {
             createFileResolved = true;
           }
-          if (fileEvent.action === 'Create' && fileEvent.info.name === fileNameMoved) {
+          if (
+            fileEvent.action === 'Create' &&
+            areStringsEqual(fileEvent.info.name, fileNameMoved, StringOptions.IgnoreCase)
+          ) {
             createRenameFileResolved = true;
           }
-          if (fileEvent.action === 'Rename' && (fileEvent as RenamedFileEvent).name === fileName) {
+          if (
+            fileEvent.action === 'Rename' &&
+            areStringsEqual(
+              (fileEvent as RenamedFileEvent).name,
+              fileName,
+              StringOptions.IgnoreCase,
+            )
+          ) {
             renameFileResolved = true;
           }
           if (
             fileEvent.action === 'Remove' &&
-            (fileEvent as RemovedFileEvent).name === fileNameMoved
+            areStringsEqual(
+              (fileEvent as RemovedFileEvent).name,
+              fileNameMoved,
+              StringOptions.IgnoreCase,
+            )
           ) {
             removeFileResolved = true;
           }
-          if (fileEvent.action === 'Remove' && (fileEvent as RemovedFileEvent).name === dirName) {
+          if (
+            fileEvent.action === 'Remove' &&
+            areStringsEqual((fileEvent as RemovedFileEvent).name, dirName, StringOptions.IgnoreCase)
+          ) {
             removeDirResolved = true;
           }
           if (
@@ -331,6 +369,28 @@ export const testFileExists = (): Promise<boolean> =>
     });
   });
 
+export const testOpenFile = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `test.txt`;
+    const writeMode = 0o755;
+
+    try {
+      await filesystem.writeFile({
+        path: filePath,
+        data: 'some text',
+        writeOperation: filesystem.WriteOperation.overwrite,
+        writeMode,
+      });
+      await filesystem.openWithDefaultApplication(filePath);
+      setTimeout(async () => {
+        await filesystem.remove(filePath);
+        resolve(true);
+      }, 2000);
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const testFileStat = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -350,5 +410,27 @@ export const testFileStat = (): Promise<boolean> =>
       }
     } catch (error) {
       reject(error);
+    }
+  });
+
+export const testOpenFileDoesNotExist = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = `nofile.txt`;
+    try {
+      await filesystem.openWithDefaultApplication(filePath);
+      reject(new Error("Shouldn't get a success here"));
+    } catch (error) {
+      resolve(true);
+    }
+  });
+
+export const testOpenDirectory = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const filePath = ``;
+    try {
+      await filesystem.openWithDefaultApplication(filePath);
+      resolve(true);
+    } catch (error) {
+      reject(new Error("Couldn't open the directory"));
     }
   });

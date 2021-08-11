@@ -14,12 +14,101 @@ import {
   DateTimeType,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
+  IconSize,
   Color,
   AlignItems,
   RichTextEditor,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { resolveRejectButtons } from './utils';
+
+export const testIconLayout = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Icon Whisper Layout Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Icon,
+              name: 'call',
+              size: IconSize.XLarge,
+              onClick: () => {
+                console.info('Call Clicked');
+              },
+              tooltip: 'Phone a friend',
+            },
+            {
+              type: WhisperComponentType.Markdown,
+              body: `**Primary**  
+              415-514-5410`,
+            },
+            {
+              type: WhisperComponentType.Markdown,
+              body: `**Secondary**  
+              415-514-5420`,
+            },
+            {
+              type: WhisperComponentType.Markdown,
+              body: `**Secondary**  
+              415-514-5200`,
+            },
+          ],
+        },
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Icon,
+              name: 'article',
+              size: IconSize.Small,
+              color: Color.Black,
+              onClick: () => {
+                console.info('Article Clicked');
+              },
+              tooltip: 'Article Tooltip',
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'emoji_emotions',
+              size: IconSize.Medium,
+              color: Color.Grey,
+              onClick: () => {
+                console.info('Emoji Emotions Clicked');
+              },
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'fingerprint',
+              size: IconSize.Large,
+              color: Color.Black,
+              onClick: () => {
+                console.info('Fingerprint Clicked');
+              },
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'pets',
+              size: IconSize.XLarge,
+              color: Color.WhisperStrip,
+              onClick: () => {
+                console.info('Pets Clicked');
+              },
+            },
+          ],
+        },
+        resolveRejectButtons(resolve, reject),
+      ],
+    });
+  });
 
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {

@@ -29,6 +29,7 @@ The following component types are available:
 * Select - A selected value of -1 indicates that nothing is selected.
 * Telephone - The text input field allows the user to provide a telephone number.
 * TextInput - The text input field allows the user to provide text information. The text can be pre-populated by the loop
+* Icon - Renders a Material Icon. For icon possibilities, see [Material Icons](https://fonts.google.com/icons). Icons can be placed inside of Box Components.
 
 ## Whisper Data Entry
 Provided on each newly created whisper is `componentState` property that is of `type StateMap = Map<string, string | boolean | number>`.
