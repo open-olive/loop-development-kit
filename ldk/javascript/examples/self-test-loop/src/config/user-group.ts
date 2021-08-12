@@ -6,8 +6,14 @@ import * as userTests from '../tests/user';
 export const userTestGroup = (): TestGroup =>
   new TestGroup('User Aptitude', [
     new LoopTest(
-      'User Aptitude - JWT - No Email Claim',
+      'User Aptitude - JWT - Default Claims',
       userTests.testJwt,
+      10000,
+      'No action required',
+    ),
+    new LoopTest(
+      'User Aptitude - JWT - No Email Claim',
+      userTests.testJwtExcludeEmail,
       10000,
       'No action required',
     ),
