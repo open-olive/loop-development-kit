@@ -66,17 +66,17 @@ describe('Browser', () => {
   });
 
   describe('openTab', () => {
-    it('opens a browser tab and returns the tab name', () => {
+    it('opens a browser tab and returns the tab id', () => {
       const tab = 'soda';
-      const tabName = 'tab';
+      const tabId = 0;
       mocked(oliveHelps.browser.openTab).mockImplementation((address, callback) => {
-        callback(undefined, tabName);
+        callback(undefined, tabId);
       });
 
       const actual = browser.openTab(tab);
 
       expect(oliveHelps.browser.openTab).toHaveBeenCalledWith(tab, expect.any(Function));
-      return expect(actual).resolves.toBe(tabName);
+      return expect(actual).resolves.toBe(tabId);
     });
 
     it('returns a rejected promise', () => {
@@ -92,17 +92,17 @@ describe('Browser', () => {
   });
 
   describe('openWindow', () => {
-    it('opens a browser window and returns the window name', () => {
-      const window = '95';
-      const windowName = 'window';
+    it('opens a browser window and returns the window id', () => {
+      const window = 'xp';
+      const windowId = 95;
       mocked(oliveHelps.browser.openWindow).mockImplementation((address, callback) => {
-        callback(undefined, windowName);
+        callback(undefined, windowId);
       });
 
       const actual = browser.openWindow(window);
 
       expect(oliveHelps.browser.openWindow).toHaveBeenCalledWith(window, expect.any(Function));
-      return expect(actual).resolves.toBe(windowName);
+      return expect(actual).resolves.toBe(windowId);
     });
 
     it('returns a rejected promise', () => {

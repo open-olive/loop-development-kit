@@ -50,10 +50,10 @@ export function listenTextSelection(callback: (value: string) => void): Promise<
   return promisifyListenable(callback, oliveHelps.browser.listenTextSelection);
 }
 
-export function openTab(address: string): Promise<string> {
+export function openTab(address: string): Promise<number> {
   return promisifyWithParam(address, oliveHelps.browser.openTab);
 }
 
-export function openWindow(address: string): Promise<string> {
+export function openWindow(address: string): Promise<number> {
   return promisifyWithParam(address, oliveHelps.browser.openWindow);
 }

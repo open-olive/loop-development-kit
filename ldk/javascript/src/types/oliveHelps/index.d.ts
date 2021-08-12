@@ -64,9 +64,9 @@ declare namespace OliveHelps {
 
     listenTextSelection: Listenable<string>;
 
-    openTab: ReadableWithParam<string, string>;
+    openTab: ReadableWithParam<string, number>;
 
-    openWindow: ReadableWithParam<string, string>;
+    openWindow: ReadableWithParam<string, number>;
   }
 
   interface NavigationDetails {
