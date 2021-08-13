@@ -129,7 +129,7 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - Components with no labels',
       whisperTests.testNoLabels,
       10000,
-      `NDid components render properly`,
+      `Did components render properly`,
     ),
     new LoopTest(
       'Whisper Aptitude - Float Number Inputs',

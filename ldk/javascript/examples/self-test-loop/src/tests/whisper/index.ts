@@ -826,7 +826,7 @@ export const testNoLabels = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await whisper.create({
-        label: 'Does it rendered correctly?',
+        label: 'Did it render components with no label?',
         components: [
           {
             type: WhisperComponentType.Number,
