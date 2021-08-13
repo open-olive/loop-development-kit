@@ -68,6 +68,8 @@ func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest
 		return err
 	}
 
+	includeOliveHelpsTraffic := req.IncludeOliveHelpsTraffic
+
 	handler := func(s string, err error) {
 		var errText string
 		if err != nil {
@@ -86,7 +88,10 @@ func (k *KeyboardServer) KeyboardTextStream(req *proto.KeyboardTextStreamRequest
 	go func() {
 		err := k.Impl.ListenText(
 			context.WithValue(stream.Context(), Session{}, session),
-			handler,
+			KeyboardListenTextConfiguration{
+				Handler:                  handler,
+				IncludeOliveHelpsTraffic: includeOliveHelpsTraffic,
+			},
 		)
 		// TODO: Fix this when we refactor to sidekick
 		if err != nil {
