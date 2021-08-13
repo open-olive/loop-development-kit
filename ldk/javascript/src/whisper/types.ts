@@ -261,6 +261,7 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
   labelCopyable?: boolean;
   label: string;
+  onCopy?: WhisperHandlerWithParam<string>;
   value: string;
   style: Urgency;
 };
@@ -268,6 +269,7 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
 export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   copyable?: MarkdownWhisperCopyMode;
   body: string;
+  onCopy?: WhisperHandler;
   tooltip?: string;
 };
 
@@ -275,6 +277,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   copyable?: MessageWhisperCopyMode;
   body?: string;
   header?: string;
+  onCopy?: WhisperHandler;
   style?: Urgency;
   textAlign?: TextAlign;
   tooltip?: string;

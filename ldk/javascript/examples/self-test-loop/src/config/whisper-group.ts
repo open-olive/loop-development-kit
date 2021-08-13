@@ -114,6 +114,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Click the Message Header to copy its text within alloted time',
     ),
     new LoopTest(
+      'Whisper Aptitude - Test onCopy',
+      whisperTests.testOnCopy,
+      20000,
+      `Test onCopy for Markdow,  ListPair, and Message. Copy one of each.`,
+    ),
+    new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
       whisperTests.testFormComponents,
       10000,

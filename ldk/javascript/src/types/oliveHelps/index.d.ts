@@ -404,6 +404,7 @@ declare namespace OliveHelps {
     copyable: boolean;
     labelCopyable?: boolean;
     label: string;
+    onCopy?: WhisperHandlerWithParam<string>;
     value: string;
     style: Urgency;
   };
@@ -411,6 +412,7 @@ declare namespace OliveHelps {
   type Markdown = Component<'markdown'> & {
     copyable?: 'body';
     body: string;
+    onCopy?: WhisperHandler;
     tooltip?: string;
   };
 
@@ -418,6 +420,7 @@ declare namespace OliveHelps {
     copyable?: 'body' | 'header';
     body?: string;
     header?: string;
+    onCopy?: WhisperHandler;
     style?: Urgency;
     textAlign?: TextAlign;
     tooltip?: string;

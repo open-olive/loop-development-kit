@@ -1568,6 +1568,66 @@ export const testAlignItems = (): Promise<boolean> =>
     });
   });
 
+export const testOnCopy = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const formLabel = 'Simple Form';
+      const passed = [false, false, false];
+      const checkTrue = (e: boolean) => e === true;
+
+      const components: Component[] = [
+        {
+          type: WhisperComponentType.Markdown,
+          body: `Click here to test onCopy for Markdown`,
+          copyable: MarkdownWhisperCopyMode.Body,
+          onCopy: () => {
+            passed[0] = true;
+
+            if (passed.every(checkTrue)) {
+              resolve(true);
+            }
+          },
+        },
+        {
+          type: WhisperComponentType.ListPair,
+          label: `This is the label`,
+          value: 'Click here to test ListPair',
+          copyable: true,
+          style: Urgency.None,
+          onCopy: (error, type) => {
+            passed[1] = true;
+
+            if (passed.every(checkTrue)) {
+              resolve(true);
+            }
+          },
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: `Click here to test Message`,
+          copyable: MessageWhisperCopyMode.Body,
+          onCopy: () => {
+            passed[2] = true;
+
+            if (passed.every(checkTrue)) {
+              resolve(true);
+            }
+          },
+        },
+      ];
+
+      whisper.create({
+        label: formLabel,
+        onClose: () => {
+          // do nothing.
+        },
+        components: [...components],
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
 export const testFlexProperties = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
