@@ -822,6 +822,81 @@ export const testNumberInputs = (): Promise<boolean> =>
     });
   });
 
+export const testNoLabels = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did it render components with no label?',
+        components: [
+          {
+            type: WhisperComponentType.Number,
+            tooltip: 'Number',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Telephone,
+            tooltip: 'Telephone',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Password,
+            tooltip: 'Password',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Checkbox,
+            tooltip: 'Checkbox',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Select,
+            tooltip: 'Select',
+            onSelect: () => {
+              // do nothing
+            },
+            options: ['option 1', 'option 2'],
+          },
+          {
+            type: WhisperComponentType.DateTimeInput,
+            dateTimeType: DateTimeType.Date,
+            tooltip: 'Date',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Email,
+            tooltip: 'Email',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Button,
+            tooltip: 'Button',
+            onClick: () => {
+              // do nothing
+            },
+          },
+          resolveRejectButtons(resolve, reject),
+        ],
+        onClose: () => {
+          // do nothing
+        },
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const testFloatNumberInputs = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     const createdWhisper = await whisper.create({
