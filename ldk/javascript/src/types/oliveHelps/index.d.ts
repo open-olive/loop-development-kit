@@ -303,6 +303,7 @@ declare namespace OliveHelps {
     | 'button'
     | 'checkbox'
     | 'collapseBox'
+    | 'dateTimeInput'
     | 'divider'
     | 'email'
     | 'icon'
@@ -315,7 +316,6 @@ declare namespace OliveHelps {
     | 'radioGroup'
     | 'select'
     | 'sectionTitle'
-    | 'dateTimeInput'
     | 'richTextEditor'
     | 'telephone'
     | 'textInput';
