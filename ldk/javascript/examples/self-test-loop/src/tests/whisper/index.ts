@@ -1686,7 +1686,7 @@ export const testRichTextEditor = (): Promise<boolean> =>
             editedText = value;
           },
           onFocus: () => {
-            console.debug(`On blur called`);
+            console.debug(`On Focus called`);
           },
           tooltip: "It's a richTextEditor tooltip.",
         },
@@ -1706,7 +1706,6 @@ export const testRichTextEditor = (): Promise<boolean> =>
                     components,
                   });
                 } else {
-                  (components[0] as RichTextEditor).validationError = null;
                   onClickWhisper.update({
                     components: [
                       {

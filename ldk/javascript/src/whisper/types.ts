@@ -324,7 +324,6 @@ export type ChildComponents =
   | RadioGroup
   | Select
   | SectionTitle
-  | DateTimeInput
   | RichTextEditor
   | Telephone
   | TextInput;

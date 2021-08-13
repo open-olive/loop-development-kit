@@ -303,7 +303,6 @@ declare namespace OliveHelps {
     | 'button'
     | 'checkbox'
     | 'collapseBox'
-    | 'dateTimeInput'
     | 'divider'
     | 'email'
     | 'icon'
