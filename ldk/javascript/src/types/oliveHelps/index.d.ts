@@ -296,6 +296,8 @@ declare namespace OliveHelps {
 
     join: ReadableWithParam<string[], string>;
 
+    unzip: ReadableWithTwoParams<string, string, void>;
+
     openWithDefaultApplication: ReadableWithParam<string, void>;
   }
 

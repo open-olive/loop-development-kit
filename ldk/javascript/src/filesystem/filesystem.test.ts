@@ -16,6 +16,7 @@ describe('Filesystem', () => {
       stat: jest.fn(),
       writeFile: jest.fn(),
       join: jest.fn(),
+      unzip: jest.fn(),
       openWithDefaultApplication: jest.fn(),
     };
   });
@@ -388,5 +389,34 @@ describe('Filesystem', () => {
 
       return expect(actual).rejects.toBe(exception);
     });
+  });
+});
+
+describe('unzip', () => {
+  it('returns a promise result when file is unzipped', () => {
+    const source = 'source';
+    const outputDir = 'outputDir';
+    mocked(oliveHelps.filesystem.unzip).mockImplementation((_source, _outputDir, callback) =>
+      callback(undefined),
+    );
+
+    filesystem.unzip(source, outputDir);
+
+    expect(oliveHelps.filesystem.unzip).toHaveBeenCalledWith(
+      source,
+      outputDir,
+      expect.any(Function),
+    );
+  });
+
+  it('returns a rejected promise', () => {
+    const exception = 'Exception';
+    mocked(oliveHelps.filesystem.unzip).mockImplementation(() => {
+      throw exception;
+    });
+
+    const actual = filesystem.unzip('source', 'outputDir');
+
+    return expect(actual).rejects.toBe(exception);
   });
 });
