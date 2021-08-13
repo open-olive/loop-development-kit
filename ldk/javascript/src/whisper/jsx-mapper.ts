@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactElement, ReactNode, ReactNodeArray, ReactPortal } from "react";
 import * as JSXComponents from '../components';
-import { Button, Component, Markdown, WhisperComponentType } from './types';
+import { Button, Component, Markdown, WhisperComponent, WhisperComponentType } from "./types";
 
 export function jsxMapper(nodes: ReactNode, topLevel = false): Array<Component> {
   if (nodes === null || nodes === false || nodes === true || nodes === undefined) {
@@ -49,31 +49,44 @@ function isReactElement(nodes: ReactNode): nodes is ReactElement {
   return ['key', 'ref', 'type', 'props'].every((key) => objectKeys.includes(key));
 }
 
+function assignKey(
+  component: React.ReactElement<any, string | React.JSXElementConstructor<any>>,
+  initialValue: WhisperComponent<any>,
+): void {
+  if (component.key != null) {
+    // eslint-disable-next-line no-param-reassign -- intentional mutation
+    initialValue.key = typeof component.key === 'number' ? component.key.toString() : component.key;
+  }
+}
+
+function dropChildren(component: WhisperComponent<any>): void {
+  // eslint-disable-next-line no-param-reassign -- intentional mutation
+  delete (component as any).children;
+}
+
 function convertElement(component: ReactElement): Component {
-  if (component.type === JSXComponents.Markdown) {
-    const initialValue: Markdown = {
-      ...component.props,
-      type: WhisperComponentType.Markdown,
-      body: component.props.children,
-    };
-    delete (initialValue as any).children;
-    if (component.key != null) {
-      initialValue.key =
-        typeof component.key === 'number' ? component.key.toString() : component.key;
+  switch (component.type) {
+    case JSXComponents.Markdown: {
+      const initialValue: Markdown = {
+        ...component.props,
+        type: WhisperComponentType.Markdown,
+        body: component.props.children,
+      };
+      dropChildren(initialValue);
+      assignKey(component, initialValue);
+      return initialValue as Markdown;
     }
-    return initialValue as Markdown;
-  }
-  if (component.type === JSXComponents.Button) {
-    const output: Button = {
-      ...component.props,
-      type: WhisperComponentType.Button,
-      label: component.props.children,
-    };
-    delete (output as any).children;
-    if (component.key != null) {
-      output.key = typeof component.key === 'number' ? component.key.toString() : component.key;
+    case JSXComponents.Button: {
+      const output: Button = {
+        ...component.props,
+        type: WhisperComponentType.Button,
+        label: component.props.children,
+      };
+      dropChildren(output);
+      assignKey(component, output);
+      return output as Button;
     }
-    return output as Button;
+    default:
+      throw new Error(`Unexpected type ${component.type.toString()}`);
   }
-  throw new Error(`Unexpected type ${component.type.toString()}`);
 }
