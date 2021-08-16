@@ -12,21 +12,31 @@ describe('whisper-renderer', () => {
     it('generates a new whisper correctly', async () => {
       await new Promise((resolve) => {
         render(
-          <>
-            <button>I'm a button</button>
-            Hello
-          </>,
+          <whisper label="whisper.label">
+            <button>button.label</button>
+            <markdown>markdown.body</markdown>
+            nakedmarkdown.body
+          </whisper>,
           whisperInterface,
           () => resolve(null),
         );
       });
 
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
-        label: 'Whisper Label',
+        label: 'whisper.label',
+        onClose: expect.any(Function),
         components: [
           {
+            type: WhisperComponentType.Button,
+            label: 'button.label',
+          },
+          {
             type: WhisperComponentType.Markdown,
-            body: 'Hello',
+            body: 'markdown.body',
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'nakedmarkdown.body',
           },
         ],
       });

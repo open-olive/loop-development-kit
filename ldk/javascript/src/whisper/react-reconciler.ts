@@ -15,7 +15,7 @@ export type HostConfigHydratableInstance = string;
 export type HostConfigPublicInstance = string;
 export type HostContext = string;
 export type Update = string;
-export type ChildSet = any[];
+export type ChildSet = NewWhisper;
 export type HostConfigTimeoutHandle = NodeJS.Timeout;
 export type HostConfigNoTimeout = string;
 
@@ -139,20 +139,35 @@ interface PersistenceConfig {
   ): TextInstance;
 }
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      markdown: React.DetailedHTMLProps<any, any>;
+      whisper: React.DetailedHTMLProps<any, any>;
+    }
+  }
+}
+
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
   akeOpaqueHydratingObject: undefined,
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
-    const returnValue =  [...childSet, child];
-    console.log("appendChildToContainerChildSet", returnValue);
-    return returnValue;
+    const whisper = child as unknown as NewWhisper;
+    childSet.label = whisper.label;
+    childSet.components = whisper.components;
+    console.log("appendChildToContainerChildSet", childSet, child);
+    return childSet;
   },
   appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void {
-    throw new Error('Not Implemented');
+    if ((parentInstance as any).components == null) {
+      (parentInstance as any).components = [];
+    }
+    (parentInstance as any).components.push(child);
+    console.log("appendInitialChild", parentInstance, child);
   },
   beforeActiveInstanceBlur: undefined,
   cancelTimeout(id: HostConfigTimeoutHandle): void {
-    throw new Error("Not Implemented");
+    console.log("cancelTimeout", id);
     clearTimeout(id);
   },
   cloneHiddenInstance(
@@ -183,7 +198,11 @@ const config: CoreConfig & PersistenceConfig = {
     throw new Error('Not Implemented');
   },
   createContainerChildSet(container: Container): ChildSet {
-    return [];
+    return {
+      label: '',
+      components: [],
+      onClose: () => {},
+    };
   },
   createInstance(
     type: Type,
@@ -192,11 +211,19 @@ const config: CoreConfig & PersistenceConfig = {
     hostContext: HostContext,
     internalHandle: Reconciler.OpaqueHandle,
   ): Instance {
-    return {
+    const propsWithoutChildren = {...props};
+    delete propsWithoutChildren.children;
+    const instance = {
       type,
-      ...props,
+      ...propsWithoutChildren,
     };
-    throw new Error('Not Implemented');
+    console.log("createInstance", type, props, instance);
+    if(type === 'button') {
+      (instance as any).label = props.children.toString();
+    } else if (type === 'markdown') {
+      (instance as any).body = props.children.toString();
+    }
+    return instance;
   },
   createTextInstance(
     text: string,
@@ -220,8 +247,7 @@ const config: CoreConfig & PersistenceConfig = {
     rootContainer: Container,
     hostContext: HostContext,
   ): boolean {
-    // Should I do anything here?
-    console.log("finalizedInitialChildren", instance, type, props, rootContainer, hostContext);
+    // I don't think I need to do anything here;
     return false;
   },
   getChildHostContext(
@@ -291,7 +317,7 @@ const config: CoreConfig & PersistenceConfig = {
     return setTimeout(fn, delay);
   },
   shouldSetTextContent(type: Type, props: Props): boolean {
-    return type === 'button';
+    return type === 'button' || type === 'markdown';
   },
   supportsHydration: false,
   supportsMutation: false,
@@ -306,8 +332,6 @@ export interface WhisperInterface {
 }
 
 export function render(element: ReactNode, whisperInterface: WhisperInterface, callback: (value?: unknown) => void): void {
-  // TODO: Generate whisper interfaces.
-  console.log("STARTING")
   const container = Renderer.createContainer(whisperInterface, 0, false, null)
   Renderer.updateContainer(element, container, null, callback);
 }
