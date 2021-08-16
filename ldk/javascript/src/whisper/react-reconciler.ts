@@ -151,19 +151,20 @@ declare global {
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
   akeOpaqueHydratingObject: undefined,
+  // Here we are
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
     const whisper = child as unknown as NewWhisper;
     childSet.label = whisper.label;
     childSet.components = whisper.components;
-    console.log("appendChildToContainerChildSet", childSet, child);
+    // console.log("appendChildToContainerChildSet", childSet, child);
     return childSet;
   },
   appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void {
+    // TODO: Do I want to check whether the parent accepts children here?
     if ((parentInstance as any).components == null) {
       (parentInstance as any).components = [];
     }
     (parentInstance as any).components.push(child);
-    console.log("appendInitialChild", parentInstance, child);
   },
   beforeActiveInstanceBlur: undefined,
   cancelTimeout(id: HostConfigTimeoutHandle): void {
@@ -217,7 +218,7 @@ const config: CoreConfig & PersistenceConfig = {
       type,
       ...propsWithoutChildren,
     };
-    console.log("createInstance", type, props, instance);
+    // TODO: Add support for properly creating other components here.
     if(type === 'button') {
       (instance as any).label = props.children.toString();
     } else if (type === 'markdown') {
@@ -238,7 +239,7 @@ const config: CoreConfig & PersistenceConfig = {
   },
   detachDeletedInstance: undefined,
   finalizeContainerChildren(container: Container, newChildren: ChildSet): void {
-    console.log("finalizeContainerChildren", container, newChildren);
+    // console.log("finalizeContainerChildren", container, newChildren);
   },
   finalizeInitialChildren(
     instance: Instance,
@@ -287,7 +288,6 @@ const config: CoreConfig & PersistenceConfig = {
   },
   prepareForCommit(containerInfo: Container): Record<string, any> | null {
     // DOM Renderer stores current text selection. I don't think I need to do anything like this.
-    console.log("prepareForCommit");
     return null;
   },
   preparePortalMount: undefined,
@@ -303,17 +303,17 @@ const config: CoreConfig & PersistenceConfig = {
     throw new Error('Not Implemented');
   },
   replaceContainerChildren(container: Container, newChildren: ChildSet): void {
-    console.log('replaceContainerChildren', container, newChildren);
+    // Here we are creating or updating a whisper.
     container.createOrUpdateWhisper(newChildren);
   },
   resetAfterCommit(containerInfo: Container): void {
-    console.log("resetAfterCommit completed");
+    // I don't need to do anything here because I never need to worry about transitional states.
   },
   scheduleTimeout(
     fn: (...args: unknown[]) => unknown,
     delay: number | undefined,
   ): HostConfigTimeoutHandle {
-    throw new Error("Not Implemeted");
+    console.log("scheduling timeout");
     return setTimeout(fn, delay);
   },
   shouldSetTextContent(type: Type, props: Props): boolean {

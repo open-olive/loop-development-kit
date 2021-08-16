@@ -64,6 +64,7 @@
     "@babel/runtime-corejs2": "^7.13.10",
     "babel-loader": "^8.2.2",
     "core-js": "^3.11.1",
+    "react": "^17.0.2",
     "react-reconciler": "^0.26.2",
     "terser-webpack-plugin": "^5.1.1",
     "text-encoding-shim": "^1.0.5",
