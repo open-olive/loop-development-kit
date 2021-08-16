@@ -1,9 +1,13 @@
 import * as Reconciler from 'react-reconciler';
 import { OpaqueHandle } from 'react-reconciler';
 import { ReactNode } from 'react';
-import { Markdown, NewWhisper, UpdateWhisper, WhisperComponent, WhisperComponentType } from "./types";
-
-
+import {
+  Markdown,
+  NewWhisper,
+  UpdateWhisper,
+  WhisperComponent,
+  WhisperComponentType,
+} from './types';
 
 export type Type = string;
 export type Props = Record<string, any>;
@@ -153,7 +157,7 @@ const config: CoreConfig & PersistenceConfig = {
   akeOpaqueHydratingObject: undefined,
   // Here we are
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
-    const whisper = child as unknown as NewWhisper;
+    const whisper = (child as unknown) as NewWhisper;
     childSet.label = whisper.label;
     childSet.components = whisper.components;
     // console.log("appendChildToContainerChildSet", childSet, child);
@@ -168,7 +172,7 @@ const config: CoreConfig & PersistenceConfig = {
   },
   beforeActiveInstanceBlur: undefined,
   cancelTimeout(id: HostConfigTimeoutHandle): void {
-    console.log("cancelTimeout", id);
+    console.log('cancelTimeout', id);
     clearTimeout(id);
   },
   cloneHiddenInstance(
@@ -212,14 +216,14 @@ const config: CoreConfig & PersistenceConfig = {
     hostContext: HostContext,
     internalHandle: Reconciler.OpaqueHandle,
   ): Instance {
-    const propsWithoutChildren = {...props};
+    const propsWithoutChildren = { ...props };
     delete propsWithoutChildren.children;
     const instance = {
       type,
       ...propsWithoutChildren,
     };
     // TODO: Add support for properly creating other components here.
-    if(type === 'button') {
+    if (type === 'button') {
       (instance as any).label = props.children.toString();
     } else if (type === 'markdown') {
       (instance as any).body = props.children.toString();
@@ -235,7 +239,7 @@ const config: CoreConfig & PersistenceConfig = {
     return {
       type: WhisperComponentType.Markdown,
       body: text,
-    }
+    };
   },
   detachDeletedInstance: undefined,
   finalizeContainerChildren(container: Container, newChildren: ChildSet): void {
@@ -313,7 +317,7 @@ const config: CoreConfig & PersistenceConfig = {
     fn: (...args: unknown[]) => unknown,
     delay: number | undefined,
   ): HostConfigTimeoutHandle {
-    console.log("scheduling timeout");
+    console.log('scheduling timeout');
     return setTimeout(fn, delay);
   },
   shouldSetTextContent(type: Type, props: Props): boolean {
@@ -331,7 +335,13 @@ export interface WhisperInterface {
   createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): void;
 }
 
-export function render(element: ReactNode, whisperInterface: WhisperInterface, callback: (value?: unknown) => void): void {
-  const container = Renderer.createContainer(whisperInterface, 0, false, null)
+export function render(
+  element: ReactNode,
+  whisperInterface: WhisperInterface,
+  callback: (value?: unknown) => void,
+): void {
+  // TODO: Is tag important here?
+  const container = Renderer.createContainer(whisperInterface, 0, false, null);
+  // TODO: Figure out how to handle multiple calls. Or even if I should.
   Renderer.updateContainer(element, container, null, callback);
 }

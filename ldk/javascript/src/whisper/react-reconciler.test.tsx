@@ -20,7 +20,6 @@ describe('whisper-renderer', () => {
 
   const ButtonFunctional: React.FunctionComponent<ButtonProps> = (props) => {
     React.useEffect(() => {
-      console.log("MOUNTING");
       props.onMount();
     }, []);
 
@@ -67,7 +66,27 @@ describe('whisper-renderer', () => {
       });
     });
     it('generates a whisper with a functional component correctly', async () => {
-      const onMount = jest.fn();
+      function createDeferred(): {
+        promise: Promise<any>;
+        resolve: (value: unknown) => void;
+        reject: (value: unknown) => void;
+      } {
+        let resolve: (value: unknown) => void;
+        let reject: (value: unknown) => void;
+        const promise = new Promise((resolve1, reject1) => {
+          resolve = resolve1;
+          reject = reject1;
+        });
+        return {
+          promise,
+          resolve: resolve!,
+          reject: reject!,
+        };
+      }
+      const deferred = createDeferred();
+      const onMount = jest.fn(() => {
+        deferred.resolve(true);
+      });
       await new Promise((resolve) => {
         render(
           <whisper label="whisper.label">
@@ -79,6 +98,7 @@ describe('whisper-renderer', () => {
           () => resolve(null),
         );
       });
+      await deferred.promise;
 
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
         label: 'whisper.label',
