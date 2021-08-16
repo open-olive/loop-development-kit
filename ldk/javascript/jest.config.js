@@ -6,4 +6,5 @@ module.exports = {
   },
   testMatch: ['**/*.test.(ts|tsx)'],
   setupFilesAfterEnv: ['<rootDir>/src/jestGlobalSetup.js'],
+  silent: false,
 };
