@@ -19,11 +19,20 @@ describe('whisper-renderer', () => {
   }
 
   const ButtonFunctional: React.FunctionComponent<ButtonProps> = (props) => {
+    const [state, useState] = React.useState(1);
     React.useEffect(() => {
       props.onMount();
     }, []);
 
-    return <button>{props.label}</button>;
+    return (
+      <button
+        onClick={() => {
+          useState(state + 1);
+        }}
+      >
+        {props.label} + {state}
+      </button>
+    );
   };
 
   describe('writing new whisper', () => {
@@ -106,7 +115,9 @@ describe('whisper-renderer', () => {
         components: [
           {
             type: WhisperComponentType.Button,
-            label: 'button.label',
+            // TODO: Improve button rendering
+            label: 'button.label, + ,1',
+            onClick: expect.any(Function),
           },
           {
             type: WhisperComponentType.Markdown,
@@ -140,7 +151,7 @@ describe('whisper-renderer', () => {
         components: [
           {
             type: WhisperComponentType.Button,
-            label: 'button.label',
+            label: 'button.label'
           },
           {
             type: WhisperComponentType.Markdown,
