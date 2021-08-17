@@ -1,10 +1,13 @@
 import * as React from 'react';
+import { mocked } from "ts-jest";
 import { render, WhisperInterface } from './react-reconciler';
-import { WhisperComponentType } from './types';
+import { Button, WhisperComponentType } from "./types";
+import mock = jest.mock;
 
 interface ButtonProps {
   label: string;
   onMount: () => void;
+  onRender: (n: number) => void;
 }
 
 describe('whisper-renderer', () => {
@@ -24,6 +27,8 @@ describe('whisper-renderer', () => {
       props.onMount();
     }, []);
 
+    props.onRender(state);
+
     return (
       <button
         onClick={() => {
@@ -34,14 +39,32 @@ describe('whisper-renderer', () => {
       </button>
     );
   };
+  let whisperInterface: WhisperInterface;
+  beforeEach(() => {
+    whisperInterface = {
+      createOrUpdateWhisper: jest.fn(),
+    };
+  });
+
+  function createDeferred(): {
+    promise: Promise<any>;
+    resolve: (value: unknown) => void;
+    reject: (value: unknown) => void;
+  } {
+    let resolve: (value: unknown) => void;
+    let reject: (value: unknown) => void;
+    const promise = new Promise((resolve1, reject1) => {
+      resolve = resolve1;
+      reject = reject1;
+    });
+    return {
+      promise,
+      resolve: resolve!,
+      reject: reject!,
+    };
+  }
 
   describe('writing new whisper', () => {
-    let whisperInterface: WhisperInterface;
-    beforeEach(() => {
-      whisperInterface = {
-        createOrUpdateWhisper: jest.fn(),
-      };
-    });
     it('generates a basic new whisper correctly', async () => {
       await new Promise((resolve) => {
         render(
@@ -75,23 +98,6 @@ describe('whisper-renderer', () => {
       });
     });
     it('generates a whisper with a functional component correctly', async () => {
-      function createDeferred(): {
-        promise: Promise<any>;
-        resolve: (value: unknown) => void;
-        reject: (value: unknown) => void;
-      } {
-        let resolve: (value: unknown) => void;
-        let reject: (value: unknown) => void;
-        const promise = new Promise((resolve1, reject1) => {
-          resolve = resolve1;
-          reject = reject1;
-        });
-        return {
-          promise,
-          resolve: resolve!,
-          reject: reject!,
-        };
-      }
       const deferred = createDeferred();
       const onMount = jest.fn(() => {
         deferred.resolve(true);
@@ -99,7 +105,7 @@ describe('whisper-renderer', () => {
       await new Promise((resolve) => {
         render(
           <whisper label="whisper.label">
-            <ButtonFunctional label="button.label" onMount={onMount} />
+            <ButtonFunctional label="button.label" onMount={onMount} onRender={jest.fn()}/>
             <markdown>markdown.body</markdown>
             nakedmarkdown.body
           </whisper>,
@@ -136,7 +142,7 @@ describe('whisper-renderer', () => {
       await new Promise((resolve) => {
         render(
           <whisper label="whisper.label">
-            <ButtonClass label="button.label" onMount={onMount} />
+            <ButtonClass label="button.label" onMount={onMount} onRender={jest.fn()}/>
             <markdown>markdown.body</markdown>
             nakedmarkdown.body
           </whisper>,
@@ -151,7 +157,7 @@ describe('whisper-renderer', () => {
         components: [
           {
             type: WhisperComponentType.Button,
-            label: 'button.label'
+            label: 'button.label',
           },
           {
             type: WhisperComponentType.Markdown,
@@ -164,6 +170,33 @@ describe('whisper-renderer', () => {
         ],
       });
       expect(onMount).toHaveBeenCalled();
+    });
+  });
+  describe('calling events triggers state updates', () => {
+    it('generates a whisper with a functional component correctly', async () => {
+      const deferred = createDeferred();
+      const onMount = jest.fn(() => {
+        deferred.resolve(true);
+      });
+      const onRender = jest.fn((arg) => {
+        console.log("RENDERING WITH", arg);
+      });
+      await new Promise((resolve) => {
+        render(
+          <whisper label="whisper.label">
+            <ButtonFunctional label="button.label" onMount={onMount} onRender={onRender}/>
+            <markdown>markdown.body</markdown>
+            nakedmarkdown.body
+          </whisper>,
+          whisperInterface,
+          () => resolve(null),
+        );
+      });
+      await deferred.promise;
+
+      const button = mocked(whisperInterface.createOrUpdateWhisper).mock.calls[0][0].components[0] as Button;
+      button.onClick(undefined, null as any);
+
     });
   });
 });
