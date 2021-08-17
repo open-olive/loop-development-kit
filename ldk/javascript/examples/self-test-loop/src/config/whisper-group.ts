@@ -6,6 +6,18 @@ import * as whisperTests from '../tests/whisper';
 export const whisperTestGroup = (): TestGroup =>
   new TestGroup('Whisper Aptitude', [
     new LoopTest(
+      'Whisper Aptitude - Flex property whisper',
+      whisperTests.testFlex,
+      20000,
+      'Click the right button',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Flex property whisper',
+      whisperTests.testFlexProperties,
+      20000,
+      'Click the right button',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Markdown whisper',
       whisperTests.testMarkdownWhisper,
       20000,
@@ -22,6 +34,12 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testBoxInBox,
       10000,
       'Verify that box in the box rendered correctly',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - AlignItem in Box',
+      whisperTests.testAlignItems,
+      10000,
+      'Verify that contents of the box are aligned correctly',
     ),
     new LoopTest(
       'Whisper Aptitude - External Links',
@@ -69,13 +87,37 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - ListPair Copyable Value',
       whisperTests.testListPairWithCopyableValue,
       6000,
-      'Click the ListPair value to copy its text within 5 min time frame',
+      'Click the ListPair value to copy its text within alloted time',
     ),
     new LoopTest(
       'Whisper Aptitude - ListPair Copyable Label',
       whisperTests.testListPairWithCopyableLabel,
       6000,
-      'Click the ListPair label to copy its text within 5 min time frame',
+      'Click the ListPair label to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Markdown Value',
+      whisperTests.testMarkdownWithCopyableBody,
+      6000,
+      'Click the Markdown value to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Message Body',
+      whisperTests.testMessageWithCopyableBody,
+      6000,
+      'Click the Message value to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Copyable Message Header',
+      whisperTests.testMessageWithCopyableHeader,
+      6000,
+      'Click the Message Header to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Test onCopy',
+      whisperTests.testOnCopy,
+      20000,
+      `Test onCopy for Markdow,  ListPair, and Message. Copy one of each.`,
     ),
     new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
@@ -88,6 +130,12 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testNumberInputs,
       10000,
       `No action required`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Components with no labels',
+      whisperTests.testNoLabels,
+      10000,
+      `Did components render properly`,
     ),
     new LoopTest(
       'Whisper Aptitude - Float Number Inputs',
@@ -120,9 +168,21 @@ export const whisperTestGroup = (): TestGroup =>
       'Click both CollapseBoxes',
     ),
     new LoopTest(
+      'Whisper Aptitude - SectionTitle',
+      whisperTests.testSectionTitle,
+      10000,
+      'Did SectionTitle render properly?',
+    ),
+    new LoopTest(
       'Whisper Aptitude - DateTime',
       whisperTests.testDateTime,
+      20000,
+      'Pick new date and time values',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Icon Rendering',
+      whisperTests.testIconLayout,
       10000,
-      'Pick date and time values',
+      'Did the icon render correctly?',
     ),
   ]);

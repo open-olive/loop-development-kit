@@ -8,7 +8,7 @@ export const whisperValidationTestGroup = (): TestGroup =>
     new LoopTest(
       'Whisper Validation - Basic Form Validation',
       whisperValidationTests.testComponentsValidation,
-      20000,
+      30000,
       `Did the form validate?`,
     ),
   ]);

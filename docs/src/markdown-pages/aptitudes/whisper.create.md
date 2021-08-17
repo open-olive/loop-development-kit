@@ -29,6 +29,7 @@ The following component types are available:
 * Select - A selected value of -1 indicates that nothing is selected.
 * Telephone - The text input field allows the user to provide a telephone number.
 * TextInput - The text input field allows the user to provide text information. The text can be pre-populated by the loop
+* Icon - Renders a Material Icon. For icon possibilities, see [Material Icons](https://fonts.google.com/icons). Icons can be placed inside of Box Components.
 
 ## Whisper Data Entry
 Provided on each newly created whisper is `componentState` property that is of `type StateMap = Map<string, string | boolean | number>`.
@@ -79,7 +80,6 @@ myWhisper.componentState.forEach((value: any, key: string) => console.log(key, v
 If a whisper update is performed, all previously tracked component state will also persist. If new components are added to the update whisper, they will follow the rules for initial component state. If it is no longer desired to keep component state across a whisper update, then new component `id` properties should be assigned.
 
 ## Component Keys
-
 Each component has an optional `key` property. The `key` property is used by our React front-end to retain the state of our presentational components across Whisper updates. If provided, keys must be unique across your component's siblings otherwise the Promise returned from `whisper.create` will reject with an error.
 
 You should provide keys for your components if you are updating Whispers and adding components or changing their state.
@@ -88,3 +88,19 @@ You do not need to provide keys if:
 
 - You never update the Whisper.
 - You only add components to the end of the component list during your updates.
+
+## Component Validation
+Text inputs and selectable components provide a `validationError` field which could be used to display a custom validation error:
+
+* Checkbox
+* Email
+* Number
+* Password
+* RadioGroup
+* Select
+* Telephone
+* TextInput
+* DateTime
+
+If `validationError` field is provided then component will be displayed in the error state along with the custom validation message.
+A good example of how a simple form validation could be implemented could be found [here](https://github.com/open-olive/loop-development-kit/tree/main/ldk/javascript/examples/form-validation-loop)

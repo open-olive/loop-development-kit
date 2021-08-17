@@ -29,4 +29,22 @@ export const whisperUpdateTestGroup = (): TestGroup =>
       5000,
       `Detecting changes across updates - No action needed.`,
     ),
+    new LoopTest(
+      'Whisper Update - Non Text Inputs - No Value',
+      whisperUpdateTests.testNonTextInputs,
+      20000,
+      `Interact with components and then click the button`,
+    ),
+    new LoopTest(
+      'Whisper Update - Non Text Inputs - With Value',
+      whisperUpdateTests.testNonTextInputsWithValue,
+      20000,
+      `Interact with components and then click the button`,
+    ),
+    new LoopTest(
+      'Whisper Update - Icon With Component State',
+      whisperUpdateTests.testIconUpdates,
+      10000,
+      `Check box and update`,
+    ),
   ]);
