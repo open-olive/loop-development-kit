@@ -1,17 +1,16 @@
-import { Cancellable } from '../cancellable';
 import { promisifyWithParam } from '../promisify';
 
 export interface Excel {
   /**
    * Encodes a workbook object into XLSX data
-   * @param  - Workbook object 
+   * @param  - Workbook object
    * @returns - A promise containing XLSX data.
    */
   encode(workbook: Workbook): Promise<ArrayBuffer>;
 
   /**
    * Decodes XLSX data into a workbook object.
-   * @param  - ArrayBuffer data 
+   * @param  - ArrayBuffer data
    * @returns - A promise containing Workbook.
    */
   decode(data: ArrayBuffer): Promise<Workbook>;
