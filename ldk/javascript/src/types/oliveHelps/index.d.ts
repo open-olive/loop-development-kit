@@ -17,6 +17,7 @@ declare namespace OliveHelps {
     user: User;
     vault: Vault;
     window: Window;
+    excel: Excel;
   }
 
   interface Cancellable {
@@ -161,6 +162,34 @@ declare namespace OliveHelps {
     httpRequest: ReadableWithParam<HTTPRequest, HTTPResponse>;
     webSocketConnect: ReadableWithParam<SocketConfiguration, Socket>;
   }
+
+  //-- Workbook
+  interface Excel{
+    encode: ReadableWithParam<Workbook,ArrayBuffer>;
+    decode: ReadableWithParam<ArrayBuffer, Workbook>;
+  }
+
+  interface Workbook{
+    worksheet: Worksheet[];
+  }
+  
+  interface Worksheet{
+    hidden: boolean;
+    hiddenColumns: number[];
+    hiddenRows: number[];
+    name: string;
+    rows: Row[];
+  }
+
+  interface Row{
+    cells: Cell[];
+  }
+
+  interface Cell{
+    value: string;
+  }
+
+
 
   interface SocketConfiguration {
     url: string;
