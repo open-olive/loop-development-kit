@@ -164,16 +164,16 @@ declare namespace OliveHelps {
   }
 
   //-- Workbook
-  interface Excel{
-    encode: ReadableWithParam<Workbook,ArrayBuffer>;
+  interface Excel {
+    encode: ReadableWithParam<Workbook, ArrayBuffer>;
     decode: ReadableWithParam<ArrayBuffer, Workbook>;
   }
 
-  interface Workbook{
+  interface Workbook {
     worksheet: Worksheet[];
   }
-  
-  interface Worksheet{
+
+  interface Worksheet {
     hidden: boolean;
     hiddenColumns: number[];
     hiddenRows: number[];
@@ -181,15 +181,13 @@ declare namespace OliveHelps {
     rows: Row[];
   }
 
-  interface Row{
+  interface Row {
     cells: Cell[];
   }
 
-  interface Cell{
+  interface Cell {
     value: string;
   }
-
-
 
   interface SocketConfiguration {
     url: string;
