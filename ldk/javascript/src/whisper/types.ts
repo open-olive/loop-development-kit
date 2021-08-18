@@ -148,6 +148,17 @@ export enum MessageWhisperCopyMode {
 }
 export interface LayoutOptions {
   flex?: string;
+  margin?: StyleSize;
+  marginBottom?: StyleSize;
+  marginLeft?: StyleSize;
+  marginTop?: StyleSize;
+  marginRight?: StyleSize;
+  padding?: StyleSize;
+  paddingBottom?: StyleSize;
+  paddingLeft?: StyleSize;
+  paddingTop?: StyleSize;
+  paddingRight?: StyleSize;
+  width?: WidthSize;
 }
 
 export enum IconSize {
@@ -155,6 +166,17 @@ export enum IconSize {
   Medium = 'medium',
   Large = 'large',
   XLarge = 'x-large',
+}
+
+export enum StyleSize {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+}
+
+export enum WidthSize {
+  Full = 'full',
+  Half = 'half',
 }
 
 export type StateMap = Map<string, string | boolean | number>;
