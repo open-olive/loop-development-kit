@@ -355,17 +355,17 @@ declare namespace OliveHelps {
 
   interface LayoutOptions {
     flex?: string;
-    margin?: StyleSize,
-    marginBottom?: StyleSize,
-    marginLeft?: StyleSize,
-    marginTop?: StyleSize,
-    marginRight?: StyleSize,
-    padding?: StyleSize,
-    paddingBottom?: StyleSize,
-    paddingLeft?: StyleSize,
-    paddingTop?: StyleSize,
-    paddingRight?: StyleSize,
-    width?: WidthSize,
+    margin?: StyleSize;
+    marginBottom?: StyleSize;
+    marginLeft?: StyleSize;
+    marginTop?: StyleSize;
+    marginRight?: StyleSize;
+    padding?: StyleSize;
+    paddingBottom?: StyleSize;
+    paddingLeft?: StyleSize;
+    paddingTop?: StyleSize;
+    paddingRight?: StyleSize;
+    width?: WidthSize;
   }
 
   interface Whisper {

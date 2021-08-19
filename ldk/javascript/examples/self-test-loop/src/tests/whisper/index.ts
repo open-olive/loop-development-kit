@@ -1803,7 +1803,6 @@ export const testFlex = (): Promise<boolean> =>
     }
   });
 
-
 export const testPadding = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -1889,8 +1888,8 @@ export const testPadding = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
-});
-  
+  });
+
 export const testMargin = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -1913,7 +1912,7 @@ export const testMargin = (): Promise<boolean> =>
                 type: whisper.WhisperComponentType.Select,
                 label: `Select 'blue'`,
                 onSelect: () => {
-                  console.log('selected')
+                  console.log('selected');
                 },
                 layout: {
                   flex: '1',
@@ -1941,13 +1940,13 @@ export const testMargin = (): Promise<boolean> =>
                 type: whisper.WhisperComponentType.Select,
                 label: `Select 'blue'`,
                 onSelect: () => {
-                  console.log('selected')
+                  console.log('selected');
                 },
                 options: ['red', 'blue'],
                 layout: {
                   flex: '1',
-                  marginRight: whisper.StyleSize.Medium
-                }
+                  marginRight: whisper.StyleSize.Medium,
+                },
               },
               {
                 type: whisper.WhisperComponentType.TextInput,
@@ -1969,8 +1968,8 @@ export const testMargin = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
-});
-  
+  });
+
 export const testWidth = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -1993,7 +1992,7 @@ export const testWidth = (): Promise<boolean> =>
                 type: whisper.WhisperComponentType.Select,
                 label: `Select 'blue'`,
                 onSelect: () => {
-                  console.log('selected')
+                  console.log('selected');
                 },
                 layout: {
                   flex: '1',
@@ -2009,14 +2008,14 @@ export const testWidth = (): Promise<boolean> =>
                 layout: {
                   flex: '1',
                   width: whisper.WidthSize.Full,
-                }
+                },
               },
             ],
           },
           {
             type: whisper.WhisperComponentType.Divider,
             layout: {
-              width: whisper.WidthSize.Half
+              width: whisper.WidthSize.Half,
             },
           },
           resolveRejectButtons(resolve, reject, 'Yes', 'No'),
@@ -2026,4 +2025,4 @@ export const testWidth = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
-});
+  });
