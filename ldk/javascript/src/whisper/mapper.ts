@@ -1,4 +1,5 @@
 import {
+  Box,
   BoxChildComponent,
   Component,
   NewWhisper,
@@ -28,39 +29,24 @@ export function mapToInternalChildComponent(
   component: BoxChildComponent,
   stateMap: StateMap,
 ): OliveHelps.ChildComponents {
+  const onClick = 'onClick' in component ? component.onClick : null;
   switch (component.type) {
     case WhisperComponentType.Box:
-      // eslint-disable-next-line
-      const { onClick } = component;
-      if (onClick) {
-        return {
-          id: component.id,
-          alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
-          direction: component.direction,
-          key: component.key,
-          children: throwForDuplicateKeys(
-            component.children.map((childComponent) =>
-              mapToInternalChildComponent(childComponent, stateMap),
-            ),
-          ),
-          type: WhisperComponentType.Box,
-          onClick: (error, whisper) => {
-            onClick(error, mapToExternalWhisper(whisper, stateMap));
-          },
-        } as OliveHelps.Box;
-      }
+      // eslint-disable-next-line no-case-declarations
+      const { justifyContent, ...otherProps } = component as Box;
       return {
-        id: component.id,
-        alignment: 'justifyContent' in component ? component.justifyContent : component.alignment,
-        direction: component.direction,
-        key: component.key,
+        ...otherProps,
+        alignment: 'justifyContent' in component ? justifyContent : component.alignment,
         children: throwForDuplicateKeys(
           component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),
           ),
         ),
         type: WhisperComponentType.Box,
-      };
+        onClick: onClick
+          ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
+          : undefined,
+      } as OliveHelps.Box;
     case WhisperComponentType.Button:
       return {
         ...component,
@@ -95,23 +81,55 @@ export function mapToInternalChildComponent(
         },
       } as OliveHelps.Email;
     case WhisperComponentType.Link: {
-      // eslint-disable-next-line
-      const { onClick } = component;
-      if (onClick) {
-        return {
-          ...component,
-          onClick: (error, whisper) => {
-            onClick(error, mapToExternalWhisper(whisper, stateMap));
-          },
-        } as OliveHelps.Link;
-      }
-      return component as OliveHelps.Link;
+      return {
+        ...component,
+        onClick: onClick
+          ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
+          : undefined,
+      } as OliveHelps.Link;
     }
     case WhisperComponentType.Divider:
-    case WhisperComponentType.ListPair:
-    case WhisperComponentType.Markdown:
-    case WhisperComponentType.Message:
+    case WhisperComponentType.SectionTitle:
       return component;
+    case WhisperComponentType.ListPair: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, param, whisper) => {
+            onCopy(error, param, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.ListPair;
+      }
+      return component as OliveHelps.ListPair;
+    }
+    case WhisperComponentType.Message: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, whisper) => {
+            onCopy(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Message;
+      }
+      return component as OliveHelps.Message;
+    }
+    case WhisperComponentType.Markdown: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, whisper) => {
+            onCopy(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Markdown;
+      }
+      return component as OliveHelps.Markdown;
+    }
     case WhisperComponentType.DropZone:
       return {
         ...component,
@@ -213,6 +231,18 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as OliveHelps.DateTimeInput;
+    case WhisperComponentType.Icon:
+      // eslint-disable-next-line
+      const onIconClick = component.onClick;
+      if (onIconClick) {
+        return {
+          ...component,
+          onClick: (error, whisper) => {
+            onIconClick(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Icon;
+      }
+      return component as OliveHelps.Icon;
     default:
       // Suppressing warning to deal with unexpected types.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -227,35 +257,20 @@ export function mapToInternalComponent(
   switch (component.type) {
     case WhisperComponentType.CollapseBox:
       // eslint-disable-next-line no-case-declarations
-      const { onClick } = component;
-      if (onClick) {
-        return {
-          label: component.label,
-          open: component.open,
-          key: component.key,
-          children: throwForDuplicateKeys(
-            component.children.map((childComponent) =>
-              mapToInternalChildComponent(childComponent, stateMap),
-            ),
-          ),
-          type: WhisperComponentType.CollapseBox,
-          onClick: (error: Error, param: boolean, whisper: OliveHelps.Whisper) => {
-            onClick(error, param, mapToExternalWhisper(whisper, stateMap));
-          },
-        } as OliveHelps.CollapseBox;
-      }
+      const onClick = 'onClick' in component ? component.onClick : null;
       return {
-        id: component.id,
-        label: component.label,
-        open: component.open,
-        key: component.key,
+        ...component,
         children: throwForDuplicateKeys(
           component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),
           ),
         ),
         type: WhisperComponentType.CollapseBox,
-      };
+        onClick: onClick
+          ? (error, param, whisper) =>
+              onClick(error, param, mapToExternalWhisper(whisper, stateMap))
+          : undefined,
+      } as OliveHelps.CollapseBox;
     default:
       return mapToInternalChildComponent(component, stateMap);
   }

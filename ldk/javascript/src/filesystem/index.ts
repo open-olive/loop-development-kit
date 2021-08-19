@@ -8,7 +8,14 @@ import {
 import { Cancellable } from '../cancellable';
 import * as mapper from '../utils/mapper';
 import { mapToFileEvent } from './mapper';
-import { FileInfo, FileEvent, RemovedFileEvent, WriteMode, WriteFileParams } from './types';
+import {
+  FileInfo,
+  FileEvent,
+  RenamedFileEvent,
+  RemovedFileEvent,
+  WriteMode,
+  WriteFileParams,
+} from './types';
 
 export * from './types';
 
@@ -43,7 +50,7 @@ export interface Filesystem {
    */
   listenDir(
     path: string,
-    callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+    callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
   ): Promise<Cancellable>;
 
   /**
@@ -54,7 +61,7 @@ export interface Filesystem {
    */
   listenFile(
     path: string,
-    callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+    callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
   ): Promise<Cancellable>;
 
   /**
@@ -103,6 +110,22 @@ export interface Filesystem {
    * @returns - a single path separated with an OS specific Separator
    */
   join(segments: string[]): Promise<string>;
+
+  /**
+   * Unzips sourced file to a specified directory.
+   * @param zipFilePath - path to the file to unzip. File has to have .zip extension.
+   * @param outputDirPath - path to the output directory. If the unzipped file already exists in the output directory, the file will be overwritten.
+   */
+  unzip(zipFilePath: string, outputDirPath: string): Promise<void>;
+
+  /**
+   * Opens a file using the default tool for the extension provided in the
+   * path parameter, including directories. Limited to .csv, .doc, .docx,
+   * .pdf, .txt, .xls, .xlsx
+   *
+   * @param path - a string providing the path to the file to open
+   */
+  openWithDefaultApplication(path: string): Promise<void>;
 }
 
 export function copy(source: string, destination: string): Promise<void> {
@@ -119,7 +142,7 @@ export function exists(path: string): Promise<boolean> {
 
 export function listenDir(
   path: string,
-  callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+  callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
 ): Promise<Cancellable> {
   return promisifyMappedListenableWithParam(
     path,
@@ -131,7 +154,7 @@ export function listenDir(
 
 export function listenFile(
   path: string,
-  callback: (fileEvent: FileEvent | RemovedFileEvent) => void,
+  callback: (fileEvent: FileEvent | RenamedFileEvent | RemovedFileEvent) => void,
 ): Promise<Cancellable> {
   return promisifyMappedListenableWithParam(
     path,
@@ -178,4 +201,12 @@ export function writeFile({
 
 export function join(segments: string[]): Promise<string> {
   return promisifyWithParam(segments, oliveHelps.filesystem.join);
+}
+
+export function unzip(zipFilePath: string, outputDirPath: string): Promise<void> {
+  return promisifyWithTwoParams(zipFilePath, outputDirPath, oliveHelps.filesystem.unzip);
+}
+
+export function openWithDefaultApplication(path: string): Promise<void> {
+  return promisifyWithParam(path, oliveHelps.filesystem.openWithDefaultApplication);
 }

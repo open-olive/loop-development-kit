@@ -59,11 +59,18 @@ export enum WhisperComponentType {
    */
   TextInput = 'textInput',
   /**
-   * The text input field allows the user to provide Date and Time information.
+   * The section title field allows the user to provide section title information.
+   */
+  SectionTitle = 'sectionTitle',
+  /* The text input field allows the user to provide Date and Time information.
    *
    * The field can be pre-populated by the loop.
    */
   DateTimeInput = 'dateTimeInput',
+  /**
+   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
+   */
+  Icon = 'icon',
   /**
    * The dropzone component allows the Loop to receive
    */
@@ -72,10 +79,20 @@ export enum WhisperComponentType {
 
 export enum JustifyContent {
   Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
   Left = 'left',
   Right = 'right',
-  SpaceAround = 'space_around',
-  SpaceEvenly = 'space_evenly',
+  SpaceAround = 'space-around',
+  SpaceBetween = 'space-between',
+  SpaceEvenly = 'space-evenly',
+}
+
+export enum AlignItems {
+  Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
+  Stretch = 'stretch',
 }
 
 /**
@@ -118,6 +135,32 @@ export enum DateTimeType {
   DateTime = 'date_time',
 }
 
+export enum Color {
+  Grey = 'grey',
+  White = 'white',
+  Black = 'black',
+  WhisperStrip = 'whisper-strip',
+}
+
+export enum MarkdownWhisperCopyMode {
+  Body = 'body',
+}
+
+export enum MessageWhisperCopyMode {
+  Body = 'body',
+  Header = 'header',
+}
+export interface LayoutOptions {
+  flex?: string;
+}
+
+export enum IconSize {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  XLarge = 'x-large',
+}
+
 export type StateMap = Map<string, string | boolean | number>;
 
 export interface Whisper {
@@ -138,14 +181,16 @@ export interface WhisperComponent<T extends WhisperComponentType> {
   id?: string;
   type: T;
   /**
-   * The key is used to maintain the object state. The component's key must be unique among its sibling components.
+   * The key is used to maintain the object state.
+   * The component's key must be unique among its sibling components.
    */
   key?: string;
+  layout?: LayoutOptions;
 }
 
 interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
   extends WhisperComponent<T1> {
-  label: string;
+  label?: string;
   tooltip?: string;
   validationError?: string;
   value?: T2;
@@ -159,7 +204,7 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
 }
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
-  label: string;
+  label?: string;
   tooltip?: string;
   value?: boolean;
   onChange: WhisperHandlerWithParam<boolean>;
@@ -172,7 +217,7 @@ export type RadioGroup = SelectComponent<WhisperComponentType.RadioGroup> & {
 };
 
 export type Select = SelectComponent<WhisperComponentType.Select> & {
-  label: string;
+  label?: string;
   options: string[];
   onSelect: WhisperHandlerWithParam<number>;
   selected?: number;
@@ -202,7 +247,7 @@ export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, D
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
-  label: string;
+  label?: string;
   onClick: WhisperHandler;
   size?: ButtonSize;
   tooltip?: string;
@@ -220,18 +265,23 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
   labelCopyable?: boolean;
   label: string;
+  onCopy?: WhisperHandlerWithParam<string>;
   value: string;
   style: Urgency;
 };
 
 export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
+  copyable?: MarkdownWhisperCopyMode;
   body: string;
+  onCopy?: WhisperHandler;
   tooltip?: string;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
+  copyable?: MessageWhisperCopyMode;
   body?: string;
   header?: string;
+  onCopy?: WhisperHandler;
   style?: Urgency;
   textAlign?: TextAlign;
   tooltip?: string;
@@ -248,14 +298,31 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
   value?: File[];
 };
 
+export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
+  name: string;
+  size?: IconSize;
+  color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip;
+  onClick?: WhisperHandler;
+  tooltip?: string;
+};
+
+export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
+  body: string;
+  textAlign?: TextAlign;
+  backgroundStyle?: Color.Grey | Color.White;
+};
+
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
+  | Box
   | Button
   | Checkbox
+  | DateTimeInput
   | Divider
   | DropZone
   | Email
+  | Icon
   | Link
   | ListPair
   | Markdown
@@ -264,9 +331,9 @@ export type ChildComponents =
   | Password
   | RadioGroup
   | Select
+  | SectionTitle
   | Telephone
-  | TextInput
-  | DateTimeInput;
+  | TextInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
@@ -279,6 +346,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   /**
    * @deprecated - use {@link Box.justifyContent} instead.
    */
+  alignItems?: AlignItems;
   alignment: JustifyContent;
   children: Array<BoxChildComponent>;
   direction: Direction;
@@ -286,19 +354,20 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 };
 
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
-  justifyContent: JustifyContent;
+  alignItems?: AlignItems;
   children: Array<BoxChildComponent>;
   direction: Direction;
+  justifyContent: JustifyContent;
   onClick?: WhisperHandler;
 };
 
-export type Component = ChildComponents | CollapseBox | Box | DeprecatedBox;
+export type Component = ChildComponents | CollapseBox | DeprecatedBox;
 /**
  * @deprecated - Use {@link Component} instead.
  */
 export type Components = Component;
 
-export type BoxChildComponent = ChildComponents | Box | DeprecatedBox;
+export type BoxChildComponent = ChildComponents | DeprecatedBox;
 
 export interface NewWhisper {
   components: Array<Component>;
