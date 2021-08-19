@@ -13,6 +13,9 @@ export interface LdkNetwork {
   urlDomains: LdkValue[];
 }
 
+export interface LdkUser {
+  optionalClaims?: LdkValue[];
+}
 export interface LdkPermissions {
   clipboard: LdkAptitude;
 
@@ -30,7 +33,7 @@ export interface LdkPermissions {
 
   ui: LdkAptitude;
 
-  user: LdkAptitude;
+  user: LdkUser;
 
   vault: LdkAptitude;
 

@@ -48,7 +48,7 @@ func (k *KeyboardClient) ListenHotkey(ctx context.Context, hotkey Hotkey, handle
 }
 
 // ListenText will call the handler when a chunk of text has been captured from the keyboard
-func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandler) error {
+func (k *KeyboardClient) ListenText(ctx context.Context, keyboardListenTextConfiguration KeyboardListenTextConfiguration) error {
 	stream, err := k.client.KeyboardTextStream(ctx, &proto.KeyboardTextStreamRequest{
 		Session: k.session.ToProto(),
 	})
@@ -63,14 +63,14 @@ func (k *KeyboardClient) ListenText(ctx context.Context, handler ListenTextHandl
 				break
 			}
 			if err != nil {
-				handler("", err)
+				keyboardListenTextConfiguration.Handler("", err)
 				return
 			}
 
 			if resp.GetError() != "" {
 				err = errors.New(resp.GetError())
 			}
-			handler(resp.GetText(), err)
+			keyboardListenTextConfiguration.Handler(resp.GetText(), err)
 		}
 	}()
 

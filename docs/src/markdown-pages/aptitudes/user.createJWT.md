@@ -2,7 +2,11 @@
 name: "JWT"
 links_js: "jwt"
 ---
-Receive a [JWT](https://jwt.io) identifying the currently logged in Olive Helps user. The email claim is only returned when the includeEmail parameter is true.
+Receive a [JWT](https://jwt.io) identifying the currently logged in Olive Helps user.
+
+The jwt function can take an optional configuration object specifying the inclusion of optional claims.
+
+DEPRECATION NOTE: The current default behavior of the jwt call is to _include_ the email claim, however, upcoming changes will deprecate this behavior. New Loop code which relies on the email claim should explicitly request it with the configuration object instead of relying on the default behavior (e.g. `jwt({includeEmail: true})` ).
 
 ### JWT Claims
 The claims in the JWT are as follows:
@@ -14,7 +18,35 @@ Standard Claims:
 
 Additional Claims:
 * `azp` (Authorized Party): contains the LoopID of the Loop which requested the JWT.
-* `email`: contains the email address of the current Olive Helps user. This claim is not included by default, but can be requested by passing true as the value of the includeEmail parameter.
+
+Optional Claims:
+* `email`: contains the email address of the current Olive Helps user. This claim can be requested by passing true as the value of the includeEmail parameter. If your Loop does not need the email, pass `{includeEmail: false}` to omit the claim (see deprecation note above).
+
+### Optional Claim Permissions
+Loops which require the use of optional JWT claims must request access to that claim in the Loop [Permissions configuration](https://github.com/open-olive/loop-development-kit/tree/main/ldk/javascript#loop-permissions).
+
+The `user` permissions object must be populated with the names of any requested optional claims in the following format:
+```
+'ldk': {
+    'permissions': {
+        'user': {
+            'optionalClaims': [
+                { 'value': 'email' }
+            ]
+        }
+    }
+}
+```
+
+Loops which do not require any optional claims should pass an empty object for the user permissions:
+
+```
+'ldk': {
+    'permissions': {
+        'user': {}
+    }
+}
+```
 
 
 ### JWT Signing

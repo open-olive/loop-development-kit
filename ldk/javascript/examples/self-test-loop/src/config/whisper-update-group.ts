@@ -32,13 +32,19 @@ export const whisperUpdateTestGroup = (): TestGroup =>
     new LoopTest(
       'Whisper Update - Non Text Inputs - No Value',
       whisperUpdateTests.testNonTextInputs,
-      10000,
+      20000,
       `Interact with components and then click the button`,
     ),
     new LoopTest(
       'Whisper Update - Non Text Inputs - With Value',
       whisperUpdateTests.testNonTextInputsWithValue,
-      10000,
+      20000,
       `Interact with components and then click the button`,
+    ),
+    new LoopTest(
+      'Whisper Update - Icon With Component State',
+      whisperUpdateTests.testIconUpdates,
+      10000,
+      `Check box and update`,
     ),
   ]);
