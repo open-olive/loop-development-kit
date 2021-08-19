@@ -165,12 +165,12 @@ declare namespace OliveHelps {
 
   //-- Workbook
   interface Excel {
-    encode: ReadableWithParam<Workbook, ArrayBuffer>;
-    decode: ReadableWithParam<ArrayBuffer, Workbook>;
+    decode: ReadableWithParam<Uint8Array, Workbook>;
+    encode: ReadableWithParam<Workbook, Uint8Array>;
   }
 
   interface Workbook {
-    worksheet: Worksheet[];
+    worksheets: Worksheet[];
   }
 
   interface Worksheet {
