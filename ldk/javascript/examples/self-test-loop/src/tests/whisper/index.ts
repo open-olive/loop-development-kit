@@ -1802,3 +1802,228 @@ export const testFlex = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+
+export const testPadding = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Padding Property Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Compare the two sets of boxes below. Does the second group have padding?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.CollapseBox,
+            open: true,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Box,
+                direction: whisper.Direction.Horizontal,
+                justifyContent: whisper.JustifyContent.SpaceAround,
+                onClick: () => console.log('click the box'),
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Button,
+                    label: 'test',
+                    layout: {
+                      flex: '1',
+                    },
+                    onClick: () => console.log('Click the Button'),
+                  },
+                  {
+                    type: whisper.WhisperComponentType.Icon,
+                    name: 'favorite',
+                    size: whisper.IconSize.Small,
+                    layout: {
+                      flex: '1',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.CollapseBox,
+            layout: {
+              padding: whisper.StyleSize.Large,
+            },
+            open: true,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Box,
+                direction: whisper.Direction.Horizontal,
+                justifyContent: whisper.JustifyContent.SpaceAround,
+                onClick: () => console.log('click the box'),
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Button,
+                    label: 'test',
+                    layout: {
+                      flex: '1',
+                      padding: whisper.StyleSize.Medium,
+                    },
+                    onClick: () => console.log('Click the Button'),
+                  },
+                  {
+                    type: whisper.WhisperComponentType.Icon,
+                    name: 'favorite',
+                    size: whisper.IconSize.Small,
+                    layout: {
+                      flex: '1',
+                      padding: whisper.StyleSize.Medium,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+});
+  
+export const testMargin = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Margin Property Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Compare the two sets of boxes below. Does the second group have margins?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Select,
+                label: `Select 'blue'`,
+                onSelect: () => {
+                  console.log('selected')
+                },
+                layout: {
+                  flex: '1',
+                },
+                options: ['red', 'blue'],
+              },
+              {
+                type: whisper.WhisperComponentType.TextInput,
+                label: 'Test Input',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            layout: {
+              margin: whisper.StyleSize.Small,
+            },
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Select,
+                label: `Select 'blue'`,
+                onSelect: () => {
+                  console.log('selected')
+                },
+                options: ['red', 'blue'],
+                layout: {
+                  flex: '1',
+                  marginRight: whisper.StyleSize.Medium
+                }
+              },
+              {
+                type: whisper.WhisperComponentType.TextInput,
+                label: 'Test Input',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+                layout: {
+                  marginLeft: whisper.StyleSize.Small,
+                  marginRight: whisper.StyleSize.Small,
+                },
+              },
+            ],
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+});
+  
+export const testWidth = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Width Property Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Is the button filling the space? Is the divider half the width of the card?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Select,
+                label: `Select 'blue'`,
+                onSelect: () => {
+                  console.log('selected')
+                },
+                layout: {
+                  flex: '1',
+                },
+                options: ['red', 'blue'],
+              },
+              {
+                type: whisper.WhisperComponentType.Button,
+                label: 'Test Input',
+                onClick: () => {
+                  console.debug('Clicked');
+                },
+                layout: {
+                  flex: '1',
+                  width: whisper.WidthSize.Full,
+                }
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Divider,
+            layout: {
+              width: whisper.WidthSize.Half
+            },
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+});
