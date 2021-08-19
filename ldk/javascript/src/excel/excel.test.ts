@@ -1,6 +1,5 @@
 import { mocked } from 'ts-jest/utils';
-import { OperationCanceledException } from 'typescript';
-import { TextDecoder, TextEncoder } from 'text-encoding-shim';
+import { TextEncoder } from 'text-encoding-shim';
 import * as excel from '.';
 
 describe('Excel', () => {
