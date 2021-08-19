@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-empty-function -- test file */
+
 import * as React from 'react';
-import { mocked } from "ts-jest";
+import { mocked } from 'ts-jest/utils';
 import { render, WhisperInterface } from './react-reconciler';
-import { Button, WhisperComponentType } from "./types";
-import mock = jest.mock;
+import { Button, WhisperComponentType } from './types';
 
 interface ButtonProps {
   label: string;
@@ -17,7 +18,7 @@ describe('whisper-renderer', () => {
     }
 
     render() {
-      return <button>{this.props.label}</button>;
+      return <oh-button onClick={this.props.onMount}>{this.props.label}</oh-button>;
     }
   }
 
@@ -30,13 +31,13 @@ describe('whisper-renderer', () => {
     props.onRender(state);
 
     return (
-      <button
+      <oh-button
         onClick={() => {
           useState(state + 1);
         }}
       >
         {props.label} + {state}
-      </button>
+      </oh-button>
     );
   };
   let whisperInterface: WhisperInterface;
@@ -68,11 +69,11 @@ describe('whisper-renderer', () => {
     it('generates a basic new whisper correctly', async () => {
       await new Promise((resolve) => {
         render(
-          <whisper label="whisper.label">
-            <button>button.label</button>
-            <markdown>markdown.body</markdown>
+          <oh-whisper label="whisper.label" onClose={() => {}}>
+            <oh-button onClick={() => {}}>button.label</oh-button>
+            <oh-markdown>markdown.body</oh-markdown>
             nakedmarkdown.body
-          </whisper>,
+          </oh-whisper>,
           whisperInterface,
           () => resolve(null),
         );
@@ -85,6 +86,7 @@ describe('whisper-renderer', () => {
           {
             type: WhisperComponentType.Button,
             label: 'button.label',
+            onClick: expect.any(Function),
           },
           {
             type: WhisperComponentType.Markdown,
@@ -104,11 +106,11 @@ describe('whisper-renderer', () => {
       });
       await new Promise((resolve) => {
         render(
-          <whisper label="whisper.label">
-            <ButtonFunctional label="button.label" onMount={onMount} onRender={jest.fn()}/>
-            <markdown>markdown.body</markdown>
+          <oh-whisper label="whisper.label" onClose={() => {}}>
+            <ButtonFunctional label="button.label" onMount={onMount} onRender={jest.fn()} key="f" />
+            <oh-markdown>markdown.body</oh-markdown>
             nakedmarkdown.body
-          </whisper>,
+          </oh-whisper>,
           whisperInterface,
           () => resolve(null),
         );
@@ -141,11 +143,11 @@ describe('whisper-renderer', () => {
       const onMount = jest.fn();
       await new Promise((resolve) => {
         render(
-          <whisper label="whisper.label">
-            <ButtonClass label="button.label" onMount={onMount} onRender={jest.fn()}/>
-            <markdown>markdown.body</markdown>
+          <oh-whisper label="whisper.label" onClose={() => {}}>
+            <ButtonClass label="button.label" onMount={onMount} onRender={jest.fn()} />
+            <oh-markdown>markdown.body</oh-markdown>
             nakedmarkdown.body
-          </whisper>,
+          </oh-whisper>,
           whisperInterface,
           () => resolve(null),
         );
@@ -158,6 +160,7 @@ describe('whisper-renderer', () => {
           {
             type: WhisperComponentType.Button,
             label: 'button.label',
+            onClick: expect.any(Function),
           },
           {
             type: WhisperComponentType.Markdown,
@@ -178,25 +181,43 @@ describe('whisper-renderer', () => {
       const onMount = jest.fn(() => {
         deferred.resolve(true);
       });
-      const onRender = jest.fn((arg) => {
-        console.log("RENDERING WITH", arg);
-      });
+      const onRender = jest.fn(() => {});
       await new Promise((resolve) => {
         render(
-          <whisper label="whisper.label">
-            <ButtonFunctional label="button.label" onMount={onMount} onRender={onRender}/>
-            <markdown>markdown.body</markdown>
+          <oh-whisper label="whisper.label" onClose={() => {}}>
+            <ButtonFunctional label="button.label" onMount={onMount} onRender={onRender} key="f" />
+            <oh-markdown key="markdown">markdown.body</oh-markdown>
             nakedmarkdown.body
-          </whisper>,
+          </oh-whisper>,
           whisperInterface,
           () => resolve(null),
         );
       });
       await deferred.promise;
 
-      const button = mocked(whisperInterface.createOrUpdateWhisper).mock.calls[0][0].components[0] as Button;
+      const button = mocked(whisperInterface.createOrUpdateWhisper).mock.calls[0][0]
+        .components[0] as Button;
       button.onClick(undefined, null as any);
 
+      expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
+        label: 'whisper.label',
+        onClose: expect.any(Function),
+        components: [
+          {
+            type: WhisperComponentType.Button,
+            label: 'button.label, + ,2',
+            onClick: expect.any(Function),
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'markdown.body',
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'nakedmarkdown.body',
+          },
+        ],
+      });
     });
   });
 });

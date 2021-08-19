@@ -1,6 +1,7 @@
 import * as Reconciler from 'react-reconciler';
 import { ReactNode } from 'react';
-import { NewWhisper, UpdateWhisper, WhisperComponentType } from './types';
+import { NewWhisper, UpdateWhisper, WhisperComponentType, WhisperHandler } from './types';
+import * as Whisper from './types';
 import {
   ChildSet,
   Container,
@@ -15,14 +16,61 @@ import {
   Update,
 } from './renderer-config';
 
+type ComponentProps<T> = Omit<T, 'id' | 'type' | 'children'> & {
+  key?: string | number;
+};
+
+type ComponentPropsWithChildren<T, TExcludeName extends string = 'children'> = Omit<
+  ComponentProps<T>,
+  TExcludeName
+> & {
+  children: ReactNode;
+};
+
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace -- needed to populate jsx comments
   namespace JSX {
+    type BoxProps = ComponentPropsWithChildren<Whisper.Box>;
+    type ButtonProps = ComponentPropsWithChildren<Whisper.Button, 'label'>;
+    type CheckboxProps = ComponentPropsWithChildren<Whisper.Checkbox, 'label'>;
+    type DateTimeInputProps = ComponentProps<Whisper.DateTimeInput>;
+    type DividerProps = ComponentProps<Whisper.Divider>;
+    type EmailProps = ComponentProps<Whisper.Email>;
+    type MarkdownProps = ComponentPropsWithChildren<Whisper.Markdown, 'body'>;
+    type WhisperProps = {
+      children: ReactNode;
+      label: string;
+      onClose: WhisperHandler;
+    };
+
     interface IntrinsicElements {
-      markdown: React.DetailedHTMLProps<any, any>;
-      whisper: React.DetailedHTMLProps<any, any>;
+      'oh-box': BoxProps;
+      'oh-button': ButtonProps;
+      'oh-checkbox': CheckboxProps;
+      'oh-datetime': DateTimeInputProps;
+      'oh-divider': DividerProps;
+      'oh-markdown': MarkdownProps;
+      'oh-whisper': WhisperProps;
+      'oh-email': EmailProps;
     }
   }
 }
+
+interface ComponentSpecificHandler {
+  appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void;
+  shouldSetTextChildren?(): boolean;
+}
+// TODO: Map whisper types to expected enums
+const handlers: Record<string, ComponentSpecificHandler> = {
+  'oh-markdown': {
+    appendInitialChild(parentInstance: Instance, child: Instance | TextInstance) {
+      throw new Error('Markdown does not accept children');
+    },
+    shouldSetTextChildren(): boolean {
+      return true;
+    },
+  },
+};
 
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
@@ -44,7 +92,6 @@ const config: CoreConfig & PersistenceConfig = {
   },
   beforeActiveInstanceBlur: undefined,
   cancelTimeout(id: HostConfigTimeoutHandle): void {
-    console.log('cancelTimeout', id);
     clearTimeout(id);
   },
   cloneHiddenInstance(
@@ -72,7 +119,21 @@ const config: CoreConfig & PersistenceConfig = {
     keepChildren: boolean,
     recyclableInstance: Instance | null,
   ): Instance {
-    throw new Error('Not Implemented');
+    const value: any = {
+      ...instance,
+      ...newProps,
+    };
+    delete value.children;
+    if (!keepChildren && value.components) {
+      value.components = [];
+    }
+    if (type === 'oh-button') {
+      (value as any).label = newProps.children.toString();
+    } else if (type === 'oh-markdown') {
+      (value as any).body = newProps.children.toString();
+    }
+    // console.log('cloneInstance', { instance, oldProps, newProps, keepChildren, value });
+    return value;
   },
   createContainerChildSet(container: Container): ChildSet {
     return {
@@ -91,13 +152,13 @@ const config: CoreConfig & PersistenceConfig = {
     const propsWithoutChildren = { ...props };
     delete propsWithoutChildren.children;
     const instance = {
-      type,
+      type: type.slice(3),
       ...propsWithoutChildren,
     };
     // TODO: Add support for properly creating other components here.
-    if (type === 'button') {
+    if (type === 'oh-button') {
       (instance as any).label = props.children.toString();
-    } else if (type === 'markdown') {
+    } else if (type === 'oh-markdown') {
       (instance as any).body = props.children.toString();
     }
     return instance;
@@ -176,10 +237,11 @@ const config: CoreConfig & PersistenceConfig = {
     rootContainer: Container,
     hostContext: HostContext,
   ): Update | null {
-    throw new Error('Not Implemented');
+    return newProps;
   },
   replaceContainerChildren(container: Container, newChildren: ChildSet): void {
     // Here we are creating or updating a whisper.
+    // console.log("replaceContainerChildren", { newChildren });
     container.createOrUpdateWhisper(newChildren);
   },
   resetAfterCommit(containerInfo: Container): void {
@@ -193,7 +255,7 @@ const config: CoreConfig & PersistenceConfig = {
     return setTimeout(fn, delay);
   },
   shouldSetTextContent(type: Type, props: Props): boolean {
-    return type === 'button' || type === 'markdown';
+    return type === 'oh-button' || type === 'oh-markdown';
   },
   supportsHydration: false,
   supportsMutation: false,
