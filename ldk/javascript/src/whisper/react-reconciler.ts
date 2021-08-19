@@ -1,7 +1,7 @@
+/* eslint-disable no-param-reassign -- we're doing tons of mutations in this file intentionally */
 import * as Reconciler from 'react-reconciler';
 import { ReactNode } from 'react';
 import { NewWhisper, UpdateWhisper, WhisperComponentType, WhisperHandler } from './types';
-import * as Whisper from './types';
 import {
   ChildSet,
   Container,
@@ -16,67 +16,50 @@ import {
   Update,
 } from './renderer-config';
 
-type ComponentProps<T> = Omit<T, 'id' | 'type' | 'children'> & {
-  key?: string | number;
-};
 
-type ComponentPropsWithChildren<T, TExcludeName extends string = 'children'> = Omit<
-  ComponentProps<T>,
-  TExcludeName
-> & {
-  children: ReactNode;
-};
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace -- needed to populate jsx comments
-  namespace JSX {
-    type BoxProps = ComponentPropsWithChildren<Whisper.Box>;
-    type ButtonProps = ComponentPropsWithChildren<Whisper.Button, 'label'>;
-    type CheckboxProps = ComponentPropsWithChildren<Whisper.Checkbox, 'label'>;
-    type DateTimeInputProps = ComponentProps<Whisper.DateTimeInput>;
-    type DividerProps = ComponentProps<Whisper.Divider>;
-    type EmailProps = ComponentProps<Whisper.Email>;
-    type MarkdownProps = ComponentPropsWithChildren<Whisper.Markdown, 'body'>;
-    type WhisperProps = {
-      children: ReactNode;
-      label: string;
-      onClose: WhisperHandler;
-    };
-
-    interface IntrinsicElements {
-      'oh-box': BoxProps;
-      'oh-button': ButtonProps;
-      'oh-checkbox': CheckboxProps;
-      'oh-datetime': DateTimeInputProps;
-      'oh-divider': DividerProps;
-      'oh-markdown': MarkdownProps;
-      'oh-whisper': WhisperProps;
-      'oh-email': EmailProps;
-    }
-  }
-}
+const assignTextChildrenToProperty: (
+  propertyNane: string,
+) => (instance: Instance, newProps: Props) => void = (propertyName) =>
+  function (instance, props) {
+    (instance as any)[propertyName] = props.children.toString();
+  };
 
 interface ComponentSpecificHandler {
-  appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void;
+  appendInitialChild?(parentInstance: Instance, child: Instance | TextInstance): void;
+  /**
+   * Whether text children should be set or not. If set to true, I think React
+   * skips appending children.
+   */
   shouldSetTextChildren?(): boolean;
+  /**
+   * Attaches the text children to this instance.
+   * @param instance
+   * @param newProps
+   */
+  assignTextChildren?(instance: Instance, newProps: Props): void;
+  /**
+   * Provide the full complete component type string that Helps expects.
+   */
+  componentType?(): string;
 }
-// TODO: Map whisper types to expected enums
+
 const handlers: Record<string, ComponentSpecificHandler> = {
   'oh-markdown': {
-    appendInitialChild(parentInstance: Instance, child: Instance | TextInstance) {
-      throw new Error('Markdown does not accept children');
-    },
-    shouldSetTextChildren(): boolean {
-      return true;
-    },
+    assignTextChildren: assignTextChildrenToProperty('body'),
+    shouldSetTextChildren: () => true,
   },
+  'oh-button': {
+    assignTextChildren: assignTextChildrenToProperty('label'),
+    shouldSetTextChildren: () => true,
+  },
+  'oh-whisper': {},
 };
 
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
   akeOpaqueHydratingObject: undefined,
-  // Here we are
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
+    // In this function we are adding the Whisper properties to the ChildSet.
     const whisper = (child as unknown) as NewWhisper;
     childSet.label = whisper.label;
     childSet.components = whisper.components;
@@ -127,18 +110,15 @@ const config: CoreConfig & PersistenceConfig = {
     if (!keepChildren && value.components) {
       value.components = [];
     }
-    if (type === 'oh-button') {
-      (value as any).label = newProps.children.toString();
-    } else if (type === 'oh-markdown') {
-      (value as any).body = newProps.children.toString();
-    }
-    // console.log('cloneInstance', { instance, oldProps, newProps, keepChildren, value });
+    handlers[type]?.assignTextChildren?.(instance, newProps);
     return value;
   },
   createContainerChildSet(container: Container): ChildSet {
+
     return {
       label: '',
       components: [],
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       onClose: () => {},
     };
   },
@@ -155,12 +135,7 @@ const config: CoreConfig & PersistenceConfig = {
       type: type.slice(3),
       ...propsWithoutChildren,
     };
-    // TODO: Add support for properly creating other components here.
-    if (type === 'oh-button') {
-      (instance as any).label = props.children.toString();
-    } else if (type === 'oh-markdown') {
-      (instance as any).body = props.children.toString();
-    }
+    handlers[type]?.assignTextChildren?.(instance, props);
     return instance;
   },
   createTextInstance(
@@ -176,7 +151,7 @@ const config: CoreConfig & PersistenceConfig = {
   },
   detachDeletedInstance: undefined,
   finalizeContainerChildren(container: Container, newChildren: ChildSet): void {
-    // console.log("finalizeContainerChildren", container, newChildren);
+    // No finalization needs to take place, these objects are ready as-is when generated.
   },
   finalizeInitialChildren(
     instance: Instance,
@@ -193,7 +168,7 @@ const config: CoreConfig & PersistenceConfig = {
     type: Type,
     rootContainer: Container,
   ): HostContext {
-    return 'context';
+    return null;
   },
   getCurrentEventPriority: undefined,
   getInstanceFromNode(node: any): any {
@@ -241,7 +216,6 @@ const config: CoreConfig & PersistenceConfig = {
   },
   replaceContainerChildren(container: Container, newChildren: ChildSet): void {
     // Here we are creating or updating a whisper.
-    // console.log("replaceContainerChildren", { newChildren });
     container.createOrUpdateWhisper(newChildren);
   },
   resetAfterCommit(containerInfo: Container): void {
@@ -251,11 +225,10 @@ const config: CoreConfig & PersistenceConfig = {
     fn: (...args: unknown[]) => unknown,
     delay: number | undefined,
   ): HostConfigTimeoutHandle {
-    console.log('scheduling timeout');
     return setTimeout(fn, delay);
   },
   shouldSetTextContent(type: Type, props: Props): boolean {
-    return type === 'oh-button' || type === 'oh-markdown';
+    return handlers[type]?.shouldSetTextChildren?.() || false;
   },
   supportsHydration: false,
   supportsMutation: false,
