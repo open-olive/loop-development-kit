@@ -2,6 +2,7 @@ import TestGroup from '../testingFixtures/testGroup';
 
 import { clipboardTestGroup } from './clipboard-group';
 import { cursorTestGroup } from './cursor-group';
+import { excelTestGroup } from './excel-group';
 import { filesystemTestGroup } from './filesystem-group';
 import { keyboardTestGroup } from './keyboard-group';
 import { networkTestGroup } from './network-group';
@@ -18,6 +19,7 @@ import { windowTestGroup } from './window-group';
 export const testConfig: { [key: string]: TestGroup } = {
   clipboard: clipboardTestGroup(),
   cursor: cursorTestGroup(),
+  excel: excelTestGroup(),
   file: filesystemTestGroup(),
   keyboard: keyboardTestGroup(),
   network: networkTestGroup(),
