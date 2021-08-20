@@ -1,6 +1,6 @@
 import { promisifyWithParam } from '../promisify';
 
-export interface Excel {
+export interface XLSX {
   /**
    * Encodes a workbook object into XLSX data
    * @param  - Workbook object
@@ -17,11 +17,11 @@ export interface Excel {
 }
 
 export function encode(workbook: Workbook): Promise<Uint8Array> {
-  return promisifyWithParam(workbook, oliveHelps.excel.encode);
+  return promisifyWithParam(workbook, oliveHelps.xlsx.encode);
 }
 
 export function decode(data: Uint8Array): Promise<Workbook> {
-  return promisifyWithParam(data, oliveHelps.excel.decode);
+  return promisifyWithParam(data, oliveHelps.xlsx.decode);
 }
 
 export interface Workbook {

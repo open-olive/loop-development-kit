@@ -17,7 +17,7 @@ declare namespace OliveHelps {
     user: User;
     vault: Vault;
     window: Window;
-    excel: Excel;
+    xlsx: XLSX;
   }
 
   interface Cancellable {
@@ -164,7 +164,7 @@ declare namespace OliveHelps {
   }
 
   //-- Workbook
-  interface Excel {
+  interface XLSX {
     decode: ReadableWithParam<Uint8Array, Workbook>;
     encode: ReadableWithParam<Workbook, Uint8Array>;
   }

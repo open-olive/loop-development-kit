@@ -1,16 +1,16 @@
 import { mocked } from 'ts-jest/utils';
-import * as excel from '.';
+import * as xlsx from '.';
 
-describe('Excel', () => {
+describe('XLSX', () => {
   beforeEach(() => {
-    oliveHelps.excel = {
+    oliveHelps.xlsx = {
       decode: jest.fn(),
       encode: jest.fn(),
     };
   });
 
   describe('encode', () => {
-    const workbook: excel.Workbook = {
+    const workbook: xlsx.Workbook = {
       worksheets: [
         {
           hidden: false,
@@ -26,12 +26,11 @@ describe('Excel', () => {
       'returns an Uint8Array promise result ',
       () => {
         const expected: Uint8Array = new Uint8Array();
-        mocked(oliveHelps.excel.encode).mockImplementation((_workbook, callback) =>
+        mocked(oliveHelps.xlsx.encode).mockImplementation((_workbook, callback) =>
           callback(undefined, expected),
         );
-        const actual = excel.encode(workbook);
+        const actual = xlsx.encode(workbook);
 
-        // expect(excel.encode).toBeCalledWith(workbook);
         return expect(actual).resolves.toBe(expected);
       },
       undefined,
@@ -40,17 +39,17 @@ describe('Excel', () => {
     it('returns a rejected promise', () => {
       const exception = 'Exception';
 
-      mocked(oliveHelps.excel.encode).mockImplementation(() => {
+      mocked(oliveHelps.xlsx.encode).mockImplementation(() => {
         throw exception;
       });
 
-      const actual = excel.encode(workbook);
+      const actual = xlsx.encode(workbook);
       return expect(actual).rejects.toBe(exception);
     });
   });
 
   describe('decode', () => {
-    const expected: excel.Workbook = {
+    const expected: xlsx.Workbook = {
       worksheets: [
         {
           hidden: false,
@@ -64,20 +63,20 @@ describe('Excel', () => {
 
     it('returns a Workbook promise result ', () => {
       const data: Uint8Array = new Uint8Array();
-      mocked(oliveHelps.excel.decode).mockImplementation((_data, callback) =>
+      mocked(oliveHelps.xlsx.decode).mockImplementation((_data, callback) =>
         callback(undefined, expected),
       );
-      const actual = excel.decode(data);
+      const actual = xlsx.decode(data);
       return expect(actual).resolves.toBe(expected);
     });
 
     it('returns a rejected promise', () => {
       const exception = 'Exception';
       const data: Uint8Array = new Uint8Array();
-      mocked(oliveHelps.excel.decode).mockImplementation(() => {
+      mocked(oliveHelps.xlsx.decode).mockImplementation(() => {
         throw exception;
       });
-      const actual = excel.decode(data);
+      const actual = xlsx.decode(data);
 
       return expect(actual).rejects.toBe(exception);
     });

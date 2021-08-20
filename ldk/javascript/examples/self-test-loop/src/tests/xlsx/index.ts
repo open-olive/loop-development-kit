@@ -1,9 +1,9 @@
 /* eslint-disable no-async-promise-executor */
-import { excel } from '@oliveai/ldk';
+import { xlsx } from '@oliveai/ldk';
 
 export const testXLSXEncodeAndDecode = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const workbook: excel.Workbook = {
+    const workbook: xlsx.Workbook = {
       worksheets: [
         {
           hidden: false,
@@ -15,18 +15,18 @@ export const testXLSXEncodeAndDecode = (): Promise<boolean> =>
       ],
     };
     setTimeout(() => {
-      reject(new Error('Excel encode did not finish in the appropriate time span.'));
+      reject(new Error('XLSX encode did not finish in the appropriate time span.'));
     }, 5000);
 
     try {
-      const uint8ArrayData = await excel.encode(workbook);
-      const actual = await excel.decode(uint8ArrayData);
+      const uint8ArrayData = await xlsx.encode(workbook);
+      const actual = await xlsx.decode(uint8ArrayData);
       const cellData = actual.worksheets[0].rows[0].cells[0].value;
 
       if (cellData === 'value') {
         resolve(true);
       } else {
-        reject(new Error(`Excel function  ${excel.encode} and ${excel.decode} failed.`));
+        reject(new Error(`XLSX function  ${xlsx.encode} and ${xlsx.decode} failed.`));
       }
     } catch (e) {
       console.error(e);

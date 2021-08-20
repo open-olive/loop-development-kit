@@ -2,7 +2,6 @@ import TestGroup from '../testingFixtures/testGroup';
 
 import { clipboardTestGroup } from './clipboard-group';
 import { cursorTestGroup } from './cursor-group';
-import { excelTestGroup } from './excel-group';
 import { filesystemTestGroup } from './filesystem-group';
 import { keyboardTestGroup } from './keyboard-group';
 import { networkTestGroup } from './network-group';
@@ -15,11 +14,11 @@ import { whisperTestGroup } from './whisper-group';
 import { whisperUpdateTestGroup } from './whisper-update-group';
 import { whisperValidationTestGroup } from './whisper-validation-group';
 import { windowTestGroup } from './window-group';
+import { xlsxTestGroup } from './xlsx-group';
 
 export const testConfig: { [key: string]: TestGroup } = {
   clipboard: clipboardTestGroup(),
   cursor: cursorTestGroup(),
-  excel: excelTestGroup(),
   file: filesystemTestGroup(),
   keyboard: keyboardTestGroup(),
   network: networkTestGroup(),
@@ -32,4 +31,5 @@ export const testConfig: { [key: string]: TestGroup } = {
   whisperUpdate: whisperUpdateTestGroup(),
   whisperValidation: whisperValidationTestGroup(),
   window: windowTestGroup(),
+  xlsx: xlsxTestGroup(),
 };
