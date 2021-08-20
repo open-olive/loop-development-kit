@@ -288,13 +288,36 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
 };
 
 export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
+  /**
+   * Specify what extensions the user can include. Do not include the dot.
+   *
+   * @example ['jpg','jpeg','png']
+   */
   accept?: string[];
   label: string;
+  /**
+   * The number of files that can be selected. There is a hard limit of ten files that can be selected at once.
+   */
   limit?: number;
+  /**
+   * If provided, replaces the word "files" in the component.
+   */
   noun?: string;
+  /**
+   * The callback function to call whenever the user selects or unselects a file.
+   */
   onDrop: WhisperHandlerWithParam<File[]>;
   tooltip?: string;
   validationError?: string;
+  /**
+   * This field can be used to re-order and remove selected files from the component.
+   *
+   * If the value property is null or undefined, the existing selection will remain as-is. To deselect all the files,
+   * set it to an empty array.
+   *
+   * You cannot add a file to the selection via this interface. The component will ignore any files provided it
+   * currently does not have selected.
+   */
   value?: File[];
 };
 
@@ -383,4 +406,8 @@ export interface UpdateWhisper {
 export interface File {
   path: string;
   size: number;
+  /**
+   * Reads the entirety of the file.
+   */
+  readFile(): Promise<Uint8Array>;
 }
