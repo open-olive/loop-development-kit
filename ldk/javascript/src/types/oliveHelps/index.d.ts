@@ -61,6 +61,7 @@ declare namespace OliveHelps {
   interface JWTConfig {
     includeEmail?: boolean;
   }
+
   interface User {
     jwt: ReadableWithParamAfterCallback<string, JWTConfig>;
   }
@@ -80,6 +81,7 @@ declare namespace OliveHelps {
     info: WindowInfo;
     action: WindowAction;
   }
+
   type WindowActionFocused = 'focus';
   type WindowActionUnfocused = 'unfocused';
   type WindowActionOpened = 'open';
@@ -179,11 +181,14 @@ declare namespace OliveHelps {
       data: Array<number>,
       callback: (error: Error | undefined) => void,
     ): void;
+
     close(callback: (error: Error | undefined) => void): void;
+
     listenMessage: (
       callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void,
       returnCb: ReturnCallback,
     ) => void;
+
     onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
   }
 
@@ -309,6 +314,7 @@ declare namespace OliveHelps {
     | 'collapseBox'
     | 'dateTimeInput'
     | 'divider'
+    | 'dropZone'
     | 'email'
     | 'icon'
     | 'link'
@@ -356,6 +362,7 @@ declare namespace OliveHelps {
   interface Whisper {
     id: string;
     close: Readable<undefined>;
+
     update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
 
@@ -390,6 +397,17 @@ declare namespace OliveHelps {
     onClick: WhisperHandler;
     size?: ButtonSize;
     tooltip?: string;
+  };
+
+  type DropZone = Component<'dropZone'> & {
+    accept?: string[];
+    label: string;
+    limit?: number;
+    noun?: string;
+    onDrop: WhisperHandlerWithParam<File[]>;
+    value?: File[];
+    tooltip?: string;
+    validationError?: string;
   };
 
   type Link = Component<'link'> & {
@@ -504,6 +522,7 @@ declare namespace OliveHelps {
     | Button
     | Checkbox
     | Divider
+    | DropZone
     | Email
     | Link
     | ListPair
@@ -534,5 +553,11 @@ declare namespace OliveHelps {
 
   interface WhisperService {
     create: ReadableWithParam<NewWhisper, Whisper>;
+  }
+
+  interface File {
+    path: string;
+    size: number;
+    readFile: Readable<ArrayBuffer>;
   }
 }
