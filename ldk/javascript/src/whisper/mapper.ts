@@ -155,13 +155,6 @@ export function mapToInternalChildComponent(
       }
       return component as OliveHelps.Markdown;
     }
-    case WhisperComponentType.DropZone:
-      return {
-        ...component,
-        onDrop: (error, param, whisper) => {
-          component.onDrop(error, param, mapToExternalWhisper(whisper, stateMap));
-        },
-      };
     case WhisperComponentType.Number:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
