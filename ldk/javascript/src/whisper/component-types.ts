@@ -25,7 +25,7 @@ declare global {
     type DividerProps = ComponentProps<Whisper.Divider>;
     type EmailProps = ComponentProps<Whisper.Email>;
     type IconProps = ComponentProps<Whisper.Icon>;
-    type LinkProps = ComponentProps<Whisper.Link>;
+    type LinkProps = ComponentPropsWithChildren<Whisper.Link, 'text'>;
     type MarkdownProps = ComponentPropsWithChildren<Whisper.Markdown, 'body'>;
     type MessageProps = ComponentPropsWithChildren<Whisper.Message, 'body'>;
     type NumberInputProps = ComponentProps<Whisper.NumberInput>;
@@ -47,17 +47,19 @@ declare global {
       'oh-checkbox': CheckboxProps;
       'oh-collapsebox': CollapseBoxProps;
       'oh-datetime': DateTimeInputProps;
+      'oh-email': EmailProps;
       'oh-divider': DividerProps;
       'oh-icon': IconProps;
       'oh-link': LinkProps;
       'oh-message': MessageProps;
       'oh-markdown': MarkdownProps;
+      'oh-number': NumberInputProps;
       'oh-password': PasswordProps;
       'oh-radiogroup': RadioGroupProps;
+      'oh-section-title': SectionTitleProps;
       'oh-telephone': TelephoneProps;
       'oh-textinput': TextInputProps;
       'oh-whisper': WhisperProps;
-      'oh-email': EmailProps;
     }
   }
 }
