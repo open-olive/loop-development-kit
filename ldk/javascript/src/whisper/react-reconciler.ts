@@ -16,13 +16,23 @@ import {
   Update,
 } from './renderer-config';
 
-
 const assignTextChildrenToProperty: (
   propertyNane: string,
 ) => (instance: Instance, newProps: Props) => void = (propertyName) =>
   function (instance, props) {
     (instance as any)[propertyName] = props.children.toString();
   };
+
+function createAppendFunction(
+  childPropertyName: string,
+): (instance: Instance, child: Instance | TextInstance) => void {
+  return (instance, child) => {
+    if ((instance as any)[childPropertyName] == null) {
+      (instance as any)[childPropertyName] = [];
+    }
+    (instance as any)[childPropertyName].push(child);
+  };
+}
 
 interface ComponentSpecificHandler {
   appendInitialChild?(parentInstance: Instance, child: Instance | TextInstance): void;
@@ -40,20 +50,46 @@ interface ComponentSpecificHandler {
   /**
    * Provide the full complete component type string that Helps expects.
    */
-  componentType?(): string;
+  helpsType: string;
+
+  whisperTagType: string;
 }
 
-const handlers: Record<string, ComponentSpecificHandler> = {
-  'oh-markdown': {
+const handlers: Array<ComponentSpecificHandler> = [
+  {
     assignTextChildren: assignTextChildrenToProperty('body'),
     shouldSetTextChildren: () => true,
+    helpsType: 'markdown',
+    whisperTagType: 'oh-markdown',
   },
-  'oh-button': {
+  {
     assignTextChildren: assignTextChildrenToProperty('label'),
     shouldSetTextChildren: () => true,
+    helpsType: 'button',
+    whisperTagType: 'oh-button',
   },
-  'oh-whisper': {},
-};
+  {
+    appendInitialChild: createAppendFunction('components'),
+    helpsType: 'whisper',
+    whisperTagType: 'oh-whisper',
+  },
+];
+
+const handlerByHelpsType = handlers.reduce<Record<string, ComponentSpecificHandler>>(
+  (record, currentValue) => {
+    record[currentValue.helpsType] = currentValue;
+    return record;
+  },
+  {},
+);
+
+const handlerByTagType = handlers.reduce<Record<string, ComponentSpecificHandler>>(
+  (record, currentValue) => {
+    record[currentValue.whisperTagType] = currentValue;
+    return record;
+  },
+  {},
+);
 
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
@@ -68,10 +104,7 @@ const config: CoreConfig & PersistenceConfig = {
   },
   appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void {
     // TODO: Do I want to check whether the parent accepts children here?
-    if ((parentInstance as any).components == null) {
-      (parentInstance as any).components = [];
-    }
-    (parentInstance as any).components.push(child);
+    handlerByHelpsType[parentInstance.type]?.appendInitialChild?.(parentInstance, child);
   },
   beforeActiveInstanceBlur: undefined,
   cancelTimeout(id: HostConfigTimeoutHandle): void {
@@ -110,11 +143,10 @@ const config: CoreConfig & PersistenceConfig = {
     if (!keepChildren && value.components) {
       value.components = [];
     }
-    handlers[type]?.assignTextChildren?.(instance, newProps);
+    handlerByTagType[type]?.assignTextChildren?.(instance, newProps);
     return value;
   },
   createContainerChildSet(container: Container): ChildSet {
-
     return {
       label: '',
       components: [],
@@ -135,7 +167,7 @@ const config: CoreConfig & PersistenceConfig = {
       type: type.slice(3),
       ...propsWithoutChildren,
     };
-    handlers[type]?.assignTextChildren?.(instance, props);
+    handlerByTagType[type]?.assignTextChildren?.(instance, props);
     return instance;
   },
   createTextInstance(
@@ -228,7 +260,7 @@ const config: CoreConfig & PersistenceConfig = {
     return setTimeout(fn, delay);
   },
   shouldSetTextContent(type: Type, props: Props): boolean {
-    return handlers[type]?.shouldSetTextChildren?.() || false;
+    return handlerByTagType[type]?.shouldSetTextChildren?.() || false;
   },
   supportsHydration: false,
   supportsMutation: false,
@@ -247,8 +279,11 @@ export function render(
   whisperInterface: WhisperInterface,
   callback: (value?: unknown) => void,
 ): void {
-  // TODO: Is tag important here?
+  // TODO: Tag here drives what sort of "modes" its using. 0 = LegacyRoot.
   const container = Renderer.createContainer(whisperInterface, 0, false, null);
   // TODO: Figure out how to handle multiple calls. Or even if I should.
   Renderer.updateContainer(element, container, null, callback);
+
+  // TODO: When a whisper is closed I need to unmount its contents. I probably need to
+  //  call updateContainer again with an empty element.
 }

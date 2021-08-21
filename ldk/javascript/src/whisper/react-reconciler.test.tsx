@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- test file */
 
-import * as React from 'react';
-import { mocked } from 'ts-jest/utils';
-import { render, WhisperInterface } from './react-reconciler';
-import { Button, WhisperComponentType } from './types';
+import * as React from "react";
+import { mocked } from "ts-jest/utils";
+import { render, WhisperInterface } from "./react-reconciler";
+import { Button, Direction, JustifyContent, WhisperComponentType } from "./types";
 
 interface ButtonProps {
   label: string;
@@ -99,6 +99,51 @@ describe('whisper-renderer', () => {
         ],
       });
     });
+    it("generates a whisper with a box component's children correctly", async () => {
+      await new Promise((resolve) => {
+        render(
+          <oh-whisper label="whisper.label" onClose={() => {}}>
+            <oh-box key="f" direction={Direction.Horizontal} justifyContent={JustifyContent.Left}>
+              <oh-checkbox onChange={jest.fn()}>DID JA</oh-checkbox>
+              Bob
+            </oh-box>
+            <oh-markdown>markdown.body</oh-markdown>
+            nakedmarkdown.body
+          </oh-whisper>,
+          whisperInterface,
+          () => resolve(null),
+        );
+      });
+
+      expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
+        label: 'whisper.label',
+        onClose: expect.any(Function),
+        components: [
+          {
+            type: WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.Left,
+            components: [
+              {}
+            ]
+          },
+          {
+            type: WhisperComponentType.Button,
+            // TODO: Improve button rendering
+            label: 'button.label, + ,1',
+            onClick: expect.any(Function),
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'markdown.body',
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'nakedmarkdown.body',
+          },
+        ],
+      });
+    })
     it('generates a whisper with a functional component correctly', async () => {
       const deferred = createDeferred();
       const onMount = jest.fn(() => {
