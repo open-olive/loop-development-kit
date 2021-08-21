@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- test file */
 
-import * as React from "react";
-import { mocked } from "ts-jest/utils";
-import { render, WhisperInterface } from "./react-reconciler";
-import { Button, Direction, JustifyContent, WhisperComponentType } from "./types";
+import * as React from 'react';
+import { mocked } from 'ts-jest/utils';
+import { render, WhisperInterface } from './react-reconciler';
+import { Button, Direction, JustifyContent, NewWhisper, WhisperComponentType } from './types';
 
 interface ButtonProps {
   label: string;
@@ -97,7 +97,7 @@ describe('whisper-renderer', () => {
             body: 'nakedmarkdown.body',
           },
         ],
-      });
+      } as NewWhisper);
     });
     it("generates a whisper with a box component's children correctly", async () => {
       await new Promise((resolve) => {
@@ -123,15 +123,17 @@ describe('whisper-renderer', () => {
             type: WhisperComponentType.Box,
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.Left,
-            components: [
-              {}
-            ]
-          },
-          {
-            type: WhisperComponentType.Button,
-            // TODO: Improve button rendering
-            label: 'button.label, + ,1',
-            onClick: expect.any(Function),
+            children: [
+              {
+                type: WhisperComponentType.Checkbox,
+                onChange: expect.any(Function),
+                label: 'DID JA',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Bob',
+              },
+            ],
           },
           {
             type: WhisperComponentType.Markdown,
@@ -142,8 +144,8 @@ describe('whisper-renderer', () => {
             body: 'nakedmarkdown.body',
           },
         ],
-      });
-    })
+      } as NewWhisper);
+    });
     it('generates a whisper with a functional component correctly', async () => {
       const deferred = createDeferred();
       const onMount = jest.fn(() => {

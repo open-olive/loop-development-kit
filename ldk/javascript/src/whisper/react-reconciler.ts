@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign -- we're doing tons of mutations in this file intentionally */
 import * as Reconciler from 'react-reconciler';
 import { ReactNode } from 'react';
-import { NewWhisper, UpdateWhisper, WhisperComponentType, WhisperHandler } from './types';
+import { NewWhisper, UpdateWhisper, WhisperComponentType } from './types';
 import {
   ChildSet,
   Container,
@@ -15,81 +15,7 @@ import {
   Type,
   Update,
 } from './renderer-config';
-
-const assignTextChildrenToProperty: (
-  propertyNane: string,
-) => (instance: Instance, newProps: Props) => void = (propertyName) =>
-  function (instance, props) {
-    (instance as any)[propertyName] = props.children.toString();
-  };
-
-function createAppendFunction(
-  childPropertyName: string,
-): (instance: Instance, child: Instance | TextInstance) => void {
-  return (instance, child) => {
-    if ((instance as any)[childPropertyName] == null) {
-      (instance as any)[childPropertyName] = [];
-    }
-    (instance as any)[childPropertyName].push(child);
-  };
-}
-
-interface ComponentSpecificHandler {
-  appendInitialChild?(parentInstance: Instance, child: Instance | TextInstance): void;
-  /**
-   * Whether text children should be set or not. If set to true, I think React
-   * skips appending children.
-   */
-  shouldSetTextChildren?(): boolean;
-  /**
-   * Attaches the text children to this instance.
-   * @param instance
-   * @param newProps
-   */
-  assignTextChildren?(instance: Instance, newProps: Props): void;
-  /**
-   * Provide the full complete component type string that Helps expects.
-   */
-  helpsType: string;
-
-  whisperTagType: string;
-}
-
-const handlers: Array<ComponentSpecificHandler> = [
-  {
-    assignTextChildren: assignTextChildrenToProperty('body'),
-    shouldSetTextChildren: () => true,
-    helpsType: 'markdown',
-    whisperTagType: 'oh-markdown',
-  },
-  {
-    assignTextChildren: assignTextChildrenToProperty('label'),
-    shouldSetTextChildren: () => true,
-    helpsType: 'button',
-    whisperTagType: 'oh-button',
-  },
-  {
-    appendInitialChild: createAppendFunction('components'),
-    helpsType: 'whisper',
-    whisperTagType: 'oh-whisper',
-  },
-];
-
-const handlerByHelpsType = handlers.reduce<Record<string, ComponentSpecificHandler>>(
-  (record, currentValue) => {
-    record[currentValue.helpsType] = currentValue;
-    return record;
-  },
-  {},
-);
-
-const handlerByTagType = handlers.reduce<Record<string, ComponentSpecificHandler>>(
-  (record, currentValue) => {
-    record[currentValue.whisperTagType] = currentValue;
-    return record;
-  },
-  {},
-);
+import { handlerByHelpsType, handlerByTagType } from './component-handlers';
 
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
@@ -164,7 +90,7 @@ const config: CoreConfig & PersistenceConfig = {
     const propsWithoutChildren = { ...props };
     delete propsWithoutChildren.children;
     const instance = {
-      type: type.slice(3),
+      type: handlerByTagType[type].helpsType,
       ...propsWithoutChildren,
     };
     handlerByTagType[type]?.assignTextChildren?.(instance, props);
