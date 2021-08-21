@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign -- we're doing tons of mutations in this file intentionally */
 import * as Reconciler from 'react-reconciler';
 import { ReactNode } from 'react';
-import { NewWhisper, UpdateWhisper, WhisperComponentType } from './types';
+import { NewWhisper, UpdateWhisper, Whisper, WhisperComponentType } from './types';
 import {
   ChildSet,
   Container,
@@ -16,6 +16,7 @@ import {
   Update,
 } from './renderer-config';
 import { handlerByHelpsType, handlerByTagType } from './component-handlers';
+import { create } from './index';
 
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
@@ -200,6 +201,20 @@ export interface WhisperInterface {
   createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): void;
 }
 
+// TODO: When a whisper is closed I need to unmount its contents. I probably need to
+//  call updateContainer again with an empty element.
+class WhisperRenderInstance implements WhisperInterface {
+  private whisper: Whisper | undefined;
+
+  async createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): Promise<void> {
+    if (this.whisper == null) {
+      this.whisper = await create(whisperData as NewWhisper);
+    } else {
+      await this.whisper.update(whisperData);
+    }
+  }
+}
+
 export function render(
   element: ReactNode,
   whisperInterface: WhisperInterface,
@@ -209,7 +224,9 @@ export function render(
   const container = Renderer.createContainer(whisperInterface, 0, false, null);
   // TODO: Figure out how to handle multiple calls. Or even if I should.
   Renderer.updateContainer(element, container, null, callback);
+}
 
-  // TODO: When a whisper is closed I need to unmount its contents. I probably need to
-  //  call updateContainer again with an empty element.
+export function renderNewWhisper(element: ReactNode): void {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  render(element, new WhisperRenderInstance(), () => {});
 }
