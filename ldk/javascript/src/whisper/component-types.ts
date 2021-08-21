@@ -13,7 +13,7 @@ type ComponentPropsWithChildren<T, TExcludeName extends string = 'children'> = O
   children: ReactNode;
 };
 
-
+// TODO: Figure out how to ensure these declarations are respected by importers.
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace -- needed to populate jsx components
   namespace JSX {

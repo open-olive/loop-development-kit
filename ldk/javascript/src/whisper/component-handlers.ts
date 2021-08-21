@@ -2,6 +2,7 @@
 import { Instance, Props, TextInstance } from './renderer-config';
 import { WhisperComponentType } from './types';
 
+// TODO: Improve text rendering here.
 const assignTextChildrenToProperty: (
   propertyNane: string,
 ) => (instance: Instance, newProps: Props) => void = (propertyName) => (instance, props) => {
