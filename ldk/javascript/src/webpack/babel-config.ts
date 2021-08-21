@@ -2,13 +2,7 @@ import * as babel from '@babel/core';
 
 export function buildBabelPlugins(includeJsx = false): babel.PluginItem[] {
   const baseline = ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'];
-  const jsx = [
-    '@babel/plugin-transform-react-jsx',
-    {
-      runtime: 'automatic',
-      importSource: '@oliveai/ldk/dist', // loads @oliveai/ldk/dist/jsx-runtime
-    },
-  ];
+  const jsx = ['@babel/plugin-transform-react-jsx'];
   return includeJsx ? [...baseline, jsx] : baseline;
 }
 

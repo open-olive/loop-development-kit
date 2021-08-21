@@ -53,21 +53,38 @@ export function buildWebpackConfig(
     ],
     optimization,
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.js', '.tsx', '.jsx'],
     },
     module: {
       rules: [
         {
           test: /\.(jsx)$/,
-          use: [{
-            loader: 'babel-loader',
-            options: {
-              sourceType: 'unambiguous',
-              cacheDirectory: true,
-              presets: buildBabelPreset(),
-              plugins: buildBabelPlugins(true),
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                sourceType: 'unambiguous',
+                cacheDirectory: true,
+                presets: buildBabelPreset(),
+                plugins: buildBabelPlugins(true),
+              },
             },
-          }],
+          ],
+        },
+        {
+          test: /\.(tsx)$/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                sourceType: 'unambiguous',
+                cacheDirectory: true,
+                presets: buildBabelPreset(),
+                plugins: buildBabelPlugins(true),
+              },
+            },
+            { loader: 'ts-loader' },
+          ],
         },
         {
           test: /\.ts$/,
