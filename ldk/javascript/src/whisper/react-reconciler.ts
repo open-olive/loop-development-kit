@@ -92,11 +92,14 @@ const config: CoreConfig & PersistenceConfig = {
   ): Instance {
     const propsWithoutChildren = { ...props };
     delete propsWithoutChildren.children;
-    const instance = {
+    const instance: Instance = {
       type: handlerByTagType[type].helpsType,
       ...propsWithoutChildren,
     };
     handlerByTagType[type]?.assignTextChildren?.(instance, props);
+    if (internalHandle.key) {
+      instance.key = internalHandle.key;
+    }
     return instance;
   },
   createTextInstance(

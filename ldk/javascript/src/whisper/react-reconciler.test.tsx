@@ -122,6 +122,7 @@ describe('whisper-renderer', () => {
             type: WhisperComponentType.Box,
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.Left,
+            key: 'f',
             children: [
               {
                 type: WhisperComponentType.Checkbox,
@@ -255,6 +256,7 @@ describe('whisper-renderer', () => {
           },
           {
             type: WhisperComponentType.Markdown,
+            key: 'markdown',
             body: 'markdown.body',
           },
           {
