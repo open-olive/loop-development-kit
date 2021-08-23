@@ -437,8 +437,8 @@ export const testClickableLink = (): Promise<boolean> =>
           {
             type: WhisperComponentType.Link,
             textAlign: TextAlign.Left,
-            href: 'https://www.google.com',
-            text: 'https://www.google.com',
+            href: 'file:///Users/brettmugglin/Desktop/untitled%20folder/test.html',
+            text: 'Open local file',
             style: Urgency.None,
           },
           resolveRejectButtons(resolve, reject, 'Url opened in browser', 'Url failed to open'),
@@ -1801,4 +1801,25 @@ export const testFlex = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
+  });
+
+export const testAutocomplete = (): Promise<boolean> =>
+  new Promise(async (resolve) => {
+    await whisper.create({
+      label: 'Autocomplete test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Do some stuff',
+        },
+        {
+          label: 'Autocomplete Test',
+          loading: true,
+          type: WhisperComponentType.Autocomplete,
+        },
+      ],
+    });
   });

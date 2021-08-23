@@ -185,4 +185,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Did the icon render correctly?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Autocomplete Rendering',
+      whisperTests.testAutocomplete,
+      10000,
+      'Test the autocomplete component',
+    ),
   ]);
