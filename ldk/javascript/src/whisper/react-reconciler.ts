@@ -208,6 +208,7 @@ export interface WhisperInterface {
 
 // TODO: When a whisper is closed I need to unmount its contents. I probably need to
 //  call updateContainer again with an empty element.
+// TODO: Add support for closing or updating whisper.
 class WhisperRenderInstance implements WhisperInterface {
   private whisper: Whisper | undefined;
 
@@ -225,7 +226,7 @@ export function render(
   whisperInterface: WhisperInterface,
   callback: (value?: unknown) => void,
 ): void {
-  // TODO: Tag here drives what sort of "modes" its using. 0 = LegacyRoot.
+  // Tag here drives what sort of "modes" its using. 0 = LegacyRoot.
   const container = Renderer.createContainer(whisperInterface, 0, false, null);
   // TODO: Figure out how to handle multiple calls. Or even if I should.
   Renderer.updateContainer(element, container, null, callback);
