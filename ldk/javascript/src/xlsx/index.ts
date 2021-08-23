@@ -1,16 +1,20 @@
 import { promisifyWithParam } from '../promisify';
 
+/**
+ *  XLSX aptitude allows Loops to enable basic parsing of XLSX files.
+ * (We do NOT supprot XLS files right now.)
+ */
 export interface XLSX {
   /**
    * Encodes a workbook object into XLSX data
    * @param  - Workbook object
-   * @returns - A promise containing XLSX data.
+   * @returns - A promise containing Uint8Array XLSX data.
    */
   encode(workbook: Workbook): Promise<Uint8Array>;
 
   /**
    * Decodes XLSX data into a workbook object.
-   * @param  - ArrayBuffer data
+   * @param  - Uint8Array XLSX data
    * @returns - A promise containing Workbook.
    */
   decode(data: Uint8Array): Promise<Workbook>;
