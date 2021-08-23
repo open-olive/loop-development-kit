@@ -4,7 +4,7 @@ import { WhisperComponentType } from './types';
 
 // TODO: Improve text rendering here.
 const assignTextChildrenToProperty: (
-  propertyNane: string,
+  propertyName: string,
 ) => (instance: Instance, newProps: Props) => void = (propertyName) => (instance, props) => {
   (instance as any)[propertyName] = props.children.toString();
 };
@@ -58,17 +58,13 @@ const handlers: Array<ComponentSpecificHandler> = [
   {
     appendInitialChild: createAppendFunction('children'),
     helpsType: WhisperComponentType.CollapseBox,
-    whisperTagType: 'oh-collapsebox',
+    whisperTagType: 'oh-collapse-box',
   },
   {
-    assignTextChildren: assignTextChildrenToProperty('label'),
-    shouldSetTextChildren: () => true,
     helpsType: WhisperComponentType.Button,
     whisperTagType: 'oh-button',
   },
   {
-    assignTextChildren: assignTextChildrenToProperty('label'),
-    shouldSetTextChildren: () => true,
     helpsType: WhisperComponentType.Checkbox,
     whisperTagType: 'oh-checkbox',
   },
@@ -89,19 +85,14 @@ const handlers: Array<ComponentSpecificHandler> = [
     whisperTagType: 'oh-icon',
   },
   {
-    assignTextChildren: assignTextChildrenToProperty('text'),
     helpsType: WhisperComponentType.Link,
     whisperTagType: 'oh-link',
   },
   {
-    assignTextChildren: assignTextChildrenToProperty('body'),
-    shouldSetTextChildren: () => true,
     helpsType: WhisperComponentType.Markdown,
     whisperTagType: 'oh-markdown',
   },
   {
-    assignTextChildren: assignTextChildrenToProperty('body'),
-    shouldSetTextChildren: () => true,
     helpsType: WhisperComponentType.Message,
     whisperTagType: 'oh-message',
   },
@@ -115,7 +106,7 @@ const handlers: Array<ComponentSpecificHandler> = [
   },
   {
     helpsType: WhisperComponentType.RadioGroup,
-    whisperTagType: 'oh-radiogroup',
+    whisperTagType: 'oh-radio-group',
   },
   {
     helpsType: WhisperComponentType.SectionTitle,
@@ -127,7 +118,7 @@ const handlers: Array<ComponentSpecificHandler> = [
   },
   {
     helpsType: WhisperComponentType.TextInput,
-    whisperTagType: 'oh-textinput',
+    whisperTagType: 'oh-text-input',
   },
   {
     appendInitialChild: createAppendFunction('components'),

@@ -18,16 +18,16 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace -- needed to populate jsx components
   namespace JSX {
     type BoxProps = ComponentPropsWithChildren<Whisper.Box>;
-    type ButtonProps = ComponentPropsWithChildren<Whisper.Button, 'label'>;
-    type CheckboxProps = ComponentPropsWithChildren<Whisper.Checkbox, 'label'>;
+    type ButtonProps = ComponentProps<Whisper.Button>;
+    type CheckboxProps = ComponentProps<Whisper.Checkbox>;
     type CollapseBoxProps = ComponentPropsWithChildren<Whisper.CollapseBox>;
     type DateTimeInputProps = ComponentProps<Whisper.DateTimeInput>;
     type DividerProps = ComponentProps<Whisper.Divider>;
     type EmailProps = ComponentProps<Whisper.Email>;
     type IconProps = ComponentProps<Whisper.Icon>;
-    type LinkProps = ComponentPropsWithChildren<Whisper.Link, 'text'>;
-    type MarkdownProps = ComponentPropsWithChildren<Whisper.Markdown, 'body'>;
-    type MessageProps = ComponentPropsWithChildren<Whisper.Message, 'body'>;
+    type LinkProps = ComponentProps<Whisper.Link>;
+    type MarkdownProps = ComponentProps<Whisper.Markdown>;
+    type MessageProps = ComponentProps<Whisper.Message>;
     type NumberInputProps = ComponentProps<Whisper.NumberInput>;
     type PasswordProps = ComponentProps<Whisper.Password>;
     type RadioGroupProps = ComponentProps<Whisper.RadioGroup>;
@@ -45,7 +45,7 @@ declare global {
       'oh-box': BoxProps;
       'oh-button': ButtonProps;
       'oh-checkbox': CheckboxProps;
-      'oh-collapsebox': CollapseBoxProps;
+      'oh-collapse-box': CollapseBoxProps;
       'oh-datetime': DateTimeInputProps;
       'oh-email': EmailProps;
       'oh-divider': DividerProps;
@@ -55,10 +55,10 @@ declare global {
       'oh-markdown': MarkdownProps;
       'oh-number': NumberInputProps;
       'oh-password': PasswordProps;
-      'oh-radiogroup': RadioGroupProps;
+      'oh-radio-group': RadioGroupProps;
       'oh-section-title': SectionTitleProps;
       'oh-telephone': TelephoneProps;
-      'oh-textinput': TextInputProps;
+      'oh-text-input': TextInputProps;
       'oh-whisper': WhisperProps;
     }
   }

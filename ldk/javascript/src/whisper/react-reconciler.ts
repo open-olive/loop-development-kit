@@ -22,6 +22,7 @@ const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
   akeOpaqueHydratingObject: undefined,
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
+    // TODO: Throw error if top-level component is not `oh-whisper`.
     // In this function we are adding the Whisper properties to the ChildSet.
     const whisper = (child as unknown) as NewWhisper;
     childSet.label = whisper.label;
@@ -30,7 +31,8 @@ const config: CoreConfig & PersistenceConfig = {
     return childSet;
   },
   appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void {
-    // TODO: Do I want to check whether the parent accepts children here?
+    // TODO: Warn if not supported
+    // TODO: Warn if they try adding oh-whisper as a child.
     handlerByHelpsType[parentInstance.type]?.appendInitialChild?.(parentInstance, child);
   },
   beforeActiveInstanceBlur: undefined,

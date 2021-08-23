@@ -18,7 +18,7 @@ describe('whisper-renderer', () => {
     }
 
     render() {
-      return <oh-button onClick={this.props.onMount}>{this.props.label}</oh-button>;
+      return <oh-button onClick={this.props.onMount} label={this.props.label} />;
     }
   }
 
@@ -35,9 +35,8 @@ describe('whisper-renderer', () => {
         onClick={() => {
           useState(state + 1);
         }}
-      >
-        {props.label} + {state}
-      </oh-button>
+        label={`${props.label} + ${state}`}
+      />
     );
   };
   let whisperInterface: WhisperInterface;
@@ -70,8 +69,8 @@ describe('whisper-renderer', () => {
       await new Promise((resolve) => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
-            <oh-button onClick={() => {}}>button.label</oh-button>
-            <oh-markdown>markdown.body</oh-markdown>
+            <oh-button onClick={() => {}} label={'button.label'} />
+            <oh-markdown body={'markdown.body'} />
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -104,10 +103,10 @@ describe('whisper-renderer', () => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
             <oh-box key="f" direction={Direction.Horizontal} justifyContent={JustifyContent.Left}>
-              <oh-checkbox onChange={jest.fn()}>DID JA</oh-checkbox>
+              <oh-checkbox onChange={jest.fn()} label={"DID JA"}/>
               Bob
             </oh-box>
-            <oh-markdown>markdown.body</oh-markdown>
+            <oh-markdown body={"markdown.body"}/>
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -155,7 +154,7 @@ describe('whisper-renderer', () => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
             <ButtonFunctional label="button.label" onMount={onMount} onRender={jest.fn()} key="f" />
-            <oh-markdown>markdown.body</oh-markdown>
+            <oh-markdown body={"markdown.body"}/>
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -170,8 +169,7 @@ describe('whisper-renderer', () => {
         components: [
           {
             type: WhisperComponentType.Button,
-            // TODO: Improve button rendering
-            label: 'button.label, + ,1',
+            label: 'button.label + 1',
             onClick: expect.any(Function),
           },
           {
@@ -192,7 +190,7 @@ describe('whisper-renderer', () => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
             <ButtonClass label="button.label" onMount={onMount} onRender={jest.fn()} />
-            <oh-markdown>markdown.body</oh-markdown>
+            <oh-markdown body={"markdown.body"}/>
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -233,7 +231,7 @@ describe('whisper-renderer', () => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
             <ButtonFunctional label="button.label" onMount={onMount} onRender={onRender} key="f" />
-            <oh-markdown key="markdown">markdown.body</oh-markdown>
+            <oh-markdown key="markdown" body="markdown.body" />
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -252,7 +250,7 @@ describe('whisper-renderer', () => {
         components: [
           {
             type: WhisperComponentType.Button,
-            label: 'button.label, + ,2',
+            label: 'button.label + 2',
             onClick: expect.any(Function),
           },
           {
