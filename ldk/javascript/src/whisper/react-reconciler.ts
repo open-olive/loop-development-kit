@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign -- we're doing tons of mutations in this file intentionally */
-import * as Reconciler from 'react-reconciler';
-import { ReactNode } from 'react';
-import { NewWhisper, UpdateWhisper, Whisper, WhisperComponentType } from './types';
+import * as Reconciler from "react-reconciler";
+import { ReactNode } from "react";
+import { NewWhisper, WhisperComponentType } from "./types";
 import {
   ChildSet,
   Container,
@@ -13,10 +13,10 @@ import {
   Props,
   TextInstance,
   Type,
-  Update,
-} from './renderer-config';
-import { handlerByHelpsType, handlerByTagType } from './component-handlers';
-import { create } from './index';
+  Update
+} from "./renderer-config";
+import { handlerByHelpsType, handlerByTagType } from "./component-handlers";
+import { WhisperRenderingInterface, WhisperRenderInstance } from "./whisper-render-instance";
 
 const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
@@ -202,37 +202,43 @@ const config: CoreConfig & PersistenceConfig = {
 
 const Renderer = Reconciler.default(config);
 
-export interface WhisperInterface {
-  createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): void;
+interface WhisperInstance {
+  update(node: ReactNode, callback?: () => void): void;
+  close(): void;
 }
 
-// TODO: When a whisper is closed I need to unmount its contents. I probably need to
-//  call updateContainer again with an empty element.
-// TODO: Add support for closing or updating whisper.
-class WhisperRenderInstance implements WhisperInterface {
-  private whisper: Whisper | undefined;
+class WhisperInstanceWrapper implements WhisperInstance {
+  private container: Reconciler.OpaqueRoot;
 
-  async createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): Promise<void> {
-    if (this.whisper == null) {
-      this.whisper = await create(whisperData as NewWhisper);
-    } else {
-      await this.whisper.update(whisperData);
-    }
+  private renderInstance: WhisperRenderingInterface;
+
+  constructor(container: Reconciler.OpaqueRoot, renderInstance: WhisperRenderingInterface) {
+    this.container = container;
+    this.renderInstance = renderInstance;
+  }
+
+  close(): void {
+    // TODO: Implement
+  }
+
+  update(node: React.ReactNode, callback?: () => void): void {
+    Renderer.updateContainer(node, this.container, null, callback);
   }
 }
 
 export function render(
   element: ReactNode,
-  whisperInterface: WhisperInterface,
-  callback: (value?: unknown) => void,
-): void {
+  whisperInterface: WhisperRenderingInterface,
+  callback?: () => void
+): WhisperInstance {
   // Tag here drives what sort of "modes" its using. 0 = LegacyRoot.
   const container = Renderer.createContainer(whisperInterface, 0, false, null);
-  // TODO: Figure out how to handle multiple calls. Or even if I should.
-  Renderer.updateContainer(element, container, null, callback);
+  const wrapper = new WhisperInstanceWrapper(container, whisperInterface);
+  wrapper.update(element, callback);
+  return wrapper;
 }
 
-export function renderNewWhisper(element: ReactNode): void {
+export function renderNewWhisper(element: ReactNode, onClose: () => void): void {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  render(element, new WhisperRenderInstance(), () => {});
+  render(element, new WhisperRenderInstance(onClose));
 }

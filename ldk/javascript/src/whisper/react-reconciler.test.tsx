@@ -2,8 +2,9 @@
 
 import * as React from 'react';
 import { mocked } from 'ts-jest/utils';
-import { render, WhisperInterface } from './react-reconciler';
+import { render} from './react-reconciler';
 import { Button, Direction, JustifyContent, NewWhisper, WhisperComponentType } from './types';
+import { WhisperRenderingInterface } from "./whisper-render-instance";
 
 interface ButtonProps {
   label: string;
@@ -39,7 +40,7 @@ describe('whisper-renderer', () => {
       />
     );
   };
-  let whisperInterface: WhisperInterface;
+  let whisperInterface: WhisperRenderingInterface;
   beforeEach(() => {
     whisperInterface = {
       createOrUpdateWhisper: jest.fn(),
@@ -103,10 +104,10 @@ describe('whisper-renderer', () => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
             <oh-box key="f" direction={Direction.Horizontal} justifyContent={JustifyContent.Left}>
-              <oh-checkbox onChange={jest.fn()} label={"DID JA"}/>
+              <oh-checkbox onChange={jest.fn()} label={'DID JA'} />
               Bob
             </oh-box>
-            <oh-markdown body={"markdown.body"}/>
+            <oh-markdown body={'markdown.body'} />
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -155,7 +156,7 @@ describe('whisper-renderer', () => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
             <ButtonFunctional label="button.label" onMount={onMount} onRender={jest.fn()} key="f" />
-            <oh-markdown body={"markdown.body"}/>
+            <oh-markdown body={'markdown.body'} />
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -191,7 +192,7 @@ describe('whisper-renderer', () => {
         render(
           <oh-whisper label="whisper.label" onClose={() => {}}>
             <ButtonClass label="button.label" onMount={onMount} onRender={jest.fn()} />
-            <oh-markdown body={"markdown.body"}/>
+            <oh-markdown body={'markdown.body'} />
             nakedmarkdown.body
           </oh-whisper>,
           whisperInterface,
@@ -268,3 +269,6 @@ describe('whisper-renderer', () => {
     });
   });
 });
+
+// TODO: Test context.
+// TODO: Test default props.
