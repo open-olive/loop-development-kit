@@ -169,6 +169,7 @@ export enum IconSize {
 }
 
 export enum StyleSize {
+  None = 'none',
   Small = 'small',
   Medium = 'medium',
   Large = 'large',

@@ -349,7 +349,7 @@ declare namespace OliveHelps {
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
-  type StyleSize = 'small' | 'medium' | 'large';
+  type StyleSize = 'none' | 'small' | 'medium' | 'large';
 
   type WidthSize = 'full' | 'half';
 
