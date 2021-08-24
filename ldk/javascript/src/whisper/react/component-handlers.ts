@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign -- we're doing tons of mutations in this file intentionally */
 import { Instance, Props, TextInstance } from './renderer-config';
-import { WhisperComponentType } from './types';
+import { WhisperComponentType } from '../types';
 
 // TODO: Improve text rendering here.
 const assignTextChildrenToProperty: (

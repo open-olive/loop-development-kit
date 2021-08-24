@@ -3,8 +3,8 @@
 
 import * as React from 'react';
 import { mocked } from 'ts-jest/utils';
-import { render } from './react-reconciler';
-import { Button, Direction, JustifyContent, NewWhisper, WhisperComponentType } from './types';
+import { render } from './renderer';
+import { Button, Direction, JustifyContent, NewWhisper, WhisperComponentType } from '../types';
 import { WhisperRenderingInterface } from './whisper-render-instance';
 
 interface ButtonProps {
@@ -13,7 +13,7 @@ interface ButtonProps {
   onRender: (n: number) => void;
 }
 
-describe('whisper-renderer', () => {
+describe('renderer', () => {
   class ButtonClass extends React.Component<ButtonProps> {
     componentDidMount() {
       this.props.onMount();

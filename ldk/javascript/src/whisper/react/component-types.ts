@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import * as Whisper from "./types";
-import { WhisperHandler } from "./types";
+import * as Whisper from "../types";
+import { WhisperHandler } from "../types";
 
 type ComponentProps<T> = Omit<T, 'id' | 'type'> & {
   key?: string | number;

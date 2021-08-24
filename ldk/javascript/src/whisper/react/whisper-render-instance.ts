@@ -1,5 +1,5 @@
-import { NewWhisper, UpdateWhisper, Whisper } from './types';
-import { create } from './index';
+import { NewWhisper, UpdateWhisper, Whisper } from '../types';
+import { create } from '../index';
 
 export interface WhisperRenderingInterface {
   createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): void;
@@ -13,7 +13,6 @@ enum RenderInstanceStatus {
 
 // TODO: When a whisper is closed I need to unmount its contents. I probably need to
 //  call updateContainer again with an empty element.
-// TODO: Add support for closing or updating whisper.
 export class WhisperRenderInstance implements WhisperRenderingInterface {
   private status: RenderInstanceStatus = RenderInstanceStatus.NotCreated;
 
