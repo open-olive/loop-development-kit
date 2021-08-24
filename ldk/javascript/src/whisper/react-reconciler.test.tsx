@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- test file */
+/* eslint-disable max-classes-per-file -- again, test file */
 
 import * as React from 'react';
 import { mocked } from 'ts-jest/utils';
-import { render} from './react-reconciler';
+import { render } from './react-reconciler';
 import { Button, Direction, JustifyContent, NewWhisper, WhisperComponentType } from './types';
-import { WhisperRenderingInterface } from "./whisper-render-instance";
+import { WhisperRenderingInterface } from './whisper-render-instance';
 
 interface ButtonProps {
   label: string;
@@ -268,7 +269,43 @@ describe('whisper-renderer', () => {
       });
     });
   });
-});
+  describe('context and default props works', () => {
+    const TestContext = React.createContext('1');
+    class ButtonWithContext extends React.Component<{ number: number }> {
+      static contextType = TestContext;
 
-// TODO: Test context.
-// TODO: Test default props.
+      static defaultProps = {
+        number: 5,
+      };
+
+      render() {
+        return <oh-button label={`${this.context} ${this.props.number}`} onClick={() => {}} />;
+      }
+    }
+
+    it('should pass data in context down and apply defaultProps as normal', async () => {
+      await new Promise((resolve) => {
+        render(
+          <oh-whisper label="whisper.label" onClose={() => {}}>
+            <TestContext.Provider value={'2'}>
+              <ButtonWithContext/>
+            </TestContext.Provider>
+          </oh-whisper>,
+          whisperInterface,
+          () => resolve(null),
+        );
+      });
+      expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
+        label: 'whisper.label',
+        onClose: expect.any(Function),
+        components: [
+          {
+            type: WhisperComponentType.Button,
+            label: '2 5',
+            onClick: expect.any(Function),
+          },
+        ],
+      });
+    });
+  });
+});
