@@ -210,7 +210,7 @@ export type Autocomplete = WhisperComponent<WhisperComponentType.Autocomplete> &
   loading?: boolean;
   onChange?: WhisperHandlerWithParam<string>;
   onSelect?: WhisperHandlerWithParam<string>;
-  // options: AutocompleteOption[];
+  options?: AutocompleteOption[];
   tooltip?: string;
   value?: string;
   validationError?: string;

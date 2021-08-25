@@ -1,3 +1,5 @@
+import { TextEncoder } from 'text-encoding-shim';
+
 import {
   Box,
   BoxChildComponent,
@@ -93,11 +95,11 @@ export function mapToInternalChildComponent(
       return component;
     case WhisperComponentType.Autocomplete: {
       // eslint-disable-next-line
-      const { onChange, onSelect } = component;
-      console.log(component.label);
-      console.log('In the mapper');
+      const { onChange, onSelect, options } = component;
+      const dataObj = { data: options };
       return {
         ...component,
+        options: options ? JSON.stringify(dataObj) : undefined,
         onChange: onChange
           ? (error, param, whisper) => {
               if (component.id) {

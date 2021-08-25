@@ -1817,7 +1817,20 @@ export const testAutocomplete = (): Promise<boolean> =>
         },
         {
           label: 'Autocomplete Test',
-          loading: true,
+          loading: false,
+          onChange: (error, value) => {
+            console.log(value);
+          },
+          onSelect: (error, value) => {
+            console.log(value);
+          },
+          options: [
+            { label: 'Value 1', value: 'one' },
+            { label: 'Value 2', value: 'two' },
+            { label: 'Value 3', value: 'three' },
+            { label: 'Value 4', value: 'four' },
+            { label: 'Value 5', value: 'five' },
+          ],
           type: WhisperComponentType.Autocomplete,
         },
       ],

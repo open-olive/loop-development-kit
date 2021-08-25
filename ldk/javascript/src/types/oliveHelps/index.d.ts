@@ -384,15 +384,19 @@ declare namespace OliveHelps {
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
   type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
 
+  type AutocompleteOption = {
+    label: string;
+    value: string;
+  };
+
   type Autocomplete = Component<'autocomplete'> & {
-    error?: boolean;
-    errorText?: string;
     label?: string;
     loading?: boolean;
     onChange?: WhisperHandlerWithParam<string>;
     onSelect?: WhisperHandlerWithParam<string>;
-    // options: AutocompleteOption[];
+    options?: AutocompleteOption[];
     tooltip?: string;
+    validationError?: string;
     value?: string;
   };
 
