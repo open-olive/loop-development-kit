@@ -19,6 +19,8 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
   private whisper: Whisper | undefined;
 
   private readonly closeHandler: () => void;
+  // TODO: Remove again or remove constructor handler.
+  private externalCloseHandler: (() => void) | undefined;
 
   constructor(closeHandler: () => void) {
     this.closeHandler = closeHandler;
@@ -26,14 +28,19 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
 
   async createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): Promise<void> {
     if (this.whisper == null) {
-      this.whisper = await create({ ...whisperData, onClose: this.onWhisperClose } as NewWhisper);
-      this.status = RenderInstanceStatus.Created;
+      await this.createWhisper(whisperData as NewWhisper);
     } else {
       if (this.status !== RenderInstanceStatus.Created) {
         throw new Error('Cannot update whisper in invalid state');
       }
       await this.whisper.update(whisperData);
     }
+  }
+
+  private async createWhisper(whisperData: NewWhisper) {
+    this.whisper = await create({ ...whisperData, onClose: this.onWhisperClose } as NewWhisper);
+    this.externalCloseHandler = whisperData.onClose;
+    this.status = RenderInstanceStatus.Created;
   }
 
   private onWhisperClose = (): void => {
