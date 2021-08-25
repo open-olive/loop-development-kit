@@ -1821,10 +1821,10 @@ export const testAutocompleteSelect = (): Promise<boolean> =>
           onChange: () => {
             // do nothing
           },
-          onSelect: (error, value) => {
+          onSelect: (error, value, onSelectWhisper) => {
             if (value === '4') {
               resolve(true);
-              whisper.close(() => {
+              onSelectWhisper.close(() => {
                 // do nothing.
               });
             }
@@ -1857,10 +1857,11 @@ export const testAutocompleteChange = (): Promise<boolean> =>
         {
           label: 'Autocomplete Test',
           loading: true,
-          onChange: (error, value, whisper) => {
+          onChange: (error, value, onChangeWhisper) => {
             if (value.toLowerCase() === 'typed') {
               resolve(true);
-              whisper.close(() => {
+
+              onChangeWhisper.close(() => {
                 // do nothing.
               });
             }
