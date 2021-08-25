@@ -203,4 +203,5 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Do the items have different widths than default?',
     ),
+    new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
   ]);

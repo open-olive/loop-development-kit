@@ -7,6 +7,7 @@ import {
   UpdateWhisper,
   Whisper,
   WhisperComponentType,
+  File,
 } from './types';
 
 function throwForDuplicateKeys<T extends { key?: string }>(components: T[]): T[] {
@@ -91,6 +92,30 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Divider:
     case WhisperComponentType.SectionTitle:
       return component;
+    case WhisperComponentType.DropZone:
+      return {
+        ...component,
+        onDrop: (error, param, whisper) => {
+          const callbackHandler: (file: OliveHelps.File) => File = (file: OliveHelps.File) => ({
+            path: file.path,
+            size: file.size,
+            readFile: () =>
+              new Promise<Uint8Array>((resolve, reject) => {
+                file.readFile((readError, buffer) => {
+                  if (readError) {
+                    return reject(readError);
+                  }
+                  return resolve(new Uint8Array(buffer));
+                });
+              }),
+          });
+          component.onDrop(
+            error,
+            param.map(callbackHandler),
+            mapToExternalWhisper(whisper, stateMap),
+          );
+        },
+      };
     case WhisperComponentType.ListPair: {
       // eslint-disable-next-line
       const { onCopy } = component;
@@ -237,7 +262,9 @@ export function mapToInternalChildComponent(
       }
       return component as OliveHelps.Icon;
     default:
-      throw new Error('Unexpected component type');
+      // Suppressing warning to deal with unexpected types.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw new Error(`Unexpected component type: ${(component as any)?.type}`);
   }
 }
 
