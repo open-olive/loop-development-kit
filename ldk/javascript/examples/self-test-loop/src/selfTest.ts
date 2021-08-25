@@ -1,6 +1,6 @@
 import { keyboard } from '@oliveai/ldk';
 import { emitTestWhisper } from './testingFixtures/testWhisper';
-import WhisperCloser from './testingFixtures/WhisperCloser';
+import WhisperCloser from './testingFixtures/whisperCloser';
 
 export default class SelfTestLoop {
   async start(): Promise<void> {

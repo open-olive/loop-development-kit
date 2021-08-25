@@ -185,4 +185,5 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Did the icon render correctly?',
     ),
+    new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
   ]);
