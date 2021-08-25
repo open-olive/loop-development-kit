@@ -185,5 +185,23 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Did the icon render correctly?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Padding',
+      whisperTests.testPadding,
+      10000,
+      'Do the items have padding?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Margin',
+      whisperTests.testMargin,
+      10000,
+      'Do the items have margins?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Width',
+      whisperTests.testWidth,
+      10000,
+      'Do the items have different widths than default?',
+    ),
     new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
   ]);
