@@ -1803,35 +1803,80 @@ export const testFlex = (): Promise<boolean> =>
     }
   });
 
-export const testAutocomplete = (): Promise<boolean> =>
+export const testAutocompleteSelect = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     await whisper.create({
-      label: 'Autocomplete test',
+      label: 'Autocomplete select test',
       onClose: () => {
         console.debug('closed');
       },
       components: [
         {
           type: WhisperComponentType.Markdown,
-          body: 'Do some stuff',
+          body: 'Select "Value 4"',
         },
         {
           label: 'Autocomplete Test',
           loading: false,
-          onChange: (error, value) => {
-            console.log(value);
+          onChange: () => {
+            // do nothing
           },
           onSelect: (error, value) => {
-            console.log(value);
+            if (value === '4') {
+              resolve(true);
+              whisper.close(() => {
+                // do nothing.
+              });
+            }
           },
           options: [
-            { label: 'Value 1', value: 'one' },
-            { label: 'Value 2', value: 'two' },
-            { label: 'Value 3', value: 'three' },
-            { label: 'Value 4', value: 'four' },
-            { label: 'Value 5', value: 'five' },
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+            { label: 'Value 3', value: '3' },
+            { label: 'Value 4', value: '4' },
+            { label: 'Value 5', value: '5' },
           ],
           type: WhisperComponentType.Autocomplete,
+        },
+      ],
+    });
+  });
+
+export const testAutocompleteChange = (): Promise<boolean> =>
+  new Promise(async (resolve) => {
+    await whisper.create({
+      label: 'Autocomplete change test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Type into the input "Typed"',
+        },
+        {
+          label: 'Autocomplete Test',
+          loading: true,
+          onChange: (error, value, whisper) => {
+            if (value.toLowerCase() === 'typed') {
+              resolve(true);
+              whisper.close(() => {
+                // do nothing.
+              });
+            }
+          },
+          onSelect: () => {
+            // do nothing
+          },
+          options: [
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+            { label: 'Value 3', value: '3' },
+            { label: 'Typed', value: '4' },
+            { label: 'Value 5', value: '5' },
+          ],
+          type: WhisperComponentType.Autocomplete,
+          tooltip: 'tooltip',
         },
       ],
     });
