@@ -1,5 +1,3 @@
-import { TextEncoder } from 'text-encoding-shim';
-
 import {
   Box,
   BoxChildComponent,
