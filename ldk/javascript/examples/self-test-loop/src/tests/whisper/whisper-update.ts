@@ -109,12 +109,7 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
                 createSelectComponent('selectNew', 'New Select Field'),
                 select1,
                 select2,
-                resolveRejectButtons(
-                  resolve,
-                  reject,
-                  'Values persisted',
-                  'Values did not persist',
-                ),
+                resolveRejectButtons(resolve, reject, 'Values persisted', 'Values did not persist'),
               ],
             });
           }),
