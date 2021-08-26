@@ -32,14 +32,14 @@ export interface Browser {
    *
    * @param address - The address to navigate to in the tab.
    */
-  openTab(address: string): Promise<string>;
+  openTab(address: string): Promise<number>;
 
   /**
    * Opens a window in the browser running the Olive Helps extension.
    *
    * @param address - The address to navigate to in the new window.
    */
-  openWindow(address: string): Promise<string>;
+  openWindow(address: string): Promise<number>;
 }
 
 export function listenNavigation(callback: (details: NavigationDetails) => void): Promise<Cancellable> {
