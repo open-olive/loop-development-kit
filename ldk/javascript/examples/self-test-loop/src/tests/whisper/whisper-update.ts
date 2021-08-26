@@ -113,7 +113,7 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
                   resolve,
                   reject,
                   'Values persisted',
-                  'Values did not persisted',
+                  'Values did not persist',
                 ),
               ],
             });
