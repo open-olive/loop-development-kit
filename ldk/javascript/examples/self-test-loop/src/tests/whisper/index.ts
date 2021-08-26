@@ -1141,8 +1141,16 @@ export const testTooltips = (): Promise<boolean> =>
             onClick: () => {
               // do nothing.
             },
-            tooltip: 'Tooltip for Button',
+            tooltip: 'Tooltip for Disabled Button',
             disabled: true,
+          },
+          {
+            type: WhisperComponentType.Button,
+            label: 'Hover to see tooltip',
+            onClick: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Button',
           },
           {
             type: WhisperComponentType.TextInput,
