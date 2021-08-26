@@ -6,6 +6,7 @@ describe('UI', () => {
     oliveHelps.ui = {
       listenSearchbar: jest.fn(),
       listenGlobalSearch: jest.fn(),
+      searchOpenHandler: jest.fn(),
     };
   });
 
@@ -56,6 +57,16 @@ describe('UI', () => {
 
       const callback = jest.fn();
       expect(() => ui.listenGlobalSearch(callback)).rejects.toBe(exception);
+    });
+  });
+
+  describe('searchOpenHandler', () => {
+    it('passes handler to olive helps', () => {
+      const handler = jest.fn();
+      
+      ui.searchOpenHandler(handler);
+
+      expect(oliveHelps.ui.searchOpenHandler).toHaveBeenCalledWith(handler)
     });
   });
 });

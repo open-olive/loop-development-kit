@@ -125,6 +125,8 @@ declare namespace OliveHelps {
     listenSearchbar: Listenable<string>;
 
     listenGlobalSearch: Listenable<string>;
+
+    searchOpenHandler: (handler: () => void) => void;
   }
 
   //-- Process
