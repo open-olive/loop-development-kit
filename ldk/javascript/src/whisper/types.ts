@@ -75,6 +75,10 @@ export enum WhisperComponentType {
    * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
    */
   Icon = 'icon',
+  /**
+   * The dropzone component allows the Loop to receive
+   */
+  DropZone = 'dropZone',
 }
 
 export enum JustifyContent {
@@ -152,6 +156,17 @@ export enum MessageWhisperCopyMode {
 }
 export interface LayoutOptions {
   flex?: string;
+  margin?: StyleSize;
+  marginBottom?: StyleSize;
+  marginLeft?: StyleSize;
+  marginTop?: StyleSize;
+  marginRight?: StyleSize;
+  padding?: StyleSize;
+  paddingBottom?: StyleSize;
+  paddingLeft?: StyleSize;
+  paddingTop?: StyleSize;
+  paddingRight?: StyleSize;
+  width?: WidthSize;
 }
 
 export enum IconSize {
@@ -159,6 +174,18 @@ export enum IconSize {
   Medium = 'medium',
   Large = 'large',
   XLarge = 'x-large',
+}
+
+export enum StyleSize {
+  None = 'none',
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+}
+
+export enum WidthSize {
+  Full = 'full',
+  Half = 'half',
 }
 
 export type StateMap = Map<string, string | boolean | number>;
@@ -190,7 +217,7 @@ export interface WhisperComponent<T extends WhisperComponentType> {
 
 interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
   extends WhisperComponent<T1> {
-  label: string;
+  label?: string;
   tooltip?: string;
   validationError?: string;
   value?: T2;
@@ -204,7 +231,7 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
 }
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
-  label: string;
+  label?: string;
   tooltip?: string;
   value?: boolean;
   onChange: WhisperHandlerWithParam<boolean>;
@@ -217,7 +244,7 @@ export type RadioGroup = SelectComponent<WhisperComponentType.RadioGroup> & {
 };
 
 export type Select = SelectComponent<WhisperComponentType.Select> & {
-  label: string;
+  label?: string;
   options: string[];
   onSelect: WhisperHandlerWithParam<number>;
   selected?: number;
@@ -247,7 +274,7 @@ export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, D
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
-  label: string;
+  label?: string;
   onClick: WhisperHandler;
   size?: ButtonSize;
   tooltip?: string;
@@ -265,6 +292,7 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
   labelCopyable?: boolean;
   label: string;
+  onCopy?: WhisperHandlerWithParam<string>;
   value: string;
   style: Urgency;
 };
@@ -272,6 +300,7 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
 export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   copyable?: MarkdownWhisperCopyMode;
   body: string;
+  onCopy?: WhisperHandler;
   tooltip?: string;
 };
 
@@ -279,9 +308,44 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   copyable?: MessageWhisperCopyMode;
   body?: string;
   header?: string;
+  onCopy?: WhisperHandler;
   style?: Urgency;
   textAlign?: TextAlign;
   tooltip?: string;
+};
+
+export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
+  /**
+   * Specify what extensions the user can include. Do not include the dot.
+   *
+   * @example ['jpg','jpeg','png']
+   */
+  accept?: string[];
+  label: string;
+  /**
+   * The number of files that can be selected. There is a hard limit of ten files that can be selected at once.
+   */
+  limit?: number;
+  /**
+   * If provided, replaces the word "files" in the component.
+   */
+  noun?: string;
+  /**
+   * The callback function to call whenever the user selects or unselects a file.
+   */
+  onDrop: WhisperHandlerWithParam<File[]>;
+  tooltip?: string;
+  validationError?: string;
+  /**
+   * This field can be used to re-order and remove selected files from the component.
+   *
+   * If the value property is null or undefined, the existing selection will remain as-is. To deselect all the files,
+   * set it to an empty array.
+   *
+   * You cannot add a file to the selection via this interface. The component will ignore any files provided it
+   * currently does not have selected.
+   */
+  value?: File[];
 };
 
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
@@ -313,6 +377,7 @@ export type ChildComponents =
   | Checkbox
   | DateTimeInput
   | Divider
+  | DropZone
   | Email
   | Icon
   | Link
@@ -371,4 +436,13 @@ export interface NewWhisper {
 export interface UpdateWhisper {
   label?: string;
   components: Array<Component>;
+}
+
+export interface File {
+  path: string;
+  size: number;
+  /**
+   * Reads the entirety of the file.
+   */
+  readFile(): Promise<Uint8Array>;
 }

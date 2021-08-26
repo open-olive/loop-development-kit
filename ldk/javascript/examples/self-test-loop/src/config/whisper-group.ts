@@ -114,6 +114,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Click the Message Header to copy its text within alloted time',
     ),
     new LoopTest(
+      'Whisper Aptitude - Test onCopy',
+      whisperTests.testOnCopy,
+      20000,
+      `Test onCopy for Markdow,  ListPair, and Message. Copy one of each.`,
+    ),
+    new LoopTest(
       'Whisper Aptitude - Simple Form Whisper',
       whisperTests.testFormComponents,
       10000,
@@ -124,6 +130,12 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testNumberInputs,
       10000,
       `No action required`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Components with no labels',
+      whisperTests.testNoLabels,
+      10000,
+      `Did components render properly`,
     ),
     new LoopTest(
       'Whisper Aptitude - Float Number Inputs',
@@ -179,4 +191,23 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Is RichTextEditor working correctly?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Padding',
+      whisperTests.testPadding,
+      10000,
+      'Do the items have padding?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Margin',
+      whisperTests.testMargin,
+      10000,
+      'Do the items have margins?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Width',
+      whisperTests.testWidth,
+      10000,
+      'Do the items have different widths than default?',
+    ),
+    new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
   ]);

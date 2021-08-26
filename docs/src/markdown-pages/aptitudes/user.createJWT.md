@@ -18,7 +18,35 @@ Standard Claims:
 
 Additional Claims:
 * `azp` (Authorized Party): contains the LoopID of the Loop which requested the JWT.
+
+Optional Claims:
 * `email`: contains the email address of the current Olive Helps user. This claim can be requested by passing true as the value of the includeEmail parameter. If your Loop does not need the email, pass `{includeEmail: false}` to omit the claim (see deprecation note above).
+
+### Optional Claim Permissions
+Loops which require the use of optional JWT claims must request access to that claim in the Loop [Permissions configuration](https://github.com/open-olive/loop-development-kit/tree/main/ldk/javascript#loop-permissions).
+
+The `user` permissions object must be populated with the names of any requested optional claims in the following format:
+```
+'ldk': {
+    'permissions': {
+        'user': {
+            'optionalClaims': [
+                { 'value': 'email' }
+            ]
+        }
+    }
+}
+```
+
+Loops which do not require any optional claims should pass an empty object for the user permissions:
+
+```
+'ldk': {
+    'permissions': {
+        'user': {}
+    }
+}
+```
 
 
 ### JWT Signing

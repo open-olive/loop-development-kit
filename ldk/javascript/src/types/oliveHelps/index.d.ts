@@ -61,6 +61,7 @@ declare namespace OliveHelps {
   interface JWTConfig {
     includeEmail?: boolean;
   }
+
   interface User {
     jwt: ReadableWithParamAfterCallback<string, JWTConfig>;
   }
@@ -80,6 +81,7 @@ declare namespace OliveHelps {
     info: WindowInfo;
     action: WindowAction;
   }
+
   type WindowActionFocused = 'focus';
   type WindowActionUnfocused = 'unfocused';
   type WindowActionOpened = 'open';
@@ -179,11 +181,14 @@ declare namespace OliveHelps {
       data: Array<number>,
       callback: (error: Error | undefined) => void,
     ): void;
+
     close(callback: (error: Error | undefined) => void): void;
+
     listenMessage: (
       callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void,
       returnCb: ReturnCallback,
     ) => void;
+
     onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
   }
 
@@ -208,6 +213,8 @@ declare namespace OliveHelps {
     listenText: Listenable<string>;
 
     listenCharacter: Listenable<string>;
+
+    includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   interface Hotkey {
@@ -294,6 +301,8 @@ declare namespace OliveHelps {
 
     join: ReadableWithParam<string[], string>;
 
+    unzip: ReadableWithTwoParams<string, string, void>;
+
     openWithDefaultApplication: ReadableWithParam<string, void>;
   }
 
@@ -305,6 +314,7 @@ declare namespace OliveHelps {
     | 'collapseBox'
     | 'dateTimeInput'
     | 'divider'
+    | 'dropZone'
     | 'email'
     | 'icon'
     | 'link'
@@ -346,13 +356,29 @@ declare namespace OliveHelps {
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
+  type StyleSize = 'none' | 'small' | 'medium' | 'large';
+
+  type WidthSize = 'full' | 'half';
+
   interface LayoutOptions {
     flex?: string;
+    margin?: StyleSize;
+    marginBottom?: StyleSize;
+    marginLeft?: StyleSize;
+    marginTop?: StyleSize;
+    marginRight?: StyleSize;
+    padding?: StyleSize;
+    paddingBottom?: StyleSize;
+    paddingLeft?: StyleSize;
+    paddingTop?: StyleSize;
+    paddingRight?: StyleSize;
+    width?: WidthSize;
   }
 
   interface Whisper {
     id: string;
     close: Readable<undefined>;
+
     update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
 
@@ -389,6 +415,17 @@ declare namespace OliveHelps {
     tooltip?: string;
   };
 
+  type DropZone = Component<'dropZone'> & {
+    accept?: string[];
+    label: string;
+    limit?: number;
+    noun?: string;
+    onDrop: WhisperHandlerWithParam<File[]>;
+    value?: File[];
+    tooltip?: string;
+    validationError?: string;
+  };
+
   type Link = Component<'link'> & {
     href?: string;
     text: string;
@@ -401,6 +438,7 @@ declare namespace OliveHelps {
     copyable: boolean;
     labelCopyable?: boolean;
     label: string;
+    onCopy?: WhisperHandlerWithParam<string>;
     value: string;
     style: Urgency;
   };
@@ -408,6 +446,7 @@ declare namespace OliveHelps {
   type Markdown = Component<'markdown'> & {
     copyable?: 'body';
     body: string;
+    onCopy?: WhisperHandler;
     tooltip?: string;
   };
 
@@ -415,6 +454,7 @@ declare namespace OliveHelps {
     copyable?: 'body' | 'header';
     body?: string;
     header?: string;
+    onCopy?: WhisperHandler;
     style?: Urgency;
     textAlign?: TextAlign;
     tooltip?: string;
@@ -505,6 +545,7 @@ declare namespace OliveHelps {
     | Button
     | Checkbox
     | Divider
+    | DropZone
     | Email
     | Link
     | ListPair
@@ -538,5 +579,11 @@ declare namespace OliveHelps {
 
   interface WhisperService {
     create: ReadableWithParam<NewWhisper, Whisper>;
+  }
+
+  interface File {
+    path: string;
+    size: number;
+    readFile: Readable<ArrayBuffer>;
   }
 }
