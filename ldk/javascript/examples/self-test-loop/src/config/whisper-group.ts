@@ -150,7 +150,7 @@ export const whisperTestGroup = (): TestGroup =>
       `No action required`,
     ),
     new LoopTest(
-      'Whisper Aptitude - multiple components tooltip test',
+      'Whisper Aptitude - Tooltip Test',
       whisperTests.testTooltips,
       20000,
       `Hover on each component to see a tooltip`,
