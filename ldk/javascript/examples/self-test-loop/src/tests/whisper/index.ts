@@ -835,7 +835,7 @@ export const testFormComponents = (): Promise<boolean> =>
         {
           id: 'dummySubmitButton',
           label: 'Dummy Submit',
-          onClick: (error: Error, onClickWhisper: Whisper) => {
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
               console.info(key, value),
             );
@@ -1121,10 +1121,7 @@ export const testTooltips = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await whisper.create({
-        label: 'Tooltip Whisper',
-        onClose: () => {
-          console.debug('whisper closed');
-        },
+        label: 'Are all tooltips rendered?',
         components: [
           {
             type: WhisperComponentType.Markdown,
@@ -1145,14 +1142,82 @@ export const testTooltips = (): Promise<boolean> =>
             onClick: () => {
               // do nothing.
             },
-            tooltip: 'Tooltip for Button',
+            tooltip: 'Tooltip for Disabled Button',
             disabled: true,
           },
           {
-            type: WhisperComponentType.Markdown,
-            body: stripIndent`
-              # Are all tooltips rendered?
-              `,
+            type: WhisperComponentType.Button,
+            label: 'Hover to see tooltip',
+            onClick: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Button',
+          },
+          {
+            type: WhisperComponentType.TextInput,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Text Input',
+          },
+          {
+            type: WhisperComponentType.Password,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Password',
+          },
+          {
+            type: WhisperComponentType.Telephone,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Telephone',
+          },
+          {
+            type: WhisperComponentType.DateTimeInput,
+            dateTimeType: DateTimeType.Date,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Date',
+          },
+          {
+            type: WhisperComponentType.Email,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Email',
+          },
+          {
+            type: WhisperComponentType.Number,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Number',
+          },
+          {
+            type: WhisperComponentType.Checkbox,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Checkbox',
+          },
+          {
+            type: WhisperComponentType.Select,
+            label: 'Hover to see tooltip',
+            onSelect: () => {
+              // do nothing.
+            },
+            options: ['Option 1'],
+            tooltip: 'Tooltip for Select',
           },
           resolveRejectButtons(resolve, reject),
         ],
