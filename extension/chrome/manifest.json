@@ -13,11 +13,5 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "permissions": [
-    "tabs",
-    "webRequest",
-    "webNavigation",
-    "http://localhost/*"
-  ]
+  "permissions": ["tabs", "webRequest", "webNavigation", "http://localhost/*"]
 }
-

@@ -1,8 +1,8 @@
 /**
  * Allows Loops to communicate with a web browser running the Olive Helps extension.
  */
-import { Cancellable } from "../cancellable";
-import { promisifyListenable, promisifyWithParam } from "../promisify";
+import { Cancellable } from '../cancellable';
+import { promisifyListenable, promisifyWithParam } from '../promisify';
 
 export interface NavigationDetails {
   tabId: number;
@@ -42,7 +42,9 @@ export interface Browser {
   openWindow(address: string): Promise<number>;
 }
 
-export function listenNavigation(callback: (details: NavigationDetails) => void): Promise<Cancellable> {
+export function listenNavigation(
+  callback: (details: NavigationDetails) => void,
+): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.browser.listenNavigation);
 }
 

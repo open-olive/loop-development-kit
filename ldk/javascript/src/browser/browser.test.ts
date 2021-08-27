@@ -19,10 +19,10 @@ describe('Browser', () => {
         parentFrameId: 1,
         tabId: 2,
         timestamp: 3,
-        url: '4'
+        url: '4',
       };
       mocked(oliveHelps.browser.listenNavigation).mockImplementation((listenerCallback) => {
-        listenerCallback(undefined, details)
+        listenerCallback(undefined, details);
       });
 
       browser.listenNavigation(callback);
@@ -46,7 +46,7 @@ describe('Browser', () => {
       const callback = jest.fn();
       const text = 'text';
       mocked(oliveHelps.browser.listenTextSelection).mockImplementation((listenerCallback) => {
-        listenerCallback(undefined, text)
+        listenerCallback(undefined, text);
       });
 
       browser.listenTextSelection(callback);
