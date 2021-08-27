@@ -232,15 +232,14 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
   validationError?: string;
 }
 
-export type Autocomplete = WhisperComponent<WhisperComponentType.Autocomplete> & {
+export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
   label?: string;
   loading?: boolean;
   onChange?: WhisperHandlerWithParam<string>;
-  onSelect?: WhisperHandlerWithParam<string>;
+  onSelect: WhisperHandlerWithParam<string>;
   options?: AutocompleteOption[];
   tooltip?: string;
   value?: string;
-  validationError?: string;
 };
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {

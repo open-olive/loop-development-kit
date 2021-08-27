@@ -411,14 +411,13 @@ declare namespace OliveHelps {
     value: string;
   };
 
-  type Autocomplete = Component<'autocomplete'> & {
+  type Autocomplete = SelectComponent<'autocomplete'> & {
     label?: string;
     loading?: boolean;
     onChange?: WhisperHandlerWithParam<string>;
-    onSelect?: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string>;
     options?: AutocompleteOption[];
     tooltip?: string;
-    validationError?: string;
     value?: string;
   };
 
