@@ -1,4 +1,5 @@
 export enum WhisperComponentType {
+  Autocomplete = 'autocomplete',
   /**
    * A container component for formatting other components.
    */
@@ -172,6 +173,11 @@ export enum IconSize {
   XLarge = 'x-large',
 }
 
+export type AutocompleteOption = {
+  label: string;
+  value: string;
+};
+
 export enum StyleSize {
   None = 'none',
   Small = 'small',
@@ -225,6 +231,16 @@ interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
 interface SelectComponent<T extends WhisperComponentType> extends WhisperComponent<T> {
   validationError?: string;
 }
+
+export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
+  label?: string;
+  loading?: boolean;
+  onChange?: WhisperHandlerWithParam<string>;
+  onSelect: WhisperHandlerWithParam<string>;
+  options?: AutocompleteOption[];
+  tooltip?: string;
+  value?: string;
+};
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
   label?: string;
@@ -361,6 +377,7 @@ export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> &
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
+  | Autocomplete
   | Box
   | Button
   | Checkbox

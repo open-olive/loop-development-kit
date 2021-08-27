@@ -308,6 +308,7 @@ declare namespace OliveHelps {
 
   //-- Whisper
   type WhisperComponentType =
+    | 'autocomplete'
     | 'box'
     | 'button'
     | 'checkbox'
@@ -404,6 +405,21 @@ declare namespace OliveHelps {
 
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
   type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
+
+  type AutocompleteOption = {
+    label: string;
+    value: string;
+  };
+
+  type Autocomplete = SelectComponent<'autocomplete'> & {
+    label?: string;
+    loading?: boolean;
+    onChange?: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string>;
+    options?: AutocompleteOption[];
+    tooltip?: string;
+    value?: string;
+  };
 
   type Button = Component<'button'> & {
     buttonStyle?: ButtonStyle;
@@ -533,6 +549,7 @@ declare namespace OliveHelps {
   };
 
   type ChildComponents =
+    | Autocomplete
     | Box
     | Button
     | Checkbox

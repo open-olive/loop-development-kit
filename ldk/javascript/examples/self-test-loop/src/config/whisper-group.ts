@@ -186,6 +186,18 @@ export const whisperTestGroup = (): TestGroup =>
       'Did the icon render correctly?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Autocomplete Select',
+      whisperTests.testAutocompleteSelect,
+      10000,
+      'Test the autocomplete onSelect function',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Autocomplete Change',
+      whisperTests.testAutocompleteChange,
+      10000,
+      'Test the autocomplete onChange function',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Padding',
       whisperTests.testPadding,
       10000,
