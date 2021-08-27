@@ -410,6 +410,9 @@ export const testDropzone = async (): Promise<boolean> => {
       filesWereCleared.component,
     ],
   });
+  testWhisper.close(() => {
+    // Do nothing.
+  });
   return filesWereCleared.acceptResult;
 };
 
