@@ -99,6 +99,11 @@ export function mapToInternalChildComponent(
       return {
         ...component,
         options: options ? JSON.stringify(dataObj) : undefined,
+        onChange: onChange
+          ? (error, param, whisper) => {
+              onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
         onSelect: onSelect
           ? (error, param, whisper) => {
               if (component.id) {
