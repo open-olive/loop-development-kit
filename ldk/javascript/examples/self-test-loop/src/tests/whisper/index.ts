@@ -507,8 +507,8 @@ export const testClickableLink = (): Promise<boolean> =>
           {
             type: WhisperComponentType.Link,
             textAlign: TextAlign.Left,
-            href: 'file:///Users/brettmugglin/Desktop/untitled%20folder/test.html',
-            text: 'Open local file',
+            href: 'https://www.google.com',
+            text: 'https://www.google.com',
             style: Urgency.None,
           },
           resolveRejectButtons(resolve, reject, 'Url opened in browser', 'Url failed to open'),
