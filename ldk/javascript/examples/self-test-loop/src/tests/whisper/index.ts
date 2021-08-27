@@ -17,6 +17,7 @@ import {
   IconSize,
   Color,
   AlignItems,
+  RichTextEditor,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { resolveRejectButtons } from './utils';
@@ -1931,6 +1932,68 @@ export const testFlex = (): Promise<boolean> =>
           },
           resolveRejectButtons(resolve, reject, 'Yes', 'No'),
         ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testRichTextEditor = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      let editedText = '';
+      const components: Component[] = [
+        {
+          id: 'RTE1',
+          key: 'RTE1',
+          type: WhisperComponentType.RichTextEditor,
+          onBlur: () => {
+            console.debug(`On blur called`);
+          },
+          onChange: (_error: Error, value: string) => {
+            console.debug(`Input value changed: ${value}`);
+            editedText = value;
+          },
+          onFocus: () => {
+            console.debug(`On Focus called`);
+          },
+          tooltip: "It's a richTextEditor tooltip.",
+        },
+        {
+          type: WhisperComponentType.Box,
+          justifyContent: JustifyContent.Right,
+          direction: Direction.Horizontal,
+          children: [
+            {
+              type: WhisperComponentType.Button,
+              label: 'Save',
+              onClick: (_error: Error, onClickWhisper: Whisper) => {
+                if (!editedText || editedText.length === 0 || editedText.length > 50) {
+                  (components[0] as RichTextEditor).validationError =
+                    'Inputed text is required and should be less than 200 chars.';
+                  onClickWhisper.update({
+                    components,
+                  });
+                } else {
+                  onClickWhisper.update({
+                    components: [
+                      {
+                        type: WhisperComponentType.Markdown,
+                        body: editedText,
+                      },
+                      resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+                    ],
+                  });
+                }
+              },
+            },
+          ],
+        },
+      ];
+      await whisper.create({
+        label: 'Did Rich Text Editor saves correctly?',
+        components,
       });
     } catch (error) {
       console.error(error);
