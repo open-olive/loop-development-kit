@@ -41,6 +41,11 @@ export function render(
   return wrapper;
 }
 
+/**
+ *
+ * @param element
+ * @param onClose
+ */
 export function renderNewWhisper(element: ReactNode, onClose: () => void): void {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   render(element, new WhisperRenderInstance(onClose));
