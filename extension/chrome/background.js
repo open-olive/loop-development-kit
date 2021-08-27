@@ -78,7 +78,7 @@ let connect = () => {
       );
     });
 
-    chrome.extension.onRequest.addListener((request, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       switch (request.message) {
         case 'TextSelection':
           ws.send(
