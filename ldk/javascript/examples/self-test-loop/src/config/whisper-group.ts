@@ -186,12 +186,6 @@ export const whisperTestGroup = (): TestGroup =>
       'Did the icon render correctly?',
     ),
     new LoopTest(
-      'Whisper Aptitude - RichTextEditor',
-      whisperTests.testRichTextEditor,
-      10000,
-      'Is RichTextEditor working correctly?',
-    ),
-    new LoopTest(
       'Whisper Aptitude - Padding',
       whisperTests.testPadding,
       10000,
