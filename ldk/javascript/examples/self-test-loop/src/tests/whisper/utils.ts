@@ -12,7 +12,7 @@ import {
 
 export const resolveOnClick = (
   error: Error,
-  whisperToClose: Whisper,
+  whisperToClose: Whisper | undefined,
   resolve: (value: boolean) => void,
   reject: (reason?: Error) => void,
 ): void => {
@@ -20,7 +20,7 @@ export const resolveOnClick = (
     console.error(error);
     reject(error);
   }
-  whisperToClose.close(() => {
+  whisperToClose?.close(() => {
     // do nothing.
   });
   resolve(true);
@@ -28,14 +28,14 @@ export const resolveOnClick = (
 
 export const rejectOnClick = (
   error: Error,
-  whisperToClose: Whisper,
+  whisperToClose: Whisper | undefined,
   reject: (reason?: Error) => void,
 ): void => {
   if (error) {
     console.error(error);
     reject(error);
   }
-  whisperToClose.close(() => {
+  whisperToClose?.close(() => {
     // do nothing.
   });
   reject(new Error('Not rendered correctly.'));
@@ -46,6 +46,7 @@ export const resolveRejectButtons = (
   reject: (reason?: Error) => void,
   resolveButtonText?: string | undefined,
   rejectButtonText?: string | undefined,
+  closeWhisper = true,
 ): Component => ({
   type: WhisperComponentType.Box,
   justifyContent: JustifyContent.SpaceBetween,
@@ -55,14 +56,14 @@ export const resolveRejectButtons = (
       type: WhisperComponentType.Button,
       label: rejectButtonText || `Incorrect`,
       onClick: (error: Error, onClickWhisper: Whisper) => {
-        rejectOnClick(error, onClickWhisper, reject);
+        rejectOnClick(error, closeWhisper ? onClickWhisper : undefined, reject);
       },
     },
     {
       type: WhisperComponentType.Button,
       label: resolveButtonText || `Looks Good`,
       onClick: (error: Error, onClickWhisper: Whisper) => {
-        resolveOnClick(error, onClickWhisper, resolve, reject);
+        resolveOnClick(error, closeWhisper ? onClickWhisper : undefined, resolve, reject);
       },
     },
   ],
