@@ -544,9 +544,11 @@ declare namespace OliveHelps {
     | Box
     | Button
     | Checkbox
+    | DateTimeInput
     | Divider
     | DropZone
     | Email
+    | Icon
     | Link
     | ListPair
     | Markdown
@@ -554,15 +556,11 @@ declare namespace OliveHelps {
     | NumberInput
     | Password
     | RadioGroup
+    | RichTextEditor
+    | SectionTitle
     | Select
     | Telephone
-    | TextInput
-    | SectionTitle
-    | DateTimeInput
-    | RichTextEditor
-    | DateTimeInput
-    | Icon
-    | SectionTitle;
+    | TextInput;
 
   type Components = ChildComponents | CollapseBox;
 
