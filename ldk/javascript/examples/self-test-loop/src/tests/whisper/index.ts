@@ -337,6 +337,26 @@ export const testBoxInBox = (): Promise<boolean> =>
     }
   });
 
+function createAcceptButtons(): {
+  component: Component;
+  acceptResult: Promise<boolean>;
+} {
+  let resolveHandler;
+  let rejectHandler;
+  const acceptResult = new Promise<boolean>((resolve, reject) => {
+    resolveHandler = resolve;
+    rejectHandler = reject;
+  });
+  const component = resolveRejectButtons(
+    resolveHandler,
+    rejectHandler,
+    undefined,
+    undefined,
+    false,
+  );
+  return { component, acceptResult };
+}
+
 export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
@@ -369,20 +389,6 @@ export const testDropzone = async (): Promise<boolean> => {
     .map((file) => `Path: ${file.path}, Size: ${file.size}`)
     .join('\n\n');
 
-  function createAcceptButtons(): {
-    component: Component;
-    acceptResult: Promise<boolean>;
-  } {
-    let resolveHandler;
-    let rejectHandler;
-    const acceptResult = new Promise<boolean>((resolve, reject) => {
-      resolveHandler = resolve;
-      rejectHandler = reject;
-    });
-    const component = resolveRejectButtons(resolveHandler, rejectHandler);
-    return { component, acceptResult };
-  }
-
   const acceptFileData = createAcceptButtons();
   await testWhisper.update({
     components: [
@@ -403,6 +409,9 @@ export const testDropzone = async (): Promise<boolean> => {
       { ...dropZone, value: [] },
       filesWereCleared.component,
     ],
+  });
+  testWhisper.close(() => {
+    // Do nothing.
   });
   return filesWereCleared.acceptResult;
 };
