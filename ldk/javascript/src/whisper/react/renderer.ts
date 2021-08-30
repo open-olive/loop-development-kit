@@ -6,8 +6,8 @@ import { WhisperRenderingInterface, WhisperRenderInstance } from './whisper-rend
 const Renderer = Reconciler.default(config);
 
 interface WhisperInstance {
-  update(node: ReactNode, callback?: () => void): void;
-  close(): void;
+  update(node: ReactNode): Promise<void>;
+  close(): Promise<void>;
 }
 
 class WhisperInstanceWrapper implements WhisperInstance {
@@ -20,24 +20,27 @@ class WhisperInstanceWrapper implements WhisperInstance {
     this.renderInstance = renderInstance;
   }
 
-  close(): void {
-    // TODO: Implement
+  close(): Promise<void> {
+    return new Promise((resolve) => {
+      Renderer.updateContainer(null, this.container, null, resolve);
+    });
   }
 
-  update(node: React.ReactNode, callback?: () => void): void {
-    Renderer.updateContainer(node, this.container, null, callback);
+  update(node: React.ReactNode): Promise<void> {
+    return new Promise((resolve) => {
+      Renderer.updateContainer(node, this.container, null, resolve);
+    });
   }
 }
 
-export function render(
+export async function render(
   element: ReactNode,
   whisperInterface: WhisperRenderingInterface,
-  callback?: () => void,
-): WhisperInstance {
+): Promise<WhisperInstance> {
   // Tag here drives what sort of "modes" its using. 0 = LegacyRoot.
   const container = Renderer.createContainer(whisperInterface, 0, false, null);
   const wrapper = new WhisperInstanceWrapper(container, whisperInterface);
-  wrapper.update(element, callback);
+  await wrapper.update(element);
   return wrapper;
 }
 
@@ -46,7 +49,7 @@ export function render(
  * @param element
  * @param onClose
  */
-export function renderNewWhisper(element: ReactNode, onClose: () => void): void {
+export function renderNewWhisper(element: ReactNode): Promise<WhisperInstance> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  render(element, new WhisperRenderInstance(onClose));
+  return render(element, new WhisperRenderInstance());
 }

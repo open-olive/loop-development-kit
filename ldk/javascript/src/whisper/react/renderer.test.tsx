@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { mocked } from 'ts-jest/utils';
-import { render } from './renderer';
+import { render, renderNewWhisper } from './renderer';
 import { Button, Direction, JustifyContent, NewWhisper, WhisperComponentType } from '../types';
 import { WhisperRenderingInterface } from './whisper-render-instance';
 
@@ -45,6 +45,7 @@ describe('renderer', () => {
   beforeEach(() => {
     whisperInterface = {
       createOrUpdateWhisper: jest.fn(),
+      closeWhisper: jest.fn(),
     };
   });
 
@@ -68,17 +69,14 @@ describe('renderer', () => {
 
   describe('writing new whisper', () => {
     it('generates a basic new whisper correctly', async () => {
-      await new Promise((resolve) => {
-        render(
-          <oh-whisper label="whisper.label" onClose={() => {}}>
-            <oh-button onClick={() => {}} label={'button.label'} />
-            <oh-markdown body={'markdown.body'} />
-            nakedmarkdown.body
-          </oh-whisper>,
-          whisperInterface,
-          () => resolve(null),
-        );
-      });
+      await render(
+        <oh-whisper label="whisper.label" onClose={() => {}}>
+          <oh-button onClick={() => {}} label={'button.label'} />
+          <oh-markdown body={'markdown.body'} />
+          nakedmarkdown.body
+        </oh-whisper>,
+        whisperInterface,
+      );
 
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
         label: 'whisper.label',
@@ -101,20 +99,17 @@ describe('renderer', () => {
       } as NewWhisper);
     });
     it("generates a whisper with a box component's children correctly", async () => {
-      await new Promise((resolve) => {
-        render(
-          <oh-whisper label="whisper.label" onClose={() => {}}>
-            <oh-box key="f" direction={Direction.Horizontal} justifyContent={JustifyContent.Left}>
-              <oh-checkbox onChange={jest.fn()} label={'DID JA'} />
-              Bob
-            </oh-box>
-            <oh-markdown body={'markdown.body'} />
-            nakedmarkdown.body
-          </oh-whisper>,
-          whisperInterface,
-          () => resolve(null),
-        );
-      });
+      await render(
+        <oh-whisper label="whisper.label" onClose={() => {}}>
+          <oh-box key="f" direction={Direction.Horizontal} justifyContent={JustifyContent.Left}>
+            <oh-checkbox onChange={jest.fn()} label={'DID JA'} />
+            Bob
+          </oh-box>
+          <oh-markdown body={'markdown.body'} />
+          nakedmarkdown.body
+        </oh-whisper>,
+        whisperInterface,
+      );
 
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
         label: 'whisper.label',
@@ -153,17 +148,14 @@ describe('renderer', () => {
       const onMount = jest.fn(() => {
         deferred.resolve(true);
       });
-      await new Promise((resolve) => {
-        render(
-          <oh-whisper label="whisper.label" onClose={() => {}}>
-            <ButtonFunctional label="button.label" onMount={onMount} onRender={jest.fn()} key="f" />
-            <oh-markdown body={'markdown.body'} />
-            nakedmarkdown.body
-          </oh-whisper>,
-          whisperInterface,
-          () => resolve(null),
-        );
-      });
+      await render(
+        <oh-whisper label="whisper.label" onClose={() => {}}>
+          <ButtonFunctional label="button.label" onMount={onMount} onRender={jest.fn()} key="f" />
+          <oh-markdown body={'markdown.body'} />
+          nakedmarkdown.body
+        </oh-whisper>,
+        whisperInterface,
+      );
       await deferred.promise;
 
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
@@ -189,17 +181,14 @@ describe('renderer', () => {
     });
     it('generates a whisper with a class component correctly', async () => {
       const onMount = jest.fn();
-      await new Promise((resolve) => {
-        render(
-          <oh-whisper label="whisper.label" onClose={() => {}}>
-            <ButtonClass label="button.label" onMount={onMount} onRender={jest.fn()} />
-            <oh-markdown body={'markdown.body'} />
-            nakedmarkdown.body
-          </oh-whisper>,
-          whisperInterface,
-          () => resolve(null),
-        );
-      });
+      await render(
+        <oh-whisper label="whisper.label" onClose={() => {}}>
+          <ButtonClass label="button.label" onMount={onMount} onRender={jest.fn()} />
+          <oh-markdown body={'markdown.body'} />
+          nakedmarkdown.body
+        </oh-whisper>,
+        whisperInterface,
+      );
 
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
         label: 'whisper.label',
@@ -230,17 +219,14 @@ describe('renderer', () => {
         deferred.resolve(true);
       });
       const onRender = jest.fn(() => {});
-      await new Promise((resolve) => {
-        render(
-          <oh-whisper label="whisper.label" onClose={() => {}}>
-            <ButtonFunctional label="button.label" onMount={onMount} onRender={onRender} key="f" />
-            <oh-markdown key="markdown" body="markdown.body" />
-            nakedmarkdown.body
-          </oh-whisper>,
-          whisperInterface,
-          () => resolve(null),
-        );
-      });
+      await render(
+        <oh-whisper label="whisper.label" onClose={() => {}}>
+          <ButtonFunctional label="button.label" onMount={onMount} onRender={onRender} key="f" />
+          <oh-markdown key="markdown" body="markdown.body" />
+          nakedmarkdown.body
+        </oh-whisper>,
+        whisperInterface,
+      );
       await deferred.promise;
 
       const button = mocked(whisperInterface.createOrUpdateWhisper).mock.calls[0][0]
@@ -284,17 +270,14 @@ describe('renderer', () => {
     }
 
     it('should pass data in context down and apply defaultProps as normal', async () => {
-      await new Promise((resolve) => {
-        render(
-          <oh-whisper label="whisper.label" onClose={() => {}}>
-            <TestContext.Provider value={'2'}>
-              <ButtonWithContext/>
-            </TestContext.Provider>
-          </oh-whisper>,
-          whisperInterface,
-          () => resolve(null),
-        );
-      });
+      await render(
+        <oh-whisper label="whisper.label" onClose={() => {}}>
+          <TestContext.Provider value={'2'}>
+            <ButtonWithContext />
+          </TestContext.Provider>
+        </oh-whisper>,
+        whisperInterface,
+      );
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
         label: 'whisper.label',
         onClose: expect.any(Function),
@@ -306,6 +289,19 @@ describe('renderer', () => {
           },
         ],
       });
+    });
+  });
+  describe('closing whispers', () => {
+    it('returned object should unmount the component when the whisper is closed', async () => {
+      const onClose = jest.fn();
+      const whisper = await render(
+        <oh-whisper label="whisper.label" onClose={onClose}>
+          markdown.body
+        </oh-whisper>,
+        whisperInterface,
+      );
+      await whisper.close();
+      expect(whisperInterface.closeWhisper).toHaveBeenCalled();
     });
   });
 });

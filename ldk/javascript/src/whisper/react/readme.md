@@ -16,7 +16,7 @@ TODO: Add more words.
 
 Content engagement is improved by both cats and memes, so here's a basic example:
 
-```javascript
+```typescript jsx
 import * as ldk from "@oliveai/ldk";
 import * as React from 'react';
 import * as ReactWhisper from "@oliveai/ldk/dist/whisper/react/renderer" // this file is the equivalent of the `react-dom` package and you'll use it to render new whispers.

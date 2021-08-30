@@ -3,6 +3,7 @@ import { create } from '../index';
 
 export interface WhisperRenderingInterface {
   createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): void;
+  closeWhisper(): void;
 }
 
 enum RenderInstanceStatus {
@@ -18,14 +19,6 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
 
   private whisper: Whisper | undefined;
 
-  private readonly closeHandler: () => void;
-  // TODO: Remove again or remove constructor handler.
-  private externalCloseHandler: (() => void) | undefined;
-
-  constructor(closeHandler: () => void) {
-    this.closeHandler = closeHandler;
-  }
-
   async createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): Promise<void> {
     if (this.whisper == null) {
       await this.createWhisper(whisperData as NewWhisper);
@@ -38,13 +31,11 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
   }
 
   private async createWhisper(whisperData: NewWhisper) {
-    this.whisper = await create({ ...whisperData, onClose: this.onWhisperClose } as NewWhisper);
-    this.externalCloseHandler = whisperData.onClose;
+    this.whisper = await create(whisperData);
     this.status = RenderInstanceStatus.Created;
   }
 
-  private onWhisperClose = (): void => {
-    this.closeHandler();
-    this.status = RenderInstanceStatus.Closed;
-  };
+  closeWhisper(): void {
+    this.whisper?.close(() => {});
+  }
 }
