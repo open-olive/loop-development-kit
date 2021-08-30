@@ -41,6 +41,13 @@ declare namespace OliveHelps {
     callback: Callback<TOut>,
   ) => void;
 
+  type ReadableWithThreeParams<TParam1, TParam2, TParam3, TOut> = (
+    param: TParam1,
+    param2: TParam2,
+    param3: TParam3,
+    callback: Callback<TOut>,
+  ) => void;
+
   type ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut> = (
     param: TParam1,
     param2: TParam2,
@@ -57,10 +64,25 @@ declare namespace OliveHelps {
     returnCb: ReturnCallback,
   ) => void;
 
+  interface Aptitudes {
+    clipboard: Clipboard;
+    whisper: WhisperService;
+    filesystem: Filesystem;
+    cursor: Cursor;
+    keyboard: Keyboard;
+    network: Network;
+    process: Process;
+    search: Search;
+    ui: UI;
+    user: User;
+    vault: Vault;
+    window: Window;
+  }
   //-- User
   interface JWTConfig {
     includeEmail?: boolean;
   }
+
   interface User {
     jwt: ReadableWithParamAfterCallback<string, JWTConfig>;
   }
@@ -80,6 +102,7 @@ declare namespace OliveHelps {
     info: WindowInfo;
     action: WindowAction;
   }
+
   type WindowActionFocused = 'focus';
   type WindowActionUnfocused = 'unfocused';
   type WindowActionOpened = 'open';
@@ -179,11 +202,14 @@ declare namespace OliveHelps {
       data: Array<number>,
       callback: (error: Error | undefined) => void,
     ): void;
+
     close(callback: (error: Error | undefined) => void): void;
+
     listenMessage: (
       callback: (error: Error | undefined, messageType: MessageType, data: ArrayBuffer) => void,
       returnCb: ReturnCallback,
     ) => void;
+
     onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
   }
 
@@ -201,6 +227,45 @@ declare namespace OliveHelps {
     headers: Record<string, string[]>;
   }
 
+  //--Search
+  interface Search {
+    createIndex: ReadableWithThreeParams<string, Array<Document>, Config, Index>;
+    openIndex: ReadableWithTwoParams<string, Config, Index>;
+    exists: ReadableWithParam<string, boolean>;
+  }
+
+  interface Index {
+    search: ReadableWithParam<string, SearchResult>;
+    queryStringSearch: ReadableWithParam<string, SearchResult>;
+    update: ReadableWithTwoParams<Array<Document>, Config, void>;
+    delete: Readable<void>;
+  }
+
+  type Config = {
+    sortBy?: string[];
+    searchSize?: number;
+    exactMatchThreshold?: number;
+    beginsWithSearch?: boolean;
+  };
+
+  type Document = {
+    name: string;
+    data: string;
+    fields?: Array<Field>;
+  };
+
+  type Field = {
+    name: string;
+    displayName?: string;
+    type?: FieldType;
+  };
+
+  type FieldType = 'standard' | 'stemmer' | 'simple' | 'numeric' | 'boolean' | 'datetime';
+
+  interface SearchResult {
+    data: Array<{ [key: string]: string }>;
+    total: number;
+  }
   //--Keyboard
   interface Keyboard {
     listenHotkey: ListenableWithParam<Hotkey, boolean>;
@@ -208,6 +273,8 @@ declare namespace OliveHelps {
     listenText: Listenable<string>;
 
     listenCharacter: Listenable<string>;
+
+    includeOliveHelpsEvents(enabled: boolean): void;
   }
 
   interface Hotkey {
@@ -294,17 +361,21 @@ declare namespace OliveHelps {
 
     join: ReadableWithParam<string[], string>;
 
+    unzip: ReadableWithTwoParams<string, string, void>;
+
     openWithDefaultApplication: ReadableWithParam<string, void>;
   }
 
   //-- Whisper
   type WhisperComponentType =
+    | 'autocomplete'
     | 'box'
     | 'button'
     | 'checkbox'
     | 'collapseBox'
     | 'dateTimeInput'
     | 'divider'
+    | 'dropZone'
     | 'email'
     | 'icon'
     | 'link'
@@ -345,13 +416,29 @@ declare namespace OliveHelps {
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
+  type StyleSize = 'none' | 'small' | 'medium' | 'large';
+
+  type WidthSize = 'full' | 'half';
+
   interface LayoutOptions {
     flex?: string;
+    margin?: StyleSize;
+    marginBottom?: StyleSize;
+    marginLeft?: StyleSize;
+    marginTop?: StyleSize;
+    marginRight?: StyleSize;
+    padding?: StyleSize;
+    paddingBottom?: StyleSize;
+    paddingLeft?: StyleSize;
+    paddingTop?: StyleSize;
+    paddingRight?: StyleSize;
+    width?: WidthSize;
   }
 
   interface Whisper {
     id: string;
     close: Readable<undefined>;
+
     update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
 
@@ -379,6 +466,21 @@ declare namespace OliveHelps {
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
   type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
 
+  type AutocompleteOption = {
+    label: string;
+    value: string;
+  };
+
+  type Autocomplete = SelectComponent<'autocomplete'> & {
+    label?: string;
+    loading?: boolean;
+    onChange?: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string>;
+    options?: AutocompleteOption[];
+    tooltip?: string;
+    value?: string;
+  };
+
   type Button = Component<'button'> & {
     buttonStyle?: ButtonStyle;
     disabled?: boolean;
@@ -386,6 +488,17 @@ declare namespace OliveHelps {
     onClick: WhisperHandler;
     size?: ButtonSize;
     tooltip?: string;
+  };
+
+  type DropZone = Component<'dropZone'> & {
+    accept?: string[];
+    label: string;
+    limit?: number;
+    noun?: string;
+    onDrop: WhisperHandlerWithParam<File[]>;
+    value?: File[];
+    tooltip?: string;
+    validationError?: string;
   };
 
   type Link = Component<'link'> & {
@@ -400,6 +513,7 @@ declare namespace OliveHelps {
     copyable: boolean;
     labelCopyable?: boolean;
     label: string;
+    onCopy?: WhisperHandlerWithParam<string>;
     value: string;
     style: Urgency;
   };
@@ -407,6 +521,7 @@ declare namespace OliveHelps {
   type Markdown = Component<'markdown'> & {
     copyable?: 'body';
     body: string;
+    onCopy?: WhisperHandler;
     tooltip?: string;
   };
 
@@ -414,6 +529,7 @@ declare namespace OliveHelps {
     copyable?: 'body' | 'header';
     body?: string;
     header?: string;
+    onCopy?: WhisperHandler;
     style?: Urgency;
     textAlign?: TextAlign;
     tooltip?: string;
@@ -493,10 +609,12 @@ declare namespace OliveHelps {
   };
 
   type ChildComponents =
+    | Autocomplete
     | Box
     | Button
     | Checkbox
     | Divider
+    | DropZone
     | Email
     | Link
     | ListPair
@@ -527,5 +645,11 @@ declare namespace OliveHelps {
 
   interface WhisperService {
     create: ReadableWithParam<NewWhisper, Whisper>;
+  }
+
+  interface File {
+    path: string;
+    size: number;
+    readFile: Readable<ArrayBuffer>;
   }
 }

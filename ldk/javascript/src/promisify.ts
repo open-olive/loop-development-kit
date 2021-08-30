@@ -30,6 +30,54 @@ export function promisifyMappedBothWithParams<TParamIn, TParamOut, TInternalOut,
   });
 }
 
+export function promisifyMappedWithTwoParams<TParam1, TParam2, TInternalOut, TExternalOut>(
+  param1: TParam1,
+  param2: TParam2,
+  map: Mapper<TInternalOut, TExternalOut>,
+  arg: OliveHelps.ReadableWithTwoParams<TParam1, TParam2, TInternalOut>,
+): Promise<TExternalOut> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param1, param2, (error, value) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(map(value));
+      });
+    } catch (e) {
+      handleCaughtError(reject, e as Error);
+    }
+  });
+}
+export function promisifyMappedWithThreeParams<
+  TParam1,
+  TParam2,
+  TParam3,
+  TInternalOut,
+  TExternalOut
+>(
+  param1: TParam1,
+  param2: TParam2,
+  param3: TParam3,
+  map: Mapper<TInternalOut, TExternalOut>,
+  arg: OliveHelps.ReadableWithThreeParams<TParam1, TParam2, TParam3, TInternalOut>,
+): Promise<TExternalOut> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param1, param2, param3, (error, value) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(map(value));
+      });
+    } catch (e) {
+      handleCaughtError(reject, e as Error);
+    }
+  });
+}
+
 export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
   param: TParam,
   map: Mapper<TInternalOut, TExternalOut>,

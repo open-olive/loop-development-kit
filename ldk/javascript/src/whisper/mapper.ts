@@ -7,6 +7,7 @@ import {
   UpdateWhisper,
   Whisper,
   WhisperComponentType,
+  File,
 } from './types';
 
 function throwForDuplicateKeys<T extends { key?: string }>(components: T[]): T[] {
@@ -89,11 +90,93 @@ export function mapToInternalChildComponent(
       } as OliveHelps.Link;
     }
     case WhisperComponentType.Divider:
-    case WhisperComponentType.ListPair:
-    case WhisperComponentType.Markdown:
-    case WhisperComponentType.Message:
     case WhisperComponentType.SectionTitle:
       return component;
+    case WhisperComponentType.Autocomplete: {
+      // eslint-disable-next-line
+      const { onChange, onSelect, options } = component;
+      const dataObj = { data: options };
+      return {
+        ...component,
+        options: options ? JSON.stringify(dataObj) : undefined,
+        onChange: onChange
+          ? (error, param, whisper) => {
+              onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+        onSelect: onSelect
+          ? (error, param, whisper) => {
+              if (component.id) {
+                stateMap.set(component.id, param);
+              }
+              onSelect(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+      } as OliveHelps.Autocomplete;
+    }
+    case WhisperComponentType.DropZone:
+      return {
+        ...component,
+        onDrop: (error, param, whisper) => {
+          const callbackHandler: (file: OliveHelps.File) => File = (file: OliveHelps.File) => ({
+            path: file.path,
+            size: file.size,
+            readFile: () =>
+              new Promise<Uint8Array>((resolve, reject) => {
+                file.readFile((readError, buffer) => {
+                  if (readError) {
+                    return reject(readError);
+                  }
+                  return resolve(new Uint8Array(buffer));
+                });
+              }),
+          });
+          component.onDrop(
+            error,
+            param.map(callbackHandler),
+            mapToExternalWhisper(whisper, stateMap),
+          );
+        },
+      };
+    case WhisperComponentType.ListPair: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, param, whisper) => {
+            onCopy(error, param, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.ListPair;
+      }
+      return component as OliveHelps.ListPair;
+    }
+    case WhisperComponentType.Message: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, whisper) => {
+            onCopy(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Message;
+      }
+      return component as OliveHelps.Message;
+    }
+    case WhisperComponentType.Markdown: {
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, whisper) => {
+            onCopy(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as OliveHelps.Markdown;
+      }
+      return component as OliveHelps.Markdown;
+    }
     case WhisperComponentType.Number:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -201,7 +284,9 @@ export function mapToInternalChildComponent(
       }
       return component as OliveHelps.Icon;
     default:
-      throw new Error('Unexpected component type');
+      // Suppressing warning to deal with unexpected types.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw new Error(`Unexpected component type: ${(component as any)?.type}`);
   }
 }
 

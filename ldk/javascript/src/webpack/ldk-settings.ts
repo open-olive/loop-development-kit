@@ -29,6 +29,8 @@ export interface LdkPermissions {
 
   process: LdkAptitude;
 
+  search: LdkAptitude;
+
   system: LdkAptitude;
 
   ui: LdkAptitude;
