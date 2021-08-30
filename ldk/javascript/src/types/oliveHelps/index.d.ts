@@ -566,6 +566,7 @@ declare namespace OliveHelps {
     label: string;
     options: string[];
     onSelect: WhisperHandlerWithParam<number>;
+    excludeDefaultOption?: boolean;
     selected?: number;
     tooltip?: string;
   };

@@ -258,6 +258,10 @@ export type RadioGroup = SelectComponent<WhisperComponentType.RadioGroup> & {
 export type Select = SelectComponent<WhisperComponentType.Select> & {
   label?: string;
   options: string[];
+  /**
+   * Indicates if default (None) option should be excluded from selectable options
+   */
+  excludeDefaultOption?: boolean;
   onSelect: WhisperHandlerWithParam<number>;
   selected?: number;
   tooltip?: string;

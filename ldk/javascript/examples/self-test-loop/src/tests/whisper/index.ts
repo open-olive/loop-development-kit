@@ -19,7 +19,7 @@ import {
   AlignItems,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { resolveRejectButtons } from './utils';
+import { logMap, resolveRejectButtons } from './utils';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -748,7 +748,7 @@ export const testFormComponents = (): Promise<boolean> =>
         {
           id: 'mySubmitButton',
           label: 'Submit',
-          onClick: (error: Error, onClickWhisper: Whisper) => {
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
               console.info(key, value),
             );
@@ -783,13 +783,23 @@ export const testFormComponents = (): Promise<boolean> =>
           type: WhisperComponentType.TextInput,
         },
         {
-          label: `Select 'blue'`,
+          label: `Second Select`,
           onSelect: () => {
             // do nothing.
           },
           options: ['red', 'blue'],
           id: 'mySelectInputTwo',
           type: WhisperComponentType.Select,
+        },
+        {
+          type: WhisperComponentType.Select,
+          label: `Select with no default option`,
+          onSelect: () => {
+            // do nothing.
+          },
+          options: ['red', 'blue'],
+          excludeDefaultOption: true,
+          id: 'mySelectInputThree',
         },
         {
           onSelect: () => {
@@ -844,9 +854,7 @@ export const testFormComponents = (): Promise<boolean> =>
           id: 'dummySubmitButton',
           label: 'Dummy Submit',
           onClick: (_error: Error, onClickWhisper: Whisper) => {
-            onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
-              console.info(key, value),
-            );
+            logMap(onClickWhisper.componentState);
           },
           type: WhisperComponentType.Button,
         },

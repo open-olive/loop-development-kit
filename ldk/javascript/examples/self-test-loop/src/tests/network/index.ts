@@ -157,7 +157,7 @@ export const testWebsocketConnection = (): Promise<boolean> =>
         await socket.close();
       }, 2000);
     } catch (error) {
-      console.error(`Error received while testing websocket: ${error.message}`);
+      console.error(error);
       reject(error);
     }
   });
