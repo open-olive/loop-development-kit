@@ -10,13 +10,18 @@ import { WhisperRenderingInterface } from './whisper-render-instance';
 interface ButtonProps {
   label: string;
   onMount: () => void;
-  onRender: (n: number) => void;
+  onUnmount?: () => void;
+  onRender?: (n: number) => void;
 }
 
 describe('renderer', () => {
   class ButtonClass extends React.Component<ButtonProps> {
     componentDidMount() {
       this.props.onMount();
+    }
+
+    componentWillUnmount() {
+      this.props.onUnmount?.();
     }
 
     render() {
@@ -30,7 +35,7 @@ describe('renderer', () => {
       props.onMount();
     }, []);
 
-    props.onRender(state);
+    props.onRender?.(state);
 
     return (
       <oh-button
@@ -46,6 +51,7 @@ describe('renderer', () => {
     whisperInterface = {
       createOrUpdateWhisper: jest.fn(),
       closeWhisper: jest.fn(),
+      setOnClose: jest.fn(),
     };
   });
 
@@ -292,7 +298,7 @@ describe('renderer', () => {
     });
   });
   describe('closing whispers', () => {
-    it('returned object should unmount the component when the whisper is closed', async () => {
+    it('returned object should call closeWhisper when programmatically closed', async () => {
       const onClose = jest.fn();
       const whisper = await render(
         <oh-whisper label="whisper.label" onClose={onClose}>
@@ -302,6 +308,25 @@ describe('renderer', () => {
       );
       await whisper.close();
       expect(whisperInterface.closeWhisper).toHaveBeenCalled();
+    });
+    it('when the whisper onClose prop is called it unmounts all the components', async () => {
+      const onClose = jest.fn();
+      const onMount = jest.fn();
+      const onUnmount = jest.fn();
+      await render(
+        <oh-whisper label="whisper.label" onClose={onClose}>
+          <ButtonClass label="button.label" onMount={onMount} onUnmount={onUnmount}/>
+        </oh-whisper>,
+        whisperInterface,
+      );
+      const closeHandler = mocked(whisperInterface.setOnClose).mock.calls[0][0];
+      await closeHandler();
+      expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
+        components: [],
+        label: '',
+        onClose: expect.any(Function),
+      })
+      expect(onUnmount).toHaveBeenCalled();
     });
   });
 });

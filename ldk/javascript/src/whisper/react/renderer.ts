@@ -7,7 +7,7 @@ const Renderer = Reconciler.default(config);
 
 interface WhisperInstance {
   update(node: ReactNode): Promise<void>;
-  close(): Promise<void>;
+  close(): void;
 }
 
 class WhisperInstanceWrapper implements WhisperInstance {
@@ -18,12 +18,11 @@ class WhisperInstanceWrapper implements WhisperInstance {
   constructor(container: Reconciler.OpaqueRoot, renderInstance: WhisperRenderingInterface) {
     this.container = container;
     this.renderInstance = renderInstance;
+    this.renderInstance.setOnClose(this.handleWhisperClose);
   }
 
-  close(): Promise<void> {
-    return new Promise((resolve) => {
-      Renderer.updateContainer(null, this.container, null, resolve);
-    });
+  close(): void {
+    this.renderInstance.closeWhisper();
   }
 
   update(node: React.ReactNode): Promise<void> {
@@ -31,6 +30,11 @@ class WhisperInstanceWrapper implements WhisperInstance {
       Renderer.updateContainer(node, this.container, null, resolve);
     });
   }
+
+  handleWhisperClose = (): Promise<void> =>
+    new Promise((resolve) => {
+      Renderer.updateContainer(null, this.container, null, resolve);
+    });
 }
 
 export async function render(
