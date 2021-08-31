@@ -5,13 +5,18 @@ import "context"
 // KeyboardService is an interface that defines what methods plugins can expect from the host
 type KeyboardService interface {
 	ListenHotkey(context.Context, Hotkey, ListenHotkeyHandler) error
-	ListenText(context.Context, ListenTextHandler) error
+	ListenText(context.Context, KeyboardListenTextConfiguration) error
 	ListenCharacter(context.Context, ListenCharacterHandler) error
 }
 
 type Hotkey struct {
 	Key       rune
 	Modifiers KeyModifier
+}
+
+type KeyboardListenTextConfiguration struct {
+	Handler                  ListenTextHandler
+	IncludeOliveHelpsTraffic bool
 }
 
 // This function takes the hotkey param (which is understood to be the actual hotkey combination provided by the

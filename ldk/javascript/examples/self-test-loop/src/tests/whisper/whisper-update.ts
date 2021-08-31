@@ -1,7 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { whisper } from '@oliveai/ldk';
 import {
-  Button,
   Checkbox,
   ChildComponents,
   Component,
@@ -16,7 +15,12 @@ import {
   Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
-import { logMap } from './utils';
+import {
+  createButtonComponent,
+  createSelectComponent,
+  createTextComponent,
+  resolveRejectButtons,
+} from './utils';
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -76,92 +80,80 @@ const createConfirmOrDenyWithPromise = (
   };
 };
 
-const updateWithConfirmation = (
-  resolve: (value: boolean | PromiseLike<boolean>) => void,
-  reject: (reason?: Error) => void,
-  updateWhisperComponents: Array<Component>,
-  prompt: string,
-  rejectReason?: string,
-): Button => ({
-  type: WhisperComponentType.Button,
-  label: 'Update',
-  onClick: (error: Error | undefined, incomingWhisper: Whisper) => {
-    if (error) {
-      incomingWhisper.close((e: Error) => {
-        console.error(e);
-      });
-      console.error(error);
-      reject(error);
-    }
-    incomingWhisper.update(
-      {
-        label: 'Update Whisper',
-        components: [
-          ...updateWhisperComponents,
-          ...confirmOrDeny(resolve, reject, prompt, rejectReason, incomingWhisper),
-        ],
-      },
-      (err: Error) => {
-        if (err) {
-          console.error(err);
-          incomingWhisper.close((e: Error) => console.error(e));
-          reject(err);
-        }
-      },
-    );
-  },
-});
-
-export const testWhisperUpdate = (): Promise<boolean> =>
+export const testValuePersistOnUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
+      const text1 = createTextComponent('text1');
+      const text2 = createTextComponent('text2');
+      const select1 = createSelectComponent('select1');
+      const select2 = createSelectComponent('select2');
       whisper.create({
-        label: 'Basic Whisper Update',
-        onClose: () => {
-          // do nothing.
-        },
+        label: 'Values should persist after update',
         components: [
-          {
-            type: WhisperComponentType.TextInput,
-            label: 'Text Input',
-            id: 'myTextInput1',
-            key: 'textinput1',
-            onChange: (_error: Error, _param: string, onChangeWhisper: Whisper) =>
-              logMap(onChangeWhisper.componentState),
-            tooltip: 'myTooltip',
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Press Update.',
-          },
-          updateWithConfirmation(
-            resolve,
-            reject,
-            [
-              {
-                type: WhisperComponentType.Markdown,
-                body: 'MARKDOWN WARNING',
-                key: 'warning',
-              },
-              {
-                type: WhisperComponentType.TextInput,
-                label: 'Text Input 2',
-                id: 'myTextInput1',
-                key: 'textinput1',
-                // TODO: Figure out what state to persist, probably need to retain focus.
-                onChange: (error: Error, _param: string, onChangeWhisper: Whisper) =>
-                  logMap(onChangeWhisper.componentState),
-                tooltip: 'myTooltip',
-              },
-            ],
-            'Did the whisper update correctly? (state will persist)',
-            'User selected update failed.',
-          ),
+          text1,
+          text2,
+          select1,
+          select2,
+          createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
+            if (error) {
+              console.error(error);
+              reject(error);
+            }
+            // Updating whisper with appended new components
+            text1.tooltip = undefined;
+            onClickWhisper.update({
+              components: [
+                createTextComponent('textNew', 'New Text Field'),
+                text1,
+                text2,
+                createSelectComponent('selectNew', 'New Select Field'),
+                select1,
+                select2,
+                resolveRejectButtons(resolve, reject, 'Values persisted', 'Values did not persist'),
+              ],
+            });
+          }),
         ],
       });
     } catch (error) {
       console.error(error);
-      console.error(error.message);
+      reject(error);
+    }
+  });
+
+export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const text1 = createTextComponent('text1');
+      const select1 = createSelectComponent('select1', 'Select Option 1');
+      whisper.create({
+        label: 'Values should be overwritten after update',
+        components: [
+          text1,
+          select1,
+          createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
+            if (error) {
+              console.error(error);
+              reject(error);
+            }
+            // Updating whisper with new component values
+            text1.value = 'overwritten';
+            select1.selected = 1;
+            onClickWhisper.update({
+              components: [
+                createTextComponent('textNew', 'New Text Field'),
+                text1,
+                createSelectComponent('selectNew', 'New Select Field'),
+                select1,
+                resolveRejectButtons(resolve, reject, 'Values overwritten', 'Values persisted'),
+              ],
+            });
+          }),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
     }
   });
 
@@ -229,79 +221,6 @@ export const testUpdateCollapseState = (): Promise<boolean> =>
             'Collapse box did not obey state change',
             testWhisper,
           ),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      console.error(error.message);
-    }
-  });
-
-export const testUpdateOnChange = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      whisper.create({
-        label: 'Update onChange events',
-        onClose: () => {
-          // do nothing.
-        },
-        components: [
-          {
-            type: WhisperComponentType.TextInput,
-            label: 'Enter 1',
-            id: 'myTextInput1',
-            key: 'input',
-            onChange: (_error: Error, value: string, incomingWhisper: Whisper) => {
-              if (value === '1') {
-                incomingWhisper.update(
-                  {
-                    label: 'Whisper Updated',
-                    components: [
-                      {
-                        type: WhisperComponentType.Markdown,
-                        body:
-                          'Enter in 2 below if the text input retained focus, anything else otherwise',
-                      },
-                      {
-                        type: WhisperComponentType.TextInput,
-                        label: 'Enter 2',
-                        id: 'myTextInput2',
-                        key: 'input',
-                        value: '',
-                        onChange: (_err: Error, param: string, onChangeWhisper: Whisper) => {
-                          if (param === '12') {
-                            onChangeWhisper.close((e: Error) => {
-                              console.error(e);
-                            });
-                            resolve(true);
-                          } else {
-                            onChangeWhisper.close((e: Error) => {
-                              console.error(e);
-                            });
-                            reject(new Error('User did not enter required value.'));
-                          }
-                        },
-                      },
-                    ],
-                  },
-                  (err: Error) => {
-                    if (err) {
-                      console.error(err);
-                      incomingWhisper.close((e: Error) => console.error(e));
-                      reject(err);
-                    }
-                  },
-                );
-              } else {
-                incomingWhisper.close((e: Error) => {
-                  console.error(e);
-                });
-                reject(new Error('User did not enter required value.'));
-              }
-            },
-            value: '',
-            tooltip: 'myTooltip',
-          },
         ],
       });
     } catch (error) {
@@ -524,15 +443,15 @@ export const testIconUpdates = (): Promise<boolean> =>
       name: 'touch_app',
       key: 'myPhoneKey',
       size: IconSize.XLarge,
-      onClick: (error, whisper) => {
-        if (whisper.componentState.get(checkbox.id) && whisperUpdated) {
+      onClick: (_error: Error, onClickWhisper: Whisper) => {
+        if (onClickWhisper.componentState.get(checkbox.id) && whisperUpdated) {
           resolve(true);
-          whisper.close((error) => {
+          onClickWhisper.close((error) => {
             console.error(error);
           });
         }
         reject('Icon update caused checkbox state failure.');
-        whisper.close((error) => {
+        onClickWhisper.close((error) => {
           console.error(error);
         });
       },
@@ -550,9 +469,9 @@ export const testIconUpdates = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Button,
           label: 'Update',
-          onClick: (error: Error, incomingWhisper: Whisper) => {
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
             whisperUpdated = true;
-            incomingWhisper.update({
+            onClickWhisper.update({
               components: [
                 checkbox,
                 phoneIcon,

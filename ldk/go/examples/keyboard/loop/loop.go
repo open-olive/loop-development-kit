@@ -40,23 +40,26 @@ func (c *Loop) LoopStart(sidekick ldk.Sidekick) error {
 	c.sidekick = sidekick
 
 	// Keyboard Listener 1
-	return sidekick.Keyboard().ListenText(c.ctx, func(text string, err error) {
-		c.logger.Info("controller loop callback called")
-		if err != nil {
-			c.logger.Error("received error from callback", err)
-			return
-		}
+	return sidekick.Keyboard().ListenText(c.ctx,
+		ldk.KeyboardListenTextConfiguration{
+			IncludeOliveHelpsTraffic: true,
+			Handler: func(text string, err error) {
+				c.logger.Info("controller loop callback called")
+				if err != nil {
+					c.logger.Error("received error from callback", err)
+					return
+				}
 
-		go func() {
-			err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
-				Label:    "Example Controller Go",
-				Markdown: "Text from the keyboard: " + text,
-			})
-			if err != nil {
-				c.logger.Error("failed to emit whisper", "error", err)
-			}
-		}()
-	})
+				go func() {
+					err = c.sidekick.Whisper().Markdown(c.ctx, &ldk.WhisperContentMarkdown{
+						Label:    "Example Controller Go",
+						Markdown: "Text from the keyboard: " + text,
+					})
+					if err != nil {
+						c.logger.Error("failed to emit whisper", "error", err)
+					}
+				}()
+			}})
 }
 
 // LoopStop is called by the host when the plugin is stopped

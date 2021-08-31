@@ -15,12 +15,29 @@ export const testListenCharacter = (): Promise<boolean> =>
 export const testListenText = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     const listener = await keyboard.listenText((text) => {
-      console.debug('Text received', 'response', text);
+      console.info('Text received', 'response', text);
       if (text === 'Olive') {
         listener.cancel();
         resolve(true);
       }
-    });
+    }, true);
+  });
+
+export const testListenTextIgnoreOliveHelpsTraffic = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const listenerIgnoreOH = await keyboard.listenText((text) => {
+      reject('Should not allow Olive Helps traffic');
+      listenerIgnoreOH.cancel();
+      listenerAllowOH.cancel();
+    }, false);
+
+    const listenerAllowOH = await keyboard.listenText((text) => {
+      if (text === 's' || text === 'S') {
+        listenerAllowOH.cancel();
+        listenerIgnoreOH.cancel();
+        resolve(true);
+      }
+    }, true);
   });
 
 export const testListenHotkey = (): Promise<boolean> =>

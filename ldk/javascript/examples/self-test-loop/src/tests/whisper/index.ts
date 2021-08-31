@@ -1,17 +1,17 @@
 /* eslint-disable no-async-promise-executor */
-import { clipboard, whisper, network } from '@oliveai/ldk';
+import { clipboard, network, whisper } from '@oliveai/ldk';
 import {
-  JustifyContent,
-  Direction,
-  ButtonStyle,
-  Urgency,
-  WhisperComponentType,
-  TextAlign,
   ButtonSize,
-  Whisper,
-  NewWhisper,
+  ButtonStyle,
   Component,
   DateTimeType,
+  Direction,
+  JustifyContent,
+  NewWhisper,
+  TextAlign,
+  Urgency,
+  Whisper,
+  WhisperComponentType,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   IconSize,
@@ -19,7 +19,7 @@ import {
   AlignItems,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { resolveRejectButtons } from './utils';
+import { logMap, resolveRejectButtons } from './utils';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -336,6 +336,85 @@ export const testBoxInBox = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+function createAcceptButtons(): {
+  component: Component;
+  acceptResult: Promise<boolean>;
+} {
+  let resolveHandler;
+  let rejectHandler;
+  const acceptResult = new Promise<boolean>((resolve, reject) => {
+    resolveHandler = resolve;
+    rejectHandler = reject;
+  });
+  const component = resolveRejectButtons(
+    resolveHandler,
+    rejectHandler,
+    undefined,
+    undefined,
+    false,
+  );
+  return { component, acceptResult };
+}
+
+export const testDropzone = async (): Promise<boolean> => {
+  const dropZone: whisper.DropZone = {
+    type: WhisperComponentType.DropZone,
+    onDrop: () => {},
+    label: 'File Components',
+    key: 'drop',
+  };
+  const onDropAction = new Promise<whisper.File[]>((resolve, reject) => {
+    dropZone.onDrop = (error, param) => {
+      if (error) {
+        reject(error);
+      }
+      if (param) {
+        resolve(param);
+      }
+    };
+  });
+  const testWhisper = await whisper.create({
+    label: 'Dropzone Test',
+    components: [
+      {
+        type: WhisperComponentType.Markdown,
+        body: 'Select and drop a file onto the dropzone box below.',
+      },
+      dropZone,
+    ],
+  });
+  const droppedFiles = await onDropAction;
+  const fileData = droppedFiles
+    .map((file) => `Path: ${file.path}, Size: ${file.size}`)
+    .join('\n\n');
+
+  const acceptFileData = createAcceptButtons();
+  await testWhisper.update({
+    components: [
+      {
+        type: WhisperComponentType.Markdown,
+        body: `Are these the files you selected?\n\n${fileData}`,
+      },
+      dropZone,
+      acceptFileData.component,
+    ],
+  });
+  await acceptFileData.acceptResult;
+
+  const filesWereCleared = createAcceptButtons();
+  await testWhisper.update({
+    components: [
+      { type: WhisperComponentType.Markdown, body: 'Are the files gone now?' },
+      { ...dropZone, value: [] },
+      filesWereCleared.component,
+    ],
+  });
+  testWhisper.close(() => {
+    // Do nothing.
+  });
+  return filesWereCleared.acceptResult;
+};
 
 export const testClickableButton = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -669,7 +748,7 @@ export const testFormComponents = (): Promise<boolean> =>
         {
           id: 'mySubmitButton',
           label: 'Submit',
-          onClick: (error: Error, onClickWhisper: Whisper) => {
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
               console.info(key, value),
             );
@@ -704,13 +783,23 @@ export const testFormComponents = (): Promise<boolean> =>
           type: WhisperComponentType.TextInput,
         },
         {
-          label: `Select 'blue'`,
+          label: `Second Select`,
           onSelect: () => {
             // do nothing.
           },
           options: ['red', 'blue'],
           id: 'mySelectInputTwo',
           type: WhisperComponentType.Select,
+        },
+        {
+          type: WhisperComponentType.Select,
+          label: `Select with no default option`,
+          onSelect: () => {
+            // do nothing.
+          },
+          options: ['red', 'blue'],
+          excludeDefaultOption: true,
+          id: 'mySelectInputThree',
         },
         {
           onSelect: () => {
@@ -764,10 +853,8 @@ export const testFormComponents = (): Promise<boolean> =>
         {
           id: 'dummySubmitButton',
           label: 'Dummy Submit',
-          onClick: (error: Error, onClickWhisper: Whisper) => {
-            onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
-              console.info(key, value),
-            );
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
+            logMap(onClickWhisper.componentState);
           },
           type: WhisperComponentType.Button,
         },
@@ -820,6 +907,81 @@ export const testNumberInputs = (): Promise<boolean> =>
         console.log('close');
       },
     });
+  });
+
+export const testNoLabels = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did it render components with no label?',
+        components: [
+          {
+            type: WhisperComponentType.Number,
+            tooltip: 'Number',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Telephone,
+            tooltip: 'Telephone',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Password,
+            tooltip: 'Password',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Checkbox,
+            tooltip: 'Checkbox',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Select,
+            tooltip: 'Select',
+            onSelect: () => {
+              // do nothing
+            },
+            options: ['option 1', 'option 2'],
+          },
+          {
+            type: WhisperComponentType.DateTimeInput,
+            dateTimeType: DateTimeType.Date,
+            tooltip: 'Date',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Email,
+            tooltip: 'Email',
+            onChange: () => {
+              // do nothing
+            },
+          },
+          {
+            type: WhisperComponentType.Button,
+            tooltip: 'Button',
+            onClick: () => {
+              // do nothing
+            },
+          },
+          resolveRejectButtons(resolve, reject),
+        ],
+        onClose: () => {
+          // do nothing
+        },
+      });
+    } catch (error) {
+      reject(error);
+    }
   });
 
 export const testFloatNumberInputs = (): Promise<boolean> =>
@@ -975,10 +1137,7 @@ export const testTooltips = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await whisper.create({
-        label: 'Tooltip Whisper',
-        onClose: () => {
-          console.debug('whisper closed');
-        },
+        label: 'Are all tooltips rendered?',
         components: [
           {
             type: WhisperComponentType.Markdown,
@@ -999,14 +1158,82 @@ export const testTooltips = (): Promise<boolean> =>
             onClick: () => {
               // do nothing.
             },
-            tooltip: 'Tooltip for Button',
+            tooltip: 'Tooltip for Disabled Button',
             disabled: true,
           },
           {
-            type: WhisperComponentType.Markdown,
-            body: stripIndent`
-              # Are all tooltips rendered?
-              `,
+            type: WhisperComponentType.Button,
+            label: 'Hover to see tooltip',
+            onClick: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Button',
+          },
+          {
+            type: WhisperComponentType.TextInput,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Text Input',
+          },
+          {
+            type: WhisperComponentType.Password,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Password',
+          },
+          {
+            type: WhisperComponentType.Telephone,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Telephone',
+          },
+          {
+            type: WhisperComponentType.DateTimeInput,
+            dateTimeType: DateTimeType.Date,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Date',
+          },
+          {
+            type: WhisperComponentType.Email,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Email',
+          },
+          {
+            type: WhisperComponentType.Number,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Number',
+          },
+          {
+            type: WhisperComponentType.Checkbox,
+            label: 'Hover to see tooltip',
+            onChange: () => {
+              // do nothing.
+            },
+            tooltip: 'Tooltip for Checkbox',
+          },
+          {
+            type: WhisperComponentType.Select,
+            label: 'Hover to see tooltip',
+            onSelect: () => {
+              // do nothing.
+            },
+            options: ['Option 1'],
+            tooltip: 'Tooltip for Select',
           },
           resolveRejectButtons(resolve, reject),
         ],
@@ -1568,6 +1795,66 @@ export const testAlignItems = (): Promise<boolean> =>
     });
   });
 
+export const testOnCopy = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const formLabel = 'Simple Form';
+      const passed = [false, false, false];
+      const checkTrue = (e: boolean) => e === true;
+
+      const components: Component[] = [
+        {
+          type: WhisperComponentType.Markdown,
+          body: `Click here to test onCopy for Markdown`,
+          copyable: MarkdownWhisperCopyMode.Body,
+          onCopy: () => {
+            passed[0] = true;
+
+            if (passed.every(checkTrue)) {
+              resolve(true);
+            }
+          },
+        },
+        {
+          type: WhisperComponentType.ListPair,
+          label: `This is the label`,
+          value: 'Click here to test ListPair',
+          copyable: true,
+          style: Urgency.None,
+          onCopy: (error, type) => {
+            passed[1] = true;
+
+            if (passed.every(checkTrue)) {
+              resolve(true);
+            }
+          },
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: `Click here to test Message`,
+          copyable: MessageWhisperCopyMode.Body,
+          onCopy: () => {
+            passed[2] = true;
+
+            if (passed.every(checkTrue)) {
+              resolve(true);
+            }
+          },
+        },
+      ];
+
+      whisper.create({
+        label: formLabel,
+        onClose: () => {
+          // do nothing.
+        },
+        components: [...components],
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
 export const testFlexProperties = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -1658,6 +1945,310 @@ export const testFlex = (): Promise<boolean> =>
                 ],
               },
             ],
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testAutocompleteSelect = (): Promise<boolean> =>
+  new Promise(async (resolve) => {
+    await whisper.create({
+      label: 'Autocomplete select test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Select "Value 4"',
+        },
+        {
+          label: 'Autocomplete Test',
+          loading: false,
+          onChange: () => {
+            // do nothing
+          },
+          onSelect: (error, value, onSelectWhisper) => {
+            if (value === '4') {
+              resolve(true);
+              onSelectWhisper.close(() => {
+                // do nothing.
+              });
+            }
+          },
+          options: [
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+            { label: 'Value 3', value: '3' },
+            { label: 'Value 4', value: '4' },
+            { label: 'Value 5', value: '5' },
+          ],
+          type: WhisperComponentType.Autocomplete,
+        },
+      ],
+    });
+  });
+
+export const testAutocompleteChange = (): Promise<boolean> =>
+  new Promise(async (resolve) => {
+    await whisper.create({
+      label: 'Autocomplete change test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Type into the input "Typed"',
+        },
+        {
+          label: 'Autocomplete Test',
+          loading: true,
+          onChange: (error, value, onChangeWhisper) => {
+            if (value.toLowerCase() === 'typed') {
+              resolve(true);
+
+              onChangeWhisper.close(() => {
+                // do nothing.
+              });
+            }
+          },
+          onSelect: () => {
+            // do nothing
+          },
+          options: [
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+            { label: 'Value 3', value: '3' },
+            { label: 'Typed', value: '4' },
+            { label: 'Value 5', value: '5' },
+          ],
+          type: WhisperComponentType.Autocomplete,
+          tooltip: 'tooltip',
+        },
+      ],
+    });
+  });
+
+export const testPadding = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Padding Property Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Compare the two sets of boxes below. Does the second group have padding?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.CollapseBox,
+            open: true,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Box,
+                direction: whisper.Direction.Horizontal,
+                justifyContent: whisper.JustifyContent.SpaceAround,
+                onClick: () => console.log('click the box'),
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Button,
+                    label: 'test',
+                    layout: {
+                      flex: '1',
+                    },
+                    onClick: () => console.log('Click the Button'),
+                  },
+                  {
+                    type: whisper.WhisperComponentType.Icon,
+                    name: 'favorite',
+                    size: whisper.IconSize.Small,
+                    layout: {
+                      flex: '1',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.CollapseBox,
+            layout: {
+              padding: whisper.StyleSize.Large,
+            },
+            open: true,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Box,
+                direction: whisper.Direction.Horizontal,
+                justifyContent: whisper.JustifyContent.SpaceAround,
+                onClick: () => console.log('click the box'),
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Button,
+                    label: 'test',
+                    layout: {
+                      flex: '1',
+                      padding: whisper.StyleSize.Medium,
+                    },
+                    onClick: () => console.log('Click the Button'),
+                  },
+                  {
+                    type: whisper.WhisperComponentType.Icon,
+                    name: 'favorite',
+                    size: whisper.IconSize.Small,
+                    layout: {
+                      flex: '1',
+                      padding: whisper.StyleSize.Medium,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testMargin = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Margin Property Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Compare the two sets of boxes below. Does the second group have margins?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Select,
+                label: `Select 'blue'`,
+                onSelect: () => {
+                  console.log('selected');
+                },
+                layout: {
+                  flex: '1',
+                },
+                options: ['red', 'blue'],
+              },
+              {
+                type: whisper.WhisperComponentType.TextInput,
+                label: 'Test Input',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            layout: {
+              margin: whisper.StyleSize.Small,
+            },
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Select,
+                label: `Select 'blue'`,
+                onSelect: () => {
+                  console.log('selected');
+                },
+                options: ['red', 'blue'],
+                layout: {
+                  flex: '1',
+                  marginRight: whisper.StyleSize.Medium,
+                },
+              },
+              {
+                type: whisper.WhisperComponentType.TextInput,
+                label: 'Test Input',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+                layout: {
+                  marginLeft: whisper.StyleSize.Small,
+                  marginRight: whisper.StyleSize.Small,
+                },
+              },
+            ],
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testWidth = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Width Property Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Is the button filling the space? Is the divider half the width of the card?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Select,
+                label: `Select 'blue'`,
+                onSelect: () => {
+                  console.log('selected');
+                },
+                layout: {
+                  flex: '1',
+                },
+                options: ['red', 'blue'],
+              },
+              {
+                type: whisper.WhisperComponentType.Button,
+                label: 'Test Input',
+                onClick: () => {
+                  console.debug('Clicked');
+                },
+                layout: {
+                  flex: '1',
+                  width: whisper.WidthSize.Full,
+                },
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Divider,
+            layout: {
+              width: whisper.WidthSize.Half,
+            },
           },
           resolveRejectButtons(resolve, reject, 'Yes', 'No'),
         ],

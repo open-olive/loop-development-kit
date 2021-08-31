@@ -5,11 +5,14 @@ import {
   Whisper,
   Component,
   StateMap,
+  Button,
+  Select,
+  TextInput,
 } from '@oliveai/ldk/dist/whisper/types';
 
 export const resolveOnClick = (
   error: Error,
-  whisperToClose: Whisper,
+  whisperToClose: Whisper | undefined,
   resolve: (value: boolean) => void,
   reject: (reason?: Error) => void,
 ): void => {
@@ -17,7 +20,7 @@ export const resolveOnClick = (
     console.error(error);
     reject(error);
   }
-  whisperToClose.close(() => {
+  whisperToClose?.close(() => {
     // do nothing.
   });
   resolve(true);
@@ -25,14 +28,14 @@ export const resolveOnClick = (
 
 export const rejectOnClick = (
   error: Error,
-  whisperToClose: Whisper,
+  whisperToClose: Whisper | undefined,
   reject: (reason?: Error) => void,
 ): void => {
   if (error) {
     console.error(error);
     reject(error);
   }
-  whisperToClose.close(() => {
+  whisperToClose?.close(() => {
     // do nothing.
   });
   reject(new Error('Not rendered correctly.'));
@@ -43,6 +46,7 @@ export const resolveRejectButtons = (
   reject: (reason?: Error) => void,
   resolveButtonText?: string | undefined,
   rejectButtonText?: string | undefined,
+  closeWhisper = true,
 ): Component => ({
   type: WhisperComponentType.Box,
   justifyContent: JustifyContent.SpaceBetween,
@@ -52,18 +56,59 @@ export const resolveRejectButtons = (
       type: WhisperComponentType.Button,
       label: rejectButtonText || `Incorrect`,
       onClick: (error: Error, onClickWhisper: Whisper) => {
-        rejectOnClick(error, onClickWhisper, reject);
+        rejectOnClick(error, closeWhisper ? onClickWhisper : undefined, reject);
       },
     },
     {
       type: WhisperComponentType.Button,
       label: resolveButtonText || `Looks Good`,
       onClick: (error: Error, onClickWhisper: Whisper) => {
-        resolveOnClick(error, onClickWhisper, resolve, reject);
+        resolveOnClick(error, closeWhisper ? onClickWhisper : undefined, resolve, reject);
       },
     },
   ],
 });
+
+export const createTextComponent = (id: string, label?: string): TextInput => {
+  return {
+    type: WhisperComponentType.TextInput,
+    label: label || 'Enter text',
+    id: id,
+    key: id,
+    onChange: (_error: Error, _param: string, onChangeWhisper: Whisper) => {
+      logMap(onChangeWhisper.componentState);
+    },
+    tooltip: 'Enter text',
+  };
+};
+
+export const createSelectComponent = (id: string, label?: string): Select => {
+  return {
+    type: WhisperComponentType.Select,
+    label: label || 'Select an option',
+    id: id,
+    key: id,
+    onSelect: (_error: Error, _param: number, onSelectWhisper: Whisper) => {
+      logMap(onSelectWhisper.componentState);
+    },
+    options: ['Option 1', 'Option 2'],
+    tooltip: 'Select an option',
+  };
+};
+
+export const createButtonComponent = (
+  label: string,
+  onClick: (error: Error, onClickWhisper: Whisper) => void,
+): Button => {
+  return {
+    type: WhisperComponentType.Button,
+    label,
+    onClick: (error: Error, onClickWhisper: Whisper) => {
+      logMap(onClickWhisper.componentState);
+      onClick(error, onClickWhisper);
+    },
+  };
+};
 
 export const newGuid = (): string =>
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {

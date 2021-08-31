@@ -8,6 +8,7 @@ describe('Keyboard', () => {
       listenHotkey: jest.fn(),
       listenText: jest.fn(),
       listenCharacter: jest.fn(),
+      includeOliveHelpsEvents: jest.fn(),
     };
   });
 
@@ -62,6 +63,18 @@ describe('Keyboard', () => {
       });
 
       expect(keyboard.listenText).rejects.toBe(exception);
+    });
+
+    it('disables olive helps events by default', () => {
+      keyboard.listenText(jest.fn());
+
+      expect(oliveHelps.keyboard.includeOliveHelpsEvents).toHaveBeenCalledWith(false);
+    });
+
+    it('calls include olive helps events with given option', () => {
+      keyboard.listenText(jest.fn(), true);
+
+      expect(oliveHelps.keyboard.includeOliveHelpsEvents).toHaveBeenCalledWith(true);
     });
   });
 
