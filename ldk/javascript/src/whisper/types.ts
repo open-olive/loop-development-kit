@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { ReactNode } from 'react';
-
 export enum WhisperComponentType {
   /**
    * A container component for formatting other components.
@@ -268,12 +265,9 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   style: Urgency;
 };
 
-export type MarkdownProps = {
+export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   copyable?: MarkdownWhisperCopyMode;
   tooltip?: string;
-};
-
-export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & MarkdownProps & {
   body: string;
 };
 

@@ -5,6 +5,5 @@ module.exports = {
     oliveHelps: {},
   },
   testMatch: ['**/*.test.(ts|tsx)'],
-  setupFilesAfterEnv: ['<rootDir>/src/jestGlobalSetup.js'],
-  silent: false,
+  silent: true,
 };
