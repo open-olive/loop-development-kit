@@ -409,9 +409,9 @@ export type ChildComponents =
   | NumberInput
   | Password
   | RadioGroup
+  | RichTextEditor
   | Select
   | SectionTitle
-  | RichTextEditor
   | Telephone
   | TextInput;
 

@@ -385,9 +385,9 @@ declare namespace OliveHelps {
     | 'number'
     | 'password'
     | 'radioGroup'
+    | 'richTextEditor'
     | 'select'
     | 'sectionTitle'
-    | 'richTextEditor'
     | 'telephone'
     | 'textInput';
 
