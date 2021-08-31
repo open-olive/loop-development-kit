@@ -2,7 +2,13 @@ import * as Reconciler from 'react-reconciler';
 import { ReactNode } from 'react';
 import { config } from './renderer-config';
 import { WhisperRenderingInterface, WhisperRenderInstance } from './whisper-render-instance';
+// This side effect import makes the JSX namespace addition available without
+// needing the consumer to import the file separately.
+import './component-types';
 
+/**
+ * @internal
+ */
 const Renderer = Reconciler.default(config);
 
 interface WhisperInstance {
