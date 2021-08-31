@@ -19,7 +19,7 @@ import {
   AlignItems,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { resolveRejectButtons } from './utils';
+import { logMap, resolveRejectButtons } from './utils';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -337,6 +337,26 @@ export const testBoxInBox = (): Promise<boolean> =>
     }
   });
 
+function createAcceptButtons(): {
+  component: Component;
+  acceptResult: Promise<boolean>;
+} {
+  let resolveHandler;
+  let rejectHandler;
+  const acceptResult = new Promise<boolean>((resolve, reject) => {
+    resolveHandler = resolve;
+    rejectHandler = reject;
+  });
+  const component = resolveRejectButtons(
+    resolveHandler,
+    rejectHandler,
+    undefined,
+    undefined,
+    false,
+  );
+  return { component, acceptResult };
+}
+
 export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
@@ -369,20 +389,6 @@ export const testDropzone = async (): Promise<boolean> => {
     .map((file) => `Path: ${file.path}, Size: ${file.size}`)
     .join('\n\n');
 
-  function createAcceptButtons(): {
-    component: Component;
-    acceptResult: Promise<boolean>;
-  } {
-    let resolveHandler;
-    let rejectHandler;
-    const acceptResult = new Promise<boolean>((resolve, reject) => {
-      resolveHandler = resolve;
-      rejectHandler = reject;
-    });
-    const component = resolveRejectButtons(resolveHandler, rejectHandler);
-    return { component, acceptResult };
-  }
-
   const acceptFileData = createAcceptButtons();
   await testWhisper.update({
     components: [
@@ -403,6 +409,9 @@ export const testDropzone = async (): Promise<boolean> => {
       { ...dropZone, value: [] },
       filesWereCleared.component,
     ],
+  });
+  testWhisper.close(() => {
+    // Do nothing.
   });
   return filesWereCleared.acceptResult;
 };
@@ -739,7 +748,7 @@ export const testFormComponents = (): Promise<boolean> =>
         {
           id: 'mySubmitButton',
           label: 'Submit',
-          onClick: (error: Error, onClickWhisper: Whisper) => {
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
               console.info(key, value),
             );
@@ -774,13 +783,23 @@ export const testFormComponents = (): Promise<boolean> =>
           type: WhisperComponentType.TextInput,
         },
         {
-          label: `Select 'blue'`,
+          label: `Second Select`,
           onSelect: () => {
             // do nothing.
           },
           options: ['red', 'blue'],
           id: 'mySelectInputTwo',
           type: WhisperComponentType.Select,
+        },
+        {
+          type: WhisperComponentType.Select,
+          label: `Select with no default option`,
+          onSelect: () => {
+            // do nothing.
+          },
+          options: ['red', 'blue'],
+          excludeDefaultOption: true,
+          id: 'mySelectInputThree',
         },
         {
           onSelect: () => {
@@ -835,9 +854,7 @@ export const testFormComponents = (): Promise<boolean> =>
           id: 'dummySubmitButton',
           label: 'Dummy Submit',
           onClick: (_error: Error, onClickWhisper: Whisper) => {
-            onClickWhisper.componentState.forEach((value: string | number | boolean, key: string) =>
-              console.info(key, value),
-            );
+            logMap(onClickWhisper.componentState);
           },
           type: WhisperComponentType.Button,
         },
@@ -1936,6 +1953,86 @@ export const testFlex = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
+  });
+
+export const testAutocompleteSelect = (): Promise<boolean> =>
+  new Promise(async (resolve) => {
+    await whisper.create({
+      label: 'Autocomplete select test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Select "Value 4"',
+        },
+        {
+          label: 'Autocomplete Test',
+          loading: false,
+          onChange: () => {
+            // do nothing
+          },
+          onSelect: (error, value, onSelectWhisper) => {
+            if (value === '4') {
+              resolve(true);
+              onSelectWhisper.close(() => {
+                // do nothing.
+              });
+            }
+          },
+          options: [
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+            { label: 'Value 3', value: '3' },
+            { label: 'Value 4', value: '4' },
+            { label: 'Value 5', value: '5' },
+          ],
+          type: WhisperComponentType.Autocomplete,
+        },
+      ],
+    });
+  });
+
+export const testAutocompleteChange = (): Promise<boolean> =>
+  new Promise(async (resolve) => {
+    await whisper.create({
+      label: 'Autocomplete change test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Type into the input "Typed"',
+        },
+        {
+          label: 'Autocomplete Test',
+          loading: true,
+          onChange: (error, value, onChangeWhisper) => {
+            if (value.toLowerCase() === 'typed') {
+              resolve(true);
+
+              onChangeWhisper.close(() => {
+                // do nothing.
+              });
+            }
+          },
+          onSelect: () => {
+            // do nothing
+          },
+          options: [
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+            { label: 'Value 3', value: '3' },
+            { label: 'Typed', value: '4' },
+            { label: 'Value 5', value: '5' },
+          ],
+          type: WhisperComponentType.Autocomplete,
+          tooltip: 'tooltip',
+        },
+      ],
+    });
   });
 
 export const testPadding = (): Promise<boolean> =>

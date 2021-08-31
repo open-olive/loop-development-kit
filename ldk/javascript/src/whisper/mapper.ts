@@ -92,6 +92,28 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Divider:
     case WhisperComponentType.SectionTitle:
       return component;
+    case WhisperComponentType.Autocomplete: {
+      // eslint-disable-next-line
+      const { onChange, onSelect, options } = component;
+      const dataObj = { data: options };
+      return {
+        ...component,
+        options: options ? JSON.stringify(dataObj) : undefined,
+        onChange: onChange
+          ? (error, param, whisper) => {
+              onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+        onSelect: onSelect
+          ? (error, param, whisper) => {
+              if (component.id) {
+                stateMap.set(component.id, param);
+              }
+              onSelect(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+      } as OliveHelps.Autocomplete;
+    }
     case WhisperComponentType.DropZone:
       return {
         ...component,

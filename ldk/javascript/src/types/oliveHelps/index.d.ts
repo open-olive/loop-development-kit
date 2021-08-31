@@ -42,6 +42,13 @@ declare namespace OliveHelps {
     callback: Callback<TOut>,
   ) => void;
 
+  type ReadableWithThreeParams<TParam1, TParam2, TParam3, TOut> = (
+    param: TParam1,
+    param2: TParam2,
+    param3: TParam3,
+    callback: Callback<TOut>,
+  ) => void;
+
   type ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut> = (
     param: TParam1,
     param2: TParam2,
@@ -58,6 +65,20 @@ declare namespace OliveHelps {
     returnCb: ReturnCallback,
   ) => void;
 
+  interface Aptitudes {
+    clipboard: Clipboard;
+    whisper: WhisperService;
+    filesystem: Filesystem;
+    cursor: Cursor;
+    keyboard: Keyboard;
+    network: Network;
+    process: Process;
+    search: Search;
+    ui: UI;
+    user: User;
+    vault: Vault;
+    window: Window;
+  }
   //-- User
   interface JWTConfig {
     includeEmail?: boolean;
@@ -233,6 +254,45 @@ declare namespace OliveHelps {
     headers: Record<string, string[]>;
   }
 
+  //--Search
+  interface Search {
+    createIndex: ReadableWithThreeParams<string, Array<Document>, Config, Index>;
+    openIndex: ReadableWithTwoParams<string, Config, Index>;
+    exists: ReadableWithParam<string, boolean>;
+  }
+
+  interface Index {
+    search: ReadableWithParam<string, SearchResult>;
+    queryStringSearch: ReadableWithParam<string, SearchResult>;
+    update: ReadableWithTwoParams<Array<Document>, Config, void>;
+    delete: Readable<void>;
+  }
+
+  type Config = {
+    sortBy?: string[];
+    searchSize?: number;
+    exactMatchThreshold?: number;
+    beginsWithSearch?: boolean;
+  };
+
+  type Document = {
+    name: string;
+    data: string;
+    fields?: Array<Field>;
+  };
+
+  type Field = {
+    name: string;
+    displayName?: string;
+    type?: FieldType;
+  };
+
+  type FieldType = 'standard' | 'stemmer' | 'simple' | 'numeric' | 'boolean' | 'datetime';
+
+  interface SearchResult {
+    data: Array<{ [key: string]: string }>;
+    total: number;
+  }
   //--Keyboard
   interface Keyboard {
     listenHotkey: ListenableWithParam<Hotkey, boolean>;
@@ -335,6 +395,7 @@ declare namespace OliveHelps {
 
   //-- Whisper
   type WhisperComponentType =
+    | 'autocomplete'
     | 'box'
     | 'button'
     | 'checkbox'
@@ -432,6 +493,21 @@ declare namespace OliveHelps {
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
   type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
 
+  type AutocompleteOption = {
+    label: string;
+    value: string;
+  };
+
+  type Autocomplete = SelectComponent<'autocomplete'> & {
+    label?: string;
+    loading?: boolean;
+    onChange?: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string>;
+    options?: AutocompleteOption[];
+    tooltip?: string;
+    value?: string;
+  };
+
   type Button = Component<'button'> & {
     buttonStyle?: ButtonStyle;
     disabled?: boolean;
@@ -517,6 +593,7 @@ declare namespace OliveHelps {
     label: string;
     options: string[];
     onSelect: WhisperHandlerWithParam<number>;
+    excludeDefaultOption?: boolean;
     selected?: number;
     tooltip?: string;
   };
@@ -560,6 +637,7 @@ declare namespace OliveHelps {
   };
 
   type ChildComponents =
+    | Autocomplete
     | Box
     | Button
     | Checkbox
