@@ -13,8 +13,9 @@ enum RenderInstanceStatus {
   Closed,
 }
 
-// TODO: When a whisper is closed I need to unmount its contents. I probably need to
-//  call updateContainer again with an empty element.
+/**
+ * @internal
+ */
 export class WhisperRenderInstance implements WhisperRenderingInterface {
   private status: RenderInstanceStatus = RenderInstanceStatus.NotCreated;
 

@@ -260,6 +260,10 @@ describe('renderer', () => {
         ],
       });
     });
+    it("should throw an error if the top-level object isn't oh-whisper", () =>
+      expect(async () =>
+        render(<oh-markdown body="markdown.body" />, whisperInterface),
+      ).rejects.toThrowError('oh-whisper must be top-level element'));
   });
   describe('context and default props works', () => {
     const TestContext = React.createContext('1');
@@ -315,7 +319,7 @@ describe('renderer', () => {
       const onUnmount = jest.fn();
       await render(
         <oh-whisper label="whisper.label" onClose={onClose}>
-          <ButtonClass label="button.label" onMount={onMount} onUnmount={onUnmount}/>
+          <ButtonClass label="button.label" onMount={onMount} onUnmount={onUnmount} />
         </oh-whisper>,
         whisperInterface,
       );
@@ -325,7 +329,7 @@ describe('renderer', () => {
         components: [],
         label: '',
         onClose: expect.any(Function),
-      })
+      });
       expect(onUnmount).toHaveBeenCalled();
     });
   });

@@ -2,31 +2,24 @@
 import { Instance, Props, TextInstance } from './renderer-config';
 import { WhisperComponentType } from '../types';
 
-// TODO: Improve text rendering here.
-const assignTextChildrenToProperty: (
-  propertyName: string,
-) => (instance: Instance, newProps: Props) => void = (propertyName) => (instance, props) => {
-  (instance as any)[propertyName] = props.children.toString();
-};
-
 function createAppendFunction(
   childPropertyName: string,
   excludeChildrenTypes: WhisperComponentType[] = [],
-): (instance: Instance, child: Instance | TextInstance) => void {
+): (instance: Instance, child: Instance | TextInstance) => boolean {
   return (instance, child) => {
     if ((instance as any)[childPropertyName] == null) {
       (instance as any)[childPropertyName] = [];
     }
     if (excludeChildrenTypes.includes(child.type)) {
-      // TODO: Warn here.
-      return;
+      return false;
     }
     (instance as any)[childPropertyName].push(child);
+    return true;
   };
 }
 
 interface ComponentSpecificHandler {
-  appendInitialChild?: (parentInstance: Instance, child: Instance | TextInstance) => void;
+  appendInitialChild?: (parentInstance: Instance, child: Instance | TextInstance) => boolean;
 
   /**
    * Whether text children should be set or not. If set to true, I think React

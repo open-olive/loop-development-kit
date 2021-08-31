@@ -10,6 +10,10 @@ interface WhisperInstance {
   close(): void;
 }
 
+/**
+ * @internal
+ * The WhisperInstanceWrapper class manages changes to the Whisper lifecycle.
+ */
 class WhisperInstanceWrapper implements WhisperInstance {
   private container: Reconciler.OpaqueRoot;
 
@@ -51,7 +55,6 @@ export async function render(
 /**
  *
  * @param element
- * @param onClose
  */
 export function renderNewWhisper(element: ReactNode): Promise<WhisperInstance> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function

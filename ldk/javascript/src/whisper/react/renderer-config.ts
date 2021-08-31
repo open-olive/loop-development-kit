@@ -141,18 +141,21 @@ export const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
   akeOpaqueHydratingObject: undefined,
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
-    // TODO: Throw error if top-level component is not `oh-whisper`.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- just need to check type that doesn't exist in Instance
+    if ((child as any).type !== 'whisper') {
+      throw new Error('oh-whisper must be top-level element');
+    }
     // In this function we are adding the Whisper properties to the ChildSet.
     const whisper = (child as unknown) as NewWhisper;
     childSet.label = whisper.label;
     childSet.components = whisper.components;
-    // console.log("appendChildToContainerChildSet", childSet, child);
     return childSet;
   },
   appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void {
-    // TODO: Warn if not supported
-    // TODO: Warn if they try adding oh-whisper as a child.
-    handlerByHelpsType[parentInstance.type]?.appendInitialChild?.(parentInstance, child);
+    const result = handlerByHelpsType[parentInstance.type]?.appendInitialChild?.(parentInstance, child) || false;
+    if (!result) {
+      console.warn(`Cannot add item of type ${child.type} to parent of type ${parentInstance.type}`);
+    }
   },
   beforeActiveInstanceBlur: undefined,
   cancelTimeout(id: HostConfigTimeoutHandle): void {
@@ -243,7 +246,7 @@ export const config: CoreConfig & PersistenceConfig = {
     rootContainer: Container,
     hostContext: HostContext,
   ): boolean {
-    // I don't think I need to do anything here;
+    // No finalization needs to take place here either;
     return false;
   },
   getChildHostContext(
