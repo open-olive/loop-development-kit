@@ -5,55 +5,20 @@ import { WhisperRenderingInterface, WhisperRenderInstance } from './whisper-rend
 // This side effect import makes the JSX namespace addition available without
 // needing the consumer to import the file separately.
 import './component-types';
+import { WhisperInstance, WhisperInstanceWrapper } from './whisper-instance-wrapper';
 
 /**
  * @internal
  */
-const Renderer = Reconciler.default(config);
-
-interface WhisperInstance {
-  update(node: ReactNode): Promise<void>;
-  close(): void;
-}
-
-/**
- * @internal
- * The WhisperInstanceWrapper class manages changes to the Whisper lifecycle.
- */
-class WhisperInstanceWrapper implements WhisperInstance {
-  private container: Reconciler.OpaqueRoot;
-
-  private renderInstance: WhisperRenderingInterface;
-
-  constructor(container: Reconciler.OpaqueRoot, renderInstance: WhisperRenderingInterface) {
-    this.container = container;
-    this.renderInstance = renderInstance;
-    this.renderInstance.setOnClose(this.handleWhisperClose);
-  }
-
-  close(): void {
-    this.renderInstance.closeWhisper();
-  }
-
-  update(node: React.ReactNode): Promise<void> {
-    return new Promise((resolve) => {
-      Renderer.updateContainer(node, this.container, null, resolve);
-    });
-  }
-
-  handleWhisperClose = (): Promise<void> =>
-    new Promise((resolve) => {
-      Renderer.updateContainer(null, this.container, null, resolve);
-    });
-}
+const renderer = Reconciler.default(config);
 
 export async function render(
   element: ReactNode,
   whisperInterface: WhisperRenderingInterface,
 ): Promise<WhisperInstance> {
   // Tag here drives what sort of "modes" its using. 0 = LegacyRoot.
-  const container = Renderer.createContainer(whisperInterface, 0, false, null);
-  const wrapper = new WhisperInstanceWrapper(container, whisperInterface);
+  const container = renderer.createContainer(whisperInterface, 0, false, null);
+  const wrapper = new WhisperInstanceWrapper(container, whisperInterface, renderer);
   await wrapper.update(element);
   return wrapper;
 }

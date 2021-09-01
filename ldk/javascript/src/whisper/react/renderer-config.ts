@@ -6,10 +6,11 @@ import { OpaqueHandle } from 'react-reconciler';
 import { Markdown, NewWhisper, WhisperComponent, WhisperComponentType } from '../types';
 import { getHandlerByHelpsType, getHandlerByTagType } from './component-handlers';
 import { HelpsComponents } from './component-types';
+import { WhisperRenderingInterface } from "./whisper-render-instance";
 
 export type Type = keyof HelpsComponents;
 export type Props = Record<string, any>;
-export type Container = any;
+export type Container = WhisperRenderingInterface;
 export type Instance = WhisperComponent<WhisperComponentType>;
 export type TextInstance = Markdown;
 export type HostConfigPublicInstance = string;

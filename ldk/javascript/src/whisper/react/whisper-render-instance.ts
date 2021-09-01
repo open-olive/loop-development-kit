@@ -29,10 +29,9 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
     }
     if (this.whisper == null) {
       await this.createWhisper(whisperData as NewWhisper);
+    } else if (this.status !== RenderInstanceStatus.Created) {
+      throw new Error('Cannot update whisper in invalid state');
     } else {
-      if (this.status !== RenderInstanceStatus.Created) {
-        throw new Error('Cannot update whisper in invalid state');
-      }
       await this.whisper.update(whisperData);
     }
   }
