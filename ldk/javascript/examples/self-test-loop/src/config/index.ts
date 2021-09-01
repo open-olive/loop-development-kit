@@ -14,7 +14,7 @@ import { whisperTestGroup } from './whisper-group';
 import { whisperUpdateTestGroup } from './whisper-update-group';
 import { whisperValidationTestGroup } from './whisper-validation-group';
 import { windowTestGroup } from './window-group';
-import { xlsxTestGroup } from './xlsx-group';
+import { documentTestGroup } from './document-group';
 
 export const testConfig: { [key: string]: TestGroup } = {
   clipboard: clipboardTestGroup(),
@@ -31,5 +31,5 @@ export const testConfig: { [key: string]: TestGroup } = {
   whisperUpdate: whisperUpdateTestGroup(),
   whisperValidation: whisperValidationTestGroup(),
   window: windowTestGroup(),
-  xlsx: xlsxTestGroup(),
+  document: documentTestGroup(),
 };

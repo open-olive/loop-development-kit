@@ -1,9 +1,10 @@
 /* eslint-disable no-async-promise-executor */
-import { xlsx } from '@oliveai/ldk';
+import { document } from '@oliveai/ldk';
+import { Workbook } from '@oliveai/ldk/dist/document/types';
 
-export const testXLSXEncodeAndDecode = (): Promise<boolean> =>
+export const testDocumentEncodeAndDecode = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const workbook: xlsx.Workbook = {
+    const workbook: Workbook = {
       worksheets: [
         {
           hidden: false,
@@ -19,14 +20,16 @@ export const testXLSXEncodeAndDecode = (): Promise<boolean> =>
     }, 5000);
 
     try {
-      const uint8ArrayData = await xlsx.encode(workbook);
-      const actual = await xlsx.decode(uint8ArrayData);
+      const uint8ArrayData = await document.xlsxEncode(workbook);
+      const actual = await document.xlsxDecode(uint8ArrayData);
       const cellData = actual.worksheets[0].rows[0].cells[0].value;
 
       if (cellData === 'value') {
         resolve(true);
       } else {
-        reject(new Error(`XLSX function  ${xlsx.encode} and ${xlsx.decode} failed.`));
+        reject(
+          new Error(`XLSX function  ${document.xlsxEncode} and ${document.xlsxDecode} failed.`),
+        );
       }
     } catch (e) {
       console.error(e);

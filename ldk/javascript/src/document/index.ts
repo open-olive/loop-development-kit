@@ -1,5 +1,5 @@
 import { promisifyWithParam } from '../promisify';
-
+import { Workbook } from './types';
 /**
  *  Document aptitude allows Loops to enable basic parsing of files including XLSX.
  */
@@ -25,24 +25,4 @@ export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
 
 export function xlsxDecode(data: Uint8Array): Promise<Workbook> {
   return promisifyWithParam(data, oliveHelps.document.xlsxDecode);
-}
-
-export interface Workbook {
-  worksheets: Worksheet[];
-}
-
-export interface Worksheet {
-  hidden: boolean;
-  hiddenColumns: number[];
-  hiddenRows: number[];
-  name: string;
-  rows: Row[];
-}
-
-export interface Row {
-  cells: Cell[];
-}
-
-export interface Cell {
-  value: string;
 }

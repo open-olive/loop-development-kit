@@ -1,5 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import * as document from '.';
+import { Workbook } from './types';
 
 describe('Document', () => {
   beforeEach(() => {
@@ -10,7 +11,7 @@ describe('Document', () => {
   });
 
   describe('xlsxEncode', () => {
-    const workbook: document.Workbook = {
+    const workbook: Workbook = {
       worksheets: [
         {
           hidden: false,
@@ -49,7 +50,7 @@ describe('Document', () => {
   });
 
   describe('xlsxDecode', () => {
-    const expected: document.Workbook = {
+    const expected: Workbook = {
       worksheets: [
         {
           hidden: false,
