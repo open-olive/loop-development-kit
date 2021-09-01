@@ -92,6 +92,16 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.Divider:
     case WhisperComponentType.SectionTitle:
       return component;
+    case WhisperComponentType.RichTextEditor:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
+          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+        },
+      } as OliveHelps.RichTextEditor;
     case WhisperComponentType.Autocomplete: {
       // eslint-disable-next-line
       const { onChange, onSelect, options } = component;
