@@ -20,7 +20,7 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
     try {
       oliveHelps.whisper.create(
         mapToInternalWhisper(whisper, stateMap),
-        (error: Error | undefined, internalWhisper: OliveHelps.Whisper) => {
+        (error: Error | undefined, internalWhisper: WhisperService.Whisper) => {
           if (error) {
             reject(error);
           }
