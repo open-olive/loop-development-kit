@@ -21,6 +21,8 @@ export interface LdkPermissions {
 
   cursor: LdkAptitude;
 
+  document: LdkAptitude;
+
   filesystem: LdkFilesystem;
 
   keyboard: LdkAptitude;
