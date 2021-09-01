@@ -200,7 +200,7 @@ export const config: CoreConfig & PersistenceConfig = {
     if (!keepChildren && value.components) {
       value.components = [];
     }
-    getHandlerByTagType(type).assignTextChildren?.(instance, newProps);
+    getHandlerByTagType(type).assignTextChildren?.(value, newProps);
     return value;
   },
   createContainerChildSet(container: Container): ChildSet {
