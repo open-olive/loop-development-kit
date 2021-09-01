@@ -1,17 +1,17 @@
 /* eslint-disable */
-import { Instance, Props, TextInstance } from './renderer-config';
+import { ComponentTypeWithWhisper, Instance, Props, TextInstance } from './renderer-config';
 import { WhisperComponentType } from '../types';
 import { HelpsComponents } from './component-types';
 
 function createAppendFunction(
   childPropertyName: string,
-  excludeChildrenTypes: WhisperComponentType[] = [],
+  excludeChildrenTypes: ComponentTypeWithWhisper[] = [],
 ): (instance: Instance, child: Instance | TextInstance) => boolean {
   return (instance, child) => {
     if ((instance as any)[childPropertyName] == null) {
       (instance as any)[childPropertyName] = [];
     }
-    if (excludeChildrenTypes.includes(child.type)) {
+    if (excludeChildrenTypes.includes(child.type) || child.type === 'whisper') {
       return false;
     }
     (instance as any)[childPropertyName].push(child);
@@ -144,11 +144,10 @@ function assertUnreachable(_: never): never {
   throw new Error(`Unexpected Type: ${_}`);
 }
 
-export function getHandlerByHelpsType(type: WhisperComponentType): ComponentSpecificHandler {
-  if ((type as string) === 'whisper') {
-    return whisperHandler;
-  }
+export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): ComponentSpecificHandler {
   switch (type) {
+    case 'whisper':
+      return whisperHandler;
     case WhisperComponentType.Autocomplete:
       return autoCompleteHandler;
     case WhisperComponentType.Box:

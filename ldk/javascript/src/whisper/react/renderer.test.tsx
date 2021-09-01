@@ -185,6 +185,27 @@ describe('renderer', () => {
       });
       expect(onMount).toHaveBeenCalled();
     });
+    it('ignores whispers rendered underneath whispers', async () => {
+      await render(
+        <oh-whisper label="whisper.label" onClose={() => {}}>
+          <oh-whisper label="forbiddenwhisper.label" onClose={() => {}}>
+            forbidden.text
+          </oh-whisper>
+          nakedmarkdown.body
+        </oh-whisper>,
+        whisperInterface,
+      );
+      expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
+        label: 'whisper.label',
+        onClose: expect.any(Function),
+        components: [
+          {
+            type: 'markdown',
+            body: 'nakedmarkdown.body',
+          },
+        ],
+      });
+    });
     it('generates a whisper with a class component correctly', async () => {
       const onMount = jest.fn();
       await render(

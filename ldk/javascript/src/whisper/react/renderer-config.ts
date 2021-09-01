@@ -6,12 +6,19 @@ import { OpaqueHandle } from 'react-reconciler';
 import { Markdown, NewWhisper, WhisperComponent, WhisperComponentType } from '../types';
 import { getHandlerByHelpsType, getHandlerByTagType } from './component-handlers';
 import { HelpsComponents } from './component-types';
-import { WhisperRenderingInterface } from "./whisper-render-instance";
+import { WhisperRenderingInterface } from './whisper-render-instance';
 
 export type Type = keyof HelpsComponents;
 export type Props = Record<string, any>;
 export type Container = WhisperRenderingInterface;
-export type Instance = WhisperComponent<WhisperComponentType>;
+export type Instance =
+  | WhisperComponent<WhisperComponentType>
+  | {
+      type: 'whisper';
+      label: string;
+      onClose: () => void;
+    };
+export type ComponentTypeWithWhisper = WhisperComponentType | 'whisper';
 export type TextInstance = Markdown;
 export type HostConfigPublicInstance = string;
 export type HostContext = null;
@@ -144,8 +151,7 @@ export const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
   akeOpaqueHydratingObject: undefined,
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- just need to check type that doesn't exist in Instance
-    if ((child as any).type !== 'whisper') {
+    if (child.type !== 'whisper') {
       throw new Error('oh-whisper must be top-level element');
     }
     // In this function we are adding the Whisper properties to the ChildSet.
