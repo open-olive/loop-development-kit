@@ -11,10 +11,11 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
     throw new Error(permissionsErrorMessage);
   }
   const json = JSON.stringify({
-    oliveHelpsContractVersion: '0.1.3',
+    oliveHelpsContractVersion: '0.1.4',
     permissions: {
       clipboard: ldkSettings.ldk.permissions.clipboard || undefined,
       cursor: ldkSettings.ldk.permissions.cursor || undefined,
+      document: ldkSettings.ldk.permissions.document || undefined,
       filesystem: ldkSettings.ldk.permissions.filesystem || undefined,
       keyboard: ldkSettings.ldk.permissions.keyboard || undefined,
       network: ldkSettings.ldk.permissions.network || undefined,
