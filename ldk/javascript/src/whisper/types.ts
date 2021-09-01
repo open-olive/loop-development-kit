@@ -69,6 +69,10 @@ export enum WhisperComponentType {
    */
   DateTimeInput = 'dateTimeInput',
   /**
+   *  The richText Editor allow users to use RichText Editor on Olive Helps
+   */
+  RichTextEditor = 'richTextEditor',
+  /**
    * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
    */
   Icon = 'icon',
@@ -378,6 +382,14 @@ export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> &
   backgroundStyle?: Color.Grey | Color.White;
 };
 
+export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEditor> & {
+  onBlur?: (error: Error | undefined) => void;
+  onChange: WhisperHandlerWithParam<string>;
+  onFocus?: (error: Error | undefined) => void;
+  tooltip?: string;
+  validationError?: string;
+};
+
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
@@ -397,6 +409,7 @@ export type ChildComponents =
   | NumberInput
   | Password
   | RadioGroup
+  | RichTextEditor
   | Select
   | SectionTitle
   | Telephone
