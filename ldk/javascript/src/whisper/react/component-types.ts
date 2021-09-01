@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
-import * as Whisper from "../types";
-import { WhisperHandler } from "../types";
+import { ReactNode } from 'react';
+import * as Whisper from '../types';
+import { WhisperHandler } from '../types';
 
 /**
  * @internal
@@ -15,7 +15,7 @@ type ComponentProps<T> = Omit<T, 'type'> & {
 type ComponentPropsWithChildren<T, TExcludeName extends string = 'children'> = Omit<
   ComponentProps<T>,
   TExcludeName
-  > & {
+> & {
   children: ReactNode;
 };
 

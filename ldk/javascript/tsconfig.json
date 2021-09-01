@@ -10,7 +10,7 @@
     "declaration": true,
     "strict": true,
     "typeRoots": ["node_modules/@types", "src/types"],
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   },
   "exclude": [
     "node_modules",
