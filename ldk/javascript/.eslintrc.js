@@ -21,6 +21,12 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
     'no-use-before-define': 'off',
+    '@typescript-eslint/no-empty-interface': [
+      'error',
+      {
+        allowSingleExtends: true,
+      },
+    ],
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
   },
   overrides: [
@@ -30,7 +36,7 @@ module.exports = {
         'import/extensions': ['off'],
         'no-console': 'off',
       },
-      files: ['**/*.ts','**/*.tsx'],
+      files: ['**/*.ts', '**/*.tsx'],
     },
   ],
 };

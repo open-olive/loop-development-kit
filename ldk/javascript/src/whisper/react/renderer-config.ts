@@ -1,11 +1,13 @@
 /* eslint-disable no-param-reassign -- we're doing tons of mutations in this file intentionally */
-
+/* eslint-disable @typescript-eslint/no-explicit-any -- need to use the escape hatches here. */
+/* eslint-disable @typescript-eslint/no-unused-vars -- lots of unused vars being kept for doc purposes. */
 import * as Reconciler from 'react-reconciler';
 import { OpaqueHandle } from 'react-reconciler';
 import { Markdown, NewWhisper, WhisperComponent, WhisperComponentType } from '../types';
-import { handlerByHelpsType, handlerByTagType } from './component-handlers';
+import { getHandlerByHelpsType, getHandlerByTagType } from './component-handlers';
+import { HelpsComponents } from './component-types';
 
-export type Type = string;
+export type Type = keyof HelpsComponents;
 export type Props = Record<string, any>;
 export type Container = any;
 export type Instance = WhisperComponent<WhisperComponentType>;
@@ -152,9 +154,13 @@ export const config: CoreConfig & PersistenceConfig = {
     return childSet;
   },
   appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void {
-    const result = handlerByHelpsType[parentInstance.type]?.appendInitialChild?.(parentInstance, child) || false;
+    const result =
+      getHandlerByHelpsType(parentInstance.type).appendInitialChild?.(parentInstance, child) ||
+      false;
     if (!result) {
-      console.warn(`Cannot add item of type ${child.type} to parent of type ${parentInstance.type}`);
+      console.warn(
+        `Cannot add item of type ${child.type} to parent of type ${parentInstance.type}`,
+      );
     }
   },
   beforeActiveInstanceBlur: undefined,
@@ -194,7 +200,7 @@ export const config: CoreConfig & PersistenceConfig = {
     if (!keepChildren && value.components) {
       value.components = [];
     }
-    handlerByTagType[type]?.assignTextChildren?.(instance, newProps);
+    getHandlerByTagType(type).assignTextChildren?.(instance, newProps);
     return value;
   },
   createContainerChildSet(container: Container): ChildSet {
@@ -214,11 +220,12 @@ export const config: CoreConfig & PersistenceConfig = {
   ): Instance {
     const propsWithoutChildren = { ...props };
     delete propsWithoutChildren.children;
+    const handler = getHandlerByTagType(type);
     const instance: Instance = {
-      type: handlerByTagType[type].helpsType,
+      type: handler.helpsType,
       ...propsWithoutChildren,
     };
-    handlerByTagType[type]?.assignTextChildren?.(instance, props);
+    handler.assignTextChildren?.(instance, props);
     if (internalHandle.key) {
       instance.key = internalHandle.key;
     }
@@ -314,7 +321,7 @@ export const config: CoreConfig & PersistenceConfig = {
     return setTimeout(fn, delay);
   },
   shouldSetTextContent(type: Type, props: Props): boolean {
-    return handlerByTagType[type]?.shouldSetTextChildren?.() || false;
+    return getHandlerByTagType(type).shouldSetTextChildren?.() || false;
   },
   supportsHydration: false,
   supportsMutation: false,

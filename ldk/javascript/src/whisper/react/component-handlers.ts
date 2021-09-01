@@ -1,6 +1,7 @@
-/* eslint-disable no-param-reassign -- we're doing tons of mutations in this file intentionally */
+/* eslint-disable */
 import { Instance, Props, TextInstance } from './renderer-config';
 import { WhisperComponentType } from '../types';
+import { HelpsComponents } from './component-types';
 
 function createAppendFunction(
   childPropertyName: string,
@@ -39,98 +40,209 @@ interface ComponentSpecificHandler {
    */
   helpsType: WhisperComponentType;
 
-  whisperTagType: keyof JSX.IntrinsicElements;
+  whisperTagType: keyof HelpsComponents;
 }
 
-const handlers: Array<ComponentSpecificHandler> = [
-  {
-    appendInitialChild: createAppendFunction('children', [WhisperComponentType.CollapseBox]),
-    helpsType: WhisperComponentType.Box,
-    whisperTagType: 'oh-box',
-  },
-  {
-    appendInitialChild: createAppendFunction('children'),
-    helpsType: WhisperComponentType.CollapseBox,
-    whisperTagType: 'oh-collapse-box',
-  },
-  {
-    helpsType: WhisperComponentType.Button,
-    whisperTagType: 'oh-button',
-  },
-  {
-    helpsType: WhisperComponentType.Checkbox,
-    whisperTagType: 'oh-checkbox',
-  },
-  {
-    helpsType: WhisperComponentType.DateTimeInput,
-    whisperTagType: 'oh-datetime',
-  },
-  {
-    helpsType: WhisperComponentType.Divider,
-    whisperTagType: 'oh-divider',
-  },
-  {
-    helpsType: WhisperComponentType.Email,
-    whisperTagType: 'oh-email',
-  },
-  {
-    helpsType: WhisperComponentType.Icon,
-    whisperTagType: 'oh-icon',
-  },
-  {
-    helpsType: WhisperComponentType.Link,
-    whisperTagType: 'oh-link',
-  },
-  {
-    helpsType: WhisperComponentType.Markdown,
-    whisperTagType: 'oh-markdown',
-  },
-  {
-    helpsType: WhisperComponentType.Message,
-    whisperTagType: 'oh-message',
-  },
-  {
-    helpsType: WhisperComponentType.Number,
-    whisperTagType: 'oh-number',
-  },
-  {
-    helpsType: WhisperComponentType.Password,
-    whisperTagType: 'oh-password',
-  },
-  {
-    helpsType: WhisperComponentType.RadioGroup,
-    whisperTagType: 'oh-radio-group',
-  },
-  {
-    helpsType: WhisperComponentType.SectionTitle,
-    whisperTagType: 'oh-section-title',
-  },
-  {
-    helpsType: WhisperComponentType.Telephone,
-    whisperTagType: 'oh-telephone',
-  },
-  {
-    helpsType: WhisperComponentType.TextInput,
-    whisperTagType: 'oh-text-input',
-  },
-  {
-    appendInitialChild: createAppendFunction('components'),
-    helpsType: 'whisper' as any,
-    whisperTagType: 'oh-whisper',
-  },
-];
+const autoCompleteHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Autocomplete,
+  whisperTagType: 'oh-autocomplete',
+};
 
-export const handlerByHelpsType = handlers.reduce<Record<string, ComponentSpecificHandler>>(
-  (record, currentValue) => {
-    record[currentValue.helpsType] = currentValue;
-    return record;
-  },
-  {},
-);
-export const handlerByTagType = handlers.reduce<Record<string, ComponentSpecificHandler>>(
-  (record, currentValue) => {
-    record[currentValue.whisperTagType] = currentValue;
-    return record;
-  },
-  {},
-);
+const boxHandler: ComponentSpecificHandler = {
+  appendInitialChild: createAppendFunction('children', [WhisperComponentType.CollapseBox]),
+  helpsType: WhisperComponentType.Box,
+  whisperTagType: 'oh-box',
+};
+const collapseBoxHandler: ComponentSpecificHandler = {
+  appendInitialChild: createAppendFunction('children'),
+  helpsType: WhisperComponentType.CollapseBox,
+  whisperTagType: 'oh-collapse-box',
+};
+const buttonHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Button,
+  whisperTagType: 'oh-button',
+};
+const checkboxHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Checkbox,
+  whisperTagType: 'oh-checkbox',
+};
+const dateTimeHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.DateTimeInput,
+  whisperTagType: 'oh-datetime',
+};
+const dividerHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Divider,
+  whisperTagType: 'oh-divider',
+};
+const dropZoneHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.DropZone,
+  whisperTagType: 'oh-drop-zone',
+};
+const emailHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Email,
+  whisperTagType: 'oh-email',
+};
+const iconHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Icon,
+  whisperTagType: 'oh-icon',
+};
+const linkHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Link,
+  whisperTagType: 'oh-link',
+};
+const listPairHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.ListPair,
+  whisperTagType: 'oh-list-pair',
+};
+const markdownHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Markdown,
+  whisperTagType: 'oh-markdown',
+};
+const messageHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Message,
+  whisperTagType: 'oh-message',
+};
+const numberHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Number,
+  whisperTagType: 'oh-number',
+};
+const passwordHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Password,
+  whisperTagType: 'oh-password',
+};
+const radioGroupHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.RadioGroup,
+  whisperTagType: 'oh-radio-group',
+};
+const sectionTitleHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.SectionTitle,
+  whisperTagType: 'oh-section-title',
+};
+const selectHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Select,
+  whisperTagType: 'oh-select',
+};
+const telephoneHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Telephone,
+  whisperTagType: 'oh-telephone',
+};
+const textInputHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.TextInput,
+  whisperTagType: 'oh-text-input',
+};
+const whisperHandler: ComponentSpecificHandler = {
+  appendInitialChild: createAppendFunction('components'),
+  helpsType: 'whisper' as any,
+  whisperTagType: 'oh-whisper',
+};
+
+function assertUnreachable(_: never): never {
+  throw new Error(`Unexpected Type: ${_}`);
+}
+
+export function getHandlerByHelpsType(type: WhisperComponentType): ComponentSpecificHandler {
+  if ((type as string) === 'whisper') {
+    return whisperHandler;
+  }
+  switch (type) {
+    case WhisperComponentType.Autocomplete:
+      return autoCompleteHandler;
+    case WhisperComponentType.Box:
+      return boxHandler;
+    case WhisperComponentType.Button:
+      return buttonHandler;
+    case WhisperComponentType.Checkbox:
+      return checkboxHandler;
+    case WhisperComponentType.CollapseBox:
+      return collapseBoxHandler;
+    case WhisperComponentType.DateTimeInput:
+      return dateTimeHandler;
+    case WhisperComponentType.Divider:
+      return dividerHandler;
+    case WhisperComponentType.DropZone:
+      return dropZoneHandler;
+    case WhisperComponentType.Email:
+      return emailHandler;
+    case WhisperComponentType.Icon:
+      return iconHandler;
+    case WhisperComponentType.Link:
+      return linkHandler;
+    case WhisperComponentType.ListPair:
+      return listPairHandler;
+    case WhisperComponentType.Markdown:
+      return markdownHandler;
+    case WhisperComponentType.Message:
+      return messageHandler;
+    case WhisperComponentType.Number:
+      return numberHandler;
+    case WhisperComponentType.Password:
+      return passwordHandler;
+    case WhisperComponentType.RadioGroup:
+      return radioGroupHandler;
+    case WhisperComponentType.Select:
+      return selectHandler;
+    case WhisperComponentType.Telephone:
+      return telephoneHandler;
+    case WhisperComponentType.TextInput:
+      return textInputHandler;
+    case WhisperComponentType.SectionTitle:
+      return sectionTitleHandler;
+    default:
+      assertUnreachable(type);
+  }
+  // Do not put a return or throw statement here, that should be caught by the
+  // assert unreachable function in default branch.
+}
+
+export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSpecificHandler {
+  switch (tagType) {
+    case 'oh-autocomplete':
+      return autoCompleteHandler;
+    case 'oh-box':
+      return boxHandler;
+    case 'oh-button':
+      return buttonHandler;
+    case 'oh-checkbox':
+      return checkboxHandler;
+    case 'oh-collapse-box':
+      return collapseBoxHandler;
+    case 'oh-datetime':
+      return dateTimeHandler;
+    case 'oh-divider':
+      return dividerHandler;
+    case 'oh-drop-zone':
+      return dropZoneHandler;
+    case 'oh-email':
+      return emailHandler;
+    case 'oh-icon':
+      return iconHandler;
+    case 'oh-link':
+      return linkHandler;
+    case 'oh-list-pair':
+      return listPairHandler;
+    case 'oh-markdown':
+      return markdownHandler;
+    case 'oh-message':
+      return messageHandler;
+    case 'oh-number':
+      return numberHandler;
+    case 'oh-password':
+      return passwordHandler;
+    case 'oh-radio-group':
+      return radioGroupHandler;
+    case 'oh-select':
+      return selectHandler;
+    case 'oh-section-title':
+      return sectionTitleHandler;
+    case 'oh-telephone':
+      return telephoneHandler;
+    case 'oh-text-input':
+      return textInputHandler;
+    case 'oh-whisper':
+      return whisperHandler;
+    default:
+      assertUnreachable(tagType);
+  }
+  // Do not put a return or throw statement here, that should be caught by the
+  // assert unreachable function in default branch.
+}
