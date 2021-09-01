@@ -12,7 +12,7 @@ import * as user from './user';
 import * as vault from './vault';
 import * as whisper from './whisper';
 import * as window from './window';
-import * as xlsx from './xlsx';
+import * as xlsx from './document';
 // These are provided to validate that the aptitude object meets the interface contract.
 
 /* eslint-disable */
@@ -30,7 +30,7 @@ const _user: user.User = user;
 const _vault: vault.Vault = vault;
 const _whisper: whisper.WhisperAptitude = whisper;
 const _window: window.Window = window;
-const _xlsx: xlsx.XLSX = xlsx;
+const _xlsx: xlsx.Document = xlsx;
 /* eslint-enable */
 
 export {

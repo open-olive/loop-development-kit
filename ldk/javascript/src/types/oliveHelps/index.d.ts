@@ -18,6 +18,6 @@ declare namespace OliveHelps {
     user: User.Aptitude;
     vault: Vault.Aptitude;
     window: Window.Aptitude;
-    xlsx: XLSX.Aptitude;
+    document: Document.Aptitude;
   }
 }

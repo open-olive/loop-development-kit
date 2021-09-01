@@ -1,7 +1,7 @@
-declare namespace XLSX {
+declare namespace Document {
   interface Aptitude {
-    decode: Common.ReadableWithParam<Uint8Array, Workbook>;
-    encode: Common.ReadableWithParam<Workbook, Uint8Array>;
+    xlsxDecode: Common.ReadableWithParam<Uint8Array, Workbook>;
+    xlsxEncode: Common.ReadableWithParam<Workbook, Uint8Array>;
   }
 
   interface Workbook {

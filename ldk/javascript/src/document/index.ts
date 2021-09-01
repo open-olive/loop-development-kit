@@ -1,31 +1,30 @@
 import { promisifyWithParam } from '../promisify';
 
 /**
- *  XLSX aptitude allows Loops to enable basic parsing of XLSX files.
- * (We do NOT supprot XLS files right now.)
+ *  Document aptitude allows Loops to enable basic parsing of files including XLSX.
  */
-export interface XLSX {
+export interface Document {
   /**
    * Encodes a workbook object into XLSX data
    * @param  - Workbook object
    * @returns - A promise containing Uint8Array XLSX data.
    */
-  encode(workbook: Workbook): Promise<Uint8Array>;
+  xlsxEncode(workbook: Workbook): Promise<Uint8Array>;
 
   /**
    * Decodes XLSX data into a workbook object.
    * @param  - Uint8Array XLSX data
    * @returns - A promise containing Workbook.
    */
-  decode(data: Uint8Array): Promise<Workbook>;
+  xlsxDecode(data: Uint8Array): Promise<Workbook>;
 }
 
-export function encode(workbook: Workbook): Promise<Uint8Array> {
-  return promisifyWithParam(workbook, oliveHelps.xlsx.encode);
+export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
+  return promisifyWithParam(workbook, oliveHelps.document.xlsxEncode);
 }
 
-export function decode(data: Uint8Array): Promise<Workbook> {
-  return promisifyWithParam(data, oliveHelps.xlsx.decode);
+export function xlsxDecode(data: Uint8Array): Promise<Workbook> {
+  return promisifyWithParam(data, oliveHelps.document.xlsxDecode);
 }
 
 export interface Workbook {

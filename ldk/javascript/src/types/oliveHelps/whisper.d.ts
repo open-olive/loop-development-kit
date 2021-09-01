@@ -21,6 +21,7 @@ declare namespace WhisperService {
     | 'number'
     | 'password'
     | 'radioGroup'
+    | 'richTextEditor'
     | 'select'
     | 'sectionTitle'
     | 'telephone'
@@ -191,6 +192,14 @@ declare namespace WhisperService {
     selected?: number;
   };
 
+  type RichTextEditor = Component<'richTextEditor'> & {
+    onBlur?: (error: Error | undefined) => void;
+    onChange: WhisperHandlerWithParam<string>;
+    onFocus?: (error: Error | undefined) => void;
+    tooltip?: string;
+    validationError?: string;
+  };
+
   type Checkbox = SelectComponent<'checkbox'> & {
     label: string;
     tooltip?: string;
@@ -260,6 +269,7 @@ declare namespace WhisperService {
     | NumberInput
     | Password
     | RadioGroup
+    | RichTextEditor
     | Select
     | Telephone
     | TextInput
