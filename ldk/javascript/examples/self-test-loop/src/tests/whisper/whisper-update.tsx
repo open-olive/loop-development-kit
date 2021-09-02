@@ -2,7 +2,6 @@
 import { whisper } from '@oliveai/ldk';
 import {
   Checkbox,
-  ChildComponents,
   Component,
   Direction,
   Icon,
@@ -21,6 +20,9 @@ import {
   createTextComponent,
   resolveRejectButtons,
 } from './utils';
+import * as React from 'react';
+import { renderNewWhisper } from '@oliveai/ldk/dist/whisper/react/renderer';
+import { WhisperInstance } from '@oliveai/ldk/dist/whisper/react/whisper-instance-wrapper';
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -157,77 +159,118 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
     }
   });
 
-export const testUpdateCollapseState = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const checkboxes: ChildComponents[] = [
-        {
-          type: WhisperComponentType.Checkbox,
-          label: 'cb1',
-          value: false,
-          key: 'c1',
-          onChange: () => {
-            // do nothing.
-          },
-        },
-        {
-          type: WhisperComponentType.Checkbox,
-          label: 'cb2',
-          value: false,
-          key: 'c2',
-          onChange: () => {
-            // do nothing.
-          },
-        },
-      ];
+interface ConfirmOrDenyProps {
+  onResolve: (value: boolean) => void;
+  onReject: (reason?: Error) => void;
+  prompt: string;
+  rejectReason?: string;
+}
 
-      const collapseBox: Component = {
-        type: WhisperComponentType.CollapseBox,
-        children: [...checkboxes],
-        label: 'first CollapseBox',
-        open: false,
-        key: 'collapse',
-      };
+const ConfirmOrDeny: React.FunctionComponent<ConfirmOrDenyProps> = (props) => {
+  const onResolve = () => {
+    props.onResolve(true);
+  };
+  const onReject = () => {
+    props.onReject();
+  };
+  return (
+    <>
+      <oh-message body={props.prompt} />
+      <oh-box direction={Direction.Horizontal} justifyContent={JustifyContent.SpaceBetween}>
+        <oh-button onClick={onResolve} label="Yes" />
+        <oh-button onClick={onReject} label="No" />
+      </oh-box>
+    </>
+  );
+};
 
-      const firstConfirm = createConfirmOrDenyWithPromise(
-        'Expand the Collapse Box and click Yes',
-        'User clicked no',
-      );
-      const testWhisper = await whisper.create({
-        label: 'Update Collapse State',
-        onClose: () => {
-          // do nothing.
-        },
-        components: [collapseBox, ...firstConfirm.button],
-      });
-      await firstConfirm.promise;
-      const secondUpdate = createConfirmOrDenyWithPromise(
-        'Did the CollapseBox stay expanded?',
-        'User selected update failed.',
-      );
-      await testWhisper.update({
-        label: 'Update Collapse State',
-        components: [{ ...collapseBox, open: true }, ...secondUpdate.button],
-      });
-      await secondUpdate.promise;
-      testWhisper.update({
-        label: 'Update Collapse State',
-        components: [
-          collapseBox,
-          ...confirmOrDeny(
-            resolve,
-            reject,
-            'Did the collapse box go back to collapsed?',
-            'Collapse box did not obey state change',
-            testWhisper,
-          ),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      console.error(error.message);
-    }
-  });
+interface TestComponentProps {
+  onResolve: (value: boolean | PromiseLike<boolean>) => void;
+  onReject: () => void;
+}
+
+class WhisperTestWrapper {
+  onResolve: (value: boolean | PromiseLike<boolean>) => void;
+  onReject: () => void;
+  promise: Promise<boolean>;
+  testComponent: React.FunctionComponent<TestComponentProps>;
+  whisper: WhisperInstance | undefined;
+
+  constructor(testComponent: React.FunctionComponent<TestComponentProps>) {
+    this.promise = new Promise((resolve, reject) => {
+      this.onResolve = resolve;
+      this.onReject = reject;
+    });
+    this.testComponent = testComponent;
+  }
+
+  async create(): Promise<void> {
+    const TestComponent = this.testComponent;
+    this.whisper = await renderNewWhisper(
+      <TestComponent onResolve={this.handleResolve} onReject={this.onReject} />,
+    );
+  }
+
+  handleResolve = (value: boolean | PromiseLike<boolean>) => {
+    this.onResolve(true);
+    this.whisper.close();
+  };
+
+  handleReject = () => {
+    this.onReject();
+    this.whisper.close();
+  };
+}
+
+const UpdateCollapseState: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  const checkboxes = (
+    <>
+      <oh-checkbox onChange={() => {}} label="cb1" value={false} key="c1" />
+      <oh-checkbox onChange={() => {}} label="cb2" value={false} key="c2" />
+    </>
+  );
+  let buttons: React.ReactNode = (
+    <ConfirmOrDeny
+      onResolve={() => {
+        updateStep(2);
+      }}
+      onReject={props.onReject}
+      prompt="Expand the Collapse Box and click Yes"
+    />
+  );
+  if (step === 2) {
+    buttons = (
+      <ConfirmOrDeny
+        onResolve={() => {
+          updateStep(3);
+        }}
+        onReject={props.onReject}
+        prompt="Did the CollapseBox stay expanded?"
+      />
+    );
+  } else if (step === 3) {
+    buttons = (
+      <ConfirmOrDeny
+        onResolve={props.onResolve}
+        onReject={props.onReject}
+        prompt="Did the collapse box go back to collapsed?"
+      />
+    );
+  }
+  return (
+    <oh-whisper label="Update Collapse State" onClose={() => {}}>
+      <oh-collapse-box open={step === 2}>{checkboxes}</oh-collapse-box>
+      {buttons}
+    </oh-whisper>
+  );
+};
+
+export const testUpdateCollapseState = async (): Promise<boolean> => {
+  const wrapper = new WhisperTestWrapper(UpdateCollapseState);
+  await wrapper.create();
+  return wrapper.promise;
+};
 
 export const testWhisperStateOnChange = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
