@@ -10,7 +10,13 @@ export interface WhisperInstance {
   close(): void;
 }
 
-export type ReconcilerInstance = Reconciler.Reconciler<WhisperRenderingInterface, Instance, Markdown, unknown, Instance>;
+export type ReconcilerInstance = Reconciler.Reconciler<
+  WhisperRenderingInterface,
+  Instance,
+  Markdown,
+  unknown,
+  Instance
+>;
 
 /**
  * @internal

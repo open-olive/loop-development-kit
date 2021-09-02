@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- lots of unused vars being kept for doc purposes. */
 import * as Reconciler from 'react-reconciler';
 import { OpaqueHandle } from 'react-reconciler';
-import { Component, Markdown, NewWhisper, WhisperComponent, WhisperComponentType } from "../types";
+import { Component, Markdown, NewWhisper, WhisperComponent, WhisperComponentType } from '../types';
 import { getHandlerByHelpsType, getHandlerByTagType } from './component-handlers';
 import { HelpsComponents } from './component-types';
 import { WhisperRenderingInterface } from './whisper-render-instance';
@@ -17,7 +17,7 @@ export type Instance =
       type: 'whisper';
       label: string;
       onClose: () => void;
-      components: Instance[]
+      components: Instance[];
     };
 export type ComponentTypeWithWhisper = WhisperComponentType | 'whisper';
 export type TextInstance = Markdown;
