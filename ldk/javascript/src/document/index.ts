@@ -1,5 +1,7 @@
-import { promisifyWithParam } from '../promisify';
+import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
 import { Workbook } from './types';
+import * as mapper from '../utils/mapper';
+
 /**
  *  Document aptitude allows Loops to enable basic parsing of files including XLSX.
  */
@@ -20,9 +22,9 @@ export interface Document {
 }
 
 export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
-  return promisifyWithParam(workbook, oliveHelps.document.xlsxEncode);
+  return promisifyMappedWithParam(workbook, mapper.mapToUint8Array, oliveHelps.document.xlsxEncode);
 }
 
 export function xlsxDecode(data: Uint8Array): Promise<Workbook> {
-  return promisifyWithParam(data, oliveHelps.document.xlsxDecode);
+  return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.xlsxDecode);
 }

@@ -1,7 +1,7 @@
 declare namespace Document {
   interface Aptitude {
-    xlsxDecode: Common.ReadableWithParam<Uint8Array, Workbook>;
-    xlsxEncode: Common.ReadableWithParam<Workbook, Uint8Array>;
+    xlsxDecode: Common.ReadableWithParam<Array<number>, Workbook>;
+    xlsxEncode: Common.ReadableWithParam<Workbook, ArrayBuffer>;
   }
 
   interface Workbook {
