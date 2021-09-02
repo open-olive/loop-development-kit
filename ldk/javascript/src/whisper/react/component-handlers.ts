@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { ComponentTypeWithWhisper, Instance, Props, TextInstance } from './renderer-config';
 import { WhisperComponentType } from '../types';
 import { HelpsComponents } from './component-types';
@@ -9,6 +8,7 @@ function createAppendFunction(
 ): (instance: Instance, child: Instance | TextInstance) => boolean {
   return (instance, child) => {
     if ((instance as any)[childPropertyName] == null) {
+      // eslint-disable-next-line no-param-reassign -- need to modify param.
       (instance as any)[childPropertyName] = [];
     }
     if (excludeChildrenTypes.includes(child.type) || child.type === 'whisper') {
@@ -144,6 +144,7 @@ function assertUnreachable(_: never): never {
   throw new Error(`Unexpected Type: ${_}`);
 }
 
+// eslint-disable-next-line consistent-return
 export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): ComponentSpecificHandler {
   switch (type) {
     case 'whisper':
@@ -199,6 +200,7 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
   // assert unreachable function in default branch.
 }
 
+// eslint-disable-next-line consistent-return
 export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSpecificHandler {
   switch (tagType) {
     case 'oh-autocomplete':

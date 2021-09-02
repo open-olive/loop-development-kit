@@ -98,7 +98,6 @@ export interface CoreConfig {
   isOpaqueHydratingObject(value: any): boolean;
 
   makeOpaqueHydratingObject: any;
-  akeOpaqueHydratingObject: any;
   makeClientId: any;
   makeClientIdInDEV: any;
   beforeActiveInstanceBlur: any;
@@ -150,7 +149,6 @@ export interface PersistenceConfig {
 
 export const config: CoreConfig & PersistenceConfig = {
   afterActiveInstanceBlur: undefined,
-  akeOpaqueHydratingObject: undefined,
   appendChildToContainerChildSet(childSet: ChildSet, child: Instance | TextInstance): ChildSet {
     if (child.type !== 'whisper') {
       throw new Error('oh-whisper must be top-level element');
