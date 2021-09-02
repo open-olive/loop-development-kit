@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- internal work - comfortable with risk */
 import { ComponentTypeWithWhisper, Instance, Props, TextInstance } from './renderer-config';
 import { WhisperComponentType } from '../types';
 import { HelpsComponents } from './component-types';
