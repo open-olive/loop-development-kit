@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars -- lots of unused vars being kept for doc purposes. */
 import * as Reconciler from 'react-reconciler';
 import { OpaqueHandle } from 'react-reconciler';
-import { Markdown, NewWhisper, WhisperComponent, WhisperComponentType } from '../types';
+import { Component, Markdown, NewWhisper, WhisperComponent, WhisperComponentType } from "../types";
 import { getHandlerByHelpsType, getHandlerByTagType } from './component-handlers';
 import { HelpsComponents } from './component-types';
 import { WhisperRenderingInterface } from './whisper-render-instance';
@@ -17,6 +17,7 @@ export type Instance =
       type: 'whisper';
       label: string;
       onClose: () => void;
+      components: Instance[]
     };
 export type ComponentTypeWithWhisper = WhisperComponentType | 'whisper';
 export type TextInstance = Markdown;
@@ -154,10 +155,8 @@ export const config: CoreConfig & PersistenceConfig = {
     if (child.type !== 'whisper') {
       throw new Error('oh-whisper must be top-level element');
     }
-    // In this function we are adding the Whisper properties to the ChildSet.
-    const whisper = (child as unknown) as NewWhisper;
-    childSet.label = whisper.label;
-    childSet.components = whisper.components;
+    childSet.label = child.label;
+    childSet.components = child.components as Component[];
     return childSet;
   },
   appendInitialChild(parentInstance: Instance, child: Instance | TextInstance): void {
