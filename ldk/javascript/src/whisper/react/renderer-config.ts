@@ -197,12 +197,15 @@ export const config: CoreConfig & PersistenceConfig = {
     recyclableInstance: Instance | null,
   ): Instance {
     const value: any = {
-      ...instance,
+      type: instance.type,
       ...newProps,
     };
     delete value.children;
     if (!keepChildren && value.components) {
       value.components = [];
+    }
+    if (internalInstanceHandle.key) {
+      value.key = internalInstanceHandle.key;
     }
     getHandlerByTagType(type).assignTextChildren?.(value, newProps);
     return value;
