@@ -32,7 +32,7 @@ describe('Document', () => {
         );
         const actual = document.xlsxEncode(workbook);
 
-        return expect(actual).resolves.toBe(expected);
+        return expect(actual).resolves.toStrictEqual(expected);
       },
       undefined,
     );
