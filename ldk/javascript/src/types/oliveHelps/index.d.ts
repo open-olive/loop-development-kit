@@ -475,6 +475,7 @@ declare namespace OliveHelps {
   type Autocomplete = SelectComponent<'autocomplete'> & {
     label?: string;
     loading?: boolean;
+    multiple?: boolean;
     onChange?: WhisperHandlerWithParam<string>;
     onSelect: WhisperHandlerWithParam<string>;
     options?: AutocompleteOption[];

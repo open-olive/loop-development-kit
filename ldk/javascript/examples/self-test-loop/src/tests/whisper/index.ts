@@ -2098,6 +2098,39 @@ export const testAutocompleteChange = (): Promise<boolean> =>
     });
   });
 
+export const testAutocompleteMultiple = (): Promise<boolean> =>
+  new Promise(async (resolve) => {
+    await whisper.create({
+      label: 'Autocomplete change test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Type into the input "Typed"',
+        },
+        {
+          label: 'Autocomplete Test',
+          loading: true,
+          multiple: true,
+          onSelect: () => {
+            // do nothing
+          },
+          options: [
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+            { label: 'Value 3', value: '3' },
+            { label: 'Value 4', value: '4' },
+            { label: 'Value 5', value: '5' },
+          ],
+          type: WhisperComponentType.Autocomplete,
+          tooltip: 'tooltip',
+        },
+      ],
+    });
+  });
+
 export const testPadding = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {

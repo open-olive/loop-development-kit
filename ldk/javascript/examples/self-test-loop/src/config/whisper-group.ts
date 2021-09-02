@@ -204,6 +204,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Test the autocomplete onChange function',
     ),
     new LoopTest(
+      'Whisper Aptitude - Autocomplete Multiple',
+      whisperTests.testAutocompleteMultiple,
+      10000,
+      'Test an autocomplete that can show multiple results',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Padding',
       whisperTests.testPadding,
       10000,

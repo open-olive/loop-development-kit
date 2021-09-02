@@ -239,6 +239,7 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
 export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
   label?: string;
   loading?: boolean;
+  multiple?: boolean;
   onChange?: WhisperHandlerWithParam<string>;
   onSelect: WhisperHandlerWithParam<string>;
   options?: AutocompleteOption[];
