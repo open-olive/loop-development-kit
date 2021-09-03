@@ -545,7 +545,7 @@ export const testClickableLink = (): Promise<boolean> =>
                 label: `Url opened in browser`,
                 onClick: (_error: Error, onClickWhisper: Whisper) => {
                   if (linkClicked) {
-                  resolve(true);
+                    resolve(true);
                   } else {
                     reject('On click action was not received.');
                   }
