@@ -207,7 +207,7 @@ class WhisperTestWrapper {
   async create(): Promise<void> {
     const TestComponent = this.testComponent;
     this.whisper = await renderNewWhisper(
-      <TestComponent onResolve={this.handleResolve} onReject={this.onReject} />,
+      <TestComponent onResolve={this.handleResolve} onReject={this.handleReject} />,
     );
   }
 
