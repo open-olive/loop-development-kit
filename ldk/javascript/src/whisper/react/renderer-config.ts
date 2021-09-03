@@ -214,8 +214,9 @@ export const config: CoreConfig & PersistenceConfig = {
     return {
       label: '',
       components: [],
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onClose: () => {},
+      onClose: () => {
+        /* do nothing */
+      },
     };
   },
   createInstance(
