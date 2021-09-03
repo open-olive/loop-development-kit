@@ -15,11 +15,7 @@ import {
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
 import {
-  createButtonComponent,
-  createSelectComponent,
-  createTextComponent,
   logMap,
-  resolveRejectButtons,
 } from './utils';
 import * as React from 'react';
 import { ConfirmOrDeny, TestComponentProps, WhisperTestWrapper } from './react-whisper-utils';
@@ -164,41 +160,53 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
 export const testValuePersistOnUpdate = (): Promise<boolean> =>
   WhisperTestWrapper.createPromise(ValuePersistOnUpdate, 'Values should persist after update');
 
-export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const text1 = createTextComponent('text1');
-      const select1 = createSelectComponent('select1', 'Select Option 1');
-      whisper.create({
-        label: 'Values should be overwritten after update',
-        components: [
-          text1,
-          select1,
-          createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
+const ValueOverwrittenOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  return (
+    <>
+      {step === 2 && <oh-text-input label="text2" id="text2" key="text2" onChange={() => {}} />}
+      <oh-text-input
+        label="text1"
+        id="text1"
+        key="text1"
+        onChange={() => {}}
+        value={step === 2 ? 'overwritten' : undefined}
+      />
+      {step === 2 && <oh-select onSelect={() => {}} options={['Option 1', 'Option 2']} />}
+      <oh-select
+        onSelect={() => {}}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? 1 : undefined}
+      />
+
+      {step === 1 && (
+        <oh-button
+          label="Update"
+          onClick={(error) => {
             if (error) {
-              console.error(error);
-              reject(error);
+              props.onReject();
+            } else {
+              updateStep(2);
             }
-            // Updating whisper with new component values
-            text1.value = 'overwritten';
-            select1.selected = 1;
-            onClickWhisper.update({
-              components: [
-                createTextComponent('textNew', 'New Text Field'),
-                text1,
-                createSelectComponent('selectNew', 'New Select Field'),
-                select1,
-                resolveRejectButtons(resolve, reject, 'Values overwritten', 'Values persisted'),
-              ],
-            });
-          }),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
+          }}
+        />
+      )}
+      {step === 2 && (
+        <ConfirmOrDeny
+          onResolve={props.onResolve}
+          onReject={props.onReject}
+          prompt={'Values overwritten'}
+        />
+      )}
+    </>
+  );
+};
+
+export const testValueOverwrittenOnUpdate = () =>
+  WhisperTestWrapper.createPromise(
+    ValueOverwrittenOnUpdate,
+    'Values should be overwritten after update',
+  );
 
 const UpdateCollapseState: React.FunctionComponent<TestComponentProps> = (props) => {
   const [step, updateStep] = React.useState(1);
