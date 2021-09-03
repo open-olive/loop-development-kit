@@ -90,10 +90,28 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
   return (
     <>
       {step === 2 && (
-        <oh-text-input onChange={onChangeHandler} key="newtext" id="newtext" tooltip="Enter text" />
+        <oh-text-input
+          onChange={onChangeHandler}
+          key="newtext"
+          id="newtext"
+          tooltip="Enter text"
+          label="Enter Text"
+        />
       )}
-      <oh-text-input onChange={onChangeHandler} key="text1" id="text1" tooltip="Enter text" />
-      <oh-text-input onChange={onChangeHandler} key="text2" id="text2" tooltip="Enter text" />
+      <oh-text-input
+        onChange={onChangeHandler}
+        key="text1"
+        id="text1"
+        tooltip="Enter text"
+        label="Enter Text"
+      />
+      <oh-text-input
+        onChange={onChangeHandler}
+        key="text2"
+        id="text2"
+        tooltip="Enter text"
+        label="Enter Text"
+      />
       {step === 2 && (
         <oh-select
           onSelect={onChangeHandler}
@@ -101,6 +119,7 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
           id="newselect"
           options={['Option 1', 'Option 2']}
           tooltip="Select an option"
+          label="Select Option"
         />
       )}
       <oh-select
@@ -109,6 +128,7 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
         id="s1"
         options={['Option 1', 'Option 2']}
         tooltip="Select an option"
+        label="Select Option"
       />
       <oh-select
         onSelect={onChangeHandler}
@@ -116,6 +136,7 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
         id="s2"
         options={['Option 1', 'Option 2']}
         tooltip="Select an option"
+        label="Select Option"
       />
       {step === 1 && (
         <oh-button
