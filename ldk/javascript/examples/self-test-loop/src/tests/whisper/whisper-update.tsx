@@ -1,5 +1,5 @@
 /* eslint-disable no-async-promise-executor */
-import { whisper } from '@oliveai/ldk';
+import { whisper } from "@oliveai/ldk";
 import {
   Checkbox,
   Component,
@@ -12,17 +12,11 @@ import {
   Select,
   TextInput,
   Whisper,
-  WhisperComponentType,
-} from '@oliveai/ldk/dist/whisper/types';
-import {
-  createButtonComponent,
-  createSelectComponent,
-  createTextComponent,
-  resolveRejectButtons,
-} from './utils';
-import * as React from 'react';
-import { renderNewWhisper } from '@oliveai/ldk/dist/whisper/react/renderer';
-import { WhisperInstance } from '@oliveai/ldk/dist/whisper/react/whisper-instance-wrapper';
+  WhisperComponentType
+} from "@oliveai/ldk/dist/whisper/types";
+import { createButtonComponent, createSelectComponent, createTextComponent, resolveRejectButtons } from "./utils";
+import * as React from "react";
+import { ConfirmOrDeny, TestComponentProps, WhisperTestWrapper } from "./react-whisper-utils";
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -158,69 +152,6 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
       reject(error);
     }
   });
-
-interface ConfirmOrDenyProps {
-  onResolve: (value: boolean) => void;
-  onReject: (reason?: Error) => void;
-  prompt: string;
-  rejectReason?: string;
-}
-
-const ConfirmOrDeny: React.FunctionComponent<ConfirmOrDenyProps> = (props) => {
-  const onResolve = () => {
-    props.onResolve(true);
-  };
-  const onReject = () => {
-    props.onReject();
-  };
-  return (
-    <>
-      <oh-message body={props.prompt} />
-      <oh-box direction={Direction.Horizontal} justifyContent={JustifyContent.SpaceBetween}>
-        <oh-button onClick={onResolve} label="Yes" />
-        <oh-button onClick={onReject} label="No" />
-      </oh-box>
-    </>
-  );
-};
-
-interface TestComponentProps {
-  onResolve: (value: boolean | PromiseLike<boolean>) => void;
-  onReject: () => void;
-}
-
-class WhisperTestWrapper {
-  onResolve: (value: boolean | PromiseLike<boolean>) => void;
-  onReject: () => void;
-  promise: Promise<boolean>;
-  testComponent: React.FunctionComponent<TestComponentProps>;
-  whisper: WhisperInstance | undefined;
-
-  constructor(testComponent: React.FunctionComponent<TestComponentProps>) {
-    this.promise = new Promise((resolve, reject) => {
-      this.onResolve = resolve;
-      this.onReject = reject;
-    });
-    this.testComponent = testComponent;
-  }
-
-  async create(): Promise<void> {
-    const TestComponent = this.testComponent;
-    this.whisper = await renderNewWhisper(
-      <TestComponent onResolve={this.handleResolve} onReject={this.handleReject} />,
-    );
-  }
-
-  handleResolve = (value: boolean | PromiseLike<boolean>) => {
-    this.onResolve(true);
-    this.whisper.close();
-  };
-
-  handleReject = () => {
-    this.onReject();
-    this.whisper.close();
-  };
-}
 
 const UpdateCollapseState: React.FunctionComponent<TestComponentProps> = (props) => {
   const [step, updateStep] = React.useState(1);
