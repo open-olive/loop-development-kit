@@ -16,7 +16,7 @@ describe('mapper', () => {
       const mappedComponent = mapToInternalChildComponent(textInputComponent, stateMap);
 
       const expectedOnChangeValue = 'myNewValue';
-      (mappedComponent as OliveHelps.TextInput).onChange(undefined, expectedOnChangeValue, {
+      (mappedComponent as WhisperService.TextInput).onChange(undefined, expectedOnChangeValue, {
         id: '',
         close: jest.fn(),
         update: jest.fn(),
@@ -37,7 +37,7 @@ describe('mapper', () => {
       const mappedComponent = mapToInternalChildComponent(textInputComponent, stateMap);
 
       const expectedOnChangeValue = 'myNewValue';
-      (mappedComponent as OliveHelps.TextInput).onChange(undefined, expectedOnChangeValue, {
+      (mappedComponent as WhisperService.TextInput).onChange(undefined, expectedOnChangeValue, {
         id: '',
         close: jest.fn(),
         update: jest.fn(),
@@ -68,7 +68,7 @@ describe('mapper', () => {
         componentState: stateMap,
         update: expect.any(Function),
       };
-      (mappedComponent as OliveHelps.TextInput).onChange(
+      (mappedComponent as WhisperService.TextInput).onChange(
         expectedError,
         expectedOnChangeValue,
         expectedWhisper,

@@ -6,7 +6,7 @@ const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: s
   reject(error);
 };
 
-export const mapToIndex = (index: OliveHelps.Index): Index => ({
+export const mapToIndex = (index: Search.Index): Index => ({
   search: (term: string): Promise<SearchResult> =>
     new Promise<SearchResult>((resolve, reject) => {
       try {

@@ -14,6 +14,7 @@
     "permissions": {
       "clipboard": {},
       "cursor": {},
+      "document": {},
       "network": {
         "urlDomains": [
           {

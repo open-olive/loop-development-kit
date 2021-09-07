@@ -12,7 +12,7 @@ export function promisifyMappedBothWithParams<TParamIn, TParamOut, TInternalOut,
   param: TParamIn,
   paramMap: Mapper<TParamIn, TParamOut>,
   map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ReadableWithParam<TParamOut, TInternalOut>,
+  arg: Common.ReadableWithParam<TParamOut, TInternalOut>,
 ): Promise<TExternalOut> {
   return new Promise((resolve, reject) => {
     try {
@@ -34,7 +34,7 @@ export function promisifyMappedWithTwoParams<TParam1, TParam2, TInternalOut, TEx
   param1: TParam1,
   param2: TParam2,
   map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ReadableWithTwoParams<TParam1, TParam2, TInternalOut>,
+  arg: Common.ReadableWithTwoParams<TParam1, TParam2, TInternalOut>,
 ): Promise<TExternalOut> {
   return new Promise((resolve, reject) => {
     try {
@@ -61,7 +61,7 @@ export function promisifyMappedWithThreeParams<
   param2: TParam2,
   param3: TParam3,
   map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ReadableWithThreeParams<TParam1, TParam2, TParam3, TInternalOut>,
+  arg: Common.ReadableWithThreeParams<TParam1, TParam2, TParam3, TInternalOut>,
 ): Promise<TExternalOut> {
   return new Promise((resolve, reject) => {
     try {
@@ -81,7 +81,7 @@ export function promisifyMappedWithThreeParams<
 export function promisifyMappedWithParam<TParam, TInternalOut, TExternalOut>(
   param: TParam,
   map: Mapper<TInternalOut, TExternalOut>,
-  arg: OliveHelps.ReadableWithParam<TParam, TInternalOut>,
+  arg: Common.ReadableWithParam<TParam, TInternalOut>,
 ): Promise<TExternalOut> {
   return promisifyMappedBothWithParams(param, (x) => x, map, arg);
 }
@@ -101,7 +101,7 @@ function promiseResolver<T>(
   };
 }
 
-export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
+export function promisify<T>(arg: Common.Readable<T>): Promise<T> {
   return new Promise((resolve, reject) => {
     try {
       arg(promiseResolver(resolve, reject));
@@ -113,7 +113,7 @@ export function promisify<T>(arg: OliveHelps.Readable<T>): Promise<T> {
 
 export function promisifyWithParamAfterCallback<TParam, TOut>(
   param: TParam,
-  arg: OliveHelps.ReadableWithParamAfterCallback<TOut, TParam>,
+  arg: Common.ReadableWithParamAfterCallback<TOut, TParam>,
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
@@ -126,7 +126,7 @@ export function promisifyWithParamAfterCallback<TParam, TOut>(
 
 export function promisifyWithParam<TParam, TOut>(
   param: TParam,
-  arg: OliveHelps.ReadableWithParam<TParam, TOut>,
+  arg: Common.ReadableWithParam<TParam, TOut>,
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
@@ -140,7 +140,7 @@ export function promisifyWithParam<TParam, TOut>(
 export function promisifyWithTwoParams<TParam1, TParam2, TOut>(
   param: TParam1,
   param2: TParam2,
-  arg: OliveHelps.ReadableWithTwoParams<TParam1, TParam2, TOut>,
+  arg: Common.ReadableWithTwoParams<TParam1, TParam2, TOut>,
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
@@ -156,7 +156,7 @@ export function promisifyWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut
   p2: TParam2,
   p3: TParam3,
   p4: TParam4,
-  arg: OliveHelps.ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut>,
+  arg: Common.ReadableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut>,
 ): Promise<TOut> {
   return new Promise((resolve, reject) => {
     try {
@@ -167,7 +167,7 @@ export function promisifyWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut
   });
 }
 
-function handleListenerCallback<T>(cb: (v: T) => void): OliveHelps.Callback<T> {
+function handleListenerCallback<T>(cb: (v: T) => void): Common.Callback<T> {
   return (error, value) => {
     if (error) {
       console.error('Received error in listener', error);
@@ -179,7 +179,7 @@ function handleListenerCallback<T>(cb: (v: T) => void): OliveHelps.Callback<T> {
 
 export function promisifyListenable<T>(
   cb: (v: T) => void,
-  arg: OliveHelps.Listenable<T>,
+  arg: Common.Listenable<T>,
 ): Promise<Cancellable> {
   return new Promise((resolve, reject) => {
     try {
@@ -193,7 +193,7 @@ export function promisifyListenable<T>(
 export function promisifyListenableWithParam<TParam, TOut>(
   param: TParam,
   cb: (v: TOut) => void,
-  arg: OliveHelps.ListenableWithParam<TParam, TOut>,
+  arg: Common.ListenableWithParam<TParam, TOut>,
 ): Promise<Cancellable> {
   return new Promise((resolve, reject) => {
     try {
@@ -210,7 +210,7 @@ export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExtern
   param: TParam,
   map: Mapper<TInternalOut, TExternalOut>,
   cb: (v: TExternalOut) => void,
-  arg: OliveHelps.ListenableWithParam<TParam, TInternalOut>,
+  arg: Common.ListenableWithParam<TParam, TInternalOut>,
 ): Promise<Cancellable> {
   return new Promise((resolve, reject) => {
     try {
