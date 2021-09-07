@@ -14,6 +14,7 @@
     "permissions": {
       "clipboard": {},
       "cursor": {},
+      "document": {},
       "network": {
         "urlDomains": [
           {
@@ -33,8 +34,7 @@
       "filesystem": {},
       "process": {},
       "ui": {},
-      "user": {
-      },
+      "user": {},
       "system": {},
       "keyboard": {},
       "whisper": {},

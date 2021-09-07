@@ -6,20 +6,20 @@ import * as whisperUpdateTests from '../tests/whisper/whisper-update';
 export const whisperUpdateTestGroup = (): TestGroup =>
   new TestGroup('Whisper Updates', [
     new LoopTest(
-      'Whisper Update - Basic Whisper Update',
-      whisperUpdateTests.testWhisperUpdate,
+      'Whisper Update - Values Persistance',
+      whisperUpdateTests.testValuePersistOnUpdate,
       20000,
-      `Did the whisper update correctly?`,
+      `Did the persist after update?`,
+    ),
+    new LoopTest(
+      'Whisper Update - Values Override',
+      whisperUpdateTests.testValueOverwrittenOnUpdate,
+      20000,
+      `Did the values got overridden after update?`,
     ),
     new LoopTest(
       'Whisper Update - Collapse State Across Update',
       whisperUpdateTests.testUpdateCollapseState,
-      20000,
-      `Did the whisper update correctly?`,
-    ),
-    new LoopTest(
-      'Whisper Update - OnChange Across Update',
-      whisperUpdateTests.testUpdateOnChange,
       20000,
       `Did the whisper update correctly?`,
     ),

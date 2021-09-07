@@ -29,7 +29,7 @@ describe('Whisper', () => {
         label: 'Test',
         onClose: expectedClose,
       };
-      const expectedWhisper: OliveHelps.NewWhisper = {
+      const expectedWhisper: WhisperService.NewWhisper = {
         components: [
           {
             body: 'Test',
@@ -48,11 +48,11 @@ describe('Whisper', () => {
         onClose: expectedClose,
       };
 
-      const expected: OliveHelps.Whisper = {
+      const expected: WhisperService.Whisper = {
         close: (c: (r: Error | undefined, value: undefined) => void) => {
           console.log(c);
         },
-        update: (w: OliveHelps.NewWhisper) => {
+        update: (w: WhisperService.NewWhisper) => {
           console.log(w);
         },
         id: '1',
@@ -110,7 +110,7 @@ describe('Whisper', () => {
         label: 'Test',
         onClose: jest.fn(),
       };
-      const internalResponse: OliveHelps.Whisper = {
+      const internalResponse: WhisperService.Whisper = {
         close: jest.fn(),
         update: jest.fn(),
         id: '1',
@@ -142,7 +142,7 @@ describe('Whisper', () => {
           onClose: jest.fn(),
         };
 
-        const internalResponse: OliveHelps.Whisper = {
+        const internalResponse: WhisperService.Whisper = {
           close: jest.fn(),
           update: jest.fn(),
           id: '1',
@@ -171,7 +171,7 @@ describe('Whisper', () => {
           onClose: jest.fn(),
         };
 
-        const internalResponse: OliveHelps.Whisper = {
+        const internalResponse: WhisperService.Whisper = {
           close: jest.fn(),
           update: jest.fn(),
           id: '1',
@@ -198,7 +198,7 @@ describe('Whisper', () => {
           onClose: jest.fn(),
         };
 
-        const internalResponse: OliveHelps.Whisper = {
+        const internalResponse: WhisperService.Whisper = {
           close: jest.fn(),
           update: jest.fn(),
           id: '1',

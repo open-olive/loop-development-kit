@@ -2,14 +2,15 @@
   "compilerOptions": {
     "outDir": "dist",
     "allowJs": true,
-    "target": "ES6",
+    "target": "ES2019",
     "module": "CommonJS",
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "rootDir": "src",
     "declaration": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types", "src/types"]
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "jsx": "react-jsx"
   },
   "exclude": [
     "node_modules",

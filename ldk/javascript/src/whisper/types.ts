@@ -1,4 +1,12 @@
+/**
+ * REMINDER: Whenever you add (or remove) components from this file, you MUST
+ * also make the corresponding change in the `ldk/javascript/src/whisper/react/component-types.ts`
+ * and `ldk/javascript/src/whisper/react/component-handlers.ts` files.
+ *
+ * You'll get a compile error if you don't...
+ */
 export enum WhisperComponentType {
+  Autocomplete = 'autocomplete',
   /**
    * A container component for formatting other components.
    */
@@ -62,11 +70,16 @@ export enum WhisperComponentType {
    * The section title field allows the user to provide section title information.
    */
   SectionTitle = 'sectionTitle',
-  /* The text input field allows the user to provide Date and Time information.
+  /**
+   The text input field allows the user to provide Date and Time information.
    *
    * The field can be pre-populated by the loop.
    */
   DateTimeInput = 'dateTimeInput',
+  /**
+   *  The richText Editor allow users to use RichText Editor on Olive Helps
+   */
+  RichTextEditor = 'richTextEditor',
   /**
    * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
    */
@@ -172,6 +185,11 @@ export enum IconSize {
   XLarge = 'x-large',
 }
 
+export type AutocompleteOption = {
+  label: string;
+  value: string;
+};
+
 export enum StyleSize {
   None = 'none',
   Small = 'small',
@@ -226,6 +244,16 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
   validationError?: string;
 }
 
+export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
+  label?: string;
+  loading?: boolean;
+  onChange?: WhisperHandlerWithParam<string>;
+  onSelect: WhisperHandlerWithParam<string>;
+  options?: AutocompleteOption[];
+  tooltip?: string;
+  value?: string;
+};
+
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
   label?: string;
   tooltip?: string;
@@ -242,6 +270,10 @@ export type RadioGroup = SelectComponent<WhisperComponentType.RadioGroup> & {
 export type Select = SelectComponent<WhisperComponentType.Select> & {
   label?: string;
   options: string[];
+  /**
+   * Indicates if default (None) option should be excluded from selectable options
+   */
+  excludeDefaultOption?: boolean;
   onSelect: WhisperHandlerWithParam<number>;
   selected?: number;
   tooltip?: string;
@@ -358,9 +390,18 @@ export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> &
   backgroundStyle?: Color.Grey | Color.White;
 };
 
+export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEditor> & {
+  onBlur?: (error: Error | undefined) => void;
+  onChange: WhisperHandlerWithParam<string>;
+  onFocus?: (error: Error | undefined) => void;
+  tooltip?: string;
+  validationError?: string;
+};
+
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type ChildComponents =
+  | Autocomplete
   | Box
   | Button
   | Checkbox
@@ -376,6 +417,7 @@ export type ChildComponents =
   | NumberInput
   | Password
   | RadioGroup
+  | RichTextEditor
   | Select
   | SectionTitle
   | Telephone

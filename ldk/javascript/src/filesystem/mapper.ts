@@ -1,7 +1,7 @@
 import { FileEvent, RemovedFileEvent, RenamedFileEvent } from './types';
 
 export const mapToFileEvent = (
-  fileEvent: OliveHelps.FileEvent,
+  fileEvent: Filesystem.FileEvent,
 ): FileEvent | RemovedFileEvent | RenamedFileEvent => {
   switch (fileEvent.action) {
     case 'Remove':

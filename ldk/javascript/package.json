@@ -1,6 +1,6 @@
 {
   "name": "@oliveai/ldk",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "The Loop Development Kit for Olive Helps.",
   "author": "Olive",
   "copyright": "Copyright 2021 Olive",
@@ -35,7 +35,10 @@
     "url": "https://github.com/open-olive/loop-development-kit/issues"
   },
   "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.14.5",
     "@types/jest": "^26.0.22",
+    "@types/react": "^17.0.14",
+    "@types/react-reconciler": "^0.26.3",
     "@types/terser-webpack-plugin": "^5.0.3",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
@@ -61,6 +64,8 @@
     "@babel/runtime-corejs2": "^7.13.10",
     "babel-loader": "^8.2.2",
     "core-js": "^3.11.1",
+    "react": "^17.0.2",
+    "react-reconciler": "0.26.2",
     "terser-webpack-plugin": "^5.1.1",
     "text-encoding-shim": "^1.0.5",
     "webpack": "^5.28.0",
