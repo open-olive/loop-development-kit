@@ -2,7 +2,7 @@
  * The UI aptitude gives access to the Olive helps search bar
  */
 import { Cancellable } from '../cancellable';
-import { promisifyListenable, promisifyWithParam } from '../promisify';
+import { promisifyListenable } from '../promisify';
 
 export interface UI {
   /**
@@ -21,11 +21,11 @@ export interface UI {
 
 
   /**
-   * Registers a handler function for the Olive Helps Search Open Button
+   * Registers a handler function for the Olive Helps Loop Open Button
    * 
-   * @param handler Function called when Search Open Button is pressed in Olive Helps
+   * @param callback Function called when Loop Open Button is pressed in Olive Helps
    */
-  searchOpenHandler(handler: () => void): void;
+  loopOpenHandler(callback: () => void): void;
 }
 
 export function listenSearchbar(callback: (val: string) => void): Promise<Cancellable> {
@@ -36,6 +36,6 @@ export function listenGlobalSearch(callback: (val: string) => void): Promise<Can
   return promisifyListenable(callback, oliveHelps.ui.listenGlobalSearch);
 }
 
-export function searchOpenHandler(handler: () => void): void {
-    oliveHelps.ui.searchOpenHandler(handler);
+export function loopOpenHandler(callback: () => void): Promise<Cancellable> {
+    return promisifyListenable(callback, oliveHelps.ui.loopOpenHandler);
 }

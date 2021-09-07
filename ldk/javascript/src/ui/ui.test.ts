@@ -6,7 +6,7 @@ describe('UI', () => {
     oliveHelps.ui = {
       listenSearchbar: jest.fn(),
       listenGlobalSearch: jest.fn(),
-      searchOpenHandler: jest.fn(),
+      loopOpenHandler: jest.fn(),
     };
   });
 
@@ -60,13 +60,13 @@ describe('UI', () => {
     });
   });
 
-  describe('searchOpenHandler', () => {
+  describe('loopOpenHandler', () => {
     it('passes handler to olive helps', () => {
       const handler = jest.fn();
       
-      ui.searchOpenHandler(handler);
+      ui.loopOpenHandler(handler);
 
-      expect(oliveHelps.ui.searchOpenHandler).toHaveBeenCalledWith(handler)
+      expect(oliveHelps.ui.loopOpenHandler).toHaveBeenCalledWith(handler)
     });
   });
 });
