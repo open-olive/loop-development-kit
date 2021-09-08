@@ -251,7 +251,7 @@ export const testClickableWhisper = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Link,
           textAlign: TextAlign.Left,
-          onClick: (error: Error, onClickWhisper: Whisper) => {
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.log(e));
             resolve(true);
           },
@@ -504,6 +504,7 @@ export const testClickableButton = (): Promise<boolean> =>
 export const testClickableLink = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
+      let linkClicked = false;
       await whisper.create({
         label: 'External Link Test',
         onClose: () => {
@@ -519,9 +520,42 @@ export const testClickableLink = (): Promise<boolean> =>
             textAlign: TextAlign.Left,
             href: 'https://www.google.com',
             text: 'https://www.google.com',
+            onClick: () => {
+              linkClicked = true;
+            },
             style: Urgency.None,
           },
-          resolveRejectButtons(resolve, reject, 'Url opened in browser', 'Url failed to open'),
+          {
+            type: WhisperComponentType.Box,
+            justifyContent: JustifyContent.SpaceBetween,
+            direction: Direction.Horizontal,
+            children: [
+              {
+                type: WhisperComponentType.Button,
+                label: `Url failed to open`,
+                onClick: (_error: Error, onClickWhisper: Whisper) => {
+                  reject('Url failed to open');
+                  onClickWhisper.close(() => {
+                    // do nothing.
+                  });
+                },
+              },
+              {
+                type: WhisperComponentType.Button,
+                label: `Url opened in browser`,
+                onClick: (_error: Error, onClickWhisper: Whisper) => {
+                  if (linkClicked) {
+                    resolve(true);
+                  } else {
+                    reject('On click action was not received.');
+                  }
+                  onClickWhisper.close(() => {
+                    // do nothing.
+                  });
+                },
+              },
+            ],
+          },
         ],
       });
     } catch (error) {
