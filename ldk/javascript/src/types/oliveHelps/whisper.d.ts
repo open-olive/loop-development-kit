@@ -268,7 +268,7 @@ declare namespace WhisperService {
     alignItems?: AlignItems;
     alignment: Alignment;
     children: Array<ChildComponents>;
-    customHeight: CustomHeight;
+    customHeight?: CustomHeight;
     direction: Direction;
     onClick?: WhisperHandler;
   };
