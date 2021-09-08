@@ -39,8 +39,6 @@ describe('Whisper', () => {
           {
             alignment: whisper.JustifyContent.Center,
             children: [],
-            // eslint-disable-next-line no-underscore-dangle
-            customHeight: whisper.CustomHeight._3Rem,
             direction: whisper.Direction.Horizontal,
             onClick: undefined,
             type: whisper.WhisperComponentType.Box,
