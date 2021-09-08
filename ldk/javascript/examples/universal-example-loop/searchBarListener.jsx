@@ -1,7 +1,34 @@
 import { ui, whisper, filesystem, network } from '@oliveai/ldk';
+import * as Renderer from '@oliveai/ldk/dist/whisper/react/renderer';
 import { Patient, patientInfoFileName } from './Patient';
 
 const { Message, Link, Markdown } = whisper.WhisperComponentType;
+
+const PatientDisplayWhisper = (props) => {
+  const patient = props.patient;
+  const messageBody = patient.patientInfo.reduce(
+    (rst, currentValue) => `
+${rst}
+${currentValue[1]}:   ${patient[currentValue[0]]}
+                            `,
+    '',
+  );
+  const messageHeader = `${props.firstName} ${props.lastName}`;
+  return (
+    <oh-whisper
+      label="Universal Example Loop - Patient Search Result"
+      onClose={() => {
+        console.log('Patient Search Result is closed');
+      }}
+    >
+      <oh-message header={messageHeader} body={messageBody} />
+    </oh-whisper>
+  );
+};
+
+const SearchResultWhisper = props => {
+
+}
 
 const emitResultWhisper = async (patients) => {
   const searchResults = [];
