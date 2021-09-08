@@ -57,6 +57,24 @@ declare namespace WhisperService {
 
   type WidthSize = 'full' | 'half';
 
+  type CustomHeight =
+    | '1rem'
+    | '2rem'
+    | '3rem'
+    | '4rem'
+    | '5rem'
+    | '6rem'
+    | '7rem'
+    | '8rem'
+    | '9rem'
+    | '10rem'
+    | '11rem'
+    | '12rem'
+    | '13rem'
+    | '14rem'
+    | '15rem'
+    | '16rem';
+
   interface LayoutOptions {
     flex?: string;
     margin?: StyleSize;
@@ -250,6 +268,7 @@ declare namespace WhisperService {
     alignItems?: AlignItems;
     alignment: Alignment;
     children: Array<ChildComponents>;
+    customHeight: CustomHeight;
     direction: Direction;
     onClick?: WhisperHandler;
   };
