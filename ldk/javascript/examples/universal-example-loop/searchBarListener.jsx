@@ -1,8 +1,7 @@
-import { ui, whisper, filesystem, network } from '@oliveai/ldk';
+import { ui, filesystem, network } from '@oliveai/ldk';
 import * as Renderer from '@oliveai/ldk/dist/whisper/react/renderer';
+import * as PropTypes from 'prop-types';
 import { Patient, patientInfoFileName } from './Patient';
-
-const { Message, Link, Markdown } = whisper.WhisperComponentType;
 
 const PatientDisplayWhisper = (props) => {
   const patient = props.patient;
@@ -26,57 +25,48 @@ ${currentValue[1]}:   ${patient[currentValue[0]]}
   );
 };
 
-const SearchResultWhisper = props => {
+PatientDisplayWhisper.propTypes = {
+  patient: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    patientInfo: PropTypes.array.isRequired,
+  }).isRequired,
+};
 
-}
+const SearchResultWhisper = (props) => {
+  const patientRows = props.patients.map((patient) => {
+    const onClick = () => {
+      props.onShowPatient(patient);
+    };
+    const text = `${patient.firstName} ${patient.lastName} ${patient.email}`;
+    return <oh-link onClick={onClick} text={text} />;
+  });
+  return (
+    <oh-whisper label="Universal Example Loop - Patient Search Result" onClose={() => {}}>
+      {patientRows.length > 0 ? (
+        patientRows
+      ) : (
+        <oh-markdown body="No results were found matching criteria" />
+      )}
+    </oh-whisper>
+  );
+};
+
+SearchResultWhisper.propTypes = {
+  patients: PropTypes.arrayOf({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+  }).isRequired,
+  onShowPatient: PropTypes.func.isRequired,
+};
 
 const emitResultWhisper = async (patients) => {
-  const searchResults = [];
-  patients.forEach((patient) => {
-    searchResults.push({
-      text: `${patient.firstName} ${patient.lastName} ${patient.email}`,
-      onClick: () => {
-        console.log(patient.serialize());
-
-        whisper.create({
-          label: 'Universal Example Loop - Patient Search Result',
-          onClose: () => {
-            console.log('Patient Search Result is closed');
-          },
-          components: [
-            {
-              header: `${patient.firstName} ${patient.lastName}`,
-              body: patient.patientInfo.reduce(
-                (rst, currentValue) => `
-${rst}
-${currentValue[1]}:   ${patient[currentValue[0]]}
-                            `,
-                '',
-              ),
-              type: Message,
-            },
-          ],
-        });
-      },
-      type: Link,
-    });
-  });
-
-  await whisper.create({
-    label: 'Universal Example Loop - Patient Search Result',
-    onClose: () => {
-      console.log('Patient Search Result');
-    },
-    components:
-      searchResults.length > 0
-        ? searchResults
-        : [
-            {
-              body: `No results were found matching provided criteria`,
-              type: Markdown,
-            },
-          ],
-  });
+  const onShowPatient = (patient) =>
+    Renderer.renderNewWhisper(<PatientDisplayWhisper patient={patient} />);
+  await Renderer.renderNewWhisper(
+    <SearchResultWhisper patients={patients} onShowPatient={onShowPatient} />,
+  );
 };
 
 const getPatients = async () => {
