@@ -8,6 +8,7 @@ import {
   Button,
   Select,
   TextInput,
+  Autocomplete,
 } from '@oliveai/ldk/dist/whisper/types';
 
 export const resolveOnClick = (
@@ -92,6 +93,23 @@ export const createSelectComponent = (id: string, label?: string): Select => {
       logMap(onSelectWhisper.componentState);
     },
     options: ['Option 1', 'Option 2'],
+    tooltip: 'Select an option',
+  };
+};
+
+export const createAutocompleteComponent = (id: string, label?: string): Autocomplete => {
+  return {
+    type: WhisperComponentType.Autocomplete,
+    label: label || 'Select an option',
+    id: id,
+    key: id,
+    onSelect: (_error: Error, _param: string[], onSelectWhisper: Whisper) => {
+      logMap(onSelectWhisper.componentState);
+    },
+    options: [
+      { label: 'Option 1', value: '1' },
+      { label: 'Option 2', value: '2' },
+    ],
     tooltip: 'Select an option',
   };
 };

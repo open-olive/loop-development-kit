@@ -20,7 +20,7 @@ import {
   RichTextEditor,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { logMap, resolveRejectButtons } from './utils';
+import { createAutocompleteComponent, logMap, rejectOnClick, resolveRejectButtons } from './utils';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -802,6 +802,7 @@ export const testFormComponents = (): Promise<boolean> =>
           excludeDefaultOption: true,
           id: 'mySelectInputThree',
         },
+        createAutocompleteComponent('auto1'),
         {
           onSelect: () => {
             // do nothing.
@@ -951,6 +952,17 @@ export const testNoLabels = (): Promise<boolean> =>
               // do nothing
             },
             options: ['option 1', 'option 2'],
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            tooltip: 'Autocomplete',
+            onSelect: () => {
+              // do nothing
+            },
+            options: [
+              { label: 'Option 1', value: '1' },
+              { label: 'Option 2', value: '2' },
+            ],
           },
           {
             type: WhisperComponentType.DateTimeInput,
@@ -2018,117 +2030,130 @@ export const testRichTextEditor = (): Promise<boolean> =>
     }
   });
 
+const dropDownOptions = [
+  { label: 'Value 1', value: '1' },
+  { label: 'Value 2', value: '2' },
+  { label: 'Value 3', value: '3' },
+  { label: 'Value 4', value: '4' },
+  { label: 'Value 5', value: '5' },
+];
+
 export const testAutocompleteSelect = (): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    await whisper.create({
-      label: 'Autocomplete select test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          type: WhisperComponentType.Markdown,
-          body: 'Select "Value 4"',
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Autocomplete select test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          label: 'Autocomplete Test',
-          loading: false,
-          onChange: () => {
-            // do nothing
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Select "Value 4"',
           },
-          onSelect: (error, value, onSelectWhisper) => {
-            if (value === '4') {
-              resolve(true);
-              onSelectWhisper.close(() => {
-                // do nothing.
-              });
-            }
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (_error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('4')) {
+                resolve(true);
+                onSelectWhisper.close(() => {
+                  // do nothing.
+                });
+              }
+            },
+            options: dropDownOptions,
           },
-          options: [
-            { label: 'Value 1', value: '1' },
-            { label: 'Value 2', value: '2' },
-            { label: 'Value 3', value: '3' },
-            { label: 'Value 4', value: '4' },
-            { label: 'Value 5', value: '5' },
-          ],
-          type: WhisperComponentType.Autocomplete,
-        },
-      ],
-    });
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
 export const testAutocompleteChange = (): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    await whisper.create({
-      label: 'Autocomplete change test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          type: WhisperComponentType.Markdown,
-          body: 'Type into the input "Typed"',
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Autocomplete change test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          label: 'Autocomplete Test',
-          loading: true,
-          onChange: (error, value, onChangeWhisper) => {
-            if (value.toLowerCase() === 'typed') {
-              resolve(true);
-
-              onChangeWhisper.close(() => {
-                // do nothing.
-              });
-            }
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Type into the input "Typed"',
           },
-          onSelect: () => {
-            // do nothing
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: true,
+            onChange: (_error, value, onChangeWhisper) => {
+              if (value.toLowerCase() === 'typed') {
+                resolve(true);
+                onChangeWhisper.close(() => {
+                  // do nothing.
+                });
+              }
+            },
+            onSelect: () => {
+              // do nothing
+            },
+            options: [...dropDownOptions, { label: 'Typed', value: '10' }],
+            tooltip: 'tooltip',
           },
-          options: [
-            { label: 'Value 1', value: '1' },
-            { label: 'Value 2', value: '2' },
-            { label: 'Value 3', value: '3' },
-            { label: 'Typed', value: '4' },
-            { label: 'Value 5', value: '5' },
-          ],
-          type: WhisperComponentType.Autocomplete,
-          tooltip: 'tooltip',
-        },
-      ],
-    });
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
+// TODO: combine autocomplete tests to avoid pollution
 export const testAutocompleteMultiple = (): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    await whisper.create({
-      label: 'Autocomplete change test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          type: WhisperComponentType.Markdown,
-          body: 'Type into the input "Typed"',
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Autocomplete multiple test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          label: 'Autocomplete Test',
-          loading: true,
-          multiple: true,
-          onSelect: () => {
-            // do nothing
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Select values 4 and 5',
           },
-          options: [
-            { label: 'Value 1', value: '1' },
-            { label: 'Value 2', value: '2' },
-            { label: 'Value 3', value: '3' },
-            { label: 'Value 4', value: '4' },
-            { label: 'Value 5', value: '5' },
-          ],
-          type: WhisperComponentType.Autocomplete,
-          tooltip: 'tooltip',
-        },
-      ],
-    });
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: true,
+            multiple: true,
+            onSelect: (_error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('4') && value.includes('5')) {
+                resolve(true);
+                onSelectWhisper.close(() => {
+                  // do nothing.
+                });
+              }
+            },
+            options: dropDownOptions,
+            tooltip: 'tooltip',
+            value: '5',
+          },
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
 export const testPadding = (): Promise<boolean> =>

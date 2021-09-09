@@ -477,7 +477,7 @@ declare namespace OliveHelps {
     loading?: boolean;
     multiple?: boolean;
     onChange?: WhisperHandlerWithParam<string>;
-    onSelect: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string[]>;
     options?: AutocompleteOption[];
     tooltip?: string;
     value?: string;

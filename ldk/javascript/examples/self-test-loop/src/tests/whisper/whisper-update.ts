@@ -19,6 +19,7 @@ import {
   createButtonComponent,
   createSelectComponent,
   createTextComponent,
+  createAutocompleteComponent,
   resolveRejectButtons,
 } from './utils';
 
@@ -85,6 +86,7 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
     try {
       const text1 = createTextComponent('text1');
       const text2 = createTextComponent('text2');
+      const autocomplete1 = createAutocompleteComponent('autocomplete1');
       const select1 = createSelectComponent('select1');
       const select2 = createSelectComponent('select2');
       whisper.create({
@@ -93,6 +95,7 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
           text1,
           text2,
           select1,
+          autocomplete1,
           select2,
           createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
             if (error) {
@@ -108,6 +111,7 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
                 text2,
                 createSelectComponent('selectNew', 'New Select Field'),
                 select1,
+                autocomplete1,
                 select2,
                 resolveRejectButtons(resolve, reject, 'Values persisted', 'Values did not persist'),
               ],
@@ -126,11 +130,13 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
     try {
       const text1 = createTextComponent('text1');
       const select1 = createSelectComponent('select1', 'Select Option 1');
+      const autocomplete1 = createAutocompleteComponent('autocomplete1', 'Select Option 1');
       whisper.create({
         label: 'Values should be overwritten after update',
         components: [
           text1,
           select1,
+          autocomplete1,
           createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
             if (error) {
               console.error(error);
@@ -139,12 +145,14 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
             // Updating whisper with new component values
             text1.value = 'overwritten';
             select1.selected = 1;
+            autocomplete1.value = '2';
             onClickWhisper.update({
               components: [
                 createTextComponent('textNew', 'New Text Field'),
                 text1,
                 createSelectComponent('selectNew', 'New Select Field'),
                 select1,
+                autocomplete1,
                 resolveRejectButtons(resolve, reject, 'Values overwritten', 'Values persisted'),
               ],
             });
