@@ -36,7 +36,7 @@ export interface Index {
 }
 
 /**
- *  Search aptitude provides access to search.
+ *  The Search aptitude provides access to search.
  */
 export interface Search {
   /**

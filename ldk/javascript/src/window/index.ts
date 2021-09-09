@@ -34,7 +34,7 @@ export interface WindowEvent {
 }
 
 /**
- * v Window aptitude provides access to the the ability to identyfy window status.
+ *  The Window aptitude provides access to the the ability to identyfy window status.
  */
 export interface Window {
   /**

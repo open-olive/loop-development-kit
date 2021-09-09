@@ -1,11 +1,8 @@
-/**
- * The ClipboardService provides access to the OS's clipboard.
- */
 import { Cancellable } from '../cancellable';
 import { promisify, promisifyListenable, promisifyWithParam } from '../promisify';
 
 /**
- *  Clipboard aptitude provides access to the the ability to read, write and listen to clipboard.
+ *  The Clipboard aptitude provides access to the OS's clipboard.
  */
 export interface Clipboard {
   /**

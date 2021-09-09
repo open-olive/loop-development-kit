@@ -19,7 +19,7 @@ export interface ProcessEvent {
 }
 
 /**
- *  Process aptitude provides access to the list of running processes for all users.
+ *  The Process aptitude provides access to the list of running processes for all users.
  */
 export interface Process {
   /**

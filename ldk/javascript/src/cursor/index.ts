@@ -10,7 +10,7 @@ export interface Position {
 }
 
 /**
- *  Cursor Aptitude provides access to the cursor position.
+ *  The Cursor Aptitude provides access to the cursor position.
  */
 export interface Cursor {
   /**

@@ -17,7 +17,7 @@ export interface Hotkey {
   shiftRight?: boolean;
 }
 /**
- *  Keyboard aptitude provides access to the the ability to listen to hotkey, text and character.
+ *  The Keyboard aptitude provides access to the the ability to listen to hotkey, text and character.
  */
 export interface Keyboard {
   /**

@@ -1,8 +1,8 @@
+import { promisifyWithParamAfterCallback } from '../promisify';
+
 /**
  * The User aptitude gives access to Olive Helps user related information
  */
-import { promisifyWithParamAfterCallback } from '../promisify';
-
 export interface JWTConfig {
   includeEmail?: boolean;
 }
