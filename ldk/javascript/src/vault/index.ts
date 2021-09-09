@@ -1,4 +1,3 @@
-
 import { promisifyWithParam, promisifyWithTwoParams } from '../promisify';
 
 /**
