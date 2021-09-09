@@ -802,7 +802,7 @@ export const testFormComponents = (): Promise<boolean> =>
           excludeDefaultOption: true,
           id: 'mySelectInputThree',
         },
-        createAutocompleteComponent('auto1'),
+        createAutocompleteComponent('auto1', 'Select autocomplete option'),
         {
           onSelect: () => {
             // do nothing.
@@ -951,7 +951,7 @@ export const testNoLabels = (): Promise<boolean> =>
             onSelect: () => {
               // do nothing
             },
-            options: ['option 1', 'option 2'],
+            options: ['Option 1', 'Option 2'],
           },
           {
             type: WhisperComponentType.Autocomplete,
