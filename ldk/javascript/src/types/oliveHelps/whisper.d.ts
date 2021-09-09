@@ -73,7 +73,27 @@ declare namespace WhisperService {
     | '13rem'
     | '14rem'
     | '15rem'
-    | '16rem';
+    | '16rem'
+    | '17rem'
+    | '18rem'
+    | '19rem'
+    | '20rem'
+    | '21rem'
+    | '22rem'
+    | '23rem'
+    | '24rem'
+    | '25rem'
+    | '26rem'
+    | '27rem'
+    | '28rem'
+    | '29rem'
+    | '30rem'
+    | '31rem'
+    | '32rem'
+    | '33rem'
+    | '34rem'
+    | '35rem'
+    | '36rem';
 
   interface LayoutOptions {
     flex?: string;

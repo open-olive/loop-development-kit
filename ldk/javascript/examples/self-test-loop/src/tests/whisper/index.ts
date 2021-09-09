@@ -2401,7 +2401,7 @@ Morbi ac ligula pellentesque, molestie quam id, pellentesque augue. Nunc condime
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.SpaceEvenly,
             // eslint-disable-next-line no-underscore-dangle
-            customHeight: CustomHeight._10Rem,
+            customHeight: CustomHeight._36Rem,
             children: [
               {
                 type: whisper.WhisperComponentType.Markdown,
@@ -2434,6 +2434,29 @@ Morbi ac ligula pellentesque, molestie quam id, pellentesque augue. Nunc condime
                  eu aliquet nunc laoreet nec. Vestibulum viverra turpis 
                  ac ligula euismod, eget mollis ligula faucibus. Nam dictum 
                  viverra sem in imperdiet. Donec tempus ullamcorper rhoncus.
+
+                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                 Ut molestie feugiat est, eget mollis metus sollicitudin 
+                 tincidunt. Integer ut lorem in nisl gravida placerat sed 
+                 eget eros. Fusce finibus velit quam, in tincidunt dui 
+                 consectetur rutrum. Donec venenatis sem in nulla malesuada,
+                  a lobortis nisi volutpat. Vivamus vitae posuere quam. 
+                  Praesent eget vestibulum risus. Fusce posuere diam elit, 
+                  eu aliquet nunc laoreet nec. Vestibulum viverra turpis 
+                  ac ligula euismod, eget mollis ligula faucibus. Nam dictum 
+                  viverra sem in imperdiet. Donec tempus ullamcorper rhoncus.
+
+
+                 Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                 Ut molestie feugiat est, eget mollis metus sollicitudin 
+                 tincidunt. Integer ut lorem in nisl gravida placerat sed 
+                 eget eros. Fusce finibus velit quam, in tincidunt dui 
+                 consectetur rutrum. Donec venenatis sem in nulla malesuada,
+                  a lobortis nisi volutpat. Vivamus vitae posuere quam. 
+                  Praesent eget vestibulum risus. Fusce posuere diam elit, 
+                  eu aliquet nunc laoreet nec. Vestibulum viverra turpis 
+                  ac ligula euismod, eget mollis ligula faucibus. Nam dictum 
+                  viverra sem in imperdiet. Donec tempus ullamcorper rhoncus.
 
                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                  Ut molestie feugiat est, eget mollis metus sollicitudin 
