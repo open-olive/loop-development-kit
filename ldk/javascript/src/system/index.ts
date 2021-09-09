@@ -1,7 +1,7 @@
 import { promisify } from '../promisify';
 
 /**
- * The System Aptitude provides access to various operating system details
+ *  System Aptitude provides access to various operating system details
  */
 export interface System {
   /**

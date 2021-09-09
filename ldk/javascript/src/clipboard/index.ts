@@ -4,6 +4,9 @@
 import { Cancellable } from '../cancellable';
 import { promisify, promisifyListenable, promisifyWithParam } from '../promisify';
 
+/**
+ *  Clipboard aptitude provides access to the the ability to read, write and listen to clipboard.
+ */
 export interface Clipboard {
   /**
    * @returns A Promise resolving with the current contents of the clipboard.

@@ -35,6 +35,9 @@ export interface Index {
   delete(): Promise<void>;
 }
 
+/**
+ *  Search aptitude provides access to search.
+ */
 export interface Search {
   /**
    * Creates a Search index with the provided configuration and data.

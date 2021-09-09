@@ -16,7 +16,9 @@ export interface Hotkey {
   shiftLeft?: boolean;
   shiftRight?: boolean;
 }
-
+/**
+ *  Keyboard aptitude provides access to the the ability to listen to hotkey, text and character.
+ */
 export interface Keyboard {
   /**
    * Calls callback function when the specified hotkey is pressed or released.
