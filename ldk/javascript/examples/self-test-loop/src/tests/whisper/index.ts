@@ -20,7 +20,13 @@ import {
   RichTextEditor,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { createAutocompleteComponent, logMap, rejectOnClick, resolveRejectButtons } from './utils';
+import {
+  createAutocompleteComponent,
+  dropDownOptions,
+  logMap,
+  rejectOnClick,
+  resolveRejectButtons,
+} from './utils';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -2030,19 +2036,16 @@ export const testRichTextEditor = (): Promise<boolean> =>
     }
   });
 
-const dropDownOptions = [
-  { label: 'Value 1', value: '1' },
-  { label: 'Value 2', value: '2' },
-  { label: 'Value 3', value: '3' },
-  { label: 'Value 4', value: '4' },
-  { label: 'Value 5', value: '5' },
-];
-
-export const testAutocompleteSelect = (): Promise<boolean> =>
+export const testAutocomplete = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Select', false],
+      ['Change', false],
+      ['Multiple', false],
+    ]);
     try {
       await whisper.create({
-        label: 'Autocomplete select test',
+        label: 'Autocomplete test',
         onClose: () => {
           console.debug('closed');
         },
@@ -2058,34 +2061,14 @@ export const testAutocompleteSelect = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (_error, value, onSelectWhisper) => {
+            onSelect: (error, value, onSelectWhisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('4')) {
-                resolve(true);
-                onSelectWhisper.close(() => {
-                  // do nothing.
-                });
+                onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
               }
             },
             options: dropDownOptions,
           },
-        ],
-      });
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-  });
-
-export const testAutocompleteChange = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      await whisper.create({
-        label: 'Autocomplete change test',
-        onClose: () => {
-          console.debug('closed');
-        },
-        components: [
           {
             type: WhisperComponentType.Markdown,
             body: 'Type into the input "Typed"',
@@ -2094,12 +2077,9 @@ export const testAutocompleteChange = (): Promise<boolean> =>
             type: WhisperComponentType.Autocomplete,
             label: 'Autocomplete Test',
             loading: true,
-            onChange: (_error, value, onChangeWhisper) => {
+            onChange: (error, value, onChangeWhisper) => {
               if (value.toLowerCase() === 'typed') {
-                resolve(true);
-                onChangeWhisper.close(() => {
-                  // do nothing.
-                });
+                onActionWrapper(error, 'Change', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
             onSelect: () => {
@@ -2108,24 +2088,6 @@ export const testAutocompleteChange = (): Promise<boolean> =>
             options: [...dropDownOptions, { label: 'Typed', value: '10' }],
             tooltip: 'tooltip',
           },
-        ],
-      });
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-  });
-
-// TODO: combine autocomplete tests to avoid pollution
-export const testAutocompleteMultiple = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      await whisper.create({
-        label: 'Autocomplete multiple test',
-        onClose: () => {
-          console.debug('closed');
-        },
-        components: [
           {
             type: WhisperComponentType.Markdown,
             body: 'Select values 4 and 5',
@@ -2135,13 +2097,10 @@ export const testAutocompleteMultiple = (): Promise<boolean> =>
             label: 'Autocomplete Test',
             loading: true,
             multiple: true,
-            onSelect: (_error, value, onSelectWhisper) => {
+            onSelect: (error, value, onSelectWhisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('4') && value.includes('5')) {
-                resolve(true);
-                onSelectWhisper.close(() => {
-                  // do nothing.
-                });
+                onActionWrapper(error, 'Multiple', resolverMap, onSelectWhisper, resolve, reject);
               }
             },
             options: dropDownOptions,

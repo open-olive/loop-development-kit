@@ -192,22 +192,10 @@ export const whisperTestGroup = (): TestGroup =>
       'Is RichTextEditor working correctly?',
     ),
     new LoopTest(
-      'Whisper Aptitude - Autocomplete Select',
-      whisperTests.testAutocompleteSelect,
-      10000,
+      'Whisper Aptitude - Autocomplete',
+      whisperTests.testAutocomplete,
+      30000,
       'Test the autocomplete onSelect function',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Autocomplete Change',
-      whisperTests.testAutocompleteChange,
-      10000,
-      'Test the autocomplete onChange function',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Autocomplete Multiple',
-      whisperTests.testAutocompleteMultiple,
-      10000,
-      'Test an autocomplete that can show multiple results',
     ),
     new LoopTest(
       'Whisper Aptitude - Padding',
