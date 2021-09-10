@@ -86,7 +86,10 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
     try {
       const text1 = createTextComponent('text1');
       const text2 = createTextComponent('text2');
-      const autocomplete1 = createAutocompleteComponent('autocomplete1', 'Select an autocomplete option');
+      const autocomplete1 = createAutocompleteComponent(
+        'autocomplete1',
+        'Select an autocomplete option',
+      );
       const select1 = createSelectComponent('select1');
       const select2 = createSelectComponent('select2');
       whisper.create({
@@ -130,7 +133,10 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
     try {
       const text1 = createTextComponent('text1');
       const select1 = createSelectComponent('select1', 'Select Option 1');
-      const autocomplete1 = createAutocompleteComponent('autocomplete1', 'Select an Autocomplete Option 1');
+      const autocomplete1 = createAutocompleteComponent(
+        'autocomplete1',
+        'Select an Autocomplete Option 1',
+      );
       whisper.create({
         label: 'Values should be overwritten after update',
         components: [
