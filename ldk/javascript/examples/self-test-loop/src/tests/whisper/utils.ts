@@ -144,7 +144,7 @@ export const logMap = (map: StateMap): void => {
   });
 };
 
-export const dropDownOptions = [
+export const autocompleteOptions = [
   { label: 'Value 1', value: '1' },
   { label: 'Value 2', value: '2' },
   { label: 'Value 3', value: '3' },

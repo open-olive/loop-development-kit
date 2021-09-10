@@ -22,7 +22,7 @@ import {
 import { stripIndent } from 'common-tags';
 import {
   createAutocompleteComponent,
-  dropDownOptions,
+  autocompleteOptions,
   logMap,
   rejectOnClick,
   resolveRejectButtons,
@@ -965,10 +965,16 @@ export const testNoLabels = (): Promise<boolean> =>
             onSelect: () => {
               // do nothing
             },
-            options: [
-              { label: 'Option 1', value: '1' },
-              { label: 'Option 2', value: '2' },
-            ],
+            options: autocompleteOptions,
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            tooltip: 'Autocomplete Multiple',
+            multiple: true,
+            onSelect: () => {
+              // do nothing
+            },
+            options: autocompleteOptions,
           },
           {
             type: WhisperComponentType.DateTimeInput,
@@ -1253,6 +1259,15 @@ export const testTooltips = (): Promise<boolean> =>
             },
             options: ['Option 1'],
             tooltip: 'Tooltip for Select',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Hover to see tooltip',
+            onSelect: () => {
+              // do nothing.
+            },
+            options: autocompleteOptions,
+            tooltip: 'Tooltip for Autocomplete',
           },
           resolveRejectButtons(resolve, reject),
         ],
@@ -2067,7 +2082,7 @@ export const testAutocomplete = (): Promise<boolean> =>
                 onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
               }
             },
-            options: dropDownOptions,
+            options: autocompleteOptions,
           },
           {
             type: WhisperComponentType.Markdown,
@@ -2085,7 +2100,7 @@ export const testAutocomplete = (): Promise<boolean> =>
             onSelect: () => {
               // do nothing
             },
-            options: [...dropDownOptions, { label: 'Typed', value: '10' }],
+            options: [...autocompleteOptions, { label: 'Typed', value: '10' }],
             tooltip: 'tooltip',
           },
           {
@@ -2103,7 +2118,7 @@ export const testAutocomplete = (): Promise<boolean> =>
                 onActionWrapper(error, 'Multiple', resolverMap, onSelectWhisper, resolve, reject);
               }
             },
-            options: dropDownOptions,
+            options: autocompleteOptions,
             tooltip: 'tooltip',
             value: '5',
           },
