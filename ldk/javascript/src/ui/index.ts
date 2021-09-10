@@ -19,10 +19,9 @@ export interface UI {
    */
   listenGlobalSearch(cb: (val: string) => void): Promise<Cancellable>;
 
-
   /**
    * Registers a handler function for the Olive Helps Loop Open Button
-   * 
+   *
    * @param callback Function called when Loop Open Button is pressed in Olive Helps
    */
   loopOpenHandler(callback: () => void): void;
@@ -37,5 +36,5 @@ export function listenGlobalSearch(callback: (val: string) => void): Promise<Can
 }
 
 export function loopOpenHandler(callback: () => void): Promise<Cancellable> {
-    return promisifyListenable(callback, oliveHelps.ui.loopOpenHandler);
+  return promisifyListenable(callback, oliveHelps.ui.loopOpenHandler);
 }

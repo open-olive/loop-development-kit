@@ -61,12 +61,17 @@ describe('UI', () => {
   });
 
   describe('loopOpenHandler', () => {
-    it('passes handler to olive helps', () => {
-      const handler = jest.fn();
-      
-      ui.loopOpenHandler(handler);
+    it('passes handler to olive helps', async () => {
+      const callback = jest.fn();
+      mocked(oliveHelps.ui.loopOpenHandler).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined);
+      });
 
-      expect(oliveHelps.ui.loopOpenHandler).toHaveBeenCalledWith(handler)
+      await ui.loopOpenHandler(callback);
+
+      expect(callback).toHaveBeenCalled();
     });
   });
 });
