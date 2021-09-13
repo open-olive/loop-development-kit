@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { ui, filesystem, network } from '@oliveai/ldk';
 import * as Renderer from '@oliveai/ldk/dist/whisper/react/renderer';
 import * as PropTypes from 'prop-types';

@@ -1,4 +1,4 @@
-import { whisper } from '@oliveai/ldk';
+import * as React from 'react';
 import * as Renderer from '@oliveai/ldk/dist/whisper/react/renderer';
 
 export const emitInstructionsWhisper = async () => {

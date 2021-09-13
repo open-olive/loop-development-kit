@@ -72,7 +72,7 @@ const PatientFormWhisper = (props) => {
     whisper.close();
   };
   return (
-    <oh-whisper label={} onClose={() => {}}>
+    <oh-whisper label="Universal Example Loop - Form Whisper" onClose={() => {}}>
       {error && <oh-markdown body={error.message} />}
       <oh-text-input label="First Name" onChange={firstNameOnChange} />
       <oh-text-input label="Last Name" onChange={lastNameOnChange} />
