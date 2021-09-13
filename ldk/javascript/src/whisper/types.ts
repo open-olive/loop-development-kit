@@ -330,6 +330,7 @@ export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   body: string;
   onCopy?: WhisperHandler;
   tooltip?: string;
+  onLinkClick?: Common.Callback<string>;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
