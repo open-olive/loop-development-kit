@@ -14,9 +14,7 @@ import {
   Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
-import {
-  logMap,
-} from './utils';
+import { logMap } from './utils';
 import * as React from 'react';
 import { ConfirmOrDeny, TestComponentProps, WhisperTestWrapper } from './react-whisper-utils';
 
