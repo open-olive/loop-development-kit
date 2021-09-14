@@ -177,14 +177,17 @@ export function mapToInternalChildComponent(
       return component as WhisperService.Message;
     }
     case WhisperComponentType.Markdown: {
-      return {
-        ...component,
-        onCopy: (error, whisper) => {
-          if (component.onCopy) {
-            component.onCopy(error, mapToExternalWhisper(whisper, stateMap));
-          }
-        },
-      } as WhisperService.Markdown;
+      // eslint-disable-next-line
+      const { onCopy } = component;
+      if (onCopy) {
+        return {
+          ...component,
+          onCopy: (error, whisper) => {
+            onCopy(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as WhisperService.Markdown;
+      }
+      return component as WhisperService.Markdown;
     }
     case WhisperComponentType.Number:
       if (component.id && component.value) {
