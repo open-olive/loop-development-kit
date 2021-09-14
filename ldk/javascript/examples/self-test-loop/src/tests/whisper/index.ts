@@ -24,7 +24,6 @@ import {
   createAutocompleteComponent,
   autocompleteOptions,
   logMap,
-  rejectOnClick,
   resolveRejectButtons,
 } from './utils';
 
@@ -2092,13 +2091,14 @@ export const testAutocomplete = (): Promise<boolean> =>
             type: WhisperComponentType.Autocomplete,
             label: 'Autocomplete Test',
             loading: true,
-            onChange: (error, value, onChangeWhisper) => {
+            onChange: (error, value: string, onChangeWhisper) => {
+              console.info(`Received onChange value: ${value}`);
               if (value.toLowerCase() === 'typed') {
                 onActionWrapper(error, 'Change', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
-            onSelect: () => {
-              // do nothing
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
             },
             options: [...autocompleteOptions, { label: 'Typed', value: '10' }],
             tooltip: 'tooltip',
