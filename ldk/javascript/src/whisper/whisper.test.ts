@@ -73,7 +73,7 @@ describe('Whisper', () => {
         componentState: expect.any(Map),
       });
     });
-    
+
     it('Throws if it encounters a duplicate key', async () => {
       const expectedClose = jest.fn();
       const newWhisper: whisper.NewWhisper = {
