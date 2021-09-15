@@ -22,7 +22,7 @@ import {
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import { logMap, resolveRejectButtons } from './utils';
-import {shortText, longText, markdownText} from'./text';
+import { shortText, longText, markdownText } from './text';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
