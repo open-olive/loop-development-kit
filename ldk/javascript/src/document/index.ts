@@ -3,7 +3,7 @@ import { Workbook } from './types';
 import * as mapper from '../utils/mapper';
 
 /**
- *  Document aptitude allows Loops to enable basic parsing of files including XLSX.
+ *  The Document aptitude allows Loops to enable basic parsing of files including XLSX.
  */
 export interface Document {
   /**

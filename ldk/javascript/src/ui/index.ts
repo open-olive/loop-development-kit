@@ -1,9 +1,9 @@
-/**
- * The UI aptitude gives access to the Olive helps search bar
- */
 import { Cancellable } from '../cancellable';
 import { promisifyListenable } from '../promisify';
 
+/**
+ * The UI aptitude gives access to the Olive helps search bar
+ */
 export interface UI {
   /**
    * Creates a stream receiving updates whenever the user enters a search in the Olive Helps Searchbar.
