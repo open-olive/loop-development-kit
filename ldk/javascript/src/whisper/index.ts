@@ -3,6 +3,9 @@ import { NewWhisper, Whisper } from './types';
 
 export * from './types';
 
+/**
+ *  Whisper aptitude provides the ability to create a whisper.
+ */
 export interface WhisperAptitude {
   /**
    * Adds a new whisper to Olive Helps based on the configuration provided.

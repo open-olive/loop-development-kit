@@ -20,7 +20,7 @@ import {
 export * from './types';
 
 /**
- * The FileSystem interfaces provides access to the ability to read, write, delete files.
+ *  The FileSystem aptitude provides access to the ability to read, write, delete files.
  */
 export interface Filesystem {
   /**

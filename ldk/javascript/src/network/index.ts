@@ -7,7 +7,7 @@ import { HTTPRequest, HTTPResponse, Socket, SocketConfiguration } from './types'
 export * from './types';
 
 /**
- * The Network Aptitude provides access to network calls through Olive Helps
+ *  The Network aptitude provides access to network calls through Olive Helps
  */
 export interface Network {
   /**
