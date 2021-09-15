@@ -195,7 +195,7 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - Autocomplete',
       whisperTests.testAutocomplete,
       30000,
-      'Test the autocomplete onSelect function',
+      'Test the autocomplete',
     ),
     new LoopTest(
       'Whisper Aptitude - Padding',
