@@ -282,7 +282,6 @@ export const testBoxInBox = (): Promise<boolean> =>
             type: WhisperComponentType.Box,
             alignment: JustifyContent.Center,
             direction: Direction.Horizontal,
-            // eslint-disable-next-line no-underscore-dangle
             customHeight: CustomHeight.Small,
             children: [
               {
@@ -2343,7 +2342,6 @@ export const testScrollInsideBox = (): Promise<boolean> =>
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.SpaceEvenly,
-            // eslint-disable-next-line no-underscore-dangle
             customHeight: CustomHeight.Small,
             children: [
               {
@@ -2379,7 +2377,6 @@ Morbi ac ligula pellentesque, molestie quam id, pellentesque augue. Nunc condime
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.SpaceEvenly,
-            // eslint-disable-next-line no-underscore-dangle
             customHeight: CustomHeight.Small,
             children: [
               {
@@ -2400,7 +2397,6 @@ Morbi ac ligula pellentesque, molestie quam id, pellentesque augue. Nunc condime
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.SpaceEvenly,
-            // eslint-disable-next-line no-underscore-dangle
             customHeight: CustomHeight.ExtraLarge,
             children: [
               {
