@@ -6,6 +6,7 @@ describe('UI', () => {
     oliveHelps.ui = {
       listenSearchbar: jest.fn(),
       listenGlobalSearch: jest.fn(),
+      loopOpenHandler: jest.fn(),
     };
   });
 
@@ -56,6 +57,21 @@ describe('UI', () => {
 
       const callback = jest.fn();
       expect(() => ui.listenGlobalSearch(callback)).rejects.toBe(exception);
+    });
+  });
+
+  describe('loopOpenHandler', () => {
+    it('passes handler to olive helps', async () => {
+      const callback = jest.fn();
+      mocked(oliveHelps.ui.loopOpenHandler).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined);
+      });
+
+      await ui.loopOpenHandler(callback);
+
+      expect(callback).toHaveBeenCalled();
     });
   });
 });
