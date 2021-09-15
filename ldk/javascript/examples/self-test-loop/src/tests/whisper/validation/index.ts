@@ -10,6 +10,7 @@ import {
   Checkbox,
   Select,
   DateTimeInput,
+  Autocomplete,
 } from '@oliveai/ldk/dist/whisper/types';
 import ComponentIds from './componentIds';
 
@@ -92,6 +93,15 @@ export const validateForm = (
       case componentIds.dropdownInputId:
         if (componentStateValue === undefined) {
           const validatedComponent = component as Select;
+          validatedComponent.validationError = `Please select an option`;
+          validatedComponents.push(validatedComponent);
+        } else {
+          validatedComponents.push(component);
+        }
+        break;
+      case componentIds.autocompleteInputId:
+        if (componentStateValue === undefined) {
+          const validatedComponent = component as Autocomplete;
           validatedComponent.validationError = `Please select an option`;
           validatedComponents.push(validatedComponent);
         } else {

@@ -20,7 +20,12 @@ import {
   RichTextEditor,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { logMap, resolveRejectButtons } from './utils';
+import {
+  createAutocompleteComponent,
+  autocompleteOptions,
+  logMap,
+  resolveRejectButtons,
+} from './utils';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -836,6 +841,7 @@ export const testFormComponents = (): Promise<boolean> =>
           excludeDefaultOption: true,
           id: 'mySelectInputThree',
         },
+        createAutocompleteComponent('auto1', 'Select autocomplete option'),
         {
           onSelect: () => {
             // do nothing.
@@ -984,7 +990,24 @@ export const testNoLabels = (): Promise<boolean> =>
             onSelect: () => {
               // do nothing
             },
-            options: ['option 1', 'option 2'],
+            options: ['Option 1', 'Option 2'],
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            tooltip: 'Autocomplete',
+            onSelect: () => {
+              // do nothing
+            },
+            options: autocompleteOptions,
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            tooltip: 'Autocomplete Multiple',
+            multiple: true,
+            onSelect: () => {
+              // do nothing
+            },
+            options: autocompleteOptions,
           },
           {
             type: WhisperComponentType.DateTimeInput,
@@ -1269,6 +1292,15 @@ export const testTooltips = (): Promise<boolean> =>
             },
             options: ['Option 1'],
             tooltip: 'Tooltip for Select',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Hover to see tooltip',
+            onSelect: () => {
+              // do nothing.
+            },
+            options: autocompleteOptions,
+            tooltip: 'Tooltip for Autocomplete',
           },
           resolveRejectButtons(resolve, reject),
         ],
@@ -2052,84 +2084,84 @@ export const testRichTextEditor = (): Promise<boolean> =>
     }
   });
 
-export const testAutocompleteSelect = (): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    await whisper.create({
-      label: 'Autocomplete select test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          type: WhisperComponentType.Markdown,
-          body: 'Select "Value 4"',
+export const testAutocomplete = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Select', false],
+      ['Change', false],
+      ['Multiple', false],
+    ]);
+    try {
+      await whisper.create({
+        label: 'Autocomplete test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          label: 'Autocomplete Test',
-          loading: false,
-          onChange: () => {
-            // do nothing
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Select "Value 4"',
           },
-          onSelect: (error, value, onSelectWhisper) => {
-            if (value === '4') {
-              resolve(true);
-              onSelectWhisper.close(() => {
-                // do nothing.
-              });
-            }
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('4')) {
+                onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
+              }
+            },
+            options: autocompleteOptions,
           },
-          options: [
-            { label: 'Value 1', value: '1' },
-            { label: 'Value 2', value: '2' },
-            { label: 'Value 3', value: '3' },
-            { label: 'Value 4', value: '4' },
-            { label: 'Value 5', value: '5' },
-          ],
-          type: WhisperComponentType.Autocomplete,
-        },
-      ],
-    });
-  });
-
-export const testAutocompleteChange = (): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    await whisper.create({
-      label: 'Autocomplete change test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          type: WhisperComponentType.Markdown,
-          body: 'Type into the input "Typed"',
-        },
-        {
-          label: 'Autocomplete Test',
-          loading: true,
-          onChange: (error, value, onChangeWhisper) => {
-            if (value.toLowerCase() === 'typed') {
-              resolve(true);
-
-              onChangeWhisper.close(() => {
-                // do nothing.
-              });
-            }
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Type into the input "Typed"',
           },
-          onSelect: () => {
-            // do nothing
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: true,
+            onChange: (error, value: string, onChangeWhisper) => {
+              console.info(`Received onChange value: ${value}`);
+              if (value.toLowerCase() === 'typed') {
+                onActionWrapper(error, 'Change', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
+            },
+            options: [...autocompleteOptions, { label: 'Typed', value: '10' }],
+            tooltip: 'tooltip',
           },
-          options: [
-            { label: 'Value 1', value: '1' },
-            { label: 'Value 2', value: '2' },
-            { label: 'Value 3', value: '3' },
-            { label: 'Typed', value: '4' },
-            { label: 'Value 5', value: '5' },
-          ],
-          type: WhisperComponentType.Autocomplete,
-          tooltip: 'tooltip',
-        },
-      ],
-    });
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Select values 4 and 5',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: true,
+            multiple: true,
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('4') && value.includes('5')) {
+                onActionWrapper(error, 'Multiple', resolverMap, onSelectWhisper, resolve, reject);
+              }
+            },
+            options: autocompleteOptions,
+            tooltip: 'tooltip',
+            value: '5',
+          },
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
 export const testPadding = (): Promise<boolean> =>

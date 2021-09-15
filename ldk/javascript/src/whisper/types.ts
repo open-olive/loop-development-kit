@@ -202,7 +202,7 @@ export enum WidthSize {
   Half = 'half',
 }
 
-export type StateMap = Map<string, string | boolean | number>;
+export type StateMap = Map<string, string | boolean | number | string[]>;
 
 export interface Whisper {
   id: string;
@@ -245,12 +245,37 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
 }
 
 export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
+  /**
+   * Label associated with component
+   */
   label?: string;
+  /**
+   * If true, displays component in 'loading' state
+   */
   loading?: boolean;
+  /**
+   * Indicates if multiple drop down selections are allowed
+   */
+  multiple?: boolean;
+  /**
+   * Callback handler triggered if typed input is received
+   */
   onChange?: WhisperHandlerWithParam<string>;
-  onSelect: WhisperHandlerWithParam<string>;
+  /**
+   * Callback handler triggered if drop down value is selected
+   */
+  onSelect: WhisperHandlerWithParam<string[]>;
+  /**
+   * List of selectable options
+   */
   options?: AutocompleteOption[];
+  /**
+   * Tooltip associated with component
+   */
   tooltip?: string;
+  /**
+   * Default selected value
+   */
   value?: string;
 };
 

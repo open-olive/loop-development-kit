@@ -111,8 +111,9 @@ declare namespace WhisperService {
   type Autocomplete = SelectComponent<'autocomplete'> & {
     label?: string;
     loading?: boolean;
+    multiple?: boolean;
     onChange?: WhisperHandlerWithParam<string>;
-    onSelect: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string[]>;
     options?: AutocompleteOption[];
     tooltip?: string;
     value?: string;

@@ -120,6 +120,19 @@ export const testComponentsValidation = (): Promise<boolean> =>
           options: ['Option 1', 'Option 2'],
         },
         {
+          type: WhisperComponentType.Autocomplete,
+          id: componentIds.autocompleteInputId,
+          key: componentIds.autocompleteInputId,
+          label: 'Selected value required',
+          onSelect: () => {
+            // do nothing.
+          },
+          options: [
+            { label: 'Value 1', value: '1' },
+            { label: 'Value 2', value: '2' },
+          ],
+        },
+        {
           type: WhisperComponentType.DateTimeInput,
           id: componentIds.dateInputId,
           key: componentIds.dateInputId,

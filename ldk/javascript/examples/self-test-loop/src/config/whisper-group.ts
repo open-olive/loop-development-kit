@@ -152,7 +152,7 @@ export const whisperTestGroup = (): TestGroup =>
     new LoopTest(
       'Whisper Aptitude - Tooltip Test',
       whisperTests.testTooltips,
-      20000,
+      30000,
       `Hover on each component to see a tooltip`,
     ),
     new LoopTest(
@@ -192,16 +192,10 @@ export const whisperTestGroup = (): TestGroup =>
       'Is RichTextEditor working correctly?',
     ),
     new LoopTest(
-      'Whisper Aptitude - Autocomplete Select',
-      whisperTests.testAutocompleteSelect,
-      10000,
-      'Test the autocomplete onSelect function',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Autocomplete Change',
-      whisperTests.testAutocompleteChange,
-      10000,
-      'Test the autocomplete onChange function',
+      'Whisper Aptitude - Autocomplete',
+      whisperTests.testAutocomplete,
+      30000,
+      'Test the autocomplete',
     ),
     new LoopTest(
       'Whisper Aptitude - Padding',
