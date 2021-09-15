@@ -2324,7 +2324,7 @@ export const testScrollInsideBox = (): Promise<boolean> =>
 
           {
             type: whisper.WhisperComponentType.Box,
-            direction: Direction.Horizontal,
+            direction: Direction.Vertical,
             justifyContent: JustifyContent.SpaceEvenly,
             customHeight: CustomHeight.Small,
             children: [
@@ -2363,7 +2363,7 @@ export const testScrollInsideBox = (): Promise<boolean> =>
           },
           {
             type: whisper.WhisperComponentType.Box,
-            direction: Direction.Horizontal,
+            direction: Direction.Vertical,
             justifyContent: JustifyContent.SpaceEvenly,
             customHeight: CustomHeight.ExtraLarge,
             children: [

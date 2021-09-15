@@ -57,7 +57,7 @@ declare namespace WhisperService {
 
   type WidthSize = 'full' | 'half';
 
-  type CustomHeight = '8rem' | '16rem' | '24rem' | '36rem';
+  type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
   interface LayoutOptions {
     flex?: string;

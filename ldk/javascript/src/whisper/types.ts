@@ -203,10 +203,10 @@ export enum WidthSize {
 }
 
 export enum CustomHeight {
-  Small = '8rem',
-  Medium = '16rem',
-  Large = '24rem',
-  ExtraLarge = '36rem',
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
 }
 
 export type StateMap = Map<string, string | boolean | number>;
