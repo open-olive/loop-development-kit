@@ -204,6 +204,13 @@ export enum WidthSize {
 
 export type StateMap = Map<string, string | boolean | number | string[]>;
 
+export enum CustomHeight {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
+}
+
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
@@ -462,6 +469,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   alignItems?: AlignItems;
   alignment: JustifyContent;
   children: Array<BoxChildComponent>;
+  customHeight?: CustomHeight;
   direction: Direction;
   onClick?: WhisperHandler;
 };
@@ -469,6 +477,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignItems?: AlignItems;
   children: Array<BoxChildComponent>;
+  customHeight?: CustomHeight;
   direction: Direction;
   justifyContent: JustifyContent;
   onClick?: WhisperHandler;

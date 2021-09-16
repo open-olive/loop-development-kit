@@ -4,6 +4,7 @@ import {
   ButtonSize,
   ButtonStyle,
   Component,
+  CustomHeight,
   DateTimeType,
   Direction,
   JustifyContent,
@@ -26,6 +27,7 @@ import {
   logMap,
   resolveRejectButtons,
 } from './utils';
+import { shortText, longText, markdownText } from './text';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -118,23 +120,6 @@ export const testIconLayout = (): Promise<boolean> =>
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const options = ['M12.01', 'M00.123'];
-    const markdown = stripIndent`
-      A paragraph with *emphasis* and **strong importance**.
-      # H1 Markdown Example 
-      ## H2 Markdown Example 
-      ### H3 Markdown Example 
-      > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
-
-      * Lists
-      * [ ] todo
-      * [x] done
-
-      A table:
-
-      | Table Header 1 | Table header 2 |
-      | - | - |
-      | Row 1 Col 1 | Row 1 Col 2 |
-      | Row 2 Col 1 | Row 2 Col 2 |`;
 
     await whisper.create({
       label: 'Markdown whisper Test',
@@ -143,7 +128,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
       },
       components: [
         {
-          body: markdown,
+          body: markdownText,
           type: WhisperComponentType.Markdown,
         },
         {
@@ -286,6 +271,7 @@ export const testBoxInBox = (): Promise<boolean> =>
             type: WhisperComponentType.Box,
             alignment: JustifyContent.Center,
             direction: Direction.Horizontal,
+            customHeight: CustomHeight.Small,
             children: [
               {
                 type: WhisperComponentType.Box,
@@ -2378,6 +2364,80 @@ export const testWidth = (): Promise<boolean> =>
             layout: {
               width: whisper.WidthSize.Half,
             },
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testScrollInsideBox = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Scrolling Inside Box Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Does is scroll?',
+            type: WhisperComponentType.Markdown,
+          },
+
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Vertical,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.Small,
+            children: [
+              {
+                type: WhisperComponentType.TextInput,
+                label: 'TextInput',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: shortText,
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.Small,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: stripIndent`
+              When customHeight is large enough to put all your markdown inside box. It won't scroll.`,
+              },
+              {
+                type: WhisperComponentType.TextInput,
+                label: 'TextInput',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Vertical,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.ExtraLarge,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: longText,
+              },
+            ],
           },
           resolveRejectButtons(resolve, reject, 'Yes', 'No'),
         ],

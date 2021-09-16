@@ -216,4 +216,10 @@ export const whisperTestGroup = (): TestGroup =>
       'Do the items have different widths than default?',
     ),
     new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
+    new LoopTest(
+      'Whisper Aptitude - Scrolling',
+      whisperTests.testScrollInsideBox,
+      10000,
+      'Does it scroll?',
+    ),
   ]);
