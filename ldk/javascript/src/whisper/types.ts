@@ -149,10 +149,11 @@ export enum DateTimeType {
 }
 
 export enum Color {
-  Grey = 'grey',
-  White = 'white',
+  Accent = 'accent',
   Black = 'black',
+  Grey = 'grey',
   WhisperStrip = 'whisper-strip',
+  White = 'white',
 }
 
 export enum MarkdownWhisperCopyMode {
@@ -362,7 +363,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   body?: string;
   header?: string;
   onCopy?: WhisperHandler;
-  style?: Urgency;
+  style?: Urgency | Color.Accent | Color.Black | Color.Grey;
   textAlign?: TextAlign;
   tooltip?: string;
 };

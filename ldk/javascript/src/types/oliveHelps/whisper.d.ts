@@ -168,7 +168,7 @@ declare namespace WhisperService {
     body?: string;
     header?: string;
     onCopy?: WhisperHandler;
-    style?: Urgency;
+    style?: Urgency | 'accent' | 'black' | 'grey';
     textAlign?: TextAlign;
     tooltip?: string;
   };

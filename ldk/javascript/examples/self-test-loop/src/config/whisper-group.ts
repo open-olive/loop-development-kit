@@ -114,6 +114,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Click the Message Header to copy its text within alloted time',
     ),
     new LoopTest(
+      'Whisper Aptitude - Message',
+      whisperTests.testMessage,
+      30000,
+      'Did components render properly',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Test onCopy',
       whisperTests.testOnCopy,
       20000,
