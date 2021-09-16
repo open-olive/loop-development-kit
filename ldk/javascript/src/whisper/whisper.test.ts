@@ -37,7 +37,7 @@ describe('Whisper', () => {
             type: whisper.WhisperComponentType.Markdown,
           },
           {
-            alignment: whisper.JustifyContent.Center,
+            alignment: whisper.JustifyContent.Normal,
             children: [],
             direction: whisper.Direction.Horizontal,
             onClick: undefined,
