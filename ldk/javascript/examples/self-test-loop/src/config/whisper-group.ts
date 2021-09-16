@@ -24,6 +24,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Did markdown rendered properly?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Markdown with Link callback',
+      whisperTests.testMarkdownOnLinkClick,
+      20000,
+      'All links callbacks should be received.',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Internal Links',
       whisperTests.testClickableWhisper,
       10000,

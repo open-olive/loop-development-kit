@@ -190,6 +190,48 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
     });
   });
 
+export const testMarkdownOnLinkClick = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['SomeLink1', false],
+      ['SomeLink2', false],
+      ['google', false],
+    ]);
+
+    const markdown = stripIndent`
+      # Links:
+
+      [Some Link 1](# "A Link")
+      Text between links
+      [Some Link 2](#)
+      Text between links
+      http://google.com
+      `;
+
+    const createdWhisper = await whisper.create({
+      label: 'Click on all the links',
+      onClose: () => {
+        // do nothing.
+      },
+      components: [
+        {
+          body: markdown,
+          type: WhisperComponentType.Markdown,
+          onLinkClick: (error: Error, linkName: string) => {
+            console.info(`Received click on the link: ${JSON.stringify(linkName)}`);
+            if (linkName === 'Some Link 1') {
+              onActionWrapper(error, 'SomeLink1', resolverMap, createdWhisper, resolve, reject);
+            } else if (linkName === 'Some Link 2') {
+              onActionWrapper(error, 'SomeLink2', resolverMap, createdWhisper, resolve, reject);
+            } else if (linkName === 'http://google.com') {
+              onActionWrapper(error, 'google', resolverMap, createdWhisper, resolve, reject);
+            }
+          },
+        },
+      ],
+    });
+  });
+
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     await whisper.create({
