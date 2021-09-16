@@ -732,6 +732,54 @@ export const testMessageWithCopyableHeader = (): Promise<boolean> =>
     }, 5000);
   });
 
+export const testMessage = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did message components rendered properly',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          body: 'None',
+          style: Urgency.None,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Success',
+          style: Urgency.Success,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Error',
+          style: Urgency.Error,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Warning',
+          style: Urgency.Warning,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Accent',
+          style: Color.Accent,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Black',
+          style: Color.Black,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Grey',
+          style: Color.Grey,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
 export const testFormComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const textInput = 'myTextInput';
