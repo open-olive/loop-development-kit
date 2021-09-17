@@ -2105,18 +2105,45 @@ export const testFlex = (): Promise<boolean> =>
             type: WhisperComponentType.Markdown,
           },
           {
-            type: whisper.WhisperComponentType.CollapseBox,
-            open: true,
+            type: whisper.WhisperComponentType.Box,
+            justifyContent: JustifyContent.Normal,
+            direction: Direction.Vertical,
             children: [
               {
                 type: whisper.WhisperComponentType.Box,
                 direction: whisper.Direction.Horizontal,
-                justifyContent: whisper.JustifyContent.SpaceAround,
+                justifyContent: whisper.JustifyContent.Normal,
+                layout: { flex: '1' },
                 onClick: () => console.log('click the box'),
                 children: [
                   {
                     type: whisper.WhisperComponentType.Button,
-                    label: 'test',
+                    label: 'normal',
+                    layout: {
+                      flex: '1',
+                    },
+                    onClick: () => console.log('Click the Button'),
+                  },
+                  {
+                    type: whisper.WhisperComponentType.Link,
+                    href: 'https://www.oliveai.com',
+                    text: 'Test link',
+                    layout: {
+                      flex: '1',
+                    },
+                  },
+                ],
+              },
+              {
+                type: whisper.WhisperComponentType.Box,
+                direction: whisper.Direction.Horizontal,
+                justifyContent: whisper.JustifyContent.Right,
+                layout: { flex: '1' },
+                onClick: () => console.log('click the box'),
+                children: [
+                  {
+                    type: whisper.WhisperComponentType.Button,
+                    label: 'right',
                     layout: {
                       flex: '1',
                     },
