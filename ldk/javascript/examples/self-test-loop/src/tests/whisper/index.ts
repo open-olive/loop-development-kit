@@ -4,6 +4,7 @@ import {
   ButtonSize,
   ButtonStyle,
   Component,
+  CustomHeight,
   DateTimeType,
   Direction,
   JustifyContent,
@@ -20,7 +21,13 @@ import {
   RichTextEditor,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
-import { logMap, resolveRejectButtons } from './utils';
+import {
+  createAutocompleteComponent,
+  autocompleteOptions,
+  logMap,
+  resolveRejectButtons,
+} from './utils';
+import { shortText, longText, markdownText } from './text';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -113,23 +120,6 @@ export const testIconLayout = (): Promise<boolean> =>
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const options = ['M12.01', 'M00.123'];
-    const markdown = stripIndent`
-      A paragraph with *emphasis* and **strong importance**.
-      # H1 Markdown Example 
-      ## H2 Markdown Example 
-      ### H3 Markdown Example 
-      > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
-
-      * Lists
-      * [ ] todo
-      * [x] done
-
-      A table:
-
-      | Table Header 1 | Table header 2 |
-      | - | - |
-      | Row 1 Col 1 | Row 1 Col 2 |
-      | Row 2 Col 1 | Row 2 Col 2 |`;
 
     await whisper.create({
       label: 'Markdown whisper Test',
@@ -138,7 +128,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
       },
       components: [
         {
-          body: markdown,
+          body: markdownText,
           type: WhisperComponentType.Markdown,
         },
         {
@@ -200,6 +190,48 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
     });
   });
 
+export const testMarkdownOnLinkClick = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['SomeLink1', false],
+      ['SomeLink2', false],
+      ['google', false],
+    ]);
+
+    const markdown = stripIndent`
+      # Links:
+
+      [Some Link 1](# "A Link")
+      Text between links
+      [Some Link 2](#)
+      Text between links
+      http://google.com
+      `;
+
+    const createdWhisper = await whisper.create({
+      label: 'Click on all the links',
+      onClose: () => {
+        // do nothing.
+      },
+      components: [
+        {
+          body: markdown,
+          type: WhisperComponentType.Markdown,
+          onLinkClick: (error: Error, linkName: string) => {
+            console.info(`Received click on the link: ${JSON.stringify(linkName)}`);
+            if (linkName === 'Some Link 1') {
+              onActionWrapper(error, 'SomeLink1', resolverMap, createdWhisper, resolve, reject);
+            } else if (linkName === 'Some Link 2') {
+              onActionWrapper(error, 'SomeLink2', resolverMap, createdWhisper, resolve, reject);
+            } else if (linkName === 'http://google.com') {
+              onActionWrapper(error, 'google', resolverMap, createdWhisper, resolve, reject);
+            }
+          },
+        },
+      ],
+    });
+  });
+
 export const testClickableWhisper = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     await whisper.create({
@@ -251,7 +283,7 @@ export const testClickableWhisper = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Link,
           textAlign: TextAlign.Left,
-          onClick: (error: Error, onClickWhisper: Whisper) => {
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.log(e));
             resolve(true);
           },
@@ -281,6 +313,7 @@ export const testBoxInBox = (): Promise<boolean> =>
             type: WhisperComponentType.Box,
             alignment: JustifyContent.Center,
             direction: Direction.Horizontal,
+            customHeight: CustomHeight.Small,
             children: [
               {
                 type: WhisperComponentType.Box,
@@ -504,6 +537,7 @@ export const testClickableButton = (): Promise<boolean> =>
 export const testClickableLink = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
+      let linkClicked = false;
       await whisper.create({
         label: 'External Link Test',
         onClose: () => {
@@ -519,9 +553,42 @@ export const testClickableLink = (): Promise<boolean> =>
             textAlign: TextAlign.Left,
             href: 'https://www.google.com',
             text: 'https://www.google.com',
+            onClick: () => {
+              linkClicked = true;
+            },
             style: Urgency.None,
           },
-          resolveRejectButtons(resolve, reject, 'Url opened in browser', 'Url failed to open'),
+          {
+            type: WhisperComponentType.Box,
+            justifyContent: JustifyContent.SpaceBetween,
+            direction: Direction.Horizontal,
+            children: [
+              {
+                type: WhisperComponentType.Button,
+                label: `Url failed to open`,
+                onClick: (_error: Error, onClickWhisper: Whisper) => {
+                  reject('Url failed to open');
+                  onClickWhisper.close(() => {
+                    // do nothing.
+                  });
+                },
+              },
+              {
+                type: WhisperComponentType.Button,
+                label: `Url opened in browser`,
+                onClick: (_error: Error, onClickWhisper: Whisper) => {
+                  if (linkClicked) {
+                    resolve(true);
+                  } else {
+                    reject('On click action was not received.');
+                  }
+                  onClickWhisper.close(() => {
+                    // do nothing.
+                  });
+                },
+              },
+            ],
+          },
         ],
       });
     } catch (error) {
@@ -707,6 +774,54 @@ export const testMessageWithCopyableHeader = (): Promise<boolean> =>
     }, 5000);
   });
 
+export const testMessage = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did message components rendered properly',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          body: 'None',
+          style: Urgency.None,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Success',
+          style: Urgency.Success,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Error',
+          style: Urgency.Error,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Warning',
+          style: Urgency.Warning,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Accent',
+          style: Color.Accent,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Black',
+          style: Color.Black,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Grey',
+          style: Color.Grey,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
 export const testFormComponents = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     const textInput = 'myTextInput';
@@ -802,6 +917,7 @@ export const testFormComponents = (): Promise<boolean> =>
           excludeDefaultOption: true,
           id: 'mySelectInputThree',
         },
+        createAutocompleteComponent('auto1', 'Select autocomplete option'),
         {
           onSelect: () => {
             // do nothing.
@@ -950,7 +1066,24 @@ export const testNoLabels = (): Promise<boolean> =>
             onSelect: () => {
               // do nothing
             },
-            options: ['option 1', 'option 2'],
+            options: ['Option 1', 'Option 2'],
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            tooltip: 'Autocomplete',
+            onSelect: () => {
+              // do nothing
+            },
+            options: autocompleteOptions,
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            tooltip: 'Autocomplete Multiple',
+            multiple: true,
+            onSelect: () => {
+              // do nothing
+            },
+            options: autocompleteOptions,
           },
           {
             type: WhisperComponentType.DateTimeInput,
@@ -1235,6 +1368,15 @@ export const testTooltips = (): Promise<boolean> =>
             },
             options: ['Option 1'],
             tooltip: 'Tooltip for Select',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Hover to see tooltip',
+            onSelect: () => {
+              // do nothing.
+            },
+            options: autocompleteOptions,
+            tooltip: 'Tooltip for Autocomplete',
           },
           resolveRejectButtons(resolve, reject),
         ],
@@ -2018,84 +2160,84 @@ export const testRichTextEditor = (): Promise<boolean> =>
     }
   });
 
-export const testAutocompleteSelect = (): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    await whisper.create({
-      label: 'Autocomplete select test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          type: WhisperComponentType.Markdown,
-          body: 'Select "Value 4"',
+export const testAutocomplete = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['Select', false],
+      ['Change', false],
+      ['Multiple', false],
+    ]);
+    try {
+      await whisper.create({
+        label: 'Autocomplete test',
+        onClose: () => {
+          console.debug('closed');
         },
-        {
-          label: 'Autocomplete Test',
-          loading: false,
-          onChange: () => {
-            // do nothing
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Select "Value 4"',
           },
-          onSelect: (error, value, onSelectWhisper) => {
-            if (value === '4') {
-              resolve(true);
-              onSelectWhisper.close(() => {
-                // do nothing.
-              });
-            }
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('4')) {
+                onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
+              }
+            },
+            options: autocompleteOptions,
           },
-          options: [
-            { label: 'Value 1', value: '1' },
-            { label: 'Value 2', value: '2' },
-            { label: 'Value 3', value: '3' },
-            { label: 'Value 4', value: '4' },
-            { label: 'Value 5', value: '5' },
-          ],
-          type: WhisperComponentType.Autocomplete,
-        },
-      ],
-    });
-  });
-
-export const testAutocompleteChange = (): Promise<boolean> =>
-  new Promise(async (resolve) => {
-    await whisper.create({
-      label: 'Autocomplete change test',
-      onClose: () => {
-        console.debug('closed');
-      },
-      components: [
-        {
-          type: WhisperComponentType.Markdown,
-          body: 'Type into the input "Typed"',
-        },
-        {
-          label: 'Autocomplete Test',
-          loading: true,
-          onChange: (error, value, onChangeWhisper) => {
-            if (value.toLowerCase() === 'typed') {
-              resolve(true);
-
-              onChangeWhisper.close(() => {
-                // do nothing.
-              });
-            }
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Type into the input "Typed"',
           },
-          onSelect: () => {
-            // do nothing
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: true,
+            onChange: (error, value: string, onChangeWhisper) => {
+              console.info(`Received onChange value: ${value}`);
+              if (value.toLowerCase() === 'typed') {
+                onActionWrapper(error, 'Change', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
+            },
+            options: [...autocompleteOptions, { label: 'Typed', value: '10' }],
+            tooltip: 'tooltip',
           },
-          options: [
-            { label: 'Value 1', value: '1' },
-            { label: 'Value 2', value: '2' },
-            { label: 'Value 3', value: '3' },
-            { label: 'Typed', value: '4' },
-            { label: 'Value 5', value: '5' },
-          ],
-          type: WhisperComponentType.Autocomplete,
-          tooltip: 'tooltip',
-        },
-      ],
-    });
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Select values 4 and 5',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Test',
+            loading: true,
+            multiple: true,
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('4') && value.includes('5')) {
+                onActionWrapper(error, 'Multiple', resolverMap, onSelectWhisper, resolve, reject);
+              }
+            },
+            options: autocompleteOptions,
+            tooltip: 'tooltip',
+            value: '5',
+          },
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
 
 export const testPadding = (): Promise<boolean> =>
@@ -2312,6 +2454,80 @@ export const testWidth = (): Promise<boolean> =>
             layout: {
               width: whisper.WidthSize.Half,
             },
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testScrollInsideBox = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Scrolling Inside Box Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Does is scroll?',
+            type: WhisperComponentType.Markdown,
+          },
+
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Vertical,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.Small,
+            children: [
+              {
+                type: WhisperComponentType.TextInput,
+                label: 'TextInput',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: shortText,
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.Small,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: stripIndent`
+              When customHeight is large enough to put all your markdown inside box. It won't scroll.`,
+              },
+              {
+                type: WhisperComponentType.TextInput,
+                label: 'TextInput',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Vertical,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.ExtraLarge,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: longText,
+              },
+            ],
           },
           resolveRejectButtons(resolve, reject, 'Yes', 'No'),
         ],

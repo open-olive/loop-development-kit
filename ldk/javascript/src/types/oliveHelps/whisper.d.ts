@@ -57,6 +57,8 @@ declare namespace WhisperService {
 
   type WidthSize = 'full' | 'half';
 
+  type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
+
   interface LayoutOptions {
     flex?: string;
     margin?: StyleSize;
@@ -111,8 +113,9 @@ declare namespace WhisperService {
   type Autocomplete = SelectComponent<'autocomplete'> & {
     label?: string;
     loading?: boolean;
+    multiple?: boolean;
     onChange?: WhisperHandlerWithParam<string>;
-    onSelect: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string[]>;
     options?: AutocompleteOption[];
     tooltip?: string;
     value?: string;
@@ -160,6 +163,7 @@ declare namespace WhisperService {
     body: string;
     onCopy?: WhisperHandler;
     tooltip?: string;
+    onLinkClick?: (error: Error | undefined, linkName: string) => void;
   };
 
   type Message = Component<'message'> & {
@@ -167,7 +171,7 @@ declare namespace WhisperService {
     body?: string;
     header?: string;
     onCopy?: WhisperHandler;
-    style?: Urgency;
+    style?: Urgency | 'accent' | 'black' | 'grey';
     textAlign?: TextAlign;
     tooltip?: string;
   };
@@ -250,6 +254,7 @@ declare namespace WhisperService {
     alignItems?: AlignItems;
     alignment: Alignment;
     children: Array<ChildComponents>;
+    customHeight?: CustomHeight;
     direction: Direction;
     onClick?: WhisperHandler;
   };
