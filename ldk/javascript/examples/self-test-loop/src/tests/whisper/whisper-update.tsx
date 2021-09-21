@@ -2,7 +2,6 @@
 import { whisper } from '@oliveai/ldk';
 import {
   Checkbox,
-  ChildComponents,
   Component,
   Direction,
   Icon,
@@ -15,13 +14,9 @@ import {
   Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
-import {
-  createButtonComponent,
-  createSelectComponent,
-  createTextComponent,
-  createAutocompleteComponent,
-  resolveRejectButtons,
-} from './utils';
+import { logMap } from './utils';
+import * as React from 'react';
+import { ConfirmOrDeny, TestComponentProps, WhisperTestWrapper } from './react-whisper-utils';
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -81,167 +76,210 @@ const createConfirmOrDenyWithPromise = (
   };
 };
 
-export const testValuePersistOnUpdate = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const text1 = createTextComponent('text1');
-      const text2 = createTextComponent('text2');
-      const autocomplete1 = createAutocompleteComponent(
-        'autocomplete1',
-        'Select an autocomplete option',
-      );
-      const select1 = createSelectComponent('select1');
-      const select2 = createSelectComponent('select2');
-      whisper.create({
-        label: 'Values should persist after update',
-        components: [
-          text1,
-          text2,
-          select1,
-          autocomplete1,
-          select2,
-          createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
+const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  const onChangeHandler = (error: Error, param: string | number, whisper: Whisper) => {
+    logMap(whisper.componentState);
+  };
+  const onSelectHandler = (error: Error, param: string[], whisper: Whisper) => {
+    logMap(whisper.componentState);
+  };
+  return (
+    <>
+      {step === 2 && (
+        <oh-text-input
+          onChange={onChangeHandler}
+          key="newtext"
+          id="newtext"
+          tooltip="Enter text"
+          label="Enter Text"
+        />
+      )}
+      <oh-text-input
+        onChange={onChangeHandler}
+        key="text1"
+        id="text1"
+        tooltip="Enter text"
+        label="Enter Text"
+      />
+      <oh-text-input
+        onChange={onChangeHandler}
+        key="text2"
+        id="text2"
+        tooltip="Enter text"
+        label="Enter Text"
+      />
+      <oh-autocomplete
+        onChange={onChangeHandler}
+        key="autocomplete"
+        id="autocomplete"
+        label="Select an option"
+        onSelect={onSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+      />
+      {step === 2 && (
+        <oh-select
+          onSelect={onChangeHandler}
+          key="newselect"
+          id="newselect"
+          options={['Option 1', 'Option 2']}
+          tooltip="Select an option"
+          label="Select Option"
+        />
+      )}
+      <oh-select
+        onSelect={onChangeHandler}
+        key="s1"
+        id="s1"
+        options={['Option 1', 'Option 2']}
+        tooltip="Select an option"
+        label="Select Option"
+      />
+      <oh-select
+        onSelect={onChangeHandler}
+        key="s2"
+        id="s2"
+        options={['Option 1', 'Option 2']}
+        tooltip="Select an option"
+        label="Select Option"
+      />
+      {step === 1 && (
+        <oh-button
+          onClick={(error) => {
             if (error) {
-              console.error(error);
-              reject(error);
+              props.onReject();
+            } else {
+              updateStep(2);
             }
-            // Updating whisper with appended new components
-            text1.tooltip = undefined;
-            onClickWhisper.update({
-              components: [
-                createTextComponent('textNew', 'New Text Field'),
-                text1,
-                text2,
-                createSelectComponent('selectNew', 'New Select Field'),
-                select1,
-                autocomplete1,
-                select2,
-                resolveRejectButtons(resolve, reject, 'Values persisted', 'Values did not persist'),
-              ],
-            });
-          }),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
+          }}
+          label="Update"
+        />
+      )}
+      {step === 2 && (
+        <ConfirmOrDeny
+          onResolve={props.onResolve}
+          onReject={props.onReject}
+          prompt="Did the values persist?"
+        />
+      )}
+    </>
+  );
+};
 
-export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const text1 = createTextComponent('text1');
-      const select1 = createSelectComponent('select1', 'Select Option 1');
-      const autocomplete1 = createAutocompleteComponent(
-        'autocomplete1',
-        'Select an Autocomplete Option 1',
-      );
-      whisper.create({
-        label: 'Values should be overwritten after update',
-        components: [
-          text1,
-          select1,
-          autocomplete1,
-          createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
+export const testValuePersistOnUpdate = (): Promise<boolean> =>
+  WhisperTestWrapper.createPromise(ValuePersistOnUpdate, 'Values should persist after update');
+
+const ValueOverwrittenOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  const onSelectHandler = (error: Error, param: string[], whisper: Whisper) => {
+    logMap(whisper.componentState);
+  };
+  return (
+    <>
+      {step === 2 && <oh-text-input label="text2" id="text2" key="text2" onChange={() => {}} />}
+      <oh-text-input
+        label="text1"
+        id="text1"
+        key="text1"
+        onChange={() => {}}
+        value={step === 2 ? 'overwritten' : undefined}
+      />
+      {step === 2 && <oh-select onSelect={() => {}} options={['Option 1', 'Option 2']} />}
+      <oh-select
+        onSelect={() => {}}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? 1 : undefined}
+      />
+      <oh-autocomplete
+        onChange={() => {}}
+        key="autocomplete"
+        id="autocomplete"
+        label="Select an option"
+        onSelect={onSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+        value={step === 2 ? 'option1' : undefined}
+      />
+      {step === 1 && (
+        <oh-button
+          label="Update"
+          onClick={(error) => {
             if (error) {
-              console.error(error);
-              reject(error);
+              props.onReject();
+            } else {
+              updateStep(2);
             }
-            // Updating whisper with new component values
-            text1.value = 'overwritten';
-            select1.selected = 1;
-            autocomplete1.value = '2';
-            onClickWhisper.update({
-              components: [
-                createTextComponent('textNew', 'New Text Field'),
-                text1,
-                createSelectComponent('selectNew', 'New Select Field'),
-                select1,
-                autocomplete1,
-                resolveRejectButtons(resolve, reject, 'Values overwritten', 'Values persisted'),
-              ],
-            });
-          }),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
+          }}
+        />
+      )}
+      {step === 2 && (
+        <ConfirmOrDeny
+          onResolve={props.onResolve}
+          onReject={props.onReject}
+          prompt={'Values overwritten'}
+        />
+      )}
+    </>
+  );
+};
+
+export const testValueOverwrittenOnUpdate = () =>
+  WhisperTestWrapper.createPromise(
+    ValueOverwrittenOnUpdate,
+    'Values should be overwritten after update',
+  );
+
+const UpdateCollapseState: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  const checkboxes = (
+    <>
+      <oh-checkbox onChange={() => {}} label="cb1" value={false} key="c1" />
+      <oh-checkbox onChange={() => {}} label="cb2" value={false} key="c2" />
+    </>
+  );
+  let buttons: React.ReactNode = (
+    <ConfirmOrDeny
+      onResolve={() => {
+        updateStep(2);
+      }}
+      onReject={props.onReject}
+      prompt="Expand the Collapse Box and click Yes"
+    />
+  );
+  if (step === 2) {
+    buttons = (
+      <ConfirmOrDeny
+        onResolve={() => {
+          updateStep(3);
+        }}
+        onReject={props.onReject}
+        prompt="Did the CollapseBox stay expanded?"
+      />
+    );
+  } else if (step === 3) {
+    buttons = (
+      <ConfirmOrDeny
+        onResolve={props.onResolve}
+        onReject={props.onReject}
+        prompt="Did the collapse box go back to collapsed?"
+      />
+    );
+  }
+  return (
+    <>
+      <oh-collapse-box open={step === 2}>{checkboxes}</oh-collapse-box>
+      {buttons}
+    </>
+  );
+};
 
 export const testUpdateCollapseState = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const checkboxes: ChildComponents[] = [
-        {
-          type: WhisperComponentType.Checkbox,
-          label: 'cb1',
-          value: false,
-          key: 'c1',
-          onChange: () => {
-            // do nothing.
-          },
-        },
-        {
-          type: WhisperComponentType.Checkbox,
-          label: 'cb2',
-          value: false,
-          key: 'c2',
-          onChange: () => {
-            // do nothing.
-          },
-        },
-      ];
-
-      const collapseBox: Component = {
-        type: WhisperComponentType.CollapseBox,
-        children: [...checkboxes],
-        label: 'first CollapseBox',
-        open: false,
-        key: 'collapse',
-      };
-
-      const firstConfirm = createConfirmOrDenyWithPromise(
-        'Expand the Collapse Box and click Yes',
-        'User clicked no',
-      );
-      const testWhisper = await whisper.create({
-        label: 'Update Collapse State',
-        onClose: () => {
-          // do nothing.
-        },
-        components: [collapseBox, ...firstConfirm.button],
-      });
-      await firstConfirm.promise;
-      const secondUpdate = createConfirmOrDenyWithPromise(
-        'Did the CollapseBox stay expanded?',
-        'User selected update failed.',
-      );
-      await testWhisper.update({
-        label: 'Update Collapse State',
-        components: [{ ...collapseBox, open: true }, ...secondUpdate.button],
-      });
-      await secondUpdate.promise;
-      testWhisper.update({
-        label: 'Update Collapse State',
-        components: [
-          collapseBox,
-          ...confirmOrDeny(
-            resolve,
-            reject,
-            'Did the collapse box go back to collapsed?',
-            'Collapse box did not obey state change',
-            testWhisper,
-          ),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      console.error(error.message);
-    }
-  });
+  WhisperTestWrapper.createPromise(UpdateCollapseState, 'Update Collapse State');
 
 export const testWhisperStateOnChange = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
