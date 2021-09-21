@@ -402,10 +402,27 @@ export const testFileStat = (): Promise<boolean> =>
         writeOperation: WriteOperation.overwrite,
         writeMode: 0o755,
       });
+
       const fileInfo = await filesystem.stat(filePath);
-      console.log('modTime toString', JSON.stringify(fileInfo.modTime));
+      const modTimeString = fileInfo.modTime.toString();
+      const event = new Date(fileInfo.modTime);
+      const newDate = new Date().getTime();
+      const getDate = new Date(newDate);
+
+      console.log('new date', newDate);
+      console.log('getDate =  new Date(newDate);', getDate);
+      console.log(event.getMilliseconds());
+      console.log('modTime toString', modTimeString);
       console.log('modTime type', typeof fileInfo.modTime);
-      console.log('modTime Passed into newDate', new Date(JSON.stringify(fileInfo.modTime)));
+      // const parsedDate= Date.parse(fileInfo.modTime);
+      // console.log('parsed Date', parsedDate);
+      // const luxonDate = luxonDateTime.fromISO(modTimeString);
+      // console.log('luxonDate', luxonDate);
+      console.log(
+        'modTime Passed into newDate',
+        new Date('2021-09-20 23:04:07.237590597 -0400 EDT'),
+      );
+
       if (fileInfo) {
         await filesystem.remove(filePath);
         resolve(true);
