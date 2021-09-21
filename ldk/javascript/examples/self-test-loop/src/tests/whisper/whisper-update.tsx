@@ -81,6 +81,9 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
   const onChangeHandler = (error: Error, param: string | number, whisper: Whisper) => {
     logMap(whisper.componentState);
   };
+  const onSelectHandler = (error: Error, param: string[], whisper: Whisper) => {
+    logMap(whisper.componentState);
+  };
   return (
     <>
       {step === 2 && (
@@ -105,6 +108,17 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
         id="text2"
         tooltip="Enter text"
         label="Enter Text"
+      />
+      <oh-autocomplete
+        onChange={onChangeHandler}
+        key="autocomplete"
+        id="autocomplete"
+        label="Select an option"
+        onSelect={onSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
       />
       {step === 2 && (
         <oh-select
@@ -160,6 +174,9 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
 
 const ValueOverwrittenOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
   const [step, updateStep] = React.useState(1);
+  const onSelectHandler = (error: Error, param: string[], whisper: Whisper) => {
+    logMap(whisper.componentState);
+  };
   return (
     <>
       {step === 2 && <oh-text-input label="text2" id="text2" key="text2" onChange={() => {}} />}
@@ -176,7 +193,18 @@ const ValueOverwrittenOnUpdate: React.FunctionComponent<TestComponentProps> = (p
         options={['Option 1', 'Option 2']}
         selected={step === 2 ? 1 : undefined}
       />
-
+      <oh-autocomplete
+        onChange={() => {}}
+        key="autocomplete"
+        id="autocomplete"
+        label="Select an option"
+        onSelect={onSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+        value={step === 2 ? 'option1' : undefined}
+      />
       {step === 1 && (
         <oh-button
           label="Update"

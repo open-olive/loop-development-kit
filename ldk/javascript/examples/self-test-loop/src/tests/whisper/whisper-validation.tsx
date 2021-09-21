@@ -46,9 +46,24 @@ const ComponentValidationTest: React.FunctionComponent<TestComponentProps> = (pr
     errors.dateInputId =
       state.get(ids.dateInputId) !== '2020-08-20' ? 'Please select 2020-08-20' : undefined;
     updateValidationErrors(errors);
+    errors.autocompleteInputId =
+      ((state.get(ids.autocompleteInputId) as string[]) || []).length === 0
+        ? 'Please choose an option'
+        : undefined;
   };
   return (
     <>
+      <oh-autocomplete
+        label="Select an option"
+        onSelect={onChange}
+        key={ids.autocompleteInputId}
+        id={ids.autocompleteInputId}
+        validationError={errors.autocompleteInputId}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+      />
       <oh-text-input
         label="Input 'valid'"
         id={ids.textInputId}
