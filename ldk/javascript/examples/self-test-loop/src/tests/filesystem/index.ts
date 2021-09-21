@@ -403,6 +403,9 @@ export const testFileStat = (): Promise<boolean> =>
         writeMode: 0o755,
       });
       const fileInfo = await filesystem.stat(filePath);
+      console.log('modTime toString', JSON.stringify(fileInfo.modTime));
+      console.log('modTime type', typeof fileInfo.modTime);
+      console.log('modTime Passed into newDate', new Date(JSON.stringify(fileInfo.modTime)));
       if (fileInfo) {
         await filesystem.remove(filePath);
         resolve(true);
