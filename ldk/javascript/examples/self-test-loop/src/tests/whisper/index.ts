@@ -4,6 +4,7 @@ import {
   ButtonSize,
   ButtonStyle,
   Component,
+  CustomHeight,
   DateTimeType,
   Direction,
   JustifyContent,
@@ -26,6 +27,7 @@ import {
   logMap,
   resolveRejectButtons,
 } from './utils';
+import { shortText, longText, markdownText } from './text';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -118,23 +120,6 @@ export const testIconLayout = (): Promise<boolean> =>
 export const testMarkdownWhisper = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const options = ['M12.01', 'M00.123'];
-    const markdown = stripIndent`
-      A paragraph with *emphasis* and **strong importance**.
-      # H1 Markdown Example 
-      ## H2 Markdown Example 
-      ### H3 Markdown Example 
-      > A block quote with ~strikethrough~ and a URL: https://oliveai.com/
-
-      * Lists
-      * [ ] todo
-      * [x] done
-
-      A table:
-
-      | Table Header 1 | Table header 2 |
-      | - | - |
-      | Row 1 Col 1 | Row 1 Col 2 |
-      | Row 2 Col 1 | Row 2 Col 2 |`;
 
     await whisper.create({
       label: 'Markdown whisper Test',
@@ -143,7 +128,7 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
       },
       components: [
         {
-          body: markdown,
+          body: markdownText,
           type: WhisperComponentType.Markdown,
         },
         {
@@ -201,6 +186,48 @@ export const testMarkdownWhisper = (): Promise<boolean> =>
           type: WhisperComponentType.RadioGroup,
         },
         resolveRejectButtons(resolve, reject),
+      ],
+    });
+  });
+
+export const testMarkdownOnLinkClick = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['SomeLink1', false],
+      ['SomeLink2', false],
+      ['google', false],
+    ]);
+
+    const markdown = stripIndent`
+      # Links:
+
+      [Some Link 1](# "A Link")
+      Text between links
+      [Some Link 2](#)
+      Text between links
+      http://google.com
+      `;
+
+    const createdWhisper = await whisper.create({
+      label: 'Click on all the links',
+      onClose: () => {
+        // do nothing.
+      },
+      components: [
+        {
+          body: markdown,
+          type: WhisperComponentType.Markdown,
+          onLinkClick: (error: Error, linkName: string) => {
+            console.info(`Received click on the link: ${JSON.stringify(linkName)}`);
+            if (linkName === 'Some Link 1') {
+              onActionWrapper(error, 'SomeLink1', resolverMap, createdWhisper, resolve, reject);
+            } else if (linkName === 'Some Link 2') {
+              onActionWrapper(error, 'SomeLink2', resolverMap, createdWhisper, resolve, reject);
+            } else if (linkName === 'http://google.com') {
+              onActionWrapper(error, 'google', resolverMap, createdWhisper, resolve, reject);
+            }
+          },
+        },
       ],
     });
   });
@@ -286,6 +313,7 @@ export const testBoxInBox = (): Promise<boolean> =>
             type: WhisperComponentType.Box,
             alignment: JustifyContent.Center,
             direction: Direction.Horizontal,
+            customHeight: CustomHeight.Small,
             children: [
               {
                 type: WhisperComponentType.Box,
@@ -744,6 +772,54 @@ export const testMessageWithCopyableHeader = (): Promise<boolean> =>
         reject(new Error('Incorrect value detected'));
       }
     }, 5000);
+  });
+
+export const testMessage = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did message components rendered properly',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          body: 'None',
+          style: Urgency.None,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Success',
+          style: Urgency.Success,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Error',
+          style: Urgency.Error,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Warning',
+          style: Urgency.Warning,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Accent',
+          style: Color.Accent,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Black',
+          style: Color.Black,
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Grey',
+          style: Color.Grey,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
   });
 
 export const testFormComponents = (): Promise<boolean> =>
@@ -2378,6 +2454,80 @@ export const testWidth = (): Promise<boolean> =>
             layout: {
               width: whisper.WidthSize.Half,
             },
+          },
+          resolveRejectButtons(resolve, reject, 'Yes', 'No'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testScrollInsideBox = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Scrolling Inside Box Test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            body: 'Does is scroll?',
+            type: WhisperComponentType.Markdown,
+          },
+
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Vertical,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.Small,
+            children: [
+              {
+                type: WhisperComponentType.TextInput,
+                label: 'TextInput',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: shortText,
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Horizontal,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.Small,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: stripIndent`
+              When customHeight is large enough to put all your markdown inside box. It won't scroll.`,
+              },
+              {
+                type: WhisperComponentType.TextInput,
+                label: 'TextInput',
+                onChange: (value) => {
+                  console.debug(`Input value changed: ${value}`);
+                },
+              },
+            ],
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            direction: Direction.Vertical,
+            justifyContent: JustifyContent.SpaceEvenly,
+            customHeight: CustomHeight.ExtraLarge,
+            children: [
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: longText,
+              },
+            ],
           },
           resolveRejectButtons(resolve, reject, 'Yes', 'No'),
         ],

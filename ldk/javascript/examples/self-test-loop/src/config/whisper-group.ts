@@ -24,6 +24,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Did markdown rendered properly?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Markdown with Link callback',
+      whisperTests.testMarkdownOnLinkClick,
+      20000,
+      'All links callbacks should be received.',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Internal Links',
       whisperTests.testClickableWhisper,
       10000,
@@ -112,6 +118,12 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testMessageWithCopyableHeader,
       6000,
       'Click the Message Header to copy its text within alloted time',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Message',
+      whisperTests.testMessage,
+      30000,
+      'Did components render properly',
     ),
     new LoopTest(
       'Whisper Aptitude - Test onCopy',
@@ -216,4 +228,10 @@ export const whisperTestGroup = (): TestGroup =>
       'Do the items have different widths than default?',
     ),
     new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
+    new LoopTest(
+      'Whisper Aptitude - Scrolling',
+      whisperTests.testScrollInsideBox,
+      10000,
+      'Does it scroll?',
+    ),
   ]);

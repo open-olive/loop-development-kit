@@ -149,10 +149,11 @@ export enum DateTimeType {
 }
 
 export enum Color {
-  Grey = 'grey',
-  White = 'white',
+  Accent = 'accent',
   Black = 'black',
+  Grey = 'grey',
   WhisperStrip = 'whisper-strip',
+  White = 'white',
 }
 
 export enum MarkdownWhisperCopyMode {
@@ -203,6 +204,13 @@ export enum WidthSize {
 }
 
 export type StateMap = Map<string, string | boolean | number | string[]>;
+
+export enum CustomHeight {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
+}
 
 export interface Whisper {
   id: string;
@@ -355,6 +363,7 @@ export type Markdown = WhisperComponent<WhisperComponentType.Markdown> & {
   body: string;
   onCopy?: WhisperHandler;
   tooltip?: string;
+  onLinkClick?: Common.Callback<string>;
 };
 
 export type Message = WhisperComponent<WhisperComponentType.Message> & {
@@ -362,7 +371,7 @@ export type Message = WhisperComponent<WhisperComponentType.Message> & {
   body?: string;
   header?: string;
   onCopy?: WhisperHandler;
-  style?: Urgency;
+  style?: Urgency | Color.Accent | Color.Black | Color.Grey;
   textAlign?: TextAlign;
   tooltip?: string;
 };
@@ -462,6 +471,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
   alignItems?: AlignItems;
   alignment: JustifyContent;
   children: Array<BoxChildComponent>;
+  customHeight?: CustomHeight;
   direction: Direction;
   onClick?: WhisperHandler;
 };
@@ -469,6 +479,7 @@ export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignItems?: AlignItems;
   children: Array<BoxChildComponent>;
+  customHeight?: CustomHeight;
   direction: Direction;
   justifyContent: JustifyContent;
   onClick?: WhisperHandler;
