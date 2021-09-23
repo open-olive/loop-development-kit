@@ -405,6 +405,7 @@ export const testFileStat = (): Promise<boolean> =>
 
       const fileInfo = await filesystem.stat(filePath);
       const modTimeString = fileInfo.modTime.toString();
+
       // const event = new Date(fileInfo.modTime);
 
       // const d = new Date(modTimeString.UnixNano()/1e6);
@@ -415,7 +416,10 @@ export const testFileStat = (): Promise<boolean> =>
       console.log('keys:', Object.keys(fileInfo.modTime));
 
       console.log('modTime parse', Date.parse(modTimeString));
-      console.log('2023-09-20 23:13:34.725519822 -0400 EDT:', new Date("2023-09-20 23:13:34.725519822 -0400 EDT"));
+      console.log(
+        '2023-09-20 23:13:34.725519822 -0400 EDT:',
+        new Date('2023-09-20 23:13:34.725519822 -0400 EDT'),
+      );
       console.log('10-02-2020 :', new Date('10-02-2020'));
       console.log(
         'Date(2018, 0O5, 0O5, 17, 23, 42, 11):',
