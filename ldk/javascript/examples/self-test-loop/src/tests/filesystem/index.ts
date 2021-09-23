@@ -404,27 +404,21 @@ export const testFileStat = (): Promise<boolean> =>
       });
 
       const fileInfo = await filesystem.stat(filePath);
-      const modTimeString = fileInfo.modTime.toString();
+      const typeOfmodTime = typeof fileInfo.modTime;
 
       // const event = new Date(fileInfo.modTime);
 
       // const d = new Date(modTimeString.UnixNano()/1e6);
 
-      const newDate = new Date().getTime();
-      console.log('new date', newDate);
+      const DateofmodTime = new Date(fileInfo.modTime).getTime();
+      console.log('type of modTime: ', typeOfmodTime);
+      console.log('modTime value: ', fileInfo.modTime);
+      console.log('DateofmodTime', DateofmodTime);
 
       console.log('keys:', Object.keys(fileInfo.modTime));
 
-      console.log('modTime parse', Date.parse(modTimeString));
-      console.log(
-        '2023-09-20 23:13:34.725519822 -0400 EDT:',
-        new Date('2023-09-20 23:13:34.725519822 -0400 EDT'),
-      );
-      console.log('10-02-2020 :', new Date('10-02-2020'));
-      console.log(
-        'Date(2018, 0O5, 0O5, 17, 23, 42, 11):',
-        new Date(2018, 0o5, 0o5, 17, 23, 42, 11),
-      );
+      console.log('modTime parse', Date.parse(fileInfo.modTime));
+
       // const getDate = new Date(newDate);
       // console.log('getDate =  new Date(newDate);', getDate);
       // console.log(event.getMilliseconds());
