@@ -153,7 +153,7 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
             // Updating whisper with new component values
             text1.value = 'overwritten';
             textToEmpty.value = '';
-            textToEmpty.label = "should now be empty";
+            textToEmpty.label = 'should now be empty';
             select1.selected = 1;
             autocomplete1.value = '2';
             onClickWhisper.update({
