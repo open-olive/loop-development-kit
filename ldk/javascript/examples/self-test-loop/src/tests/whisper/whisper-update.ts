@@ -134,8 +134,13 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
       const text1 = createTextComponent('text1');
       const textToEmpty = createTextComponent('textToEmpty', 'type something in');
       const select1 = createSelectComponent('select1', 'Select Option 1');
+      const selectToEmpty = createSelectComponent('select2', 'Select Option 1');
       const autocomplete1 = createAutocompleteComponent(
         'autocomplete1',
+        'Select an Autocomplete Option 1',
+      );
+      const acToEmpty = createAutocompleteComponent(
+        'autocomplete2',
         'Select an Autocomplete Option 1',
       );
       whisper.create({
@@ -144,7 +149,9 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
           text1,
           textToEmpty,
           select1,
+          selectToEmpty,
           autocomplete1,
+          acToEmpty,
           createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
             if (error) {
               console.error(error);
@@ -155,7 +162,11 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
             textToEmpty.value = '';
             textToEmpty.label = 'should now be empty';
             select1.selected = 1;
+            selectToEmpty.selected = -1;
+            selectToEmpty.label = 'should now be unselected';
             autocomplete1.value = '2';
+            acToEmpty.value = '';
+            acToEmpty.label = 'should now be empty';
             onClickWhisper.update({
               components: [
                 createTextComponent('textNew', 'New Text Field'),
@@ -163,7 +174,9 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
                 textToEmpty,
                 createSelectComponent('selectNew', 'New Select Field'),
                 select1,
+                selectToEmpty,
                 autocomplete1,
+                acToEmpty,
                 resolveRejectButtons(resolve, reject, 'Values overwritten', 'Values persisted'),
               ],
             });
