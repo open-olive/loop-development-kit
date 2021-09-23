@@ -132,6 +132,7 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const text1 = createTextComponent('text1');
+      const textToEmpty = createTextComponent('textToEmpty', 'type something in');
       const select1 = createSelectComponent('select1', 'Select Option 1');
       const autocomplete1 = createAutocompleteComponent(
         'autocomplete1',
@@ -141,6 +142,7 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
         label: 'Values should be overwritten after update',
         components: [
           text1,
+          textToEmpty,
           select1,
           autocomplete1,
           createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
@@ -150,12 +152,15 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
             }
             // Updating whisper with new component values
             text1.value = 'overwritten';
+            textToEmpty.value = '';
+            textToEmpty.label = "should now be empty";
             select1.selected = 1;
             autocomplete1.value = '2';
             onClickWhisper.update({
               components: [
                 createTextComponent('textNew', 'New Text Field'),
                 text1,
+                textToEmpty,
                 createSelectComponent('selectNew', 'New Select Field'),
                 select1,
                 autocomplete1,
