@@ -238,6 +238,6 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - JustifyContent',
       whisperTests.testJustifyContent,
       10000,
-      'Does the JustifyContent-Normal items behave as "stretch" in the flex container?',
+      'Does the JustifyContent-Normal items behave as "stretch" in flex container?',
     ),
   ]);
