@@ -20,7 +20,7 @@ describe('Whisper', () => {
             type: whisper.WhisperComponentType.Markdown,
           },
           {
-            justifyContent: whisper.JustifyContent.Center,
+            justifyContent: whisper.JustifyContent.Normal,
             children: [],
             direction: whisper.Direction.Horizontal,
             type: whisper.WhisperComponentType.Box,
