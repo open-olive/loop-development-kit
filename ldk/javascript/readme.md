@@ -56,6 +56,10 @@ module.exports = merged;
 ### VSCode Extension
 If you prefer to use VSCode, you can install our [VSCode extension](https://marketplace.visualstudio.com/items?itemName=Olive-AI.vscode-loop-development-kit) to generate boilerplate code for Olive Helps Loops.
 
+### Experimental React Whispers
+
+We've added support for writing and updating Whispers with React to the LDK. Visit the [dedicated readme](./src/whisper/react/readme.md) for details on how to use it.
+
 ### Loading a Local Loop Into Olive Helps
 Once you have generated the Loop using the above steps into your `./dist/loop.js` directory, you can now load it into Olive Helps to test.
 

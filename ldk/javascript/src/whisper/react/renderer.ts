@@ -31,3 +31,5 @@ export function renderNewWhisper(element: ReactNode): Promise<WhisperInstance> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   return render(element, new WhisperRenderInstance());
 }
+
+export { WhisperInstance };
