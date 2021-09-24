@@ -2709,6 +2709,9 @@ export const testJustifyContent = (): Promise<boolean> =>
               type: WhisperComponentType.Box,
               alignment: JustifyContent.Right,
               direction: Direction.Vertical,
+              layout: {
+                flex: 'auto',
+              },
               children: [
                 {
                   body: 'normal',
@@ -2720,6 +2723,9 @@ export const testJustifyContent = (): Promise<boolean> =>
               type: WhisperComponentType.Box,
               alignment: JustifyContent.Right,
               direction: Direction.Vertical,
+              layout: {
+                flex: 'auto',
+              },
               children: [
                 {
                   body: 'normal',
