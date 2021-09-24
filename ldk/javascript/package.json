@@ -17,14 +17,14 @@
     "sdk"
   ],
   "scripts": {
-    "clear-dist": "rm -rf dist || if exist dist rmdir /s /q dist",
+    "clear-dist": "rm -rf dist || del /s /q dist",
     "build": "npm run clear-dist && tsc",
     "prepush": "npm run build && npm run test && npm run lint",
     "test": "jest",
     "test-coverage": "jest --collectCoverage",
     "test-watch": "jest --watchAll",
     "lint": "./node_modules/.bin/eslint . --max-warnings 0 --ext .js,.ts",
-    "clear-docs": "(rm -rf docs || if exist docs rmdir /s /q docs) && mkdir docs",
+    "clear-docs": "(rm -rf docs || del /s /q docs) && mkdir docs",
     "build-docs": "./node_modules/.bin/typedoc --options typedoc.json",
     "doc": "npm run clear-docs && npm run build-docs",
     "publish-local": "npm unpublish @oliveai/ldk -f --registry http://localhost:4873 && npm publish --registry http://localhost:4873"
