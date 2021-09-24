@@ -134,6 +134,7 @@ export function copy(source: string, destination: string): Promise<void> {
 
 export function dir(path: string): Promise<FileInfo[]> {
   return promisifyWithParam(path, oliveHelps.filesystem.dir);
+  //  return promisifyWithParam(path, oliveHelps.filesystem.dir);
 }
 
 export function exists(path: string): Promise<boolean> {
