@@ -39,7 +39,7 @@ declare namespace Filesystem {
     name: string;
     size: number;
     mode: string;
-    modTime: string;
+    modTime: number;
     isDir: boolean;
   }
 

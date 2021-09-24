@@ -410,14 +410,14 @@ export const testFileStat = (): Promise<boolean> =>
 
       // const d = new Date(modTimeString.UnixNano()/1e6);
 
-      const DateofmodTime = new Date(fileInfo.modTime).getTime();
+      const DateofmodTime = new Date(fileInfo.modTime);
       console.log('type of modTime: ', typeOfmodTime);
       console.log('modTime value: ', fileInfo.modTime);
       console.log('DateofmodTime', DateofmodTime);
 
       console.log('keys:', Object.keys(fileInfo.modTime));
 
-      console.log('modTime parse', Date.parse(fileInfo.modTime));
+      // console.log('modTime parse', Date.parse(fileInfo.modTime));
 
       // const getDate = new Date(newDate);
       // console.log('getDate =  new Date(newDate);', getDate);
@@ -429,7 +429,7 @@ export const testFileStat = (): Promise<boolean> =>
       // console.log('luxonDate', luxonDate);
       console.log(
         'modTime Passed into newDate',
-        new Date('2021-09-20 23:04:07.237590597 -0400 EDT'),
+        new Date('2021-09-20 23:04:07.237590597'),
       );
 
       if (fileInfo) {

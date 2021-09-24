@@ -17,7 +17,7 @@ export interface FileInfo {
   /**
    * The last updated time, if present.
    */
-  modTime: string;
+  modTime: number;
   /**
    * Whether the entry is a directory.
    */

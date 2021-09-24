@@ -58,7 +58,7 @@ describe('Filesystem', () => {
           name: 'name',
           size: 2345,
           mode: 'mode',
-          modTime: 'modTime',
+          modTime: 111,
           isDir: true,
         },
       ];
@@ -118,7 +118,7 @@ describe('Filesystem', () => {
           name: 'bob',
           size: 1,
           mode: '0o755',
-          modTime: 'time',
+          modTime: 111,
           isDir: false,
         },
       };
@@ -156,7 +156,7 @@ describe('Filesystem', () => {
           name: 'bob',
           size: 1,
           mode: '0o755',
-          modTime: 'time',
+          modTime: 111,
           isDir: false,
         },
       };
@@ -301,7 +301,7 @@ describe('Filesystem', () => {
         name: 'name',
         size: 2345,
         mode: 'mode',
-        modTime: 'modTime',
+        modTime: 11111,
         isDir: true,
       };
       mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
