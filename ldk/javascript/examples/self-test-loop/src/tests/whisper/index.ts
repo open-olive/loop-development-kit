@@ -434,7 +434,7 @@ export const testDropzone = async (): Promise<boolean> => {
       acceptFileData.component,
     ],
   });
-  acceptFileData.acceptResult.finally(() => {
+  acceptFileData.acceptResult.catch(() => {
     testWhisper.close(() => {
       // Do nothing.
     });
