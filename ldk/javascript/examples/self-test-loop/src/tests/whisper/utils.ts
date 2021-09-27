@@ -9,6 +9,8 @@ import {
   Select,
   TextInput,
   Autocomplete,
+  RadioGroup,
+  Markdown,
 } from '@oliveai/ldk/dist/whisper/types';
 
 export const resolveOnClick = (
@@ -97,6 +99,18 @@ export const createSelectComponent = (id: string, label?: string): Select => {
   };
 };
 
+export const createRadioComponent = (id: string): RadioGroup => {
+  return {
+    type: WhisperComponentType.RadioGroup,
+    id: id,
+    key: id,
+    onSelect: (_error: Error, _param: number, onSelectWhisper: Whisper) => {
+      logMap(onSelectWhisper.componentState);
+    },
+    options: ['Option 1', 'Option 2'],
+  };
+};
+
 export const createAutocompleteComponent = (id: string, label?: string): Autocomplete => {
   return {
     type: WhisperComponentType.Autocomplete,
@@ -125,6 +139,13 @@ export const createButtonComponent = (
       logMap(onClickWhisper.componentState);
       onClick(error, onClickWhisper);
     },
+  };
+};
+
+export const createMarkdownComponent = (text: string): Markdown => {
+  return {
+    type: WhisperComponentType.Markdown,
+    body: text,
   };
 };
 

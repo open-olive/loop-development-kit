@@ -21,6 +21,8 @@ import {
   createTextComponent,
   createAutocompleteComponent,
   resolveRejectButtons,
+  createRadioComponent,
+  createMarkdownComponent,
 } from './utils';
 
 const confirmOrDeny = (
@@ -85,21 +87,19 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const text1 = createTextComponent('text1');
-      const text2 = createTextComponent('text2');
       const autocomplete1 = createAutocompleteComponent(
         'autocomplete1',
         'Select an autocomplete option',
       );
       const select1 = createSelectComponent('select1');
-      const select2 = createSelectComponent('select2');
+      const radio1 = createRadioComponent('radio1');
       whisper.create({
-        label: 'Values should persist after update',
+        label: 'Values should persist after update with added empty duplicates',
         components: [
           text1,
-          text2,
           select1,
           autocomplete1,
-          select2,
+          radio1,
           createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
             if (error) {
               console.error(error);
@@ -111,11 +111,13 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
               components: [
                 createTextComponent('textNew', 'New Text Field'),
                 text1,
-                text2,
                 createSelectComponent('selectNew', 'New Select Field'),
                 select1,
+                createAutocompleteComponent('autocompleteNew', 'New autocomplete component'),
                 autocomplete1,
-                select2,
+                createMarkdownComponent('New radio component:'),
+                createRadioComponent('radioNew'),
+                radio1,
                 resolveRejectButtons(resolve, reject, 'Values persisted', 'Values did not persist'),
               ],
             });
@@ -132,14 +134,16 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const text1 = createTextComponent('text1');
-      const textToEmpty = createTextComponent('textToEmpty', 'type something in');
+      const textToEmpty = createTextComponent('textToEmpty');
       const select1 = createSelectComponent('select1', 'Select Option 1');
       const selectToEmpty = createSelectComponent('select2', 'Select Option 1');
+      const radio1 = createRadioComponent('radio1');
+      const radioToEmpty = createRadioComponent('radio2');
       const autocomplete1 = createAutocompleteComponent(
         'autocomplete1',
         'Select an Autocomplete Option 1',
       );
-      const acToEmpty = createAutocompleteComponent(
+      const autocompleteToEmpty = createAutocompleteComponent(
         'autocomplete2',
         'Select an Autocomplete Option 1',
       );
@@ -150,8 +154,12 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
           textToEmpty,
           select1,
           selectToEmpty,
+          createMarkdownComponent('Choose Option 1'),
+          radio1,
+          createMarkdownComponent('Choose Option 1'),
+          radioToEmpty,
           autocomplete1,
-          acToEmpty,
+          autocompleteToEmpty,
           createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
             if (error) {
               console.error(error);
@@ -160,13 +168,17 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
             // Updating whisper with new component values
             text1.value = 'overwritten';
             textToEmpty.value = '';
-            textToEmpty.label = 'should now be empty';
+            textToEmpty.label = 'Should be empty';
             select1.selected = 1;
+            select1.label = 'Option 2 should be selected';
             selectToEmpty.selected = -1;
-            selectToEmpty.label = 'should now be unselected';
+            selectToEmpty.label = 'Should be unselected';
+            radio1.selected = 1;
+            radioToEmpty.selected = -1;
             autocomplete1.value = '2';
-            acToEmpty.value = '';
-            acToEmpty.label = 'should now be empty';
+            autocomplete1.label = 'Option 2 should be selected';
+            autocompleteToEmpty.value = '';
+            autocompleteToEmpty.label = 'Should be unselected';
             onClickWhisper.update({
               components: [
                 createTextComponent('textNew', 'New Text Field'),
@@ -175,8 +187,12 @@ export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
                 createSelectComponent('selectNew', 'New Select Field'),
                 select1,
                 selectToEmpty,
+                createMarkdownComponent('Option 2 should be selected'),
+                radio1,
+                createMarkdownComponent('Should be unselected'),
+                radioToEmpty,
                 autocomplete1,
-                acToEmpty,
+                autocompleteToEmpty,
                 resolveRejectButtons(resolve, reject, 'Values overwritten', 'Values persisted'),
               ],
             });
