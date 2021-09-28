@@ -146,6 +146,22 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
           { value: 'option2', label: 'Option 2' },
         ]}
       />
+      {step === 2 && <oh-markdown body="New radio component" />}
+      {step === 2 && (
+        <oh-radio-group
+          id="radioNew"
+          key="radioNew"
+          onSelect={onChangeSelectHandler}
+          options={['Option 1', 'Option 2']}
+        />
+      )}
+      <oh-markdown body="Select an option" />
+      <oh-radio-group
+        id="radio1"
+        key="radio1"
+        onSelect={onChangeSelectHandler}
+        options={['Option 1', 'Option 2']}
+      />
       {step === 1 && (
         <oh-button
           onClick={(error) => {
