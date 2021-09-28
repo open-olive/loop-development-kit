@@ -65,9 +65,12 @@ function withWrapper(WrappedComponent: React.JSXElementConstructor<TestComponent
     render() {
       const { onResolve, onReject, label } = this.props;
       return (
-        <oh-whisper label={label} onClose={() => {
-          // do nothing.
-        }}>
+        <oh-whisper
+          label={label}
+          onClose={() => {
+            // do nothing.
+          }}
+        >
           <WrappedComponent onResolve={onResolve} onReject={onReject} />
         </oh-whisper>
       );
