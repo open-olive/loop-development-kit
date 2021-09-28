@@ -234,4 +234,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Does it scroll?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Message, Pair, Markdown layout',
+      whisperTests.testMissingLayouts,
+      10000,
+      `Do the different component's have appropriate layout properties?`,
+    ),
   ]);
