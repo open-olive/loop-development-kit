@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import * as React from 'react';
 import { whisper } from '@oliveai/ldk';
 import { renderNewWhisper, WhisperInstance } from '@oliveai/ldk/dist/whisper/react/renderer';
@@ -64,7 +65,12 @@ function withWrapper(WrappedComponent: React.JSXElementConstructor<TestComponent
     render() {
       const { onResolve, onReject, label } = this.props;
       return (
-        <oh-whisper label={label} onClose={() => {}}>
+        <oh-whisper
+          label={label}
+          onClose={() => {
+            // do nothing.
+          }}
+        >
           <WrappedComponent onResolve={onResolve} onReject={onReject} />
         </oh-whisper>
       );
@@ -74,10 +80,15 @@ function withWrapper(WrappedComponent: React.JSXElementConstructor<TestComponent
 
 export class WhisperTestWrapper {
   onResolve: (value: boolean | PromiseLike<boolean>) => void;
+
   onReject: () => void;
+
   promise: Promise<boolean>;
+
   label: string;
+
   testComponent: React.FunctionComponent<TestComponentProps>;
+
   whisper: WhisperInstance | undefined;
 
   static async createPromise(
