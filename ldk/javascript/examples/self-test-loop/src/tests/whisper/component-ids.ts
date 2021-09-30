@@ -1,4 +1,4 @@
-import { newGuid } from '../utils';
+import { newGuid } from './utils';
 
 export default class ComponentIds {
   textInputId: string;
@@ -17,6 +17,8 @@ export default class ComponentIds {
 
   dropdownInputId: string;
 
+  autocompleteInputId: string;
+
   dateInputId: string;
 
   constructor() {
@@ -28,6 +30,7 @@ export default class ComponentIds {
     this.radioInputId = newGuid();
     this.checkboxInputId = newGuid();
     this.dropdownInputId = newGuid();
+    this.autocompleteInputId = newGuid();
     this.dateInputId = newGuid();
   }
 }

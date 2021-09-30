@@ -11,15 +11,17 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
     throw new Error(permissionsErrorMessage);
   }
   const json = JSON.stringify({
-    oliveHelpsContractVersion: '0.1.2',
+    oliveHelpsContractVersion: '0.1.4',
     permissions: {
       browser: ldkSettings.ldk.permissions.browser || undefined,
       clipboard: ldkSettings.ldk.permissions.clipboard || undefined,
       cursor: ldkSettings.ldk.permissions.cursor || undefined,
+      document: ldkSettings.ldk.permissions.document || undefined,
       filesystem: ldkSettings.ldk.permissions.filesystem || undefined,
       keyboard: ldkSettings.ldk.permissions.keyboard || undefined,
       network: ldkSettings.ldk.permissions.network || undefined,
       process: ldkSettings.ldk.permissions.process || undefined,
+      search: ldkSettings.ldk.permissions.search || undefined,
       system: ldkSettings.ldk.permissions.system || undefined,
       ui: ldkSettings.ldk.permissions.ui || undefined,
       user: ldkSettings.ldk.permissions.user || undefined,

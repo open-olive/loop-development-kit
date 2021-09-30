@@ -83,4 +83,10 @@ export const filesystemTestGroup = (): TestGroup =>
       5000,
       'Checking for file to be unzipped...',
     ),
+    new LoopTest(
+      'File Aptitude - Working Directory',
+      filesystemTests.testWorkDir,
+      2000,
+      'Checking working directory...',
+    ),
   ]);

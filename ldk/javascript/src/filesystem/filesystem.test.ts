@@ -18,6 +18,7 @@ describe('Filesystem', () => {
       join: jest.fn(),
       unzip: jest.fn(),
       openWithDefaultApplication: jest.fn(),
+      workDir: jest.fn(),
     };
   });
 
@@ -386,6 +387,31 @@ describe('Filesystem', () => {
       });
 
       const actual = filesystem.join(['a', 'b', 'c']);
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('workDir', () => {
+    it('returns a promise result with given joined path', () => {
+      const expected = '/an/excellent/path';
+
+      mocked(oliveHelps.filesystem.workDir).mockImplementation((callback) =>
+        callback(undefined, expected),
+      );
+
+      const actual = filesystem.workDir();
+
+      return expect(actual).resolves.toBe(expected);
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.filesystem.workDir).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = filesystem.workDir();
 
       return expect(actual).rejects.toBe(exception);
     });

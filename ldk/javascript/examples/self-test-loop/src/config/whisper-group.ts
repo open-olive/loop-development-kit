@@ -24,6 +24,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Did markdown rendered properly?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Markdown with Link callback',
+      whisperTests.testMarkdownOnLinkClick,
+      20000,
+      'All links callbacks should be received.',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Internal Links',
       whisperTests.testClickableWhisper,
       10000,
@@ -114,6 +120,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Click the Message Header to copy its text within alloted time',
     ),
     new LoopTest(
+      'Whisper Aptitude - Message',
+      whisperTests.testMessage,
+      30000,
+      'Did components render properly',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Test onCopy',
       whisperTests.testOnCopy,
       20000,
@@ -152,7 +164,7 @@ export const whisperTestGroup = (): TestGroup =>
     new LoopTest(
       'Whisper Aptitude - Tooltip Test',
       whisperTests.testTooltips,
-      20000,
+      30000,
       `Hover on each component to see a tooltip`,
     ),
     new LoopTest(
@@ -186,6 +198,18 @@ export const whisperTestGroup = (): TestGroup =>
       'Did the icon render correctly?',
     ),
     new LoopTest(
+      'Whisper Aptitude - RichTextEditor',
+      whisperTests.testRichTextEditor,
+      30000,
+      'Is RichTextEditor working correctly?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Autocomplete',
+      whisperTests.testAutocomplete,
+      30000,
+      'Test the autocomplete',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Padding',
       whisperTests.testPadding,
       10000,
@@ -204,4 +228,10 @@ export const whisperTestGroup = (): TestGroup =>
       'Do the items have different widths than default?',
     ),
     new LoopTest('Whisper Aptitude - Dropzone', whisperTests.testDropzone, 30000, 'Select files'),
+    new LoopTest(
+      'Whisper Aptitude - Scrolling',
+      whisperTests.testScrollInsideBox,
+      10000,
+      'Does it scroll?',
+    ),
   ]);

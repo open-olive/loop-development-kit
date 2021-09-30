@@ -1,8 +1,8 @@
-/**
- * Allows Loops to retrieve and store strings in the system's secure storage (Keychain for MacOS, Credential Manager for Windows).
- */
 import { promisifyWithParam, promisifyWithTwoParams } from '../promisify';
 
+/**
+ * The Vault aptitude allows Loops to retrieve and store strings in the system's secure storage (Keychain for MacOS, Credential Manager for Windows).
+ */
 export interface Vault {
   /**
    * Removes an entry from the vault.
