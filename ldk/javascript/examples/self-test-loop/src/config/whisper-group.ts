@@ -234,4 +234,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Does it scroll?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - JustifyContent',
+      whisperTests.testJustifyContent,
+      10000,
+      'Does the JustifyContent-Normal items behave as "stretch" in flex container?',
+    ),
   ]);
