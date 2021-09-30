@@ -14,8 +14,8 @@ import {
   Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
-import { logMap } from './utils';
 import * as React from 'react';
+import { logMap } from './utils';
 import { ConfirmOrDeny, TestComponentProps, WhisperTestWrapper } from './react-whisper-utils';
 
 const confirmOrDeny = (
@@ -76,75 +76,91 @@ const createConfirmOrDenyWithPromise = (
   };
 };
 
+const onChangeSelectHandler = (
+  _error: Error,
+  _param: string | string[] | number,
+  incomingWhisper: Whisper,
+) => {
+  logMap(incomingWhisper.componentState);
+};
+
 const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
   const [step, updateStep] = React.useState(1);
-  const onChangeHandler = (error: Error, param: string | number, whisper: Whisper) => {
-    logMap(whisper.componentState);
-  };
-  const onSelectHandler = (error: Error, param: string[], whisper: Whisper) => {
-    logMap(whisper.componentState);
-  };
   return (
     <>
       {step === 2 && (
         <oh-text-input
-          onChange={onChangeHandler}
-          key="newtext"
-          id="newtext"
+          onChange={onChangeSelectHandler}
+          key="textNew"
+          id="textNew"
           tooltip="Enter text"
-          label="Enter Text"
+          label="New Text Component"
         />
       )}
       <oh-text-input
-        onChange={onChangeHandler}
+        onChange={onChangeSelectHandler}
         key="text1"
         id="text1"
-        tooltip="Enter text"
+        tooltip={step === 2 ? undefined : 'Enter text'}
         label="Enter Text"
       />
-      <oh-text-input
-        onChange={onChangeHandler}
-        key="text2"
-        id="text2"
-        tooltip="Enter text"
-        label="Enter Text"
+      {step === 2 && (
+        <oh-select
+          onSelect={onChangeSelectHandler}
+          key="selectNew"
+          id="selectNew"
+          options={['Option 1', 'Option 2']}
+          tooltip="Select an option"
+          label="New Select Component"
+        />
+      )}
+      <oh-select
+        onSelect={onChangeSelectHandler}
+        key="select1"
+        id="select1"
+        options={['Option 1', 'Option 2']}
+        tooltip="Select an option"
+        label="Select Option"
       />
+      {step === 2 && (
+        <oh-autocomplete
+          onChange={onChangeSelectHandler}
+          key="autocompleteNew"
+          id="autocompleteNew"
+          label="New autocomplete component"
+          onSelect={onChangeSelectHandler}
+          options={[
+            { value: 'option1', label: 'Option 1' },
+            { value: 'option2', label: 'Option 2' },
+          ]}
+        />
+      )}
       <oh-autocomplete
-        onChange={onChangeHandler}
-        key="autocomplete"
-        id="autocomplete"
-        label="Select an option"
-        onSelect={onSelectHandler}
+        onChange={onChangeSelectHandler}
+        key="autocomplete1"
+        id="autocomplete1"
+        label="Select an autocomplete option"
+        onSelect={onChangeSelectHandler}
         options={[
           { value: 'option1', label: 'Option 1' },
           { value: 'option2', label: 'Option 2' },
         ]}
       />
+      {step === 2 && <oh-markdown body="New radio component" />}
       {step === 2 && (
-        <oh-select
-          onSelect={onChangeHandler}
-          key="newselect"
-          id="newselect"
+        <oh-radio-group
+          id="radioNew"
+          key="radioNew"
+          onSelect={onChangeSelectHandler}
           options={['Option 1', 'Option 2']}
-          tooltip="Select an option"
-          label="Select Option"
         />
       )}
-      <oh-select
-        onSelect={onChangeHandler}
-        key="s1"
-        id="s1"
+      <oh-markdown body="Select an option" />
+      <oh-radio-group
+        id="radio1"
+        key="radio1"
+        onSelect={onChangeSelectHandler}
         options={['Option 1', 'Option 2']}
-        tooltip="Select an option"
-        label="Select Option"
-      />
-      <oh-select
-        onSelect={onChangeHandler}
-        key="s2"
-        id="s2"
-        options={['Option 1', 'Option 2']}
-        tooltip="Select an option"
-        label="Select Option"
       />
       {step === 1 && (
         <oh-button
@@ -170,40 +186,109 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
 };
 
 export const testValuePersistOnUpdate = (): Promise<boolean> =>
-  WhisperTestWrapper.createPromise(ValuePersistOnUpdate, 'Values should persist after update');
+  WhisperTestWrapper.createPromise(
+    ValuePersistOnUpdate,
+    'Values should persist after update with added empty duplicates',
+  );
 
 const ValueOverwrittenOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
   const [step, updateStep] = React.useState(1);
-  const onSelectHandler = (error: Error, param: string[], whisper: Whisper) => {
-    logMap(whisper.componentState);
-  };
   return (
     <>
-      {step === 2 && <oh-text-input label="text2" id="text2" key="text2" onChange={() => {}} />}
+      {step === 2 && (
+        <oh-text-input
+          label="New Text Field"
+          id="textNew"
+          key="textNew"
+          onChange={onChangeSelectHandler}
+          tooltip="Enter text"
+        />
+      )}
       <oh-text-input
-        label="text1"
+        label="Enter text"
         id="text1"
         key="text1"
-        onChange={() => {}}
+        onChange={onChangeSelectHandler}
+        tooltip="Enter text"
         value={step === 2 ? 'overwritten' : undefined}
       />
-      {step === 2 && <oh-select onSelect={() => {}} options={['Option 1', 'Option 2']} />}
+      <oh-text-input
+        label={step === 2 ? 'Should be empty' : 'Enter text'}
+        id="textToEmpty"
+        key="textToEmpty"
+        onChange={onChangeSelectHandler}
+        tooltip="Enter text"
+        value={step === 2 ? '' : undefined}
+      />
+      {step === 2 && (
+        <oh-select
+          onSelect={onChangeSelectHandler}
+          key="selectNew"
+          id="selectNew"
+          options={['Option 1', 'Option 2']}
+          tooltip="Select an option"
+          label="New Select Component"
+        />
+      )}
       <oh-select
-        onSelect={() => {}}
+        id="select1"
+        key="select1"
+        onSelect={onChangeSelectHandler}
+        label={step === 2 ? 'Option 2 should be selected' : 'Select Option 1'}
         options={['Option 1', 'Option 2']}
         selected={step === 2 ? 1 : undefined}
       />
+      <oh-select
+        id="selectToEmpty"
+        key="selectToEmpty"
+        onSelect={onChangeSelectHandler}
+        label={step === 2 ? 'Should be unselected' : 'Select Option 1'}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? -1 : undefined}
+      />
+      <oh-markdown body={step === 2 ? 'Option 2 should be selected' : 'Choose Option 1'} />
+      <oh-radio-group
+        id="radio1"
+        key="radio1"
+        onSelect={onChangeSelectHandler}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? 1 : undefined}
+      />
+      <oh-markdown body={step === 2 ? 'Should be unselected' : 'Choose Option 1'} />
+      <oh-radio-group
+        id="radioToEmpty"
+        key="radioToEmpty"
+        onSelect={onChangeSelectHandler}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? -1 : undefined}
+      />
       <oh-autocomplete
-        onChange={() => {}}
-        key="autocomplete"
-        id="autocomplete"
-        label="Select an option"
-        onSelect={onSelectHandler}
+        onChange={() => {
+          // do nothing.
+        }}
+        key="autocomplete1"
+        id="autocomplete1"
+        label={step === 2 ? 'Option 2 should be selected' : 'Select an Autocomplete Option 1'}
+        onSelect={onChangeSelectHandler}
         options={[
           { value: 'option1', label: 'Option 1' },
           { value: 'option2', label: 'Option 2' },
         ]}
-        value={step === 2 ? 'option1' : undefined}
+        value={step === 2 ? 'option2' : undefined}
+      />
+      <oh-autocomplete
+        onChange={() => {
+          // do nothing.
+        }}
+        key="autocompleteToEmpty"
+        id="autocompleteToEmpty"
+        label={step === 2 ? 'Should be unselected' : 'Select an Autocomplete Option 1'}
+        onSelect={onChangeSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+        value={step === 2 ? '' : undefined}
       />
       {step === 1 && (
         <oh-button
@@ -228,7 +313,7 @@ const ValueOverwrittenOnUpdate: React.FunctionComponent<TestComponentProps> = (p
   );
 };
 
-export const testValueOverwrittenOnUpdate = () =>
+export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
   WhisperTestWrapper.createPromise(
     ValueOverwrittenOnUpdate,
     'Values should be overwritten after update',
@@ -238,8 +323,22 @@ const UpdateCollapseState: React.FunctionComponent<TestComponentProps> = (props)
   const [step, updateStep] = React.useState(1);
   const checkboxes = (
     <>
-      <oh-checkbox onChange={() => {}} label="cb1" value={false} key="c1" />
-      <oh-checkbox onChange={() => {}} label="cb2" value={false} key="c2" />
+      <oh-checkbox
+        onChange={() => {
+          // do nothing.
+        }}
+        label="cb1"
+        value={false}
+        key="c1"
+      />
+      <oh-checkbox
+        onChange={() => {
+          // do nothing.
+        }}
+        label="cb2"
+        value={false}
+        key="c2"
+      />
     </>
   );
   let buttons: React.ReactNode = (

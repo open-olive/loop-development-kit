@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --entry ./index.ts --config ./node_modules/@oliveai/ldk/dist/webpack/config.js",
-    "build-ldk": "cd ../.. && npm i && rm -rf dist && npm run build",
+    "build-ldk": "cd ../.. && npm run build",
     "build-all": "npm run build-ldk && npm i && npm run build"
   },
   "author": "LDK Team",
