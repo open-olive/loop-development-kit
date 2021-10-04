@@ -1,15 +1,20 @@
 import {
-  JustifyContent,
-  Direction,
-  WhisperComponentType,
-  Whisper,
-  Component,
-  StateMap,
-  Button,
-  Select,
-  TextInput,
   Autocomplete,
+  Button,
+  Component,
+  Direction,
+  Divider,
+  JustifyContent,
+  Select,
+  StateMap,
+  TextInput,
+  Whisper,
+  WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
+
+import {
+  WidthSize,
+} from '@oliveai/ldk/dist/whisper';
 
 export const resolveOnClick = (
   error: Error,
@@ -75,6 +80,15 @@ export const logMap = (map: StateMap): void => {
     console.log(`Key: ${entry[0]} Value: ${entry[1]}`);
   });
 };
+
+export const createDivider = (widthSize?: WidthSize): Divider =>{
+  return {
+    type: WhisperComponentType.Divider,
+    layout: {
+      width: widthSize || WidthSize.Half,
+    }
+  };
+}
 
 export const createTextComponent = (id: string, label?: string): TextInput => ({
   type: WhisperComponentType.TextInput,
