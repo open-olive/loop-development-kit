@@ -2200,7 +2200,7 @@ export const testRichTextEditor = (): Promise<boolean> =>
               onClick: (_error: Error, onClickWhisper: Whisper) => {
                 if (!editedText || editedText.length === 0 || editedText.length > 50) {
                   (components[0] as RichTextEditor).validationError =
-                    'Inputed text is required and should be less than 200 chars.';
+                    'Inputed text is required and should be less than 50 chars.';
                   onClickWhisper.update({
                     components,
                   });
