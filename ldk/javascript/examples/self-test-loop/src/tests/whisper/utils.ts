@@ -12,9 +12,7 @@ import {
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
 
-import {
-  WidthSize,
-} from '@oliveai/ldk/dist/whisper';
+import { WidthSize } from '@oliveai/ldk/dist/whisper';
 
 export const resolveOnClick = (
   error: Error,
@@ -81,14 +79,12 @@ export const logMap = (map: StateMap): void => {
   });
 };
 
-export const createDivider = (widthSize?: WidthSize): Divider =>{
-  return {
-    type: WhisperComponentType.Divider,
-    layout: {
-      width: widthSize || WidthSize.Half,
-    }
-  };
-}
+export const createDivider = (widthSize?: WidthSize): Divider => ({
+  type: WhisperComponentType.Divider,
+  layout: {
+    width: widthSize || WidthSize.Half,
+  },
+});
 
 export const createTextComponent = (id: string, label?: string): TextInput => ({
   type: WhisperComponentType.TextInput,
