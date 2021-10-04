@@ -2322,10 +2322,10 @@ export const testPadding = (): Promise<boolean> =>
       const componentsToGroup = [];
       const componentCreationFunctions = [createTextComponent, createSelectComponent, createAutocompleteComponent]
 
-      for(let functionIndex = 0; functionIndex < componentCreationFunctions.length; functionIndex++) {
+      for (let functionIndex = 0; functionIndex < componentCreationFunctions.length; functionIndex++) {
         const func = componentCreationFunctions[functionIndex];
         const component = func(`${functionIndex}`, "Label");
-        component.layout = {padding:paddingSize};
+        component.layout = { padding: paddingSize };
         componentsToGroup.push(component);
       }
 
@@ -2426,7 +2426,7 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare elements wrapped in a collaspible box below. Does they have padding? Do the labels appear in the correct place?',
+            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
