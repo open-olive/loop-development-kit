@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "webpack",
-    "build-ldk": "cd ../.. && npm i && rm -rf dist && tsc",
+    "build-ldk": "cd ../.. && npm run build",
     "build-all": "npm run build-ldk && npm i && npm run build"
   },
   "keywords": [],
@@ -14,6 +14,7 @@
     "permissions": {
       "clipboard": {},
       "cursor": {},
+      "document": {},
       "network": {
         "urlDomains": [
           {
@@ -68,6 +69,7 @@
     "common-tags": "^1.8.0",
     "core-js": "3.10.1",
     "es6-promise": "4.2.8",
+    "react": "^17.0.2",
     "ts-node": "^9.1.1",
     "xlsx": "^0.17.0"
   }

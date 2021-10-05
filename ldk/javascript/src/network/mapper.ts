@@ -2,13 +2,13 @@ import { TextDecoder } from 'text-encoding-shim';
 import { HTTPResponse, Socket, HTTPRequest } from './index';
 import { mapToUint8Array, mapToBinaryData } from '../utils/mapper';
 
-export const mapToHttpResponse = (response: OliveHelps.HTTPResponse): HTTPResponse => ({
+export const mapToHttpResponse = (response: Network.HTTPResponse): HTTPResponse => ({
   statusCode: response.statusCode,
   body: new Uint8Array(response.body),
   headers: response.headers,
 });
 
-export const mapToHttpRequest = (request: HTTPRequest): OliveHelps.HTTPRequest => ({
+export const mapToHttpRequest = (request: HTTPRequest): Network.HTTPRequest => ({
   body: request.body ? mapToBinaryData(request.body) : undefined,
   headers: request.headers,
   method: request.method,
@@ -38,7 +38,7 @@ const mapToResponseMessage = (
 const mapToMessageType = (message: string | Uint8Array): MessageType =>
   typeof message === 'string' ? MessageType.text : MessageType.binary;
 
-export const mapToSocket = (socket: OliveHelps.Socket): Socket => ({
+export const mapToSocket = (socket: Network.Socket): Socket => ({
   writeMessage: (message: string | Uint8Array) =>
     new Promise((resolve, reject) => {
       try {

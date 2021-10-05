@@ -31,7 +31,7 @@ describe('Network', () => {
         body: new Uint8Array([102, 75]),
         headers: { x: ['x'] },
       };
-      const oliveHelpsResponse: OliveHelps.HTTPResponse = {
+      const oliveHelpsResponse: Network.HTTPResponse = {
         statusCode: expectedResponse.statusCode,
         body: expectedResponse.body.buffer,
         headers: expectedResponse.headers,

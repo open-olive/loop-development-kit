@@ -1,4 +1,5 @@
 import {
+  promisify,
   promisifyWithFourParams,
   promisifyWithParam,
   promisifyWithTwoParams,
@@ -20,7 +21,7 @@ import {
 export * from './types';
 
 /**
- * The FileSystem interfaces provides access to the ability to read, write, delete files.
+ *  The FileSystem aptitude provides access to the ability to read, write, delete files.
  */
 export interface Filesystem {
   /**
@@ -126,6 +127,13 @@ export interface Filesystem {
    * @param path - a string providing the path to the file to open
    */
   openWithDefaultApplication(path: string): Promise<void>;
+
+  /**
+   * Get the Loop's working directory
+   *
+   * @returns - the fully qualified path of the Loop's working directory as a string
+   */
+  workDir(): Promise<string>;
 }
 
 export function copy(source: string, destination: string): Promise<void> {
@@ -209,4 +217,8 @@ export function unzip(zipFilePath: string, outputDirPath: string): Promise<void>
 
 export function openWithDefaultApplication(path: string): Promise<void> {
   return promisifyWithParam(path, oliveHelps.filesystem.openWithDefaultApplication);
+}
+
+export function workDir(): Promise<string> {
+  return promisify(oliveHelps.filesystem.workDir);
 }

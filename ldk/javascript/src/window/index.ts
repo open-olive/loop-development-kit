@@ -33,6 +33,9 @@ export interface WindowEvent {
   action: WindowAction;
 }
 
+/**
+ *  The Window aptitude provides access to the the ability to identyfy window status.
+ */
 export interface Window {
   /**
    * Get the currently focused window and it's data.

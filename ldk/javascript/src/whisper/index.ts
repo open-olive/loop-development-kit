@@ -3,6 +3,9 @@ import { NewWhisper, Whisper } from './types';
 
 export * from './types';
 
+/**
+ *  Whisper aptitude provides the ability to create a whisper.
+ */
 export interface WhisperAptitude {
   /**
    * Adds a new whisper to Olive Helps based on the configuration provided.
@@ -20,7 +23,7 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
     try {
       oliveHelps.whisper.create(
         mapToInternalWhisper(whisper, stateMap),
-        (error: Error | undefined, internalWhisper: OliveHelps.Whisper) => {
+        (error: Error | undefined, internalWhisper: WhisperService.Whisper) => {
           if (error) {
             reject(error);
           }

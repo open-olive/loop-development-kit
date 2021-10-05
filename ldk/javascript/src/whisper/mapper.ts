@@ -29,7 +29,7 @@ function throwForDuplicateKeys<T extends { key?: string }>(components: T[]): T[]
 export function mapToInternalChildComponent(
   component: BoxChildComponent,
   stateMap: StateMap,
-): OliveHelps.ChildComponents {
+): WhisperService.ChildComponents {
   const onClick = 'onClick' in component ? component.onClick : null;
   switch (component.type) {
     case WhisperComponentType.Box:
@@ -47,14 +47,14 @@ export function mapToInternalChildComponent(
         onClick: onClick
           ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
           : undefined,
-      } as OliveHelps.Box;
+      } as WhisperService.Box;
     case WhisperComponentType.Button:
       return {
         ...component,
         onClick: (error, whisper) => {
           component.onClick(error, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.Button;
+      } as WhisperService.Button;
     case WhisperComponentType.Checkbox:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -67,7 +67,7 @@ export function mapToInternalChildComponent(
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.Checkbox;
+      } as WhisperService.Checkbox;
     case WhisperComponentType.Email:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -80,23 +80,57 @@ export function mapToInternalChildComponent(
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.Email;
+      } as WhisperService.Email;
     case WhisperComponentType.Link: {
       return {
         ...component,
         onClick: onClick
           ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
           : undefined,
-      } as OliveHelps.Link;
+      } as WhisperService.Link;
     }
     case WhisperComponentType.Divider:
     case WhisperComponentType.SectionTitle:
       return component;
+    case WhisperComponentType.RichTextEditor:
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
+          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+        },
+      } as WhisperService.RichTextEditor;
+    case WhisperComponentType.Autocomplete: {
+      // eslint-disable-next-line
+      const { onChange, onSelect, options } = component;
+      const dataObj = { data: options };
+      return {
+        ...component,
+        options: options ? JSON.stringify(dataObj) : undefined,
+        onChange: onChange
+          ? (error, param, whisper) => {
+              onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+        onSelect: onSelect
+          ? (error, param, whisper) => {
+              if (component.id) {
+                stateMap.set(component.id, param);
+              }
+              onSelect(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+      } as WhisperService.Autocomplete;
+    }
     case WhisperComponentType.DropZone:
       return {
         ...component,
         onDrop: (error, param, whisper) => {
-          const callbackHandler: (file: OliveHelps.File) => File = (file: OliveHelps.File) => ({
+          const callbackHandler: (file: WhisperService.File) => File = (
+            file: WhisperService.File,
+          ) => ({
             path: file.path,
             size: file.size,
             readFile: () =>
@@ -125,9 +159,9 @@ export function mapToInternalChildComponent(
           onCopy: (error, param, whisper) => {
             onCopy(error, param, mapToExternalWhisper(whisper, stateMap));
           },
-        } as OliveHelps.ListPair;
+        } as WhisperService.ListPair;
       }
-      return component as OliveHelps.ListPair;
+      return component as WhisperService.ListPair;
     }
     case WhisperComponentType.Message: {
       // eslint-disable-next-line
@@ -138,9 +172,9 @@ export function mapToInternalChildComponent(
           onCopy: (error, whisper) => {
             onCopy(error, mapToExternalWhisper(whisper, stateMap));
           },
-        } as OliveHelps.Message;
+        } as WhisperService.Message;
       }
-      return component as OliveHelps.Message;
+      return component as WhisperService.Message;
     }
     case WhisperComponentType.Markdown: {
       // eslint-disable-next-line
@@ -151,9 +185,9 @@ export function mapToInternalChildComponent(
           onCopy: (error, whisper) => {
             onCopy(error, mapToExternalWhisper(whisper, stateMap));
           },
-        } as OliveHelps.Markdown;
+        } as WhisperService.Markdown;
       }
-      return component as OliveHelps.Markdown;
+      return component as WhisperService.Markdown;
     }
     case WhisperComponentType.Number:
       if (component.id && component.value) {
@@ -167,7 +201,7 @@ export function mapToInternalChildComponent(
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.NumberInput;
+      } as WhisperService.NumberInput;
     case WhisperComponentType.Password:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -180,7 +214,7 @@ export function mapToInternalChildComponent(
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.Password;
+      } as WhisperService.Password;
     case WhisperComponentType.RadioGroup:
       if (component.id && component.selected) {
         stateMap.set(component.id, component.selected);
@@ -193,7 +227,7 @@ export function mapToInternalChildComponent(
           }
           component.onSelect(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.RadioGroup;
+      } as WhisperService.RadioGroup;
     case WhisperComponentType.Select:
       if (component.id && component.selected) {
         stateMap.set(component.id, component.selected);
@@ -206,7 +240,7 @@ export function mapToInternalChildComponent(
           }
           component.onSelect(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.Select;
+      } as WhisperService.Select;
     case WhisperComponentType.Telephone:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -219,7 +253,7 @@ export function mapToInternalChildComponent(
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.Telephone;
+      } as WhisperService.Telephone;
     case WhisperComponentType.TextInput:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -232,7 +266,7 @@ export function mapToInternalChildComponent(
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.TextInput;
+      } as WhisperService.TextInput;
     case WhisperComponentType.DateTimeInput:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value.toISOString());
@@ -248,7 +282,7 @@ export function mapToInternalChildComponent(
           }
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
-      } as OliveHelps.DateTimeInput;
+      } as WhisperService.DateTimeInput;
     case WhisperComponentType.Icon:
       // eslint-disable-next-line
       const onIconClick = component.onClick;
@@ -258,9 +292,9 @@ export function mapToInternalChildComponent(
           onClick: (error, whisper) => {
             onIconClick(error, mapToExternalWhisper(whisper, stateMap));
           },
-        } as OliveHelps.Icon;
+        } as WhisperService.Icon;
       }
-      return component as OliveHelps.Icon;
+      return component as WhisperService.Icon;
     default:
       // Suppressing warning to deal with unexpected types.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -271,7 +305,7 @@ export function mapToInternalChildComponent(
 export function mapToInternalComponent(
   component: Component,
   stateMap: StateMap,
-): OliveHelps.Components {
+): WhisperService.Components {
   switch (component.type) {
     case WhisperComponentType.CollapseBox:
       // eslint-disable-next-line no-case-declarations
@@ -288,7 +322,7 @@ export function mapToInternalComponent(
           ? (error, param, whisper) =>
               onClick(error, param, mapToExternalWhisper(whisper, stateMap))
           : undefined,
-      } as OliveHelps.CollapseBox;
+      } as WhisperService.CollapseBox;
     default:
       return mapToInternalChildComponent(component, stateMap);
   }
@@ -297,15 +331,15 @@ export function mapToInternalComponent(
 export function mapToInternalWhisper(
   whisper: NewWhisper,
   stateMap: StateMap,
-): OliveHelps.NewWhisper;
+): WhisperService.NewWhisper;
 export function mapToInternalWhisper(
   whisper: UpdateWhisper,
   stateMap: StateMap,
-): OliveHelps.UpdateWhisper;
+): WhisperService.UpdateWhisper;
 export function mapToInternalWhisper(
   whisper: NewWhisper | UpdateWhisper,
   stateMap: StateMap,
-): OliveHelps.NewWhisper | OliveHelps.UpdateWhisper {
+): WhisperService.NewWhisper | WhisperService.UpdateWhisper {
   return 'onClose' in whisper
     ? {
         label: whisper.label,
@@ -322,7 +356,7 @@ export function mapToInternalWhisper(
       };
 }
 
-export function mapToExternalWhisper(whisper: OliveHelps.Whisper, stateMap: StateMap): Whisper {
+export function mapToExternalWhisper(whisper: WhisperService.Whisper, stateMap: StateMap): Whisper {
   return {
     id: whisper.id,
     close: whisper.close,

@@ -2,6 +2,7 @@ import * as webpack from 'webpack';
 import Terser from 'terser-webpack-plugin';
 import { LdkSettings } from './ldk-settings';
 import { generateBanner } from './generate-banner';
+import { buildBabelPlugins, buildBabelPreset } from './babel-config';
 
 export function buildBabelConfig(cache: boolean): webpack.RuleSetRule {
   return {
@@ -9,16 +10,8 @@ export function buildBabelConfig(cache: boolean): webpack.RuleSetRule {
     options: {
       sourceType: 'unambiguous',
       cacheDirectory: cache,
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            useBuiltIns: 'entry',
-            corejs: '3.11',
-          },
-        ],
-      ],
-      plugins: ['@babel/plugin-transform-destructuring', '@babel/plugin-transform-runtime'],
+      presets: buildBabelPreset(),
+      plugins: buildBabelPlugins(),
     },
   };
 }
@@ -60,10 +53,39 @@ export function buildWebpackConfig(
     ],
     optimization,
     resolve: {
-      extensions: ['.ts', '.js'],
+      extensions: ['.ts', '.js', '.tsx', '.jsx'],
     },
     module: {
       rules: [
+        {
+          test: /\.(jsx)$/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                sourceType: 'unambiguous',
+                cacheDirectory: true,
+                presets: buildBabelPreset(),
+                plugins: buildBabelPlugins(true),
+              },
+            },
+          ],
+        },
+        {
+          test: /\.(tsx)$/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                sourceType: 'unambiguous',
+                cacheDirectory: true,
+                presets: buildBabelPreset(),
+                plugins: buildBabelPlugins(true),
+              },
+            },
+            { loader: 'ts-loader' },
+          ],
+        },
         {
           test: /\.ts$/,
           use: [{ ...baseBabelConfig }, { loader: 'ts-loader' }],
