@@ -135,7 +135,7 @@ export const testWebsocketConnection = (): Promise<boolean> =>
 
       await socket.setCloseHandler((error, code, text) => {
         if (error) {
-          console.error(error);
+          console.error('setCloseHandler error', error);
           reject(error);
         }
         console.info(`Received on close code: ${code}. ${text}`);
@@ -146,7 +146,7 @@ export const testWebsocketConnection = (): Promise<boolean> =>
 
       const cancellable = await socket.setMessageHandler(async (error, message) => {
         if (error) {
-          console.error(error);
+          console.error('setMessageHandler error', error);
           reject(error);
         }
         await browserFake(socket, message, reject);
@@ -161,7 +161,7 @@ export const testWebsocketConnection = (): Promise<boolean> =>
           console.log('All messages received, cancelling message listener!');
         }
       } catch (error) {
-        console.log(`broken: ${error}`);
+        console.error(`broken: ${error}`);
       } finally {
         console.log('closing socket!');
         await socket.close();
