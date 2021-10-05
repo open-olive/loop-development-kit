@@ -240,4 +240,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       `Do the different component's have appropriate layout properties?`,
     ),
+    new LoopTest(
+      'Whisper Aptitude - JustifyContent',
+      whisperTests.testJustifyContent,
+      10000,
+      'Does the JustifyContent-Normal items behave as "stretch" in flex container?',
+    ),
   ]);

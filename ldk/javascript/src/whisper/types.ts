@@ -95,6 +95,7 @@ export enum JustifyContent {
   FlexEnd = 'flex-end',
   FlexStart = 'flex-start',
   Left = 'left',
+  Normal = 'normal',
   Right = 'right',
   SpaceAround = 'space-around',
   SpaceBetween = 'space-between',
