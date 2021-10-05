@@ -1,6 +1,8 @@
 /* eslint-disable no-async-promise-executor */
 import { browser, network } from '@oliveai/ldk';
 
+const windowId = 37;
+
 export const testSecuredHttpRequest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const url =
@@ -108,7 +110,7 @@ const browserFake = async (
     const [callId] = msg.match(re);
     try {
       await socket.writeMessage(
-        `{ "type": "OpenWindowReturn", "version": 0, "callId": "${callId}", "return": { "windowId": 37, "err": "" }}`,
+        `{ "type": "OpenWindowReturn", "version": 0, "callId": "${callId}", "return": { "windowId": ${windowId}, "err": "" }}`,
       );
     } catch (err) {
       console.log('failed to write message ', err);
@@ -153,7 +155,7 @@ export const testWebsocketConnection = (): Promise<boolean> =>
       try {
         const id = await browser.openWindow('about:blank');
         console.log('open browser window with id ', id);
-        testPassed = id.valueOf() === 37;
+        testPassed = id.valueOf() === windowId;
         if (testPassed) {
           cancellable.cancel();
           console.log('All messages received, cancelling message listener!');
