@@ -5,6 +5,7 @@ declare const oliveHelps: OliveHelps.Aptitudes;
 
 declare namespace OliveHelps {
   interface Aptitudes {
+    browser: Browser.Aptitude;
     clipboard: Clipboard.Aptitude;
     whisper: WhisperService.Aptitude;
     filesystem: Filesystem.Aptitude;

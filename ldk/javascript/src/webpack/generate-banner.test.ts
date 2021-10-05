@@ -21,6 +21,7 @@ describe('Generate Banner', () => {
   const ldkSettings: LdkSettings = {
     ldk: {
       permissions: {
+        browser: {},
         clipboard: {},
         cursor: {},
         document: {},
@@ -44,6 +45,7 @@ describe('Generate Banner', () => {
     const expected = {
       oliveHelpsContractVersion: '0.1.4',
       permissions: {
+        browser: {},
         clipboard: {},
         cursor: {},
         document: {},
