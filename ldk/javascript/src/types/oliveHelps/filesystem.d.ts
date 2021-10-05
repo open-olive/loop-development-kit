@@ -39,8 +39,12 @@ declare namespace Filesystem {
     name: string;
     size: number;
     mode: string;
-    modTime: number;
+    modTime: GoTime;
     isDir: boolean;
+  }
+
+  interface GoTime {
+    UnixMilli: () => Date;
   }
 
   interface FileEvent {

@@ -1,3 +1,4 @@
+import fs from 'fs';
 import {
   promisifyWithFourParams,
   promisifyWithParam,
@@ -210,4 +211,19 @@ export function unzip(zipFilePath: string, outputDirPath: string): Promise<void>
 
 export function openWithDefaultApplication(path: string): Promise<void> {
   return promisifyWithParam(path, oliveHelps.filesystem.openWithDefaultApplication);
+}
+
+
+export function UnixMilli(path: string) {
+  let result; let mtimeMS;
+  const date = fs.stat(path, (err, stats) => {
+    if (err) {
+      throw err;
+    }
+    mtimeMS = stats.mtimeMs;
+     result = new Date(mtimeMS).toString();
+    console.log(result);
+    return result;
+  });
+  return result;
 }
