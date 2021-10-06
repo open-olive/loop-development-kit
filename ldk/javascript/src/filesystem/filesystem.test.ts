@@ -58,12 +58,12 @@ describe('Filesystem', () => {
           name: 'name',
           size: 2345,
           mode: 'mode',
-          modTime: 111,
+          modTime: new Date(),
           isDir: true,
         },
       ];
       mocked(oliveHelps.filesystem.dir).mockImplementation((_path, callback) =>
-        callback(undefined, expected),
+        callback(undefined, expected as any),
       );
 
       const actual = filesystem.dir(path);
@@ -118,7 +118,7 @@ describe('Filesystem', () => {
           name: 'bob',
           size: 1,
           mode: '0o755',
-          modTime: 111,
+          modTime: new Date(),
           isDir: false,
         },
       };
@@ -126,7 +126,7 @@ describe('Filesystem', () => {
         expect(pathCb).toEqual(path);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         returnCb({} as any);
-        listenerCb(undefined, fileEvent);
+        listenerCb(undefined, fileEvent as any);
       });
 
       await filesystem.listenDir(path, callback);
@@ -166,7 +166,7 @@ describe('Filesystem', () => {
           expect(pathCb).toEqual(path);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           returnCb({} as any);
-          listenerCb(undefined, fileEvent);
+          listenerCb(undefined, fileEvent as any);
         },
       );
 
@@ -301,11 +301,11 @@ describe('Filesystem', () => {
         name: 'name',
         size: 2345,
         mode: 'mode',
-        modTime: 11111,
+        modTime: new Date(),
         isDir: true,
       };
       mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
-        callback(undefined, expected),
+        callback(undefined, expected as any),
       );
 
       const actual = filesystem.stat(path);

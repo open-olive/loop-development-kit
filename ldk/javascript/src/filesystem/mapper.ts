@@ -16,20 +16,18 @@ export const mapToFileEvent = (
         name: fileEvent.info.name,
       } as RenamedFileEvent;
     default:
-      return fileEvent;
+      return {
+        action: fileEvent.action,
+        info: convert(fileEvent.info),
+      };
   }
 };
 
-export function UnixMilli(path: string){
-  fs.stat(path, (err, stats) => {
-    if (err) {
-      throw err;
-    }
-    const mtimeMS = stats.mtimeMs;
-    const date = new Date(mtimeMS).toString();
-    return date;
-  });
-  //  return promisifyWithParam(path, oliveHelps.filesystem.dir);
+export function convert(fileInfo: Filesystem.FileInfo): FileInfo {
+  return {
+    ...fileInfo,
+    modTime: new Date(fileInfo.modTime.UnixMilli()),
+  };
 }
 
 // export const UnixMilli = (fileInfo: FileInfo): number => {

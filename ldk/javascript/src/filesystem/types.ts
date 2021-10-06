@@ -17,7 +17,7 @@ export interface FileInfo {
   /**
    * The last updated time, if present.
    */
-  modTime: GoTime; // convert the value to js date object
+  modTime: Date; // convert the value to js date object
   /**
    * Whether the entry is a directory.
    */
@@ -56,10 +56,6 @@ export enum WriteOperation {
   append = 2,
 }
 
-
-export interface GoTime {
-  UnixMilli: () => Date;
-}
 /**
  * Represents file mode and permission bits
  */

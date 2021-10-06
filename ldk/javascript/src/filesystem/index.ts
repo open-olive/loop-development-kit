@@ -183,7 +183,7 @@ export function remove(source: string): Promise<void> {
 }
 
 export function stat(path: string): Promise<FileInfo> {
-  return promisifyWithParam(path, oliveHelps.filesystem.stat);
+  return promisifyMappedWithParam(path,  ,oliveHelps.filesystem.stat);
 }
 
 export function writeFile({
