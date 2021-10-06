@@ -120,6 +120,7 @@ declare namespace WhisperService {
     options?: AutocompleteOption[];
     tooltip?: string;
     value?: string;
+    freeSolo?: boolean;
   };
 
   type Button = Component<'button'> & {

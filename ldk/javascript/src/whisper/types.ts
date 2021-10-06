@@ -286,6 +286,10 @@ export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & 
    * Default selected value
    */
   value?: string;
+  /**
+   * Option to allow custom user input that doesn't match any of the supplied selectable options
+   */
+  freeSolo?: boolean;
 };
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
