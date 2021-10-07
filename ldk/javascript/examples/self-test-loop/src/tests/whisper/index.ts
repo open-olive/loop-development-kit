@@ -2237,6 +2237,7 @@ export const testAutocomplete = (): Promise<boolean> =>
       ['Change', false],
       ['Multiple', false],
       ['Custom', false],
+      ['MultiCustom', false],
     ]);
     try {
       await whisper.create({
@@ -2309,7 +2310,7 @@ export const testAutocomplete = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Autocomplete,
-            label: 'Autocomplete Test',
+            label: 'Autocomplete Free Solo Test',
             loading: true,
             multiple: false,
             freeSolo: true,
@@ -2317,6 +2318,24 @@ export const testAutocomplete = (): Promise<boolean> =>
               console.log(`Received onChange value: ${JSON.stringify(value)}`);
               if (value?.includes('custom')) {
                 onActionWrapper(error, 'Custom', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
+            },
+            options: autocompleteOptions,
+            tooltip: 'tooltip',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Free Solo Multiple Test',
+            loading: true,
+            multiple: true,
+            freeSolo: true,
+            onChange: (error, value, onChangeWhisper) => {
+              console.log(`Received onChange value: ${JSON.stringify(value)}`);
+              if (value?.includes('custom')) {
+                onActionWrapper(error, 'MultiCustom', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
             onSelect: (_error, value: string[]) => {
