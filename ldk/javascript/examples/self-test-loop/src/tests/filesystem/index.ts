@@ -404,33 +404,14 @@ export const testFileStat = (): Promise<boolean> =>
       });
 
       const fileInfo = await filesystem.stat(filePath);
-      const typeOfmodTime = typeof fileInfo.modTime;
 
-      // const event = new Date(fileInfo.modTime);
-
-      // const d = new Date(modTimeString.UnixNano()/1e6);
-
-      const DateofmodTime = new Date(fileInfo.modTime);
-      console.log('type of modTime: ', typeOfmodTime);
-      console.log('modTime value: ', fileInfo.modTime);
-      console.log('DateofmodTime', DateofmodTime);
+      console.log('type of modTime: ', typeof fileInfo.modTime);
+      console.log('modtime value: ', fileInfo.modTime);
+      console.log('DateofmodTime', new Date(fileInfo.modTime));
 
       console.log('keys:', Object.keys(fileInfo.modTime));
 
-      // console.log('modTime parse', Date.parse(fileInfo.modTime));
-
-      // const getDate = new Date(newDate);
-      // console.log('getDate =  new Date(newDate);', getDate);
-      // console.log(event.getMilliseconds());
-      // console.log('modTime type', typeof fileInfo.modTime);
-      // const parsedDate= Date.parse(fileInfo.modTime);
-      // console.log('parsed Date', parsedDate);
-      // const luxonDate = luxonDateTime.fromISO(modTimeString);
-      // console.log('luxonDate', luxonDate);
-      console.log(
-        'modTime Passed into newDate',
-        new Date('2021-09-20 23:04:07.237590597'),
-      );
+      console.log('modTime Passed into newDate', new Date('2021-09-20 23:04:07.237590597'));
 
       if (fileInfo) {
         await filesystem.remove(filePath);

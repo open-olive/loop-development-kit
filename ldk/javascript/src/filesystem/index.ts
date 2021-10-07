@@ -1,4 +1,3 @@
-import fs from 'fs';
 import {
   promisifyWithFourParams,
   promisifyWithParam,
@@ -8,7 +7,7 @@ import {
 } from '../promisify';
 import { Cancellable } from '../cancellable';
 import * as mapper from '../utils/mapper';
-import { mapToFileEvent } from './mapper';
+import { mapToFileInfo, mapToFileEvent, mapToFileInfoArray } from './mapper';
 import {
   FileInfo,
   FileEvent,
@@ -134,7 +133,7 @@ export function copy(source: string, destination: string): Promise<void> {
 }
 
 export function dir(path: string): Promise<FileInfo[]> {
-  return promisifyWithParam(path, oliveHelps.filesystem.dir);
+  return promisifyMappedWithParam(path, mapToFileInfoArray, oliveHelps.filesystem.dir);
   //  return promisifyWithParam(path, oliveHelps.filesystem.dir);
 }
 
@@ -183,7 +182,7 @@ export function remove(source: string): Promise<void> {
 }
 
 export function stat(path: string): Promise<FileInfo> {
-  return promisifyMappedWithParam(path,  ,oliveHelps.filesystem.stat);
+  return promisifyMappedWithParam(path, mapToFileInfo, oliveHelps.filesystem.stat);
 }
 
 export function writeFile({
@@ -211,19 +210,4 @@ export function unzip(zipFilePath: string, outputDirPath: string): Promise<void>
 
 export function openWithDefaultApplication(path: string): Promise<void> {
   return promisifyWithParam(path, oliveHelps.filesystem.openWithDefaultApplication);
-}
-
-
-export function UnixMilli(path: string) {
-  let result; let mtimeMS;
-  const date = fs.stat(path, (err, stats) => {
-    if (err) {
-      throw err;
-    }
-    mtimeMS = stats.mtimeMs;
-     result = new Date(mtimeMS).toString();
-    console.log(result);
-    return result;
-  });
-  return result;
 }

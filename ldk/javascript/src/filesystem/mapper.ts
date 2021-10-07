@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { FileEvent, RemovedFileEvent, RenamedFileEvent, FileInfo } from './types';
 
 export const mapToFileEvent = (
@@ -18,32 +17,23 @@ export const mapToFileEvent = (
     default:
       return {
         action: fileEvent.action,
-        info: convert(fileEvent.info),
+        info: mapToFileInfo(fileEvent.info),
       };
   }
 };
 
-export function convert(fileInfo: Filesystem.FileInfo): FileInfo {
+export function mapToFileInfo(fileInfo: Filesystem.FileInfo): FileInfo {
+  fileInfo.modTime.UnixMilli();
   return {
     ...fileInfo,
     modTime: new Date(fileInfo.modTime.UnixMilli()),
   };
 }
 
-// export const UnixMilli = (fileInfo: FileInfo): number => {
-//   // input date, output number
-
-//   const date = new Date(fileInfo.modTime).getTime();
-
-//     fs.stat(path : string, (err, stats) => {
-//       if (err) {
-//         throw err;
-//       }
-//       const mtimeMS = stats.mtimeMs;
-//       return stats.mtimeMs;
-//     });
-
-//     return date;
-
-//   // return mtimeMS;
-// };
+export function mapToFileInfoArray(fileInfos: Filesystem.FileInfo[]): FileInfo[] {
+  const result = fileInfos.map((x) => ({
+    ...x,
+    modTime: new Date(x.modTime.UnixMilli()),
+  }));
+  return result;
+}
