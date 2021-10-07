@@ -106,15 +106,16 @@ const browserFake = async (
 ): Promise<void> => {
   if (msg && typeof msg === 'string') {
     console.info(`Received message: ${JSON.stringify(msg)}`);
-    const re = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/g;
-    const [callId] = msg.match(re);
+    // Regex to find callId (uuid) from msg string
+    const callIdRegex = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/g;
+    const [callId] = msg.match(callIdRegex);
     try {
       await socket.writeMessage(
         `{ "type": "OpenWindowReturn", "version": 0, "callId": "${callId}", "return": { "windowId": ${windowId}, "err": "" }}`,
       );
-    } catch (err) {
-      console.log('failed to write message ', err);
-      reject(err);
+    } catch (error) {
+      console.log('failed to write message ', error);
+      reject(error);
     }
   }
 };
