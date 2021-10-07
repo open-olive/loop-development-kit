@@ -2306,7 +2306,7 @@ export const testAutocomplete = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Markdown,
-            body: 'Enter the word \'custom\'',
+            body: "Enter the word 'custom'",
           },
           {
             type: WhisperComponentType.Autocomplete,
@@ -2335,7 +2335,14 @@ export const testAutocomplete = (): Promise<boolean> =>
             onChange: (error, value, onChangeWhisper) => {
               console.log(`Received onChange value: ${JSON.stringify(value)}`);
               if (value?.includes('custom')) {
-                onActionWrapper(error, 'MultiCustom', resolverMap, onChangeWhisper, resolve, reject);
+                onActionWrapper(
+                  error,
+                  'MultiCustom',
+                  resolverMap,
+                  onChangeWhisper,
+                  resolve,
+                  reject,
+                );
               }
             },
             onSelect: (_error, value: string[]) => {
