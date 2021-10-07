@@ -19,6 +19,7 @@ import {
   Color,
   AlignItems,
   RichTextEditor,
+  StyleSize,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -2736,6 +2737,47 @@ export const testJustifyContent = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         resolveRejectButtons(resolve, reject),
+      ],
+    });
+  });
+
+export const testMissingLayouts = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did message components rendered properly',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          layout: {
+            flex: '1',
+            marginTop: StyleSize.Medium,
+          },
+          body: 'This is a message with a top margin and flex',
+          style: Urgency.Success,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          layout: {
+            flex: '1',
+            marginTop: StyleSize.Medium,
+          },
+          body: 'This is markdown with a top margin and flex',
+        },
+        {
+          type: WhisperComponentType.ListPair,
+          layout: {
+            flex: '1',
+            marginTop: StyleSize.Medium,
+          },
+          copyable: false,
+          label: 'This is a label',
+          value: 'This is a list pair with top margin',
+          style: Urgency.None,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
   });
