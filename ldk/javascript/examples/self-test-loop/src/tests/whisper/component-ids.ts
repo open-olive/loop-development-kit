@@ -1,4 +1,4 @@
-import { newGuid } from '../utils';
+import { newGuid } from './utils';
 
 export default class ComponentIds {
   textInputId: string;

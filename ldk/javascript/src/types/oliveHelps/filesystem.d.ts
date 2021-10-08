@@ -33,6 +33,8 @@ declare namespace Filesystem {
     unzip: Common.ReadableWithTwoParams<string, string, void>;
 
     openWithDefaultApplication: Common.ReadableWithParam<string, void>;
+
+    workDir: Common.Readable<string>;
   }
 
   interface FileInfo {

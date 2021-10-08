@@ -481,3 +481,14 @@ export const testOpenDirectory = (): Promise<boolean> =>
       reject(new Error("Couldn't open the directory"));
     }
   });
+
+export const testWorkDir = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const workDir = await filesystem.workDir();
+      console.info(`workDir: ${workDir}`);
+      resolve(true);
+    } catch (error) {
+      reject(new Error("Couldn't get working directory"));
+    }
+  });
