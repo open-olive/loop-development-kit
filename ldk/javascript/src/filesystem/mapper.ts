@@ -23,17 +23,13 @@ export const mapToFileEvent = (
 };
 
 export function mapToFileInfo(fileInfo: Filesystem.FileInfo): FileInfo {
-  fileInfo.modTime.UnixMilli();
   return {
     ...fileInfo,
-    modTime: new Date(fileInfo.modTime.UnixMilli()),
+    modTime: new Date(fileInfo.modTime.UnixNano() / 1000000),
   };
 }
 
 export function mapToFileInfoArray(fileInfos: Filesystem.FileInfo[]): FileInfo[] {
-  const result = fileInfos.map((x) => ({
-    ...x,
-    modTime: new Date(x.modTime.UnixMilli()),
-  }));
+  const result = fileInfos.map(mapToFileInfo);
   return result;
 }
