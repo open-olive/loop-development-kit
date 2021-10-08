@@ -1,4 +1,5 @@
 /* eslint-disable no-async-promise-executor */
+import * as React from 'react';
 import { whisper } from '@oliveai/ldk';
 import {
   Checkbox,
@@ -14,15 +15,8 @@ import {
   Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
-import {
-  createButtonComponent,
-  createSelectComponent,
-  createTextComponent,
-  createAutocompleteComponent,
-  resolveRejectButtons,
-  createRadioComponent,
-  createMarkdownComponent,
-} from './utils';
+import { logMap } from './utils';
+import { ConfirmOrDeny, TestComponentProps, WhisperTestWrapper } from './react-whisper-utils';
 
 const confirmOrDeny = (
   resolve: (value: boolean | PromiseLike<boolean>) => void,
@@ -89,8 +83,6 @@ const onChangeSelectHandler = (
 ) => {
   logMap(incomingWhisper.componentState);
 };
-
-// TODO: FIX MERGE STUFF
 
 const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
   const [step, updateStep] = React.useState(1);
@@ -194,23 +186,6 @@ const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props
 };
 
 export const testValuePersistOnUpdate = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const text1 = createTextComponent('text1');
-      const autocomplete1 = createAutocompleteComponent(
-        'autocomplete1',
-        'Select an autocomplete option',
-      );
-      const select1 = createSelectComponent('select1');
-      const radio1 = createRadioComponent('radio1');
-      whisper.create({
-        label: 'Values should persist after update with added empty duplicates',
-        components: [
-          text1,
-          select1,
-          autocomplete1,
-          radio1,
-          createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
   WhisperTestWrapper.createPromise(
     ValuePersistOnUpdate,
     'Values should persist after update with added empty duplicates',
