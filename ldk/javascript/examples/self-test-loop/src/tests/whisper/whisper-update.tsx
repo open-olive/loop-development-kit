@@ -2,7 +2,6 @@
 import { whisper } from '@oliveai/ldk';
 import {
   Checkbox,
-  ChildComponents,
   Component,
   Direction,
   Icon,
@@ -83,6 +82,117 @@ const createConfirmOrDenyWithPromise = (
   };
 };
 
+const onChangeSelectHandler = (
+  _error: Error,
+  _param: string | string[] | number,
+  incomingWhisper: Whisper,
+) => {
+  logMap(incomingWhisper.componentState);
+};
+
+// TODO: FIX MERGE STUFF
+
+const ValuePersistOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  return (
+    <>
+      {step === 2 && (
+        <oh-text-input
+          onChange={onChangeSelectHandler}
+          key="textNew"
+          id="textNew"
+          tooltip="Enter text"
+          label="New Text Component"
+        />
+      )}
+      <oh-text-input
+        onChange={onChangeSelectHandler}
+        key="text1"
+        id="text1"
+        tooltip={step === 2 ? undefined : 'Enter text'}
+        label="Enter Text"
+      />
+      {step === 2 && (
+        <oh-select
+          onSelect={onChangeSelectHandler}
+          key="selectNew"
+          id="selectNew"
+          options={['Option 1', 'Option 2']}
+          tooltip="Select an option"
+          label="New Select Component"
+        />
+      )}
+      <oh-select
+        onSelect={onChangeSelectHandler}
+        key="select1"
+        id="select1"
+        options={['Option 1', 'Option 2']}
+        tooltip="Select an option"
+        label="Select Option"
+      />
+      {step === 2 && (
+        <oh-autocomplete
+          onChange={onChangeSelectHandler}
+          key="autocompleteNew"
+          id="autocompleteNew"
+          label="New autocomplete component"
+          onSelect={onChangeSelectHandler}
+          options={[
+            { value: 'option1', label: 'Option 1' },
+            { value: 'option2', label: 'Option 2' },
+          ]}
+        />
+      )}
+      <oh-autocomplete
+        onChange={onChangeSelectHandler}
+        key="autocomplete1"
+        id="autocomplete1"
+        label="Select an autocomplete option"
+        onSelect={onChangeSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+      />
+      {step === 2 && <oh-markdown body="New radio component" />}
+      {step === 2 && (
+        <oh-radio-group
+          id="radioNew"
+          key="radioNew"
+          onSelect={onChangeSelectHandler}
+          options={['Option 1', 'Option 2']}
+        />
+      )}
+      <oh-markdown body="Select an option" />
+      <oh-radio-group
+        id="radio1"
+        key="radio1"
+        onSelect={onChangeSelectHandler}
+        options={['Option 1', 'Option 2']}
+      />
+      {step === 1 && (
+        <oh-button
+          onClick={(error) => {
+            if (error) {
+              props.onReject();
+            } else {
+              updateStep(2);
+            }
+          }}
+          label="Update"
+        />
+      )}
+      {step === 2 && (
+        <ConfirmOrDeny
+          onResolve={props.onResolve}
+          onReject={props.onReject}
+          prompt="Did the values persist?"
+        />
+      )}
+    </>
+  );
+};
+
 export const testValuePersistOnUpdate = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -101,181 +211,199 @@ export const testValuePersistOnUpdate = (): Promise<boolean> =>
           autocomplete1,
           radio1,
           createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
+  WhisperTestWrapper.createPromise(
+    ValuePersistOnUpdate,
+    'Values should persist after update with added empty duplicates',
+  );
+
+const ValueOverwrittenOnUpdate: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  return (
+    <>
+      {step === 2 && (
+        <oh-text-input
+          label="New Text Field"
+          id="textNew"
+          key="textNew"
+          onChange={onChangeSelectHandler}
+          tooltip="Enter text"
+        />
+      )}
+      <oh-text-input
+        label="Enter text"
+        id="text1"
+        key="text1"
+        onChange={onChangeSelectHandler}
+        tooltip="Enter text"
+        value={step === 2 ? 'overwritten' : undefined}
+      />
+      <oh-text-input
+        label={step === 2 ? 'Should be empty' : 'Enter text'}
+        id="textToEmpty"
+        key="textToEmpty"
+        onChange={onChangeSelectHandler}
+        tooltip="Enter text"
+        value={step === 2 ? '' : undefined}
+      />
+      {step === 2 && (
+        <oh-select
+          onSelect={onChangeSelectHandler}
+          key="selectNew"
+          id="selectNew"
+          options={['Option 1', 'Option 2']}
+          tooltip="Select an option"
+          label="New Select Component"
+        />
+      )}
+      <oh-select
+        id="select1"
+        key="select1"
+        onSelect={onChangeSelectHandler}
+        label={step === 2 ? 'Option 2 should be selected' : 'Select Option 1'}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? 1 : undefined}
+      />
+      <oh-select
+        id="selectToEmpty"
+        key="selectToEmpty"
+        onSelect={onChangeSelectHandler}
+        label={step === 2 ? 'Should be unselected' : 'Select Option 1'}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? -1 : undefined}
+      />
+      <oh-markdown body={step === 2 ? 'Option 2 should be selected' : 'Choose Option 1'} />
+      <oh-radio-group
+        id="radio1"
+        key="radio1"
+        onSelect={onChangeSelectHandler}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? 1 : undefined}
+      />
+      <oh-markdown body={step === 2 ? 'Should be unselected' : 'Choose Option 1'} />
+      <oh-radio-group
+        id="radioToEmpty"
+        key="radioToEmpty"
+        onSelect={onChangeSelectHandler}
+        options={['Option 1', 'Option 2']}
+        selected={step === 2 ? -1 : undefined}
+      />
+      <oh-autocomplete
+        onChange={() => {
+          // do nothing.
+        }}
+        key="autocomplete1"
+        id="autocomplete1"
+        label={step === 2 ? 'Option 2 should be selected' : 'Select an Autocomplete Option 1'}
+        onSelect={onChangeSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+        value={step === 2 ? 'option2' : undefined}
+      />
+      <oh-autocomplete
+        onChange={() => {
+          // do nothing.
+        }}
+        key="autocompleteToEmpty"
+        id="autocompleteToEmpty"
+        label={step === 2 ? 'Should be unselected' : 'Select an Autocomplete Option 1'}
+        onSelect={onChangeSelectHandler}
+        options={[
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' },
+        ]}
+        value={step === 2 ? '' : undefined}
+      />
+      {step === 1 && (
+        <oh-button
+          label="Update"
+          onClick={(error) => {
             if (error) {
-              console.error(error);
-              reject(error);
+              props.onReject();
+            } else {
+              updateStep(2);
             }
-            // Updating whisper with appended new components
-            text1.tooltip = undefined;
-            onClickWhisper.update({
-              components: [
-                createTextComponent('textNew', 'New Text Field'),
-                text1,
-                createSelectComponent('selectNew', 'New Select Field'),
-                select1,
-                createAutocompleteComponent('autocompleteNew', 'New autocomplete component'),
-                autocomplete1,
-                createMarkdownComponent('New radio component:'),
-                createRadioComponent('radioNew'),
-                radio1,
-                resolveRejectButtons(resolve, reject, 'Values persisted', 'Values did not persist'),
-              ],
-            });
-          }),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
+          }}
+        />
+      )}
+      {step === 2 && (
+        <ConfirmOrDeny
+          onResolve={props.onResolve}
+          onReject={props.onReject}
+          prompt={'Values overwritten'}
+        />
+      )}
+    </>
+  );
+};
 
 export const testValueOverwrittenOnUpdate = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const text1 = createTextComponent('text1');
-      const textToEmpty = createTextComponent('textToEmpty');
-      const select1 = createSelectComponent('select1', 'Select Option 1');
-      const selectToEmpty = createSelectComponent('select2', 'Select Option 1');
-      const radio1 = createRadioComponent('radio1');
-      const radioToEmpty = createRadioComponent('radio2');
-      const autocomplete1 = createAutocompleteComponent(
-        'autocomplete1',
-        'Select an Autocomplete Option 1',
-      );
-      const autocompleteToEmpty = createAutocompleteComponent(
-        'autocomplete2',
-        'Select an Autocomplete Option 1',
-      );
-      whisper.create({
-        label: 'Values should be overwritten after update',
-        components: [
-          text1,
-          textToEmpty,
-          select1,
-          selectToEmpty,
-          createMarkdownComponent('Choose Option 1'),
-          radio1,
-          createMarkdownComponent('Choose Option 1'),
-          radioToEmpty,
-          autocomplete1,
-          autocompleteToEmpty,
-          createButtonComponent('Update', (error: Error, onClickWhisper: Whisper) => {
-            if (error) {
-              console.error(error);
-              reject(error);
-            }
-            // Updating whisper with new component values
-            text1.value = 'overwritten';
-            textToEmpty.value = '';
-            textToEmpty.label = 'Should be empty';
-            select1.selected = 1;
-            select1.label = 'Option 2 should be selected';
-            selectToEmpty.selected = -1;
-            selectToEmpty.label = 'Should be unselected';
-            radio1.selected = 1;
-            radioToEmpty.selected = -1;
-            autocomplete1.value = '2';
-            autocomplete1.label = 'Option 2 should be selected';
-            autocompleteToEmpty.value = '';
-            autocompleteToEmpty.label = 'Should be unselected';
-            onClickWhisper.update({
-              components: [
-                createTextComponent('textNew', 'New Text Field'),
-                text1,
-                textToEmpty,
-                createSelectComponent('selectNew', 'New Select Field'),
-                select1,
-                selectToEmpty,
-                createMarkdownComponent('Option 2 should be selected'),
-                radio1,
-                createMarkdownComponent('Should be unselected'),
-                radioToEmpty,
-                autocomplete1,
-                autocompleteToEmpty,
-                resolveRejectButtons(resolve, reject, 'Values overwritten', 'Values persisted'),
-              ],
-            });
-          }),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
+  WhisperTestWrapper.createPromise(
+    ValueOverwrittenOnUpdate,
+    'Values should be overwritten after update',
+  );
+
+const UpdateCollapseState: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  const checkboxes = (
+    <>
+      <oh-checkbox
+        onChange={() => {
+          // do nothing.
+        }}
+        label="cb1"
+        value={false}
+        key="c1"
+      />
+      <oh-checkbox
+        onChange={() => {
+          // do nothing.
+        }}
+        label="cb2"
+        value={false}
+        key="c2"
+      />
+    </>
+  );
+  let buttons: React.ReactNode = (
+    <ConfirmOrDeny
+      onResolve={() => {
+        updateStep(2);
+      }}
+      onReject={props.onReject}
+      prompt="Expand the Collapse Box and click Yes"
+    />
+  );
+  if (step === 2) {
+    buttons = (
+      <ConfirmOrDeny
+        onResolve={() => {
+          updateStep(3);
+        }}
+        onReject={props.onReject}
+        prompt="Did the CollapseBox stay expanded?"
+      />
+    );
+  } else if (step === 3) {
+    buttons = (
+      <ConfirmOrDeny
+        onResolve={props.onResolve}
+        onReject={props.onReject}
+        prompt="Did the collapse box go back to collapsed?"
+      />
+    );
+  }
+  return (
+    <>
+      <oh-collapse-box open={step === 2}>{checkboxes}</oh-collapse-box>
+      {buttons}
+    </>
+  );
+};
 
 export const testUpdateCollapseState = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const checkboxes: ChildComponents[] = [
-        {
-          type: WhisperComponentType.Checkbox,
-          label: 'cb1',
-          value: false,
-          key: 'c1',
-          onChange: () => {
-            // do nothing.
-          },
-        },
-        {
-          type: WhisperComponentType.Checkbox,
-          label: 'cb2',
-          value: false,
-          key: 'c2',
-          onChange: () => {
-            // do nothing.
-          },
-        },
-      ];
-
-      const collapseBox: Component = {
-        type: WhisperComponentType.CollapseBox,
-        children: [...checkboxes],
-        label: 'first CollapseBox',
-        open: false,
-        key: 'collapse',
-      };
-
-      const firstConfirm = createConfirmOrDenyWithPromise(
-        'Expand the Collapse Box and click Yes',
-        'User clicked no',
-      );
-      const testWhisper = await whisper.create({
-        label: 'Update Collapse State',
-        onClose: () => {
-          // do nothing.
-        },
-        components: [collapseBox, ...firstConfirm.button],
-      });
-      await firstConfirm.promise;
-      const secondUpdate = createConfirmOrDenyWithPromise(
-        'Did the CollapseBox stay expanded?',
-        'User selected update failed.',
-      );
-      await testWhisper.update({
-        label: 'Update Collapse State',
-        components: [{ ...collapseBox, open: true }, ...secondUpdate.button],
-      });
-      await secondUpdate.promise;
-      testWhisper.update({
-        label: 'Update Collapse State',
-        components: [
-          collapseBox,
-          ...confirmOrDeny(
-            resolve,
-            reject,
-            'Did the collapse box go back to collapsed?',
-            'Collapse box did not obey state change',
-            testWhisper,
-          ),
-        ],
-      });
-    } catch (error) {
-      console.error(error);
-      console.error(error.message);
-    }
-  });
+  WhisperTestWrapper.createPromise(UpdateCollapseState, 'Update Collapse State');
 
 export const testWhisperStateOnChange = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {

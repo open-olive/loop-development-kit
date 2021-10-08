@@ -34,6 +34,7 @@ declare namespace WhisperService {
     | 'flex-end'
     | 'flex-start'
     | 'left'
+    | 'normal'
     | 'right'
     | 'space-around'
     | 'space-between'

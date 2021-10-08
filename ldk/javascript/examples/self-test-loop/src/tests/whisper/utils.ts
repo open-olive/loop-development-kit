@@ -72,32 +72,34 @@ export const resolveRejectButtons = (
   ],
 });
 
-export const createTextComponent = (id: string, label?: string): TextInput => {
-  return {
-    type: WhisperComponentType.TextInput,
-    label: label || 'Enter text',
-    id: id,
-    key: id,
-    onChange: (_error: Error, _param: string, onChangeWhisper: Whisper) => {
-      logMap(onChangeWhisper.componentState);
-    },
-    tooltip: 'Enter text',
-  };
+export const logMap = (map: StateMap): void => {
+  Array.from(map.entries()).forEach((entry) => {
+    console.log(`Key: ${entry[0]} Value: ${entry[1]}`);
+  });
 };
 
-export const createSelectComponent = (id: string, label?: string): Select => {
-  return {
-    type: WhisperComponentType.Select,
-    label: label || 'Select an option',
-    id: id,
-    key: id,
-    onSelect: (_error: Error, _param: number, onSelectWhisper: Whisper) => {
-      logMap(onSelectWhisper.componentState);
-    },
-    options: ['Option 1', 'Option 2'],
-    tooltip: 'Select an option',
-  };
-};
+export const createTextComponent = (id: string, label?: string): TextInput => ({
+  type: WhisperComponentType.TextInput,
+  label: label || 'Enter text',
+  id,
+  key: id,
+  onChange: (_error: Error, _param: string, onChangeWhisper: Whisper) => {
+    logMap(onChangeWhisper.componentState);
+  },
+  tooltip: 'Enter text',
+});
+
+export const createSelectComponent = (id: string, label?: string): Select => ({
+  type: WhisperComponentType.Select,
+  label: label || 'Select an option',
+  id,
+  key: id,
+  onSelect: (_error: Error, _param: number, onSelectWhisper: Whisper) => {
+    logMap(onSelectWhisper.componentState);
+  },
+  options: ['Option 1', 'Option 2'],
+  tooltip: 'Select an option',
+});
 
 export const createRadioComponent = (id: string): RadioGroup => {
   return {
@@ -111,36 +113,32 @@ export const createRadioComponent = (id: string): RadioGroup => {
   };
 };
 
-export const createAutocompleteComponent = (id: string, label?: string): Autocomplete => {
-  return {
-    type: WhisperComponentType.Autocomplete,
-    label: label || 'Select an option',
-    id: id,
-    key: id,
-    onSelect: (_error: Error, _param: string[], onSelectWhisper: Whisper) => {
-      logMap(onSelectWhisper.componentState);
-    },
-    options: [
-      { label: 'Option 1', value: '1' },
-      { label: 'Option 2', value: '2' },
-    ],
-    tooltip: 'Select an option',
-  };
-};
+export const createAutocompleteComponent = (id: string, label?: string): Autocomplete => ({
+  type: WhisperComponentType.Autocomplete,
+  label: label || 'Select an option',
+  id,
+  key: id,
+  onSelect: (_error: Error, _param: string[], onSelectWhisper: Whisper) => {
+    logMap(onSelectWhisper.componentState);
+  },
+  options: [
+    { label: 'Option 1', value: '1' },
+    { label: 'Option 2', value: '2' },
+  ],
+  tooltip: 'Select an option',
+});
 
 export const createButtonComponent = (
   label: string,
   onClick: (error: Error, onClickWhisper: Whisper) => void,
-): Button => {
-  return {
-    type: WhisperComponentType.Button,
-    label,
-    onClick: (error: Error, onClickWhisper: Whisper) => {
-      logMap(onClickWhisper.componentState);
-      onClick(error, onClickWhisper);
-    },
-  };
-};
+): Button => ({
+  type: WhisperComponentType.Button,
+  label,
+  onClick: (error: Error, onClickWhisper: Whisper) => {
+    logMap(onClickWhisper.componentState);
+    onClick(error, onClickWhisper);
+  },
+});
 
 export const createMarkdownComponent = (text: string): Markdown => {
   return {
@@ -158,12 +156,6 @@ export const newGuid = (): string =>
 
     return v.toString(16);
   });
-
-export const logMap = (map: StateMap): void => {
-  Array.from(map.entries()).forEach((entry) => {
-    console.log(`Key: ${entry[0]} Value: ${entry[1]}`);
-  });
-};
 
 export const autocompleteOptions = [
   { label: 'Value 1', value: '1' },
