@@ -18,7 +18,7 @@ export const mapToHttpRequest = (request: HTTPRequest): Network.HTTPRequest => (
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleCaughtError = (
-  reject: (reason?: any) => void,
+  reject: (reason?: unknown) => void,
   error: Error | undefined | unknown,
   type: string,
 ): void => {
@@ -121,7 +121,6 @@ export const mapToSocket = (socket: Network.Socket): Socket => ({
           if (error) {
             console.log(`Received error on ping ${error.message}`);
             reject(error);
-            return;
           }
         });
       } catch (error) {
