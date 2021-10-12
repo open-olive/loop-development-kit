@@ -119,9 +119,10 @@ export const mapToSocket = (socket: Network.Socket): Socket => ({
       try {
         socket.ping((error) => {
           if (error) {
-            console.log(`Received error on ping ${error.message}`);
+            console.error(`Received error on ping ${error.message}`);
             reject(error);
           }
+          resolve();
         });
       } catch (error) {
         handleCaughtError(reject, error, 'close');
