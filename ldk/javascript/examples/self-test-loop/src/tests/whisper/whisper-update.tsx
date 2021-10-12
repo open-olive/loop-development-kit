@@ -1,4 +1,5 @@
 /* eslint-disable no-async-promise-executor */
+import * as React from 'react';
 import { whisper } from '@oliveai/ldk';
 import {
   Checkbox,
@@ -14,7 +15,6 @@ import {
   Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
-import * as React from 'react';
 import { logMap } from './utils';
 import { ConfirmOrDeny, TestComponentProps, WhisperTestWrapper } from './react-whisper-utils';
 
