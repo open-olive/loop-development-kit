@@ -1,14 +1,21 @@
+let timeout = 2;
 let connect = () => {
   console.log('connecting');
 
   const ws = new WebSocket('ws://127.0.0.1:24984');
 
   ws.addEventListener('close', (event) => {
-    setTimeout(connect, 1000);
+    if (timeout < 1000) {
+      timeout *= 2;
+    } else {
+      timeout = 1000;
+    }
+    setTimeout(connect, timeout);
   });
 
   ws.addEventListener('open', (event) => {
     console.log('connected');
+    timeout = 2;
 
     ws.addEventListener('message', function (event) {
       let callMessage = {};

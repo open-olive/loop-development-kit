@@ -17,7 +17,6 @@ import * as document from './document';
 // These are provided to validate that the aptitude object meets the interface contract.
 
 /* eslint-disable */
-
 const _browser: browser.Browser = browser;
 const _clipboard: clipboard.Clipboard = clipboard;
 const _cursor: cursor.Cursor = cursor;
