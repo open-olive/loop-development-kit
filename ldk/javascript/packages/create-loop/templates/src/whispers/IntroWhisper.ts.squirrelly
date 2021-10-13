@@ -1,0 +1,286 @@
+import { whisper } from '@oliveai/ldk';
+import { stripIndent } from 'common-tags';
+
+{{ @if (it.isTypeScript) }}
+interface Props {
+  newMessage: string;
+  numClones: number;
+  label: string;
+}
+{{ /if }}
+export default class IntroWhisper {
+{{ @if (it.isTypeScript) }}
+  whisper: whisper.Whisper;
+
+  label: string;
+
+  props: Props;
+
+{{ /if }}
+  constructor() {
+    this.whisper = undefined;
+    this.label = 'Intro Whisper';
+    this.props = {
+      newMessage: '',
+      numClones: 1,
+      label: '',
+    };
+  }
+
+  createComponents() {
+    const divider{{it.isTypeScript ? ': whisper.Divider' : ''}} = {
+      type: whisper.WhisperComponentType.Divider,
+    };
+
+    // Intro message.
+    const introMessage{{it.isTypeScript ? ': whisper.Message' : ''}} = {
+      type: whisper.WhisperComponentType.Message,
+      body: 'These are some components you can use in whispers.',
+      style: whisper.Urgency.Success,
+    };
+
+    // Collapse box.
+    const collapsibleContent{{it.isTypeScript ? ': whisper.Markdown' : ''}} = {
+      type: whisper.WhisperComponentType.Markdown,
+      body: stripIndent`
+      # Collapsible Section
+      Content you put here can be expanded/collapsed.
+      `,
+    };
+    const collapseBox{{it.isTypeScript ? ': whisper.CollapseBox' : ''}} = {
+      type: whisper.WhisperComponentType.CollapseBox,
+      children: [collapsibleContent],
+      open: true,
+    };
+
+    // Box example.
+    const boxHeader{{it.isTypeScript ? ': whisper.Markdown' : ''}} = {
+      type: whisper.WhisperComponentType.Markdown,
+      body: '# Box with Child Components',
+    };
+    const firstButton{{it.isTypeScript ? ': whisper.Button' : ''}} = {
+      type: whisper.WhisperComponentType.Button,
+      label: 'Button 1',
+      onClick: () => {
+        console.log('Button 1 clicked.');
+      },
+    };
+    const secondButton{{it.isTypeScript ? ': whisper.Button' : ''}} = {
+      type: whisper.WhisperComponentType.Button,
+      label: 'Button 2',
+      onClick: () => {
+        console.log('Button 2 clicked.');
+      },
+    };
+    const box{{it.isTypeScript ? ': whisper.Box' : ''}} = {
+      type: whisper.WhisperComponentType.Box,
+      children: [firstButton, secondButton],
+      direction: whisper.Direction.Horizontal,
+      justifyContent: whisper.JustifyContent.SpaceEvenly,
+    };
+
+    // Various example components.
+    const exampleComponentsHeading{{it.isTypeScript ? ': whisper.Markdown' : ''}} = {
+      type: whisper.WhisperComponentType.Markdown,
+      body: '# Example Components',
+    };
+    const textInput{{it.isTypeScript ? ': whisper.TextInput' : ''}} = {
+      type: whisper.WhisperComponentType.TextInput,
+      label: 'Text Input',
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': string' : ''}}) => {
+        console.log('Text changed: ', val);
+      },
+    };
+    const email{{it.isTypeScript ? ': whisper.Email' : ''}} = {
+      type: whisper.WhisperComponentType.Email,
+      label: 'Email',
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': string' : ''}}) => {
+        console.log('Email changed: ', val);
+      },
+    };
+    const password{{it.isTypeScript ? ': whisper.Password' : ''}} = {
+      type: whisper.WhisperComponentType.Password,
+      label: 'Password',
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': string' : ''}}) => {
+        console.log('Password changed: ', val);
+      },
+    };
+    const telephone{{it.isTypeScript ? ': whisper.Telephone' : ''}} = {
+      type: whisper.WhisperComponentType.Telephone,
+      label: 'Telephone Number',
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': string' : ''}}) => {
+        console.log('Telephone number changed: ', val);
+      },
+    };
+    const button{{it.isTypeScript ? ': whisper.Button' : ''}} = {
+      type: whisper.WhisperComponentType.Button,
+      label: 'Button',
+      onClick: () => {
+        console.log('Button clicked.');
+      },
+    };
+    const link{{it.isTypeScript ? ': whisper.Link' : ''}} = {
+      type: whisper.WhisperComponentType.Link,
+      text: 'Example of a link',
+      onClick: () => {
+        console.log('Link clicked.');
+      },
+    };
+    const checkbox{{it.isTypeScript ? ': whisper.Checkbox' : ''}} = {
+      type: whisper.WhisperComponentType.Checkbox,
+      label: 'Checkbox',
+      tooltip: "Here's a tooltip.",
+      value: false,
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': boolean' : ''}}) => {
+        console.log('Checkbox clicked: ', val);
+      },
+    };
+    const pair{{it.isTypeScript ? ': whisper.ListPair' : ''}} = {
+      type: whisper.WhisperComponentType.ListPair,
+      copyable: true,
+      label: 'List pair example:',
+      value: 'This value is copyable.',
+      style: whisper.Urgency.None,
+    };
+    const numberInput{{it.isTypeScript ? ': whisper.NumberInput' : ''}} = {
+      type: whisper.WhisperComponentType.Number,
+      value: 6,
+      max: 10,
+      min: 1,
+      step: 2,
+      tooltip: 'Number Input',
+      label: 'Number Input',
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': number' : ''}}) => {
+        console.log('Number changed: ', val);
+      },
+    };
+    const select{{it.isTypeScript ? ': whisper.Select' : ''}} = {
+      type: whisper.WhisperComponentType.Select,
+      label: 'Select Box',
+      options: ['One', 'Two', 'Three'],
+      selected: 0,
+      onSelect: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': number' : ''}}) => {
+        console.log('Selected: ', val);
+      },
+    };
+    const radioBtn{{it.isTypeScript ? ': whisper.RadioGroup' : ''}} = {
+      type: whisper.WhisperComponentType.RadioGroup,
+      options: ['Option 1', 'Option 2', 'Option 3'],
+      onSelect: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': number' : ''}}) => {
+        console.log('Radio button option selected: ', val);
+      },
+    };
+
+    // Showing how to use whisper.update
+    const updatableComponentsHeading{{it.isTypeScript ? ': whisper.Markdown' : ''}} = {
+      type: whisper.WhisperComponentType.Markdown,
+      body: '# Updatable Whisper Components',
+    };
+    const updatableMessage{{it.isTypeScript ? ': whisper.Message' : ''}} = {
+      type: whisper.WhisperComponentType.Message,
+      header: 'This is a component hooked up to Updatable Whisper logic',
+      body: this.props.newMessage || 'Type in the field below to update this line of text',
+      style: whisper.Urgency.Success,
+    };
+    const updatableMessageInput{{it.isTypeScript ? ': whisper.TextInput' : ''}} = {
+      type: whisper.WhisperComponentType.TextInput,
+      label: 'New Text Input',
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': string' : ''}}) => {
+        console.log('Updating message text: ', val);
+        this.update({ newMessage: val });
+      },
+    };
+    const updatableLabelInput{{it.isTypeScript ? ': whisper.TextInput' : ''}} = {
+      type: whisper.WhisperComponentType.TextInput,
+      label: 'Change Whisper Label',
+      onChange: (_error{{it.isTypeScript ? ': Error | undefined' : ''}}, val{{it.isTypeScript ? ': string' : ''}}) => {
+        console.log('Updating whisper label: ', val);
+        this.update({ label: val });
+      },
+    };
+    const resetButton{{it.isTypeScript ? ': whisper.Button' : ''}} = {
+      type: whisper.WhisperComponentType.Button,
+      label: 'Reset Clones',
+      size: whisper.ButtonSize.Large,
+      buttonStyle: whisper.ButtonStyle.Secondary,
+      onClick: () => {
+        const numClones = 1;
+        console.log('Resetting number of clones: ', numClones);
+        this.update({ numClones });
+      },
+    };
+    const clonedComponents{{it.isTypeScript ? ': whisper.ChildComponents[]' : ''}} = [];
+    for (let i = this.props.numClones; i > 0; i -= 1) {
+      const clone{{it.isTypeScript ? ': whisper.Button' : ''}} = {
+        type: whisper.WhisperComponentType.Button,
+        label: 'Clone Me',
+        onClick: () => {
+          const numClones = this.props.numClones + 1;
+          console.log('Adding another clone: ', numClones);
+          this.update({ numClones });
+        },
+      };
+      clonedComponents.push(clone);
+    }
+
+    return [
+      introMessage,
+      divider,
+      collapseBox,
+      divider,
+      boxHeader,
+      box,
+      divider,
+      exampleComponentsHeading,
+      textInput,
+      email,
+      password,
+      telephone,
+      button,
+      link,
+      checkbox,
+      pair,
+      numberInput,
+      select,
+      radioBtn,
+      divider,
+      updatableComponentsHeading,
+      updatableMessage,
+      updatableMessageInput,
+      updatableLabelInput,
+      resetButton,
+      ...clonedComponents,
+    ];
+  }
+
+  show() {
+    whisper
+      .create({
+        components: this.createComponents(),
+        label: this.label,
+        onClose: IntroWhisper.onClose,
+      })
+      .then((newWhisper) => {
+        this.whisper = newWhisper;
+      });
+  }
+
+  update(props{{it.isTypeScript ? ': Partial<Props>' : '' | safe}}) {
+    this.props = { ...this.props, ...props };
+    this.whisper.update({
+      label: this.props.label || this.label,
+      components: this.createComponents(),
+    });
+  }
+
+  close() {
+    this.whisper.close(IntroWhisper.onClose);
+  }
+
+  static onClose(err{{it.isTypeScript ? '?: Error' : ''}}) {
+    if (err) {
+      console.error('There was an error closing Intro whisper', err);
+    }
+    console.log('Intro whisper closed');
+  }
+}

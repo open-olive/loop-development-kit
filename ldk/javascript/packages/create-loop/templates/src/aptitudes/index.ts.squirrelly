@@ -1,0 +1,39 @@
+{{ @if (it.aptitudes.includes('clipboard')) }}
+import clipboardListener from './clipboard/clipboardListener';
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+import filesystemExample from './filesystem/filesystemExample';
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+import keyboardListener from './keyboard/keyboardListener';
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+import networkExample from './network/networkExample';
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+import searchListener from './ui/searchListener';
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+import activeWindowListener from './window/activeWindowListener';
+{{ /if }}
+
+export {
+{{ @if (it.aptitudes.includes('clipboard')) }}
+  clipboardListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+  filesystemExample,
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+  keyboardListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+  networkExample,
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+  searchListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+  activeWindowListener,
+{{ /if }}
+};

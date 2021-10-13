@@ -1,0 +1,45 @@
+import IntroWhisper from './IntroWhisper';
+{{ @if (it.aptitudes.includes('clipboard')) }}
+import ClipboardWhisper from './ClipboardWhisper';
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+import FilesystemWhisper from './FilesystemWhisper';
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+import KeyboardWhisper from './KeyboardWhisper';
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+import NetworkWhisper from './NetworkWhisper';
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+import UiWhisper from './UiWhisper';
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+import WindowWhisper from './WindowWhisper';
+{{ /if }}
+
+{{ @if (it.aptitudes.length) }}
+export {
+  IntroWhisper,
+{{ @if (it.aptitudes.includes('clipboard')) }}
+  ClipboardWhisper,
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+  FilesystemWhisper,
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+  KeyboardWhisper,
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+  NetworkWhisper,
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+  UiWhisper,
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+  WindowWhisper,
+{{ /if }}
+};
+{{ #else }}
+export { IntroWhisper };
+{{ /if }}

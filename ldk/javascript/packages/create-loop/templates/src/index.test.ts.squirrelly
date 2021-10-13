@@ -1,0 +1,65 @@
+{{ @if (it.aptitudes.length > 0) }}
+import {
+{{ @if (it.aptitudes.includes('clipboard')) }}
+  clipboardListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+  filesystemExample,
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+  keyboardListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+  networkExample,
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+  searchListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+  activeWindowListener,
+{{ /if }}
+} from './aptitudes';
+
+jest.mock('./aptitudes');
+{{ /if }}
+jest.mock('@oliveai/ldk');
+
+const mockIntroShow = jest.fn();
+jest.mock('./whispers', () => {
+  return {
+    IntroWhisper: jest.fn().mockImplementation(() => {
+      return { show: mockIntroShow };
+    }),
+  };
+});
+
+describe('Project Startup', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should start the Intro whisper{{ @if (it.aptitudes.length > 0) }} and all active aptitudes{{ /if }} on startup', () => {
+    // eslint-disable-next-line global-require
+    require('.');
+
+    expect(mockIntroShow).toBeCalled();
+{{ @if (it.aptitudes.includes('clipboard')) }}
+    expect(clipboardListener.listen).toBeCalled();
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+    expect(filesystemExample.run).toBeCalled();
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+    expect(keyboardListener.listen).toBeCalled();
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+    expect(networkExample.run).toBeCalled();
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+    expect(searchListener.listen).toBeCalled();
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+    expect(activeWindowListener.listen).toBeCalled();
+{{ /if }}
+  });
+});
