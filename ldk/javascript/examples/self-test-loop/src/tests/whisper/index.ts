@@ -19,6 +19,7 @@ import {
   Color,
   AlignItems,
   RichTextEditor,
+  StyleSize,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -434,6 +435,11 @@ export const testDropzone = async (): Promise<boolean> => {
       acceptFileData.component,
     ],
   });
+  acceptFileData.acceptResult.catch(() => {
+    testWhisper.close(() => {
+      // Do nothing.
+    });
+  });
   await acceptFileData.acceptResult;
 
   const filesWereCleared = createAcceptButtons();
@@ -444,8 +450,10 @@ export const testDropzone = async (): Promise<boolean> => {
       filesWereCleared.component,
     ],
   });
-  testWhisper.close(() => {
-    // Do nothing.
+  filesWereCleared.acceptResult.finally(() => {
+    testWhisper.close(() => {
+      // Do nothing.
+    });
   });
   return filesWereCleared.acceptResult;
 };
@@ -2200,7 +2208,7 @@ export const testRichTextEditor = (): Promise<boolean> =>
               onClick: (_error: Error, onClickWhisper: Whisper) => {
                 if (!editedText || editedText.length === 0 || editedText.length > 50) {
                   (components[0] as RichTextEditor).validationError =
-                    'Inputed text is required and should be less than 200 chars.';
+                    'Inputed text is required and should be less than 50 chars.';
                   onClickWhisper.update({
                     components,
                   });
@@ -2785,6 +2793,47 @@ export const testJustifyContent = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         resolveRejectButtons(resolve, reject),
+      ],
+    });
+  });
+
+export const testMissingLayouts = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did message components rendered properly',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Message,
+          layout: {
+            flex: '1',
+            marginTop: StyleSize.Medium,
+          },
+          body: 'This is a message with a top margin and flex',
+          style: Urgency.Success,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          layout: {
+            flex: '1',
+            marginTop: StyleSize.Medium,
+          },
+          body: 'This is markdown with a top margin and flex',
+        },
+        {
+          type: WhisperComponentType.ListPair,
+          layout: {
+            flex: '1',
+            marginTop: StyleSize.Medium,
+          },
+          copyable: false,
+          label: 'This is a label',
+          value: 'This is a list pair with top margin',
+          style: Urgency.None,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
   });

@@ -1,5 +1,7 @@
 /* eslint-disable no-async-promise-executor */
-import { network } from '@oliveai/ldk';
+import { browser, network } from '@oliveai/ldk';
+
+const windowId = 37;
 
 export const testSecuredHttpRequest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -97,65 +99,74 @@ export const testHttpRequestBlock = (): Promise<boolean> =>
     }
   });
 
+const browserFake = async (
+  socket: network.Socket,
+  msg: string | Uint8Array,
+  reject: (arg0: unknown) => void,
+): Promise<void> => {
+  if (msg && typeof msg === 'string') {
+    console.info(`Received message: ${JSON.stringify(msg)}`);
+    // Regex to find callId (uuid) from msg string
+    const callIdRegex = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/g;
+    const [callId] = msg.match(callIdRegex);
+    try {
+      await socket.writeMessage(
+        `{ "type": "OpenWindowReturn", "version": 0, "callId": "${callId}", "return": { "windowId": ${windowId}, "err": "" }}`,
+      );
+    } catch (error) {
+      console.log('failed to write message ', error);
+      reject(error);
+    }
+  }
+};
+
 export const testWebsocketConnection = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const url = 'wss://html5rocks.websocket.org/echo';
-    const testData = new Uint8Array([53, 6, 6, 65, 20, 74, 65, 78, 74]);
-    const testText = 'some text';
-    let textTestPassed = false;
-    let binaryTestPassed = false;
-
+    const url = 'ws://127.0.0.1:24984/';
+    let testPassed = false;
     setTimeout(() => {
       reject(new Error('Network websocket test did not finish in the appropriate time span.'));
     }, 20000);
 
-    const socketConfiguration: network.SocketConfiguration = {
-      url,
-      useCompression: true,
-    };
+    const socketConfiguration: network.SocketConfiguration = { url };
 
     try {
       const socket = await network.webSocketConnect(socketConfiguration);
       console.info('Websocket successfully connected');
 
-      socket.setCloseHandler(async (error, code, text) => {
+      await socket.setCloseHandler((error, code, text) => {
         if (error) {
-          console.error(error);
+          console.error('setCloseHandler error', error);
           reject(error);
         }
         console.info(`Received on close code: ${code}. ${text}`);
-        if (textTestPassed && binaryTestPassed) {
+        if (testPassed) {
           resolve(true);
         }
       });
+
       const cancellable = await socket.setMessageHandler(async (error, message) => {
         if (error) {
-          console.error(error);
+          console.error('setMessageHandler error', error);
           reject(error);
         }
-        if (message) {
-          console.info(`Received message: ${JSON.stringify(message)}`);
-          if (typeof message === 'string') {
-            if (message === testText) {
-              textTestPassed = true;
-            }
-          } else if (JSON.stringify(message) === JSON.stringify(testData)) {
-            binaryTestPassed = true;
-          }
-          if (textTestPassed && binaryTestPassed) {
-            console.info(`Received all messages. Cancelling message listener.`);
-            cancellable.cancel();
-          }
-        }
+        await browserFake(socket, message, reject);
       });
-      // send text
-      await socket.writeMessage(testText);
-      // send binary
-      await socket.writeMessage(testData);
-      // close socket
-      setTimeout(async () => {
+
+      try {
+        const id = await browser.openWindow('about:blank');
+        console.log('open browser window with id ', id);
+        testPassed = id.valueOf() === windowId;
+        if (testPassed) {
+          cancellable.cancel();
+          console.log('All messages received, cancelling message listener!');
+        }
+      } catch (error) {
+        console.error(`broken: ${error}`);
+      } finally {
+        console.log('closing socket!');
         await socket.close();
-      }, 2000);
+      }
     } catch (error) {
       console.error(error);
       reject(error);
