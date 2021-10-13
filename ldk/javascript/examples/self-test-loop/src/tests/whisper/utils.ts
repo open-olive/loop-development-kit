@@ -5,6 +5,8 @@ import {
   Direction,
   Divider,
   JustifyContent,
+  Markdown,
+  RadioGroup,
   Select,
   StateMap,
   TextInput,
@@ -109,6 +111,18 @@ export const createSelectComponent = (id: string, label?: string): Select => ({
   tooltip: 'Select an option',
 });
 
+export const createRadioComponent = (id: string): RadioGroup => {
+  return {
+    type: WhisperComponentType.RadioGroup,
+    id: id,
+    key: id,
+    onSelect: (_error: Error, _param: number, onSelectWhisper: Whisper) => {
+      logMap(onSelectWhisper.componentState);
+    },
+    options: ['Option 1', 'Option 2'],
+  };
+};
+
 export const createAutocompleteComponent = (id: string, label?: string): Autocomplete => ({
   type: WhisperComponentType.Autocomplete,
   label: label || 'Select an option',
@@ -135,6 +149,13 @@ export const createButtonComponent = (
     onClick(error, onClickWhisper);
   },
 });
+
+export const createMarkdownComponent = (text: string): Markdown => {
+  return {
+    type: WhisperComponentType.Markdown,
+    body: text,
+  };
+};
 
 export const newGuid = (): string =>
   'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {

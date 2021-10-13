@@ -1,0 +1,17 @@
+{
+  "name": "OliveHelps Browser Aptitude",
+  "description": "OliveHelps Browser Aptitude Extension",
+  "version": "0.1",
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "all_frames": true,
+      "js": ["content-script.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "permissions": ["tabs", "webRequest", "webNavigation", "http://localhost/*"]
+}
