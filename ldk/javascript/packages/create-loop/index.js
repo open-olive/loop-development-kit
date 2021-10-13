@@ -13,7 +13,7 @@ const projectOptions = {
   aptitudes: [],
 };
 
-const installNodeModules = async () => {
+const installNodeModules = () => {
   try {
     const { name: projectName } = projectOptions;
 
@@ -26,12 +26,12 @@ const installNodeModules = async () => {
 const createProject = async () => {
   try {
     const { name: projectName, aptitudes, language } = projectOptions;
+    const isTypeScript = language === 'typescript';
 
     // Render a given template file to a given target file path
     const renderTemplate = async (template, filePath) => {
       const fileContents = await Sqrl.renderFile(template, {
-        isTypeScript: language === 'typescript',
-        isUnix: true,
+        isTypeScript,
         projectName,
         aptitudes,
       });
@@ -41,7 +41,7 @@ const createProject = async () => {
 
     // Replace TS file extension with the right one, or add an extension if it doesn't exist
     const filenameWithExtension = (filename) => {
-      const fileExtension = language === 'typescript' ? '.ts' : '.js';
+      const fileExtension = isTypeScript ? '.ts' : '.js';
 
       if (filename.endsWith('.ts')) {
         return filename.replace('.ts', fileExtension);
@@ -166,7 +166,7 @@ const createProject = async () => {
         path.join(targetWhispersPath, filenameWithExtension(`${whisperFilename}.test`)),
       );
 
-      return installNodeModules();
+      installNodeModules();
     });
   } catch (error) {
     console.error(error);
