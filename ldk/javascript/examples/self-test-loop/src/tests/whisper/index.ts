@@ -15,7 +15,7 @@ import {
   MarkdownWhisperCopyMode,
   NewWhisper,
   RichTextEditor,
-  StyleSize
+  StyleSize,
   TextAlign,
   Urgency,
   Whisper,
