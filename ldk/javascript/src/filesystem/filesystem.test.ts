@@ -54,12 +54,17 @@ describe('Filesystem', () => {
   describe('dir', () => {
     it('returns a promise result with expected FileInfos', () => {
       const path = 'path';
+      interface GoTime {
+        UnixNano: () => number;
+      }
+      const goTime: GoTime = { UnixNano: () => 1234 };
+      const goDate = new Date(goTime.UnixNano());
       const expected: filesystem.FileInfo[] = [
         {
           name: 'name',
           size: 2345,
           mode: 'mode',
-          modTime: new Date(),
+          modTime: goDate,
           isDir: true,
         },
       ];
@@ -110,6 +115,11 @@ describe('Filesystem', () => {
   });
 
   describe('listenDir', () => {
+    interface GoTime {
+      UnixNano: () => number;
+    }
+    const goTime: GoTime = { UnixNano: () => 1234 };
+
     it('passed in listen function to olive helps', async () => {
       const path = 'path';
       const callback = jest.fn();
@@ -119,7 +129,7 @@ describe('Filesystem', () => {
           name: 'bob',
           size: 1,
           mode: '0o755',
-          modTime: new Date(),
+          modTime: goTime,
           isDir: false,
         },
       };
@@ -127,7 +137,7 @@ describe('Filesystem', () => {
         expect(pathCb).toEqual(path);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         returnCb({} as any);
-        listenerCb(undefined, fileEvent as any);
+        listenerCb(undefined, fileEvent);
       });
 
       await filesystem.listenDir(path, callback);
@@ -148,6 +158,10 @@ describe('Filesystem', () => {
   });
 
   describe('listenFile', () => {
+    interface GoTime {
+      UnixNano: () => number;
+    }
+    const goTime: GoTime = { UnixNano: () => 1234 };
     it('passed in listen function to olive helps', async () => {
       const path = 'path';
       const callback = jest.fn();
@@ -157,7 +171,7 @@ describe('Filesystem', () => {
           name: 'bob',
           size: 1,
           mode: '0o755',
-          modTime: 111,
+          modTime: goTime,
           isDir: false,
         },
       };
@@ -167,7 +181,7 @@ describe('Filesystem', () => {
           expect(pathCb).toEqual(path);
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           returnCb({} as any);
-          listenerCb(undefined, fileEvent as any);
+          listenerCb(undefined, fileEvent);
         },
       );
 
@@ -302,11 +316,11 @@ describe('Filesystem', () => {
         name: 'name',
         size: 2345,
         mode: 'mode',
-        modTime: new Date(),
+        modTime: GoTime,
         isDir: true,
       };
       mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
-        callback(undefined, expected as any),
+        callback(undefined, expected),
       );
 
       const actual = filesystem.stat(path);

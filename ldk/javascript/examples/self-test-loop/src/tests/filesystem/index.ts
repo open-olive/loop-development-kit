@@ -402,17 +402,7 @@ export const testFileStat = (): Promise<boolean> =>
         writeOperation: WriteOperation.overwrite,
         writeMode: 0o755,
       });
-
       const fileInfo = await filesystem.stat(filePath);
-
-      console.log('type of modTime: ', typeof fileInfo.modTime);
-      console.log('modtime value: ', fileInfo.modTime);
-      console.log('DateofmodTime', new Date(fileInfo.modTime));
-
-      console.log('keys:', Object.keys(fileInfo.modTime));
-
-      console.log('modTime Passed into newDate', new Date('2021-09-20 23:04:07.237590597'));
-
       if (fileInfo) {
         await filesystem.remove(filePath);
         resolve(true);
