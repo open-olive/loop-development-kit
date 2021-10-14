@@ -1,13 +1,246 @@
+@import '../pages/global';
+
 .section {
-  padding-top: 95px;
-  padding-bottom: 95px;
+  --titleColor: #{$oliveVibrant};
+  --blanketColor: #{$oliveBlack};
+
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  overflow: hidden;
+  padding: clamp(60px, 12vw, 140px) 0;
+  color: var(--blanketColor);
 }
 
-.content {
-  width: 80%;
-  max-width: 1280px;
+.sectionMist {
+  background:
+    linear-gradient(
+      to bottom,
+        $oliveMist 0%,
+        white 80%
+    );
+}
+
+.sectionSun {
+  --titleColor: white;
+  --blanketColor: white;
+
+  background:
+    radial-gradient(
+      100% 100% at 50% 120%,
+        $oliveRadiant,
+        $oliveDark 80%,
+    );
+}
+
+.sectionDark {
+  --blanketColor: white;
+
+  background: $oliveDark;
+}
+
+.sectionRadiant {
+  --titleColor: white;
+  --blanketColor: white;
+
+  background: $oliveVibrant;
+}
+
+.sectionSparkles {
+  position: absolute;
+  inset: 0;
+}
+
+.sectionSparklePlus {
+  position: absolute;
+  opacity: .2;
+  transform:
+    translate(-50%, -50%)
+    rotate(0);
+
+  @include respond-to('lg') {
+    opacity: .4;
+  }
+
+  &:before,
+  &:after {
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--titleColor);
+    content: '';
+  }
+
+  &:before {
+    transform: translate(-50%, -50%)
+  }
+
+  &:after {
+    transform:
+      translate(-50%, -50%)
+      rotate(90deg);
+  }
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      $size: random(4) + 20px;
+      width: $size;
+      height: $size;
+      top: random(100) * 1%;
+      left: random(100) * 1%;
+      animation: sectionSparklePlusSpin 4s .05s * $i infinite linear;
+    }
+  }
+}
+
+@keyframes sectionSparklePlusSpin {
+  100% {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+}
+
+.sectionSparkleCircle {
+  position: absolute;
+  border: 2px dashed var(--titleColor);
+  border-radius: 50%;
+  opacity: .1;
+  transform:
+    translate(-50%, -50%)
+    rotate(0);
+
+  @include respond-to('lg') {
+    opacity: .2;
+  }
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      $size: random(4) + 20px;
+      width: $size;
+      height: $size;
+      top: random(100) * 1%;
+      left: random(100) * 1%;
+      animation: sectionSparkleCircleSpin 4s .05s * $i infinite linear;
+    }
+  }
+}
+
+@keyframes sectionSparkleCircleSpin {
+  100% {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+}
+
+.sectionSparkleScrape {
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  opacity: .05;
+  transform:
+    rotate(-45deg)
+    scale(1);
+
+  @include respond-to('lg') {
+    opacity: .1;
+  }
+
+  &:before,
+  &:after {
+    height: 1px;
+    display: block;
+    margin: 8px 0;
+    background: var(--titleColor);
+    content: '';
+  }
+
+  &:before {
+    width: 80%;
+    box-shadow: 16px -8px 0 0 var(--titleColor);
+  }
+
+  &:after {
+    width: 50%;
+    margin-left: auto;
+    box-shadow: -16px 8px 0 0 var(--titleColor);
+  }
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      top: random(100) * 1%;
+      left: random(100) * 1%;
+      animation: sectionSparkleScrapeBeat 4s .05s * $i infinite;
+    }
+  }
+}
+
+@keyframes sectionSparkleScrapeBeat {
+  50% {
+    transform:
+      rotate(-45deg)
+      scale(1.15);
+  }
+}
+
+.sectionInner {
+  @include inner;
+
+  position: relative;
+  z-index: 40;
+  text-align: center;
+}
+
+.sectionHeader {
+  margin-bottom: 36px;
+}
+
+.sectionTitle {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 16px;
+  font-size: clamp(24px, 6vw, 50px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--titleColor);
+
+  .sectionMist & {
+    background:
+      -webkit-linear-gradient(
+        -45deg,
+          $oliveVibrant 50%,
+          $oliveRadiant
+      );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.sectionCaption {
+  width: 100%;
+  max-width: 660px;
+  margin: 0 auto;
+  font-size: clamp(18px, 4vmin, 22px);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--captionColor);
+}
+
+.sectionContent {}
+
+.sectionActions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @include respond-to('sm') {
+    align-items: center;
+    flex-direction: row;
+    gap: 24px;
+    justify-content: center;
+  }
 }

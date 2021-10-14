@@ -13,6 +13,12 @@ $oliveAccentMagenta: #ea098b;
 $oliveAccentOrange: #ffa000;
 $oliveAccentYellow: #ffff00;
 
+$oliveVibrant: #651fff;
+$oliveDark: #410099;
+$oliveBlack: #282828;
+$oliveMist: #e0d2f8;
+$oliveRadiant: #E17C89;
+
 $primaryThemeColor: $olivePurple;
 
 $mediumGradientStart: $olivePurple;
@@ -91,7 +97,7 @@ $headerBackgroundColor: $oliveSecondary3;
 
 $menuBackgroundImage: linear-gradient(to bottom left, $oliveSecondary3, $oliveSecondary3);
 
-$menuBackgroundColor: $oliveSecondary3;
+$menuBackgroundColor: #651fff;
 $menuTextColor: white;
 $menuLinkColor: $menuTextColor;
 $menuLinkColorHover: $hoverColor;
@@ -109,6 +115,15 @@ $breakpoints: (
   ),
   'desktop': (
     min-width: 768px,
+  ),
+  'sm': (
+    min-width: 500px,
+  ),
+  'md': (
+    min-width: 800px,
+  ),
+  'lg': (
+    min-width: 1200px,
   ),
 ) !default;
 
@@ -147,4 +162,20 @@ $breakpoints: (
   @include mobile() {
     #{$property}: $mobileValue;
   }
+}
+
+@mixin inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@mixin visuallyHide {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }

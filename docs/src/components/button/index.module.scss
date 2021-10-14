@@ -1,0 +1,92 @@
+@import '../../pages/global';
+
+.button {
+  min-height: 44px;
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: color 200ms;
+
+  @include respond-to('md') {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  &:before {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -20;
+    background:
+      linear-gradient(
+        45deg,
+          $oliveVibrant,
+          $oliveRadiant
+      );
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 rgba($oliveRadiant, 1);
+    content: '';
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.5, .75);
+    transition:
+      opacity 200ms,
+      transform 200ms;
+  }
+
+  &:hover,
+  &:focus {
+    color: white;
+    text-decoration: none;
+
+    &:before {
+      animation: buttonBurst 400ms forwards;
+      opacity: 1;
+      transform: scale(1.005, 1.005);
+    }
+  }
+}
+
+@keyframes buttonBurst {
+  100% {
+    box-shadow: 0 0 0 8px rgba($oliveRadiant, 0);
+  }
+}
+
+.buttonPlain {
+  color: $oliveVibrant;
+}
+
+.buttonFilledPurple {
+  background: $oliveVibrant;
+  color: white;
+}
+
+.buttonFilledWhite {
+  background: white;
+  color: $oliveDark;
+}
+
+.buttonFilledRadiant {
+  background: white;
+  color: $oliveVibrant;
+}
+
+.buttonIcon {
+  display: block;
+
+  svg {
+    display: block;
+  }
+}
+
+.buttonLabel {
+  font-weight: 500;
+}
