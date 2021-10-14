@@ -1270,6 +1270,7 @@ export const testDefaultValueForSelectAndRadio = (): Promise<boolean> =>
 
 export const testTooltips = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
+    const dateValue = new Date(1634145967056);
     try {
       await whisper.create({
         label: 'Are all tooltips rendered?',
@@ -1335,6 +1336,7 @@ export const testTooltips = (): Promise<boolean> =>
             onChange: () => {
               // do nothing.
             },
+            value: dateValue,
             tooltip: 'Tooltip for Date',
           },
           {
