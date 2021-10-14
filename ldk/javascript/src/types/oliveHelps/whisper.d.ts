@@ -164,7 +164,7 @@ declare namespace WhisperService {
     body: string;
     onCopy?: WhisperHandler;
     tooltip?: string;
-    onLinkClick?: (error: Error | undefined, linkName: string) => void;
+    onLinkClick?: WhisperHandlerWithParam<string>;
   };
 
   type Message = Component<'message'> & {
