@@ -23,4 +23,10 @@ export const windowTestGroup = (): TestGroup =>
       10000,
       'Listening to active windows, please change active window...',
     ),
+    new LoopTest(
+      'Window Aptitude - WindowInfo Path',
+      windowTests.testWindowInfoPath,
+      10000,
+      'Gathering windows...',
+    ),
   ]);
