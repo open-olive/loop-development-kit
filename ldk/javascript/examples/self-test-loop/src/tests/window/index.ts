@@ -42,3 +42,22 @@ export const testWindowAll = (): Promise<boolean> =>
         reject(e);
       });
   });
+
+export const testWindowInfoPath = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    window
+      .all()
+      .then((windowInfoArr) => {
+        if (!windowInfoArr.length) {
+          reject('No windows found');
+          return;
+        }
+
+        const windowInfo = windowInfoArr[0];
+        console.log(JSON.stringify(windowInfo));
+        windowInfo.path ? resolve(true) : reject('No path on window info');
+      })
+      .catch((e) => {
+        reject(e);
+      });
+  });
