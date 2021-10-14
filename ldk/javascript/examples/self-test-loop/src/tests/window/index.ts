@@ -54,7 +54,6 @@ export const testWindowInfoPath = (): Promise<boolean> =>
         }
 
         const windowInfo = windowInfoArr[0];
-        console.log(JSON.stringify(windowInfo));
         windowInfo.path ? resolve(true) : reject('No path on window info');
       })
       .catch((e) => {
