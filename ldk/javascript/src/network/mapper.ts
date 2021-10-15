@@ -17,8 +17,16 @@ export const mapToHttpRequest = (request: HTTPRequest): Network.HTTPRequest => (
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleCaughtError = (reject: (reason?: any) => void, error: Error, type: string): void => {
-  console.error(`Received error calling ${type}: ${error.message}`);
+const handleCaughtError = (
+  reject: (reason?: unknown) => void,
+  error: Error | undefined | unknown,
+  type: string,
+): void => {
+  let message = 'failure';
+  if (error instanceof Error) {
+    message = error.message;
+  }
+  console.error(`Received error calling ${type}: ${message}`);
   reject(error);
 };
 
@@ -95,6 +103,29 @@ export const mapToSocket = (socket: Network.Socket): Socket => ({
         resolve();
       } catch (e) {
         handleCaughtError(reject, e, 'onCloseHandler');
+      }
+    }),
+  setPongHandler: (handler: (error: Error | undefined, msg: string) => void) =>
+    new Promise((resolve, reject) => {
+      try {
+        socket.onPongHandler(handler);
+        resolve();
+      } catch (error) {
+        handleCaughtError(reject, error, 'onPongHandler');
+      }
+    }),
+  ping: () =>
+    new Promise((resolve, reject) => {
+      try {
+        socket.ping((error) => {
+          if (error) {
+            console.error(`Received error on ping ${error.message}`);
+            reject(error);
+          }
+          resolve();
+        });
+      } catch (error) {
+        handleCaughtError(reject, error, 'close');
       }
     }),
 });

@@ -30,6 +30,9 @@ declare namespace Network {
     ) => void;
 
     onCloseHandler(callback: (error: Error | undefined, code: number, text: string) => void): void;
+
+    onPongHandler(callback: (error: Error | undefined, msg: string) => void): void;
+    ping(callback: (error: Error | undefined) => void): void;
   }
 
   interface HTTPRequest {
