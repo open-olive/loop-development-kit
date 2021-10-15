@@ -218,7 +218,7 @@ export const testMarkdownOnLinkClick = (): Promise<boolean> =>
         {
           body: markdown,
           type: WhisperComponentType.Markdown,
-          onLinkClick: (error: Error, linkName: string) => {
+          onLinkClick: (error, linkName) => {
             console.info(`Received click on the link: ${JSON.stringify(linkName)}`);
             if (linkName === 'Some Link 1') {
               onActionWrapper(error, 'SomeLink1', resolverMap, createdWhisper, resolve, reject);
