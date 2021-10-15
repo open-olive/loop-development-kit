@@ -1,7 +1,7 @@
 @import '../pages/global';
 
 .section {
-  --titleColor: #{$oliveVibrant};
+  --titleColor: #{$oliveDark};
   --blanketColor: #{$oliveBlack};
 
   position: relative;
@@ -29,12 +29,13 @@
   background:
     radial-gradient(
       100% 100% at 50% 120%,
-        $oliveRadiant,
+        $oliveMedium,
         $oliveDark 80%,
     );
 }
 
 .sectionDark {
+  --titleColor: white;
   --blanketColor: white;
 
   background: $oliveDark;
@@ -187,6 +188,64 @@
   }
 }
 
+.sectionOhs {
+  height: 560px;
+  width: 1368px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  transform: translate(-50%, -50%);
+}
+
+$gridSize: 18;
+
+@function sqrt($r) {
+  $x0: 1;
+  $x1: $x0;
+
+  @for $i from 1 through 10 {
+    $x1: $x0 - ($x0 * $x0 - abs($r)) / (2 * $x0);
+    $x0: $x1;
+  }
+
+  @return $x1;
+}
+
+@function distToCenter($x1, $y1) {
+  $center: $gridSize / 2;
+  $x: $x1 - $center;
+  $y: $y1 - $center;
+
+  @return sqrt($x * $x + $y * $y);
+}
+
+.sectionOh {
+  animation: sectionOhColorize 4s infinite;
+  color: transparent;
+  padding: 8px;
+
+  $i: 0;
+
+  @for $x from 0 through $gridSize - 1 {
+    @for $y from 0 through $gridSize - 1 {
+      $i: $i + 1;
+
+      &:nth-child(#{$i}) {
+        $dist: distToCenter($x, $y);
+        animation-delay: $dist*200ms;
+      }
+    }
+  }
+}
+
+@keyframes sectionOhColorize {
+  50% {
+    color: $oliveMist;
+  }
+}
+
 .sectionInner {
   @include inner;
 
@@ -213,7 +272,7 @@
       -webkit-linear-gradient(
         -45deg,
           $oliveVibrant 50%,
-          $oliveRadiant
+          $oliveDark
       );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -222,9 +281,9 @@
 
 .sectionCaption {
   width: 100%;
-  max-width: 660px;
+  max-width: 800px;
   margin: 0 auto;
-  font-size: clamp(18px, 4vmin, 22px);
+  font-size: clamp(18px, 2vmin, 22px);
   font-weight: 300;
   line-height: 1.5;
   color: var(--captionColor);

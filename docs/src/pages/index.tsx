@@ -54,7 +54,16 @@ const GuideItem: React.FunctionComponent<IFrontmatterProps> = (props) => {
         <h3 className={styles.guideTitle}>{props.title}</h3>
         <p className={styles.guideDescription}>{props.description}</p>
       </div>
-      <p className={styles.guideCTA}>Read more</p>
+      <p className={styles.guideHint}>
+        <span className={styles.guideHintLabel}>Read more</span>
+        <span className={styles.guideHintIcon}>
+          <svg width="24" height="24">
+            <g id="icon-arrow_right_alt" viewBox="0 0 24 24">
+              <path d="M16.031 11.016v-3l3.984 3.984-3.984 3.984v-3h-12.047v-1.969h12.047z" fill="currentColor"></path>
+            </g>
+          </svg>
+        </span>
+      </p>
     </Link>
   );
 };
@@ -77,7 +86,7 @@ export default function Home(
       <V2Menu />
       <Section
         sectionClassName={sectionStyles.sectionMist}
-        sparkles
+        ohs
         title="Welcome To the Olive Helps Developer Hub"
         caption="Ready to put your solution in front of a new group of healthcare users? Get started using
         the Loop Developer Kit (LDK)."
@@ -176,8 +185,7 @@ export default function Home(
         <div className={styles.aptitudeList}>{aptitudeItems}</div>
       </Section>
       <Section
-        sectionClassName={sectionStyles.sectionRadiant}
-        sparkles
+        sectionClassName={sectionStyles.sectionDark}
         title="Design system"
         caption="Create beautiful Loops that seamlessly integrated with Olive Helps."
       >
@@ -196,7 +204,7 @@ export default function Home(
               href="https://coda.io/@olive-helps-design/design-system"
               label="View the design system"
               target
-              theme="FilledRadiant"
+              theme="FilledWhite"
             />
           </p>
         </div>

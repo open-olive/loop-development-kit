@@ -1,37 +1,37 @@
 @import './global';
 
 .aptitudeList {
-  display: grid;
-  grid-gap: 24px;
-  grid-template-columns: 1fr;
-  grid-auto-rows: 1fr;
-  grid-auto-flow: row;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
 
   @include respond-to('sm') {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @include respond-to('md') {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  @include respond-to('lg') {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin: 0 -12px;
   }
 }
 
 .aptitudeItem {
+  width: 100%;
+  padding: 16px;
   background: white;
   box-shadow:
     4px 16px 32px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
-  padding: 16px;
   text-align: left;
   transition: box-shadow 200ms;
 
+  @include respond-to('sm') {
+    width: calc(50% - 24px);
+  }
+
+  @include respond-to('md') {
+    width: calc(33.33% - 24px);
+  }
+
   &:hover {
     box-shadow:
-      -8px -8px 20px rgba($oliveRadiant, .25),
+      -8px -8px 20px rgba($oliveMedium, .25),
       8px 8px 20px rgba($oliveDark, .25);
     text-decoration: none;
   }
@@ -73,38 +73,46 @@
 }
 
 .guideList {
-  display: grid;
-  grid-gap: 24px;
-  grid-template-columns: 1fr;
-  grid-auto-rows: 1fr;
-  grid-auto-flow: row;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
 
   @include respond-to('sm') {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @include respond-to('md') {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  @include respond-to('lg') {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin: 0 -12px;
   }
 }
 
-
 .guideItem {
-  @extend .aptitudeItem;
-
+  width: 100%;
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  flex-direction: column;
+  padding: 16px;
   color: inherit;
+  background: white;
+  box-shadow:
+    4px 16px 32px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  text-align: left;
+  transition: box-shadow 200ms;
+
+  @include respond-to('sm') {
+    width: calc(50% - 24px);
+  }
+
+  @include respond-to('md') {
+    width: calc(33.33% - 24px);
+  }
 
   &:hover,
   &:focus {
+    box-shadow:
+      -8px -8px 20px rgba($oliveMedium, .25),
+      8px 8px 20px rgba($oliveDark, .25);
     color: $oliveVibrant;
+    text-decoration: none;
   }
 }
 
@@ -133,17 +141,21 @@
   color: #282828;
 }
 
-.guideCTA {
+.guideHint {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
   font-weight: 500;
   color: $oliveVibrant;
+  white-space: nowrap;
 
   &:after {
-    width: 90%;
+    width: calc(100% - 24px - 8px - 12px);
     height: 4px;
-    position: relative;
-    top: 4px;
+    position: absolute;
+    bottom: -4px;
     display: block;
     background: #e0d2f8;
     border-radius: 4px;
@@ -156,6 +168,28 @@
     .guideItem:focus & {
       transform: scaleX(1);
     }
+  }
+}
+
+.guideHintLabel {}
+
+.guideHintIcon {
+  position: relative;
+  top: 1px;
+
+  .guideItem:hover &,
+  .guideItem:focus & {
+    animation: guideHintIconDootDoot 800ms infinite;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+@keyframes guideHintIconDootDoot {
+  50% {
+    transform: translate(4px, 0);
   }
 }
 
@@ -199,7 +233,7 @@
 .footer {
   padding: 24px 0;
   overflow: hidden;
-  background: $oliveDark;
+  background: $oliveMidnight;
   color: #fff;
 }
 
@@ -298,8 +332,8 @@
     border-radius: 50%;
     box-shadow:
       inset -14px -14px 10px 0 $oliveVibrant,
-      inset -14px 14px 10px 0 $oliveRadiant,
-      inset 14px 14px 10px 0 $oliveRadiant;
+      inset -14px 14px 10px 0 $oliveMedium,
+      inset 14px 14px 10px 0 $oliveMedium;
     content: '';
     pointer-events: none;
     transform:
@@ -322,8 +356,8 @@
   50% {
     box-shadow:
       inset -14px -14px 10px 0 $oliveVibrant,
-      inset -14px 14px 10px 0 $oliveRadiant,
-      inset 14px 14px 10px 0 $oliveRadiant;
+      inset -14px 14px 10px 0 $oliveMedium,
+      inset 14px 14px 10px 0 $oliveMedium;
   }
 
   80% {
@@ -333,8 +367,8 @@
   100% {
     box-shadow:
       inset 0 0 0 0 $oliveVibrant,
-      inset 0 0 0 0 $oliveRadiant,
-      inset 0 0 0 0 $oliveRadiant;
+      inset 0 0 0 0 $oliveMedium,
+      inset 0 0 0 0 $oliveMedium;
     opacity: 0;
     transform:
       translate(-50%, -50%)
