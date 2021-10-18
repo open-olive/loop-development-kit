@@ -57,8 +57,17 @@ describe('Filesystem', () => {
       interface GoTime {
         UnixNano: () => number;
       }
-      const goTime: GoTime = { UnixNano: () => 1234 };
+      const goTime: GoTime = { UnixNano: () => 0 };
       const goDate = new Date(goTime.UnixNano());
+      const fileInfo: Filesystem.FileInfo[] = [
+        {
+          name: 'name',
+          size: 2345,
+          mode: 'mode',
+          modTime: goTime,
+          isDir: true,
+        },
+      ];
       const expected: filesystem.FileInfo[] = [
         {
           name: 'name',
@@ -69,12 +78,12 @@ describe('Filesystem', () => {
         },
       ];
       mocked(oliveHelps.filesystem.dir).mockImplementation((_path, callback) =>
-        callback(undefined, expected as any),
+        callback(undefined, fileInfo),
       );
 
       const actual = filesystem.dir(path);
 
-      return expect(actual).resolves.toBe(expected);
+      return expect(actual).resolves.toStrictEqual(expected);
     });
 
     it('returns a rejected promise', () => {
@@ -82,7 +91,6 @@ describe('Filesystem', () => {
       mocked(oliveHelps.filesystem.dir).mockImplementation(() => {
         throw exception;
       });
-
       const actual = filesystem.dir('path');
 
       return expect(actual).rejects.toBe(exception);
@@ -139,10 +147,6 @@ describe('Filesystem', () => {
         returnCb({} as any);
         listenerCb(undefined, fileEvent);
       });
-
-      await filesystem.listenDir(path, callback);
-
-      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -184,10 +188,6 @@ describe('Filesystem', () => {
           listenerCb(undefined, fileEvent);
         },
       );
-
-      await filesystem.listenFile(path, callback);
-
-      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -310,25 +310,36 @@ describe('Filesystem', () => {
   });
 
   describe('stat', () => {
-    const event = new Date('August 19, 1975 23:15:30 GMT+00:00');
+    interface GoTime {
+      UnixNano: () => number;
+    }
+    const goTime: GoTime = { UnixNano: () => 0 };
+    const goDate = new Date(goTime.UnixNano());
+
     it('returns a promise result with expected file information', () => {
       const path = 'path';
+      const fileInfo: Filesystem.FileInfo = {
+        name: 'name',
+        size: 2345,
+        mode: 'mode',
+        modTime: goTime,
+        isDir: true,
+      };
       const expected: filesystem.FileInfo = {
         name: 'name',
         size: 2345,
         mode: 'mode',
-        modTime: event,
+        modTime: goDate,
         isDir: true,
       };
 
       mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        callback(undefined, expected as any),
+        callback(undefined, fileInfo),
       );
 
       const actual = filesystem.stat(path);
 
-      return expect(actual).resolves.toBe(expected);
+      return expect(actual).resolves.toStrictEqual(expected);
     });
 
     it('returns a rejected promise', () => {
@@ -463,3 +474,6 @@ describe('unzip', () => {
     return expect(actual).rejects.toBe(exception);
   });
 });
+function Unixnano(): number {
+  return 1234;
+}
