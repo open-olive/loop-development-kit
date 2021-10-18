@@ -38,7 +38,7 @@ export class Section extends React.Component<SectionProps> {
         )}
         {this.props.ohs && (
           <div className={styles.sectionOhs}>
-            {[...Array(126)].map((e, index) => (
+            {[...Array(90)].map((e, index) => (
               <span className={styles.sectionOh}>
                 <svg
                   className={styles.sectionOhIcon}
