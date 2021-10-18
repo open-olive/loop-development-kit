@@ -87,7 +87,7 @@ export default function Home(
       <Section
         sectionClassName={sectionStyles.sectionMist}
         ohs
-        title="Welcome To the Olive Helps Developer Hub"
+        title="Welcome to the Olive Helps Developer Hub"
         caption="Ready to put your solution in front of a new group of healthcare users? Get started using
         the Loop Developer Kit (LDK)."
       >
