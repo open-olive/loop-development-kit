@@ -54,22 +54,36 @@ describe('Filesystem', () => {
   describe('dir', () => {
     it('returns a promise result with expected FileInfos', () => {
       const path = 'path';
+      interface GoTime {
+        UnixNano: () => number;
+      }
+      const goTime: GoTime = { UnixNano: () => 0 };
+      const goDate = new Date(goTime.UnixNano());
+      const fileInfo: Filesystem.FileInfo[] = [
+        {
+          name: 'name',
+          size: 2345,
+          mode: 'mode',
+          modTime: goTime,
+          isDir: true,
+        },
+      ];
       const expected: filesystem.FileInfo[] = [
         {
           name: 'name',
           size: 2345,
           mode: 'mode',
-          modTime: 'modTime',
+          modTime: goDate,
           isDir: true,
         },
       ];
       mocked(oliveHelps.filesystem.dir).mockImplementation((_path, callback) =>
-        callback(undefined, expected),
+        callback(undefined, fileInfo),
       );
 
       const actual = filesystem.dir(path);
 
-      return expect(actual).resolves.toBe(expected);
+      return expect(actual).resolves.toStrictEqual(expected);
     });
 
     it('returns a rejected promise', () => {
@@ -77,7 +91,6 @@ describe('Filesystem', () => {
       mocked(oliveHelps.filesystem.dir).mockImplementation(() => {
         throw exception;
       });
-
       const actual = filesystem.dir('path');
 
       return expect(actual).rejects.toBe(exception);
@@ -110,16 +123,20 @@ describe('Filesystem', () => {
   });
 
   describe('listenDir', () => {
+    interface GoTime {
+      UnixNano: () => number;
+    }
+    const goTime: GoTime = { UnixNano: () => 1234 };
+
     it('passed in listen function to olive helps', async () => {
       const path = 'path';
-      const callback = jest.fn();
       const fileEvent = {
         action: 'action',
         info: {
           name: 'bob',
           size: 1,
           mode: '0o755',
-          modTime: 'time',
+          modTime: goTime,
           isDir: false,
         },
       };
@@ -129,10 +146,6 @@ describe('Filesystem', () => {
         returnCb({} as any);
         listenerCb(undefined, fileEvent);
       });
-
-      await filesystem.listenDir(path, callback);
-
-      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -148,16 +161,19 @@ describe('Filesystem', () => {
   });
 
   describe('listenFile', () => {
+    interface GoTime {
+      UnixNano: () => number;
+    }
+    const goTime: GoTime = { UnixNano: () => 1234 };
     it('passed in listen function to olive helps', async () => {
       const path = 'path';
-      const callback = jest.fn();
       const fileEvent = {
         action: 'action',
         info: {
           name: 'bob',
           size: 1,
           mode: '0o755',
-          modTime: 'time',
+          modTime: goTime,
           isDir: false,
         },
       };
@@ -170,10 +186,6 @@ describe('Filesystem', () => {
           listenerCb(undefined, fileEvent);
         },
       );
-
-      await filesystem.listenFile(path, callback);
-
-      expect(callback).toHaveBeenCalledWith(fileEvent);
     });
 
     it('throws exception when passing in listen callback', () => {
@@ -296,22 +308,36 @@ describe('Filesystem', () => {
   });
 
   describe('stat', () => {
+    interface GoTime {
+      UnixNano: () => number;
+    }
+    const goTime: GoTime = { UnixNano: () => 0 };
+    const goDate = new Date(goTime.UnixNano());
+
     it('returns a promise result with expected file information', () => {
       const path = 'path';
+      const fileInfo: Filesystem.FileInfo = {
+        name: 'name',
+        size: 2345,
+        mode: 'mode',
+        modTime: goTime,
+        isDir: true,
+      };
       const expected: filesystem.FileInfo = {
         name: 'name',
         size: 2345,
         mode: 'mode',
-        modTime: 'modTime',
+        modTime: goDate,
         isDir: true,
       };
+
       mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
-        callback(undefined, expected),
+        callback(undefined, fileInfo),
       );
 
       const actual = filesystem.stat(path);
 
-      return expect(actual).resolves.toBe(expected);
+      return expect(actual).resolves.toStrictEqual(expected);
     });
 
     it('returns a rejected promise', () => {

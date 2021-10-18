@@ -1,4 +1,4 @@
-import { FileEvent, RemovedFileEvent, RenamedFileEvent } from './types';
+import { FileEvent, RemovedFileEvent, RenamedFileEvent, FileInfo } from './types';
 
 export const mapToFileEvent = (
   fileEvent: Filesystem.FileEvent,
@@ -15,6 +15,21 @@ export const mapToFileEvent = (
         name: fileEvent.info.name,
       } as RenamedFileEvent;
     default:
-      return fileEvent;
+      return {
+        action: fileEvent.action,
+        info: mapToFileInfo(fileEvent.info),
+      };
   }
 };
+
+export function mapToFileInfo(fileInfo: Filesystem.FileInfo): FileInfo {
+  return {
+    ...fileInfo,
+    modTime: new Date(fileInfo.modTime.UnixNano() / 1000000),
+  };
+}
+
+export function mapToFileInfoArray(fileInfos: Filesystem.FileInfo[]): FileInfo[] {
+  const result = fileInfos.map(mapToFileInfo);
+  return result;
+}

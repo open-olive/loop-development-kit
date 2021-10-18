@@ -8,7 +8,7 @@ import {
 } from '../promisify';
 import { Cancellable } from '../cancellable';
 import * as mapper from '../utils/mapper';
-import { mapToFileEvent } from './mapper';
+import { mapToFileInfo, mapToFileEvent, mapToFileInfoArray } from './mapper';
 import {
   FileInfo,
   FileEvent,
@@ -141,7 +141,7 @@ export function copy(source: string, destination: string): Promise<void> {
 }
 
 export function dir(path: string): Promise<FileInfo[]> {
-  return promisifyWithParam(path, oliveHelps.filesystem.dir);
+  return promisifyMappedWithParam(path, mapToFileInfoArray, oliveHelps.filesystem.dir);
 }
 
 export function exists(path: string): Promise<boolean> {
@@ -189,7 +189,7 @@ export function remove(source: string): Promise<void> {
 }
 
 export function stat(path: string): Promise<FileInfo> {
-  return promisifyWithParam(path, oliveHelps.filesystem.stat);
+  return promisifyMappedWithParam(path, mapToFileInfo, oliveHelps.filesystem.stat);
 }
 
 export function writeFile({
