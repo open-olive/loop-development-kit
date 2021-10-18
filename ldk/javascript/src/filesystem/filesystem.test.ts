@@ -310,17 +310,20 @@ describe('Filesystem', () => {
   });
 
   describe('stat', () => {
+    const event = new Date('August 19, 1975 23:15:30 GMT+00:00');
     it('returns a promise result with expected file information', () => {
       const path = 'path';
       const expected: filesystem.FileInfo = {
         name: 'name',
         size: 2345,
         mode: 'mode',
-        modTime: GoTime,
+        modTime: event,
         isDir: true,
       };
+
       mocked(oliveHelps.filesystem.stat).mockImplementation((_path, callback) =>
-        callback(undefined, expected),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        callback(undefined, expected as any),
       );
 
       const actual = filesystem.stat(path);
