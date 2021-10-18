@@ -130,7 +130,6 @@ describe('Filesystem', () => {
 
     it('passed in listen function to olive helps', async () => {
       const path = 'path';
-      const callback = jest.fn();
       const fileEvent = {
         action: 'action',
         info: {
@@ -168,7 +167,6 @@ describe('Filesystem', () => {
     const goTime: GoTime = { UnixNano: () => 1234 };
     it('passed in listen function to olive helps', async () => {
       const path = 'path';
-      const callback = jest.fn();
       const fileEvent = {
         action: 'action',
         info: {
@@ -474,6 +472,3 @@ describe('unzip', () => {
     return expect(actual).rejects.toBe(exception);
   });
 });
-function Unixnano(): number {
-  return 1234;
-}
