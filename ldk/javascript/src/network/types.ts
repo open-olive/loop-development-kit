@@ -95,4 +95,8 @@ export interface Socket {
   setCloseHandler(
     handler: (error: Error | undefined, code: number, text: string) => void,
   ): Promise<void>;
+
+  setPongHandler(handler: (error: Error | undefined, msg: string) => void): Promise<void>;
+
+  ping(): Promise<void>;
 }

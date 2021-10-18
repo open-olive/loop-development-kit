@@ -17,7 +17,7 @@ export interface FileInfo {
   /**
    * The last updated time, if present.
    */
-  modTime: string;
+  modTime: Date; // convert the value to js date object
   /**
    * Whether the entry is a directory.
    */

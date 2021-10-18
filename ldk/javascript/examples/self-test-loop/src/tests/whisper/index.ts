@@ -435,6 +435,11 @@ export const testDropzone = async (): Promise<boolean> => {
       acceptFileData.component,
     ],
   });
+  acceptFileData.acceptResult.catch(() => {
+    testWhisper.close(() => {
+      // Do nothing.
+    });
+  });
   await acceptFileData.acceptResult;
 
   const filesWereCleared = createAcceptButtons();
@@ -445,8 +450,10 @@ export const testDropzone = async (): Promise<boolean> => {
       filesWereCleared.component,
     ],
   });
-  testWhisper.close(() => {
-    // Do nothing.
+  filesWereCleared.acceptResult.finally(() => {
+    testWhisper.close(() => {
+      // Do nothing.
+    });
   });
   return filesWereCleared.acceptResult;
 };
