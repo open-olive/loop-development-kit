@@ -108,22 +108,16 @@ const createProject = async () => {
         filesystem: 'filesystemExample',
         keyboard: 'keyboardListener',
         network: 'networkExample',
-        ui:'searchListener',
-        window: 'activeWindowListener'
-      }
+        ui: 'searchListener',
+        window: 'activeWindowListener',
+      };
 
       const aptitudeFilename = APTITUDE_FILENAMES[aptitude];
       // Change first letter to uppercase, e.g. ClipboardWhisper
       const whisperFilename = aptitude[0].toUpperCase() + aptitude.slice(1) + 'Whisper';
 
-      const sourceAptitudePath = path.join(
-        sourceAptitudesPath,
-        aptitude,
-      );
-      const targetAptitudePath = path.join(
-        targetAptitudesPath,
-        aptitude,
-      );
+      const sourceAptitudePath = path.join(sourceAptitudesPath, aptitude);
+      const targetAptitudePath = path.join(targetAptitudesPath, aptitude);
       await fs.mkdir(targetAptitudePath);
 
       // Render aptitude
@@ -154,20 +148,20 @@ const createProject = async () => {
     // Render aptitude index file
     renderTemplate(
       path.join(sourceAptitudesPath, 'index.ts.squirrelly'),
-      path.join(targetAptitudesPath, filenameWithExtension('index'))
-    )
+      path.join(targetAptitudesPath, filenameWithExtension('index')),
+    );
 
     // Render whisper index file
     renderTemplate(
       path.join(sourceWhispersPath, 'index.ts.squirrelly'),
-      path.join(targetWhispersPath, filenameWithExtension('index'))
-    )
+      path.join(targetWhispersPath, filenameWithExtension('index')),
+    );
 
     // Render intro whisper
     renderTemplate(
       path.join(sourceWhispersPath, 'IntroWhisper.ts.squirrelly'),
-      path.join(targetWhispersPath, filenameWithExtension('IntroWhisper'))
-    )
+      path.join(targetWhispersPath, filenameWithExtension('IntroWhisper')),
+    );
 
     installNodeModules();
   } catch (error) {
