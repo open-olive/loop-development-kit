@@ -103,34 +103,33 @@ const createProject = async () => {
 
     // "search" aptitude create "ui" templates
     aptitudes.forEach(async (aptitude) => {
-      let aptitudeFilename;
-      let whisperFilename = `${aptitude}Whisper`;
+      const FILENAMES = {
+        clipboard: {
+          aptitudeFilename: 'clipboardListener'
+        },
+        filesystem: {
+          aptitudeFilename: 'filesystemExample'
+        },
+        keyboard: {
+          aptitudeFilename: 'keyboardListener'
+        },
+        network: {
+          aptitudeFilename: 'networkExample'
+        },
+        search: {
+          aptitudeFilename: 'searchListener',
+          // Search aptitude uses a different whisper name scheme
+          whisperFilename: 'UiWhisper'
+        },
+        window: {
+          aptitudeFilename: 'activeWindowListener',
+        }
+      }
+
+      const aptitudeFilename = FILENAMES[aptitude].aptitudeFilename;
+      const whisperFilename = FILENAMES[aptitude].whisperFilename || `${aptitude}Whisper`;
       // Change first letter to uppercase, e.g. ClipboardWhisper
       whisperFilename[0] = whisperFilename[0].toUpperCase();
-
-      switch (aptitude) {
-        case 'clipboard':
-          aptitudeFilename = 'clipboardListener';
-          break;
-        case 'filesystem':
-          aptitudeFilename = 'filesystemExample';
-          break;
-        case 'keyboard':
-          aptitudeFilename = 'keyboardListener';
-          break;
-        case 'network':
-          aptitudeFilename = 'networkExample';
-          break;
-        case 'search':
-          aptitudeFilename = 'searchListener';
-          whisperFilename = 'UiWhisper';
-          break;
-        case 'window':
-          aptitudeFilename = 'activeWindowListener';
-          break;
-        default:
-          break;
-      }
 
       const sourceAptitudePath = path.join(
         sourceAptitudesPath,
