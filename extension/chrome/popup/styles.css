@@ -1,0 +1,27 @@
+html,
+body {
+  height: 75px;
+  margin: 0;
+}
+
+div {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+p {
+  text-align: center;
+  vertical-align: middle;
+  color: black;
+  width: 150px;
+  height: 25px;
+}
+
+a {
+  text-align: center;
+  /* display: inline-flex; */
+  margin: auto 10px;
+  width: 75px;
+  height: 25px;
+}

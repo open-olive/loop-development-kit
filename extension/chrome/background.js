@@ -20,6 +20,23 @@ const setIcon = (isConnected) => {
   chrome.browserAction.setIcon(icon);
 };
 
+const setPopup = (isConnected) => {
+  const connectedHTML = 'popup/connected.html';
+  const disconnectedHTML = 'popup/disconnected.html';
+
+  let popUp = {
+    popup: disconnectedHTML,
+  };
+
+  if (isConnected) {
+    popUp = {
+      popup: connectedHTML,
+    };
+  }
+
+  chrome.browserAction.setPopup(popUp);
+};
+
 let timeout = 2;
 let connect = () => {
   console.log('connecting');
@@ -132,6 +149,7 @@ let connect = () => {
   });
 
   setIcon(isConnected);
+  setPopup(isConnected);
 };
 
 connect();
