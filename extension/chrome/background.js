@@ -37,15 +37,20 @@ const setPopup = (isConnected) => {
   chrome.browserAction.setPopup(popUp);
 };
 
+const backgroundAction = (isConnected) => {
+  setIcon(isConnected);
+  setPopup(isConnected);
+};
+
 let timeout = 2;
 let connect = () => {
   console.log('connecting');
-  let isConnected = false;
-
   const ws = new WebSocket('ws://127.0.0.1:24984');
 
   ws.addEventListener('close', (_event) => {
-    isConnected = false;
+    console.log('closing...');
+    backgroundAction(false);
+
     if (timeout < 1000) {
       timeout *= 2;
     } else {
@@ -55,7 +60,6 @@ let connect = () => {
   });
 
   ws.addEventListener('open', (_event) => {
-    isConnected = true;
     console.log('connected');
     timeout = 2;
 
@@ -146,10 +150,9 @@ let connect = () => {
           break;
       }
     });
-  });
 
-  setIcon(isConnected);
-  setPopup(isConnected);
+    backgroundAction(true);
+  });
 };
 
 connect();
