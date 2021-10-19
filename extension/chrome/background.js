@@ -1,10 +1,34 @@
+const setIcon = (isConnected) => {
+  const offImage = 'images/OH Chrome Browser Extension Icon - Off.png';
+  const onImage = 'images/OH Chrome Browser Extension Icon - On.png';
+  let icon = {
+    path: {
+      16: offImage,
+      48: offImage,
+      128: offImage,
+    },
+  };
+  if (isConnected) {
+    icon = {
+      path: {
+        16: onImage,
+        48: onImage,
+        128: onImage,
+      },
+    };
+  }
+  chrome.browserAction.setIcon(icon);
+};
+
 let timeout = 2;
 let connect = () => {
   console.log('connecting');
+  let isConnected = false;
 
   const ws = new WebSocket('ws://127.0.0.1:24984');
 
-  ws.addEventListener('close', (event) => {
+  ws.addEventListener('close', (_event) => {
+    isConnected = false;
     if (timeout < 1000) {
       timeout *= 2;
     } else {
@@ -13,7 +37,8 @@ let connect = () => {
     setTimeout(connect, timeout);
   });
 
-  ws.addEventListener('open', (event) => {
+  ws.addEventListener('open', (_event) => {
+    isConnected = true;
     console.log('connected');
     timeout = 2;
 
@@ -85,7 +110,7 @@ let connect = () => {
       );
     });
 
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       switch (request.message) {
         case 'TextSelection':
           ws.send(
@@ -105,6 +130,8 @@ let connect = () => {
       }
     });
   });
+
+  setIcon(isConnected);
 };
 
 connect();
