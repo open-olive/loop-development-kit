@@ -103,41 +103,26 @@ const createProject = async () => {
 
     // "search" aptitude create "ui" templates
     aptitudes.forEach(async (aptitude) => {
-      const FILENAMES = {
-        clipboard: {
-          aptitudeFilename: 'clipboardListener'
-        },
-        filesystem: {
-          aptitudeFilename: 'filesystemExample'
-        },
-        keyboard: {
-          aptitudeFilename: 'keyboardListener'
-        },
-        network: {
-          aptitudeFilename: 'networkExample'
-        },
-        search: {
-          aptitudeFilename: 'searchListener',
-          // Search aptitude uses a different whisper name scheme
-          whisperFilename: 'UiWhisper'
-        },
-        window: {
-          aptitudeFilename: 'activeWindowListener',
-        }
+      const APTITUDE_FILENAMES = {
+        clipboard: 'clipboardListener',
+        filesystem: 'filesystemExample',
+        keyboard: 'keyboardListener',
+        network: 'networkExample',
+        ui:'searchListener',
+        window: 'activeWindowListener'
       }
 
-      const aptitudeFilename = FILENAMES[aptitude].aptitudeFilename;
-      const whisperFilename = FILENAMES[aptitude].whisperFilename || `${aptitude}Whisper`;
+      const aptitudeFilename = APTITUDE_FILENAMES[aptitude];
       // Change first letter to uppercase, e.g. ClipboardWhisper
-      whisperFilename[0] = whisperFilename[0].toUpperCase();
+      const whisperFilename = aptitude[0].toUpperCase() + aptitude.slice(1) + 'Whisper';
 
       const sourceAptitudePath = path.join(
         sourceAptitudesPath,
-        aptitude === 'search' ? 'ui' : aptitude,
+        aptitude,
       );
       const targetAptitudePath = path.join(
         targetAptitudesPath,
-        aptitude === 'search' ? 'ui' : aptitude,
+        aptitude,
       );
       await fs.mkdir(targetAptitudePath);
 
@@ -164,9 +149,27 @@ const createProject = async () => {
         path.join(sourceWhispersPath, `${whisperFilename}.test.ts.squirrelly`),
         path.join(targetWhispersPath, filenameWithExtension(`${whisperFilename}.test`)),
       );
-
-      installNodeModules();
     });
+
+    // Render aptitude index file
+    renderTemplate(
+      path.join(sourceAptitudesPath, 'index.ts.squirrelly'),
+      path.join(targetAptitudesPath, filenameWithExtension('index'))
+    )
+
+    // Render whisper index file
+    renderTemplate(
+      path.join(sourceWhispersPath, 'index.ts.squirrelly'),
+      path.join(targetWhispersPath, filenameWithExtension('index'))
+    )
+
+    // Render intro whisper
+    renderTemplate(
+      path.join(sourceWhispersPath, 'IntroWhisper.ts.squirrelly'),
+      path.join(targetWhispersPath, filenameWithExtension('IntroWhisper'))
+    )
+
+    installNodeModules();
   } catch (error) {
     console.error(error);
   }
@@ -199,7 +202,7 @@ const aptitudesPrompt = () => {
       { title: 'Filesystem', value: 'filesystem' },
       { title: 'Keyboard', value: 'keyboard' },
       { title: 'Network', value: 'network' },
-      { title: 'Search', value: 'search' },
+      { title: 'Search', value: 'ui' },
       { title: 'Window', value: 'window' },
     ],
     hint: 'Use your spacebar to select. You can select multiple!',
