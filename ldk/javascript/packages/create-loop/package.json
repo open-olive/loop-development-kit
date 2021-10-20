@@ -1,5 +1,5 @@
 {
-  "name": "create-loop",
+  "name": "@oliveai/create-loop",
   "version": "1.0.0",
   "description": "Create Olive Helps loops with aptitudes of your choice quickly and easily",
   "main": "index.js",
