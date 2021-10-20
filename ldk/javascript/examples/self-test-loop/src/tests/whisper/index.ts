@@ -1,30 +1,33 @@
 /* eslint-disable no-async-promise-executor */
 import { clipboard, network, whisper } from '@oliveai/ldk';
 import {
+  AlignItems,
   ButtonSize,
   ButtonStyle,
+  Color,
   Component,
   CustomHeight,
   DateTimeType,
   Direction,
   JustifyContent,
+  IconSize,
+  MessageWhisperCopyMode,
+  MarkdownWhisperCopyMode,
   NewWhisper,
+  RichTextEditor,
+  StyleSize,
   TextAlign,
   Urgency,
   Whisper,
   WhisperComponentType,
-  MessageWhisperCopyMode,
-  MarkdownWhisperCopyMode,
-  IconSize,
-  Color,
-  AlignItems,
-  RichTextEditor,
-  StyleSize,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
-  createAutocompleteComponent,
   autocompleteOptions,
+  createAutocompleteComponent,
+  createDivider,
+  createTextComponent,
+  createSelectComponent,
   logMap,
   resolveRejectButtons,
 } from './utils';
@@ -2321,6 +2324,27 @@ export const testAutocomplete = (): Promise<boolean> =>
 export const testPadding = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
+      const divider = createDivider();
+
+      const paddingSize = whisper.StyleSize.Medium;
+      const componentsToGroup = [];
+      const componentCreationFunctions = [
+        createTextComponent,
+        createSelectComponent,
+        createAutocompleteComponent,
+      ];
+
+      for (
+        let functionIndex = 0;
+        functionIndex < componentCreationFunctions.length;
+        functionIndex++
+      ) {
+        const func = componentCreationFunctions[functionIndex];
+        const component = func(`${functionIndex}`, 'Label');
+        component.layout = { padding: paddingSize };
+        componentsToGroup.push(component);
+      }
+
       await whisper.create({
         label: 'Padding Property Test',
         onClose: () => {
@@ -2395,6 +2419,42 @@ export const testPadding = (): Promise<boolean> =>
                 ],
               },
             ],
+          },
+          divider,
+          {
+            body:
+              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            type: WhisperComponentType.Markdown,
+          },
+          ...componentsToGroup,
+          divider,
+          {
+            body:
+              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.Box,
+            layout: {
+              margin: whisper.StyleSize.Small,
+            },
+            direction: Direction.Vertical,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: componentsToGroup,
+          },
+          divider,
+          {
+            body:
+              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            type: whisper.WhisperComponentType.CollapseBox,
+            layout: {
+              margin: whisper.StyleSize.Small,
+            },
+            open: true,
+            children: componentsToGroup,
           },
           resolveRejectButtons(resolve, reject, 'Yes', 'No'),
         ],
