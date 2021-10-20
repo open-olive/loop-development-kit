@@ -2249,6 +2249,8 @@ export const testAutocomplete = (): Promise<boolean> =>
       ['Select', false],
       ['Change', false],
       ['Multiple', false],
+      ['Custom', false],
+      ['MultiCustom', false],
     ]);
     try {
       await whisper.create({
@@ -2314,6 +2316,53 @@ export const testAutocomplete = (): Promise<boolean> =>
             options: autocompleteOptions,
             tooltip: 'tooltip',
             value: '5',
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: "Enter the word 'custom'",
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Free Solo Test',
+            loading: true,
+            multiple: false,
+            freeSolo: true,
+            onChange: (error, value, onChangeWhisper) => {
+              console.log(`Received onChange value: ${JSON.stringify(value)}`);
+              if (value?.includes('custom')) {
+                onActionWrapper(error, 'Custom', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
+            },
+            options: autocompleteOptions,
+            tooltip: 'tooltip',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Free Solo Multiple Test',
+            loading: true,
+            multiple: true,
+            freeSolo: true,
+            onChange: (error, value, onChangeWhisper) => {
+              console.log(`Received onChange value: ${JSON.stringify(value)}`);
+              if (value?.includes('custom')) {
+                onActionWrapper(
+                  error,
+                  'MultiCustom',
+                  resolverMap,
+                  onChangeWhisper,
+                  resolve,
+                  reject,
+                );
+              }
+            },
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
+            },
+            options: autocompleteOptions,
+            tooltip: 'tooltip',
           },
         ],
       });
