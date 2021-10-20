@@ -221,7 +221,7 @@ export const testMarkdownOnLinkClick = (): Promise<boolean> =>
         {
           body: markdown,
           type: WhisperComponentType.Markdown,
-          onLinkClick: (error: Error, linkName: string) => {
+          onLinkClick: (error, linkName) => {
             console.info(`Received click on the link: ${JSON.stringify(linkName)}`);
             if (linkName === 'Some Link 1') {
               onActionWrapper(error, 'SomeLink1', resolverMap, createdWhisper, resolve, reject);
@@ -1280,6 +1280,7 @@ export const testDefaultValueForSelectAndRadio = (): Promise<boolean> =>
 
 export const testTooltips = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
+    const dateValue = new Date(1634145967056);
     try {
       await whisper.create({
         label: 'Are all tooltips rendered?',
@@ -1345,6 +1346,7 @@ export const testTooltips = (): Promise<boolean> =>
             onChange: () => {
               // do nothing.
             },
+            value: dateValue,
             tooltip: 'Tooltip for Date',
           },
           {
