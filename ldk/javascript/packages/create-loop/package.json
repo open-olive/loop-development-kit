@@ -1,0 +1,21 @@
+{
+  "name": "@oliveai/create-loop",
+  "version": "1.0.0",
+  "description": "Create Olive Helps loops with aptitudes of your choice quickly and easily",
+  "main": "index.js",
+  "bin": {
+    "create-loop": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^8.2.0",
+    "prompts": "^2.4.1",
+    "squirrelly": "^8.0.8",
+    "typescript": "^4.4.3"
+  }
+}

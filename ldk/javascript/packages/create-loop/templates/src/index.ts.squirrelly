@@ -1,0 +1,44 @@
+import { IntroWhisper } from './whispers';
+{{ @if (it.aptitudes.length > 0) }}
+import {
+{{ @if (it.aptitudes.includes('clipboard')) }}
+  clipboardListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+  filesystemExample,
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+  keyboardListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+  networkExample,
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+  searchListener,
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+  activeWindowListener,
+{{ /if }}
+} from './aptitudes';
+
+{{ @if (it.aptitudes.includes('clipboard')) }}
+clipboardListener.listen();
+{{ /if }}
+{{ @if (it.aptitudes.includes('filesystem')) }}
+filesystemExample.run();
+{{ /if }}
+{{ @if (it.aptitudes.includes('keyboard')) }}
+keyboardListener.listen();
+{{ /if }}
+{{ @if (it.aptitudes.includes('network')) }}
+networkExample.run();
+{{ /if }}
+{{ @if (it.aptitudes.includes('ui')) }}
+searchListener.listen();
+{{ /if }}
+{{ @if (it.aptitudes.includes('window')) }}
+activeWindowListener.listen();
+{{ /if }}
+{{ /if }}
+
+new IntroWhisper().show();

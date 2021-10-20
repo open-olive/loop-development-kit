@@ -1,0 +1,19 @@
+{
+{{ @if (it.isTypeScript) }}
+  "extends": ["airbnb-typescript-prettier"],
+{{ #else }}
+  "extends": ["airbnb-base", "plugin:jest/recommended", "plugin:prettier/recommended"],
+{{ /if }}
+  "rules": {
+{{ @if (it.isTypeScript) }}
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": ["error"],
+{{ /if }}
+    "import/prefer-default-export": "off",
+    "jest/no-conditional-expect": "off",
+    "no-console": "off",
+    "no-nested-ternary": "off"
+  }
+}

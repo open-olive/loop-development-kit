@@ -1,0 +1,121 @@
+{
+  "name": "{{it.projectName}}",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.{{it.isTypeScript ? 'ts' : 'js'}}",
+  "scripts": {
+    "build": "webpack --entry ./src/index.{{it.isTypeScript ? 'ts' : 'js'}} --config ./node_modules/@oliveai/ldk/dist/webpack/config.js",
+    "test": "jest --maxWorkers=1",
+    "test:coverage": "npm run test -- --collect-coverage",
+    "lint": "eslint ./ --ignore-path .gitignore",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+{{ @if (it.isTypeScript) }}
+    "@types/common-tags": "^1.8.1",
+    "@types/jest": "^27.0.0",
+    "ts-jest": "^27.0.3",
+    "ts-loader": "^9.0.0",
+    "typescript": "^4.2.4",
+    "eslint-config-airbnb-typescript-prettier": "^4.2.0",
+{{ #else }}
+    "babel-jest": "^27.0.6",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-prettier": "^3.4.0",
+{{ /if }}
+    "eslint": "^7.30.0",
+    "jest": "^27.0.6",
+    "prettier": "^2.3.2"
+  },
+  "dependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/plugin-transform-async-to-generator": "^7.13.0",
+    "@babel/plugin-transform-destructuring": "^7.13.0",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/runtime": "^7.13.10",
+    "@babel/runtime-corejs2": "^7.13.10",
+    "@oliveai/ldk": "^3.2.0",
+    "babel-loader": "^8.2.2",
+    "common-tags": "^1.8.0",
+    "core-js": "^3.12.1",
+{{ @if (it.aptitudes.includes('network')) }}
+    "date-fns": "^2.21.3",
+{{ /if }}
+    "terser-webpack-plugin": "^5.1.1",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.5.0",
+    "webpack-merge": "^5.7.3"
+  },
+{{ @if (!it.isTypeScript) }}
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
+    ]
+  },
+{{ /if }}
+  "jest": {
+{{ @if (it.isTypeScript) }}
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+          "ignoreCodes": [
+            151001
+          ]
+        },
+        "isolatedModules": true
+      }
+    },
+{{ /if }}
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/*.test.{ts,js}"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/jestGlobalSetup.js"
+    ],
+    "verbose": true,
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.{ts,js}"
+    ]
+  },
+  "ldk": {
+    "permissions": {
+{{ @each(it.aptitudes) => aptitude }}
+{{ @if (aptitude === 'clipboard') }}
+      "clipboard": {},
+{{ #elif (aptitude === 'filesystem') }}
+      "filesystem": {},
+{{ #elif (aptitude === 'keyboard') }}
+      "keyboard": {},
+{{ #elif (aptitude === 'network') }}
+      "network": {
+        "urlDomains": [
+          {
+            "value": "*.fda.gov"
+          }
+        ]
+      },
+{{ #elif (aptitude === 'ui') }}
+      "ui": {},
+{{ #elif (aptitude === 'window') }}
+      "window": {},
+{{ /if }}
+{{/each}}
+      "whisper": {}
+    }
+  }
+}
