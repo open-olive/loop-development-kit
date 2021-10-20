@@ -1,38 +1,27 @@
 const setIcon = (isConnected) => {
   const offImage = 'images/OH Chrome Browser Extension Icon - Off.png';
   const onImage = 'images/OH Chrome Browser Extension Icon - On.png';
-  let icon = {
-    path: {
-      16: offImage,
-      48: offImage,
-      128: offImage,
-    },
-  };
-  if (isConnected) {
-    icon = {
-      path: {
+  const path = isConnected
+    ? {
         16: onImage,
         48: onImage,
         128: onImage,
-      },
-    };
-  }
-  chrome.browserAction.setIcon(icon);
+      }
+    : {
+        16: offImage,
+        48: offImage,
+        128: offImage,
+      };
+  chrome.browserAction.setIcon({ path });
 };
 
 const setPopup = (isConnected) => {
   const connectedHTML = 'popup/connected.html';
   const disconnectedHTML = 'popup/disconnected.html';
 
-  let popUp = {
-    popup: disconnectedHTML,
+  const popUp = {
+    popup: isConnected ? connectedHTML : disconnectedHTML,
   };
-
-  if (isConnected) {
-    popUp = {
-      popup: connectedHTML,
-    };
-  }
 
   chrome.browserAction.setPopup(popUp);
 };
@@ -44,11 +33,9 @@ const backgroundAction = (isConnected) => {
 
 let timeout = 2;
 let connect = () => {
-  console.log('connecting');
   const ws = new WebSocket('ws://127.0.0.1:24984');
 
   ws.addEventListener('close', (_event) => {
-    console.log('closing...');
     backgroundAction(false);
 
     if (timeout < 1000) {
@@ -60,7 +47,6 @@ let connect = () => {
   });
 
   ws.addEventListener('open', (_event) => {
-    console.log('connected');
     timeout = 2;
 
     ws.addEventListener('message', function (event) {
@@ -68,7 +54,6 @@ let connect = () => {
       try {
         callMessage = JSON.parse(event.data);
       } catch (e) {
-        console.log('error parsing call message: ' + e);
         return;
       }
 
