@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   document.getElementById('about').addEventListener('click', function () {
-    chrome.tabs.create({ url: 'https://www.oliveai.dev' });
+    chrome.tabs.create({ url: 'https://oliveai.com/' });
   });
 
   document.getElementById('close').addEventListener('click', function () {

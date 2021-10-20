@@ -92,8 +92,6 @@ svg {
   grid-row: 2;
   grid-column: 1 / 4;
   text-align: center;
-  margin: auto;
-  width: 100%;
   padding: 10px;
 }
 
@@ -102,6 +100,7 @@ svg {
   font-style: normal;
   font-weight: 300;
   font-size: 22px;
+  top: 138px;
   /* line-height: 150%; */
 }
 
@@ -110,7 +109,7 @@ svg {
   width: 260px;
   height: 24px;
   left: 110px;
-  top: 231px;
+  top: 245px;
 
   /* Desktop/Paragraph/Base */
   font-family: CircularXX;
