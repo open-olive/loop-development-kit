@@ -1,10 +1,43 @@
+const setIcon = (isConnected) => {
+  const offImage = 'images/OH Chrome Browser Extension Icon - Off.png';
+  const onImage = 'images/OH Chrome Browser Extension Icon - On.png';
+  const path = isConnected
+    ? {
+        16: onImage,
+        48: onImage,
+        128: onImage,
+      }
+    : {
+        16: offImage,
+        48: offImage,
+        128: offImage,
+      };
+  chrome.browserAction.setIcon({ path });
+};
+
+const setPopup = (isConnected) => {
+  const connectedHTML = 'popup/connected.html';
+  const disconnectedHTML = 'popup/disconnected.html';
+
+  const popUp = {
+    popup: isConnected ? connectedHTML : disconnectedHTML,
+  };
+
+  chrome.browserAction.setPopup(popUp);
+};
+
+const backgroundAction = (isConnected) => {
+  setIcon(isConnected);
+  setPopup(isConnected);
+};
+
 let timeout = 2;
 let connect = () => {
-  console.log('connecting');
-
   const ws = new WebSocket('ws://127.0.0.1:24984');
 
-  ws.addEventListener('close', (event) => {
+  ws.addEventListener('close', (_event) => {
+    backgroundAction(false);
+
     if (timeout < 1000) {
       timeout *= 2;
     } else {
@@ -13,8 +46,7 @@ let connect = () => {
     setTimeout(connect, timeout);
   });
 
-  ws.addEventListener('open', (event) => {
-    console.log('connected');
+  ws.addEventListener('open', (_event) => {
     timeout = 2;
 
     ws.addEventListener('message', function (event) {
@@ -22,7 +54,6 @@ let connect = () => {
       try {
         callMessage = JSON.parse(event.data);
       } catch (e) {
-        console.log('error parsing call message: ' + e);
         return;
       }
 
@@ -85,7 +116,7 @@ let connect = () => {
       );
     });
 
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       switch (request.message) {
         case 'TextSelection':
           ws.send(
@@ -104,6 +135,8 @@ let connect = () => {
           break;
       }
     });
+
+    backgroundAction(true);
   });
 };
 
