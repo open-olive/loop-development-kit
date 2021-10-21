@@ -39,9 +39,7 @@ svg {
 
 #close {
   border: none;
-  display: inline-block;
   padding: 8px 16px;
-  vertical-align: center;
   color: inherit;
   background-color: inherit;
   text-align: center;
@@ -49,14 +47,15 @@ svg {
   white-space: nowrap;
   position: absolute;
   right: 15px;
-  top: 22%;
-  font-size: 25px;
+  top: 20%;
+  font-size: 30px;
 }
 
 #p-text {
   grid-row: 2;
   grid-column: 1 / 4;
   text-align: center;
+  margin: auto;
 }
 
 #connection-text {
@@ -67,17 +66,37 @@ svg {
   /* line-height: 150%; */
 }
 
+#connected {
+  color: #32cd32;
+}
+
+#troubleshoot {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+}
+
+#troubleshoot-ideas {
+  font-size: 12px;
+  line-height: 18px;
+}
+
 #help-text {
   position: absolute;
   height: 24px;
-  left: 110px;
+  left: 89px;
 
   font-style: normal;
   font-weight: 300;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 150%;
 
   color: #000000;
+}
+
+#not-connected {
+  color: #ff0000;
 }
 
 #footer-div {
@@ -98,9 +117,9 @@ svg {
   right: 80.21%;
   /* top: calc(50% - 20px / 2 + 166.5px); */
 
-  font-family: CircularXX;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
+  font-style: normal;
   font-size: 12px;
   line-height: 20px;
   /* identical to box height, or 167% */
