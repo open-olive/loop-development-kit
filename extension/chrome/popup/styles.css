@@ -60,7 +60,6 @@ svg {
 }
 
 #connection-text {
-  font-family: CircularXX;
   font-style: normal;
   font-weight: 300;
   font-size: 22px;
@@ -70,12 +69,9 @@ svg {
 
 #help-text {
   position: absolute;
-  width: 260px;
   height: 24px;
   left: 110px;
 
-  /* Desktop/Paragraph/Base */
-  font-family: CircularXX;
   font-style: normal;
   font-weight: 300;
   font-size: 16px;
