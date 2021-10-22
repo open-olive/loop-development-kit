@@ -34,7 +34,6 @@ const backgroundAction = (isConnected) => {
 let timeout = 2;
 let connect = () => {
   backgroundAction(false);
-  console.log('connecting');
 
   const ws = new WebSocket('ws://127.0.0.1:24984');
 
@@ -48,7 +47,6 @@ let connect = () => {
   });
 
   ws.addEventListener('open', (event) => {
-    console.log('connected');
     timeout = 2;
 
     ws.addEventListener('message', function (event) {
