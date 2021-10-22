@@ -139,7 +139,7 @@ let connect = () => {
       }
     });
 
-    backgroundAction(false);
+    backgroundAction(true);
   });
 };
 
