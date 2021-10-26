@@ -227,7 +227,6 @@ export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExtern
   });
 }
 
-
 export function promisifyWithThreeParams<TParam1, TParam2, TParam3, TOut>(
   p1: TParam1,
   p2: TParam2,

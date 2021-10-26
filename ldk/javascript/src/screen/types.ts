@@ -15,8 +15,8 @@ export interface OCRResult {
 }
 
 export interface OCRCoordinates {
-    top: number;
-    left: number;
-    width: number;
-    height: number;
-  }
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
