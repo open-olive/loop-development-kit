@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 declare namespace Screen {
   interface Aptitude {
     ocr: (
@@ -8,7 +9,17 @@ declare namespace Screen {
   }
 
   interface OCRResult {
-    confidence: number;
+    level: number;
+    page_num: number;
+    block_num: number;
+    par_num: number;
+    line_num: number;
+    word_num: number;
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    conf: number;
     text: string;
   }
 
