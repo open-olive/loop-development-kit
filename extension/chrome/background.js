@@ -125,6 +125,7 @@ let connect = () => {
               version: 0,
               event: {
                 selectedText: request.data,
+                domain: request.domain,
               },
             }),
           );
