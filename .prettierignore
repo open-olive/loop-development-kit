@@ -1,5 +1,4 @@
-docs/.cache
-docs/public
+docs
 package.json
 package-lock.json
 
