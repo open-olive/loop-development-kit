@@ -55,7 +55,7 @@ export function promisifyMappedWithThreeParams<
   TParam2,
   TParam3,
   TInternalOut,
-  TExternalOut
+  TExternalOut,
 >(
   param1: TParam1,
   param2: TParam2,

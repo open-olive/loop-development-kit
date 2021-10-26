@@ -5,6 +5,7 @@ package-lock.json
 
 ldk/node/dist
 ldk/node/docs
+ldk/csharp
 ldk/node/docsExtra
 ldk/node/src/grpc
 
