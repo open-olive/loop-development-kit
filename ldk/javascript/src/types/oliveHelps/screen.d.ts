@@ -4,7 +4,6 @@ declare namespace Screen {
     ocr: (
       callback: (error: Error | undefined, value: OCRResult[]) => void,
       ocrCoordinates: OCRCoordinates,
-      monitor: number,
     ) => void;
   }
 
