@@ -58,6 +58,8 @@ declare namespace WhisperService {
 
   type WidthSize = 'full' | 'half';
 
+  type OpenDirection = 'bottom' | 'top';
+
   type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
   interface LayoutOptions {
@@ -249,6 +251,7 @@ declare namespace WhisperService {
     children: Array<ChildComponents>;
     label?: string;
     open: boolean;
+    openDirection?: OpenDirection;
     onClick?: WhisperHandlerWithParam<boolean>;
   };
 
