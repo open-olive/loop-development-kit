@@ -2473,15 +2473,13 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body:
-              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2495,8 +2493,7 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {

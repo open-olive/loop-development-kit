@@ -41,8 +41,7 @@ export const testJwtExcludeEmail = (): Promise<boolean> =>
           components: [
             {
               type: whisper.WhisperComponentType.Markdown,
-              body:
-                'You can paste the token into jwt.io to check the claims. This token **should not** have an email claim.',
+              body: 'You can paste the token into jwt.io to check the claims. This token **should not** have an email claim.',
             },
             {
               type: whisper.WhisperComponentType.Link,
@@ -74,8 +73,7 @@ export const testJwtIncludeEmail = (): Promise<boolean> =>
           components: [
             {
               type: whisper.WhisperComponentType.Markdown,
-              body:
-                'You can paste the token into jwt.io to check the claims. This token **should** have an email claim.',
+              body: 'You can paste the token into jwt.io to check the claims. This token **should** have an email claim.',
             },
             {
               type: whisper.WhisperComponentType.Link,
