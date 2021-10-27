@@ -246,4 +246,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Does the JustifyContent-Normal items behave as "stretch" in flex container?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - CollapseBox openDirection',
+      whisperTests.testJustifyContent,
+      10000,
+      'Do the CollapseBoxes open in the correct directions?',
+    ),
   ]);

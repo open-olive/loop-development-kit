@@ -14,6 +14,7 @@ import {
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   NewWhisper,
+  OpenDirection,
   RichTextEditor,
   StyleSize,
   TextAlign,
@@ -1254,7 +1255,7 @@ export const testCollapseBoxOpenDirection = (): Promise<boolean> =>
         {
           label: 'Expand',
           open: false,
-          openDirection: 'top',
+          openDirection: OpenDirection.Top,
           children: [
             {
               body: 'This one opens with "Top"',
@@ -1266,7 +1267,7 @@ export const testCollapseBoxOpenDirection = (): Promise<boolean> =>
         {
           label: 'Expand',
           open: false,
-          openDirection: 'bottom',
+          openDirection: OpenDirection.Bottom,
           children: [
             {
               body: 'This one opens with "Bottom"',
