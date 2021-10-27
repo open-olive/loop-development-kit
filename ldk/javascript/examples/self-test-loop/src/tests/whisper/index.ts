@@ -2758,18 +2758,18 @@ export const testJustifyContent = (): Promise<boolean> =>
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'left',
+                  body: 'space-even',
                   type: WhisperComponentType.Markdown,
                 },
               ],
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: 'space-even',
                   type: WhisperComponentType.Markdown,
                 },
               ],
@@ -2788,22 +2788,22 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: ' Right',
                   type: WhisperComponentType.Markdown,
                 },
               ],
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: ' Right',
                   type: WhisperComponentType.Markdown,
                 },
               ],
@@ -2822,7 +2822,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               layout: {
                 flex: 'auto',
@@ -2851,7 +2851,7 @@ export const testJustifyContent = (): Promise<boolean> =>
           ],
         },
         {
-          body: 'Are the items above aligned?',
+          body: 'Are all the items above correctly aligned?',
           type: WhisperComponentType.Markdown,
         },
         resolveRejectButtons(resolve, reject),
