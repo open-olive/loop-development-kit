@@ -216,7 +216,8 @@ const projectNamePrompt = () =>
     format: (projectNameInput) => projectNameInput.replace(/ /g, '-').toLowerCase(),
     validate: (projectNameInput) => {
       // The regex pattern NPM uses for project names in package.json http://json.schemastore.org/package
-      const NPM_PROJECT_NAME_PATTERN = /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/g;
+      const NPM_PROJECT_NAME_PATTERN =
+        /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/g;
       const projectNameFormatted = projectNameInput.replace(/ /g, '-').toLowerCase();
 
       return projectNameFormatted.match(NPM_PROJECT_NAME_PATTERN);
