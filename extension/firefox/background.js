@@ -1,6 +1,39 @@
+const setIcon = (isConnected) => {
+  const offImage = 'images/OH Chrome Browser Extension Icon - Off.png';
+  const onImage = 'images/OH Chrome Browser Extension Icon - On.png';
+  const path = isConnected
+    ? {
+        16: onImage,
+        48: onImage,
+        128: onImage,
+      }
+    : {
+        16: offImage,
+        48: offImage,
+        128: offImage,
+      };
+  browser.browserAction.setIcon({ path });
+};
+
+const setPopup = (isConnected) => {
+  const connectedHTML = 'popup/connected.html';
+  const disconnectedHTML = 'popup/disconnected.html';
+
+  const popUp = {
+    popup: isConnected ? connectedHTML : disconnectedHTML,
+  };
+
+  browser.browserAction.setPopup(popUp);
+};
+
+const backgroundAction = (isConnected) => {
+  setIcon(isConnected);
+  setPopup(isConnected);
+};
+
 let timeout = 2;
 let connect = () => {
-  console.log('connecting');
+  backgroundAction(false);
 
   const ws = new WebSocket('ws://127.0.0.1:24984');
 
@@ -14,7 +47,6 @@ let connect = () => {
   });
 
   ws.addEventListener('open', (event) => {
-    console.log('connected');
     timeout = 2;
 
     ws.addEventListener('message', function (event) {
@@ -104,6 +136,8 @@ let connect = () => {
           break;
       }
     });
+
+    backgroundAction(true);
   });
 };
 

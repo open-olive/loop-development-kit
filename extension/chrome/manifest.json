@@ -19,5 +19,5 @@
     "48": "images/OH Chrome Browser Extension Icon - On.png",
     "128": "images/OH Chrome Browser Extension Icon - On.png"
   },
-  "permissions": ["tabs", "webRequest", "webNavigation", "http://localhost/*"]
+  "permissions": ["webNavigation", "http://localhost/*"]
 }
