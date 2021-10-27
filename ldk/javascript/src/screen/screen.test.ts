@@ -9,14 +9,14 @@ describe('screen', () => {
     };
   });
   describe('ocr', () => {
-    it('return a promise of void', () => {
+    it('return a promise of OCRResult[]', () => {
       const ocrCoordinates: OCRCoordinates = {
         top: 1,
         left: 1,
         width: 1,
         height: 1,
       };
-      const ocrResultf: OCRResult[] = [
+      const ocrResult: OCRResult[] = [
         {
           level: 1,
           page_num: 1,
@@ -32,10 +32,11 @@ describe('screen', () => {
           text: '',
         },
       ];
-      mocked(oliveHelps.screen.ocr).mockImplementation((returnCb, ocrCoordinatesParam) => {
+      mocked(oliveHelps.screen.ocr).mockImplementation((ocrCoordinatesParam) => {
         expect(ocrCoordinatesParam).toEqual(ocrCoordinates);
-        returnCb(undefined, ocrResultf);
       });
+      const actual = screen.ocr(ocrCoordinates);
+      expect(actual).resolves.toBe(ocrResult);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {

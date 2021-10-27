@@ -1,10 +1,7 @@
 /* eslint-disable camelcase */
 declare namespace Screen {
   interface Aptitude {
-    ocr: (
-      callback: (error: Error | undefined, value: OCRResult[]) => void,
-      ocrCoordinates: OCRCoordinates,
-    ) => void;
+    ocr: Common.ReadableWithParam<OCRCoordinates, OCRResult[]>;
   }
 
   interface OCRResult {
