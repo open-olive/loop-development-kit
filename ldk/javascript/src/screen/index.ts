@@ -15,7 +15,3 @@ export interface Screen {
 export function ocr(ocrCoordinates: OCRCoordinates): Promise<OCRResult[]> {
   return promisifyWithParam(ocrCoordinates, oliveHelps.screen.ocr);
 }
-
-export const screen: Screen = {
-  ocr,
-};
