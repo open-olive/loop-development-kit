@@ -2851,7 +2851,7 @@ export const testJustifyContent = (): Promise<boolean> =>
           ],
         },
         {
-          body: 'Is normal in JustifyContent?',
+          body: 'Are all the items above correctly aligned?',
           type: WhisperComponentType.Markdown,
         },
         resolveRejectButtons(resolve, reject),
