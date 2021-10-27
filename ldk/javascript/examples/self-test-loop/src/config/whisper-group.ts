@@ -248,7 +248,7 @@ export const whisperTestGroup = (): TestGroup =>
     ),
     new LoopTest(
       'Whisper Aptitude - CollapseBox openDirection',
-      whisperTests.testJustifyContent,
+      whisperTests.testCollapseBoxOpenDirection,
       10000,
       'Do the CollapseBoxes open in the correct directions?',
     ),
