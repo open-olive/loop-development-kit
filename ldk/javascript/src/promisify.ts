@@ -226,18 +226,3 @@ export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExtern
     }
   });
 }
-
-export function promisifyWithThreeParams<TParam1, TParam2, TParam3, TOut>(
-  p1: TParam1,
-  p2: TParam2,
-  p3: TParam3,
-  arg: Common.ReadableWithThreeParams<TParam1, TParam2, TParam3, TOut>,
-): Promise<TOut> {
-  return new Promise((resolve, reject) => {
-    try {
-      arg(p1, p2, p3, promiseResolver(resolve, reject));
-    } catch (e) {
-      handleCaughtError(reject, e);
-    }
-  });
-}
