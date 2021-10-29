@@ -17,7 +17,7 @@ export const mapToIndex = (index: Search.Index): Index => ({
           resolve(searchResult);
         });
       } catch (e) {
-        handleCaughtError(reject, e, 'search');
+        handleCaughtError(reject, e as Error, 'search');
       }
     }),
   queryStringSearch: (queryString: string): Promise<SearchResult> =>
@@ -33,7 +33,7 @@ export const mapToIndex = (index: Search.Index): Index => ({
           },
         );
       } catch (e) {
-        handleCaughtError(reject, e, 'queryStringSearch');
+        handleCaughtError(reject, e as Error, 'queryStringSearch');
       }
     }),
   update: (documents: Document[], config: Config): Promise<void> =>
@@ -46,7 +46,7 @@ export const mapToIndex = (index: Search.Index): Index => ({
           resolve();
         });
       } catch (e) {
-        handleCaughtError(reject, e, 'update');
+        handleCaughtError(reject, e as Error, 'update');
       }
     }),
   delete: (): Promise<void> =>
@@ -59,7 +59,7 @@ export const mapToIndex = (index: Search.Index): Index => ({
           resolve();
         });
       } catch (e) {
-        handleCaughtError(reject, e, 'delete');
+        handleCaughtError(reject, e as Error, 'delete');
       }
     }),
 });

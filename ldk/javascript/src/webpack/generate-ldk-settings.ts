@@ -28,7 +28,8 @@ export function generateLdkSettings(): LdkSettings {
         `/ldk-config.${process.env.LDK_CONFIG}.json`,
       ));
       ldkSettings = mergeLdkSettings(ldkSettings, ldkOverrides);
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       console.error(`Failed to load environment config for LDK_CONFIG=${process.env.LDK_CONFIG}.`);
       console.error(err.message);
     }
