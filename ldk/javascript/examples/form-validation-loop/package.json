@@ -1,5 +1,5 @@
 {
-  "name": "typescript-loop-example",
+  "name": "form-validation-loop-example",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -41,6 +41,6 @@
     "core-js": "3.10.1",
     "es6-promise": "4.2.8",
     "ts-node": "^9.1.1",
-    "xlsx": "0.16.9"
+    "xlsx": "0.17.0"
   }
 }

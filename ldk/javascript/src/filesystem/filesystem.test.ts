@@ -204,9 +204,9 @@ describe('Filesystem', () => {
     it('returns a promise result when directory is created', () => {
       const writeMode: filesystem.WriteMode = 5;
       const destination = 'destination';
-      mocked(
-        oliveHelps.filesystem.makeDir,
-      ).mockImplementation((_destination, _writeMode, callback) => callback(undefined));
+      mocked(oliveHelps.filesystem.makeDir).mockImplementation(
+        (_destination, _writeMode, callback) => callback(undefined),
+      );
 
       filesystem.makeDir(destination, writeMode);
 
@@ -358,10 +358,8 @@ describe('Filesystem', () => {
       const data = new Uint8Array([84]);
       const writeOperation: filesystem.WriteOperation = 1;
       const writeMode: filesystem.WriteMode = 54;
-      mocked(
-        oliveHelps.filesystem.writeFile,
-      ).mockImplementation((_path, _data, _writeOperation, _writeMode, callback) =>
-        callback(undefined),
+      mocked(oliveHelps.filesystem.writeFile).mockImplementation(
+        (_path, _data, _writeOperation, _writeMode, callback) => callback(undefined),
       );
 
       filesystem.writeFile({ path, data, writeOperation, writeMode });

@@ -221,7 +221,7 @@ export const testMarkdownOnLinkClick = (): Promise<boolean> =>
         {
           body: markdown,
           type: WhisperComponentType.Markdown,
-          onLinkClick: (error: Error, linkName: string) => {
+          onLinkClick: (error, linkName) => {
             console.info(`Received click on the link: ${JSON.stringify(linkName)}`);
             if (linkName === 'Some Link 1') {
               onActionWrapper(error, 'SomeLink1', resolverMap, createdWhisper, resolve, reject);
@@ -1280,6 +1280,7 @@ export const testDefaultValueForSelectAndRadio = (): Promise<boolean> =>
 
 export const testTooltips = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
+    const dateValue = new Date(1634145967056);
     try {
       await whisper.create({
         label: 'Are all tooltips rendered?',
@@ -1345,6 +1346,7 @@ export const testTooltips = (): Promise<boolean> =>
             onChange: () => {
               // do nothing.
             },
+            value: dateValue,
             tooltip: 'Tooltip for Date',
           },
           {
@@ -2247,6 +2249,8 @@ export const testAutocomplete = (): Promise<boolean> =>
       ['Select', false],
       ['Change', false],
       ['Multiple', false],
+      ['Custom', false],
+      ['MultiCustom', false],
     ]);
     try {
       await whisper.create({
@@ -2312,6 +2316,53 @@ export const testAutocomplete = (): Promise<boolean> =>
             options: autocompleteOptions,
             tooltip: 'tooltip',
             value: '5',
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: "Enter the word 'custom'",
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Free Solo Test',
+            loading: true,
+            multiple: false,
+            freeSolo: true,
+            onChange: (error, value, onChangeWhisper) => {
+              console.log(`Received onChange value: ${JSON.stringify(value)}`);
+              if (value?.includes('custom')) {
+                onActionWrapper(error, 'Custom', resolverMap, onChangeWhisper, resolve, reject);
+              }
+            },
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
+            },
+            options: autocompleteOptions,
+            tooltip: 'tooltip',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Free Solo Multiple Test',
+            loading: true,
+            multiple: true,
+            freeSolo: true,
+            onChange: (error, value, onChangeWhisper) => {
+              console.log(`Received onChange value: ${JSON.stringify(value)}`);
+              if (value?.includes('custom')) {
+                onActionWrapper(
+                  error,
+                  'MultiCustom',
+                  resolverMap,
+                  onChangeWhisper,
+                  resolve,
+                  reject,
+                );
+              }
+            },
+            onSelect: (_error, value: string[]) => {
+              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
+            },
+            options: autocompleteOptions,
+            tooltip: 'tooltip',
           },
         ],
       });
@@ -2422,15 +2473,13 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body:
-              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2444,8 +2493,7 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2707,18 +2755,18 @@ export const testJustifyContent = (): Promise<boolean> =>
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'left',
+                  body: 'space-even',
                   type: WhisperComponentType.Markdown,
                 },
               ],
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: 'space-even',
                   type: WhisperComponentType.Markdown,
                 },
               ],
@@ -2737,22 +2785,22 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: ' Right',
                   type: WhisperComponentType.Markdown,
                 },
               ],
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: ' Right',
                   type: WhisperComponentType.Markdown,
                 },
               ],
@@ -2771,7 +2819,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               layout: {
                 flex: 'auto',
@@ -2800,7 +2848,7 @@ export const testJustifyContent = (): Promise<boolean> =>
           ],
         },
         {
-          body: 'Are the items above aligned?',
+          body: 'Are all the items above correctly aligned?',
           type: WhisperComponentType.Markdown,
         },
         resolveRejectButtons(resolve, reject),

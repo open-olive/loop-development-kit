@@ -1,8 +1,12 @@
 {
-  "name": "OliveHelps Browser Aptitude",
-  "description": "OliveHelps Browser Aptitude Extension",
+  "name": "Olive Helps Browser Aptitude",
+  "description": "For use with Olive Helps Loops that use the Browser Aptitude",
   "version": "0.1",
   "manifest_version": 2,
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {},
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -10,8 +14,10 @@
       "js": ["content-script.js"]
     }
   ],
-  "background": {
-    "scripts": ["background.js"]
+  "icons": {
+    "16": "images/OH Chrome Browser Extension Icon - On.png",
+    "48": "images/OH Chrome Browser Extension Icon - On.png",
+    "128": "images/OH Chrome Browser Extension Icon - On.png"
   },
-  "permissions": ["tabs", "webRequest", "webNavigation", "http://localhost/*"]
+  "permissions": ["webNavigation", "http://localhost/*"]
 }

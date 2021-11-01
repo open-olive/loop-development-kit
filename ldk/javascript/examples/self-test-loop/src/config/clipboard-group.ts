@@ -15,6 +15,6 @@ export const clipboardTestGroup = (): TestGroup =>
       'Clipboard Aptitude - Clipboard Stream',
       clipboardTests.testListen,
       10000,
-      'Copying the value "LDKThxBai" to the clipboard',
+      'Copy the value "LDKThxBai" to the clipboard',
     ),
   ]);

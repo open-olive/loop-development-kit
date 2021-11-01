@@ -120,6 +120,7 @@ declare namespace WhisperService {
     options?: AutocompleteOption[];
     tooltip?: string;
     value?: string;
+    freeSolo?: boolean;
   };
 
   type Button = Component<'button'> & {
@@ -164,7 +165,7 @@ declare namespace WhisperService {
     body: string;
     onCopy?: WhisperHandler;
     tooltip?: string;
-    onLinkClick?: (error: Error | undefined, linkName: string) => void;
+    onLinkClick?: WhisperHandlerWithParam<string>;
   };
 
   type Message = Component<'message'> & {
