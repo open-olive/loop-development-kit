@@ -35,6 +35,10 @@ declare namespace Filesystem {
     openWithDefaultApplication: Common.ReadableWithParam<string, void>;
 
     workDir: Common.Readable<string>;
+
+    retainedFilePaths: Common.Readable<Array<string>>;
+
+    getFileObject: Common.ReadableWithParam<string, File>;
   }
 
   interface FileInfo {

@@ -19,6 +19,8 @@ describe('Filesystem', () => {
       unzip: jest.fn(),
       openWithDefaultApplication: jest.fn(),
       workDir: jest.fn(),
+      retainedFilePaths: jest.fn(),
+      getFileObject: jest.fn(),
     };
   });
 

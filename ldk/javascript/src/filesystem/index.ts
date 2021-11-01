@@ -234,3 +234,11 @@ export function openWithDefaultApplication(path: string): Promise<void> {
 export function workDir(): Promise<string> {
   return promisify(oliveHelps.filesystem.workDir);
 }
+
+export function retainedFilePaths(): Promise<Array<string>> {
+  return promisify(oliveHelps.filesystem.retainedFilePaths);
+}
+
+export function getFileObject(path: string): Promise<File> {
+  return promisifyWithParam(path, oliveHelps.filesystem.getFileObject);
+}

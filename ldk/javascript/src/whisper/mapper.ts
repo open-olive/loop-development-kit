@@ -142,6 +142,20 @@ export function mapToInternalChildComponent(
                   return resolve(new Uint8Array(buffer));
                 });
               }),
+            retain: () =>
+              new Promise<void>((resolve, reject) => {
+                file.retain((retainError) => {
+                  if (retainError) return reject(retainError);
+                  return resolve();
+                });
+              }),
+            revoke: () =>
+              new Promise<void>((resolve, reject) => {
+                file.revoke((revokeError) => {
+                  if (revokeError) return reject(revokeError);
+                  return resolve();
+                });
+              }),
           });
           component.onDrop(
             error,
