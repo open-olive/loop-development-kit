@@ -134,6 +134,18 @@ export interface Filesystem {
    * @returns - the fully qualified path of the Loop's working directory as a string
    */
   workDir(): Promise<string>;
+
+  /**
+   * Get the list of retained file paths
+   * @returns the list of retained file paths
+   */
+  retainedFilePaths(): Promise<Array<string>>;
+
+  /**
+   * Get the file object for the specified file
+   * @param path - path to the file
+   */
+  getFileObject(path: string): Promise<File>;
 }
 
 export function copy(source: string, destination: string): Promise<void> {

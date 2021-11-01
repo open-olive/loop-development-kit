@@ -512,4 +512,14 @@ export interface File {
    * Reads the entirety of the file.
    */
   readFile(): Promise<Uint8Array>;
+
+  /**
+   * Adds this file to the persistent file path collection.
+   */
+  retain(): Promise<void>;
+
+  /**
+   * Removes this file from the persistent file path collection.
+   */
+  revoke(): Promise<void>;
 }

@@ -300,5 +300,7 @@ declare namespace WhisperService {
     path: string;
     size: number;
     readFile: Common.Readable<ArrayBuffer>;
+    retain: Common.Readable<void>;
+    revoke: Common.Readable<void>;
   }
 }
