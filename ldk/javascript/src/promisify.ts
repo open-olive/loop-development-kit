@@ -25,7 +25,7 @@ export function promisifyMappedBothWithParams<TParamIn, TParamOut, TInternalOut,
         resolve(map(value));
       });
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -55,7 +55,7 @@ export function promisifyMappedWithThreeParams<
   TParam2,
   TParam3,
   TInternalOut,
-  TExternalOut
+  TExternalOut,
 >(
   param1: TParam1,
   param2: TParam2,
@@ -106,7 +106,7 @@ export function promisify<T>(arg: Common.Readable<T>): Promise<T> {
     try {
       arg(promiseResolver(resolve, reject));
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -119,7 +119,7 @@ export function promisifyWithParamAfterCallback<TParam, TOut>(
     try {
       arg(promiseResolver(resolve, reject), param);
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -132,7 +132,7 @@ export function promisifyWithParam<TParam, TOut>(
     try {
       arg(param, promiseResolver(resolve, reject));
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -146,7 +146,7 @@ export function promisifyWithTwoParams<TParam1, TParam2, TOut>(
     try {
       arg(param, param2, promiseResolver(resolve, reject));
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -162,7 +162,7 @@ export function promisifyWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut
     try {
       arg(p1, p2, p3, p4, promiseResolver(resolve, reject));
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -185,7 +185,7 @@ export function promisifyListenable<T>(
     try {
       arg(handleListenerCallback(cb), (obj) => resolve(obj));
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -201,7 +201,7 @@ export function promisifyListenableWithParam<TParam, TOut>(
         resolve(obj);
       });
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }
@@ -222,7 +222,7 @@ export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExtern
         },
       );
     } catch (e) {
-      handleCaughtError(reject, e);
+      handleCaughtError(reject, e as Error);
     }
   });
 }

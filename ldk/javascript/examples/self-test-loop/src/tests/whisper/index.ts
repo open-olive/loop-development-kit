@@ -2473,15 +2473,13 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body:
-              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2495,8 +2493,7 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2758,18 +2755,18 @@ export const testJustifyContent = (): Promise<boolean> =>
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'left',
+                  body: 'space-even',
                   type: WhisperComponentType.Markdown,
                 },
               ],
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: 'space-even',
                   type: WhisperComponentType.Markdown,
                 },
               ],
@@ -2788,22 +2785,22 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: ' Right',
                   type: WhisperComponentType.Markdown,
                 },
               ],
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
-                  body: 'right',
+                  body: ' Right',
                   type: WhisperComponentType.Markdown,
                 },
               ],
@@ -2822,7 +2819,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              alignment: JustifyContent.Left,
               direction: Direction.Vertical,
               layout: {
                 flex: 'auto',
@@ -2851,7 +2848,7 @@ export const testJustifyContent = (): Promise<boolean> =>
           ],
         },
         {
-          body: 'Are the items above aligned?',
+          body: 'Are all the items above correctly aligned?',
           type: WhisperComponentType.Markdown,
         },
         resolveRejectButtons(resolve, reject),

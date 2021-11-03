@@ -155,3 +155,6 @@ ldk/csharp/**/*.scc
 docs/public
 docs/.cache
 docs/node_modules
+
+# browser extension zip
+extension/*.zip

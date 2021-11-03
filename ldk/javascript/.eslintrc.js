@@ -4,6 +4,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
+  root: true,
   extends: ['airbnb-base', 'plugin:@typescript-eslint/recommended', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
