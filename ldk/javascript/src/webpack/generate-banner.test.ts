@@ -54,6 +54,7 @@ describe('Generate Banner', () => {
         keyboard: {},
         network: { urlDomains: [{ value: '*.google.com' }] },
         process: {},
+        screen:{},
         search: {},
         system: {},
         ui: {},
