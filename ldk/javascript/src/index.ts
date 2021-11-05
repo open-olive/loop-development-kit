@@ -14,6 +14,7 @@ import * as vault from './vault';
 import * as whisper from './whisper';
 import * as window from './window';
 import * as document from './document';
+import * as screen from './screen';
 // These are provided to validate that the aptitude object meets the interface contract.
 
 /* eslint-disable */
@@ -24,6 +25,7 @@ const _filesystem: filesystem.Filesystem = filesystem;
 const _keyboard: keyboard.Keyboard = keyboard;
 const _network: network.Network = network;
 const _process: process.Process = process;
+const _screen: screen.Screen = screen;
 const _search: search.Search = search;
 const _system: system.System = system;
 const _ui: ui.UI = ui;
@@ -42,6 +44,7 @@ export {
   keyboard,
   network,
   process,
+  screen,
   search,
   system,
   ui,
