@@ -30,6 +30,7 @@ describe('Generate Banner', () => {
         network: { urlDomains: [{ value: '*.google.com' }] },
         process: {},
         search: {},
+        screen: {},
         system: {},
         ui: {},
         user: { optionalClaims: [{ value: 'email' }] },

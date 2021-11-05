@@ -33,6 +33,8 @@ export interface LdkPermissions {
 
   process: LdkAptitude;
 
+  screen: LdkAptitude;
+
   search: LdkAptitude;
 
   system: LdkAptitude;
