@@ -17,7 +17,7 @@ export interface LdkUser {
   optionalClaims?: LdkValue[];
 }
 export interface LdkPermissions {
-  browser: LdkAptitude;
+  browser: LdkNetwork;
 
   clipboard: LdkAptitude;
 
