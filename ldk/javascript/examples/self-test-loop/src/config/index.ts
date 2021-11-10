@@ -1,5 +1,6 @@
 import TestGroup from '../testingFixtures/testGroup';
 
+import { browserTestGroup } from './browser-group';
 import { clipboardTestGroup } from './clipboard-group';
 import { cursorTestGroup } from './cursor-group';
 import { filesystemTestGroup } from './filesystem-group';
@@ -17,6 +18,7 @@ import { windowTestGroup } from './window-group';
 import { documentTestGroup } from './document-group';
 
 export const testConfig: { [key: string]: TestGroup } = {
+  browser: browserTestGroup(),
   clipboard: clipboardTestGroup(),
   cursor: cursorTestGroup(),
   file: filesystemTestGroup(),
