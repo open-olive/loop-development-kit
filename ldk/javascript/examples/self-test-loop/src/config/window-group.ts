@@ -24,6 +24,12 @@ export const windowTestGroup = (): TestGroup =>
       'Listening to active windows, please change active window...',
     ),
     new LoopTest(
+      'Window Aptitude - Listen All  Test',
+      windowTests.testListenAll,
+      10000,
+      'Listening to all windows. Please trigger a blur, close, focus, move, open, resize, and title change. NOTE: Some of these events (like blur, close, open) will often happen by changing the focused window',
+    ),
+    new LoopTest(
       'Window Aptitude - WindowInfo Path',
       windowTests.testWindowInfoPath,
       10000,

@@ -43,6 +43,39 @@ export const testWindowAll = (): Promise<boolean> =>
       });
   });
 
+export const testListenAll = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    let activeStream: Cancellable;
+    const actionsReceived = {
+      blur: false,
+      close: false,
+      focus: false,
+      move: false,
+      open: false,
+      resize: false,
+      titleChange: false,
+    };
+
+    window
+      .listenAll((windowEvent) => {
+        console.debug('received action:', windowEvent.action);
+        const { action } = windowEvent;
+        actionsReceived[action] = true;
+
+        const values = Array.from(Object.values(actionsReceived));
+
+        if (!values.includes(false)) {
+          resolve(true);
+          activeStream.cancel();
+        } else {
+          console.debug(values);
+        }
+      })
+      .then((cancellable: Cancellable) => {
+        activeStream = cancellable;
+      });
+  });
+
 export const testWindowInfoPath = (): Promise<boolean> =>
   new Promise((resolve, reject) => {
     window
