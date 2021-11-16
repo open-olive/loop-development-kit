@@ -17,7 +17,7 @@ export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
             resolve(true);
           }
 
-          reject(new Error('Incorrect value detected'));
+          reject(new Error('The newest tab and URL do not match the test'));
         },
       );
     } catch (error) {
@@ -42,7 +42,7 @@ export const testOpenWindowAndListenNavigation = (): Promise<boolean> =>
             resolve(true);
           }
 
-          reject(new Error('Incorrect value detected'));
+          reject(new Error('The URL opened in the window does not match the test URL'));
         },
       );
     } catch (error) {
@@ -71,7 +71,7 @@ export const testListenTextSelection = (): Promise<boolean> =>
         setTimeout(() => {
           // After 2 seconds, if the text selection hasn't changed, assume it's final
           if (textSelectedSoFar === textSelection) {
-            reject(new Error('Incorrect value detected'));
+            reject(new Error('The text selection in your browser does not match the test text'));
           }
         }, 2000);
       });
