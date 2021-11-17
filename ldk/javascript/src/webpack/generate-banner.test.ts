@@ -97,7 +97,7 @@ describe('Generate Banner', () => {
   it('adds oliveHelpsContractVersion', () => {
     const result = getLoopMetadataContent(generateBanner(ldkSettings));
 
-    expect(result.oliveHelpsContractVersion).toEqual('0.1.7');
+    expect(result.oliveHelpsContractVersion).toEqual('0.1.6');
   });
 
   it('throws exception when LDK permissions are not provided', () => {
