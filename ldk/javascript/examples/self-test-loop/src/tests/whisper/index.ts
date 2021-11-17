@@ -2473,13 +2473,15 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2493,7 +2495,8 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2653,6 +2656,23 @@ export const testWidth = (): Promise<boolean> =>
 export const testScrollInsideBox = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
+      const housingTypeDropdown: whisper.Select = {
+        type: whisper.WhisperComponentType.Select,
+        id: 'housingResourceType',
+        key: 'housingResourceType',
+        label: 'Housing Resource',
+        options: [
+          'Housing Financial Assistance',
+          'Temporary Shelter',
+          'Subsidized Rentals (Section 8)',
+        ],
+        selected: 0, // housingTypeIndex(housingResourcesWhisper.getState('housingType')),
+        onSelect: async (_, param) => {
+          // removed state management for repro
+          // housingResourcesWhisper.resetState();
+          // housingResourcesWhisper.setState('housingType', indexToHousingType(param), true);
+        },
+      };
       await whisper.create({
         label: 'Scrolling Inside Box Test',
         onClose: () => {
@@ -2663,31 +2683,25 @@ export const testScrollInsideBox = (): Promise<boolean> =>
             body: 'Does is scroll?',
             type: WhisperComponentType.Markdown,
           },
-
+          {
+            type: whisper.WhisperComponentType.Markdown,
+            body:
+              "If you can't see the scrollbar in the following Sclect component, then it's good!",
+          },
           {
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Vertical,
             justifyContent: JustifyContent.SpaceEvenly,
             customHeight: CustomHeight.Small,
-            children: [
-              {
-                type: WhisperComponentType.TextInput,
-                label: 'TextInput',
-                onChange: (value) => {
-                  console.debug(`Input value changed: ${value}`);
-                },
-              },
-              {
-                type: whisper.WhisperComponentType.Markdown,
-                body: shortText,
-              },
-            ],
+            children: [housingTypeDropdown],
+            layout: {
+              marginTop: StyleSize.Small,
+            },
           },
           {
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.SpaceEvenly,
-            customHeight: CustomHeight.Small,
             children: [
               {
                 type: whisper.WhisperComponentType.Markdown,
