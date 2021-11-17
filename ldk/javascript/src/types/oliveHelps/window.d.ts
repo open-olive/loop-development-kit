@@ -14,21 +14,21 @@ declare namespace Window {
     action: WindowAction;
   }
 
-  type WindowActionFocused = 'focus';
-  type WindowActionUnfocused = 'unfocused';
-  type WindowActionOpened = 'open';
+  type WindowActionBlur = 'blur';
   type WindowActionClosed = 'close';
+  type WindowActionFocused = 'focus';
   type WindowActionMoved = 'move';
-  type WindowActionResized = 'resized';
+  type WindowActionOpened = 'open';
+  type WindowActionResize = 'resize';
   type WindowActionTitleChanged = 'titleChange';
 
   type WindowAction =
-    | WindowActionFocused
-    | WindowActionUnfocused
-    | WindowActionOpened
+    | WindowActionBlur
     | WindowActionClosed
+    | WindowActionFocused
     | WindowActionMoved
-    | WindowActionResized
+    | WindowActionOpened
+    | WindowActionResize
     | WindowActionTitleChanged;
 
   interface WindowInfo {
