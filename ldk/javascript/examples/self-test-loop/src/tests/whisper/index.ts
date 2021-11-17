@@ -2667,10 +2667,8 @@ export const testScrollInsideBox = (): Promise<boolean> =>
           'Subsidized Rentals (Section 8)',
         ],
         selected: 0, // housingTypeIndex(housingResourcesWhisper.getState('housingType')),
-        onSelect: async (_, param) => {
-          // removed state management for repro
-          // housingResourcesWhisper.resetState();
-          // housingResourcesWhisper.setState('housingType', indexToHousingType(param), true);
+        onSelect: () => {
+          // do nothing
         },
       };
       await whisper.create({
