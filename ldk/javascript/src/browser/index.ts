@@ -39,7 +39,7 @@ export interface Browser {
    * Opens a window in the browser running the Olive Helps extension.
    *
    * @param address - The address to navigate to in the new window.
-   * @returns The tab ID of the new tab inside the new window
+   * @returns The window ID of the new window
    */
   openWindow(address: string): Promise<number>;
 }
