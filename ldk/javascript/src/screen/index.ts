@@ -4,13 +4,12 @@ import { OCRResult, OCRCoordinates } from './types';
 export * from './types';
 
 /**
- *  @ignore Screen aptitude allows Loops to enable Optical character recognition ability.
+ *  Screen aptitude allows Loops to enable Optical character recognition ability.
  */
 export interface Screen {
   /**
-   * @ignore
    * Performs screen OCR and returns recognized text ressults.
-   * @param  ocrCoordinates? - The term that will be used to identify the coordination of cursor???
+   * @param  ocrCoordinates? The ocrCoordinates is used to identify an area on the screen to search for text
    * @returns A Promise resolving with the text results as a string.
    */
   ocr(ocrCoordinates?: OCRCoordinates): Promise<OCRResult[]>;
