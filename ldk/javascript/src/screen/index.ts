@@ -9,7 +9,7 @@ export * from './types';
 export interface Screen {
   /**
    * Performs screen OCR and returns recognized text ressults.
-   * @param  ocrCoordinates? The ocrCoordinates is used to identify an area on the screen to search for text
+   * @param  ocrCoordinates? - The ocrCoordinates is used to identify an area on the screen to search for text
    * @returns A Promise resolving with the text results as a string.
    */
   ocr(ocrCoordinates?: OCRCoordinates): Promise<OCRResult[]>;
