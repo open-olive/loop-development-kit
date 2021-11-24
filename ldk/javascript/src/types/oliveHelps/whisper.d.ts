@@ -267,7 +267,7 @@ declare namespace WhisperService {
     id?: string;
     key?: string;
     layout?: LayoutOptions;
-  }
+  };
 
   type ChildComponents =
     | Autocomplete
