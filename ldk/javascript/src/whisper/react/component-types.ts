@@ -35,6 +35,7 @@ type MarkdownProps = ComponentProps<Whisper.Markdown>;
 type MessageProps = ComponentProps<Whisper.Message>;
 type NumberInputProps = ComponentProps<Whisper.NumberInput>;
 type PasswordProps = ComponentProps<Whisper.Password>;
+type ProgressProps = ComponentProps<Whisper.Progress>;
 type RadioGroupProps = ComponentProps<Whisper.RadioGroup>;
 type RichTextEditorProps = ComponentProps<Whisper.RichTextEditor>;
 type SelectProps = ComponentProps<Whisper.Select>;
@@ -64,6 +65,7 @@ export interface HelpsComponents {
   'oh-message': MessageProps;
   'oh-number': NumberInputProps;
   'oh-password': PasswordProps;
+  'oh-progress': ProgressProps;
   'oh-radio-group': RadioGroupProps;
   'oh-rich-text-editor': RichTextEditorProps;
   'oh-select': SelectProps;

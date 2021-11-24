@@ -2896,3 +2896,21 @@ export const testMissingLayouts = (): Promise<boolean> =>
       ],
     });
   });
+
+
+export const testProgressIndicator = (): Promise<boolean> =>
+new Promise(async (resolve, reject) => {
+  await whisper.create({
+    label: 'Did progress indicator show the percentage? ',
+    onClose: () => {
+      console.debug('closed');
+    },
+    components: [
+      {
+        type: WhisperComponentType.Progress,
+        determinate: 42,
+      },
+      resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+    ],
+  });
+});

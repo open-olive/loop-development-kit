@@ -47,6 +47,10 @@ export enum WhisperComponentType {
    */
   Password = 'password',
   /**
+   * The progress field allows the user to see the visualized progress indicator.
+   */
+  Progress = 'progress',
+  /**
    * The radio group allows a loop to provide the user with a collection of options in which they select a single result. The result is selected by clicking one of the radio elements in the radio group.
    *
    * A selected value of -1 indicates that nothing is selected.
@@ -439,6 +443,13 @@ export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEdito
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
+export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
+  determinate?: number;
+  id?: string;
+  key?: string;
+  layout?: LayoutOptions;
+};
+
 export type ChildComponents =
   | Autocomplete
   | Box
@@ -455,6 +466,7 @@ export type ChildComponents =
   | Message
   | NumberInput
   | Password
+  | Progress
   | RadioGroup
   | RichTextEditor
   | Select

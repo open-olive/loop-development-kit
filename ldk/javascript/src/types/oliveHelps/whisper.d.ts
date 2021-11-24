@@ -20,6 +20,7 @@ declare namespace WhisperService {
     | 'message'
     | 'number'
     | 'password'
+    | 'progress'
     | 'radioGroup'
     | 'richTextEditor'
     | 'select'
@@ -261,6 +262,13 @@ declare namespace WhisperService {
     onClick?: WhisperHandler;
   };
 
+  type Progress = Component<'progress'> & {
+    determinate?: number;
+    id?: string;
+    key?: string;
+    layout?: LayoutOptions;
+  }
+
   type ChildComponents =
     | Autocomplete
     | Box
@@ -275,6 +283,7 @@ declare namespace WhisperService {
     | Message
     | NumberInput
     | Password
+    | Progress
     | RadioGroup
     | RichTextEditor
     | Select

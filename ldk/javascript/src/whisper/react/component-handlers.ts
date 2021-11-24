@@ -111,6 +111,11 @@ const passwordHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Password,
   whisperTagType: 'oh-password',
 };
+
+const progressHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Progress,
+  whisperTagType: 'oh-progress',
+};
 const radioGroupHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.RadioGroup,
   whisperTagType: 'oh-radio-group',
@@ -182,6 +187,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return numberHandler;
     case WhisperComponentType.Password:
       return passwordHandler;
+    case WhisperComponentType.Progress:
+      return progressHandler;
     case WhisperComponentType.RadioGroup:
       return radioGroupHandler;
     case WhisperComponentType.RichTextEditor:
@@ -236,6 +243,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return numberHandler;
     case 'oh-password':
       return passwordHandler;
+    case 'oh-progress':
+      return progressHandler;
     case 'oh-radio-group':
       return radioGroupHandler;
     case 'oh-rich-text-editor':
