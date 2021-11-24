@@ -2913,3 +2913,19 @@ export const testProgressIndicator = (): Promise<boolean> =>
       ],
     });
   });
+
+export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did progress indicator have indefinite animation? ',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Progress,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });

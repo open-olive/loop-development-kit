@@ -250,6 +250,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - Progress',
       whisperTests.testProgressIndicator,
       10000,
-      'Does the Progress Indicator display as explained?',
+      'Does the Progress Indicator display with percentage?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Progress',
+      whisperTests.testProgressIndicatorIndefinite,
+      10000,
+      'Does the Progress display indefinite animation? ',
     ),
   ]);
