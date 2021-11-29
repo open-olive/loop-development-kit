@@ -16,6 +16,7 @@ import { whisperUpdateTestGroup } from './whisper-update-group';
 import { whisperValidationTestGroup } from './whisper-validation-group';
 import { windowTestGroup } from './window-group';
 import { documentTestGroup } from './document-group';
+import { screenTestGroup } from './screen-group';
 
 export const testConfig: { [key: string]: TestGroup } = {
   browser: browserTestGroup(),
@@ -25,6 +26,7 @@ export const testConfig: { [key: string]: TestGroup } = {
   keyboard: keyboardTestGroup(),
   network: networkTestGroup(),
   process: processTestGroup(),
+  screen: screenTestGroup(),
   system: systemTestGroup(),
   ui: uiTestGroup(),
   user: userTestGroup(),
