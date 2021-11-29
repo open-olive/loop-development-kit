@@ -449,11 +449,8 @@ export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   determinate?: number;
-  shape?: string;
+  shape?: Shape;
   size?: StyleSize;
-  id?: string;
-  key?: string;
-  layout?: LayoutOptions;
 };
 
 export type ChildComponents =

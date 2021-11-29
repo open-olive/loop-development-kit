@@ -268,9 +268,6 @@ declare namespace WhisperService {
     determinate?: number;
     shape?: Shape;
     size?: StyleSize;
-    id?: string;
-    key?: string;
-    layout?: LayoutOptions;
   };
 
   type ChildComponents =
