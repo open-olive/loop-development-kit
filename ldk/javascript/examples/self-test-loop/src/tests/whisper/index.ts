@@ -2923,7 +2923,7 @@ export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Progress,
           size: StyleSize.Medium,
-          shape:Shape.Linear,
+          shape: Shape.Linear,
         },
         {
           type: WhisperComponentType.Progress,
