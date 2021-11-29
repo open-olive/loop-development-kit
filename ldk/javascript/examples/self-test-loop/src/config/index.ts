@@ -1,5 +1,6 @@
 import TestGroup from '../testingFixtures/testGroup';
 
+import { browserTestGroup } from './browser-group';
 import { clipboardTestGroup } from './clipboard-group';
 import { cursorTestGroup } from './cursor-group';
 import { filesystemTestGroup } from './filesystem-group';
@@ -15,14 +16,17 @@ import { whisperUpdateTestGroup } from './whisper-update-group';
 import { whisperValidationTestGroup } from './whisper-validation-group';
 import { windowTestGroup } from './window-group';
 import { documentTestGroup } from './document-group';
+import { screenTestGroup } from './screen-group';
 
 export const testConfig: { [key: string]: TestGroup } = {
+  browser: browserTestGroup(),
   clipboard: clipboardTestGroup(),
   cursor: cursorTestGroup(),
   file: filesystemTestGroup(),
   keyboard: keyboardTestGroup(),
   network: networkTestGroup(),
   process: processTestGroup(),
+  screen: screenTestGroup(),
   system: systemTestGroup(),
   ui: uiTestGroup(),
   user: userTestGroup(),

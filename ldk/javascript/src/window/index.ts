@@ -11,21 +11,21 @@ export interface WindowInfo {
   height: number;
 }
 
-export type WindowActionFocused = 'focus';
-export type WindowActionUnfocused = 'unfocused';
-export type WindowActionOpened = 'open';
+export type WindowActionBlur = 'blur';
 export type WindowActionClosed = 'close';
+export type WindowActionFocused = 'focus';
 export type WindowActionMoved = 'move';
-export type WindowActionResized = 'resized';
+export type WindowActionOpened = 'open';
+export type WindowActionResize = 'resize';
 export type WindowActionTitleChanged = 'titleChange';
 
 export type WindowAction =
-  | WindowActionFocused
-  | WindowActionUnfocused
-  | WindowActionOpened
+  | WindowActionBlur
   | WindowActionClosed
+  | WindowActionFocused
   | WindowActionMoved
-  | WindowActionResized
+  | WindowActionOpened
+  | WindowActionResize
   | WindowActionTitleChanged;
 
 export interface WindowEvent {
@@ -59,7 +59,9 @@ export interface Window {
   all(): Promise<WindowInfo[]>;
 
   /**
-   * Receive a notification whenever a window is opened, closed, focused, unfocused, moved, resized, or its title changes. A window that is opened with focus will generate an Opened event and a Focused event.
+   * Receive a notification whenever a window is opened, closed, focused,
+   * unfocused, moved, resized, or its title changes. A window that is
+   * opened with focus will generate an Opened event and a Focused event.
    *
    * @param callback A function called when any window changes.
    */

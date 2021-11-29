@@ -12,6 +12,13 @@
   "author": "",
   "ldk": {
     "permissions": {
+      "browser": {
+        "urlDomains": [
+          {
+            "value": "www.oliveai.dev"
+          }
+        ]
+      },
       "clipboard": {},
       "cursor": {},
       "document": {},
@@ -39,6 +46,7 @@
       "ui": {},
       "user": {},
       "system": {},
+      "screen": {},
       "keyboard": {},
       "whisper": {},
       "vault": {},

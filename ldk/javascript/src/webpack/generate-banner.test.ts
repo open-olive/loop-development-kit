@@ -21,7 +21,7 @@ describe('Generate Banner', () => {
   const ldkSettings: LdkSettings = {
     ldk: {
       permissions: {
-        browser: {},
+        browser: { urlDomains: [{ value: '*.google.com' }] },
         clipboard: {},
         cursor: {},
         document: {},
@@ -30,6 +30,7 @@ describe('Generate Banner', () => {
         network: { urlDomains: [{ value: '*.google.com' }] },
         process: {},
         search: {},
+        screen: {},
         system: {},
         ui: {},
         user: { optionalClaims: [{ value: 'email' }] },
@@ -45,7 +46,7 @@ describe('Generate Banner', () => {
     const expected = {
       oliveHelpsContractVersion: '0.1.6',
       permissions: {
-        browser: {},
+        browser: { urlDomains: [{ value: '*.google.com' }] },
         clipboard: {},
         cursor: {},
         document: {},
@@ -53,6 +54,7 @@ describe('Generate Banner', () => {
         keyboard: {},
         network: { urlDomains: [{ value: '*.google.com' }] },
         process: {},
+        screen: {},
         search: {},
         system: {},
         ui: {},
