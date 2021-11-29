@@ -196,6 +196,10 @@ export type AutocompleteOption = {
   value: string;
 };
 
+export enum Shape {
+  Circular = 'circular',
+  Linear = 'linear',
+}
 export enum StyleSize {
   None = 'none',
   Small = 'small',
@@ -445,6 +449,8 @@ export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   determinate?: number;
+  shape?: string;
+  size?: StyleSize;
   id?: string;
   key?: string;
   layout?: LayoutOptions;

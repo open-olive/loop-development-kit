@@ -2473,13 +2473,15 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2493,7 +2495,8 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2663,7 +2666,6 @@ export const testScrollInsideBox = (): Promise<boolean> =>
             body: 'Does is scroll?',
             type: WhisperComponentType.Markdown,
           },
-
           {
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Vertical,
@@ -2906,9 +2908,21 @@ export const testProgressIndicator = (): Promise<boolean> =>
       },
       components: [
         {
-          type: WhisperComponentType.Progress,
-          determinate: 42,
+          type: WhisperComponentType.Markdown,
+          body: 'This is progress component',
         },
+        {
+          type: WhisperComponentType.Box,
+          alignment: JustifyContent.Center,
+          direction: Direction.Horizontal,
+          children: [
+            {
+              type: WhisperComponentType.Progress,
+              determinate: 42,
+            },
+          ],
+        },
+
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
@@ -2920,11 +2934,13 @@ export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
       label: 'Did progress indicator have indefinite animation? ',
       onClose: () => {
         console.debug('closed');
+        console.log('Progress whisper:', WhisperComponentType.Progress);
       },
       components: [
         {
           type: WhisperComponentType.Progress,
         },
+
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });

@@ -55,6 +55,8 @@ declare namespace WhisperService {
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
+  type Shape = 'circular' | 'linear';
+
   type StyleSize = 'none' | 'small' | 'medium' | 'large';
 
   type WidthSize = 'full' | 'half';
@@ -264,6 +266,8 @@ declare namespace WhisperService {
 
   type Progress = Component<'progress'> & {
     determinate?: number;
+    shape?: Shape;
+    size?: StyleSize;
     id?: string;
     key?: string;
     layout?: LayoutOptions;
