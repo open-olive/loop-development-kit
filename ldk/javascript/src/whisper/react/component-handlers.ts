@@ -190,8 +190,6 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return progressHandler;
     case WhisperComponentType.RadioGroup:
       return radioGroupHandler;
-    case WhisperComponentType.Progress:
-      return progressHandler;
     case WhisperComponentType.RichTextEditor:
       return richTextEditorHandler;
     case WhisperComponentType.Select:
@@ -248,8 +246,6 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return progressHandler;
     case 'oh-radio-group':
       return radioGroupHandler;
-    case 'oh-progress':
-      return progressHandler;
     case 'oh-rich-text-editor':
       return richTextEditorHandler;
     case 'oh-select':
