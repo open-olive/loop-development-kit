@@ -2388,6 +2388,7 @@ export const testPadding = (): Promise<boolean> =>
       for (
         let functionIndex = 0;
         functionIndex < componentCreationFunctions.length;
+        // eslint-disable-next-line no-plusplus
         functionIndex++
       ) {
         const func = componentCreationFunctions[functionIndex];
