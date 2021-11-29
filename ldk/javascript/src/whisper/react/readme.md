@@ -1,14 +1,11 @@
 # React Whispers
 
-**Warning** this is all experimental and there may be bugs. Please open issues as you run into them!
-
-You can now use React to manage your Whispers! In just the same way you can use React to create and update complex user interfaces in HTML, you can use React to create and update Whispers in Olive Helps.
+You can now use React to manage your Whispers! In just the same way you can use React to create and update complex user interfaces in HTML, you can use React to create and update Whispers in Olive Helps. Visit the [documentation](https://docs.oliveai.dev/aptitudes/whisper/jsx-whispers) to learn how to use them.
 
 ## Technical Summary
 
 We've developed a custom React Host Configuration that handles creating and updating Whispers. It treats each Whisper as a separate container.
 
-TODO: Add more words.
 
 ## Using React Whispers
 
