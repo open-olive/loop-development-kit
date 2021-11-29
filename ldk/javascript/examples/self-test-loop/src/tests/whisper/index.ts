@@ -204,7 +204,6 @@ export const testMarkdownOnLinkClick = (): Promise<boolean> =>
 
     const markdown = stripIndent`
       # Links:
-
       [Some Link 1](# "A Link")
       Text between links
       [Some Link 2](#)
@@ -328,7 +327,6 @@ export const testBoxInBox = (): Promise<boolean> =>
                     type: WhisperComponentType.Markdown,
                     body: stripIndent`
                       **Header Left**
-
                       Some text on the left
                       `,
                   },
@@ -350,7 +348,6 @@ export const testBoxInBox = (): Promise<boolean> =>
                     type: WhisperComponentType.Markdown,
                     body: stripIndent`
                       **Header Right**
-
                       Some text on the right
                       `,
                   },
@@ -2388,7 +2385,6 @@ export const testPadding = (): Promise<boolean> =>
       for (
         let functionIndex = 0;
         functionIndex < componentCreationFunctions.length;
-        // eslint-disable-next-line no-plusplus
         functionIndex++
       ) {
         const func = componentCreationFunctions[functionIndex];
@@ -2667,6 +2663,7 @@ export const testScrollInsideBox = (): Promise<boolean> =>
             body: 'Does is scroll?',
             type: WhisperComponentType.Markdown,
           },
+
           {
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Vertical,
@@ -2909,21 +2906,9 @@ export const testProgressIndicator = (): Promise<boolean> =>
       },
       components: [
         {
-          type: WhisperComponentType.Markdown,
-          body: 'This is progress component',
+          type: WhisperComponentType.Progress,
+          determinate: 42,
         },
-        {
-          type: WhisperComponentType.Box,
-          alignment: JustifyContent.Center,
-          direction: Direction.Horizontal,
-          children: [
-            {
-              type: WhisperComponentType.Progress,
-              determinate: 42,
-            },
-          ],
-        },
-
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
@@ -2935,13 +2920,11 @@ export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
       label: 'Did progress indicator have indefinite animation? ',
       onClose: () => {
         console.debug('closed');
-        console.log('Progress whisper:', WhisperComponentType.Progress);
       },
       components: [
         {
           type: WhisperComponentType.Progress,
         },
-
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
