@@ -20,6 +20,7 @@ import {
   Urgency,
   Whisper,
   WhisperComponentType,
+  Shape,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -2919,6 +2920,11 @@ export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
         console.debug('closed');
       },
       components: [
+        {
+          type: WhisperComponentType.Progress,
+          size: StyleSize.Medium,
+          shape:Shape.Linear,
+        },
         {
           type: WhisperComponentType.Progress,
         },
