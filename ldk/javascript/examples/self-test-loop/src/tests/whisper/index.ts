@@ -14,6 +14,7 @@ import {
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   NewWhisper,
+  OpenDirection,
   RichTextEditor,
   StyleSize,
   TextAlign,
@@ -1237,6 +1238,47 @@ export const testNetworkAndListComponents = (): Promise<boolean> =>
             },
           ],
           type: WhisperComponentType.CollapseBox,
+        },
+        resolveRejectButtons(resolve, reject),
+      ],
+    });
+  });
+
+export const testCollapseBoxOpenDirection = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Collapse Box - Open Direction',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          label: 'Expand',
+          open: false,
+          openDirection: OpenDirection.Top,
+          children: [
+            {
+              body: 'This one opens with "Top"',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Expand',
+          open: false,
+          openDirection: OpenDirection.Bottom,
+          children: [
+            {
+              body: 'This one opens with "Bottom"',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          body: 'Did the CollapseBoxes open the correct direction?',
+          type: WhisperComponentType.Markdown,
         },
         resolveRejectButtons(resolve, reject),
       ],
