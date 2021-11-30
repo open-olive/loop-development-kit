@@ -2913,7 +2913,7 @@ export const testProgressIndicator = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Progress,
-          determinate:30,
+          determinate: 30,
           shape: ProgressShape.Linear,
           size: StyleSize.Small,
         },
@@ -2923,7 +2923,7 @@ export const testProgressIndicator = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Progress,
-          determinate:90,
+          determinate: 90,
           shape: ProgressShape.Linear,
           size: StyleSize.Medium,
         },
@@ -2933,7 +2933,7 @@ export const testProgressIndicator = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Progress,
-          determinate:90,
+          determinate: 90,
           shape: ProgressShape.Linear,
           size: StyleSize.Large,
         },
@@ -2943,7 +2943,7 @@ export const testProgressIndicator = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Progress,
-          determinate:90,
+          determinate: 90,
           shape: ProgressShape.Linear,
           size: StyleSize.None,
         },
