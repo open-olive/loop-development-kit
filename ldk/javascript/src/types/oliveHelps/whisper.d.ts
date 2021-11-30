@@ -6,6 +6,7 @@ declare namespace WhisperService {
   type WhisperComponentType =
     | 'autocomplete'
     | 'box'
+    | 'breadcrumbs'
     | 'button'
     | 'checkbox'
     | 'collapseBox'
@@ -122,6 +123,10 @@ declare namespace WhisperService {
     value?: string;
     freeSolo?: boolean;
   };
+
+  type Breadcrumbs = Component<'breadcrumbs'> & {
+    links: Link[];
+  }
 
   type Button = Component<'button'> & {
     buttonStyle?: ButtonStyle;
@@ -264,6 +269,7 @@ declare namespace WhisperService {
   type ChildComponents =
     | Autocomplete
     | Box
+    | Breadcrumbs
     | Button
     | Checkbox
     | Divider

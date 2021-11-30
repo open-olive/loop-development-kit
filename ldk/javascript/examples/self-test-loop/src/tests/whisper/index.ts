@@ -2896,3 +2896,221 @@ export const testMissingLayouts = (): Promise<boolean> =>
       ],
     });
   });
+
+export const testEmptyBreadcrumbs = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Breadcrumb Empty Test',
+      onClose: () => {
+        console.debug('Breadcrumb empty test closed.');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Breadcrumbs,
+          links:[]
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'There should be no content.',
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
+export const testSimpleBreadcrumbs = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Breadcrumb Simple Test',
+      onClose: () => {
+        console.debug('Breadcrumb simple test closed.');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Breadcrumbs,
+          links:[
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 1",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 2",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 3",
+            },
+          ]
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Do you see three (3) breadcrumbs?',
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
+export const testManyBreadcrumbs = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Breadcrumb Many Test',
+      onClose: () => {
+        console.debug('Breadcrumb many test closed.');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Breadcrumbs,
+          links:[
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 1",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 2",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 3",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 4",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 5",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 6",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 7",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 8",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 9",
+            },            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 10",
+            },
+          ]
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Are there 10 breadcrumbs with the majority collapsed in \'...\'?',
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
+  export const testManyClickBreadcrumbs = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Breadcrumb Many Click Test',
+      onClose: () => {
+        console.debug('Breadcrumb many click test closed.');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Breadcrumbs,
+          links:[
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 1",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 2",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 3",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 4",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 5",
+              onClick: (_error: Error, onClickWhisper: Whisper) => {
+                onClickWhisper.close((e) => console.log(e));
+                resolve(true);
+              },
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 6",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 7",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 8",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 9",
+            },            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 10",
+            },
+          ]
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Click \'Breadcrumb 5\'.',
+        },
+      ],
+    });
+  });
+
+  export const testSimpleClickBreadcrumbs = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Breadcrumb Simple Click Test',
+      onClose: () => {
+        console.debug('Breadcrumb simple Click test closed.');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Breadcrumbs,
+          links:[
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 1",
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 2",
+              onClick: (_error: Error, onClickWhisper: Whisper) => {
+                onClickWhisper.close((e) => console.log(e));
+                resolve(true);
+              },
+            },
+            {
+              type: WhisperComponentType.Link,
+              text: "Breadcrumb 3",
+            },
+          ]
+        },
+        {
+          type: WhisperComponentType.Message,
+          body: 'Click \'Breadcrumb 2\'.',
+        },
+      ],
+    });
+  });
+ 
