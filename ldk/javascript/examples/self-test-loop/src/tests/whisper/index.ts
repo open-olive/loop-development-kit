@@ -20,7 +20,7 @@ import {
   Urgency,
   Whisper,
   WhisperComponentType,
-  Shape,
+  ProgressShape,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -2907,6 +2907,46 @@ export const testProgressIndicator = (): Promise<boolean> =>
           type: WhisperComponentType.Progress,
           determinate: 42,
         },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a small sized progress indicator.',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate:30,
+          shape: ProgressShape.Linear,
+          size: StyleSize.Small,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a medium sized progress indicator.',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate:90,
+          shape: ProgressShape.Linear,
+          size: StyleSize.Medium,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a large sized progress indicator.',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate:90,
+          shape: ProgressShape.Linear,
+          size: StyleSize.Large,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a progress indicator, size: None.',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate:90,
+          shape: ProgressShape.Linear,
+          size: StyleSize.None,
+        },
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
@@ -2923,7 +2963,7 @@ export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Progress,
           size: StyleSize.Medium,
-          shape: Shape.Linear,
+          shape: ProgressShape.Linear,
         },
         {
           type: WhisperComponentType.Progress,

@@ -47,7 +47,7 @@ export enum WhisperComponentType {
    */
   Password = 'password',
   /**
-   * The progress field allows the user to see the visualized progress indicator.
+   * Progress components express an unspecified wait time or display the length of a process.
    */
   Progress = 'progress',
   /**
@@ -196,7 +196,7 @@ export type AutocompleteOption = {
   value: string;
 };
 
-export enum Shape {
+export enum ProgressShape {
   Circular = 'circular',
   Linear = 'linear',
 }
@@ -449,7 +449,7 @@ export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   determinate?: number;
-  shape?: Shape;
+  shape?: ProgressShape;
   size?: StyleSize;
 };
 
