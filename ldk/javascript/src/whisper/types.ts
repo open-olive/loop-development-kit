@@ -140,6 +140,11 @@ export enum TextAlign {
   Right = 'right',
 }
 
+export enum OpenDirection {
+  Bottom = 'bottom',
+  Top = 'top',
+}
+
 export enum Urgency {
   Error = 'error',
   None = 'none',
@@ -475,6 +480,7 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
   label?: string;
   open: boolean;
+  openDirection?: OpenDirection;
   onClick?: WhisperHandlerWithParam<boolean>;
 };
 

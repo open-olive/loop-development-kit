@@ -276,4 +276,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       "Click 'Breadcrumb 3'.",
     ),
+    new LoopTest(
+      'Whisper Aptitude - CollapseBox openDirection',
+      whisperTests.testCollapseBoxOpenDirection,
+      10000,
+      'Do the CollapseBoxes open in the correct directions?',
+    ),
   ]);
