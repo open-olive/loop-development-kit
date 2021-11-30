@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { WhisperComponentType } from '..';
 import * as Whisper from '../types';
 import { WhisperHandler } from '../types';
 

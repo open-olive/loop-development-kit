@@ -2473,13 +2473,15 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2493,7 +2495,8 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2907,7 +2910,7 @@ export const testEmptyBreadcrumbs = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Breadcrumbs,
-          links:[]
+          links: [],
         },
         {
           type: WhisperComponentType.Message,
@@ -2928,20 +2931,20 @@ export const testSimpleBreadcrumbs = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Breadcrumbs,
-          links:[
+          links: [
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 1",
+              text: 'Breadcrumb 1',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 2",
+              text: 'Breadcrumb 2',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 3",
+              text: 'Breadcrumb 3',
             },
-          ]
+          ],
         },
         {
           type: WhisperComponentType.Message,
@@ -2962,58 +2965,59 @@ export const testManyBreadcrumbs = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Breadcrumbs,
-          links:[
+          links: [
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 1",
+              text: 'Breadcrumb 1',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 2",
+              text: 'Breadcrumb 2',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 3",
+              text: 'Breadcrumb 3',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 4",
+              text: 'Breadcrumb 4',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 5",
+              text: 'Breadcrumb 5',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 6",
+              text: 'Breadcrumb 6',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 7",
+              text: 'Breadcrumb 7',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 8",
+              text: 'Breadcrumb 8',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 9",
-            },            {
-              type: WhisperComponentType.Link,
-              text: "Breadcrumb 10",
+              text: 'Breadcrumb 9',
             },
-          ]
+            {
+              type: WhisperComponentType.Link,
+              text: 'Breadcrumb 10',
+            },
+          ],
         },
         {
           type: WhisperComponentType.Message,
-          body: 'Are there 10 breadcrumbs with the majority collapsed in \'...\'?',
+          body: "Are there 10 breadcrumbs with the majority collapsed in '...'?",
         },
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
   });
 
-  export const testManyClickBreadcrumbs = (): Promise<boolean> =>
+export const testManyClickBreadcrumbs = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     await whisper.create({
       label: 'Breadcrumb Many Click Test',
@@ -3023,26 +3027,26 @@ export const testManyBreadcrumbs = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Breadcrumbs,
-          links:[
+          links: [
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 1",
+              text: 'Breadcrumb 1',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 2",
+              text: 'Breadcrumb 2',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 3",
+              text: 'Breadcrumb 3',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 4",
+              text: 'Breadcrumb 4',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 5",
+              text: 'Breadcrumb 5',
               onClick: (_error: Error, onClickWhisper: Whisper) => {
                 onClickWhisper.close((e) => console.log(e));
                 resolve(true);
@@ -3050,34 +3054,35 @@ export const testManyBreadcrumbs = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 6",
+              text: 'Breadcrumb 6',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 7",
+              text: 'Breadcrumb 7',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 8",
+              text: 'Breadcrumb 8',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 9",
-            },            {
-              type: WhisperComponentType.Link,
-              text: "Breadcrumb 10",
+              text: 'Breadcrumb 9',
             },
-          ]
+            {
+              type: WhisperComponentType.Link,
+              text: 'Breadcrumb 10',
+            },
+          ],
         },
         {
           type: WhisperComponentType.Message,
-          body: 'Click \'Breadcrumb 5\'.',
+          body: "Click 'Breadcrumb 5'.",
         },
       ],
     });
   });
 
-  export const testSimpleClickBreadcrumbs = (): Promise<boolean> =>
+export const testSimpleClickBreadcrumbs = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     await whisper.create({
       label: 'Breadcrumb Simple Click Test',
@@ -3087,14 +3092,14 @@ export const testManyBreadcrumbs = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.Breadcrumbs,
-          links:[
+          links: [
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 1",
+              text: 'Breadcrumb 1',
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 2",
+              text: 'Breadcrumb 2',
               onClick: (_error: Error, onClickWhisper: Whisper) => {
                 onClickWhisper.close((e) => console.log(e));
                 resolve(true);
@@ -3102,15 +3107,14 @@ export const testManyBreadcrumbs = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Link,
-              text: "Breadcrumb 3",
+              text: 'Breadcrumb 3',
             },
-          ]
+          ],
         },
         {
           type: WhisperComponentType.Message,
-          body: 'Click \'Breadcrumb 2\'.',
+          body: "Click 'Breadcrumb 2'.",
         },
       ],
     });
   });
- 

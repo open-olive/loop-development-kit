@@ -343,7 +343,7 @@ export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, D
 
 export type Breadcrumbs = WhisperComponent<WhisperComponentType.Breadcrumbs> & {
   links: Link[];
-}
+};
 
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;

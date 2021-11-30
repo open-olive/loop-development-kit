@@ -641,24 +641,22 @@ export const testIconUpdates = (): Promise<boolean> =>
     });
   });
 
-  export const testBreadcrumbUpdates = (): Promise<boolean> =>
+export const testBreadcrumbUpdates = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-
     const breadcrumb: Breadcrumbs = {
       key: 'crumbs',
       type: WhisperComponentType.Breadcrumbs,
-      links: []
+      links: [],
     };
-    
-    
+
     const button: Button = {
       key: 'btn',
       type: WhisperComponentType.Button,
       label: 'Click Me',
-      onClick: () => {},   
-    }
+      onClick: () => {},
+    };
 
-    let promise = new Promise( (r, _) => {
+    let promise = new Promise((r, _) => {
       button.onClick = () => r(true);
     });
 
@@ -667,53 +665,46 @@ export const testIconUpdates = (): Promise<boolean> =>
       onClose: () => {
         console.debug('Closed breadcrumb update test.');
       },
-      components: [
-        breadcrumb,button
-      ],
+      components: [breadcrumb, button],
     });
 
     await promise;
 
     const link: Link = {
-      key: "lnk1",
+      key: 'lnk1',
       type: WhisperComponentType.Link,
-      text: "Breadcrumb 1"
-
+      text: 'Breadcrumb 1',
     };
 
     breadcrumb.links.push(link);
-    promise = new Promise( (r, _) => {
+    promise = new Promise((r, _) => {
       button.onClick = () => r(true);
     });
-    
+
     theWhisper.update({
       label: 'Breadcrumb Update Test',
-      components:[
-        breadcrumb, button  
-      ]
+      components: [breadcrumb, button],
     });
 
     await promise;
 
     breadcrumb.links.push({
-      key: "lnk2",
+      key: 'lnk2',
       type: WhisperComponentType.Link,
-      text: "Breadcrumb 2"
+      text: 'Breadcrumb 2',
     });
 
-    link.text = "Click Me"
+    link.text = 'Click Me';
 
-    promise = new Promise( (r, _) => {
+    promise = new Promise((r, _) => {
       link.onClick = () => r(true);
     });
 
     theWhisper.update({
       label: 'Breadcrumb Update Test',
-      components:[
-        breadcrumb  
-      ]
+      components: [breadcrumb],
     });
 
     await promise;
-    resolve(true)
+    resolve(true);
   });

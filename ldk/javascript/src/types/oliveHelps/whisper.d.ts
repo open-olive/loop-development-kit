@@ -126,7 +126,7 @@ declare namespace WhisperService {
 
   type Breadcrumbs = Component<'breadcrumbs'> & {
     links: Link[];
-  }
+  };
 
   type Button = Component<'button'> & {
     buttonStyle?: ButtonStyle;

@@ -262,18 +262,18 @@ export const whisperTestGroup = (): TestGroup =>
       'Whisper Aptitude - Breadcrumbs Many',
       whisperTests.testManyBreadcrumbs,
       10000,
-      'Are there 10 breadcrumbs with the majority collapsed in \'...\'?',
+      "Are there 10 breadcrumbs with the majority collapsed in '...'?",
     ),
     new LoopTest(
       'Whisper Aptitude - Breadcrumbs Many Clickable',
       whisperTests.testManyClickBreadcrumbs,
       10000,
-      'Click \'Breadcrumb 5\'.',
+      "Click 'Breadcrumb 5'.",
     ),
     new LoopTest(
       'Whisper Aptitude - Breadcrumbs Simple Clickable',
       whisperTests.testSimpleClickBreadcrumbs,
       10000,
-      'Click \'Breadcrumb 3\'.',
+      "Click 'Breadcrumb 3'.",
     ),
   ]);
