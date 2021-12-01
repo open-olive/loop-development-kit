@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { whisper } from '@oliveai/ldk';
 import {
+  Breadcrumbs,
   Button,
   Checkbox,
   Component,
@@ -9,6 +10,7 @@ import {
   Icon,
   IconSize,
   JustifyContent,
+  Link,
   NumberInput,
   Progress,
   RadioGroup,
@@ -640,60 +642,129 @@ export const testIconUpdates = (): Promise<boolean> =>
     });
   });
 
-export const testProcessComponent = (): Promise<boolean> =>
+export const testBreadcrumbUpdates = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    try {
-      const checkbox: Checkbox = {
-        label: 'Check this box',
-        key: 'Checkbox',
-        onChange: () => {
-          // do nothing.
-        },
-        id: 'myCheckbox',
-        type: WhisperComponentType.Checkbox,
-      };
+    const breadcrumb: Breadcrumbs = {
+      key: 'crumbs',
+      type: WhisperComponentType.Breadcrumbs,
+      links: [],
+    };
 
-      const initialProgress: Progress = {
-        type: WhisperComponentType.Progress,
-        id: 'progressId',
-        key: 'progressId',
-        determinate: 10,
-      };
+    const button: Button = {
+      key: 'btn',
+      type: WhisperComponentType.Button,
+      label: 'Click Me',
+      onClick: () => {},
+    };
 
-      const finalProgress: Progress = {
-        type: WhisperComponentType.Progress,
-        id: 'progressId',
-        key: 'progressId',
-        determinate: 100,
-      };
+    let promise = new Promise((r, _) => {
+      button.onClick = () => r(true);
+    });
 
-      const firstConfirm = createConfirmOrDenyWithPromise('Click Update Button', 'User clicked no');
-      const secondUpdate = createConfirmOrDenyWithPromise(
-        'Did the progress component change its value?',
-        'User selected update failed.',
-      );
+    const theWhisper = await whisper.create({
+      label: 'Breadcrumb Update Test',
+      onClose: () => {
+        console.debug('Closed breadcrumb update test.');
+      },
+      components: [breadcrumb, button],
+    });
 
-      const testWhisper = await whisper.create({
-        label: 'Test Progress Component Update',
-        onClose: () => {
-          // do nothing.
-        },
-        components: [
-          initialProgress,
-          {
-            type: WhisperComponentType.Button,
-            label: 'Update',
-            onClick: (_error: Error, onClickWhisper: Whisper) => {
-              onClickWhisper.update({
-                components: [finalProgress, ...secondUpdate.button],
-              });
-            },
-          },
-          ...firstConfirm.button,
-        ],
-      });
-      resolve(true);
-    } catch (e) {
-      reject(e);
-    }
+    await promise;
+
+    const link: Link = {
+      key: 'lnk1',
+      type: WhisperComponentType.Link,
+      text: 'Breadcrumb 1',
+    };
+
+    breadcrumb.links.push(link);
+    promise = new Promise((r, _) => {
+      button.onClick = () => r(true);
+    });
+
+    theWhisper.update({
+      label: 'Breadcrumb Update Test',
+      components: [breadcrumb, button],
+    });
+
+    await promise;
+
+    breadcrumb.links.push({
+      key: 'lnk2',
+      type: WhisperComponentType.Link,
+      text: 'Breadcrumb 2',
+    });
+
+    link.text = 'Click Me';
+
+    promise = new Promise((r, _) => {
+      link.onClick = () => r(true);
+    });
+
+    theWhisper.update({
+      label: 'Breadcrumb Update Test',
+      components: [breadcrumb],
+    });
+
+    await promise;
+    resolve(true);
   });
+
+
+export const testProcessComponent = (): Promise<boolean> =>
+new Promise(async (resolve, reject) => {
+  try {
+    const checkbox: Checkbox = {
+      label: 'Check this box',
+      key: 'Checkbox',
+      onChange: () => {
+        // do nothing.
+      },
+      id: 'myCheckbox',
+      type: WhisperComponentType.Checkbox,
+    };
+
+    const initialProgress: Progress = {
+      type: WhisperComponentType.Progress,
+      id: 'progressId',
+      key: 'progressId',
+      determinate: 10,
+    };
+
+    const finalProgress: Progress = {
+      type: WhisperComponentType.Progress,
+      id: 'progressId',
+      key: 'progressId',
+      determinate: 100,
+    };
+
+    const firstConfirm = createConfirmOrDenyWithPromise('Click Update Button', 'User clicked no');
+    const secondUpdate = createConfirmOrDenyWithPromise(
+      'Did the progress component change its value?',
+      'User selected update failed.',
+    );
+
+    const testWhisper = await whisper.create({
+      label: 'Test Progress Component Update',
+      onClose: () => {
+        // do nothing.
+      },
+      components: [
+        initialProgress,
+        {
+          type: WhisperComponentType.Button,
+          label: 'Update',
+          onClick: (_error: Error, onClickWhisper: Whisper) => {
+            onClickWhisper.update({
+              components: [finalProgress, ...secondUpdate.button],
+            });
+          },
+        },
+        ...firstConfirm.button,
+      ],
+    });
+    resolve(true);
+  } catch (e) {
+    reject(e);
+  }
+});
