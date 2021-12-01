@@ -247,6 +247,36 @@ export const whisperTestGroup = (): TestGroup =>
       'Does the JustifyContent-Normal items behave as "stretch" in flex container?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Breadcrumbs Empty',
+      whisperTests.testEmptyBreadcrumbs,
+      10000,
+      'Are the breadcrumbs empty?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Breadcrumbs Simple',
+      whisperTests.testSimpleBreadcrumbs,
+      10000,
+      'Do you see three breadcrumbs?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Breadcrumbs Many',
+      whisperTests.testManyBreadcrumbs,
+      10000,
+      "Are there 10 breadcrumbs with the majority collapsed in '...'?",
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Breadcrumbs Many Clickable',
+      whisperTests.testManyClickBreadcrumbs,
+      10000,
+      "Click 'Breadcrumb 5'.",
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Breadcrumbs Simple Clickable',
+      whisperTests.testSimpleClickBreadcrumbs,
+      10000,
+      "Click 'Breadcrumb 3'.",
+    ),
+    new LoopTest(
       'Whisper Aptitude - CollapseBox openDirection',
       whisperTests.testCollapseBoxOpenDirection,
       10000,

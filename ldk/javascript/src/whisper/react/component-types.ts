@@ -21,6 +21,7 @@ type ComponentPropsWithChildren<T, TExcludeName extends string = 'children'> = O
 
 type AutocompleteProps = ComponentProps<Whisper.Autocomplete>;
 type BoxProps = ComponentPropsWithChildren<Whisper.Box>;
+type BreadcumbsProps = ComponentProps<Whisper.Breadcrumbs>;
 type ButtonProps = ComponentProps<Whisper.Button>;
 type CheckboxProps = ComponentProps<Whisper.Checkbox>;
 type CollapseBoxProps = ComponentPropsWithChildren<Whisper.CollapseBox>;
@@ -50,6 +51,7 @@ type WhisperProps = {
 export interface HelpsComponents {
   'oh-autocomplete': AutocompleteProps;
   'oh-box': BoxProps;
+  'oh-breadcrumbs': BreadcumbsProps;
   'oh-button': ButtonProps;
   'oh-checkbox': CheckboxProps;
   'oh-collapse-box': CollapseBoxProps;

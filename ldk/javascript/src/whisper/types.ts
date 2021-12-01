@@ -11,6 +11,10 @@ export enum WhisperComponentType {
    * A container component for formatting other components.
    */
   Box = 'box',
+  /**
+   * A list of links that display a hierarchal relationship between each other
+   */
+  Breadcrumbs = 'breadcrumbs',
   Button = 'button',
   Checkbox = 'checkbox',
   /**
@@ -342,6 +346,10 @@ export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, D
   max?: Date;
 };
 
+export type Breadcrumbs = WhisperComponent<WhisperComponentType.Breadcrumbs> & {
+  links: Link[];
+};
+
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
@@ -447,6 +455,7 @@ export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 export type ChildComponents =
   | Autocomplete
   | Box
+  | Breadcrumbs
   | Button
   | Checkbox
   | DateTimeInput
