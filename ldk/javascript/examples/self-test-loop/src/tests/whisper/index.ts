@@ -2513,15 +2513,13 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body:
-              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2535,8 +2533,7 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body:
-              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2723,8 +2720,7 @@ export const testScrollInsideBox = (): Promise<boolean> =>
           },
           {
             type: whisper.WhisperComponentType.Markdown,
-            body:
-              "If you can't see the scrollbar in the following Sclect component, then it's good!",
+            body: "If you can't see the scrollbar in the following Sclect component, then it's good!",
           },
           {
             type: whisper.WhisperComponentType.Box,
