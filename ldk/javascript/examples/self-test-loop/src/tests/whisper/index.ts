@@ -2914,7 +2914,7 @@ export const testProgressIndicator = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Progress,
           determinate: 30,
-          shape: ProgressShape.Linear,
+          shape: ProgressShape.Circular,
           size: StyleSize.Small,
         },
         {
@@ -2924,7 +2924,7 @@ export const testProgressIndicator = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Progress,
           determinate: 90,
-          shape: ProgressShape.Linear,
+          shape: ProgressShape.Circular,
           size: StyleSize.Medium,
         },
         {
@@ -2934,17 +2934,17 @@ export const testProgressIndicator = (): Promise<boolean> =>
         {
           type: WhisperComponentType.Progress,
           determinate: 90,
-          shape: ProgressShape.Linear,
+          shape: ProgressShape.Circular,
           size: StyleSize.Large,
         },
         {
           type: WhisperComponentType.Markdown,
-          body: 'This is a progress indicator, size: None.',
+          body: 'This is a progress indicator, size: None. If no size is set or size is set to None, it will be its default value: Medium',
         },
         {
           type: WhisperComponentType.Progress,
           determinate: 90,
-          shape: ProgressShape.Linear,
+          shape: ProgressShape.Circular,
           size: StyleSize.None,
         },
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
