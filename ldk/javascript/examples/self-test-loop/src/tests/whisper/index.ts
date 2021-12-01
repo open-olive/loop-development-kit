@@ -2703,7 +2703,7 @@ export const testScrollInsideBox = (): Promise<boolean> =>
           'Temporary Shelter',
           'Subsidized Rentals (Section 8)',
         ],
-        selected: 0, // housingTypeIndex(housingResourcesWhisper.getState('housingType')),
+        selected: 0,
         onSelect: () => {
           // do nothing
         },
