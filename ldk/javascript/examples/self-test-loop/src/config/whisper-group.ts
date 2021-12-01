@@ -258,4 +258,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Does the Progress display indefinite animation? ',
     ),
+    new LoopTest(
+      'Whisper Aptitude - CollapseBox openDirection',
+      whisperTests.testCollapseBoxOpenDirection,
+      10000,
+      'Do the CollapseBoxes open in the correct directions?',
+    ),
   ]);
