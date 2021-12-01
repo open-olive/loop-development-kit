@@ -11,6 +11,10 @@ export enum WhisperComponentType {
    * A container component for formatting other components.
    */
   Box = 'box',
+  /**
+   * A list of links that display a hierarchal relationship between each other
+   */
+  Breadcrumbs = 'breadcrumbs',
   Button = 'button',
   Checkbox = 'checkbox',
   /**
@@ -46,6 +50,10 @@ export enum WhisperComponentType {
    * The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
    */
   Password = 'password',
+  /**
+   * Progress components express an unspecified wait time or display the length of a process.
+   */
+  Progress = 'progress',
   /**
    * The radio group allows a loop to provide the user with a collection of options in which they select a single result. The result is selected by clicking one of the radio elements in the radio group.
    *
@@ -136,6 +144,11 @@ export enum TextAlign {
   Right = 'right',
 }
 
+export enum OpenDirection {
+  Bottom = 'bottom',
+  Top = 'top',
+}
+
 export enum Urgency {
   Error = 'error',
   None = 'none',
@@ -192,6 +205,10 @@ export type AutocompleteOption = {
   value: string;
 };
 
+export enum ProgressShape {
+  Circular = 'circular',
+  Linear = 'linear',
+}
 export enum StyleSize {
   None = 'none',
   Small = 'small',
@@ -337,6 +354,10 @@ export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, D
   max?: Date;
 };
 
+export type Breadcrumbs = WhisperComponent<WhisperComponentType.Breadcrumbs> & {
+  links: Link[];
+};
+
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
@@ -439,9 +460,19 @@ export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEdito
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
+export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
+  determinate?: number;
+  shape?: ProgressShape;
+  /**
+   * If StyleSize is set to 'None', it will return its default StyleSize 'Medium'
+   */
+  size?: StyleSize;
+};
+
 export type ChildComponents =
   | Autocomplete
   | Box
+  | Breadcrumbs
   | Button
   | Checkbox
   | DateTimeInput
@@ -455,6 +486,7 @@ export type ChildComponents =
   | Message
   | NumberInput
   | Password
+  | Progress
   | RadioGroup
   | RichTextEditor
   | Select
@@ -466,6 +498,7 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
   label?: string;
   open: boolean;
+  openDirection?: OpenDirection;
   onClick?: WhisperHandlerWithParam<boolean>;
 };
 

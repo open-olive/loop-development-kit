@@ -47,4 +47,17 @@ export const whisperUpdateTestGroup = (): TestGroup =>
       10000,
       `Check box and update`,
     ),
+
+    new LoopTest(
+      'Whisper Update - Progress',
+      whisperUpdateTests.testProcessComponent,
+      10000,
+      `Test Progress Component`,
+    ),
+    new LoopTest(
+      'Whisper Update - Breadcrumb',
+      whisperUpdateTests.testBreadcrumbUpdates,
+      10000,
+      `Click button and update`,
+    ),
   ]);

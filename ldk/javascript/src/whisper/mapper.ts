@@ -48,6 +48,10 @@ export function mapToInternalChildComponent(
           ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
           : undefined,
       } as WhisperService.Box;
+    case WhisperComponentType.Breadcrumbs:
+      return {
+        ...component,
+      } as WhisperService.Breadcrumbs;
     case WhisperComponentType.Button:
       return {
         ...component,
@@ -215,6 +219,8 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Password;
+    case WhisperComponentType.Progress:
+      return component;
     case WhisperComponentType.RadioGroup:
       if (component.id && component.selected) {
         stateMap.set(component.id, component.selected);
