@@ -104,8 +104,18 @@ export function mapToInternalChildComponent(
       } as WhisperService.RichTextEditor;
     case WhisperComponentType.Autocomplete: {
       // eslint-disable-next-line
-      const { onChange, onSelect, options } = component;
+      const { filterOptions, onChange, onSelect, options } = component;
+
       const dataObj = { data: options };
+
+      if (filterOptions) {
+        const { stringify } = filterOptions;
+        filterOptions.stringify = stringify
+          ? (error: Error | undefined, whisper: WhisperService.Whisper) =>
+              stringify(error, mapToExternalWhisper(whisper, stateMap))
+          : undefined;
+      }
+
       return {
         ...component,
         options: options ? JSON.stringify(dataObj) : undefined,

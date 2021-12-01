@@ -113,7 +113,17 @@ declare namespace WhisperService {
     value: string;
   };
 
+  interface AutocompleteFilterOptions {
+    ignoreAccents?: boolean;
+    ignoreCase?: boolean;
+    limit?: number;
+    matchFrom?: 'any' | 'start';
+    stringify?: WhisperHandler | undefined; // TODO: Add to the mapper.ts file
+    trim?: boolean;
+  }
+
   type Autocomplete = SelectComponent<'autocomplete'> & {
+    filterOptions?: AutocompleteFilterOptions;
     label?: string;
     loading?: boolean;
     multiple?: boolean;
