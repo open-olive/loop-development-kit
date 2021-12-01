@@ -21,6 +21,7 @@ declare namespace WhisperService {
     | 'message'
     | 'number'
     | 'password'
+    | 'progress'
     | 'radioGroup'
     | 'richTextEditor'
     | 'select'
@@ -54,6 +55,8 @@ declare namespace WhisperService {
   type DateTimeType = 'date' | 'time' | 'date_time';
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
+
+  type ProgressShape = 'circular' | 'linear';
 
   type StyleSize = 'none' | 'small' | 'medium' | 'large';
 
@@ -269,6 +272,12 @@ declare namespace WhisperService {
     onClick?: WhisperHandler;
   };
 
+  type Progress = Component<'progress'> & {
+    determinate?: number;
+    shape?: ProgressShape;
+    size?: StyleSize;
+  };
+
   type ChildComponents =
     | Autocomplete
     | Box
@@ -284,6 +293,7 @@ declare namespace WhisperService {
     | Message
     | NumberInput
     | Password
+    | Progress
     | RadioGroup
     | RichTextEditor
     | Select

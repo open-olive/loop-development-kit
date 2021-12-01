@@ -219,6 +219,8 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Password;
+    case WhisperComponentType.Progress:
+      return component;
     case WhisperComponentType.RadioGroup:
       if (component.id && component.selected) {
         stateMap.set(component.id, component.selected);

@@ -51,6 +51,10 @@ export enum WhisperComponentType {
    */
   Password = 'password',
   /**
+   * Progress components express an unspecified wait time or display the length of a process.
+   */
+  Progress = 'progress',
+  /**
    * The radio group allows a loop to provide the user with a collection of options in which they select a single result. The result is selected by clicking one of the radio elements in the radio group.
    *
    * A selected value of -1 indicates that nothing is selected.
@@ -201,6 +205,10 @@ export type AutocompleteOption = {
   value: string;
 };
 
+export enum ProgressShape {
+  Circular = 'circular',
+  Linear = 'linear',
+}
 export enum StyleSize {
   None = 'none',
   Small = 'small',
@@ -452,6 +460,15 @@ export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEdito
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
+export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
+  determinate?: number;
+  shape?: ProgressShape;
+  /**
+   * If StyleSize is set to 'None', it will return its default StyleSize 'Medium'
+   */
+  size?: StyleSize;
+};
+
 export type ChildComponents =
   | Autocomplete
   | Box
@@ -469,6 +486,7 @@ export type ChildComponents =
   | Message
   | NumberInput
   | Password
+  | Progress
   | RadioGroup
   | RichTextEditor
   | Select

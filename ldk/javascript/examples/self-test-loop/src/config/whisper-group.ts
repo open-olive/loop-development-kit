@@ -247,6 +247,18 @@ export const whisperTestGroup = (): TestGroup =>
       'Does the JustifyContent-Normal items behave as "stretch" in flex container?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Progress',
+      whisperTests.testProgressIndicator,
+      10000,
+      'Does the Progress Indicator display with percentage?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Indefinite Progress',
+      whisperTests.testProgressIndicatorIndefinite,
+      10000,
+      'Does the Progress display indefinite animation? ',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Breadcrumbs Empty',
       whisperTests.testEmptyBreadcrumbs,
       10000,

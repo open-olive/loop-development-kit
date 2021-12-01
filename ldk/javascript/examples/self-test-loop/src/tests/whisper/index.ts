@@ -21,6 +21,7 @@ import {
   Urgency,
   Whisper,
   WhisperComponentType,
+  ProgressShape,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -205,7 +206,6 @@ export const testMarkdownOnLinkClick = (): Promise<boolean> =>
 
     const markdown = stripIndent`
       # Links:
-
       [Some Link 1](# "A Link")
       Text between links
       [Some Link 2](#)
@@ -329,7 +329,6 @@ export const testBoxInBox = (): Promise<boolean> =>
                     type: WhisperComponentType.Markdown,
                     body: stripIndent`
                       **Header Left**
-
                       Some text on the left
                       `,
                   },
@@ -351,7 +350,6 @@ export const testBoxInBox = (): Promise<boolean> =>
                     type: WhisperComponentType.Markdown,
                     body: stripIndent`
                       **Header Right**
-
                       Some text on the right
                       `,
                   },
@@ -3154,6 +3152,84 @@ export const testSimpleClickBreadcrumbs = (): Promise<boolean> =>
           type: WhisperComponentType.Message,
           body: "Click 'Breadcrumb 2'.",
         },
+      ],
+    });
+  });
+
+export const testProgressIndicator = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did progress indicator show the percentage? ',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Progress,
+          determinate: 42,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a small sized progress indicator.',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate: 30,
+          shape: ProgressShape.Circular,
+          size: StyleSize.Small,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a medium sized progress indicator.',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate: 90,
+          shape: ProgressShape.Circular,
+          size: StyleSize.Medium,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a large sized progress indicator.',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate: 90,
+          shape: ProgressShape.Circular,
+          size: StyleSize.Large,
+        },
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'This is a progress indicator, size: None. If no size is set or size is set to None, it will be its default value: Medium',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          determinate: 90,
+          shape: ProgressShape.Circular,
+          size: StyleSize.None,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
+export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Did progress indicator have indefinite animation? ',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Progress,
+          size: StyleSize.Medium,
+          shape: ProgressShape.Linear,
+        },
+        {
+          type: WhisperComponentType.Progress,
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
     });
   });
