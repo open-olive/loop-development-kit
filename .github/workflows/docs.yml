@@ -1,6 +1,5 @@
 name: Build and Deploy Javascript Documents
 
-
 on:
   push:
     branches:
@@ -18,16 +17,7 @@ jobs:
         with:
           node-version: 14.x
       - run: npm ci
-      - run: npm run build:production
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          deploy_key: ${{ secrets.HELPS_DOCS_DEPLOY_KEY }}
-          publish_branch: gh-pages
-          publish_dir: ./docs/public
-          force_orphan: true
-          external_repository: open-olive/olive-helps
-  
+
   deploy-gh-pages-docs:
     runs-on: ubuntu-latest
     steps:
