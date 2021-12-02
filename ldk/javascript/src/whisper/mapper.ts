@@ -111,8 +111,7 @@ export function mapToInternalChildComponent(
       if (filterOptions) {
         const { stringify } = filterOptions;
         filterOptions.stringify = stringify
-          ? (error: Error | undefined, whisper: WhisperService.Whisper) =>
-              stringify(error, mapToExternalWhisper(whisper, stateMap))
+          ? (error, whisper) => stringify(error, mapToExternalWhisper(whisper, stateMap))
           : undefined;
       }
 

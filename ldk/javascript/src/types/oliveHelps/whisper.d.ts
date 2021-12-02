@@ -79,7 +79,7 @@ declare namespace WhisperService {
 
   interface Whisper {
     id: string;
-    close: Common.Readable<undefined>;
+    close: (cb: (err: Error | undefined) => void) => void;
 
     update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
