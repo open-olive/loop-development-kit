@@ -118,7 +118,7 @@ declare namespace WhisperService {
     ignoreCase?: boolean;
     limit?: number;
     matchFrom?: 'any' | 'start';
-    stringify?: WhisperHandler | undefined; // TODO: Add to the mapper.ts file
+    stringify?: (option: AutocompleteOption) => void;
     trim?: boolean;
   }
 

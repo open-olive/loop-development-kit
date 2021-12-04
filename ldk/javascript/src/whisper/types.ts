@@ -283,7 +283,7 @@ export interface AutocompleteFilterOptions {
    * Controls how an option is converted into a string so that
    * it can be matched against the input text fragment.
    */
-  stringify?: WhisperHandler;
+  stringify?: (option: AutocompleteOption) => void;
   /**
    * Defaults to false. Remove trailing spaces.
    */
