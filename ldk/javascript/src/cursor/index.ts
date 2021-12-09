@@ -19,7 +19,7 @@ export interface Cursor {
   position(): Promise<Position>;
 
   /**
-   * Starts listening to changes to the clipboard.
+   * Starts listening to changes to the cursor position.
    *
    * @param callback - The callback function called when the function changes.
    */
