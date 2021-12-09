@@ -1,17 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { screen, whisper, window } from '@oliveai/ldk';
 
-export const testOCR = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    try {
-      await OcrLoop();
-      await sleep(10000);
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-  });
-
 const writeWhisper = (label: string, body: string) =>
   whisper.create({
     label,
@@ -34,8 +23,18 @@ const writeWhisper = (label: string, body: string) =>
     ],
   });
 
-// eslint-disable-next-line camelcase
-const rebuild_image = (results: screen.OCRResult[]) => {
+export const testOCR = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await writeWhisper(`OCR`, `Starting OCR app`);
+      await sleep(10000);
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });
+
+const rebuildImage = (results: screen.OCRResult[]) => {
   const lines: any[][][] = [];
   results.forEach((box) => {
     if (box.level !== undefined) {
@@ -97,21 +96,16 @@ export async function performOcr() {
       .then((result) => {
         console.log('OCR Results: ');
         console.log(JSON.stringify(result));
-
-        console.log(rebuild_image(result));
-        const resFilter = result.filter((res) => res.conf > 75);
-        const resFilterResult = resFilter.map((res) => `${res.text}`);
-        writeWhisper(`result`, `${resFilterResult.join(' ')}`);
+        const concatResult = result.map((res) => res.text).join(' ');
+        console.log('concatResult', concatResult);
+        console.log('result: ', rebuildImage(result));
+        writeWhisper(`result`, rebuildImage(result));
       })
       .catch((error) => {
         console.log('error: ');
         console.log(error);
       });
   });
-}
-
-async function OcrLoop() {
-  writeWhisper(`OCR`, `Starting ocr app`);
 }
 
 console.log(`Starting app`);
