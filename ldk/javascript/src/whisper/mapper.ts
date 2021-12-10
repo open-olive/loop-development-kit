@@ -50,6 +50,7 @@ export function mapToInternalChildComponent(
           : undefined,
       } as WhisperService.Box;
     case WhisperComponentType.Breadcrumbs:
+      // eslint-disable-next-line no-case-declarations
       const { links, ...props} = component as Breadcrumbs;
       return {
         links: throwForDuplicateKeys(links.map((link)=>{
