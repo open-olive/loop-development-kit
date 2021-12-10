@@ -2513,13 +2513,15 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           ...componentsToGroup,
           divider,
           {
-            body: 'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare the elements wrapped in a box below. Do they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -2533,7 +2535,8 @@ export const testPadding = (): Promise<boolean> =>
           },
           divider,
           {
-            body: 'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
+            body:
+              'Compare elements wrapped in a collapsible box below. Does they have padding? Do the labels appear in the correct place?',
             type: WhisperComponentType.Markdown,
           },
           {
@@ -3200,7 +3203,8 @@ export const testProgressIndicator = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Markdown,
-          body: 'This is a progress indicator, size: None. If no size is set or size is set to None, it will be its default value: Medium',
+          body:
+            'This is a progress indicator, size: None. If no size is set or size is set to None, it will be its default value: Medium',
         },
         {
           type: WhisperComponentType.Progress,
@@ -3231,5 +3235,53 @@ export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
         },
         resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
       ],
+    });
+  });
+
+export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const box: whisper.Box = {
+      type: whisper.WhisperComponentType.Box,
+      children: [{ type: whisper.WhisperComponentType.Message, body: 'Text within Box component' }],
+      justifyContent: whisper.JustifyContent.Center,
+      direction: whisper.Direction.Vertical,
+    };
+    const link: whisper.Link = {
+      type: whisper.WhisperComponentType.Link,
+      text: 'Update Breadcrumb',
+      onClick: (error, thisWhisper) => {
+        if (error) console.error(error);
+        thisWhisper.update({
+          label: 'Can you see the text?',
+          components: [box, resolveRejectButtons(resolve, reject, 'Yes', 'No', true)],
+        });
+      },
+    };
+    const link2: whisper.Link = {
+      type: whisper.WhisperComponentType.Link,
+      text: 'Button 2',
+      onClick: (error, thisWhisper) => {
+        if (error) console.error(error);
+        thisWhisper.update({
+          label: 'test',
+          components: [{ type: whisper.WhisperComponentType.Markdown, body: '# Hello' }],
+        });
+      },
+    };
+    const bread: whisper.Breadcrumbs = {
+      type: whisper.WhisperComponentType.Breadcrumbs,
+      links: [link2, link, link],
+    };
+    const md: whisper.Markdown = {
+      type: whisper.WhisperComponentType.Markdown,
+      body:
+        '![image_name](https://d33wubrfki0l68.cloudfront.net/e7ed9fe4bafe46e275c807d63591f85f9ab246ba/e2d28/assets/images/tux.png)',
+    };
+    await whisper.create({
+      label: ' Can you see text after clicking Update Breadcrumb Button?',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [md, bread],
     });
   });
