@@ -3272,16 +3272,12 @@ export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
       type: whisper.WhisperComponentType.Breadcrumbs,
       links: [link2, link, link],
     };
-    const md: whisper.Markdown = {
-      type: whisper.WhisperComponentType.Markdown,
-      body:
-        '![image_name](https://d33wubrfki0l68.cloudfront.net/e7ed9fe4bafe46e275c807d63591f85f9ab246ba/e2d28/assets/images/tux.png)',
-    };
+
     await whisper.create({
       label: ' Can you see text after clicking Update Breadcrumb Button?',
       onClose: () => {
         console.debug('closed');
       },
-      components: [md, bread],
+      components: [bread],
     });
   });
