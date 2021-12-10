@@ -4,6 +4,7 @@ import {
   Component,
   NewWhisper,
   StateMap,
+  Breadcrumbs,
   UpdateWhisper,
   Whisper,
   WhisperComponentType,
@@ -49,8 +50,12 @@ export function mapToInternalChildComponent(
           : undefined,
       } as WhisperService.Box;
     case WhisperComponentType.Breadcrumbs:
+      const { links, ...props} = component as Breadcrumbs;
       return {
-        ...component,
+        links: throwForDuplicateKeys(links.map((link)=>{
+          return mapToInternalChildComponent(link, stateMap);
+        })),
+        ...props,
       } as WhisperService.Breadcrumbs;
     case WhisperComponentType.Button:
       return {
