@@ -5,7 +5,6 @@ import {
   Component,
   NewWhisper,
   StateMap,
-  Breadcrumbs,
   UpdateWhisper,
   Whisper,
   WhisperComponentType,
