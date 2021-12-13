@@ -294,4 +294,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Do the CollapseBoxes open in the correct directions?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Breadcrumbs update Box',
+      whisperTests.testBreadcrumbUpdateBox,
+      10000,
+      'Does box pass on after clicking the breadcrumb link?',
+    ),
   ]);

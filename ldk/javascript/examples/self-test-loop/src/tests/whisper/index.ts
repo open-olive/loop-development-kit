@@ -3233,3 +3233,47 @@ export const testProgressIndicatorIndefinite = (): Promise<boolean> =>
       ],
     });
   });
+
+export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const box: whisper.Box = {
+      type: whisper.WhisperComponentType.Box,
+      children: [{ type: whisper.WhisperComponentType.Message, body: 'Text within Box component' }],
+      justifyContent: whisper.JustifyContent.Center,
+      direction: whisper.Direction.Vertical,
+    };
+    const link: whisper.Link = {
+      type: whisper.WhisperComponentType.Link,
+      text: 'Update Breadcrumb',
+      onClick: (error, thisWhisper) => {
+        if (error) console.error(error);
+        thisWhisper.update({
+          label: 'Can you see the text?',
+          components: [box, resolveRejectButtons(resolve, reject, 'Yes', 'No', true)],
+        });
+      },
+    };
+    const link2: whisper.Link = {
+      type: whisper.WhisperComponentType.Link,
+      text: 'Button 2',
+      onClick: (error, thisWhisper) => {
+        if (error) console.error(error);
+        thisWhisper.update({
+          label: 'test',
+          components: [{ type: whisper.WhisperComponentType.Markdown, body: '# Hello' }],
+        });
+      },
+    };
+    const bread: whisper.Breadcrumbs = {
+      type: whisper.WhisperComponentType.Breadcrumbs,
+      links: [link2, link, link],
+    };
+
+    await whisper.create({
+      label: ' Can you see text after clicking Update Breadcrumb Button?',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [bread],
+    });
+  });
