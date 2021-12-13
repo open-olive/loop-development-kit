@@ -2693,6 +2693,21 @@ export const testWidth = (): Promise<boolean> =>
 export const testScrollInsideBox = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
+      const housingTypeDropdown: whisper.Select = {
+        type: whisper.WhisperComponentType.Select,
+        id: 'housingResourceType',
+        key: 'housingResourceType',
+        label: 'Housing Resource',
+        options: [
+          'Housing Financial Assistance',
+          'Temporary Shelter',
+          'Subsidized Rentals (Section 8)',
+        ],
+        selected: 0,
+        onSelect: () => {
+          // do nothing
+        },
+      };
       await whisper.create({
         label: 'Scrolling Inside Box Test',
         onClose: () => {
@@ -2703,31 +2718,24 @@ export const testScrollInsideBox = (): Promise<boolean> =>
             body: 'Does is scroll?',
             type: WhisperComponentType.Markdown,
           },
-
+          {
+            type: whisper.WhisperComponentType.Markdown,
+            body: "If you can't see the scrollbar in the following Sclect component, then it's good!",
+          },
           {
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Vertical,
             justifyContent: JustifyContent.SpaceEvenly,
             customHeight: CustomHeight.Small,
-            children: [
-              {
-                type: WhisperComponentType.TextInput,
-                label: 'TextInput',
-                onChange: (value) => {
-                  console.debug(`Input value changed: ${value}`);
-                },
-              },
-              {
-                type: whisper.WhisperComponentType.Markdown,
-                body: shortText,
-              },
-            ],
+            children: [housingTypeDropdown],
+            layout: {
+              marginTop: StyleSize.Small,
+            },
           },
           {
             type: whisper.WhisperComponentType.Box,
             direction: Direction.Horizontal,
             justifyContent: JustifyContent.SpaceEvenly,
-            customHeight: CustomHeight.Small,
             children: [
               {
                 type: whisper.WhisperComponentType.Markdown,
