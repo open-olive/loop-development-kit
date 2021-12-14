@@ -1838,28 +1838,31 @@ export const testSectionTitle = (): Promise<boolean> =>
         label: 'Did Section Title render correctly?',
         components: [
           {
-            body: 'section Title in center',
+            body: 'section Title in center with [Some Link 1](# "A Link")',
             type: WhisperComponentType.SectionTitle,
             textAlign: TextAlign.Center,
           },
           {
-            body: 'section Title on the left',
+            body: 'section Title on the left with a link : http://google.com',
             type: WhisperComponentType.SectionTitle,
             textAlign: TextAlign.Left,
           },
           {
-            body: 'section Title on the right(white)',
+            body: '~~Strikethrough section Title on the right(white)~~',
             type: WhisperComponentType.SectionTitle,
             textAlign: TextAlign.Right,
             backgroundStyle: Color.White,
           },
           {
-            body: 'section Title in center(grey)',
+            body: '_Italic section Title in center(grey)_',
             textAlign: TextAlign.Center,
             type: WhisperComponentType.SectionTitle,
             backgroundStyle: Color.Grey,
           },
-          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Section Title is a section heading component to a Whisper. It helps better separate content on the Whisper. ',
+          },
         ],
       });
     } catch (error) {
