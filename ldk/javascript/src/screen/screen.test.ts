@@ -6,6 +6,15 @@ describe('screen', () => {
   beforeEach(() => {
     oliveHelps.screen = {
       ocr: jest.fn(),
+      averageHash: jest.fn(),
+      differenceHash: jest.fn(),
+      perceptionHash: jest.fn(),
+      compareHashes: jest.fn(),
+      listenAverageHash: jest.fn(),
+      listenDifferenceHash: jest.fn(),
+      listenPerceptionHash: jest.fn(),
+      listenPixelDiff: jest.fn(),
+      listenPixelDiffActiveWindow: jest.fn(),
     };
   });
   describe('ocr', () => {

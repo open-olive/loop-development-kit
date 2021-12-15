@@ -206,6 +206,60 @@ export function promisifyListenableWithParam<TParam, TOut>(
   });
 }
 
+export function promisifyListenableWithTwoParams<TParam1, TParam2, TOut>(
+  param: TParam1,
+  param2: TParam2,
+  cb: (v: TOut) => void,
+  arg: Common.ListenableWithTwoParams<TParam1, TParam2, TOut>,
+): Promise<Cancellable> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param, param2, handleListenerCallback(cb), (obj) => {
+        resolve(obj);
+      });
+    } catch (e) {
+      handleCaughtError(reject, e as Error);
+    }
+  });
+}
+
+export function promisifyListenableWithThreeParams<TParam1, TParam2, TParam3, TOut>(
+  param: TParam1,
+  param2: TParam2,
+  param3: TParam3,
+  cb: (v: TOut) => void,
+  arg: Common.ListenableWithThreeParams<TParam1, TParam2, TParam3, TOut>,
+): Promise<Cancellable> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param, param2, param3, handleListenerCallback(cb), (obj) => {
+        resolve(obj);
+      });
+    } catch (e) {
+      handleCaughtError(reject, e as Error);
+    }
+  });
+}
+
+export function promisifyListenableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut>(
+  param: TParam1,
+  param2: TParam2,
+  param3: TParam3,
+  param4: TParam4,
+  cb: (v: TOut) => void,
+  arg: Common.ListenableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut>,
+): Promise<Cancellable> {
+  return new Promise((resolve, reject) => {
+    try {
+      arg(param, param2, param3, param4, handleListenerCallback(cb), (obj) => {
+        resolve(obj);
+      });
+    } catch (e) {
+      handleCaughtError(reject, e as Error);
+    }
+  });
+}
+
 export function promisifyMappedListenableWithParam<TParam, TInternalOut, TExternalOut>(
   param: TParam,
   map: Mapper<TInternalOut, TExternalOut>,
