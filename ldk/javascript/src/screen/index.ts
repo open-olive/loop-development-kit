@@ -93,13 +93,14 @@ export function ocr(ocrCoordinates: OCRCoordinates): Promise<OCRResult[]> {
 }
 
 export function hash(bounds: Bounds, sensitivity: bigint, hashType?: HashType): Promise<string> {
-  hashType = hashType || HashType.Average;
-  switch (hashType) {
+  const defaultOrHashType = hashType || HashType.Average;
+  switch (defaultOrHashType) {
     case HashType.Difference:
       return promisifyWithTwoParams(bounds, sensitivity, oliveHelps.screen.differenceHash);
     case HashType.Perception:
       return promisifyWithTwoParams(bounds, sensitivity, oliveHelps.screen.perceptionHash);
     case HashType.Average:
+    default:
       return promisifyWithTwoParams(bounds, sensitivity, oliveHelps.screen.averageHash);
   }
 }
@@ -119,15 +120,16 @@ export function listenHash(
   let listenFunc: Common.ListenableWithFourParams<Bounds, bigint, bigint, bigint, bigint>;
 
   switch (hashType) {
-    case HashType.Average:
-      listenFunc = oliveHelps.screen.listenAverageHash;
-      break;
     case HashType.Difference:
       listenFunc = oliveHelps.screen.listenDifferenceHash;
       break;
-    case HashType.Perception:
-      listenFunc = oliveHelps.screen.listenPerceptionHash;
-      break;
+      case HashType.Perception:
+        listenFunc = oliveHelps.screen.listenPerceptionHash;
+        break;
+      case HashType.Average:
+      default:
+        listenFunc = oliveHelps.screen.listenAverageHash;
+        break;
   }
 
   return promisifyListenableWithFourParams(
