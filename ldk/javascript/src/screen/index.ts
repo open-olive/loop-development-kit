@@ -123,13 +123,13 @@ export function listenHash(
     case HashType.Difference:
       listenFunc = oliveHelps.screen.listenDifferenceHash;
       break;
-      case HashType.Perception:
-        listenFunc = oliveHelps.screen.listenPerceptionHash;
-        break;
-      case HashType.Average:
-      default:
-        listenFunc = oliveHelps.screen.listenAverageHash;
-        break;
+    case HashType.Perception:
+      listenFunc = oliveHelps.screen.listenPerceptionHash;
+      break;
+    case HashType.Average:
+    default:
+      listenFunc = oliveHelps.screen.listenAverageHash;
+      break;
   }
 
   return promisifyListenableWithFourParams(
