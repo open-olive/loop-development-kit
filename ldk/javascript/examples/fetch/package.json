@@ -1,0 +1,32 @@
+{
+  "name": "fetch-polyfill-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --entry ./index.js --config ./node_modules/@oliveai/ldk/dist/webpack/config.js"
+  },
+  "author": "LDK Team",
+  "license": "ISC",
+  "ldk": {
+    "permissions": {
+      "network": {
+        "urlDomains": [
+          {
+            "value": "httpstat.us"
+          }
+        ]
+      },
+      "whisper": {}
+    }
+  },
+  "dependencies": {
+    "@oliveai/ldk": "file:../..",
+    "whatwg-fetch": "^3.6.2"
+  },
+  "devDependencies": {
+    "webpack": "^5.32.0",
+    "webpack-cli": "^4.6.0"
+  }
+}
