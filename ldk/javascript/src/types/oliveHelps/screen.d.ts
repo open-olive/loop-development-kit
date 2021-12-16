@@ -2,15 +2,15 @@
 declare namespace Screen {
   interface Aptitude {
     ocr: Common.ReadableWithParam<OCRCoordinates, OCRResult[]>;
-    averageHash: Common.ReadableWithTwoParams<Bounds, bigint, string>;
-    differenceHash: Common.ReadableWithTwoParams<Bounds, bigint, string>;
-    perceptionHash: Common.ReadableWithTwoParams<Bounds, bigint, string>;
-    compareHashes: Common.ReadableWithTwoParams<string, string, bigint>;
-    listenAverageHash: Common.ListenableWithFourParams<Bounds, bigint, bigint, bigint, bigint>;
-    listenDifferenceHash: Common.ListenableWithFourParams<Bounds, bigint, bigint, bigint, bigint>;
-    listenPerceptionHash: Common.ListenableWithFourParams<Bounds, bigint, bigint, bigint, bigint>;
-    listenPixelDiff: Common.ListenableWithThreeParams<Bounds, number, bigint, number>;
-    listenPixelDiffActiveWindow: Common.ListenableWithTwoParams<number, bigint, number>;
+    averageHash: Common.ReadableWithTwoParams<Bounds, number, string>;
+    differenceHash: Common.ReadableWithTwoParams<Bounds, number, string>;
+    perceptionHash: Common.ReadableWithTwoParams<Bounds, number, string>;
+    compareHashes: Common.ReadableWithTwoParams<string, string, number>;
+    listenAverageHash: Common.ListenableWithFourParams<Bounds, number, number, number, number>;
+    listenDifferenceHash: Common.ListenableWithFourParams<Bounds, number, number, number, number>;
+    listenPerceptionHash: Common.ListenableWithFourParams<Bounds, number, number, number, number>;
+    listenPixelDiff: Common.ListenableWithThreeParams<Bounds, number, number, number>;
+    listenPixelDiffActiveWindow: Common.ListenableWithTwoParams<number, number, number>;
   }
 
   interface OCRResult {

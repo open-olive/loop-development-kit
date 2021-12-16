@@ -29,7 +29,7 @@ export interface Screen {
    * @param hashType? - Specifies the type of hash to use. By default it uses the average hashing algorithm.
    * @returns A promise resolving with the hash of the selected area
    */
-  hash(bounds: Bounds, sensitivity: bigint, hashType?: HashType): Promise<string>;
+  hash(bounds: Bounds, sensitivity: number, hashType?: HashType): Promise<string>;
 
   /**
    * @experimental This functionality is experimental and subject to breaking changes.
@@ -38,7 +38,7 @@ export interface Screen {
    * @param hashB - The second hash to compare
    * @returns A promise with the hamming distance from hashA to hashB
    */
-  compareHash(hashA: string, hashB: string): Promise<bigint>;
+  compareHash(hashA: string, hashB: string): Promise<number>;
 
   /**
    * @experimental This functionality is experimental and subject to breaking changes.
@@ -52,11 +52,11 @@ export interface Screen {
    */
   listenHash(
     bounds: Bounds,
-    threshold: bigint,
-    delayMs: bigint,
-    sensitivity: bigint,
+    threshold: number,
+    delayMs: number,
+    sensitivity: number,
     hashType: HashType,
-    callback: (distance: bigint) => void,
+    callback: (distance: number) => void,
   ): Promise<Cancellable>;
 
   /**
@@ -70,7 +70,7 @@ export interface Screen {
   listenPixelDiff(
     bounds: Bounds,
     threshold: number,
-    delayMs: bigint,
+    delayMs: number,
     callback: (difference: number) => void,
   ): Promise<Cancellable>;
 
@@ -83,7 +83,7 @@ export interface Screen {
    */
   listenPixelDiffActiveWindow(
     threshold: number,
-    delayMs: bigint,
+    delayMs: number,
     callback: (difference: number) => void,
   ): Promise<Cancellable>;
 }
@@ -92,7 +92,7 @@ export function ocr(ocrCoordinates: OCRCoordinates): Promise<OCRResult[]> {
   return promisifyWithParam(ocrCoordinates, oliveHelps.screen.ocr);
 }
 
-export function hash(bounds: Bounds, sensitivity: bigint, hashType?: HashType): Promise<string> {
+export function hash(bounds: Bounds, sensitivity: number, hashType?: HashType): Promise<string> {
   const defaultOrHashType = hashType || HashType.Average;
   switch (defaultOrHashType) {
     case HashType.Difference:
@@ -105,19 +105,19 @@ export function hash(bounds: Bounds, sensitivity: bigint, hashType?: HashType): 
   }
 }
 
-export function compareHash(hashA: string, hashB: string): Promise<bigint> {
+export function compareHash(hashA: string, hashB: string): Promise<number> {
   return promisifyWithTwoParams(hashA, hashB, oliveHelps.screen.compareHashes);
 }
 
 export function listenHash(
   bounds: Bounds,
-  threshold: bigint,
-  delayMs: bigint,
-  sensitivity: bigint,
+  threshold: number,
+  delayMs: number,
+  sensitivity: number,
   hashType: HashType,
-  callback: (distance: bigint) => void,
+  callback: (distance: number) => void,
 ): Promise<Cancellable> {
-  let listenFunc: Common.ListenableWithFourParams<Bounds, bigint, bigint, bigint, bigint>;
+  let listenFunc: Common.ListenableWithFourParams<Bounds, number, number, number, number>;
 
   switch (hashType) {
     case HashType.Difference:
@@ -145,7 +145,7 @@ export function listenHash(
 export function listenPixelDiff(
   bounds: Bounds,
   threshold: number,
-  delayMs: bigint,
+  delayMs: number,
   callback: (difference: number) => void,
 ): Promise<Cancellable> {
   return promisifyListenableWithThreeParams(
@@ -159,7 +159,7 @@ export function listenPixelDiff(
 
 export function listenPixelDiffActiveWindow(
   threshold: number,
-  delayMs: bigint,
+  delayMs: number,
   callback: (difference: number) => void,
 ): Promise<Cancellable> {
   return promisifyListenableWithTwoParams(

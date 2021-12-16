@@ -1,6 +1,8 @@
 /* eslint-disable no-async-promise-executor */
 import { screen, whisper, window } from '@oliveai/ldk';
 
+export * from './hashTests';
+
 const writeWhisper = (label: string, body: string) =>
   whisper.create({
     label,
@@ -108,4 +110,4 @@ export async function performOcr() {
   });
 }
 
-console.log(`Starting app`);
+
