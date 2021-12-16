@@ -1874,6 +1874,7 @@ export const testDateTime = (): Promise<boolean> =>
       ['Date', false],
       ['Time', false],
       ['DateTime', false],
+      ['ClearedDateTime', false],
     ]);
 
     try {
@@ -1925,6 +1926,30 @@ export const testDateTime = (): Promise<boolean> =>
           tooltip: 'Date/Time picker',
           min: new Date(2020, 0, 1),
           value: new Date(2021, 4, 5),
+          max: new Date(2022, 11, 31),
+        },
+        {
+          type: WhisperComponentType.DateTimeInput,
+          key: 'clearedDateTimeId',
+          id: 'clearedDateTimeId',
+          label: 'Cleared Date and Time',
+          dateTimeType: DateTimeType.DateTime,
+          onChange: (error: Error, param: string, onChangeWhisper: Whisper) => {
+            if (param) {
+              console.debug(`ClearedDateTime picker value received: ${param}`);
+              onActionWrapper(
+                error,
+                'ClearedDateTime',
+                resolverMap,
+                onChangeWhisper,
+                resolve,
+                reject,
+              );
+            }
+          },
+          tooltip: 'Date/Time picker',
+          min: new Date(2020, 0, 1),
+          value: '',
           max: new Date(2022, 11, 31),
         },
       ];
