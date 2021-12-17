@@ -36,7 +36,7 @@ export const testFullScreenHash = (): Promise<boolean> =>
 export const testScreenHash = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      const fullScreen: Bounds = {
+      const bounds: Bounds = {
         top: 0,
         left: 0,
         width: 512,
@@ -45,10 +45,10 @@ export const testScreenHash = (): Promise<boolean> =>
 
       const sensitivity: number = 1;
 
-      await screen.hash(fullScreen, sensitivity);
-      const averageHash = await screen.hash(fullScreen, sensitivity, HashType.Average);
-      const differenceHash = await screen.hash(fullScreen, sensitivity, HashType.Difference);
-      const perceptionHash = await screen.hash(fullScreen, sensitivity, HashType.Perception);
+      await screen.hash(bounds, sensitivity);
+      const averageHash = await screen.hash(bounds, sensitivity, HashType.Average);
+      const differenceHash = await screen.hash(bounds, sensitivity, HashType.Difference);
+      const perceptionHash = await screen.hash(bounds, sensitivity, HashType.Perception);
 
       const usedDifferentAlg =
         averageHash != differenceHash &&
@@ -67,12 +67,27 @@ export const testScreenHash = (): Promise<boolean> =>
 export const testCompareHash = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      const hashA = 'bbbb';
-      const hashB = 'cccc';
-      const expectedDistance = 4;
+      const boundsA: Bounds = {
+        top: 0,
+        left: 0,
+        width: 512,
+        height: 512,
+      };
+
+      const boundsB: Bounds = {
+        top: 0,
+        left: 512,
+        width: 512,
+        height: 512,
+      };
+
+      const sensitivity: number = 1;
+
+      const hashA = await screen.hash(boundsA, sensitivity);
+      const hashB = await screen.hash(boundsB, sensitivity);
 
       let distance = await screen.compareHash(hashA, hashB);
-      if (distance != expectedDistance) {
+      if (distance == 0) {
         reject(`Distance between ${hashA} and ${hashB} resulted in ${distance}`);
       }
 
@@ -112,15 +127,25 @@ export const testListenFunctions = (): Promise<boolean> =>
       };
 
       function verifyAllCalled() {
+        console.log(JSON.stringify(verified));
         if (Object.values(verified).indexOf(false) == -1) {
           resolve(true);
         }
       }
 
+      function clearListener(fnType: string) {
+        console.log(`Clearing ${fnType} listener`);
+        if (listeners[fnType]) {
+          listeners[fnType].cancel();
+          listeners[fnType] = undefined;
+        }
+      }
+
       function generateCb(fnType: string) {
         return (distance: number) => {
+          console.log(`${fnType} callback called.`);
           verified[fnType] = true;
-          listeners[fnType].cancel();
+          setTimeout(() => clearListener(fnType), 0);
           setTimeout(verifyAllCalled, 0);
         };
       }
@@ -159,11 +184,11 @@ export const testListenFunctions = (): Promise<boolean> =>
         .then((cancellable) => (listeners['difference'] = cancellable));
 
       screen
-        .listenPixelDiff(bounds, threshold, delayMs, generateCb('pixelDiff'))
+        .listenPixelDiff(bounds, 0.25, delayMs, generateCb('pixelDiff'))
         .then((cancellable) => (listeners['pixelDiff'] = cancellable));
 
       screen
-        .listenPixelDiffActiveWindow(threshold, delayMs, generateCb('activeWindow'))
+        .listenPixelDiffActiveWindow(0.25, delayMs, generateCb('activeWindow'))
         .then((cancellable) => (listeners['activeWindow'] = cancellable));
     } catch (error) {
       reject(error);
