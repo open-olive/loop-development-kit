@@ -20,3 +20,16 @@ export interface OCRCoordinates {
   width: number;
   height: number;
 }
+
+export type Bounds = {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+};
+
+export enum HashType {
+  Average,
+  Difference,
+  Perception,
+}

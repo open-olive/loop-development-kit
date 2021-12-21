@@ -281,11 +281,13 @@ export function mapToInternalChildComponent(
       } as WhisperService.TextInput;
     case WhisperComponentType.DateTimeInput:
       if (component.id && component.value) {
-        stateMap.set(component.id, component.value.toISOString());
+        const value =
+          component.value instanceof Date ? component.value.toISOString() : component.value;
+        stateMap.set(component.id, value);
       }
       return {
         ...component,
-        value: component.value?.toISOString(),
+        value: component.value instanceof Date ? component.value?.toISOString() : component.value,
         max: component.max?.toISOString(),
         min: component.min?.toISOString(),
         onChange: (error, param, whisper) => {

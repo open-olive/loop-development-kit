@@ -1,6 +1,9 @@
 /* eslint-disable no-async-promise-executor */
 import { screen, whisper, window, cursor } from '@oliveai/ldk';
 import { Cancellable } from '../../../../../dist/cancellable';
+
+export * from './hashTests';
+
 const writeWhisper = (label: string, body: string) =>
   whisper.create({
     label,
