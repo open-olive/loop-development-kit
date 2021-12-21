@@ -16,7 +16,7 @@ export const testListenText = (): Promise<boolean> =>
   new Promise(async (resolve) => {
     const listener = await keyboard.listenText((text) => {
       console.info('Text received', 'response', text);
-      if (text === 'Olive') {
+      if (text === 'olive helps') {
         listener.cancel();
         resolve(true);
       }

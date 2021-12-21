@@ -1,6 +1,6 @@
 /* eslint-disable no-async-promise-executor */
-import { screen, whisper, window } from '@oliveai/ldk';
-
+import { screen, whisper, window, cursor } from '@oliveai/ldk';
+import { Cancellable } from '../../../../../dist/cancellable';
 const writeWhisper = (label: string, body: string) =>
   whisper.create({
     label,
@@ -27,7 +27,8 @@ export const testOCR = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await writeWhisper(`OCR`, `Starting OCR app`);
-      await sleep(10000);
+      await sleep(5000);
+      resolve(true);
     } catch (e) {
       console.error(e);
       reject(e);
@@ -109,3 +110,99 @@ export async function performOcr() {
 }
 
 console.log(`Starting app`);
+
+async function testOCRUsingCursor() {
+  let i = 0;
+  let cursorPositionStream: Cancellable;
+  let topParam: number;
+  let leftParam: number;
+  let topParam1: number;
+  let leftParam1: number;
+  await sleep(1000);
+  cursor
+    .listenPosition((response) => {
+      if (typeof response !== 'undefined') {
+        if (i === 0) {
+          topParam = response.y;
+          leftParam = response.x;
+          console.debug(`leftParam - X - ${leftParam1}`);
+          console.debug(` topParam - Y - ${topParam1}`);
+        }
+        if (i === 1) {
+          topParam1 = response.y;
+          leftParam1 = response.x;
+          console.debug(`leftParam1 - X - ${leftParam1}`);
+          console.debug(` topParam1 - Y - ${topParam1}`);
+        }
+
+        i += 1;
+
+        if (i >= 2) {
+          cursorPositionStream.cancel();
+        }
+      }
+    })
+    .then((cancellable: Cancellable) => {
+      cursorPositionStream = cancellable;
+    });
+  await sleep(2000);
+  const width = Math.abs(leftParam1 - leftParam).toString();
+  const height = Math.abs(topParam1 - topParam).toString();
+
+  const ocrCoordinates = {
+    top: topParam,
+    left: leftParam,
+    width: parseInt(width, 10),
+    height: parseInt(height, 10),
+  };
+  console.log('got OCR coordinates:');
+  console.log(ocrCoordinates.top, ocrCoordinates.left, ocrCoordinates.width, ocrCoordinates.height);
+  console.log('performing ocr with coordinates...');
+
+  screen
+    .ocr(ocrCoordinates)
+    .then((result) => {
+      console.log('OCR Results: ');
+      console.log(JSON.stringify(result));
+      console.log('result: ', rebuildImage(result));
+      writeWhisper(`result`, rebuildImage(result));
+    })
+    .catch((error) => {
+      console.log('error: ');
+      console.log(error);
+    });
+}
+
+const writeWhisperCursorTest = (label: string, body: string) =>
+  whisper.create({
+    label,
+    onClose: () => {
+      console.log(`Closed Whisper`);
+    },
+    components: [
+      {
+        body,
+        type: whisper.WhisperComponentType.Markdown,
+      },
+      {
+        type: whisper.WhisperComponentType.Button,
+        label: 'Perform OCR',
+        onClick: (error, incomingWhisper) => {
+          incomingWhisper.close((e) => console.error(e));
+          testOCRUsingCursor();
+        },
+      },
+    ],
+  });
+
+export const testOCRUsingCursorAptitude = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await writeWhisperCursorTest(`OCR`, `Starting OCR app`);
+      await sleep(5000);
+      resolve(true);
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });

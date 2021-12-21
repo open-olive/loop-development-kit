@@ -6,9 +6,18 @@ import * as screenTests from '../tests/screen';
 export const screenTestGroup = (): TestGroup =>
   new TestGroup('Screen Aptitude', [
     new LoopTest(
-      'Screem Aptitude - OCR',
+      'Screem Aptitude - OCR',    
       screenTests.testOCR,
       10000,
       'Can you see recognized text?.',
     ),
+    new LoopTest(
+      'Screem Aptitude - OCRUsingCursor ',    
+      screenTests.testOCRUsingCursorAptitude,
+      10000,
+      'Can you see recognized text?.',
+    ),
   ]);
+
+
+  
