@@ -36,12 +36,9 @@ export const screenTestGroup = (): TestGroup =>
       'Please open a new fullscreen window and change the contents (A browser works well for this).',
     ),
     new LoopTest(
-      'Screem Aptitude - OCRUsingCursor ',    
+      'Screem Aptitude - OCRUsingCursor ',
       screenTests.testOCRUsingCursorAptitude,
       10000,
       'Can you see recognized text?.',
     ),
   ]);
-
-
-  
