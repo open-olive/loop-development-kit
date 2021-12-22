@@ -111,9 +111,6 @@ export async function performOcr() {
       });
   });
 }
-
-console.log(`Starting app`);
-
 async function testOCRUsingCursor() {
   let i = 0;
   let cursorPositionStream: Cancellable;
@@ -149,14 +146,14 @@ async function testOCRUsingCursor() {
       cursorPositionStream = cancellable;
     });
   await sleep(2000);
-  const width = Math.abs(leftParam1 - leftParam).toString();
-  const height = Math.abs(topParam1 - topParam).toString();
+  const width = Math.abs(leftParam1 - leftParam);
+  const height = Math.abs(topParam1 - topParam);
 
   const ocrCoordinates = {
     top: topParam,
     left: leftParam,
-    width: parseInt(width, 10),
-    height: parseInt(height, 10),
+    width,
+    height,
   };
   console.log('got OCR coordinates:');
   console.log(ocrCoordinates.top, ocrCoordinates.left, ocrCoordinates.width, ocrCoordinates.height);
