@@ -323,6 +323,8 @@ describe('renderer', () => {
     });
   });
   describe('closing whispers', () => {
+    const callAllOnCloseHandlers = (mockedFn: jest.Mock) => Promise.all(mockedFn.mock.calls.map(call => call[0]()));
+
     it('returned object should call closeWhisper when programmatically closed', async () => {
       const onClose = jest.fn();
       const whisper = await render(
@@ -344,14 +346,26 @@ describe('renderer', () => {
         </oh-whisper>,
         whisperInterface,
       );
-      const closeHandler = mocked(whisperInterface.setOnClose).mock.calls[0][0];
-      await closeHandler();
+
+      await callAllOnCloseHandlers(mocked(whisperInterface.setOnClose));
       expect(whisperInterface.createOrUpdateWhisper).toHaveBeenCalledWith({
         components: [],
         label: '',
         onClose: expect.any(Function),
       });
       expect(onUnmount).toHaveBeenCalled();
+    });
+    it('when the whisper onClose prop is called it calls the users handler', async () => {
+      const onClose = jest.fn();
+      await render(
+        <oh-whisper label="whisper.label" onClose={onClose}>
+	        <oh-markdown body="markdown.body"/>
+        </oh-whisper>,
+        whisperInterface
+      );
+
+      await callAllOnCloseHandlers(mocked(whisperInterface.setOnClose))
+      expect(onClose).toHaveBeenCalled()
     });
   });
 });
