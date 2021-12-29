@@ -21,7 +21,7 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
 
   private whisper: Whisper | undefined;
 
-  private onCloseHandler: undefined | (() => Promise<void>);
+  private onCloseHandlers: (() => Promise<void>)[] = [];
 
   async createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): Promise<void> {
     if (this.status === RenderInstanceStatus.Closed) {
@@ -48,10 +48,10 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
 
   handleOnClose = (): void => {
     this.status = RenderInstanceStatus.Closed;
-    this.onCloseHandler?.();
+    this.onCloseHandlers.forEach(handler => handler())
   };
 
   setOnClose(func: () => Promise<void>): void {
-    this.onCloseHandler = func;
+    this.onCloseHandlers.push(func);
   }
 }
