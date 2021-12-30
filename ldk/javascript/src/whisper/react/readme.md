@@ -56,4 +56,3 @@ main();
 * We have targeted specific `react` and `react-reconciler` versions in the LDK. Weird things may happen if you use another version.
 * If you are using a local build of the LDK that's symlinked into your Loop's repo, you'll need to use a Webpack `resolve` alias to ensure that both the LDK and your Loop are using the same `react` library.
 * Text nodes are automatically converted into Markdown components. If you plan on using interpolation, we recommend that you use explicit Markdown components (`oh-markdown` element) and supply the Markdown text to be rendered in the `body` prop.
-* The way onClose currently works is a bit weird, it is required on oh-whisper, but it will only be hooked up to the close event if it's set as a prop on the top level component like in the example above
