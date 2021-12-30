@@ -4,7 +4,8 @@ import { create } from '../index';
 export interface WhisperRenderingInterface {
   createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): void;
   closeWhisper(): void;
-  setOnClose(func: () => Promise<void>): void;
+  setInternalOnClose(func: () => Promise<void>): void;
+  setExternalOnClose(func: () => Promise<void>): void;
 }
 
 enum RenderInstanceStatus {
@@ -21,7 +22,9 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
 
   private whisper: Whisper | undefined;
 
-  private onCloseHandlers: (() => Promise<void>)[] = [];
+  private internalOnClose: (() => Promise<void>) | undefined;
+
+  private externalOnClose: (() => Promise<void>) | undefined;
 
   async createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): Promise<void> {
     if (this.status === RenderInstanceStatus.Closed) {
@@ -48,10 +51,15 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
 
   handleOnClose = (): void => {
     this.status = RenderInstanceStatus.Closed;
-    this.onCloseHandlers.forEach(handler => handler())
+    this.internalOnClose?.();
+    this.externalOnClose?.();
   };
 
-  setOnClose(func: () => Promise<void>): void {
-    this.onCloseHandlers.push(func);
+  setInternalOnClose(func: () => Promise<void>): void {
+    this.internalOnClose = func;
+  }
+
+  setExternalOnClose(func: () => Promise<void>): void {
+    this.externalOnClose = func;
   }
 }
