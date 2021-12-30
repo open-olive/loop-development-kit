@@ -235,7 +235,7 @@ export const config: CoreConfig & PersistenceConfig = {
     };
     handler.assignTextChildren?.(instance, props);
     if (type === 'oh-whisper' && typeof props.onClose === 'function') {
-      rootContainer.setExternalOnClose(props.onClose)
+      rootContainer.setExternalOnClose(props.onClose);
     }
     if (internalHandle.key) {
       instance.key = internalHandle.key;

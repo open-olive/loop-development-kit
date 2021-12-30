@@ -52,7 +52,7 @@ describe('renderer', () => {
       createOrUpdateWhisper: jest.fn(),
       closeWhisper: jest.fn(),
       setInternalOnClose: jest.fn(),
-      setExternalOnClose: jest.fn()
+      setExternalOnClose: jest.fn(),
     };
   });
 
@@ -358,13 +358,13 @@ describe('renderer', () => {
       const onClose = jest.fn();
       await render(
         <oh-whisper label="whisper.label" onClose={onClose}>
-	        <oh-markdown body="markdown.body"/>
+          <oh-markdown body="markdown.body" />
         </oh-whisper>,
-        whisperInterface
+        whisperInterface,
       );
 
       await mocked(whisperInterface.setExternalOnClose).mock.calls[0][0]();
-      expect(onClose).toHaveBeenCalled()
+      expect(onClose).toHaveBeenCalled();
     });
   });
 });
