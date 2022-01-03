@@ -119,32 +119,32 @@ async function testOCRUsingCursor() {
   let topParam1: number;
   let leftParam1: number;
   await sleep(1000);
-  cursor
-    .listenPosition((response) => {
-      if (typeof response !== 'undefined') {
-        if (i === 0) {
-          topParam = response.y;
-          leftParam = response.x;
-          console.debug(`leftParam - X - ${leftParam1}`);
-          console.debug(` topParam - Y - ${topParam1}`);
-        }
-        if (i === 1) {
-          topParam1 = response.y;
-          leftParam1 = response.x;
-          console.debug(`leftParam1 - X - ${leftParam1}`);
-          console.debug(` topParam1 - Y - ${topParam1}`);
-        }
-
-        i += 1;
-
-        if (i >= 2) {
-          cursorPositionStream.cancel();
-        }
+  await cursor.listenPosition((response) => {
+    if (typeof response !== 'undefined') {
+      if (i === 0) {
+        topParam = response.y;
+        leftParam = response.x;
+        console.debug(`leftParam - X - ${leftParam1}`);
+        console.debug(` topParam - Y - ${topParam1}`);
       }
-    })
-    .then((cancellable: Cancellable) => {
-      cursorPositionStream = cancellable;
-    });
+      if (i === 1) {
+        topParam1 = response.y;
+        leftParam1 = response.x;
+        console.debug(`leftParam1 - X - ${leftParam1}`);
+        console.debug(` topParam1 - Y - ${topParam1}`);
+      }
+
+      i += 1;
+
+      if (i >= 2) {
+        cursorPositionStream.cancel();
+      }
+    }
+  });
+
+  let cancellable: Cancellable;
+  cursorPositionStream = cancellable;
+
   await sleep(2000);
   const width = Math.abs(leftParam1 - leftParam);
   const height = Math.abs(topParam1 - topParam);
@@ -159,18 +159,17 @@ async function testOCRUsingCursor() {
   console.log(ocrCoordinates.top, ocrCoordinates.left, ocrCoordinates.width, ocrCoordinates.height);
   console.log('performing ocr with coordinates...');
 
-  screen
-    .ocr(ocrCoordinates)
-    .then((result) => {
-      console.log('OCR Results: ');
-      console.log(JSON.stringify(result));
-      console.log('result: ', rebuildImage(result));
-      writeWhisper(`result`, rebuildImage(result));
-    })
-    .catch((error) => {
-      console.log('error: ');
-      console.log(error);
-    });
+  try {
+    const result = await screen.ocr(ocrCoordinates);
+
+    console.log('OCR Results: ');
+    console.log(JSON.stringify(result));
+    console.log('result: ', rebuildImage(result));
+    writeWhisper(`result`, rebuildImage(result));
+  } catch (error) {
+    console.log('error: ');
+    console.log(error);
+  }
 }
 
 const writeWhisperCursorTest = (label: string, body: string) =>
