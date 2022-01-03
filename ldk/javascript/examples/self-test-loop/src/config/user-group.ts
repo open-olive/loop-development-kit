@@ -21,6 +21,6 @@ export const userTestGroup = (): TestGroup =>
       'User Aptitude - JWT - Email Claim',
       userTests.testJwtIncludeEmail,
       10000,
-      'No action required',
+      'Please check package.json and update the value of email to your email address!',
     ),
   ]);
