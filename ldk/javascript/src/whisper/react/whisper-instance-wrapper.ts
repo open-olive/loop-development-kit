@@ -37,7 +37,7 @@ export class WhisperInstanceWrapper implements WhisperInstance {
     this.container = container;
     this.renderInstance = renderInstance;
     this.reconciler = reconciler;
-    this.renderInstance.setOnClose(this.handleWhisperClose);
+    this.renderInstance.setInternalOnClose(this.handleWhisperClose);
   }
 
   close(): void {
