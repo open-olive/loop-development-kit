@@ -76,7 +76,7 @@ describe('Browser', () => {
         tabId: 0,
         requestUrl: 'https://www.google.com',
         method: 'GET',
-        requestBody: undefined,
+        requestBody: null,
         domain: 'google.com',
       };
 
