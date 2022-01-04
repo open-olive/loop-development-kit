@@ -96,7 +96,7 @@ describe('Browser', () => {
         id: 0,
         sourceHTML: '<HTML></HTML>',
       };
-      mocked(oliveHelps.browser.sourceHTML).mockImplementation((address, callback) => {
+      mocked(oliveHelps.browser.sourceHTML).mockImplementation((addr, callback) => {
         callback(undefined, details);
       });
 

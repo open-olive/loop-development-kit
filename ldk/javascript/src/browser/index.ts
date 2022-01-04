@@ -106,9 +106,8 @@ export function openTab(
 ): Promise<number> | Promise<PageDetails> {
   if (configuration?.includeSource) {
     return promisifyWithParam(address, oliveHelps.browser.openTab2);
-  } else {
-    return promisifyWithParam(address, oliveHelps.browser.openTab);
   }
+  return promisifyWithParam(address, oliveHelps.browser.openTab);
 }
 
 export function openWindow(
@@ -117,9 +116,8 @@ export function openWindow(
 ): Promise<number> | Promise<PageDetails> {
   if (configuration?.includeSource) {
     return promisifyWithParam(address, oliveHelps.browser.openWindow2);
-  } else {
-    return promisifyWithParam(address, oliveHelps.browser.openWindow);
   }
+  return promisifyWithParam(address, oliveHelps.browser.openWindow);
 }
 
 export function sourceHTML(address: string): Promise<PageDetails> {
