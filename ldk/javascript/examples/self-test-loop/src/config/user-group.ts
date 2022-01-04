@@ -21,6 +21,6 @@ export const userTestGroup = (): TestGroup =>
       'User Aptitude - JWT - Email Claim',
       userTests.testJwtIncludeEmail,
       10000,
-      'Please check package.json and update the value of email to your email address!',
+      'Log in to the team-ldx@oliveai.com account in Olive Helps and try this again.',
     ),
   ]);
