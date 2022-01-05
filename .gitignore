@@ -1,24 +1,12 @@
 # npm & yarn
 **/node_modules/
-ldk/node.npm
-ldk/node.yarn-integrity
-ldk/node/npm-debug.log*
-ldk/node/yarn-debug.log*
-ldk/node/yarn-error.log*
-ldk/node/yarn.lock*
-ldk/node/build/bundle.js
-ldk/node/build/index.html
-ldk/node/build*
-ldk/node/build/*
-ldk/node/docs
 
 # Go LDK build files for examples
 ldk/go/examples/**/build
 
 # Testing
 coverage/
-ldk/node/coverage/
-ldk/node/.eslintcache
+**/coverage/
 
 # IDE support files
 **/eclipse
@@ -34,7 +22,6 @@ ldk/node/.eslintcache
 **/.idea
 **/*.launch
 **/*.tmproj
-**/.vs/
 *.iml
 *.ipr
 *.iws
@@ -55,106 +42,7 @@ Thumbs.db:*
 *.orig
 *.swp
 
-# C#
-
-
-# User-specific files
-*.rsuser
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-
-# User-specific files (MonoDevelop/Xamarin Studio)
-*.userprefs
-
-# Mono auto generated files
-mono_crash.*
-
-# Build results
-ldk/csharp/**/[Dd]ebug/
-ldk/csharp/**/[Dd]ebugPublic/
-ldk/csharp/**/[Rr]elease/
-ldk/csharp/**/[Rr]eleases/
-ldk/csharp/**/x64/
-ldk/csharp/**/x86/
-ldk/csharp/**/[Ww][Ii][Nn]32/
-ldk/csharp/**/[Aa][Rr][Mm]/
-ldk/csharp/**/[Aa][Rr][Mm]64/
-ldk/csharp/**/bld/
-ldk/csharp/**/[Bb]in/
-ldk/csharp/**/[Oo]bj/
-ldk/csharp/**/[Ll]og/
-ldk/csharp/**/[Ll]ogs/
-
-# Visual Studio 2015/2017 cache/options directory
-.vs/
-# Uncomment if you have tasks that create the project's static files in wwwroot
-#wwwroot/
-
-# Visual Studio 2017 auto generated files
-Generated\ Files/
-
-# MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
-
-# NUnit
-*.VisualState.xml
-TestResult.xml
-nunit-*.xml
-
-# Build Results of an ATL Project
-[Dd]ebugPS/
-[Rr]eleasePS/
-dlldata.c
-
-# Benchmark Results
-BenchmarkDotNet.Artifacts/
-
-# .NET Core
-project.lock.json
-project.fragment.lock.json
-artifacts/
-
-# ASP.NET Scaffolding
-ScaffoldingReadMe.txt
-
-# StyleCop
-StyleCopReport.xml
-
-# Files built by Visual Studio
-ldk/csharp/**/*_i.c
-ldk/csharp/**/*_p.c
-ldk/csharp/**/*_h.h
-ldk/csharp/**/*.ilk
-ldk/csharp/**/*.meta
-ldk/csharp/**/*.obj
-ldk/csharp/**/*.iobj
-ldk/csharp/**/*.pch
-ldk/csharp/**/*.pdb
-ldk/csharp/**/*.ipdb
-ldk/csharp/**/*.pgc
-ldk/csharp/**/*.pgd
-ldk/csharp/**/*.rsp
-ldk/csharp/**/*.sbr
-ldk/csharp/**/*.tlb
-ldk/csharp/**/*.tli
-ldk/csharp/**/*.tlh
-ldk/csharp/**/*.tmp
-ldk/csharp/**/*.tmp_proj
-ldk/csharp/**/*_wpftmp.csproj
-ldk/csharp/**/*.log
-ldk/csharp/**/*.vspscc
-ldk/csharp/**/*.vssscc
-ldk/csharp/**/.builds
-ldk/csharp/**/*.pidb
-ldk/csharp/**/*.svclog
-ldk/csharp/**/*.scc
-
+# Docs
 docs/public
 docs/.cache
 docs/node_modules
-
-# browser extension zip
-extension/*.zip
