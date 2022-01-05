@@ -38,7 +38,7 @@ function main() {
     if (textEntry) {
       return;
     }
-    ReactWhisper.renderNewWhisper(<Incrementer/>)
+    ReactWhisper.renderNewWhisper(<Incrementer onClose={() => console.log('closed')} />)
   };
   ldk.keyboard.listenHotkey({control: true, key: 'a'}, listener);
 }
