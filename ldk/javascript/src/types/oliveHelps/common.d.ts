@@ -43,4 +43,28 @@ declare namespace Common {
     callback: Callback<TOut>,
     returnCb: ReturnCallback,
   ) => void;
+
+  type ListenableWithTwoParams<TParam1, TParam2, TOut> = (
+    param1: TParam1,
+    param2: TParam2,
+    callback: Callback<TOut>,
+    returnCb: ReturnCallback,
+  ) => void;
+
+  type ListenableWithThreeParams<TParam1, TParam2, TParam3, TOut> = (
+    param1: TParam1,
+    param2: TParam2,
+    param3: TParam3,
+    callback: Callback<TOut>,
+    returnCb: ReturnCallback,
+  ) => void;
+
+  type ListenableWithFourParams<TParam1, TParam2, TParam3, TParam4, TOut> = (
+    param1: TParam1,
+    param2: TParam2,
+    param3: TParam3,
+    param4: TParam4,
+    callback: Callback<TOut>,
+    returnCb: ReturnCallback,
+  ) => void;
 }

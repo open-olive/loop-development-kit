@@ -348,7 +348,11 @@ export type Telephone = InputComponent<WhisperComponentType.Telephone, string>;
 
 export type TextInput = InputComponent<WhisperComponentType.TextInput, string>;
 
-export type DateTimeInput = InputComponent<WhisperComponentType.DateTimeInput, Date, string> & {
+export type DateTimeInput = InputComponent<
+  WhisperComponentType.DateTimeInput,
+  Date | string,
+  string
+> & {
   dateTimeType: DateTimeType;
   min?: Date;
   max?: Date;
