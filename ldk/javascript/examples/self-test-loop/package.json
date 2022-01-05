@@ -47,7 +47,7 @@
       "user": {
         "optionalClaims":[
           {
-            "value" :"team-ldx@oliveai.com"
+            "value" :"email"
           }
         ]
       },
