@@ -460,6 +460,7 @@ export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEdito
   onFocus?: (error: Error | undefined) => void;
   tooltip?: string;
   validationError?: string;
+  value?: string;
 };
 
 export type Divider = WhisperComponent<WhisperComponentType.Divider>;

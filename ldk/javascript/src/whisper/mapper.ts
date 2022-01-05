@@ -103,6 +103,9 @@ export function mapToInternalChildComponent(
     case WhisperComponentType.SectionTitle:
       return component;
     case WhisperComponentType.RichTextEditor:
+      if (component.id && component.value) {
+        stateMap.set(component.id, component.value);
+      }
       return {
         ...component,
         onChange: (error, param, whisper) => {

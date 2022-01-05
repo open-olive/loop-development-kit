@@ -214,6 +214,7 @@ declare namespace WhisperService {
     onFocus?: (error: Error | undefined) => void;
     tooltip?: string;
     validationError?: string;
+    value?: string;
   };
 
   type Checkbox = SelectComponent<'checkbox'> & {
