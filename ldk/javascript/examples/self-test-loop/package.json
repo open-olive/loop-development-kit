@@ -44,7 +44,13 @@
       "filesystem": {},
       "process": {},
       "ui": {},
-      "user": {},
+      "user": {
+        "optionalClaims":[
+          {
+            "value" :"email"
+          }
+        ]
+      },
       "system": {},
       "screen": {},
       "keyboard": {},
