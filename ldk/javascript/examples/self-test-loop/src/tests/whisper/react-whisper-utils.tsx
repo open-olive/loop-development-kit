@@ -44,7 +44,10 @@ interface TestWhisperState {
   error: Error | undefined;
 }
 
-function withWrapper(WrappedComponent: React.JSXElementConstructor<TestComponentProps>) {
+function withWrapper(
+  WrappedComponent: React.JSXElementConstructor<TestComponentProps>,
+  resolveOnClose?: boolean,
+) {
   return class WithWrapper extends React.Component<
     TestComponentProps & TestWhisperProps,
     TestWhisperState
@@ -68,7 +71,9 @@ function withWrapper(WrappedComponent: React.JSXElementConstructor<TestComponent
         <oh-whisper
           label={label}
           onClose={() => {
-            // do nothing.
+            if (resolveOnClose) {
+              onResolve(true);
+            }
           }}
         >
           <WrappedComponent onResolve={onResolve} onReject={onReject} />
@@ -100,6 +105,15 @@ export class WhisperTestWrapper {
     return wrapper.promise;
   }
 
+  static async createPromiseWithResolveOnClsoe(
+    testComponent: React.FunctionComponent<TestComponentProps>,
+    label: string,
+  ): Promise<boolean> {
+    const wrapper = new WhisperTestWrapper(testComponent, label);
+    await wrapper.create(true);
+    return wrapper.promise;
+  }
+
   constructor(testComponent: React.FunctionComponent<TestComponentProps>, label: string) {
     this.promise = new Promise((resolve, reject) => {
       this.onResolve = resolve;
@@ -109,8 +123,8 @@ export class WhisperTestWrapper {
     this.label = label;
   }
 
-  async create(): Promise<void> {
-    const TestComponent = withWrapper(this.testComponent);
+  async create(resolveOnClose?: boolean): Promise<void> {
+    const TestComponent = withWrapper(this.testComponent, resolveOnClose);
     const promise = renderNewWhisper(
       <TestComponent
         onResolve={this.handleResolve}
