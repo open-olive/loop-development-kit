@@ -56,5 +56,5 @@ export {
   window,
   document,
   React,
-  ReactWhisper
+  ReactWhisper,
 };
