@@ -778,3 +778,67 @@ export const testProcessComponent = (): Promise<boolean> =>
       reject(e);
     }
   });
+
+const RichTextEditorUpdates: React.FunctionComponent<TestComponentProps> = (props) => {
+  const [step, updateStep] = React.useState(1);
+  const FINAL_STEP = 3;
+  return (
+    <>
+      <oh-markdown
+        body={step === 2 ? 'Editor should have a default value' : 'Editor should be empty'}
+      />
+      {step === 1 && (
+        <oh-rich-text-editor
+          id="rte"
+          key="rte"
+          tooltip="This text editor should be blank"
+          onChange={onChangeSelectHandler}
+        />
+      )}
+
+      {step === 2 && (
+        <oh-rich-text-editor
+          id="rte"
+          key="rte"
+          tooltip="This text editor should have a default value"
+          value="Default Value"
+          onChange={onChangeSelectHandler}
+        />
+      )}
+
+      {step === 3 && (
+        <oh-rich-text-editor
+          id="rte"
+          key="rte"
+          tooltip="This text editor should be empty"
+          value=""
+          onChange={onChangeSelectHandler}
+        />
+      )}
+
+      {step != FINAL_STEP && (
+        <oh-button
+          label="Next Stage"
+          onClick={(error) => {
+            if (error) {
+              props.onReject();
+            } else {
+              updateStep(step + 1);
+            }
+          }}
+        />
+      )}
+
+      {step === FINAL_STEP && (
+        <ConfirmOrDeny
+          onResolve={props.onResolve}
+          onReject={props.onReject}
+          prompt={'Did the editor update as expected?'}
+        />
+      )}
+    </>
+  );
+};
+
+export const testRichTextEditorUpdates = (): Promise<boolean> =>
+  WhisperTestWrapper.createPromise(RichTextEditorUpdates, 'Values should update');

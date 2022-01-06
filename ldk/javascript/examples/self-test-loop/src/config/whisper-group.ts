@@ -204,6 +204,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Is RichTextEditor working correctly?',
     ),
     new LoopTest(
+      'Whisper Aptitude - RichTextEditor with default',
+      whisperTests.testRichTextEditorValues,
+      30000,
+      'Is RichTextEditor working correctly?',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Autocomplete',
       whisperTests.testAutocomplete,
       30000,

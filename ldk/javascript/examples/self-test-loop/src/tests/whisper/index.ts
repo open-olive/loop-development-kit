@@ -2308,6 +2308,70 @@ export const testRichTextEditor = (): Promise<boolean> =>
     }
   });
 
+
+export const testRichTextEditorValues = (): Promise<boolean> =>
+new Promise(async (resolve, reject) => {
+  try {
+    let editedText = '';
+    const components: Component[] = [
+      {
+        id: 'RTE1',
+        key: 'RTE1',
+        value: "Default value",
+        type: WhisperComponentType.RichTextEditor,
+        onBlur: () => {
+          console.debug(`On blur called`);
+        },
+        onChange: (_error: Error, value: string) => {
+          console.debug(`Input value changed: ${value}`);
+          editedText = value;
+        },
+        onFocus: () => {
+          console.debug(`On Focus called`);
+        },
+        tooltip: "It's a richTextEditor tooltip.",
+      },
+      {
+        type: WhisperComponentType.Box,
+        justifyContent: JustifyContent.Right,
+        direction: Direction.Horizontal,
+        children: [
+          {
+            type: WhisperComponentType.Button,
+            label: 'Save',
+            onClick: (_error: Error, onClickWhisper: Whisper) => {
+              if (!editedText || editedText.length === 0 || editedText.length > 50) {
+                (components[0] as RichTextEditor).validationError =
+                  'Input text is required and should be less than 50 chars, must not be default value.';
+                onClickWhisper.update({
+                  components,
+                });
+              } else {
+                onClickWhisper.update({
+                  components: [
+                    {
+                      type: WhisperComponentType.Markdown,
+                      body: editedText,
+                    },
+                    resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+                  ],
+                });
+              }
+            },
+          },
+        ],
+      },
+    ];
+    await whisper.create({
+      label: 'Did Rich Text Editor save correctly?',
+      components,
+    });
+  } catch (error) {
+    console.error(error);
+    reject(error);
+  }
+});
+
 export const testAutocomplete = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const resolverMap = new Map([
