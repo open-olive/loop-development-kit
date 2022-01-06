@@ -45,9 +45,9 @@
       "process": {},
       "ui": {},
       "user": {
-        "optionalClaims":[
+        "optionalClaims": [
           {
-            "value" :"email"
+            "value": "email"
           }
         ]
       },

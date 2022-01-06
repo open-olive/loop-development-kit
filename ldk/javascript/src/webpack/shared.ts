@@ -1,5 +1,7 @@
 import * as webpack from 'webpack';
 import Terser from 'terser-webpack-plugin';
+import process from 'process';
+import path from 'path';
 import { LdkSettings } from './ldk-settings';
 import { generateBanner } from './generate-banner';
 import { buildBabelPlugins, buildBabelPreset } from './babel-config';
@@ -54,6 +56,9 @@ export function buildWebpackConfig(
     optimization,
     resolve: {
       extensions: ['.ts', '.js', '.tsx', '.jsx'],
+      alias: {
+        react: path.resolve(process.cwd(), 'node_modules/react'),
+      },
     },
     module: {
       rules: [
