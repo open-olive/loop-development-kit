@@ -1,6 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { browser } from '@oliveai/ldk';
-import { NavigationDetails } from '@oliveai/ldk/dist/browser';
+import { NavigationDetails, NetworkActivityDetails, PageDetails } from '@oliveai/ldk/dist/browser';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -20,6 +20,92 @@ export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
           reject(new Error('The newest tab and URL do not match the test'));
         },
       );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testOpenTabAndListenNetworkActivity = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      const tabId = await browser.openTab(URL);
+
+      const listener = await browser.listenNetworkActivity(
+        (networkActivity: NetworkActivityDetails): void => {
+          if (networkActivity.tabId === tabId) {
+            listener.cancel();
+            resolve(true);
+          }
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testOpenTabWithSource = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      const { id, sourceHTML } = (await browser.openTab(URL, {
+        includeSource: true,
+      })) as PageDetails;
+
+      if (!sourceHTML.length) {
+        reject(new Error('Source did not come back when opening tab'));
+      }
+
+      if (!id) {
+        reject(new Error('ID not populated'));
+      }
+
+      resolve(true);
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testOpenWindowWithSource = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      const { id, sourceHTML } = (await browser.openWindow(URL, {
+        includeSource: true,
+      })) as PageDetails;
+
+      if (!sourceHTML.length) {
+        reject(new Error('Source did not come back when opening window'));
+      }
+
+      if (!id) {
+        reject(new Error('ID not populated'));
+      }
+
+      resolve(true);
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testSourceHTML = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      const { id, sourceHTML } = await browser.sourceHTML(URL);
+      if (!sourceHTML.length) {
+        reject(new Error('Unable to retrieve the source html'));
+      }
+
+      if (!id) {
+        reject(new Error('ID not populated'));
+      }
+
+      resolve(true);
     } catch (error) {
       console.error(error);
       reject(error);
