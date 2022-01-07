@@ -12,10 +12,34 @@ export const browserTestGroup = (): TestGroup =>
       'Opening a new tab to go to oliveai.dev and receiving that event from the navigation listener',
     ),
     new LoopTest(
+      'Browser Aptitude - Open Tab & Network Activity Stream',
+      browserTests.testOpenTabAndListenNetworkActivity,
+      10000,
+      'Opening a new tab to go to oliveai.dev and waiting for network activity',
+    ),
+    new LoopTest(
       'Browser Aptitude - Open Window & Navigation Stream',
       browserTests.testOpenWindowAndListenNavigation,
       10000,
       'Opening a new window to go to oliveai.dev and receiving that event from the navigation listener',
+    ),
+    new LoopTest(
+      'Browser Aptitude - Open Tab With Source',
+      browserTests.testOpenTabWithSource,
+      10000,
+      'Opening a new tab to go to oliveai.dev and reading the source',
+    ),
+    new LoopTest(
+      'Browser Aptitude - Open Window With Source',
+      browserTests.testOpenWindowWithSource,
+      10000,
+      'Opening a new window to go to oliveai.dev and reading the source',
+    ),
+    new LoopTest(
+      'Browser Aptitude - Retrieve Source',
+      browserTests.testSourceHTML,
+      10000,
+      'Reading the source from oliveai.dev',
     ),
     new LoopTest(
       'Browser Aptitude - Text Selection Stream',

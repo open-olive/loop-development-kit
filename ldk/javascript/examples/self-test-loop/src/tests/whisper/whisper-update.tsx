@@ -384,6 +384,15 @@ const UpdateCollapseState: React.FunctionComponent<TestComponentProps> = (props)
 export const testUpdateCollapseState = (): Promise<boolean> =>
   WhisperTestWrapper.createPromise(UpdateCollapseState, 'Update Collapse State');
 
+const ResolveOnClose: React.FunctionComponent<TestComponentProps> = (props) => (
+  <>
+    <oh-markdown body="This whisper is set to pass this test if it closes. Close this whisper, and if the test passes, it was succesful." />
+  </>
+);
+
+export const testReactWhisperClose = (): Promise<boolean> =>
+  WhisperTestWrapper.createPromiseWithResolveOnClsoe(ResolveOnClose, 'Test JSX OnClose()');
+
 export const testWhisperStateOnChange = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const inputValue = 'testInput';
@@ -654,7 +663,9 @@ export const testBreadcrumbUpdates = (): Promise<boolean> =>
       key: 'btn',
       type: WhisperComponentType.Button,
       label: 'Click Me',
-      onClick: () => {},
+      onClick: () => {
+        // do nothing
+      },
     };
 
     let promise = new Promise((r, _) => {

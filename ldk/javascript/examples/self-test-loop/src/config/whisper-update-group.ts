@@ -60,4 +60,10 @@ export const whisperUpdateTestGroup = (): TestGroup =>
       10000,
       `Click button and update`,
     ),
+    new LoopTest(
+      'Whisper Update - JSX onClose',
+      whisperUpdateTests.testReactWhisperClose,
+      10000,
+      `Read the prompt of the whisper`,
+    ),
   ]);

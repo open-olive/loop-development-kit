@@ -8,6 +8,10 @@ describe('Browser', () => {
       listenTextSelection: jest.fn(),
       openTab: jest.fn(),
       openWindow: jest.fn(),
+      openTab2: jest.fn(),
+      openWindow2: jest.fn(),
+      listenNetworkActivity: jest.fn(),
+      sourceHTML: jest.fn(),
     };
   });
 
@@ -65,6 +69,43 @@ describe('Browser', () => {
     });
   });
 
+  describe('listenNetworkActivity', () => {
+    it('returns network activity events', () => {
+      const callback = jest.fn();
+      const activity = {
+        tabId: 0,
+        requestUrl: 'https://www.google.com',
+        method: 'GET',
+        requestBody: null,
+        domain: 'google.com',
+      };
+
+      mocked(oliveHelps.browser.listenNetworkActivity).mockImplementation((listenerCallback) => {
+        listenerCallback(undefined, activity);
+      });
+
+      browser.listenNetworkActivity(callback);
+      expect(callback).toHaveBeenCalledWith(activity);
+    });
+  });
+
+  describe('sourceHTML', () => {
+    it('returns the id and source', () => {
+      const address = 'sourceAddress';
+      const details = {
+        id: 0,
+        sourceHTML: '<HTML></HTML>',
+      };
+      mocked(oliveHelps.browser.sourceHTML).mockImplementation((addr, callback) => {
+        callback(undefined, details);
+      });
+
+      const actual = browser.sourceHTML(address);
+      expect(oliveHelps.browser.sourceHTML).toHaveBeenCalledWith(address, expect.any(Function));
+      return expect(actual).resolves.toBe(details);
+    });
+  });
+
   describe('openTab', () => {
     it('opens a browser tab and returns the tab id', () => {
       const tab = 'soda';
@@ -77,6 +118,22 @@ describe('Browser', () => {
 
       expect(oliveHelps.browser.openTab).toHaveBeenCalledWith(tab, expect.any(Function));
       return expect(actual).resolves.toBe(tabId);
+    });
+
+    it('opens a browser tab and returns the tab id and source', () => {
+      const tab = 'soda';
+      const details = {
+        id: 0,
+        sourceHTML: '<HTML></HTML>',
+      };
+      mocked(oliveHelps.browser.openTab2).mockImplementation((address, callback) => {
+        callback(undefined, details);
+      });
+
+      const actual = browser.openTab(tab, { includeSource: true });
+
+      expect(oliveHelps.browser.openTab2).toHaveBeenCalledWith(tab, expect.any(Function));
+      return expect(actual).resolves.toBe(details);
     });
 
     it('returns a rejected promise', () => {
@@ -103,6 +160,22 @@ describe('Browser', () => {
 
       expect(oliveHelps.browser.openWindow).toHaveBeenCalledWith(window, expect.any(Function));
       return expect(actual).resolves.toBe(windowId);
+    });
+
+    it('opens a browser window and returns the window id and source', () => {
+      const window = 'xp';
+      const details = {
+        id: 95,
+        sourceHTML: '<HTML></HTML>',
+      };
+      mocked(oliveHelps.browser.openWindow2).mockImplementation((address, callback) => {
+        callback(undefined, details);
+      });
+
+      const actual = browser.openWindow(window, { includeSource: true });
+
+      expect(oliveHelps.browser.openWindow2).toHaveBeenCalledWith(window, expect.any(Function));
+      return expect(actual).resolves.toBe(details);
     });
 
     it('returns a rejected promise', () => {

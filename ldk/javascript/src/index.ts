@@ -1,4 +1,6 @@
 import 'core-js';
+import * as React from 'react';
+import * as ReactWhisper from './whisper/react/renderer';
 import * as browser from './browser';
 import * as clipboard from './clipboard';
 import * as cursor from './cursor';
@@ -53,4 +55,6 @@ export {
   whisper,
   window,
   document,
+  React,
+  ReactWhisper,
 };
