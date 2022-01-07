@@ -1,6 +1,9 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-async-promise-executor */
-import { screen, whisper, window, cursor } from '@oliveai/ldk';
+import { screen, whisper, window, cursor, keyboard } from '@oliveai/ldk';
 import { Cancellable } from '../../../../../dist/cancellable';
+import { Hotkey } from '../../../../../dist/keyboard';
+import { resolveRejectButtons } from '../whisper/utils';
 
 export * from './hashTests';
 
@@ -13,6 +16,10 @@ const writeWhisper = (label: string, body: string) =>
     components: [
       {
         body,
+        type: whisper.WhisperComponentType.Markdown,
+      },
+      {
+        body: "Move the cursor to left top of the image you want to recognize and press 's', then move your cursor to bottom right position to the image and press 'a' ",
         type: whisper.WhisperComponentType.Markdown,
       },
       {
@@ -111,41 +118,40 @@ export async function performOcr() {
       });
   });
 }
-async function testOCRUsingCursor() {
-  let i = 0;
-  let cursorPositionStream: Cancellable;
+
+async function getCursorPosition() {
   let topParam: number;
   let leftParam: number;
   let topParam1: number;
   let leftParam1: number;
-  await sleep(1000);
-  await cursor.listenPosition((response) => {
-    if (typeof response !== 'undefined') {
-      if (i === 0) {
-        topParam = response.y;
-        leftParam = response.x;
-        console.debug(`leftParam - X - ${leftParam1}`);
-        console.debug(` topParam - Y - ${topParam1}`);
-      }
-      if (i === 1) {
-        topParam1 = response.y;
-        leftParam1 = response.x;
-        console.debug(`leftParam1 - X - ${leftParam1}`);
-        console.debug(` topParam1 - Y - ${topParam1}`);
-      }
-
-      i += 1;
-
-      if (i >= 2) {
-        cursorPositionStream.cancel();
-      }
+  const listener1 = await keyboard.listenCharacter(async (char) => {
+    console.debug('Hotkey pressed', 'response', char);
+    if (char === 's' || char === 'S') {
+      const position = await cursor.position();
+      leftParam = Math.floor(position.x);
+      topParam = Math.floor(position.y);
+      // leftParam = parseInt(position.x.toString(), 10);
+      // topParam = parseInt(position.y.toString(), 10);
+      console.log('First time cursor position:', topParam, leftParam);
+      listener1.cancel();
     }
   });
 
-  let cancellable: Cancellable;
-  cursorPositionStream = cancellable;
-
-  await sleep(2000);
+  const listener2 = await keyboard.listenCharacter(async (char) => {
+    console.debug('Hotkey pressed', 'response', char);
+    if (char === 'a' || char === 'A') {
+      const position1 = await cursor.position();
+      leftParam1 = Math.floor(position1.x);
+      topParam1 = Math.floor(position1.y);
+      // leftParam1 = parseInt(position1.x.toString(), 10);
+      // topParam1 = parseInt(position1.y.toString(), 10);
+      console.log('Second time cursor Position:', topParam1, leftParam1);
+      listener2.cancel();
+    }
+  });
+  if (listener2) {
+    console.log('listener2 called');
+  }
   const width = Math.abs(leftParam1 - leftParam);
   const height = Math.abs(topParam1 - topParam);
 
@@ -155,11 +161,23 @@ async function testOCRUsingCursor() {
     width,
     height,
   };
-  console.log('got OCR coordinates:');
-  console.log(ocrCoordinates.top, ocrCoordinates.left, ocrCoordinates.width, ocrCoordinates.height);
-  console.log('performing ocr with coordinates...');
+  return ocrCoordinates;
+}
 
+async function testOCRUsingCursor() {
   try {
+    const ocrCoordinates = await getCursorPosition();
+    console.log('got OCR coordinates:');
+    console.log(
+      ocrCoordinates.top,
+      ocrCoordinates.left,
+      ocrCoordinates.width,
+      ocrCoordinates.height,
+    );
+    console.log('performing ocr with coordinates...');
+
+    await sleep(5000);
+
     const result = await screen.ocr(ocrCoordinates);
 
     console.log('OCR Results: ');
@@ -198,7 +216,7 @@ export const testOCRUsingCursorAptitude = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await writeWhisperCursorTest(`OCR`, `Starting OCR app`);
-      await sleep(5000);
+      await sleep(10000);
       resolve(true);
     } catch (e) {
       console.error(e);
