@@ -48,23 +48,25 @@ declare namespace WhisperService {
 
   type ButtonStyle = 'primary' | 'secondary' | 'text';
 
-  type Direction = 'horizontal' | 'vertical';
+  type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
-  type TextAlign = 'center' | 'left' | 'right';
+  type Direction = 'horizontal' | 'vertical';
 
   type DateTimeType = 'date' | 'time' | 'date_time';
 
+  type FontWeight = 'thin' | 'regular' | 'bold' | 'extraBold';
+
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
+
+  type OpenDirection = 'bottom' | 'top';
 
   type ProgressShape = 'circular' | 'linear';
 
   type StyleSize = 'none' | 'small' | 'medium' | 'large';
 
+  type TextAlign = 'center' | 'left' | 'right';
+
   type WidthSize = 'full' | 'half';
-
-  type OpenDirection = 'bottom' | 'top';
-
-  type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
   interface LayoutOptions {
     flex?: string;
@@ -79,6 +81,10 @@ declare namespace WhisperService {
     paddingTop?: StyleSize;
     paddingRight?: StyleSize;
     width?: WidthSize;
+  }
+
+  interface StyleOptions {
+    fontWeight?: FontWeight;
   }
 
   interface Whisper {
@@ -159,6 +165,7 @@ declare namespace WhisperService {
     onClick?: WhisperHandler;
     style?: Urgency;
     textAlign?: TextAlign;
+    componentStyle?: StyleOptions;
   };
 
   type ListPair = Component<'listPair'> & {
