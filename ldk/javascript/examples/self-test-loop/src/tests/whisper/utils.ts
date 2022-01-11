@@ -174,3 +174,11 @@ export const autocompleteOptions = [
   { label: 'Value 4', value: '4' },
   { label: 'Value 5', value: '5' },
 ];
+export const filterOptionsTestOptions = [
+  { label: 'THIS IS ALL CAPS', value: '1' },
+  { label: 'this is all lower', value: '2' },
+  { label: 'Ending with Olive', value: '3' },
+  { label: 'Olive starts here', value: '4' },
+  { label: 'Middle Olive here', value: '5' },
+  { label: 'Trailing Spaces           ', value: '6' },
+];

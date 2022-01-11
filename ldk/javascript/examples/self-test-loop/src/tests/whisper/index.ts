@@ -26,6 +26,7 @@ import {
 import { stripIndent } from 'common-tags';
 import {
   autocompleteOptions,
+  filterOptionsTestOptions,
   createAutocompleteComponent,
   createDivider,
   createTextComponent,
@@ -2428,6 +2429,31 @@ export const testAutocomplete = (): Promise<boolean> =>
             },
             options: autocompleteOptions,
             tooltip: 'tooltip',
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Select "Value 4"',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Autocomplete Filter Options Test',
+            filterOptions: {
+              ignoreCase: false,
+              limit: 3,
+              matchFrom: 'start',
+              trim: true,
+            },
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('4')) {
+                onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
+              }
+            },
+            options: filterOptionsTestOptions,
           },
         ],
       });

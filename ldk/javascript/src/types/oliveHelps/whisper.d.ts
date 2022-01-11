@@ -117,7 +117,17 @@ declare namespace WhisperService {
     value: string;
   };
 
+  interface AutocompleteFilterOptions {
+    ignoreAccents?: boolean;
+    ignoreCase?: boolean;
+    limit?: number;
+    matchFrom?: 'any' | 'start';
+    stringify?: (option: AutocompleteOption) => void;
+    trim?: boolean;
+  }
+
   type Autocomplete = SelectComponent<'autocomplete'> & {
+    filterOptions?: AutocompleteFilterOptions;
     label?: string;
     loading?: boolean;
     multiple?: boolean;

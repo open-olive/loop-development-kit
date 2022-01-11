@@ -270,7 +270,43 @@ interface SelectComponent<T extends WhisperComponentType> extends WhisperCompone
   validationError?: string;
 }
 
+export interface AutocompleteFilterOptions {
+  /**
+   * Defaults to true. Remove diacritics.
+   */
+  ignoreAccents?: boolean;
+  /**
+   * Defaults to true. Lowercase everything.
+   */
+  ignoreCase?: boolean;
+  /**
+   * Default to null. Limit the number of suggested options
+   * to be shown. For example, if config.limit is 100, only
+   * the first 100 matching options are shown. It can be
+   * useful if a lot of options match and virtualization
+   * wasn't set up.
+   */
+  limit?: number;
+  /**
+   * Defaults to 'any'
+   */
+  matchFrom?: 'any' | 'start';
+  /**
+   * Controls how an option is converted into a string so that
+   * it can be matched against the input text fragment.
+   */
+  stringify?: (option: AutocompleteOption) => void;
+  /**
+   * Defaults to false. Remove trailing spaces.
+   */
+  trim?: boolean;
+}
+
 export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
+  /**
+   * Options to configure how the filter search behaves
+   */
+  filterOptions?: AutocompleteFilterOptions;
   /**
    * Label associated with component
    */
