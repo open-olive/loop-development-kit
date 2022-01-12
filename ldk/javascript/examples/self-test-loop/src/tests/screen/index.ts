@@ -1,10 +1,6 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-async-promise-executor */
 import { screen, whisper, window, cursor, keyboard } from '@oliveai/ldk';
-import { Cancellable } from '../../../../../dist/cancellable';
-import { Hotkey } from '../../../../../dist/keyboard';
-import { resolveRejectButtons } from '../whisper/utils';
-
 export * from './hashTests';
 
 const writeWhisper = (label: string, body: string) =>
@@ -119,71 +115,65 @@ export async function performOcr() {
   });
 }
 
-async function getCursorPosition() {
+let check = 0;
+async function runOCRWithCursorPosition() {
   let topParam: number;
   let leftParam: number;
   let topParam1: number;
   let leftParam1: number;
+
   const listener1 = await keyboard.listenCharacter(async (char) => {
     console.debug('Hotkey pressed', 'response', char);
     if (char === 's' || char === 'S') {
       const position = await cursor.position();
-      leftParam = Math.floor(position.x);
-      topParam = Math.floor(position.y);
-      // leftParam = parseInt(position.x.toString(), 10);
-      // topParam = parseInt(position.y.toString(), 10);
+      leftParam = parseInt(position.x.toString(), 10);
+      topParam = parseInt(position.y.toString(), 10);
       console.log('First time cursor position:', topParam, leftParam);
       listener1.cancel();
+      check = 1;
     }
   });
 
   const listener2 = await keyboard.listenCharacter(async (char) => {
     console.debug('Hotkey pressed', 'response', char);
-    if (char === 'a' || char === 'A') {
+    if ((char === 'a' || char === 'A') && check === 1) {
       const position1 = await cursor.position();
-      leftParam1 = Math.floor(position1.x);
-      topParam1 = Math.floor(position1.y);
-      // leftParam1 = parseInt(position1.x.toString(), 10);
-      // topParam1 = parseInt(position1.y.toString(), 10);
+      leftParam1 = parseInt(position1.x.toString(), 10);
+      topParam1 = parseInt(position1.y.toString(), 10);
       console.log('Second time cursor Position:', topParam1, leftParam1);
       listener2.cancel();
+
+      const width = Math.abs(leftParam1 - leftParam);
+      const height = Math.abs(topParam1 - topParam);
+
+      const ocrCoordinates = {
+        top: topParam,
+        left: leftParam,
+        width,
+        height,
+      };
+      const result = await screen.ocr(ocrCoordinates);
+
+      console.log('OCR Results: ');
+      console.log(JSON.stringify(result));
+      console.log('result: ', rebuildImage(result));
+      writeWhisper(`result`, rebuildImage(result));
+
+      console.log('got OCR coordinates:');
+      console.log(
+        ocrCoordinates.top,
+        ocrCoordinates.left,
+        ocrCoordinates.width,
+        ocrCoordinates.height,
+      );
+      console.log('performing ocr with coordinates...');
     }
   });
-  if (listener2) {
-    console.log('listener2 called');
-  }
-  const width = Math.abs(leftParam1 - leftParam);
-  const height = Math.abs(topParam1 - topParam);
-
-  const ocrCoordinates = {
-    top: topParam,
-    left: leftParam,
-    width,
-    height,
-  };
-  return ocrCoordinates;
 }
 
 async function testOCRUsingCursor() {
   try {
-    const ocrCoordinates = await getCursorPosition();
-    console.log('got OCR coordinates:');
-    console.log(
-      ocrCoordinates.top,
-      ocrCoordinates.left,
-      ocrCoordinates.width,
-      ocrCoordinates.height,
-    );
-    console.log('performing ocr with coordinates...');
-
-    await sleep(5000);
-
-    const result = await screen.ocr(ocrCoordinates);
-
-    console.log('OCR Results: ');
-    console.log(JSON.stringify(result));
-    console.log('result: ', rebuildImage(result));
-    writeWhisper(`result`, rebuildImage(result));
+    await runOCRWithCursorPosition();
   } catch (error) {
     console.log('error: ');
     console.log(error);
