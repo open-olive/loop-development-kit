@@ -75,17 +75,17 @@ export enum WhisperComponentType {
    */
   TextInput = 'textInput',
   /**
-   * The section title field allows the user to provide section title information.
+   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
    */
   SectionTitle = 'sectionTitle',
   /**
-   The text input field allows the user to provide Date and Time information.
+   * A text input field allows the user to provide date and time information.
    *
    * The field can be pre-populated by the loop.
    */
   DateTimeInput = 'dateTimeInput',
   /**
-   *  The richText Editor allow users to use RichText Editor on Olive Helps
+   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
    */
   RichTextEditor = 'richTextEditor',
   /**
@@ -93,7 +93,7 @@ export enum WhisperComponentType {
    */
   Icon = 'icon',
   /**
-   * The dropzone component allows the Loop to receive
+   * The dropzone component allows the Loop to receive a file uploaded by a user
    */
   DropZone = 'dropZone',
 }
