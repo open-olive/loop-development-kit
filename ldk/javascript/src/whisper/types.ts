@@ -139,10 +139,10 @@ export enum Direction {
 }
 
 export enum FontWeight {
-  Thin = 'thin',
-  Regular = 'regular',
-  Bold = 'bold',
-  ExtraBold = 'extraBold',
+  Thin = '300',
+  Regular = '400',
+  Bold = '700',
+  ExtraBold = '800',
 }
 
 export enum TextAlign {
