@@ -11,6 +11,7 @@ import {
   Direction,
   JustifyContent,
   IconSize,
+  IconVariant,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   NewWhisper,
@@ -116,6 +117,52 @@ export const testIconLayout = (): Promise<boolean> =>
               onClick: () => {
                 console.info('Pets Clicked');
               },
+            },
+          ],
+        },
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Normal'
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Outlined',
+              variant: IconVariant.Outlined
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Round',
+              variant: IconVariant.Round
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Sharp',
+              variant: IconVariant.Sharp
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Two-tone',
+              variant: IconVariant.TwoTone
             },
           ],
         },
