@@ -66,4 +66,10 @@ export const whisperUpdateTestGroup = (): TestGroup =>
       10000,
       `Read the prompt of the whisper`,
     ),
+    new LoopTest(
+      'Whisper Update - Rich Text Editor',
+      whisperUpdateTests.testRichTextEditorUpdates,
+      10000,
+      `Click button to update`,
+    ),
   ]);

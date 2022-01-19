@@ -26,12 +26,13 @@ import {
 import { stripIndent } from 'common-tags';
 import {
   autocompleteOptions,
-  filterOptionsTestOptions,
+  ignoreCase,
   createAutocompleteComponent,
   createDivider,
   createTextComponent,
   createSelectComponent,
   logMap,
+  matchFrom,
   resolveRejectButtons,
 } from './utils';
 import { shortText, longText, markdownText, image } from './text';
@@ -482,7 +483,6 @@ export const testClickableButton = (): Promise<boolean> =>
               label: `Don't click me`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: WhisperComponentType.Button,
-              size: ButtonSize.Large,
             },
             {
               buttonStyle: ButtonStyle.Text,
@@ -1841,7 +1841,6 @@ export const testSectionTitle = (): Promise<boolean> =>
           {
             body: 'section Title in center with [Some Link 1](# "A Link")',
             type: WhisperComponentType.SectionTitle,
-            textAlign: TextAlign.Center,
           },
           {
             body: 'section Title on the left with a link : http://google.com',
@@ -2312,6 +2311,69 @@ export const testRichTextEditor = (): Promise<boolean> =>
     }
   });
 
+export const testRichTextEditorValues = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      let editedText = '';
+      const components: Component[] = [
+        {
+          id: 'RTE1',
+          key: 'RTE1',
+          value: 'Default value',
+          type: WhisperComponentType.RichTextEditor,
+          onBlur: () => {
+            console.debug(`On blur called`);
+          },
+          onChange: (_error: Error, value: string) => {
+            console.debug(`Input value changed: ${value}`);
+            editedText = value;
+          },
+          onFocus: () => {
+            console.debug(`On Focus called`);
+          },
+          tooltip: "It's a richTextEditor tooltip.",
+        },
+        {
+          type: WhisperComponentType.Box,
+          justifyContent: JustifyContent.Right,
+          direction: Direction.Horizontal,
+          children: [
+            {
+              type: WhisperComponentType.Button,
+              label: 'Save',
+              onClick: (_error: Error, onClickWhisper: Whisper) => {
+                if (!editedText || editedText.length === 0 || editedText.length > 50) {
+                  (components[0] as RichTextEditor).validationError =
+                    'Input text is required and should be less than 50 chars, must not be default value.';
+                  onClickWhisper.update({
+                    components,
+                  });
+                } else {
+                  onClickWhisper.update({
+                    components: [
+                      {
+                        type: WhisperComponentType.Markdown,
+                        body: editedText,
+                      },
+                      resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+                    ],
+                  });
+                }
+              },
+            },
+          ],
+        },
+      ];
+      await whisper.create({
+        label: 'Did Rich Text Editor save correctly?',
+        components,
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
 export const testAutocomplete = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const resolverMap = new Map([
@@ -2433,18 +2495,91 @@ export const testAutocomplete = (): Promise<boolean> =>
             options: autocompleteOptions,
             tooltip: 'tooltip',
           },
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });
+
+export const testAutocompleteFilterOptions = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const resolverMap = new Map([
+      ['IgnoreCase', false],
+      ['RespectCase', false],
+      ['Limit', false],
+      ['MatchFromStart', false],
+      ['MatchFromAny', false],
+      ['Stringify', false],
+    ]);
+    try {
+      await whisper.create({
+        label: 'Autocomplete test',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
           {
             type: WhisperComponentType.Markdown,
-            body: 'Select "Value 4"',
+            body: 'Case when searching should be ignored. Search for either "Value" or "value", all options should come back. Select "value 1"',
           },
           {
             type: WhisperComponentType.Autocomplete,
-            label: 'Autocomplete Filter Options Test',
+            label: 'Ignore Case Test',
+            filterOptions: {
+              ignoreCase: true,
+            },
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('1')) {
+                onActionWrapper(error, 'IgnoreCase', resolverMap, onSelectWhisper, resolve, reject);
+              }
+            },
+            options: ignoreCase,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Case when searching should NOT be ignored. Search for either "Value" or "value", only the respective results should come back. Select "value 5"',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: `Don't Ignore Case Test`,
             filterOptions: {
               ignoreCase: false,
-              limit: 3,
-              matchFrom: 'start',
-              trim: true,
+            },
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('5')) {
+                onActionWrapper(
+                  error,
+                  'RespectCase',
+                  resolverMap,
+                  onSelectWhisper,
+                  resolve,
+                  reject,
+                );
+              }
+            },
+            options: ignoreCase,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Search results limited to max of 2 options shown. If you click the arrow in other autocompletes and 5 options come back, not setting it works. Select "Value 4"',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Limit Test',
+            filterOptions: {
+              limit: 2,
             },
             loading: false,
             onChange: () => {
@@ -2453,10 +2588,90 @@ export const testAutocomplete = (): Promise<boolean> =>
             onSelect: (error, value, onSelectWhisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('4')) {
-                onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
+                onActionWrapper(error, 'Limit', resolverMap, onSelectWhisper, resolve, reject);
               }
             },
-            options: filterOptionsTestOptions,
+            options: autocompleteOptions,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'The search is searching using matchFrom value "start" (defaults to "any"). This means that the query will try to find items matching from the start of the string. 3 values are "Weird Value X". Start a search with "Weird" and confirm that only those items come back. Then, Search for "Value" and select "Value 2"',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Match From Start Test',
+            filterOptions: {
+              matchFrom: 'start',
+            },
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('2')) {
+                onActionWrapper(
+                  error,
+                  'MatchFromStart',
+                  resolverMap,
+                  onSelectWhisper,
+                  resolve,
+                  reject,
+                );
+              }
+            },
+            options: matchFrom,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'The search is searching using matchFrom value "any". This means that the query will try to find items matching from any part of the string. Same options as previous Match test. Search "Value", confirm all 5 options return, and select "Value 2"',
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Match From Any Test',
+            filterOptions: {
+              matchFrom: 'any',
+            },
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('2')) {
+                onActionWrapper(
+                  error,
+                  'MatchFromAny',
+                  resolverMap,
+                  onSelectWhisper,
+                  resolve,
+                  reject,
+                );
+              }
+            },
+            options: matchFrom,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: `Uses the stringify function in filter options. This tells the autocomplete to use a different value when searching it's options. In this case, it is using option.value (1, 2, 3, 4, 5) instead of option.label. This means that if you search "Value", noting will return. Confirm that this happens, then search 1, confirm it shows up, then select "Value 1"`,
+          },
+          {
+            type: WhisperComponentType.Autocomplete,
+            label: 'Stringify Test',
+            filterOptions: {
+              stringify: ['value'],
+            },
+            loading: false,
+            onChange: () => {
+              // do nothing
+            },
+            onSelect: (error, value, onSelectWhisper) => {
+              console.log(`Received selected value: ${JSON.stringify(value)}`);
+              if (value.includes('1')) {
+                onActionWrapper(error, 'Stringify', resolverMap, onSelectWhisper, resolve, reject);
+              }
+            },
+            options: autocompleteOptions,
           },
         ],
       });
