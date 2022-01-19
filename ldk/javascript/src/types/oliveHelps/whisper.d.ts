@@ -114,7 +114,7 @@ declare namespace WhisperService {
 
   type AutocompleteOption = {
     label: string;
-    value: any;
+    value: any; // eslint-disable-line
   };
 
   interface AutocompleteFilterOptions {

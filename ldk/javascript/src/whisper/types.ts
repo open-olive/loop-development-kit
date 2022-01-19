@@ -202,7 +202,7 @@ export enum IconSize {
 
 export type AutocompleteOption = {
   label: string;
-  value: any;
+  value: any; // eslint-disable-line;
 };
 
 export enum ProgressShape {
