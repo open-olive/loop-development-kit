@@ -54,7 +54,7 @@ declare namespace WhisperService {
 
   type DateTimeType = 'date' | 'time' | 'date_time';
 
-  type FontWeight = '300' | '400' | '700' | '800';
+  type FontWeight = 300 | 400 | 700 | 800;
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 

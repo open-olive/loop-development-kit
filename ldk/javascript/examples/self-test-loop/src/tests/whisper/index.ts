@@ -3335,7 +3335,7 @@ export const testLinkStyles = (): Promise<boolean> =>
           },
           {
             text: 'Extra Bold Link',
-            componentStyle: { fontWeight: FontWeight.Thin },
+            componentStyle: { fontWeight: FontWeight.ExtraBold },
             type: WhisperComponentType.Link,
           },
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
