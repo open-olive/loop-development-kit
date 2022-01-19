@@ -483,7 +483,6 @@ export const testClickableButton = (): Promise<boolean> =>
               label: `Don't click me`,
               onClick: () => console.debug(`Why'd you do that?`),
               type: WhisperComponentType.Button,
-              // size: ButtonSize.Large,
             },
             {
               buttonStyle: ButtonStyle.Text,
@@ -1842,7 +1841,6 @@ export const testSectionTitle = (): Promise<boolean> =>
           {
             body: 'section Title in center',
             type: WhisperComponentType.SectionTitle,
-            // textAlign: TextAlign.Center,
           },
           {
             body: 'section Title on the left',
