@@ -489,7 +489,7 @@ export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip;
   onClick?: WhisperHandler;
   tooltip?: string;
-  variant?: IconVariant.Outlined | IconVariant.Round | IconVariant.Sharp | IconVariant.TwoTone;
+  variant?: IconVariant;
 };
 
 export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
