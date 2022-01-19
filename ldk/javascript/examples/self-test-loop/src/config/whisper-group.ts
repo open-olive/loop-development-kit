@@ -210,6 +210,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Test the autocomplete',
     ),
     new LoopTest(
+      'Whisper Aptitude - Autocomplete FilterOptions',
+      whisperTests.testAutocompleteFilterOptions,
+      30000,
+      'Test the autocomplete filter options',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Padding',
       whisperTests.testPadding,
       10000,

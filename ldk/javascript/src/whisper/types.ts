@@ -202,7 +202,7 @@ export enum IconSize {
 
 export type AutocompleteOption = {
   label: string;
-  value: string;
+  value: any;
 };
 
 export enum ProgressShape {
@@ -293,9 +293,11 @@ export interface AutocompleteFilterOptions {
   matchFrom?: 'any' | 'start';
   /**
    * Controls how an option is converted into a string so that
-   * it can be matched against the input text fragment.
+   * it can be matched against the input text fragment. Accepts
+   * an array of strings that is the path to the key in the
+   * AutocompleteOption to be used.
    */
-  stringify?: (option: AutocompleteOption) => void;
+  stringify?: string[];
   /**
    * Defaults to false. Remove trailing spaces.
    */
