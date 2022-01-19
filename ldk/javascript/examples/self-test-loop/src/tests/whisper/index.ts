@@ -37,6 +37,40 @@ import {
 } from './utils';
 import { shortText, longText, markdownText, image } from './text';
 
+const areAllResolved = (resolverMap: Map<string, boolean>) => {
+  let result = true;
+  resolverMap.forEach((value) => {
+    if (!value) {
+      result = false;
+    }
+  });
+
+  return result;
+};
+
+const onActionWrapper = (
+  error: Error,
+  actionType: string,
+  resolverMap: Map<string, boolean>,
+  createdWhisper: Whisper,
+  resolve: (value: boolean) => void,
+  reject: (reason?: Error) => void,
+) => {
+  if (error) {
+    console.error(error);
+    reject(error);
+  }
+  console.debug(`Received ${actionType} event`);
+  resolverMap.set(actionType, true);
+
+  if (areAllResolved(resolverMap)) {
+    resolve(true);
+    createdWhisper.close(() => {
+      // do nothing.
+    });
+  }
+};
+
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     await whisper.create({
@@ -130,7 +164,7 @@ export const testIconLayout = (): Promise<boolean> =>
               name: 'account_balance_wallet',
               size: IconSize.XLarge,
               color: Color.Black,
-              tooltip: 'Normal'
+              tooltip: 'Normal',
             },
             {
               type: WhisperComponentType.Icon,
@@ -138,7 +172,7 @@ export const testIconLayout = (): Promise<boolean> =>
               size: IconSize.XLarge,
               color: Color.Black,
               tooltip: 'Outlined',
-              variant: IconVariant.Outlined
+              variant: IconVariant.Outlined,
             },
             {
               type: WhisperComponentType.Icon,
@@ -146,7 +180,7 @@ export const testIconLayout = (): Promise<boolean> =>
               size: IconSize.XLarge,
               color: Color.Black,
               tooltip: 'Round',
-              variant: IconVariant.Round
+              variant: IconVariant.Round,
             },
             {
               type: WhisperComponentType.Icon,
@@ -154,7 +188,7 @@ export const testIconLayout = (): Promise<boolean> =>
               size: IconSize.XLarge,
               color: Color.Black,
               tooltip: 'Sharp',
-              variant: IconVariant.Sharp
+              variant: IconVariant.Sharp,
             },
             {
               type: WhisperComponentType.Icon,
@@ -162,7 +196,7 @@ export const testIconLayout = (): Promise<boolean> =>
               size: IconSize.XLarge,
               color: Color.Black,
               tooltip: 'Two-tone',
-              variant: IconVariant.TwoTone
+              variant: IconVariant.TwoTone,
             },
           ],
         },
@@ -445,7 +479,7 @@ function createAcceptButtons(): {
 export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
-    onDrop: () => {},
+    onDrop: () => undefined,
     label: 'File Components',
     key: 'drop',
   };
@@ -625,7 +659,7 @@ export const testClickableLink = (): Promise<boolean> =>
                 type: WhisperComponentType.Button,
                 label: `Url failed to open`,
                 onClick: (_error: Error, onClickWhisper: Whisper) => {
-                  reject('Url failed to open');
+                  reject(new Error('Url failed to open'));
                   onClickWhisper.close(() => {
                     // do nothing.
                   });
@@ -638,7 +672,7 @@ export const testClickableLink = (): Promise<boolean> =>
                   if (linkClicked) {
                     resolve(true);
                   } else {
-                    reject('On click action was not received.');
+                    reject(new Error('On click action was not received.'));
                   }
                   onClickWhisper.close(() => {
                     // do nothing.
@@ -1658,40 +1692,6 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
     });
   });
 
-const areAllResolved = (resolverMap: Map<string, boolean>) => {
-  let result = true;
-  resolverMap.forEach((value) => {
-    if (!value) {
-      result = false;
-    }
-  });
-
-  return result;
-};
-
-const onActionWrapper = (
-  error: Error,
-  actionType: string,
-  resolverMap: Map<string, boolean>,
-  createdWhisper: Whisper,
-  resolve: (value: boolean) => void,
-  reject: (reason?: Error) => void,
-) => {
-  if (error) {
-    console.error(error);
-    reject(error);
-  }
-  console.debug(`Received ${actionType} event`);
-  resolverMap.set(actionType, true);
-
-  if (areAllResolved(resolverMap)) {
-    resolve(true);
-    createdWhisper.close(() => {
-      // do nothing.
-    });
-  }
-};
-
 export const testOnBlurAndOnFocus = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const resolverMap = new Map([
@@ -2529,7 +2529,7 @@ export const testPadding = (): Promise<boolean> =>
       for (
         let functionIndex = 0;
         functionIndex < componentCreationFunctions.length;
-        functionIndex++
+        functionIndex += 1
       ) {
         const func = componentCreationFunctions[functionIndex];
         const component = func(`${functionIndex}`, 'Label');
