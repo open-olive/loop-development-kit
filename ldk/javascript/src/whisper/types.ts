@@ -400,6 +400,7 @@ export type Breadcrumbs = WhisperComponent<WhisperComponentType.Breadcrumbs> & {
 
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   buttonStyle?: ButtonStyle;
+  href?: string;
   disabled?: boolean;
   label?: string;
   onClick: WhisperHandler;
@@ -478,6 +479,7 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
 
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   name: string;
+  href?: string;
   size?: IconSize;
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip;
   onClick?: WhisperHandler;

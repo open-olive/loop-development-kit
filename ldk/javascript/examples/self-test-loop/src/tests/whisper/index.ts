@@ -3339,3 +3339,28 @@ export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
       components: [bread],
     });
   });
+
+export const testButtonAndIconHref = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Can Icon and Button direct you to the website? ',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Icon,
+          name: 'Icon1',
+          href: 'https://www.google.com',
+        },
+        {
+          type: WhisperComponentType.Button,
+          href: 'https://www.google.com',
+          onClick: () => {
+            console.log('Button clicked');
+          },
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
