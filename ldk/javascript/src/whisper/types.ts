@@ -75,17 +75,17 @@ export enum WhisperComponentType {
    */
   TextInput = 'textInput',
   /**
-   * The section title field allows the user to provide section title information.
+   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
    */
   SectionTitle = 'sectionTitle',
   /**
-   The text input field allows the user to provide Date and Time information.
+   * A text input field allows the user to provide date and time information.
    *
    * The field can be pre-populated by the loop.
    */
   DateTimeInput = 'dateTimeInput',
   /**
-   *  The richText Editor allow users to use RichText Editor on Olive Helps
+   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
    */
   RichTextEditor = 'richTextEditor',
   /**
@@ -93,7 +93,7 @@ export enum WhisperComponentType {
    */
   Icon = 'icon',
   /**
-   * The dropzone component allows the Loop to receive
+   * The dropzone component allows the Loop to receive a file uploaded by a user
    */
   DropZone = 'dropZone',
 }
@@ -202,7 +202,7 @@ export enum IconSize {
 
 export type AutocompleteOption = {
   label: string;
-  value: string;
+  value: any; // eslint-disable-line
 };
 
 export enum ProgressShape {
@@ -293,9 +293,11 @@ export interface AutocompleteFilterOptions {
   matchFrom?: 'any' | 'start';
   /**
    * Controls how an option is converted into a string so that
-   * it can be matched against the input text fragment.
+   * it can be matched against the input text fragment. Accepts
+   * an array of strings that is the path to the key in the
+   * AutocompleteOption to be used.
    */
-  stringify?: (option: AutocompleteOption) => void;
+  stringify?: string[];
   /**
    * Defaults to false. Remove trailing spaces.
    */
