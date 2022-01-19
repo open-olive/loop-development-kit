@@ -114,7 +114,7 @@ declare namespace WhisperService {
 
   type AutocompleteOption = {
     label: string;
-    value: string;
+    value: any; // eslint-disable-line
   };
 
   interface AutocompleteFilterOptions {
@@ -122,7 +122,7 @@ declare namespace WhisperService {
     ignoreCase?: boolean;
     limit?: number;
     matchFrom?: 'any' | 'start';
-    stringify?: (option: AutocompleteOption) => void;
+    stringify?: string[];
     trim?: boolean;
   }
 
@@ -224,6 +224,7 @@ declare namespace WhisperService {
     onFocus?: (error: Error | undefined) => void;
     tooltip?: string;
     validationError?: string;
+    value?: string;
   };
 
   type Checkbox = SelectComponent<'checkbox'> & {
