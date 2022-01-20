@@ -138,6 +138,13 @@ export enum Direction {
   Vertical = 'vertical',
 }
 
+export enum FontWeight {
+  Thin = 300,
+  Regular = 400,
+  Bold = 700,
+  ExtraBold = 800,
+}
+
 export enum TextAlign {
   Center = 'center',
   Left = 'left',
@@ -191,6 +198,10 @@ export interface LayoutOptions {
   paddingTop?: StyleSize;
   paddingRight?: StyleSize;
   width?: WidthSize;
+}
+
+export interface StyleOptions {
+  fontWeight?: FontWeight;
 }
 
 export enum IconSize {
@@ -422,6 +433,7 @@ export type Link = WhisperComponent<WhisperComponentType.Link> & {
   onClick?: WhisperHandler;
   style?: Urgency;
   textAlign?: TextAlign;
+  componentStyle?: StyleOptions;
 };
 
 export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {

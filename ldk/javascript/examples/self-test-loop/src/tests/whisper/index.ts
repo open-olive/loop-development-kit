@@ -23,6 +23,7 @@ import {
   Whisper,
   WhisperComponentType,
   ProgressShape,
+  FontWeight,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -3600,4 +3601,39 @@ export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
       },
       components: [bread],
     });
+  });
+
+export const testLinkStyles = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did the links render correctly?',
+        components: [
+          {
+            text: 'Thin Link',
+            componentStyle: { fontWeight: FontWeight.Thin },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Regular Link',
+            componentStyle: { fontWeight: FontWeight.Regular },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Bold Link',
+            componentStyle: { fontWeight: FontWeight.Bold },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Extra Bold Link',
+            componentStyle: { fontWeight: FontWeight.ExtraBold },
+            type: WhisperComponentType.Link,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
   });
