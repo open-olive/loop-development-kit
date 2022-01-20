@@ -200,6 +200,13 @@ export enum IconSize {
   XLarge = 'x-large',
 }
 
+export enum IconVariant {
+  Outlined = 'outlined',
+  Round = 'round',
+  Sharp = 'sharp',
+  TwoTone = 'two-tone',
+}
+
 export type AutocompleteOption = {
   label: string;
   value: any; // eslint-disable-line
@@ -484,6 +491,7 @@ export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip;
   onClick?: WhisperHandler;
   tooltip?: string;
+  variant?: IconVariant;
 };
 
 export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
