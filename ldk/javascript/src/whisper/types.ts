@@ -409,11 +409,11 @@ export type Breadcrumbs = WhisperComponent<WhisperComponentType.Breadcrumbs> & {
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
   endIcon?: {
     name: string;
-    variant: IconVariant;
+    variant?: IconVariant;
   };
   startIcon?: {
     name: string;
-    variant: IconVariant;
+    variant?: IconVariant;
   };
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
