@@ -215,6 +215,12 @@ export enum StyleSize {
   Medium = 'medium',
   Large = 'large',
 }
+export enum IconVariant {
+  Outlined = 'outlined',
+  Round = 'round',
+  Sharp = 'sharp',
+  TwoTone = 'two-tone',
+}
 
 export enum WidthSize {
   Full = 'full',
@@ -401,6 +407,14 @@ export type Breadcrumbs = WhisperComponent<WhisperComponentType.Breadcrumbs> & {
 };
 
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
+  endIcon?: {
+    name: string;
+    variant: IconVariant;
+  };
+  startIcon?: {
+    name: string;
+    variant: IconVariant;
+  };
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
   label?: string;

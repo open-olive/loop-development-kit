@@ -312,4 +312,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Does box pass on after clicking the breadcrumb link?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Test ButtonIcon',
+      whisperTests.testButtonIcon,
+      10000,
+      'Are the icon buttons clickable?',
+    ),
   ]);
