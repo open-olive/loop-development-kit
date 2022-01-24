@@ -233,6 +233,7 @@ export enum StyleSize {
   Medium = 'medium',
   Large = 'large',
 }
+
 export enum WidthSize {
   Full = 'full',
   Half = 'half',
