@@ -3602,6 +3602,54 @@ export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
       components: [bread],
     });
   });
+export const testButtonIcon = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Are the icon buttons clickable?',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('button clicked.');
+          },
+          startIcon: {
+            name: 'call',
+            variant: IconVariant.Round,
+          },
+          endIcon: {
+            name: 'pets',
+            variant: IconVariant.Outlined,
+          },
+        },
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('article button clicked.');
+          },
+          label: 'article button',
+          startIcon: {
+            name: 'article',
+            variant: IconVariant.Sharp,
+          },
+        },
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('emoji button clicked.');
+          },
+          label: 'emoji button',
+          endIcon: {
+            name: 'emoji_emotions',
+            variant: IconVariant.TwoTone,
+          },
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
 
 export const testLinkStyles = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
