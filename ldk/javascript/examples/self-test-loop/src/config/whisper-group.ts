@@ -318,4 +318,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Are the icon buttons clickable?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Link Styling',
+      whisperTests.testLinkStyles,
+      10000,
+      'Do the links have the expected styling?',
+    ),
   ]);
