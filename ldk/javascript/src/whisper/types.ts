@@ -233,13 +233,6 @@ export enum StyleSize {
   Medium = 'medium',
   Large = 'large',
 }
-export enum IconVariant {
-  Outlined = 'outlined',
-  Round = 'round',
-  Sharp = 'sharp',
-  TwoTone = 'two-tone',
-}
-
 export enum WidthSize {
   Full = 'full',
   Half = 'half',
