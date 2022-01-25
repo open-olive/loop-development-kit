@@ -11,6 +11,7 @@ import {
   Direction,
   JustifyContent,
   IconSize,
+  IconVariant,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   NewWhisper,
@@ -22,6 +23,7 @@ import {
   Whisper,
   WhisperComponentType,
   ProgressShape,
+  FontWeight,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -36,6 +38,40 @@ import {
   resolveRejectButtons,
 } from './utils';
 import { shortText, longText, markdownText, image } from './text';
+
+const areAllResolved = (resolverMap: Map<string, boolean>) => {
+  let result = true;
+  resolverMap.forEach((value) => {
+    if (!value) {
+      result = false;
+    }
+  });
+
+  return result;
+};
+
+const onActionWrapper = (
+  error: Error,
+  actionType: string,
+  resolverMap: Map<string, boolean>,
+  createdWhisper: Whisper,
+  resolve: (value: boolean) => void,
+  reject: (reason?: Error) => void,
+) => {
+  if (error) {
+    console.error(error);
+    reject(error);
+  }
+  console.debug(`Received ${actionType} event`);
+  resolverMap.set(actionType, true);
+
+  if (areAllResolved(resolverMap)) {
+    resolve(true);
+    createdWhisper.close(() => {
+      // do nothing.
+    });
+  }
+};
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -117,6 +153,52 @@ export const testIconLayout = (): Promise<boolean> =>
               onClick: () => {
                 console.info('Pets Clicked');
               },
+            },
+          ],
+        },
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Normal',
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Outlined',
+              variant: IconVariant.Outlined,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Round',
+              variant: IconVariant.Round,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Sharp',
+              variant: IconVariant.Sharp,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Two-tone',
+              variant: IconVariant.TwoTone,
             },
           ],
         },
@@ -399,7 +481,7 @@ function createAcceptButtons(): {
 export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
-    onDrop: () => {},
+    onDrop: () => undefined,
     label: 'File Components',
     key: 'drop',
   };
@@ -578,7 +660,7 @@ export const testClickableLink = (): Promise<boolean> =>
                 type: WhisperComponentType.Button,
                 label: `Url failed to open`,
                 onClick: (_error: Error, onClickWhisper: Whisper) => {
-                  reject('Url failed to open');
+                  reject(new Error('Url failed to open'));
                   onClickWhisper.close(() => {
                     // do nothing.
                   });
@@ -591,7 +673,7 @@ export const testClickableLink = (): Promise<boolean> =>
                   if (linkClicked) {
                     resolve(true);
                   } else {
-                    reject('On click action was not received.');
+                    reject(new Error('On click action was not received.'));
                   }
                   onClickWhisper.close(() => {
                     // do nothing.
@@ -1610,40 +1692,6 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
       ],
     });
   });
-
-const areAllResolved = (resolverMap: Map<string, boolean>) => {
-  let result = true;
-  resolverMap.forEach((value) => {
-    if (!value) {
-      result = false;
-    }
-  });
-
-  return result;
-};
-
-const onActionWrapper = (
-  error: Error,
-  actionType: string,
-  resolverMap: Map<string, boolean>,
-  createdWhisper: Whisper,
-  resolve: (value: boolean) => void,
-  reject: (reason?: Error) => void,
-) => {
-  if (error) {
-    console.error(error);
-    reject(error);
-  }
-  console.debug(`Received ${actionType} event`);
-  resolverMap.set(actionType, true);
-
-  if (areAllResolved(resolverMap)) {
-    resolve(true);
-    createdWhisper.close(() => {
-      // do nothing.
-    });
-  }
-};
 
 export const testOnBlurAndOnFocus = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -2697,7 +2745,7 @@ export const testPadding = (): Promise<boolean> =>
       for (
         let functionIndex = 0;
         functionIndex < componentCreationFunctions.length;
-        functionIndex++
+        functionIndex += 1
       ) {
         const func = componentCreationFunctions[functionIndex];
         const component = func(`${functionIndex}`, 'Label');
@@ -3553,4 +3601,87 @@ export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
       },
       components: [bread],
     });
+  });
+export const testButtonIcon = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Are the icon buttons clickable?',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('button clicked.');
+          },
+          startIcon: {
+            name: 'call',
+            variant: IconVariant.Round,
+          },
+          endIcon: {
+            name: 'pets',
+            variant: IconVariant.Outlined,
+          },
+        },
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('article button clicked.');
+          },
+          label: 'article button',
+          startIcon: {
+            name: 'article',
+            variant: IconVariant.Sharp,
+          },
+        },
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('emoji button clicked.');
+          },
+          label: 'emoji button',
+          endIcon: {
+            name: 'emoji_emotions',
+            variant: IconVariant.TwoTone,
+          },
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
+export const testLinkStyles = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did the links render correctly?',
+        components: [
+          {
+            text: 'Thin Link',
+            componentStyle: { fontWeight: FontWeight.Thin },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Regular Link',
+            componentStyle: { fontWeight: FontWeight.Regular },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Bold Link',
+            componentStyle: { fontWeight: FontWeight.Bold },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Extra Bold Link',
+            componentStyle: { fontWeight: FontWeight.ExtraBold },
+            type: WhisperComponentType.Link,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
   });
