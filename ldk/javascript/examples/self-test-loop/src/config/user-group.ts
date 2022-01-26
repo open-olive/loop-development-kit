@@ -23,4 +23,22 @@ export const userTestGroup = (): TestGroup =>
       10000,
       'No action required',
     ),
+    new LoopTest(
+      'User Aptitude - JWT - Full Name Claim',
+      userTests.testJwtIncludeFullName,
+      10000,
+      'No action required',
+    ),
+    new LoopTest(
+      'User Aptitude - JWT - Organization ID Claim',
+      userTests.testJwtIncludeOrganizationId,
+      10000,
+      'No action required',
+    ),
+    new LoopTest(
+      'User Aptitude - JWT - Organization Name Claim',
+      userTests.testJwtIncludeOrganizationName,
+      10000,
+      'No action required',
+    ),
   ]);

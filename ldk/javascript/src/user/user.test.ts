@@ -31,6 +31,42 @@ describe('User', () => {
       return expect(actual).resolves.toBe(jwt);
     });
 
+    it('returns a promise with the token when jwtConfig is present (fullName)', () => {
+      const jwt = 'jwt';
+      mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
+
+      const actual = user.jwt({ includeFulllName: true });
+
+      expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
+        includeFulllName: true,
+      });
+      return expect(actual).resolves.toBe(jwt);
+    });
+
+    it('returns a promise with the token when jwtConfig is present (organizationId)', () => {
+      const jwt = 'jwt';
+      mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
+
+      const actual = user.jwt({ includeOrganizationId: true });
+
+      expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
+        includeOrganizationId: true,
+      });
+      return expect(actual).resolves.toBe(jwt);
+    });
+
+    it('returns a promise with the token when jwtConfig is present (organizationName)', () => {
+      const jwt = 'jwt';
+      mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
+
+      const actual = user.jwt({ includeOrganizationName: true });
+
+      expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
+        includeOrganizationName: true,
+      });
+      return expect(actual).resolves.toBe(jwt);
+    });
+
     it('returns a rejected promise', () => {
       const exception = 'Exception';
       mocked(oliveHelps.user.jwt).mockImplementation(() => {
