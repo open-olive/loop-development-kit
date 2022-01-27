@@ -27,7 +27,6 @@ import {
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
-  areAllResolved,
   autocompleteOptions,
   ignoreCase,
   createAutocompleteComponent,

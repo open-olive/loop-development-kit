@@ -24,12 +24,12 @@ export const resolveOnClick = (
 ): void => {
   if (error) {
     console.error(error);
-    reject(error);
+    return reject(error);
   }
   whisperToClose?.close(() => {
     // do nothing.
   });
-  resolve(true);
+  return resolve(true);
 };
 
 export const rejectOnClick = (
@@ -39,12 +39,12 @@ export const rejectOnClick = (
 ): void => {
   if (error) {
     console.error(error);
-    reject(error);
+    return reject(error);
   }
   whisperToClose?.close(() => {
     // do nothing.
   });
-  reject(new Error('Not rendered correctly.'));
+  return reject(new Error('Not rendered correctly.'));
 };
 
 export const resolveRejectButtons = (
@@ -188,16 +188,16 @@ export const onActionWrapper = (
 
   if (error) {
     console.error(error);
-    reject(error);
+    return reject(error);
   }
   console.debug(`Received ${actionType} event`);
   resolverMap.set(actionType, true);
 
   if (areAllResolved(resolverMap)) {
-    resolve(true);
     createdWhisper.close(() => {
       // do nothing.
     });
+    return resolve(true);
   }
 };
 
