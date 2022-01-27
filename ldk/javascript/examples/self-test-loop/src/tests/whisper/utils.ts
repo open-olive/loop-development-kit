@@ -167,6 +167,40 @@ export const newGuid = (): string =>
     return v.toString(16);
   });
 
+export const onActionWrapper = (
+  error: Error,
+  actionType: string,
+  resolverMap: Map<string, boolean>,
+  createdWhisper: Whisper,
+  resolve: (value: boolean) => void,
+  reject: (reason?: Error) => void,
+): void => {
+  const areAllResolved = (resolverMapInput: Map<string, boolean>): boolean => {
+    let result = true;
+    resolverMapInput.forEach((value) => {
+      if (!value) {
+        result = false;
+      }
+    });
+
+    return result;
+  };
+
+  if (error) {
+    console.error(error);
+    reject(error);
+  }
+  console.debug(`Received ${actionType} event`);
+  resolverMap.set(actionType, true);
+
+  if (areAllResolved(resolverMap)) {
+    resolve(true);
+    createdWhisper.close(() => {
+      // do nothing.
+    });
+  }
+};
+
 export const autocompleteOptions = [
   { label: 'Value 1', value: '1' },
   { label: 'Value 2', value: '2' },
