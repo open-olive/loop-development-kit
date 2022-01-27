@@ -400,6 +400,12 @@ export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
     onDrop: () => {},
+    messaging: {
+      accept: 'file accepted',
+      click: 'dropzone clicked',
+      drop: 'file dropped',
+      limit: 'reached ',
+    },
     label: 'File Components',
     key: 'drop',
   };

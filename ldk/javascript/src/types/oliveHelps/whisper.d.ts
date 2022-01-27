@@ -156,6 +156,12 @@ declare namespace WhisperService {
     accept?: string[];
     label: string;
     limit?: number;
+    messaging?: {
+      accept?: string;
+      click?: string;
+      drop?: string;
+      limit?: string;
+    };
     noun?: string;
     onDrop: WhisperHandlerWithParam<File[]>;
     value?: File[];
