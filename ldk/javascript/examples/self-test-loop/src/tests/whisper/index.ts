@@ -400,11 +400,12 @@ export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
     onDrop: () => {},
+    limit: 3,
     messaging: {
-      accept: 'file accepted',
-      click: 'dropzone clicked',
-      drop: 'file dropped',
-      limit: 'reached ',
+      accept: 'That file type is not accepted',
+      click: 'BROWSE',
+      drop: 'drop here',
+      limit: 'You can only upload 3 files ',
     },
     label: 'File Components',
     key: 'drop',
