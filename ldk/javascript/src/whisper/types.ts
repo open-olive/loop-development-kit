@@ -138,6 +138,13 @@ export enum Direction {
   Vertical = 'vertical',
 }
 
+export enum FontWeight {
+  Thin = 300,
+  Regular = 400,
+  Bold = 700,
+  ExtraBold = 800,
+}
+
 export enum TextAlign {
   Center = 'center',
   Left = 'left',
@@ -193,11 +200,22 @@ export interface LayoutOptions {
   width?: WidthSize;
 }
 
+export interface StyleOptions {
+  fontWeight?: FontWeight;
+}
+
 export enum IconSize {
   Small = 'small',
   Medium = 'medium',
   Large = 'large',
   XLarge = 'x-large',
+}
+
+export enum IconVariant {
+  Outlined = 'outlined',
+  Round = 'round',
+  Sharp = 'sharp',
+  TwoTone = 'two-tone',
 }
 
 export type AutocompleteOption = {
@@ -401,6 +419,14 @@ export type Breadcrumbs = WhisperComponent<WhisperComponentType.Breadcrumbs> & {
 };
 
 export type Button = WhisperComponent<WhisperComponentType.Button> & {
+  endIcon?: {
+    name: string;
+    variant?: IconVariant;
+  };
+  startIcon?: {
+    name: string;
+    variant?: IconVariant;
+  };
   buttonStyle?: ButtonStyle;
   disabled?: boolean;
   label?: string;
@@ -415,6 +441,7 @@ export type Link = WhisperComponent<WhisperComponentType.Link> & {
   onClick?: WhisperHandler;
   style?: Urgency;
   textAlign?: TextAlign;
+  componentStyle?: StyleOptions;
 };
 
 export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
@@ -484,6 +511,7 @@ export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip;
   onClick?: WhisperHandler;
   tooltip?: string;
+  variant?: IconVariant;
 };
 
 export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> & {
