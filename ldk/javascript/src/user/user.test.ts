@@ -5,6 +5,7 @@ describe('User', () => {
   beforeEach(() => {
     oliveHelps.user = {
       jwt: jest.fn(),
+      jwtWithUserDetails: jest.fn(),
     };
   });
 
@@ -35,10 +36,10 @@ describe('User', () => {
       const jwt = 'jwt';
       mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
 
-      const actual = user.jwt({ includeFulllName: true });
+      const actual = user.jwt({ includeFullName: true });
 
       expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
-        includeFulllName: true,
+        includeFullName: true,
       });
       return expect(actual).resolves.toBe(jwt);
     });
