@@ -33,10 +33,15 @@ describe('User', () => {
     });
 
     it('returns a promise with the token when jwtConfig is present (fullName)', () => {
-      const jwt = 'jwt';
-      mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
+      const jwt: user.JWTWithParams = {
+        jwt: 'jwt',
+        fullName: 'fullName',
+      };
+      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknown, callback) =>
+        callback(undefined, jwt),
+      );
 
-      const actual = user.jwt({ includeFullName: true });
+      const actual = user.jwtWithUserDetails({ includeFullName: true });
 
       expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
         includeFullName: true,
@@ -45,10 +50,15 @@ describe('User', () => {
     });
 
     it('returns a promise with the token when jwtConfig is present (organizationId)', () => {
-      const jwt = 'jwt';
-      mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
+      const jwt: user.JWTWithParams = {
+        jwt: 'jwt',
+        organizationId: 'organizationId',
+      };
+      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknown, callback) =>
+        callback(undefined, jwt),
+      );
 
-      const actual = user.jwt({ includeOrganizationId: true });
+      const actual = user.jwtWithUserDetails({ includeFullName: true });
 
       expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
         includeOrganizationId: true,
@@ -57,10 +67,15 @@ describe('User', () => {
     });
 
     it('returns a promise with the token when jwtConfig is present (organizationName)', () => {
-      const jwt = 'jwt';
-      mocked(oliveHelps.user.jwt).mockImplementation((callback) => callback(undefined, jwt));
+      const jwt: user.JWTWithParams = {
+        jwt: 'jwt',
+        organizationName: 'organizationName',
+      };
+      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknown, callback) =>
+        callback(undefined, jwt),
+      );
 
-      const actual = user.jwt({ includeOrganizationName: true });
+      const actual = user.jwtWithUserDetails({ includeFullName: true });
 
       expect(oliveHelps.user.jwt).toHaveBeenCalledWith(expect.any(Function), {
         includeOrganizationName: true,

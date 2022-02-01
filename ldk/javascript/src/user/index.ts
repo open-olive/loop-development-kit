@@ -1,4 +1,4 @@
-import { promisifyWithParamAfterCallback } from '../promisify';
+import { promisifyWithParam, promisifyWithParamAfterCallback } from '../promisify';
 
 /**
  * The User aptitude gives access to Olive Helps user related information
@@ -9,6 +9,15 @@ export interface JWTConfig {
   includeOrganizationId?: boolean;
   includeOrganizationName?: boolean;
 }
+
+export interface JWTWithParams {
+  email?: string;
+  fullName?: string;
+  jwt: string;
+  organizationId?: string;
+  organizationName?: string;
+}
+
 export interface User {
   /**
    * Returns a JWT identifying the current OliveHelps user.
@@ -26,13 +35,13 @@ export interface User {
    * @param includeOrganizationName if true, the user's organization name will be included in an optional organizationName claim.
    * @returns JWT with the current username in the subject field.
    */
-  jwtWithUserDetails(jwtConfig?: JWTConfig): Promise<any>;
+  jwtWithUserDetails(jwtConfig?: JWTConfig): Promise<JWTWithParams>;
 }
 
 export function jwt(jwtConfig: JWTConfig = {}): Promise<string> {
   return promisifyWithParamAfterCallback(jwtConfig, oliveHelps.user.jwt);
 }
 
-export function jwtWithUserDetails(jwtConfig: JWTConfig = {}): Promise<any> {
-  return promisifyWithParamAfterCallback(jwtConfig, oliveHelps.user.jwtWithUserDetails);
+export function jwtWithUserDetails(jwtConfig: JWTConfig = {}): Promise<JWTWithParams> {
+  return promisifyWithParam(jwtConfig, oliveHelps.user.jwtWithUserDetails);
 }
