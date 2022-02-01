@@ -37,8 +37,8 @@ describe('User', () => {
         jwt: 'jwt',
         fullName: 'stuff',
       };
-      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation(
-        (unknow: unknown, callback: any) => callback(undefined, jwt),
+      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknow: unknown, callback) =>
+        callback(undefined, jwt),
       );
 
       const actual = user.jwtWithUserDetails({ includeFullName: true });
@@ -57,8 +57,8 @@ describe('User', () => {
         jwt: 'jwt',
         organizationId: 'stuff',
       };
-      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation(
-        (unknow: unknown, callback: any) => callback(undefined, jwt),
+      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknow: unknown, callback) =>
+        callback(undefined, jwt),
       );
 
       const actual = user.jwtWithUserDetails({ includeOrganizationId: true });
@@ -77,8 +77,8 @@ describe('User', () => {
         jwt: 'jwt',
         organizationName: 'stuff',
       };
-      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation(
-        (unknow: unknown, callback: any) => callback(undefined, jwt),
+      mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknow: unknown, callback) =>
+        callback(undefined, jwt),
       );
 
       const actual = user.jwtWithUserDetails({ includeOrganizationName: true });
