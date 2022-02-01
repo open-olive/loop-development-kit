@@ -166,3 +166,27 @@ export const testListenTextSelection = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+export const testListenNavigationType = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      const tabId = await browser.openTab(URL);
+
+      const listener = await browser.listenNavigation(
+        (navigationEvent: NavigationDetails): void => {
+          const { navigationType } = navigationEvent;
+
+          console.log(navigationType);
+
+          if (navigationType === 'real') {
+            listener.cancel();
+            resolve(true);
+          }
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });

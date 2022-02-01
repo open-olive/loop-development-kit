@@ -12,6 +12,7 @@ declare namespace Browser {
 
   interface NavigationDetails {
     frameId: number;
+    navigationType: string;
     parentFrameId: number;
     tabId: number;
     timestamp: number;

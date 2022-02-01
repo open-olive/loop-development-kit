@@ -5,11 +5,12 @@ import { Cancellable } from '../cancellable';
 import { promisifyListenable, promisifyWithParam } from '../promisify';
 
 export interface NavigationDetails {
-  tabId: number;
-  url: string;
   frameId: number;
+  navigationType: string;
   parentFrameId: number;
+  tabId: number;
   timestamp: number;
+  url: string;
 }
 
 export interface NetworkActivityDetails {
