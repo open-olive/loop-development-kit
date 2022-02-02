@@ -170,16 +170,24 @@ export const testListenTextSelection = (): Promise<boolean> =>
 export const testListenNavigationType = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      const URL = 'https://www.oliveai.dev/';
-      const tabId = await browser.openTab(URL);
+      const URL = 'https://reactrouter.com/';
+      await browser.openTab(URL);
+      let realNavigation = false;
+      let historyNavigation = false;
 
       const listener = await browser.listenNavigation(
         (navigationEvent: NavigationDetails): void => {
           const { navigationType } = navigationEvent;
 
-          console.log(navigationType);
+          console.debug(JSON.stringify(navigationEvent));
 
           if (navigationType === 'real') {
+            realNavigation = true;
+          }
+          if (navigationType === 'history') {
+            historyNavigation = true;
+          }
+          if (realNavigation && historyNavigation) {
             listener.cancel();
             resolve(true);
           }

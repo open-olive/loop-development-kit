@@ -51,6 +51,6 @@ export const browserTestGroup = (): TestGroup =>
       'Browser Aptitude - Navigation Type',
       browserTests.testListenNavigationType,
       10000,
-      'Trigger a real navigation event by doing a full page load',
+      'Trigger both a "history" navigation event and a "real" navigation event. To trigger a "history" event, click on a menu item on the webpage that opens. To trigger a "real" navigation event by doing a page refresh.',
     ),
   ]);
