@@ -248,6 +248,27 @@ export enum CustomHeight {
   ExtraLarge = 'extraLarge',
 }
 
+export enum CaseTypes {
+  CamelCase = 'camelCase',
+  KebabCase = 'kebab-case',
+  PascalCase = 'PascalCase',
+  SnakeCase = 'snake_case',
+}
+
+export enum MatchSorterRankings {
+  Acronym = 'ACRONYM',
+  CaseSensitiveEqual = 'CASE_SENSITIVE_EQUAL',
+  Contains = 'CONTAINS',
+  Equal = 'EQUAL',
+  Matches = 'MATCHES',
+  /**
+   * @hidden -- Sorting is disabled in UI, breaking this ranking. Temporarily hiding.
+   */
+  NoMatch = 'NO_MATCH',
+  StartsWith = 'STARTS_WITH',
+  WordStartsWith = 'WORD_STARTS_WITH',
+}
+
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
@@ -322,11 +343,44 @@ export interface AutocompleteFilterOptions {
   trim?: boolean;
 }
 
+export interface AutocompleteMatchSorterOptions {
+  /**
+   * By default, match-sorter will strip diacritics before doing any comparisons.
+   * You can use this option to disable this behavior.
+   */
+  keepDiacritics?: boolean;
+  /**
+   * @hidden -- Core does not support objects for values yet
+   * By default, match-sorter just uses the value itself. Passing an array
+   * tells match-sorter which keys to use for the ranking.
+   */
+  keys?: string[];
+  /**
+   * By default, match-sorter assumes spaces to be the word separator. However,
+   * you can use this option with the {@link CaseTypes} enum to choose a different
+   * casing style.
+   */
+  recipe?: CaseTypes;
+  /**
+   * Thresholds can be used to specify the criteria used to rank the results.
+   * Available thresholds are in the {@link MatchSorterRankings} enum.
+   */
+  threshold?: MatchSorterRankings;
+}
+
 export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
   /**
    * Options to configure how the filter search behaves
+   *
+   * (Note: filterOptions and matchSorter can't be used together; if you include both,
+   * matchSorter will take precedence)
    */
   filterOptions?: AutocompleteFilterOptions;
+  /**
+   * Option to allow custom user input that doesn't match any of the
+   * supplied selectable options
+   */
+  freeSolo?: boolean;
   /**
    * Label associated with component
    */
@@ -335,6 +389,14 @@ export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & 
    * If true, displays component in 'loading' state
    */
   loading?: boolean;
+  /**
+   * Options to use with our implementation of match-sorter
+   * https://github.com/kentcdodds/match-sorter
+   *
+   * (Note: filterOptions and matchSorter can't be used together; if you include both,
+   * matchSorter will take precedence)
+   */
+  matchSorter?: AutocompleteMatchSorterOptions;
   /**
    * Indicates if multiple drop down selections are allowed
    */
@@ -359,10 +421,6 @@ export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & 
    * Default selected value
    */
   value?: string;
-  /**
-   * Option to allow custom user input that doesn't match any of the supplied selectable options
-   */
-  freeSolo?: boolean;
 };
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {
