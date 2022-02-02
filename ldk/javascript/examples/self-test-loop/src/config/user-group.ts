@@ -24,19 +24,25 @@ export const userTestGroup = (): TestGroup =>
       'No action required',
     ),
     new LoopTest(
-      'User Aptitude - JWT - Full Name Claim',
+      'User Aptitude - JWTWithUserDetails - Email Claim',
+      userTests.testJwtUserDetailsIncludeEmail,
+      10000,
+      'No action required',
+    ),
+    new LoopTest(
+      'User Aptitude - JWTWithUserDetails - Full Name Claim',
       userTests.testJwtIncludeFullName,
       10000,
       'No action required',
     ),
     new LoopTest(
-      'User Aptitude - JWT - Organization ID Claim',
+      'User Aptitude - JWTWithUserDetails - Organization ID Claim',
       userTests.testJwtIncludeOrganizationId,
       10000,
       'No action required',
     ),
     new LoopTest(
-      'User Aptitude - JWT - Organization Name Claim',
+      'User Aptitude - JWTWithUserDetails - Organization Name Claim',
       userTests.testJwtIncludeOrganizationName,
       10000,
       'No action required',
