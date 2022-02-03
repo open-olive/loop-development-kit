@@ -48,6 +48,15 @@
         "optionalClaims": [
           {
             "value": "email"
+          },
+          {
+            "value": "fullName"
+          },
+          {
+            "value": "organizationId"
+          },
+          {
+            "value": "organizationName"
           }
         ]
       },
