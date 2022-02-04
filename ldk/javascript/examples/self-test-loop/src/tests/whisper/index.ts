@@ -451,11 +451,22 @@ export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
     onDrop: () => undefined,
+    onRemove: () => undefined,
     label: 'File Components',
     key: 'drop',
   };
   const onDropAction = new Promise<whisper.File[]>((resolve, reject) => {
     dropZone.onDrop = (error, param) => {
+      if (error) {
+        reject(error);
+      }
+      if (param) {
+        resolve(param);
+      }
+    };
+  });
+  const onRemoveAction = new Promise<whisper.File[]>((resolve, reject) => {
+    dropZone.onRemove = (error, param) => {
       if (error) {
         reject(error);
       }
@@ -475,16 +486,27 @@ export const testDropzone = async (): Promise<boolean> => {
     ],
   });
   const droppedFiles = await onDropAction;
-  const fileData = droppedFiles
-    .map((file) => `Path: ${file.path}, Size: ${file.size}`)
-    .join('\n\n');
+  const removedFiles = await onRemoveAction;
+  const mapFile = new Map();
 
+  await droppedFiles.map((file) => {
+    mapFile.set(file, `Path: ${file.path}, Size: ${file.size}`);
+  });
+  await removedFiles.map((removedFile) => {
+    if (mapFile.has(removedFile)) {
+      mapFile.delete(removedFile);
+    }
+    return mapFile;
+  });
+
+  const Files = Object.fromEntries(mapFile);
+  console.log(Files);
   const acceptFileData = createAcceptButtons();
   await testWhisper.update({
     components: [
       {
         type: WhisperComponentType.Markdown,
-        body: `Are these the files you selected?\n\n${fileData}`,
+        body: `Are these the files you selected?\n\n${JSON.stringify(Files)}`,
       },
       dropZone,
       acceptFileData.component,
@@ -3346,4 +3368,48 @@ export const testLinkStyles = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
+  });
+
+export const testDropZoneOnRemove = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    let removedFiles: String;
+    const dropZone: whisper.DropZone = {
+      type: WhisperComponentType.DropZone,
+      onDrop: (file) => {
+        console.log('dropZone.onFileDrop', JSON.stringify(file));
+        removedFiles.concat(JSON.stringify(file));
+      },
+      onRemove: (removedFile) => {
+        console.log('dropZone.onRemove', JSON.stringify(removedFile));
+      },
+
+      label: 'File Components',
+      key: 'drop',
+    };
+    const dropZoneWhisper = await whisper.create({
+      label: 'Dropzone Test',
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: 'Select and drop a file onto the dropzone box below.',
+        },
+        dropZone,
+      ],
+    });
+    // await whisper.create({
+    //   label: 'DropZoneOnRemove?',
+    //   onClose: () => {
+    //     console.debug('closed');
+    //   },
+    //   components: [dropZone],
+    // });
+    await dropZoneWhisper.update({
+      components: [
+        {
+          type: WhisperComponentType.Markdown,
+          body: `Are these the files you removed?\n\n${JSON.stringify(removedFiles)}`,
+        },
+        dropZone,
+      ],
+    });
   });

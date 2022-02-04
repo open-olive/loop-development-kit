@@ -162,6 +162,30 @@ export function mapToInternalChildComponent(
             mapToExternalWhisper(whisper, stateMap),
           );
         },
+        onRemove: (error, param, whisper) => {
+          const callbackHandler: (file: WhisperService.File) => File = (
+            file: WhisperService.File,
+          ) => ({
+            path: file.path,
+            size: file.size,
+            readFile: () =>
+              new Promise<Uint8Array>((resolve, reject) => {
+                file.readFile((readError, buffer) => {
+                  if (readError) {
+                    return reject(readError);
+                  }
+                  return resolve(new Uint8Array(buffer));
+                });
+              }),
+          });
+          if (component.onRemove) {
+            component.onRemove(
+              error,
+              param.map(callbackHandler),
+              mapToExternalWhisper(whisper, stateMap),
+            );
+          }
+        },
       };
     case WhisperComponentType.ListPair: {
       // eslint-disable-next-line

@@ -164,6 +164,7 @@ declare namespace WhisperService {
     limit?: number;
     noun?: string;
     onDrop: WhisperHandlerWithParam<File[]>;
+    onRemove?: WhisperHandlerWithParam<File[]>;
     value?: File[];
     tooltip?: string;
     validationError?: string;
@@ -193,7 +194,7 @@ declare namespace WhisperService {
     onCopy?: WhisperHandler;
     tooltip?: string;
     onLinkClick?: WhisperHandlerWithParam<string>;
-  };
+  }
 
   type Message = Component<'message'> & {
     copyable?: 'body' | 'header';

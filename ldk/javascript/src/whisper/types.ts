@@ -549,6 +549,7 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
    * The callback function to call whenever the user selects or unselects a file.
    */
   onDrop: WhisperHandlerWithParam<File[]>;
+  onRemove?: WhisperHandlerWithParam<File[]>;
   tooltip?: string;
   validationError?: string;
   /**
