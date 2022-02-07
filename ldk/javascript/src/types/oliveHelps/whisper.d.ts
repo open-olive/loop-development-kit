@@ -194,7 +194,7 @@ declare namespace WhisperService {
     onCopy?: WhisperHandler;
     tooltip?: string;
     onLinkClick?: WhisperHandlerWithParam<string>;
-  }
+  };
 
   type Message = Component<'message'> & {
     copyable?: 'body' | 'header';
