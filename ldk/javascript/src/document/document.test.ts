@@ -7,6 +7,7 @@ describe('Document', () => {
     oliveHelps.document = {
       xlsxDecode: jest.fn(),
       xlsxEncode: jest.fn(),
+      readPDF: jest.fn(),
     };
   });
 

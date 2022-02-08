@@ -1,5 +1,5 @@
 import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
-import { Workbook } from './types';
+import { Workbook, PDFOutput } from './types';
 import * as mapper from '../utils/mapper';
 
 /**
@@ -27,4 +27,8 @@ export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
 
 export function xlsxDecode(data: Uint8Array): Promise<Workbook> {
   return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.xlsxDecode);
+}
+
+export function readPDF(data: Uint8Array): Promise<PDFOutput> {
+  return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.readPDF);
 }
