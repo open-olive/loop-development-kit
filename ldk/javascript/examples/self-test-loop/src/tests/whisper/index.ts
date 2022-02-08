@@ -3361,15 +3361,20 @@ export const testDropZoneOnRemove = async (): Promise<boolean> =>
         // param represents remaining files.
         onRemove: (error, param) => {
           if (param) {
+            // Get remaining files and delete them from mapFIle to get deleted files.
             param.map((file) => {
               if (mapFile.has(file.path)) {
                 mapFile.delete(file.path);
+                console.log('deleted files are: ', mapFile.values);
               }
-
-              mapFile.forEach((deletedFilePath, file) => {
-                deletedFile.push(deletedFilePath + ` \n\n `);
-              });
             });
+
+            mapFile.forEach((deletedFilePath, file) => {
+              deletedFile.push(deletedFilePath + ` \n\n `);
+              console.log('deleted files have been pushed :', deletedFilePath);
+            });
+
+            // Add remaining files to mapFile
             mapFile.clear();
             param.map((remainingFile) => {
               mapFile.set(
