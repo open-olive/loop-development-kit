@@ -1,6 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import * as document from '.';
-import { Workbook } from './types';
+import { PDFContentType, Workbook } from './types';
 
 describe('Document', () => {
   beforeEach(() => {
@@ -81,6 +81,25 @@ describe('Document', () => {
       const actual = document.xlsxDecode(data);
 
       return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('readPDF', () => {
+    it('parses a PDF', () => {
+      const pdfFile = new Uint8Array();
+      const expected = {
+        '1': {
+          Content: [{ Value: 'test', Type: PDFContentType.Text }],
+        },
+      };
+
+      mocked(oliveHelps.document.readPDF).mockImplementation((data, callback) => {
+        callback(undefined, expected);
+      });
+
+      const actual = document.readPDF(pdfFile);
+
+      return expect(actual).resolves.toBe(expected);
     });
   });
 });

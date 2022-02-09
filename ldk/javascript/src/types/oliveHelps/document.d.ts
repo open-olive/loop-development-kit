@@ -1,3 +1,8 @@
+enum PDFContentType {
+  Text = 'text',
+  NewLine = 'newLine',
+}
+
 declare namespace Document {
   interface Aptitude {
     xlsxDecode: Common.ReadableWithParam<Array<number>, Workbook>;
@@ -26,13 +31,13 @@ declare namespace Document {
   }
 
   interface PDFValue {
-    value: string;
-    type: 'text' | 'newLine';
+    Value: string;
+    Type: PDFContentType;
   }
 
   interface PDFOutput {
     [key: string]: {
-      content: PDFValue[];
+      Content: PDFValue[];
     };
   }
 }
