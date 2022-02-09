@@ -19,6 +19,13 @@ export interface Document {
    * @returns - A promise containing Workbook.
    */
   xlsxDecode(data: Uint8Array): Promise<Workbook>;
+
+  /**
+   * Takes a PDF and outputs the text content inside
+   * @param - Uint8Array PDF data
+   * @returns - A promise containing PDFOutput
+   */
+  readPDF(data: Uint8Array): Promise<PDFOutput>;
 }
 
 export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
