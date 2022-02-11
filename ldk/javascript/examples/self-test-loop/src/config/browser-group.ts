@@ -47,4 +47,10 @@ export const browserTestGroup = (): TestGroup =>
       10000,
       "Inside the new oliveai.dev browser tab, select the text 'Welcome to the Olive Helps Developer Hub'",
     ),
+    new LoopTest(
+      'Browser Aptitude - Navigation Type',
+      browserTests.testListenNavigationType,
+      10000,
+      'Trigger both a "history" navigation event and a "real" navigation event. To trigger a "history" event, click on a menu item on the webpage that opens. To trigger a "real" navigation event by doing a page refresh.',
+    ),
   ]);

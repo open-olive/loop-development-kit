@@ -166,3 +166,35 @@ export const testListenTextSelection = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+export const testListenNavigationType = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://reactrouter.com/';
+      await browser.openTab(URL);
+      let realNavigation = false;
+      let historyNavigation = false;
+
+      const listener = await browser.listenNavigation(
+        (navigationEvent: NavigationDetails): void => {
+          const { navigationType } = navigationEvent;
+
+          console.debug(JSON.stringify(navigationEvent));
+
+          if (navigationType === 'real') {
+            realNavigation = true;
+          }
+          if (navigationType === 'history') {
+            historyNavigation = true;
+          }
+          if (realNavigation && historyNavigation) {
+            listener.cancel();
+            resolve(true);
+          }
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
