@@ -14,6 +14,7 @@ declare namespace WhisperService {
     | 'divider'
     | 'dropZone'
     | 'email'
+    | 'grid'
     | 'icon'
     | 'link'
     | 'listPair'
@@ -178,6 +179,19 @@ declare namespace WhisperService {
     componentStyle?: StyleOptions;
   };
 
+   type Grid = Component<'grid'>& {
+    alignContent?: AlignContent;
+    alignItems: AlignItems;
+    children: Array<ChildComponents>;
+    container?: boolean;
+    direction?: GridDirection;
+    justifyContent?: JustifyContent;
+    item?: boolean;
+    spacing: number;
+    wrap: string;
+    xs?: string;
+  };
+
   type ListPair = Component<'listPair'> & {
     copyable: boolean;
     labelCopyable?: boolean;
@@ -305,6 +319,7 @@ declare namespace WhisperService {
     | Divider
     | DropZone
     | Email
+    | Grid
     | Link
     | ListPair
     | Markdown

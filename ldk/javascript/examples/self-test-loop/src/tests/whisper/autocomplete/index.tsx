@@ -73,6 +73,7 @@ export const testAutocomplete = (): Promise<boolean> =>
             multiple: true,
             onSelect: (error, value, onSelectWhisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
+              console.log('type of value: ', typeof value);
               if (value.includes('4') && value.includes('5')) {
                 onActionWrapper(error, 'Multiple', resolverMap, onSelectWhisper, resolve, reject);
               }

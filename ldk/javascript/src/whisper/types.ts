@@ -34,6 +34,10 @@ export enum WhisperComponentType {
    */
   Link = 'link',
   /**
+   * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
+   */
+  Grid = 'grid',
+  /**
    * This component shows a two column view of information typically used for lists of information.
    */
   ListPair = 'listPair',
@@ -122,6 +126,15 @@ export enum AlignItems {
  */
 export const Alignment = JustifyContent;
 
+export enum AlignContent {
+  FlexStart = 'flex-start',
+  FlexEnd = 'flex-end',
+  Center = 'center',
+  SpaceBetween = 'space-between',
+  SpaceAround = 'space-around',
+  Stretch = 'stretch',
+}
+
 export enum ButtonSize {
   Large = 'large',
   Small = 'small',
@@ -136,6 +149,13 @@ export enum ButtonStyle {
 export enum Direction {
   Horizontal = 'horizontal',
   Vertical = 'vertical',
+}
+
+export enum GridDirection {
+  Row = 'row',
+  RowReverse = 'row-reverse',
+  Column = 'column',
+  ColumnReverse = 'column-reverse',
 }
 
 export enum FontWeight {
@@ -598,6 +618,19 @@ export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   size?: StyleSize;
 };
 
+export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
+  alignContent?: AlignContent;
+  alignItems: AlignItems;
+  children: Array<ChildComponents>;
+  container?: boolean;
+  direction?: GridDirection;
+  justifyContent?: JustifyContent;
+  item?: boolean;
+  spacing: number;
+  wrap: string;
+  xs?: string;
+};
+
 export type ChildComponents =
   | Autocomplete
   | Box
@@ -608,6 +641,7 @@ export type ChildComponents =
   | Divider
   | DropZone
   | Email
+  | Grid
   | Icon
   | Link
   | ListPair

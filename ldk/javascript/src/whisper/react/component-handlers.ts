@@ -87,6 +87,10 @@ const emailHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Email,
   whisperTagType: 'oh-email',
 };
+const gridHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Grid,
+  whisperTagType: 'oh-grid',
+};
 const iconHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Icon,
   whisperTagType: 'oh-icon',
@@ -178,6 +182,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return dropZoneHandler;
     case WhisperComponentType.Email:
       return emailHandler;
+    case WhisperComponentType.Grid:
+      return gridHandler;
     case WhisperComponentType.Icon:
       return iconHandler;
     case WhisperComponentType.Link:
@@ -236,6 +242,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return dropZoneHandler;
     case 'oh-email':
       return emailHandler;
+    case 'oh-grid':
+      return gridHandler;
     case 'oh-icon':
       return iconHandler;
     case 'oh-link':

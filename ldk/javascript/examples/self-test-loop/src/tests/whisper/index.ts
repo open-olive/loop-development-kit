@@ -24,6 +24,7 @@ import {
   WhisperComponentType,
   ProgressShape,
   FontWeight,
+  Alignment,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -3339,6 +3340,58 @@ export const testLinkStyles = (): Promise<boolean> =>
             componentStyle: { fontWeight: FontWeight.ExtraBold },
             type: WhisperComponentType.Link,
           },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testGridComponent = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did the grid render correctly?',
+        components: [
+          {
+            alignItems: AlignItems.Center,
+            type: WhisperComponentType.Grid,
+            children: [
+              {
+                type: WhisperComponentType.Icon,
+                name: 'account_balance_wallet',
+                size: IconSize.XLarge,
+                color: Color.Black,
+                tooltip: 'Normal',
+              },
+            ],
+            spacing: 5,
+            wrap: '',
+          },
+          {
+            alignItems: AlignItems.FlexEnd,
+            type: WhisperComponentType.Grid,
+            children: [
+              {
+                type: WhisperComponentType.Icon,
+                name: 'account_balance_wallet',
+                size: IconSize.XLarge,
+                color: Color.Black,
+                tooltip: 'Normal',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Grid with xs - false, spacing 0, wrap - no wrap',
+              },
+            ],
+            spacing: 0,
+            // nowrap, wrap, wrap-reverse?
+            wrap: 'nowrap', // TODO: use type & figure out what wrap does it have!
+            xs: 'false',
+          },
+
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
         ],
       });
