@@ -137,7 +137,7 @@ export function mapToInternalChildComponent(
           : undefined,
       } as WhisperService.Autocomplete;
     }
-    case WhisperComponentType.DropZone:
+    case WhisperComponentType.DropZone: {
       return {
         ...component,
         onDrop: (error, param, whisper) => {
@@ -186,7 +186,8 @@ export function mapToInternalChildComponent(
             );
           }
         },
-      };
+      } as WhisperService.DropZone;
+    }
     case WhisperComponentType.ListPair: {
       // eslint-disable-next-line
       const { onCopy } = component;

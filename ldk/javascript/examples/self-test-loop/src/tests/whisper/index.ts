@@ -3357,21 +3357,24 @@ export const testDropZoneOnRemove = async (): Promise<boolean> =>
 
       const dropZone: whisper.DropZone = {
         type: WhisperComponentType.DropZone,
-        onDrop: () => undefined,
+        onDrop: () => {
+          console.log('onDrop called: ');
+        },
         // param represents remaining files.
         onRemove: (error, param) => {
           if (param) {
             // Get remaining files and delete them from mapFIle to get deleted files.
             param.map((file) => {
+              console.log('onRemove called : files are: ', file.path);
               if (mapFile.has(file.path)) {
                 mapFile.delete(file.path);
-                console.log('deleted files are: ', mapFile.values);
+                // console.log('deleted files are: ', mapFile.values);
               }
             });
 
             mapFile.forEach((deletedFilePath, file) => {
               deletedFile.push(deletedFilePath + ` \n\n `);
-              console.log('deleted files have been pushed :', deletedFilePath);
+              // console.log('deleted files have been pushed :', deletedFilePath);
             });
 
             // Add remaining files to mapFile
@@ -3387,7 +3390,7 @@ export const testDropZoneOnRemove = async (): Promise<boolean> =>
               console.log('fileValue: ', fileValue);
               resultArray.push(fileValue + ` \n\n `);
             });
-            console.log('result Array : ', resultArray);
+            // console.log('result Array : ', resultArray);
           }
         },
         label: 'File Components',
@@ -3420,10 +3423,10 @@ export const testDropZoneOnRemove = async (): Promise<boolean> =>
       });
 
       await mapFile.forEach((fileValue, file) => {
-        console.log('fileValue: ', fileValue);
+        // console.log('fileValue: ', fileValue);
         resultArray.push(fileValue + ` \n\n `);
       });
-      console.log('result :', resultArray);
+      // console.log('result :', resultArray);
 
       await testWhisper.update({
         label: 'DropZone onRemove Test',
