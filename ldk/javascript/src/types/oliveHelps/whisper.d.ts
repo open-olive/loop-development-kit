@@ -45,6 +45,14 @@ declare namespace WhisperService {
 
   type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
 
+  type AlignContent =
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-around';
+
   type ButtonSize = 'large' | 'small';
 
   type ButtonStyle = 'primary' | 'secondary' | 'text';
@@ -69,6 +77,7 @@ declare namespace WhisperService {
 
   type WidthSize = 'full' | 'half';
 
+  type Wrap = 'nowrap' | 'wrap-reverse' | 'wrap';
   interface LayoutOptions {
     flex?: string;
     margin?: StyleSize;
@@ -179,16 +188,16 @@ declare namespace WhisperService {
     componentStyle?: StyleOptions;
   };
 
-   type Grid = Component<'grid'>& {
+  type Grid = Component<'grid'> & {
     alignContent?: AlignContent;
     alignItems: AlignItems;
     children: Array<ChildComponents>;
-    container?: boolean;
+    container: boolean;
     direction?: GridDirection;
     justifyContent?: JustifyContent;
-    item?: boolean;
+    item: boolean;
     spacing: number;
-    wrap: string;
+    wrap: Wrap;
     xs?: string;
   };
 

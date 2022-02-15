@@ -24,6 +24,7 @@ import {
   WhisperComponentType,
   ProgressShape,
   FontWeight,
+  Wrap,
   Alignment,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
@@ -3367,8 +3368,10 @@ export const testGridComponent = (): Promise<boolean> =>
                 tooltip: 'Normal',
               },
             ],
+            container: false,
+            item: true,
             spacing: 5,
-            wrap: '',
+            wrap: Wrap.NoWrap,
           },
           {
             alignItems: AlignItems.FlexEnd,
@@ -3386,10 +3389,12 @@ export const testGridComponent = (): Promise<boolean> =>
                 body: 'Grid with xs - false, spacing 0, wrap - no wrap',
               },
             ],
+            container: false,
+            item: false,
             spacing: 0,
             // nowrap, wrap, wrap-reverse?
-            wrap: 'nowrap', // TODO: use type & figure out what wrap does it have!
-            xs: 'false',
+            wrap: Wrap.NoWrap,
+            xs: 'auto',
           },
 
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),

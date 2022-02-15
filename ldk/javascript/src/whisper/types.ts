@@ -182,6 +182,11 @@ export enum Urgency {
   Success = 'success',
   Warning = 'warning',
 }
+export enum Wrap {
+  NoWrap = 'nowrap',
+  WrapReverse = 'wrap-reverse',
+  Wrap = 'wrap',
+}
 
 export enum DateTimeType {
   Date = 'date',
@@ -622,12 +627,12 @@ export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
   alignContent?: AlignContent;
   alignItems: AlignItems;
   children: Array<ChildComponents>;
-  container?: boolean;
+  container: boolean;
   direction?: GridDirection;
   justifyContent?: JustifyContent;
-  item?: boolean;
+  item: boolean;
   spacing: number;
-  wrap: string;
+  wrap: Wrap;
   xs?: string;
 };
 
