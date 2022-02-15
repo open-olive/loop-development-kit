@@ -3394,7 +3394,7 @@ export const testGridComponent = (): Promise<boolean> =>
             spacing: 0,
             // nowrap, wrap, wrap-reverse?
             wrap: Wrap.NoWrap,
-            xs: 'auto',
+            // xs: 'auto',
           },
 
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),

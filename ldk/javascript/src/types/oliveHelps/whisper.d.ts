@@ -65,6 +65,8 @@ declare namespace WhisperService {
 
   type FontWeight = 300 | 400 | 700 | 800;
 
+  type GridDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
   type OpenDirection = 'bottom' | 'top';
