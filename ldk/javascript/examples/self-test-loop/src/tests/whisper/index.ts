@@ -109,7 +109,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'fingerprint',
               size: IconSize.Large,
-              color: Color.Black,
+              color: Color.Accent,
               onClick: () => {
                 console.info('Fingerprint Clicked');
               },
