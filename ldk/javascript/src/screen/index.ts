@@ -1,12 +1,13 @@
 import { Cancellable } from '../cancellable';
 import {
+  promisifyListenable,
   promisifyListenableWithFourParams,
   promisifyListenableWithThreeParams,
   promisifyListenableWithTwoParams,
   promisifyWithParam,
   promisifyWithTwoParams,
 } from '../promisify';
-import { Bounds, HashType, OCRResult, OCRCoordinates } from './types';
+import { Bounds, HashType, OCRResult, OCRCoordinates, OcrEvent } from './types';
 
 export * from './types';
 
@@ -86,6 +87,12 @@ export interface Screen {
     delayMs: number,
     callback: (difference: number) => void,
   ): Promise<Cancellable>;
+  /**
+   * @experimental This functionality is experimental and subject to breaking changes.
+   * listenOcrMonitor listens to active window changes.
+   * @param ocrEvents - The event that records ounds and text changes.
+   */
+  listenOcrMonitor(callback: (ocrEvents: OcrEvent[]) => void): Promise<Cancellable>;
 }
 
 export function ocr(ocrCoordinates: OCRCoordinates): Promise<OCRResult[]> {
@@ -168,4 +175,7 @@ export function listenPixelDiffActiveWindow(
     callback,
     oliveHelps.screen.listenPixelDiffActiveWindow,
   );
+}
+export function listenOcrMonitor(callback: (ocrEvents: OcrEvent[]) => void): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.screen.listenOcrMonitor);
 }

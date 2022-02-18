@@ -11,6 +11,7 @@ declare namespace Screen {
     listenPerceptionHash: Common.ListenableWithFourParams<Bounds, number, number, number, number>;
     listenPixelDiff: Common.ListenableWithThreeParams<Bounds, number, number, number>;
     listenPixelDiffActiveWindow: Common.ListenableWithTwoParams<number, number, number>;
+    listenOcrMonitor: Common.Listenable<OcrEvent[]>;
   }
 
   interface OCRResult {
@@ -34,11 +35,30 @@ declare namespace Screen {
     width: number;
     height: number;
   }
+  interface OcrEvent {
+    old: TextAndBounds;
+    new: TextAndBounds;
+  }
+
+  interface TextAndBounds {
+    bounds: Rectangle;
+    text: string;
+  }
 
   type Bounds = {
     top: number;
     left: number;
     width: number;
     height: number;
+  };
+
+  type Rectangle = {
+    Max: Point;
+    Min: Point;
+  };
+
+  type Point = {
+    X: number;
+    Y: number;
   };
 }
