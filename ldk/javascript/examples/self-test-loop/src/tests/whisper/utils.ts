@@ -24,12 +24,12 @@ export const resolveOnClick = (
 ): void => {
   if (error) {
     console.error(error);
-    reject(error);
+    return reject(error);
   }
   whisperToClose?.close(() => {
     // do nothing.
   });
-  resolve(true);
+  return resolve(true);
 };
 
 export const rejectOnClick = (
@@ -39,12 +39,12 @@ export const rejectOnClick = (
 ): void => {
   if (error) {
     console.error(error);
-    reject(error);
+    return reject(error);
   }
   whisperToClose?.close(() => {
     // do nothing.
   });
-  reject(new Error('Not rendered correctly.'));
+  return reject(new Error('Not rendered correctly.'));
 };
 
 export const resolveRejectButtons = (
@@ -166,6 +166,40 @@ export const newGuid = (): string =>
 
     return v.toString(16);
   });
+
+export const onActionWrapper = (
+  error: Error,
+  actionType: string,
+  resolverMap: Map<string, boolean>,
+  createdWhisper: Whisper,
+  resolve: (value: boolean) => void,
+  reject: (reason?: Error) => void,
+): void => {
+  const areAllResolved = (resolverMapInput: Map<string, boolean>): boolean => {
+    let result = true;
+    resolverMapInput.forEach((value) => {
+      if (!value) {
+        result = false;
+      }
+    });
+
+    return result;
+  };
+
+  if (error) {
+    console.error(error);
+    return reject(error);
+  }
+  console.debug(`Received ${actionType} event`);
+  resolverMap.set(actionType, true);
+
+  if (areAllResolved(resolverMap)) {
+    createdWhisper.close(() => {
+      // do nothing.
+    });
+    return resolve(true);
+  }
+};
 
 export const autocompleteOptions = [
   { label: 'Value 1', value: '1' },

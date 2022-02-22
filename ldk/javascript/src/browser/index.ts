@@ -4,12 +4,18 @@
 import { Cancellable } from '../cancellable';
 import { promisifyListenable, promisifyWithParam } from '../promisify';
 
+export type NavigationTypeReal = 'real';
+export type NavigationTypeHistory = 'history';
+
+export type NavigationType = NavigationTypeReal | NavigationTypeHistory;
+
 export interface NavigationDetails {
-  tabId: number;
-  url: string;
   frameId: number;
+  navigationType: NavigationType;
   parentFrameId: number;
+  tabId: number;
   timestamp: number;
+  url: string;
 }
 
 export interface NetworkActivityDetails {

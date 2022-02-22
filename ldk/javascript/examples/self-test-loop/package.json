@@ -16,6 +16,9 @@
         "urlDomains": [
           {
             "value": "www.oliveai.dev"
+          },
+          {
+            "value": "reactrouter.com/*"
           }
         ]
       },
@@ -48,6 +51,15 @@
         "optionalClaims": [
           {
             "value": "email"
+          },
+          {
+            "value": "fullName"
+          },
+          {
+            "value": "organizationId"
+          },
+          {
+            "value": "organizationName"
           }
         ]
       },

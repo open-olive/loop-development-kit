@@ -222,6 +222,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Test the autocomplete filter options',
     ),
     new LoopTest(
+      'Whisper Aptitude - Autocomplete matchSorter',
+      whisperTests.testAutocompleteMatchSorter,
+      30000,
+      'Test the autocomplete matchSorter options',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Padding',
       whisperTests.testPadding,
       10000,
@@ -311,5 +317,17 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testBreadcrumbUpdateBox,
       10000,
       'Does box pass on after clicking the breadcrumb link?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Test ButtonIcon',
+      whisperTests.testButtonIcon,
+      10000,
+      'Are the icon buttons clickable?',
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Link Styling',
+      whisperTests.testLinkStyles,
+      10000,
+      'Do the links have the expected styling?',
     ),
   ]);

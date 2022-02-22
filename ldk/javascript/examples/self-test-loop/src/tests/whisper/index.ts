@@ -11,6 +11,7 @@ import {
   Direction,
   JustifyContent,
   IconSize,
+  IconVariant,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
   NewWhisper,
@@ -22,6 +23,7 @@ import {
   Whisper,
   WhisperComponentType,
   ProgressShape,
+  FontWeight,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -33,9 +35,12 @@ import {
   createSelectComponent,
   logMap,
   matchFrom,
+  onActionWrapper,
   resolveRejectButtons,
 } from './utils';
 import { shortText, longText, markdownText, image } from './text';
+
+export * from './autocomplete';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -117,6 +122,52 @@ export const testIconLayout = (): Promise<boolean> =>
               onClick: () => {
                 console.info('Pets Clicked');
               },
+            },
+          ],
+        },
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Normal',
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Outlined',
+              variant: IconVariant.Outlined,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Round',
+              variant: IconVariant.Round,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Sharp',
+              variant: IconVariant.Sharp,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              name: 'account_balance_wallet',
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Two-tone',
+              variant: IconVariant.TwoTone,
             },
           ],
         },
@@ -399,7 +450,7 @@ function createAcceptButtons(): {
 export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
-    onDrop: () => {},
+    onDrop: () => undefined,
     limit: 3,
     messaging: {
       accept: 'That file type is not accepted',
@@ -585,7 +636,7 @@ export const testClickableLink = (): Promise<boolean> =>
                 type: WhisperComponentType.Button,
                 label: `Url failed to open`,
                 onClick: (_error: Error, onClickWhisper: Whisper) => {
-                  reject('Url failed to open');
+                  reject(new Error('Url failed to open'));
                   onClickWhisper.close(() => {
                     // do nothing.
                   });
@@ -598,7 +649,7 @@ export const testClickableLink = (): Promise<boolean> =>
                   if (linkClicked) {
                     resolve(true);
                   } else {
-                    reject('On click action was not received.');
+                    reject(new Error('On click action was not received.'));
                   }
                   onClickWhisper.close(() => {
                     // do nothing.
@@ -1618,40 +1669,6 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
     });
   });
 
-const areAllResolved = (resolverMap: Map<string, boolean>) => {
-  let result = true;
-  resolverMap.forEach((value) => {
-    if (!value) {
-      result = false;
-    }
-  });
-
-  return result;
-};
-
-const onActionWrapper = (
-  error: Error,
-  actionType: string,
-  resolverMap: Map<string, boolean>,
-  createdWhisper: Whisper,
-  resolve: (value: boolean) => void,
-  reject: (reason?: Error) => void,
-) => {
-  if (error) {
-    console.error(error);
-    reject(error);
-  }
-  console.debug(`Received ${actionType} event`);
-  resolverMap.set(actionType, true);
-
-  if (areAllResolved(resolverMap)) {
-    resolve(true);
-    createdWhisper.close(() => {
-      // do nothing.
-    });
-  }
-};
-
 export const testOnBlurAndOnFocus = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const resolverMap = new Map([
@@ -2381,313 +2398,6 @@ export const testRichTextEditorValues = (): Promise<boolean> =>
     }
   });
 
-export const testAutocomplete = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    const resolverMap = new Map([
-      ['Select', false],
-      ['Change', false],
-      ['Multiple', false],
-      ['Custom', false],
-      ['MultiCustom', false],
-    ]);
-    try {
-      await whisper.create({
-        label: 'Autocomplete test',
-        onClose: () => {
-          console.debug('closed');
-        },
-        components: [
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Select "Value 4"',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Autocomplete Test',
-            loading: false,
-            onChange: () => {
-              // do nothing
-            },
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('4')) {
-                onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
-              }
-            },
-            options: autocompleteOptions,
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Type into the input "Typed"',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Autocomplete Test',
-            loading: true,
-            onChange: (error, value: string, onChangeWhisper) => {
-              console.info(`Received onChange value: ${value}`);
-              if (value.toLowerCase() === 'typed') {
-                onActionWrapper(error, 'Change', resolverMap, onChangeWhisper, resolve, reject);
-              }
-            },
-            onSelect: (_error, value: string[]) => {
-              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
-            },
-            options: [...autocompleteOptions, { label: 'Typed', value: '10' }],
-            tooltip: 'tooltip',
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Select values 4 and 5',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Autocomplete Test',
-            loading: true,
-            multiple: true,
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('4') && value.includes('5')) {
-                onActionWrapper(error, 'Multiple', resolverMap, onSelectWhisper, resolve, reject);
-              }
-            },
-            options: autocompleteOptions,
-            tooltip: 'tooltip',
-            value: '5',
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: "Enter the word 'custom'",
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Autocomplete Free Solo Test',
-            loading: true,
-            multiple: false,
-            freeSolo: true,
-            onChange: (error, value, onChangeWhisper) => {
-              console.log(`Received onChange value: ${JSON.stringify(value)}`);
-              if (value?.includes('custom')) {
-                onActionWrapper(error, 'Custom', resolverMap, onChangeWhisper, resolve, reject);
-              }
-            },
-            onSelect: (_error, value: string[]) => {
-              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
-            },
-            options: autocompleteOptions,
-            tooltip: 'tooltip',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Autocomplete Free Solo Multiple Test',
-            loading: true,
-            multiple: true,
-            freeSolo: true,
-            onChange: (error, value, onChangeWhisper) => {
-              console.log(`Received onChange value: ${JSON.stringify(value)}`);
-              if (value?.includes('custom')) {
-                onActionWrapper(
-                  error,
-                  'MultiCustom',
-                  resolverMap,
-                  onChangeWhisper,
-                  resolve,
-                  reject,
-                );
-              }
-            },
-            onSelect: (_error, value: string[]) => {
-              console.info(`Received onSelect value: ${JSON.stringify(value)}`);
-            },
-            options: autocompleteOptions,
-            tooltip: 'tooltip',
-          },
-        ],
-      });
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-  });
-
-export const testAutocompleteFilterOptions = (): Promise<boolean> =>
-  new Promise(async (resolve, reject) => {
-    const resolverMap = new Map([
-      ['IgnoreCase', false],
-      ['RespectCase', false],
-      ['Limit', false],
-      ['MatchFromStart', false],
-      ['MatchFromAny', false],
-      ['Stringify', false],
-    ]);
-    try {
-      await whisper.create({
-        label: 'Autocomplete test',
-        onClose: () => {
-          console.debug('closed');
-        },
-        components: [
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Case when searching should be ignored. Search for either "Value" or "value", all options should come back. Select "value 1"',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Ignore Case Test',
-            filterOptions: {
-              ignoreCase: true,
-            },
-            loading: false,
-            onChange: () => {
-              // do nothing
-            },
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('1')) {
-                onActionWrapper(error, 'IgnoreCase', resolverMap, onSelectWhisper, resolve, reject);
-              }
-            },
-            options: ignoreCase,
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Case when searching should NOT be ignored. Search for either "Value" or "value", only the respective results should come back. Select "value 5"',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: `Don't Ignore Case Test`,
-            filterOptions: {
-              ignoreCase: false,
-            },
-            loading: false,
-            onChange: () => {
-              // do nothing
-            },
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('5')) {
-                onActionWrapper(
-                  error,
-                  'RespectCase',
-                  resolverMap,
-                  onSelectWhisper,
-                  resolve,
-                  reject,
-                );
-              }
-            },
-            options: ignoreCase,
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'Search results limited to max of 2 options shown. If you click the arrow in other autocompletes and 5 options come back, not setting it works. Select "Value 4"',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Limit Test',
-            filterOptions: {
-              limit: 2,
-            },
-            loading: false,
-            onChange: () => {
-              // do nothing
-            },
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('4')) {
-                onActionWrapper(error, 'Limit', resolverMap, onSelectWhisper, resolve, reject);
-              }
-            },
-            options: autocompleteOptions,
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'The search is searching using matchFrom value "start" (defaults to "any"). This means that the query will try to find items matching from the start of the string. 3 values are "Weird Value X". Start a search with "Weird" and confirm that only those items come back. Then, Search for "Value" and select "Value 2"',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Match From Start Test',
-            filterOptions: {
-              matchFrom: 'start',
-            },
-            loading: false,
-            onChange: () => {
-              // do nothing
-            },
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('2')) {
-                onActionWrapper(
-                  error,
-                  'MatchFromStart',
-                  resolverMap,
-                  onSelectWhisper,
-                  resolve,
-                  reject,
-                );
-              }
-            },
-            options: matchFrom,
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: 'The search is searching using matchFrom value "any". This means that the query will try to find items matching from any part of the string. Same options as previous Match test. Search "Value", confirm all 5 options return, and select "Value 2"',
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Match From Any Test',
-            filterOptions: {
-              matchFrom: 'any',
-            },
-            loading: false,
-            onChange: () => {
-              // do nothing
-            },
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('2')) {
-                onActionWrapper(
-                  error,
-                  'MatchFromAny',
-                  resolverMap,
-                  onSelectWhisper,
-                  resolve,
-                  reject,
-                );
-              }
-            },
-            options: matchFrom,
-          },
-          {
-            type: WhisperComponentType.Markdown,
-            body: `Uses the stringify function in filter options. This tells the autocomplete to use a different value when searching it's options. In this case, it is using option.value (1, 2, 3, 4, 5) instead of option.label. This means that if you search "Value", noting will return. Confirm that this happens, then search 1, confirm it shows up, then select "Value 1"`,
-          },
-          {
-            type: WhisperComponentType.Autocomplete,
-            label: 'Stringify Test',
-            filterOptions: {
-              stringify: ['value'],
-            },
-            loading: false,
-            onChange: () => {
-              // do nothing
-            },
-            onSelect: (error, value, onSelectWhisper) => {
-              console.log(`Received selected value: ${JSON.stringify(value)}`);
-              if (value.includes('1')) {
-                onActionWrapper(error, 'Stringify', resolverMap, onSelectWhisper, resolve, reject);
-              }
-            },
-            options: autocompleteOptions,
-          },
-        ],
-      });
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-  });
-
 export const testPadding = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -2704,7 +2414,7 @@ export const testPadding = (): Promise<boolean> =>
       for (
         let functionIndex = 0;
         functionIndex < componentCreationFunctions.length;
-        functionIndex++
+        functionIndex += 1
       ) {
         const func = componentCreationFunctions[functionIndex];
         const component = func(`${functionIndex}`, 'Label');
@@ -3560,4 +3270,87 @@ export const testBreadcrumbUpdateBox = (): Promise<boolean> =>
       },
       components: [bread],
     });
+  });
+export const testButtonIcon = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Are the icon buttons clickable?',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('button clicked.');
+          },
+          startIcon: {
+            name: 'call',
+            variant: IconVariant.Round,
+          },
+          endIcon: {
+            name: 'pets',
+            variant: IconVariant.Outlined,
+          },
+        },
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('article button clicked.');
+          },
+          label: 'article button',
+          startIcon: {
+            name: 'article',
+            variant: IconVariant.Sharp,
+          },
+        },
+        {
+          type: WhisperComponentType.Button,
+          onClick: () => {
+            console.log('emoji button clicked.');
+          },
+          label: 'emoji button',
+          endIcon: {
+            name: 'emoji_emotions',
+            variant: IconVariant.TwoTone,
+          },
+        },
+        resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+      ],
+    });
+  });
+
+export const testLinkStyles = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did the links render correctly?',
+        components: [
+          {
+            text: 'Thin Link',
+            componentStyle: { fontWeight: FontWeight.Thin },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Regular Link',
+            componentStyle: { fontWeight: FontWeight.Regular },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Bold Link',
+            componentStyle: { fontWeight: FontWeight.Bold },
+            type: WhisperComponentType.Link,
+          },
+          {
+            text: 'Extra Bold Link',
+            componentStyle: { fontWeight: FontWeight.ExtraBold },
+            type: WhisperComponentType.Link,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
   });

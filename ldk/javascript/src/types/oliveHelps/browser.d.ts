@@ -1,4 +1,9 @@
 declare namespace Browser {
+  type NavigationTypeReal = 'real';
+  type NavigationTypeHistory = 'history';
+
+  type NavigationType = NavigationTypeReal | NavigationTypeHistory;
+
   interface Aptitude {
     listenNavigation: Common.Listenable<NavigationDetails>;
     listenTextSelection: Common.Listenable<string>;
@@ -12,6 +17,7 @@ declare namespace Browser {
 
   interface NavigationDetails {
     frameId: number;
+    navigationType: NavigationType;
     parentFrameId: number;
     tabId: number;
     timestamp: number;

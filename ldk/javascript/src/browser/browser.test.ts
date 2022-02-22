@@ -20,6 +20,7 @@ describe('Browser', () => {
       const callback = jest.fn();
       const details = {
         frameId: 0,
+        navigationType: 'real' as browser.NavigationTypeReal,
         parentFrameId: 1,
         tabId: 2,
         timestamp: 3,
