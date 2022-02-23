@@ -12,22 +12,29 @@
   "author": "",
   "ldk": {
     "configSchema": {
-      "testVariable": {
-        "type": "string",
-        "default": "testing a string"
-      },
-      "testObject": {
-        "type": "object",
-        "properties": {
-          "foo": {
-            "type": "string",
-            "default": "testing an object"
-          },
-          "bar": {
-            "type": "string"
+      "schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "testVariable": {
+          "type": "string",
+          "default": "testing a string"
+        },
+        "testObject": {
+          "type": "object",
+          "properties": {
+            "foo": {
+              "type": "string",
+              "default": "testing an object"
+            },
+            "bar": {
+              "type": "string"
+            }
           }
         }
-      }
+      },
+      "required": [
+        "testVariable"
+      ]
     },
     "permissions": {
       "browser": {

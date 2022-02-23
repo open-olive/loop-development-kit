@@ -21,28 +21,33 @@ describe('Generate Banner', () => {
   const ldkSettings: LdkSettings = {
     ldk: {
       configSchema: {
-        testString: {
-          type: 'string',
-          default: 'testing',
-        },
-        testObject: {
-          type: 'object',
-          properties: {
-            foo: {
-              type: 'string',
-            },
-            bar: {
-              type: 'object',
-              properties: {
-                baz: {
-                  type: 'string',
-                },
-              },
-              required: [],
-            },
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          testString: {
+            type: 'string',
+            default: 'testing',
           },
-          required: [],
+          testObject: {
+            type: 'object',
+            properties: {
+              foo: {
+                type: 'string',
+              },
+              bar: {
+                type: 'object',
+                properties: {
+                  baz: {
+                    type: 'string',
+                  },
+                },
+                required: [],
+              },
+            },
+            required: [],
+          },
         },
+        required: ['testString'],
       },
       permissions: {
         browser: { urlDomains: [{ value: '*.google.com' }] },
@@ -71,28 +76,33 @@ describe('Generate Banner', () => {
     const expected = {
       oliveHelpsContractVersion: '0.3.0',
       configSchema: {
-        testString: {
-          type: 'string',
-          default: 'testing',
-        },
-        testObject: {
-          type: 'object',
-          properties: {
-            foo: {
-              type: 'string',
-            },
-            bar: {
-              type: 'object',
-              properties: {
-                baz: {
-                  type: 'string',
-                },
-              },
-              required: [],
-            },
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          testString: {
+            type: 'string',
+            default: 'testing',
           },
-          required: [],
+          testObject: {
+            type: 'object',
+            properties: {
+              foo: {
+                type: 'string',
+              },
+              bar: {
+                type: 'object',
+                properties: {
+                  baz: {
+                    type: 'string',
+                  },
+                },
+                required: [],
+              },
+            },
+            required: [],
+          },
         },
+        required: ['testString'],
       },
       permissions: {
         browser: { urlDomains: [{ value: '*.google.com' }] },
