@@ -55,7 +55,7 @@ export interface LdkPermissions {
 }
 
 type LdkConfigObject = {
-  [key: string]: string | LdkConfigSchema;
+  [key: string]: LdkConfigSchema;
 };
 
 type LdkConfigSchema = LdkConfigObject | string;
