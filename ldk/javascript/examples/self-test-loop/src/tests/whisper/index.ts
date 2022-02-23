@@ -109,7 +109,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'fingerprint',
               size: IconSize.Large,
-              color: Color.Black,
+              color: Color.Accent,
               onClick: () => {
                 console.info('Fingerprint Clicked');
               },
@@ -451,6 +451,13 @@ export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
     onDrop: () => undefined,
+    limit: 3,
+    messaging: {
+      accept: 'That file type is not accepted',
+      click: 'BROWSE',
+      drop: 'drop here',
+      limit: 'You can only upload 3 files ',
+    },
     label: 'File Components',
     key: 'drop',
   };
