@@ -1,5 +1,6 @@
 import * as webpack from 'webpack';
 import Terser from 'terser-webpack-plugin';
+import path from 'path';
 import { LdkSettings } from './ldk-settings';
 import { generateBanner } from './generate-banner';
 import { buildBabelPlugins, buildBabelPreset } from './babel-config';
@@ -49,6 +50,9 @@ export function buildWebpackConfig(
       new webpack.BannerPlugin({
         banner: generateBanner(ldkSettings),
         raw: true,
+      }),
+      new webpack.ProvidePlugin({
+        console: path.resolve(path.join(__dirname, 'console-polyfill')),
       }),
     ],
     optimization,
