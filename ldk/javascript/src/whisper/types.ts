@@ -546,6 +546,15 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
    */
   noun?: string;
   /**
+   * If provided, display the messages stating that the the file not being accepted, the area that user drops a file, browse a file, or has reached the maximum number of files.
+   */
+  messaging?: {
+    accept?: string;
+    click?: string;
+    drop?: string;
+    limit?: string;
+  };
+  /**
    * The callback function to call whenever the user selects or unselects a file.
    */
   onDrop: WhisperHandlerWithParam<File[]>;
