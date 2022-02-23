@@ -1,3 +1,5 @@
+import { JSONSchemaType } from 'ajv';
+
 /* eslint-disable-next-line */ // Keeping type for future expansion.
 export interface LdkAptitude {}
 
@@ -20,6 +22,8 @@ export interface LdkPermissions {
   browser: LdkNetwork;
 
   clipboard: LdkAptitude;
+
+  config: LdkAptitude;
 
   cursor: LdkAptitude;
 
@@ -50,7 +54,16 @@ export interface LdkPermissions {
   window: LdkAptitude;
 }
 
+type LdkConfigObject = {
+  [key: string]: string | LdkConfigSchema;
+};
+
+type LdkConfigSchema = LdkConfigObject | string;
+
 export interface Ldk {
+  configSchema?: {
+    [key: string]: JSONSchemaType<LdkConfigSchema>;
+  };
   permissions: LdkPermissions;
 }
 

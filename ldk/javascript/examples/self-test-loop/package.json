@@ -11,6 +11,24 @@
   "keywords": [],
   "author": "",
   "ldk": {
+    "configSchema": {
+      "testVariable": {
+        "type": "string",
+        "default": "testing a string"
+      },
+      "testObject": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string",
+            "default": "testing an object"
+          },
+          "bar": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "permissions": {
       "browser": {
         "urlDomains": [
