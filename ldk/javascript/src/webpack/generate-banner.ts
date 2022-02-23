@@ -26,13 +26,15 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
           // Only allow types supported by Loop Library form
           if (type !== 'string' && type !== 'object') {
             errors.push(
-              `Error: The LDK does not currently support ${type} types in the config schema`,
+              `Error: The LDK does not currently support "${type}" types in the config schema`,
             );
           }
 
           // Check to make sure default value matches type because ajv won't
           if (defaultValue && typeof defaultValue !== type) {
-            errors.push(`Error: The default value ${defaultValue} does not match the type ${type}`);
+            errors.push(
+              `Error: The default value "${defaultValue}" does not match the type "${type}"`,
+            );
           }
         } catch (error) {
           errors.push(error as string);
