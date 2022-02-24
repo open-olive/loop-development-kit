@@ -3355,6 +3355,106 @@ export const testLinkStyles = (): Promise<boolean> =>
     }
   });
 
+export const testDisabledInputs = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Are all components disabled?',
+        components: [
+          {
+            disabled: true,
+            type: WhisperComponentType.TextInput,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            dateTimeType: DateTimeType.DateTime,
+            disabled: true,
+            type: WhisperComponentType.DateTimeInput,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.Email,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.Number,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.Password,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.Telephone,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.Autocomplete,
+            onSelect: () => {
+              // Do  nothing
+            },
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.Select,
+            onSelect: () => {
+              // Do  nothing
+            },
+            options: ['Option 1', 'Option 2', 'Option 3'],
+          },
+          {
+            disabled: true,
+            label: 'Disabled Checkbox',
+            type: WhisperComponentType.Checkbox,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.RadioGroup,
+            onSelect: () => {
+              // Do  nothing
+            },
+            options: ['Option 1', 'Option 2', 'Option 3'],
+          },
+          {
+            disabled: true,
+            type: WhisperComponentType.RichTextEditor,
+            onChange: () => {
+              // Do  nothing
+            },
+          },
+          {
+            body: 'Are all the above components disabled?',
+            type: WhisperComponentType.Markdown,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
 export const testDropZoneOnRemove = async (): Promise<boolean> => {
   const resultArray = new Array();
   const deletedFile = new Array();
