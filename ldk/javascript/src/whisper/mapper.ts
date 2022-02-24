@@ -137,7 +137,7 @@ export function mapToInternalChildComponent(
           : undefined,
       } as WhisperService.Autocomplete;
     }
-    case WhisperComponentType.DropZone:
+    case WhisperComponentType.DropZone: {
       return {
         ...component,
         onDrop: (error, param, whisper) => {
@@ -162,7 +162,32 @@ export function mapToInternalChildComponent(
             mapToExternalWhisper(whisper, stateMap),
           );
         },
-      };
+        onRemove: (error, param, whisper) => {
+          const callbackHandler: (file: WhisperService.File) => File = (
+            file: WhisperService.File,
+          ) => ({
+            path: file.path,
+            size: file.size,
+            readFile: () =>
+              new Promise<Uint8Array>((resolve, reject) => {
+                file.readFile((readError, buffer) => {
+                  if (readError) {
+                    return reject(readError);
+                  }
+                  return resolve(new Uint8Array(buffer));
+                });
+              }),
+          });
+          if (component.onRemove) {
+            component.onRemove(
+              error,
+              param.map(callbackHandler),
+              mapToExternalWhisper(whisper, stateMap),
+            );
+          }
+        },
+      } as WhisperService.DropZone;
+    }
     case WhisperComponentType.ListPair: {
       // eslint-disable-next-line
       const { onCopy } = component;
