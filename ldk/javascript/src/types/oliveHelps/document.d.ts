@@ -31,13 +31,13 @@ declare namespace Document {
   }
 
   interface PDFValue {
-    Value: string;
-    Type: PDFContentType;
+    value: string;
+    type: PDFContentType;
   }
 
   interface PDFOutput {
     [key: string]: {
-      Content: PDFValue[];
+      content: PDFValue[];
     };
   }
 }

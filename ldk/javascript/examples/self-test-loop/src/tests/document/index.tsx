@@ -11,7 +11,11 @@ export const testDocumentEncodeAndDecode = (): Promise<boolean> =>
           hiddenColumns: [],
           hiddenRows: [],
           name: 'name',
-          rows: [{ cells: [{ value: 'value' }] }],
+          rows: [
+            {
+              cells: [{ value: 'value' }],
+            },
+          ],
         },
       ],
     };
@@ -67,13 +71,13 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
 
       let pdfParse = '';
 
-      Object.entries(decodedSorted).forEach(([page, { Content }]) => {
+      Object.entries(decodedSorted).forEach(([page, { content }]) => {
         pdfParse += `# Page ${page}\n`;
 
-        Content.forEach(({ Value, Type }) => {
-          if (Type === PDFContentType.Text) {
-            pdfParse += Value;
-          } else if (Type === PDFContentType.NewLine) {
+        content.forEach(({ value, type }) => {
+          if (type === PDFContentType.Text) {
+            pdfParse += value;
+          } else if (type === PDFContentType.NewLine) {
             pdfParse += '\n\n';
           }
         });
@@ -90,8 +94,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
             }
           />
           <oh-markdown
-            body={`Link to PDF:
-            https://github.com/open-olive/loop-development-kit/blob/${branch}/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf`}
+            body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
           />
           <oh-markdown body={parsedText} />
           <oh-box

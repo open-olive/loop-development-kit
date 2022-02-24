@@ -24,12 +24,12 @@ export enum PDFContentType {
 }
 
 export interface PDFValue {
-  Value: string;
-  Type: PDFContentType;
+  value: string;
+  type: PDFContentType;
 }
 
 export interface PDFOutput {
   [key: string]: {
-    Content: PDFValue[];
+    content: PDFValue[];
   };
 }

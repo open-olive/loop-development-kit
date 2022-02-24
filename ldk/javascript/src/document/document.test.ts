@@ -19,7 +19,11 @@ describe('Document', () => {
           hiddenColumns: [],
           hiddenRows: [],
           name: 'name',
-          rows: [{ cells: [{ value: 'value' }] }],
+          rows: [
+            {
+              cells: [{ value: 'value' }],
+            },
+          ],
         },
       ],
     };
@@ -58,7 +62,11 @@ describe('Document', () => {
           hiddenColumns: [],
           hiddenRows: [],
           name: 'name',
-          rows: [{ cells: [{ value: 'value' }] }],
+          rows: [
+            {
+              cells: [{ value: 'value' }],
+            },
+          ],
         },
       ],
     };
@@ -89,7 +97,12 @@ describe('Document', () => {
       const pdfFile = new Uint8Array();
       const expected = {
         '1': {
-          Content: [{ Value: 'test', Type: PDFContentType.Text }],
+          content: [
+            {
+              value: 'test',
+              type: PDFContentType.Text,
+            },
+          ],
         },
       };
 
