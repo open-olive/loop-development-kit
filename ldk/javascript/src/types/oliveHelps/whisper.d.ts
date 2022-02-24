@@ -170,6 +170,7 @@ declare namespace WhisperService {
     };
     noun?: string;
     onDrop: WhisperHandlerWithParam<File[]>;
+    onRemove?: WhisperHandlerWithParam<File[]>;
     value?: File[];
     tooltip?: string;
     validationError?: string;

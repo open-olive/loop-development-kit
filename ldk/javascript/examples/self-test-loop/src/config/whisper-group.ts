@@ -330,4 +330,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Do the links have the expected styling?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - DropZone onRemove Test',
+      whisperTests.testDropZoneOnRemove,
+      10000,
+      'Do you see onRemove in log?',
+    ),
   ]);
