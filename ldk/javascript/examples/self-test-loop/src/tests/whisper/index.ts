@@ -3372,6 +3372,7 @@ export const testGridComponent = (): Promise<boolean> =>
             item: true,
             spacing: 5,
             wrap: Wrap.NoWrap,
+            xs: '2',
           },
           {
             alignItems: AlignItems.FlexEnd,
@@ -3390,11 +3391,10 @@ export const testGridComponent = (): Promise<boolean> =>
               },
             ],
             container: false,
-            item: false,
+            item: true,
             spacing: 0,
-            // nowrap, wrap, wrap-reverse?
             wrap: Wrap.NoWrap,
-            // xs: 'auto',
+            xs: '8',
           },
 
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
