@@ -7,10 +7,10 @@ export interface JWTConfig {
   includeEmail?: boolean;
 }
 /**
- * @property {boolean} includeEmail if true, the user's email address will be included in an optional email claim.
- * @property {boolean} includeFullName if true, the user's full name will be included in an optional fullName claim.
- * @property {boolean} includeOrganizationId if true, the user's Olive Helps internal organizaiton ID will be included in an optional organizationId claim.
- * @property {boolean} includeOrganizationName if true, the user's organization name will be included in an optional organizationName claim.
+ * @property {boolean} includeEmail if true, the user's email address will be included in an optional email claim in the JWT.
+ * @property {boolean} includeFullName if true, the user's full name will be included as a parameter on the returned object.
+ * @property {boolean} includeOrganizationId if true, the user's Olive Helps internal organizaiton ID will be included as a parameter on the returned object.
+ * @property {boolean} includeOrganizationName if true, the user's organization name will be included as a parameter on the returned object.
  */
 export interface JWTWithUserDetailsConfig {
   includeEmail?: boolean;
@@ -20,7 +20,6 @@ export interface JWTWithUserDetailsConfig {
 }
 
 export interface JWTWithUserDetails {
-  email?: string;
   fullName?: string;
   jwt: string;
   organizationId?: string;

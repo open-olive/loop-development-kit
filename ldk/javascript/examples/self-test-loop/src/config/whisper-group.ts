@@ -336,4 +336,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Are all of the components disabled?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - DropZone onRemove Test',
+      whisperTests.testDropZoneOnRemove,
+      10000,
+      'Do you see onRemove in log?',
+    ),
   ]);

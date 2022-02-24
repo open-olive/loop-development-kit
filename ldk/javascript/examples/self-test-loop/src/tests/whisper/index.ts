@@ -109,7 +109,7 @@ export const testIconLayout = (): Promise<boolean> =>
               type: WhisperComponentType.Icon,
               name: 'fingerprint',
               size: IconSize.Large,
-              color: Color.Black,
+              color: Color.Accent,
               onClick: () => {
                 console.info('Fingerprint Clicked');
               },
@@ -451,6 +451,13 @@ export const testDropzone = async (): Promise<boolean> => {
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
     onDrop: () => undefined,
+    limit: 3,
+    messaging: {
+      accept: 'That file type is not accepted',
+      click: 'BROWSE',
+      drop: 'drop here',
+      limit: 'You can only upload 3 files ',
+    },
     label: 'File Components',
     key: 'drop',
   };
@@ -3447,3 +3454,116 @@ export const testDisabledInputs = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+export const testDropZoneOnRemove = async (): Promise<boolean> => {
+  const resultArray = new Array();
+  const deletedFile = new Array();
+  const mapFile = new Map();
+
+  const dropZone: whisper.DropZone = {
+    type: WhisperComponentType.DropZone,
+    onDrop: (error, param) => {
+      if (param) {
+        param.map((file) => {
+          mapFile.set(file.path, `Path: ${file.path}, Size: ${file.size}`);
+        });
+        console.log('onDrop called: ');
+      }
+      if (error) {
+        console.error('Caught error of onDrop: ', error);
+      }
+    },
+    // param represents remaining files.
+    onRemove: async (error, param) => {
+      const onRemoveAction = new Promise<whisper.File[]>((resolve, reject) => {
+        if (error) {
+          reject(error);
+        }
+        if (param) {
+          resolve(param);
+        }
+      });
+      const remainingFiles = await onRemoveAction;
+      // Get remaining files and delete them from mapFIle to get deleted files.
+      remainingFiles.map((file) => {
+        console.log('onRemove called : files are: ', file.path);
+        if (mapFile.has(file.path)) {
+          mapFile.delete(file.path);
+          // console.log('deleted files are: ', mapFile.values);
+        }
+      });
+
+      mapFile.forEach((deletedFilePath, file) => {
+        deletedFile.push(`${deletedFilePath} \n\n `);
+        // console.log('deleted files have been pushed :', deletedFilePath);
+      });
+
+      // Add remaining files to mapFile
+      mapFile.clear();
+      remainingFiles.map((remainingFile) => {
+        mapFile.set(remainingFile.path, `Path: ${remainingFile.path}, Size: ${remainingFile.size}`);
+      });
+      resultArray.splice(0, resultArray.length);
+      mapFile.forEach((fileValue, file) => {
+        console.log('fileValue: ', fileValue);
+        resultArray.push(`${fileValue} \n\n `);
+      });
+    },
+    label: 'File Components',
+    key: 'drop',
+  };
+
+  const testWhisper = await whisper.create({
+    label: 'Dropzone Test',
+    components: [
+      {
+        type: WhisperComponentType.Markdown,
+        body: 'Select and drop a file onto the dropzone box below. Then remove some files and click update button. Is the list of file updated?',
+      },
+      dropZone,
+    ],
+  });
+
+  await mapFile.forEach((fileValue, file) => {
+    // console.log('fileValue: ', fileValue);
+    resultArray.push(`${fileValue} \n\n `);
+  });
+  const acceptFileData = createAcceptButtons();
+  await testWhisper.update({
+    label: 'DropZone onRemove Test',
+    components: [
+      {
+        type: WhisperComponentType.Markdown,
+        body: `Are these the files you selected?\n\n${JSON.stringify(resultArray)}`,
+      },
+      {
+        type: WhisperComponentType.Button,
+        label: 'Update',
+        onClick: (error: Error, onClickWhisper: Whisper) => {
+          console.log('result :', resultArray);
+          onClickWhisper.update({
+            components: [
+              {
+                type: WhisperComponentType.Markdown,
+                body: `**Did you just remove these files?** \n\n${deletedFile}`,
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: `**Are these the files you selected?** \n\n${resultArray}`,
+              },
+              dropZone,
+              acceptFileData.component,
+            ],
+          });
+        },
+      },
+      dropZone,
+    ],
+  });
+  acceptFileData.acceptResult.catch(() => {
+    testWhisper.close(() => {
+      // Do nothing.
+    });
+  });
+  return acceptFileData.acceptResult;
+};

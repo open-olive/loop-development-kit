@@ -1,7 +1,5 @@
 /* eslint-disable no-async-promise-executor */
-import { browser, network } from '@oliveai/ldk';
-
-const windowId = 37;
+import { network, whisper, clipboard } from '@oliveai/ldk';
 
 export const testSecuredHttpRequest = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -99,76 +97,83 @@ export const testHttpRequestBlock = (): Promise<boolean> =>
     }
   });
 
-const browserFake = async (
-  socket: network.Socket,
-  msg: string | Uint8Array,
-  reject: (arg0: unknown) => void,
-): Promise<void> => {
-  if (msg && typeof msg === 'string') {
-    console.info(`Received message: ${JSON.stringify(msg)}`);
-    // Regex to find callId (uuid) from msg string
-    const callIdRegex = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/g;
-    const [callId] = msg.match(callIdRegex);
-    try {
-      await socket.writeMessage(
-        `{ "type": "OpenWindowReturn", "version": 0, "callId": "${callId}", "return": { "windowId": ${windowId}, "err": "" }}`,
-      );
-    } catch (error) {
-      console.log('failed to write message ', error);
-      reject(error);
-    }
-  }
-};
-
 export const testWebsocketConnection = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
-    const url = 'ws://127.0.0.1:24984/';
-    let testPassed = false;
-    setTimeout(() => {
-      reject(new Error('Network websocket test did not finish in the appropriate time span.'));
-    }, 20000);
+    // Whisper to instruct the user to get a test websocket URL from piesocket
+    const getUrlWhisper = await whisper.create({
+      label: 'Get websocket URL',
+      onClose: () => undefined,
+      components: [
+        {
+          type: whisper.WhisperComponentType.Markdown,
+          body: '[Click this link](https://www.piesocket.com/websocket-tester) and copy/paste the websocket URL it gives you (starts with wss://) into the text input below',
+        },
+      ],
+    });
 
-    const socketConfiguration: network.SocketConfiguration = { url };
+    // After copying the websocket URL from the above step run websocket test
+    const clipboardListener = await clipboard.listen(false, async (url) => {
+      let testPassed = false;
 
-    try {
-      const socket = await network.webSocketConnect(socketConfiguration);
-      console.info('Websocket successfully connected');
-
-      await socket.setCloseHandler((error, code, text) => {
-        if (error) {
-          console.error('setCloseHandler error', error);
-          reject(error);
-        }
-        console.info(`Received on close code: ${code}. ${text}`);
-        if (testPassed) {
-          resolve(true);
-        }
-      });
-
-      const cancellable = await socket.setMessageHandler(async (error, message) => {
-        if (error) {
-          console.error('setMessageHandler error', error);
-          reject(error);
-        }
-        await browserFake(socket, message, reject);
-      });
+      const socketConfiguration: network.SocketConfiguration = { url };
 
       try {
-        const id = await browser.openWindow('about:blank');
-        console.log('open browser window with id ', id);
-        testPassed = id.valueOf() === windowId;
-        if (testPassed) {
+        const socket = await network.webSocketConnect(socketConfiguration);
+        console.info('Websocket successfully connected');
+
+        await socket.setCloseHandler((error, code, text) => {
+          if (error) {
+            console.error('setCloseHandler error', error);
+            reject(error);
+          }
+
+          console.info(`Received on close code: ${code}. ${text}`);
+
+          // This is from us closing the socket connection in the message handler below
+          if (testPassed) {
+            resolve(true);
+          }
+        });
+
+        const cancellable = await socket.setMessageHandler(async (error, message) => {
+          if (error) {
+            console.error('setMessageHandler error', error);
+            reject(error);
+          }
+
+          console.log(`Received message: ${message}`);
+          const messageObject = JSON.parse(message as string);
+
+          // This is the first message that is always returned from piesocket on connect
+          testPassed = messageObject?.info === 'You are using a test api key';
+
+          socket.close();
+          console.info('Socket closed');
+
+          getUrlWhisper.close(console.error);
+          console.info('Whisper closed');
+
+          clipboardListener.cancel();
+          console.info('Clipboard listener cancelled');
+
           cancellable.cancel();
-          console.log('All messages received, cancelling message listener!');
-        }
+        });
       } catch (error) {
-        console.error(`broken: ${error}`);
+        console.error(error);
+        reject(error);
       } finally {
-        console.log('closing socket!');
-        await socket.close();
+        clipboardListener.cancel();
+        console.info('Clipboard listener finally cancelled');
       }
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
+    });
+
+    setTimeout(() => {
+      getUrlWhisper.close(console.error);
+      console.info('Whisper closed in timeout error');
+
+      clipboardListener.cancel();
+      console.info('Clipboard listener cancelled in timeout error');
+
+      reject(new Error('Network websocket test did not finish in the appropriate time span.'));
+    }, 20000);
   });

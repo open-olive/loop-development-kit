@@ -16,6 +16,9 @@
         "urlDomains": [
           {
             "value": "www.oliveai.dev"
+          },
+          {
+            "value": "reactrouter.com/*"
           }
         ]
       },
@@ -38,6 +41,9 @@
           },
           {
             "value": "127.0.0.1"
+          },
+          {
+            "value": "demo.piesocket.com"
           }
         ]
       },
