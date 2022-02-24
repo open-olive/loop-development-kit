@@ -1,5 +1,5 @@
 import Ajv from 'ajv';
-import { LdkSettings, LdkConfigProperties } from './ldk-settings';
+import { LdkSettings } from './ldk-settings';
 
 const permissionsErrorMessage = `Please add a "ldk" object to your package.json file with a permission property:
     "ldk": {
@@ -14,36 +14,11 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
 
   if (ldkSettings.ldk.configSchema) {
     const ajv = new Ajv();
-    const errors: string[] = [];
 
-    Object.values(ldkSettings.ldk.configSchema.properties as LdkConfigProperties).forEach(
-      (configChild) => {
-        try {
-          ajv.compile(configChild);
-
-          const { default: defaultValue, type } = configChild;
-
-          // Only allow types supported by Loop Library form
-          if (type !== 'string' && type !== 'object') {
-            errors.push(
-              `Error: The LDK does not currently support "${type}" types in the config schema`,
-            );
-          }
-
-          // Check to make sure default value matches type because ajv won't
-          if (defaultValue && typeof defaultValue !== type) {
-            errors.push(
-              `Error: The default value "${defaultValue}" does not match the type "${type}"`,
-            );
-          }
-        } catch (error) {
-          errors.push(error as string);
-        }
-      },
-    );
-
-    if (errors.length) {
-      throw new Error(`There was an error with your LDK config:\n${errors.join('\n')}`);
+    try {
+      ajv.compile(ldkSettings.ldk.configSchema);
+    } catch (error) {
+      throw new Error(`There was an error in your LDK configSchema:\n${error}`);
     }
   }
 

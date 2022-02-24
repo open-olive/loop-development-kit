@@ -60,10 +60,6 @@ type LdkConfigObject = {
 
 export type LdkConfigSchema = LdkConfigObject | string;
 
-export interface LdkConfigProperties {
-  [key: string]: JSONSchemaType<LdkConfigSchema>;
-}
-
 export interface Ldk {
   configSchema?: JSONSchemaType<LdkConfigSchema>;
   permissions: LdkPermissions;
