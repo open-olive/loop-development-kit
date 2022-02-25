@@ -20,6 +20,7 @@ declare namespace WhisperService {
     | 'markdown'
     | 'message'
     | 'number'
+    | 'pagination'
     | 'password'
     | 'progress'
     | 'radioGroup'
@@ -59,6 +60,8 @@ declare namespace WhisperService {
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
   type OpenDirection = 'bottom' | 'top';
+
+  type PaginationComponentType = 'pagination' | 'tablePagination';
 
   type ProgressShape = 'circular' | 'linear';
 
@@ -279,6 +282,18 @@ declare namespace WhisperService {
 
   type Divider = Component<'divider'>;
 
+  type Pagination = Component<'pagination'> & {
+    count: number;
+    component?: PaginationComponentType;
+    disabled?: boolean;
+    labelRowsPerPage?: string;
+    onChange: WhisperHandlerWithParam<string>;
+    onRowsPerPageChange: WhisperHandlerWithParam<string>;
+    page: number;
+    rowsPerPage: number;
+    rowsPerPageOptions: number[];
+  };
+
   type CollapseBox = Component<'collapseBox'> & {
     children: Array<ChildComponents>;
     label?: string;
@@ -316,6 +331,7 @@ declare namespace WhisperService {
     | Markdown
     | Message
     | NumberInput
+    | Pagination
     | Password
     | Progress
     | RadioGroup

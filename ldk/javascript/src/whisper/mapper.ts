@@ -99,6 +99,17 @@ export function mapToInternalChildComponent(
           : undefined,
       } as WhisperService.Link;
     }
+    case WhisperComponentType.Pagination: {
+      return {
+        ...component,
+        onChange: (error, param, whisper) => {
+          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+        },
+        onRowsPerPageChange: (error, param, whisper) => {
+          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+        },
+      } as WhisperService.Pagination;
+    }
     case WhisperComponentType.Divider:
     case WhisperComponentType.SectionTitle:
       return component;

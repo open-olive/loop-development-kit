@@ -47,6 +47,10 @@ export enum WhisperComponentType {
    */
   Number = 'number',
   /**
+   * Pagination component to use in conjunction with state changes for paginating content within components
+   */
+  Pagination = 'pagination',
+  /**
    * The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
    */
   Password = 'password',
@@ -185,6 +189,7 @@ export enum MessageWhisperCopyMode {
   Body = 'body',
   Header = 'header',
 }
+
 export interface LayoutOptions {
   flex?: string;
   margin?: StyleSize;
@@ -222,6 +227,11 @@ export type AutocompleteOption = {
   label: string;
   value: any; // eslint-disable-line
 };
+
+export enum PaginationComponentType {
+  Pagination = 'pagination',
+  tablePagination = 'tablePagination',
+}
 
 export enum ProgressShape {
   Circular = 'circular',
@@ -607,6 +617,18 @@ export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   size?: StyleSize;
 };
 
+export type Pagination = WhisperComponent<WhisperComponentType.Pagination> & {
+  count: number;
+  component?: PaginationComponentType;
+  disabled?: boolean;
+  labelRowsPerPage?: string;
+  onChange: WhisperHandlerWithParam<string>;
+  onRowsPerPageChange: WhisperHandlerWithParam<string>;
+  page: number;
+  rowsPerPage: number;
+  rowsPerPageOptions: number[];
+};
+
 export type ChildComponents =
   | Autocomplete
   | Box
@@ -623,6 +645,7 @@ export type ChildComponents =
   | Markdown
   | Message
   | NumberInput
+  | Pagination
   | Password
   | Progress
   | RadioGroup
@@ -633,7 +656,7 @@ export type ChildComponents =
   | TextInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
-  children: Array<ChildComponents>;
+  children: Array<Exclude<ChildComponents, Box>>;
   label?: string;
   open: boolean;
   openDirection?: OpenDirection;
