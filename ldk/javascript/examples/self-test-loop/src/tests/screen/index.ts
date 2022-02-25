@@ -1,5 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { screen, whisper, window } from '@oliveai/ldk';
+import { OcrEvent } from '@oliveai/ldk/dist/screen/types';
 export * from './hashTests';
 
 const writeWhisper = (label: string, body: string) =>
@@ -114,12 +115,11 @@ export const testScreenMonitor = (): Promise<boolean> =>
     try {
       console.log('Running listenOcrMonitor function...');
       sleep(1000);
+
       const listener = await screen.listenOcrMonitor((ocrEvent) => {
         sleep(1000);
-        // eslint-disable-next-line @typescript-eslint/no-array-constructor
-        const resultNew = new Array();
-        // eslint-disable-next-line @typescript-eslint/no-array-constructor
-        const resultOld = new Array();
+        const resultNew: string[] = [];
+        const resultOld: string[] = [];
 
         ocrEvent.forEach((element) => {
           resultNew.push(element.new.text);
@@ -146,9 +146,8 @@ export const testScreenMonitor = (): Promise<boolean> =>
         });
         console.log('result of changed text are', resultNewString);
         listener.cancel();
+        resolve(true);
       });
-
-      resolve(true);
     } catch (error) {
       reject(error);
     }

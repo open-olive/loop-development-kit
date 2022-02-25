@@ -89,8 +89,8 @@ export interface Screen {
   ): Promise<Cancellable>;
   /**
    * @experimental This functionality is experimental and subject to breaking changes.
-   * listenOcrMonitor listens to active window changes.
-   * @param ocrEvents - The event that records ounds and text changes.
+   * listenOcrMonitor listens to active window changes. This function provides active window recognition on the backend.
+   * @param ocrEvents - The event that records bounds and text changes.
    */
   listenOcrMonitor(callback: (ocrEvents: OcrEvent[]) => void): Promise<Cancellable>;
 }
