@@ -35,4 +35,10 @@ export const screenTestGroup = (): TestGroup =>
       10000,
       'Please open a new fullscreen window and change the contents (A browser works well for this).',
     ),
+    new LoopTest(
+      'Screen Aptitude - Listen OCR Monitor',
+      screenTests.testScreenMonitor,
+      10000,
+      'Please check if New Text and Old Text are different.',
+    ),
   ]);

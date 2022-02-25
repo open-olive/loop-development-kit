@@ -15,6 +15,7 @@ describe('screen', () => {
       listenPerceptionHash: jest.fn(),
       listenPixelDiff: jest.fn(),
       listenPixelDiffActiveWindow: jest.fn(),
+      listenOcrMonitor: jest.fn(),
     };
   });
   describe('ocr', () => {
@@ -55,6 +56,29 @@ describe('screen', () => {
       });
 
       expect(screen.ocr).rejects.toBe(exception);
+    });
+  });
+  describe('listenOcrMonitor', () => {
+    it('return a promise of ocrEvent', () => {
+      // eslint-disable-next-line @typescript-eslint/no-array-constructor
+      const resultArray = new Array();
+      // eslint-disable-next-line @typescript-eslint/no-array-constructor
+      const theArray = new Array();
+      screen.listenOcrMonitor((result) => {
+        result.forEach((element) => {
+          resultArray.push(element.new.text);
+        });
+      });
+      expect(theArray).toStrictEqual(resultArray);
+    });
+
+    it('rejects with the error when the underlying call throws an error', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.screen.listenOcrMonitor).mockImplementation(() => {
+        throw exception;
+      });
+
+      expect(screen.listenOcrMonitor).rejects.toBe(exception);
     });
   });
 });
