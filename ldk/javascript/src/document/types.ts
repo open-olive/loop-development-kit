@@ -17,3 +17,19 @@ export interface Row {
 export interface Cell {
   value: string;
 }
+
+export enum PDFContentType {
+  Text = 'text',
+  NewLine = 'newLine',
+}
+
+export interface PDFValue {
+  value: string;
+  type: PDFContentType;
+}
+
+export interface PDFOutput {
+  [key: string]: {
+    content: PDFValue[];
+  };
+}
