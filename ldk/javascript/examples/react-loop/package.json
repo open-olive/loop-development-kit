@@ -52,19 +52,6 @@
       "@babel/preset-react"
     ]
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/*.test.{ts,js}"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/jestGlobalSetup.js"
-    ],
-    "verbose": true,
-    "collectCoverageFrom": [
-      "<rootDir>/src/**/*.{ts,js}"
-    ]
-  },
   "ldk": {
     "permissions": {
       "ui": {},
