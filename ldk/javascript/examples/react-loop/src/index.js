@@ -23,24 +23,23 @@ import {
 } from '@oliveai/ldk/dist/whisper/types';
 
 const ComponentHotTub = () => {
-  const [radioValue, setRadioValue] = React.useState(0);
   const externalLink = 'https://www.google.com/';
   const options = [
     {
       label: 'Bananas Dogs Starbucks Ballerina',
-      value: 'optionone'
+      value: 'optionone',
     },
     {
       label: 'Pineapples Dinosaur Jamba Juice Mango',
-      value: 'optiontwo'
+      value: 'optiontwo',
     },
     {
       label: 'Dragon Fruit Oatmeal Chair Tread',
-      value: 'optionthree'
+      value: 'optionthree',
     },
     {
       label: 'Apples Bottle Green Frame',
-      value: 'optionfour'
+      value: 'optionfour',
     }
   ];
 
@@ -64,15 +63,6 @@ const ComponentHotTub = () => {
         console.log('oh-whisper onClose');
       }}
     >
-      <oh-pagination
-        component="pagination"
-        count={5}
-        page={1}
-        rowsPerPage={1}
-        rowsPerPageOptions={[10]}
-        onChange={(error, value) => console.log(value)}
-        onRowsPerPageChange={() => undefined}
-      />
       <oh-autocomplete
         freeSolo={false}
         label="Autocomplete"
@@ -81,7 +71,7 @@ const ComponentHotTub = () => {
         onChange={(error, value) => onEvent(error, value)}
         onSelect={(error, value) => onEvent(error, value)}
         options={options}
-        tooltip="Autocomplete Tooltip"
+        tooltip="Autocomplete"
         validationError="Validation Error"
         value=""
       />
@@ -161,7 +151,7 @@ const ComponentHotTub = () => {
           label="Small"
           onClick={(error, value) => onEvent(error, value)}
           size={ButtonSize.Small}
-          tooltip="Button Tooltip"
+          tooltip="Small"
         />
         <oh-button
           buttonStyle={ButtonStyle.Secondary}
@@ -180,41 +170,6 @@ const ComponentHotTub = () => {
         <oh-button
           buttonStyle={ButtonStyle.Text}
           disabled={false}
-          label="Large Text"
-          onClick={(error, value) => onEvent(error, value)}
-          size={ButtonSize.Large}
-        />
-      </oh-box>
-      <oh-box
-        alignItems={AlignItems.Center}
-        direction={Direction.Horizontal}
-        justifyContent={JustifyContent.Center}
-      >
-        <oh-button
-          buttonStyle={ButtonStyle.Primary}
-          disabled={true}
-          label="Small"
-          onClick={(error, value) => onEvent(error, value)}
-          size={ButtonSize.Small}
-          tooltip="Disabled Button Tooltip"
-        />
-        <oh-button
-          buttonStyle={ButtonStyle.Secondary}
-          disabled={true}
-          label="Large"
-          onClick={(error, value) => onEvent(error, value)}
-          size={ButtonSize.Large}
-        />
-        <oh-button
-          buttonStyle={ButtonStyle.Text}
-          disabled={true}
-          label="Small Text"
-          onClick={(error, value) => onEvent(error, value)}
-          size={ButtonSize.Small}
-        />
-        <oh-button
-          buttonStyle={ButtonStyle.Text}
-          disabled={true}
           label="Large Text"
           onClick={(error, value) => onEvent(error, value)}
           size={ButtonSize.Large}
@@ -223,7 +178,7 @@ const ComponentHotTub = () => {
       <oh-checkbox
         label="Checkbox One"
         onChange={(error, value) => onEvent(error, value)}
-        tooltip="Checkbox Tooltip"
+        tooltip="Checkbox One"
         validationError="Validation Error"
         value={false}
       />
@@ -233,49 +188,33 @@ const ComponentHotTub = () => {
         value={true}
       />
       <oh-checkbox
+        label="Checkbox Three"
         onChange={(error, value) => onEvent(error, value)}
         value={true}
       />
       <oh-radio-group
-        onSelect={(error, value) => {
-          onEvent(error, value);
-
-          setRadioValue(value);
-        }}
+        onSelect={(error, value) => onEvent(error, value)}
         options={[
           "Radio One",
           "Radio Two",
           "Radio Three",
         ]}
-        validationError="Bad Message"
-        selected={radioValue}
+        validationError="Validation Error"
+        selected={0}
       />
       <oh-collapse-box
+        customHeight={CustomHeight.Small}
         label="CollapseBox Top"
         onClick={(error, value) => onEvent(error, value)}
         open={false}
         openDirection={OpenDirection.Top}
-        customHeight={CustomHeight.Small}
       >
-        <oh-box
-          direction={Direction.Vertical}
-          justifyContent={JustifyContent.Left}
-        >
-          Nested Children
-        </oh-box>
-      </oh-collapse-box>
-      <oh-collapse-box
-        label="CollapseBox Bottom"
-        onClick={(error, value) => onEvent(error, value)}
-        open={true}
-        openDirection={OpenDirection.Bottom}
-      >
-        Open by default When a baby peperomia meets salami, there is often a dispute in who is the spiciest creature.
-        Peperomia, the queen of the forest floor, will strike a pose upon first glance.
-        Even a moment is enough to freeze the toughest taste buds in their tracks.
         When a baby peperomia meets salami, there is often a dispute in who is the spiciest creature.
         Peperomia, the queen of the forest floor, will strike a pose upon first glance.
         Even a moment is enough to freeze the toughest taste buds in their tracks.
+        Salami, the terminator of all who read blues, constructs pillows of agony with every step.
+        With the slightest reverberation, an iron clad tongue has but no chance to break towards freedom.
+        What do you do?
       </oh-collapse-box>
       <oh-divider />
       <oh-drop-zone
@@ -288,11 +227,10 @@ const ComponentHotTub = () => {
         limit={3}
         noun="Custom Noun"
         onDrop={(error, value) => onEvent(error, value)}
-        onRemove={(error, value) => onEvent(error, value)}
         tooltip="DropZone Tooltip"
       />
       <oh-drop-zone
-        label="DropZone Error Without Optional Fields"
+        label="DropZone Error Without Optional Fields "
         onDrop={(error, value) => onEvent(error, value)}
         validationError="Validation Error"
       />
@@ -306,7 +244,7 @@ const ComponentHotTub = () => {
           name="settings"
           onClick={(error, value) => onEvent(error, value)}
           size={IconSize.Small}
-          tooltip="Icon Tooltip"
+          tooltip="Settings Icon"
         />
         <oh-icon
           color={Color.Grey}
@@ -332,7 +270,6 @@ const ComponentHotTub = () => {
         onClick={(error, value) => onEvent(error, value)}
         text="Link Left"
         textAlign={TextAlign.Left}
-        tooltip="Link Tooltip"
       />
       <oh-link
         href={externalLink}
@@ -364,39 +301,38 @@ const ComponentHotTub = () => {
       <oh-list-pair
         copyable={false}
         labelCopyable={false}
-        label="List Pair Label None Not Copyable"
+        label="Label None Not Copyable"
         onCopy={(error, value) => onEvent(error, value)}
         style={Urgency.None}
-        value="Value Error Copyable [Link](https://docs.oliveai.dev/whisper-components)"
+        value="Value Error Copyable"
       />
       <oh-list-pair
         copyable={true}
         labelCopyable={true}
-        label="List Pair Label Error Copyable"
+        label="Label Error Copyable"
         onCopy={(error, value) => onEvent(error, value)}
         style={Urgency.Error}
-        value="Value Error Copyable [Link](https://docs.oliveai.dev/whisper-components)"
+        value="Value Error Copyable"
       />
       <oh-list-pair
         copyable={true}
         labelCopyable={false}
-        label="List Pair Label Success Not Copyable"
+        label="Label Success Not Copyable"
         onCopy={(error, value) => onEvent(error, value)}
         style={Urgency.Success}
-        value="Value Success Copyable [Link](https://docs.oliveai.dev/whisper-components)"
+        value="Value Success Copyable"
       />
       <oh-list-pair
         copyable={false}
         labelCopyable={true}
-        label="List Pair Label Warning Copyable"
+        label="Label Warning Copyable"
         onCopy={(error, value) => onEvent(error, value)}
         style={Urgency.Warning}
-        value="Value Warning Not Copyable [Link](https://docs.oliveai.dev/whisper-components)"
+        value="Value Warning Not Copyable"
       />
       <oh-markdown
         body="# Markdown Header 1
-        ## Markdown Header 2
-        [Link](https://docs.oliveai.dev/whisper-components)"
+        ## Markdown Header 2"
         copyable={MarkdownWhisperCopyMode.Body}
         onCopy={(error, value) => onEvent(error, value)}
         onLinkClick={(error, value) => onEvent(error, value)}
@@ -404,9 +340,8 @@ const ComponentHotTub = () => {
       />
       <oh-markdown
         body={`
-          # Template Literal Markdown Header 1
-          ## Template Literal Markdown Header 2
-          [Link](https://docs.oliveai.dev/whisper-components)
+        # Template Literal Markdown Header 1
+        ## Template Literal Markdown Header 2
         `}
         copyable={MarkdownWhisperCopyMode.Body}
         onCopy={(error, value) => onEvent(error, value)}
@@ -414,7 +349,7 @@ const ComponentHotTub = () => {
       />
       <oh-message
         copyable={MessageWhisperCopyMode.Header}
-        body="Message Accent [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message Accent"
         header="Message Accent"
         onCopy={(error, value) => onEvent(error, value)}
         style={Color.Accent}
@@ -422,45 +357,45 @@ const ComponentHotTub = () => {
       />
       <oh-message
         copyable={MessageWhisperCopyMode.Header}
-        body="Message Black [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message Black"
         header="Message Black"
         onCopy={(error, value) => onEvent(error, value)}
         style={Color.Black}
       />
       <oh-message
         copyable={MessageWhisperCopyMode.Body}
-        body="Message Grey [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message Grey"
         header="Message Grey"
         onCopy={(error, value) => onEvent(error, value)}
         style={Color.Grey}
       />
       <oh-message
-        body="Message WhisperStrip [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message WhisperStrip"
         header="Message WhisperStrip"
         onCopy={(error, value) => onEvent(error, value)}
         style={Color.WhisperStrip}
       />
       <oh-message
-        body="Message None [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message None"
         header="Message None"
         onCopy={(error, value) => onEvent(error, value)}
       />
       <oh-message
-        body="Message Error Left [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message Error Left"
         header="Message Error Left"
         onCopy={(error, value) => onEvent(error, value)}
         style={Urgency.Error}
         textAlign={TextAlign.Left}
       />
       <oh-message
-        body="Message Success Center [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message Success Center"
         header="Message Success Center"
         onCopy={(error, value) => onEvent(error, value)}
         style={Urgency.Success}
         textAlign={TextAlign.Center}
       />
       <oh-message
-        body="Message Warning Right [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Message Warning Right"
         header="Message Warning Right"
         onCopy={(error, value) => onEvent(error, value)}
         style={Urgency.Warning}
@@ -512,28 +447,18 @@ const ComponentHotTub = () => {
         tooltip="Rich Text Editor"
       />
       <oh-section-title
-        body="Section Title None Left [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Section Title None Left"
         textAlign={TextAlign.Left}
       />
       <oh-section-title
         backgroundStyle={Color.Grey}
-        body="Section Title Grey Center [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Section Title Grey Center"
         textAlign={TextAlign.Center}
       />
       <oh-section-title
         backgroundStyle={Color.White}
-        body="Section Title White Right [Link](https://docs.oliveai.dev/whisper-components)"
+        body="Section Title White Right"
         textAlign={TextAlign.Right}
-      />
-      <oh-select
-        label="Select Label"
-        loading={false}
-        onChange={(error, value) => onEvent(error, value)}
-        onSelect={(error, value) => onEvent(error, value)}
-        options={selectOptions}
-        tooltip="Select Tooltip"
-        validationError=""
-        value=""
       />
       <oh-select
         label="Select Label"
@@ -550,15 +475,8 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
-        tooltip="Text Tooltip"
+        tooltip="Text Input"
         validationError="Validation Error"
-        value=""
-      />
-      <oh-text-input
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
-        validationError=""
         value=""
       />
       <oh-number
@@ -569,6 +487,7 @@ const ComponentHotTub = () => {
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
         step={20}
+        tooltip="Number Input"
         validationError=""
         value={0}
       />
@@ -577,6 +496,7 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
+        tooltip="Number Input"
         validationError=""
         value={0}
       />
@@ -585,6 +505,7 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
+        tooltip="Telephone Input"
         validationError=""
         value=""
       />
@@ -593,6 +514,7 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
+        tooltip="Password Input"
         validationError=""
         value=""
       />
@@ -601,6 +523,7 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
+        tooltip="Email Input"
         validationError=""
         value=""
       />
@@ -612,6 +535,16 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
+        tooltip="Date Input"
+        validationError=""
+      />
+      <oh-datetime
+        dateTimeType={DateTimeType.Date}
+        label="Date Input"
+        onBlur={(error, value) => onEvent(error, value)}
+        onFocus={(error, value) => onEvent(error, value)}
+        onChange={(error, value) => onEvent(error, value)}
+        tooltip="Date Input"
         validationError=""
       />
       <oh-datetime
@@ -622,6 +555,7 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
+        tooltip="DateTime Input"
         validationError=""
       />
       <oh-datetime
@@ -632,6 +566,7 @@ const ComponentHotTub = () => {
         onBlur={(error, value) => onEvent(error, value)}
         onFocus={(error, value) => onEvent(error, value)}
         onChange={(error, value) => onEvent(error, value)}
+        tooltip="Time Input"
         validationError=""
       />
     </oh-whisper>
