@@ -3441,15 +3441,15 @@ export const testGridComponent = (): Promise<boolean> =>
                 children: [
                   {
                     type: WhisperComponentType.Markdown,
+                    body: 'Row 1 Col 1',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
                     body: 'Row 2 Col 1',
                   },
                   {
                     type: WhisperComponentType.Markdown,
-                    body: 'Row 2 Col 2',
-                  },
-                  {
-                    type: WhisperComponentType.Markdown,
-                    body: 'Row 2 Col 3',
+                    body: 'Row 3 Col 1',
                   },
                 ],
                 container: true,
@@ -3464,7 +3464,7 @@ export const testGridComponent = (): Promise<boolean> =>
                 children: [
                   {
                     type: WhisperComponentType.Markdown,
-                    body: 'Row 2 Col 1',
+                    body: 'Row 1 Col 2',
                   },
                   {
                     type: WhisperComponentType.Markdown,
@@ -3472,7 +3472,7 @@ export const testGridComponent = (): Promise<boolean> =>
                   },
                   {
                     type: WhisperComponentType.Markdown,
-                    body: 'Row 2 Col 3',
+                    body: 'Row 3 Col 2',
                   },
                 ],
                 container: false,
