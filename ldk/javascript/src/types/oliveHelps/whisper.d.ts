@@ -105,6 +105,7 @@ declare namespace WhisperService {
   }
 
   interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {
+    disabled?: boolean;
     label: string;
     tooltip?: string;
     validationError?: string;
@@ -115,6 +116,7 @@ declare namespace WhisperService {
   }
 
   interface SelectComponent<T extends WhisperComponentType> extends Component<T> {
+    disabled?: boolean;
     validationError?: string;
   }
 
@@ -173,6 +175,7 @@ declare namespace WhisperService {
     };
     noun?: string;
     onDrop: WhisperHandlerWithParam<File[]>;
+    onRemove?: WhisperHandlerWithParam<File[]>;
     value?: File[];
     tooltip?: string;
     validationError?: string;
@@ -235,6 +238,7 @@ declare namespace WhisperService {
   };
 
   type RichTextEditor = Component<'richTextEditor'> & {
+    disabled?: boolean;
     onBlur?: (error: Error | undefined) => void;
     onChange: WhisperHandlerWithParam<string>;
     onFocus?: (error: Error | undefined) => void;
