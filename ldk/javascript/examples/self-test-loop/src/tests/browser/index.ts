@@ -6,13 +6,11 @@ export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const URL = 'https://www.oliveai.dev/';
-      const tabId = await browser.openTab(URL);
-
       const listener = await browser.listenNavigation(
         (navigationEvent: NavigationDetails): void => {
-          const { tabId: eventTabId, url: eventUrl } = navigationEvent;
+          const { url: eventUrl } = navigationEvent;
 
-          if (eventTabId === tabId && eventUrl === URL) {
+          if (eventUrl === URL) {
             listener.cancel();
             resolve(true);
           }
@@ -20,6 +18,8 @@ export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
           reject(new Error('The newest tab and URL do not match the test'));
         },
       );
+
+      await browser.openTab(URL);
     } catch (error) {
       console.error(error);
       reject(error);
@@ -116,8 +116,6 @@ export const testOpenWindowAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       const URL = 'https://www.oliveai.dev/';
-      await browser.openWindow(URL);
-
       const listener = await browser.listenNavigation(
         (navigationEvent: NavigationDetails): void => {
           const { url: eventUrl } = navigationEvent;
@@ -131,6 +129,8 @@ export const testOpenWindowAndListenNavigation = (): Promise<boolean> =>
           reject(new Error('The URL opened in the window does not match the test URL'));
         },
       );
+
+      await browser.openWindow(URL);
     } catch (error) {
       console.error(error);
       reject(error);

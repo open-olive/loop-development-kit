@@ -1,6 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { screen, whisper, window } from '@oliveai/ldk';
-
+import { OcrEvent } from '@oliveai/ldk/dist/screen/types';
 export * from './hashTests';
 
 const writeWhisper = (label: string, body: string) =>
@@ -109,3 +109,46 @@ export async function performOcr() {
       });
   });
 }
+
+export const testScreenMonitor = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      console.log('Running listenOcrMonitor function...');
+      sleep(1000);
+
+      const listener = await screen.listenOcrMonitor((ocrEvent) => {
+        sleep(1000);
+        const resultNew: string[] = [];
+        const resultOld: string[] = [];
+
+        ocrEvent.forEach((element) => {
+          resultNew.push(element.new.text);
+          resultOld.push(element.old.text);
+        });
+
+        const resultNewString = resultNew.join(' ');
+        const resultOldString = resultOld.join(' ');
+        whisper.create({
+          label: 'test Screen Monitor',
+          onClose: () => {
+            console.log(`Closed Whisper`);
+          },
+          components: [
+            {
+              body: `New Text: ${resultNewString}`,
+              type: whisper.WhisperComponentType.Markdown,
+            },
+            {
+              body: `Old Text: ${resultOldString}`,
+              type: whisper.WhisperComponentType.Markdown,
+            },
+          ],
+        });
+        console.log('result of changed text are', resultNewString);
+        listener.cancel();
+        resolve(true);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
