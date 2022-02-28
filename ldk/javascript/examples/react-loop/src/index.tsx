@@ -1,6 +1,4 @@
-import * as React from 'react';
-import '@oliveai/ldk';
-import * as ReactWhisper from '@oliveai/ldk/dist/whisper/react/renderer';
+import { React, ReactWhisper } from '@oliveai/ldk';
 // Display all enums rather than importing with * for better referencing as a test loop
 import {
   AlignItems,
