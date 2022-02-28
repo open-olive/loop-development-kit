@@ -56,9 +56,6 @@ const ComponentHotTub = () => {
   return (
     <oh-whisper
       label="React"
-      close={() => {
-        console.log('oh-whisper close');
-      }}
       onClose={() => {
         console.log('oh-whisper onClose');
       }}

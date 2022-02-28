@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack --entry ./src/index.js --config ./node_modules/@oliveai/ldk/dist/webpack/config.js",
+    "build": "webpack",
     "lint": "eslint ./ --ignore-path .gitignore",
     "lint:fix": "npm run lint -- --fix"
   },
@@ -54,23 +54,7 @@
   },
   "ldk": {
     "permissions": {
-      "ui": {},
-      "whisper": {},
-      "document": {},
-      "filesystem": {
-        "pathGlobs": [
-          {
-            "value": "/Users/bryan.stoner/Downloads/Repos/**"
-          }
-        ]
-      },
-      "network": {
-        "urlDomains": [
-          {
-            "value": "github.com"
-          }
-        ]
-      }
+      "whisper": {}
     }
   }
 }
