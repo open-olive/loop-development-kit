@@ -291,11 +291,11 @@ declare namespace WhisperService {
     component?: PaginationComponentType;
     disabled?: boolean;
     labelRowsPerPage?: string;
-    onChange: WhisperHandlerWithParam<string>;
-    onRowsPerPageChange: WhisperHandlerWithParam<string>;
+    onChange?: WhisperHandlerWithParam<string>;
+    onRowsPerPageChange?: WhisperHandlerWithParam<string>;
     page: number;
-    rowsPerPage: number;
-    rowsPerPageOptions: number[];
+    rowsPerPage?: number;
+    rowsPerPageOptions?: number[];
   };
 
   type CollapseBox = Component<'collapseBox'> & {

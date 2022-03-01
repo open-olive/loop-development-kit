@@ -230,7 +230,7 @@ export type AutocompleteOption = {
 
 export enum PaginationComponentType {
   Pagination = 'pagination',
-  tablePagination = 'tablePagination',
+  TablePagination = 'tablePagination',
 }
 
 export enum ProgressShape {
@@ -622,15 +622,41 @@ export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
 };
 
 export type Pagination = WhisperComponent<WhisperComponentType.Pagination> & {
+  /**
+   * tablePagination: total number of rows in your table
+   * pagination: total number of pages
+   */
   count: number;
+  /**
+   * This component can either be normal pagination or table pagination
+   */
   component?: PaginationComponentType;
   disabled?: boolean;
+  /**
+   * The label next to the "rows per page" dropdown (for table pagination)
+   */
   labelRowsPerPage?: string;
-  onChange: WhisperHandlerWithParam<string>;
-  onRowsPerPageChange: WhisperHandlerWithParam<string>;
+  /**
+   * @returns string containing the selected page number
+   */
+  onChange?: WhisperHandlerWithParam<string>;
+  /**
+   * @returns string containing the new "rows per page" value selected (for table pagination)
+   */
+  onRowsPerPageChange?: WhisperHandlerWithParam<string>;
+  /**
+   * The current page
+   */
   page: number;
-  rowsPerPage: number;
-  rowsPerPageOptions: number[];
+  /**
+   * The number of table rows per page (for table pagination)
+   */
+  rowsPerPage?: number;
+  /**
+   * An array of options that the user can select to determine the number of rows per page
+   * (table pagination)
+   */
+  rowsPerPageOptions?: number[];
 };
 
 export type ChildComponents =
@@ -660,7 +686,7 @@ export type ChildComponents =
   | TextInput;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
-  children: Array<Exclude<ChildComponents, Box>>;
+  children: Array<ChildComponents>;
   label?: string;
   open: boolean;
   openDirection?: OpenDirection;
