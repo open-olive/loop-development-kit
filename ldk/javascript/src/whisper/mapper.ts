@@ -115,6 +115,17 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.RichTextEditor;
+    case WhisperComponentType.Rating:
+      return {
+        ...component,
+        onChange: component.onChange
+          ? (error, param, whisper) => {
+              if (component.onChange) {
+                component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+              }
+            }
+          : undefined,
+      } as WhisperService.Rating;
     case WhisperComponentType.Autocomplete: {
       // eslint-disable-next-line
       const { onChange, onSelect, options } = component;

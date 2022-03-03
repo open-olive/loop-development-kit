@@ -342,4 +342,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Do you see onRemove in log?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Rating Test',
+      whisperTests.testRating,
+      10000,
+      'Tests for the Rating component',
+    ),
   ]);

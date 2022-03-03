@@ -3567,3 +3567,25 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
   });
   return acceptFileData.acceptResult;
 };
+
+export const testRating = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did Rating render correctly?',
+        components: [
+          {
+            max: 5,
+            name: 'Test Rating',
+            precision: 0.5,
+            value: 4.5,
+            type: WhisperComponentType.Rating,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });

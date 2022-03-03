@@ -38,6 +38,7 @@ type NumberInputProps = ComponentProps<Whisper.NumberInput>;
 type PasswordProps = ComponentProps<Whisper.Password>;
 type ProgressProps = ComponentProps<Whisper.Progress>;
 type RadioGroupProps = ComponentProps<Whisper.RadioGroup>;
+type RatingProps = ComponentProps<Whisper.Rating>;
 type RichTextEditorProps = ComponentProps<Whisper.RichTextEditor>;
 type SelectProps = ComponentProps<Whisper.Select>;
 type SectionTitleProps = ComponentProps<Whisper.SectionTitle>;
@@ -69,6 +70,7 @@ export interface HelpsComponents {
   'oh-password': PasswordProps;
   'oh-progress': ProgressProps;
   'oh-radio-group': RadioGroupProps;
+  'oh-rating': RatingProps;
   'oh-rich-text-editor': RichTextEditorProps;
   'oh-select': SelectProps;
   'oh-section-title': SectionTitleProps;

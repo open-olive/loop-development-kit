@@ -23,6 +23,7 @@ declare namespace WhisperService {
     | 'password'
     | 'progress'
     | 'radioGroup'
+    | 'rating'
     | 'richTextEditor'
     | 'select'
     | 'sectionTitle'
@@ -251,6 +252,21 @@ declare namespace WhisperService {
     onChange: WhisperHandlerWithParam<boolean>;
   };
 
+  type Rating = Component<'rating'> & {
+    defaultValue?: number;
+    disabled?: boolean;
+    emptyIcon?: string;
+    emptyIconColor?: string;
+    icon?: string;
+    max?: number;
+    name?: string;
+    onChange?: WhisperHandlerWithParam<number>;
+    precision?: number;
+    readOnly?: boolean;
+    size?: string;
+    value?: number;
+  };
+
   type Select = SelectComponent<'select'> & {
     label: string;
     options: string[];
@@ -312,9 +328,11 @@ declare namespace WhisperService {
     | Breadcrumbs
     | Button
     | Checkbox
+    | DateTimeInput
     | Divider
     | DropZone
     | Email
+    | Icon
     | Link
     | ListPair
     | Markdown
@@ -323,13 +341,12 @@ declare namespace WhisperService {
     | Password
     | Progress
     | RadioGroup
+    | Rating
     | RichTextEditor
+    | SectionTitle
     | Select
     | Telephone
-    | TextInput
-    | DateTimeInput
-    | Icon
-    | SectionTitle;
+    | TextInput;
 
   type Components = ChildComponents | CollapseBox;
 

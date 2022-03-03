@@ -22,13 +22,27 @@ export enum WhisperComponentType {
    */
   CollapseBox = 'collapseBox',
   /**
+   * A text input field allows the user to provide date and time information.
+   *
+   * The field can be pre-populated by the loop.
+   */
+  DateTimeInput = 'dateTimeInput',
+  /**
    * This component shows a horizontal divider to separate different kinds on content in a whisper. This component has no options.
    */
   Divider = 'divider',
   /**
+   * The dropzone component allows the Loop to receive a file uploaded by a user
+   */
+  DropZone = 'dropZone',
+  /**
    * The text input field allows the user to provide an email address.
    */
   Email = 'email',
+  /**
+   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
+   */
+  Icon = 'icon',
   /**
    * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
    */
@@ -61,6 +75,18 @@ export enum WhisperComponentType {
    */
   RadioGroup = 'radioGroup',
   /**
+   * Rating gives a multi-icon cluster to show or give ratings
+   */
+  Rating = 'rating',
+  /**
+   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
+   */
+  RichTextEditor = 'richTextEditor',
+  /**
+   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
+   */
+  SectionTitle = 'sectionTitle',
+  /**
    * A selected value of -1 indicates that nothing is selected.
    */
   Select = 'select',
@@ -74,28 +100,6 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
-  /**
-   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
-   */
-  SectionTitle = 'sectionTitle',
-  /**
-   * A text input field allows the user to provide date and time information.
-   *
-   * The field can be pre-populated by the loop.
-   */
-  DateTimeInput = 'dateTimeInput',
-  /**
-   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
-   */
-  RichTextEditor = 'richTextEditor',
-  /**
-   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
-   */
-  Icon = 'icon',
-  /**
-   * The dropzone component allows the Loop to receive a file uploaded by a user
-   */
-  DropZone = 'dropZone',
 }
 
 export enum JustifyContent {
@@ -575,6 +579,21 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
   value?: File[];
 };
 
+export type Rating = WhisperComponent<WhisperComponentType.Rating> & {
+  defaultValue?: number;
+  disabled?: boolean;
+  emptyIcon?: string;
+  emptyIconColor?: string;
+  icon?: string;
+  max?: number;
+  name?: string;
+  onChange?: WhisperHandlerWithParam<number>;
+  precision?: number;
+  readOnly?: boolean;
+  size?: string;
+  value?: number;
+};
+
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   name: string;
   size?: IconSize;
@@ -630,6 +649,7 @@ export type ChildComponents =
   | Password
   | Progress
   | RadioGroup
+  | Rating
   | RichTextEditor
   | Select
   | SectionTitle
