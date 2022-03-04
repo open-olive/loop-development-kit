@@ -21,8 +21,3 @@ npm run build
 # ESLint and Prettier
 npm run lint          # Check for issues
 npm run lint:fix      # Fix all auto-fixable issues
-
-# Jest
-npm run test          # Run unit tests
-npm run test:coverage # Run unit tests with coverage report
-```
