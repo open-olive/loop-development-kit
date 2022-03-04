@@ -10,17 +10,17 @@ import {
   Direction,
   IconSize,
   JustifyContent,
-  Urgency,
+  MatchSorterRankings,
   MarkdownWhisperCopyMode,
   MessageWhisperCopyMode,
   OpenDirection,
   ProgressShape,
   StyleSize,
   TextAlign,
-  WidthSize,
+  Urgency,
 } from '@oliveai/ldk/dist/whisper/types';
 
-const ComponentHotTub = () => {
+const ComponentHotTub: React.FunctionComponent<unknown> = () => {
   const externalLink = 'https://www.google.com/';
   const options = [
     {
@@ -40,14 +40,13 @@ const ComponentHotTub = () => {
       value: 'optionfour',
     }
   ];
-
   const selectOptions = [
     "Option One",
     "Option Two",
     "Option Three",
   ];
 
-  const onEvent = (error, value) => {
+  const onEvent = (error: Error, value?: any) => {
     console.log(`React Test Loop: ${value}${error ? `, ${error}` : ''}`)
   };
 
@@ -63,8 +62,8 @@ const ComponentHotTub = () => {
         label="Autocomplete"
         loading={false}
         multiple={false}
-        onChange={(error, value) => onEvent(error, value)}
-        onSelect={(error, value) => onEvent(error, value)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onSelect={(error: Error, value: any) => onEvent(error, value)}
         options={options}
         tooltip="Autocomplete"
         validationError="Validation Error"
@@ -75,8 +74,8 @@ const ComponentHotTub = () => {
         label="Autocomplete Freesolo"
         loading={false}
         multiple={false}
-        onChange={(error, value) => onEvent(error, value)}
-        onSelect={(error, value) => onEvent(error, value)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onSelect={(error: Error, value: any) => onEvent(error, value)}
         options={options}
         value=""
       />
@@ -97,8 +96,8 @@ const ComponentHotTub = () => {
           label="Autocomplete Freesolo filterOptions"
           loading={false}
           multiple={true}
-          onChange={(error, value) => onEvent(error, value)}
-          onSelect={(error, value) => onEvent(error, value)}
+          onChange={(error: Error, value: any) => onEvent(error, value)}
+          onSelect={(error: Error, value: any) => onEvent(error, value)}
           options={options}
           value=""
         />
@@ -108,11 +107,11 @@ const ComponentHotTub = () => {
           loading={false}
           matchSorter={{
             keys: ['label'],
-            threshold: 'MATCHES',
+            threshold: MatchSorterRankings.Matches,
           }}
           multiple={true}
-          onChange={(error, value) => onEvent(error, value)}
-          onSelect={(error, value) => onEvent(error, value)}
+          onChange={(error: Error, value: any) => onEvent(error, value)}
+          onSelect={(error: Error, value: any) => onEvent(error, value)}
           options={options}
           value=""
         />
@@ -144,7 +143,7 @@ const ComponentHotTub = () => {
           buttonStyle={ButtonStyle.Primary}
           disabled={false}
           label="Small"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={ButtonSize.Small}
           tooltip="Small"
         />
@@ -152,43 +151,43 @@ const ComponentHotTub = () => {
           buttonStyle={ButtonStyle.Secondary}
           disabled={false}
           label="Large"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={ButtonSize.Large}
         />
         <oh-button
           buttonStyle={ButtonStyle.Text}
           disabled={false}
           label="Small Text"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={ButtonSize.Small}
         />
         <oh-button
           buttonStyle={ButtonStyle.Text}
           disabled={false}
           label="Large Text"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={ButtonSize.Large}
         />
       </oh-box>
       <oh-checkbox
         label="Checkbox One"
-        onChange={(error, value) => onEvent(error, value)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
         tooltip="Checkbox One"
         validationError="Validation Error"
         value={false}
       />
       <oh-checkbox
         label="Checkbox Two"
-        onChange={(error, value) => onEvent(error, value)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
         value={true}
       />
       <oh-checkbox
         label="Checkbox Three"
-        onChange={(error, value) => onEvent(error, value)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
         value={true}
       />
       <oh-radio-group
-        onSelect={(error, value) => onEvent(error, value)}
+        onSelect={(error: Error, value: any) => onEvent(error, value)}
         options={[
           "Radio One",
           "Radio Two",
@@ -198,9 +197,8 @@ const ComponentHotTub = () => {
         selected={0}
       />
       <oh-collapse-box
-        customHeight={CustomHeight.Small}
         label="CollapseBox Top"
-        onClick={(error, value) => onEvent(error, value)}
+        onClick={(error: Error, value: any) => onEvent(error, value)}
         open={false}
         openDirection={OpenDirection.Top}
       >
@@ -221,12 +219,12 @@ const ComponentHotTub = () => {
         label="DropZone"
         limit={3}
         noun="Custom Noun"
-        onDrop={(error, value) => onEvent(error, value)}
+        onDrop={(error: Error, value: any) => onEvent(error, value)}
         tooltip="DropZone Tooltip"
       />
       <oh-drop-zone
         label="DropZone Error Without Optional Fields "
-        onDrop={(error, value) => onEvent(error, value)}
+        onDrop={(error: Error, value: any) => onEvent(error, value)}
         validationError="Validation Error"
       />
       <oh-box
@@ -237,59 +235,59 @@ const ComponentHotTub = () => {
         <oh-icon
           color={Color.Black}
           name="settings"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={IconSize.Small}
           tooltip="Settings Icon"
         />
         <oh-icon
           color={Color.Grey}
           name="touch_app"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={IconSize.Medium}
         />
         <oh-icon
           color={Color.White}
           name="task_alt"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={IconSize.Large}
         />
         <oh-icon
           color={Color.WhisperStrip}
           name="delete"
-          onClick={(error, value) => onEvent(error, value)}
+          onClick={(error: Error, value: any) => onEvent(error, value)}
           size={IconSize.XLarge}
         />
       </oh-box>
       <oh-link
         href={externalLink}
-        onClick={(error, value) => onEvent(error, value)}
+        onClick={(error: Error, value: any) => onEvent(error, value)}
         text="Link Left"
         textAlign={TextAlign.Left}
       />
       <oh-link
         href={externalLink}
-        onClick={(error, value) => onEvent(error, value)}
+        onClick={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.None}
         text="Link None Left"
         textAlign={TextAlign.Left}
       />
       <oh-link
         href={externalLink}
-        onClick={(error, value) => onEvent(error, value)}
+        onClick={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Error}
         text="Link Error Center"
         textAlign={TextAlign.Center}
       />
       <oh-link
         href={externalLink}
-        onClick={(error, value) => onEvent(error, value)}
+        onClick={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Success}
         text="Link Success Right"
         textAlign={TextAlign.Right}
       />
       <oh-link
         href={externalLink}
-        onClick={(error, value) => onEvent(error, value)}
+        onClick={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Warning}
         text="Link Warning"
       />
@@ -297,7 +295,7 @@ const ComponentHotTub = () => {
         copyable={false}
         labelCopyable={false}
         label="Label None Not Copyable"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.None}
         value="Value Error Copyable"
       />
@@ -305,7 +303,7 @@ const ComponentHotTub = () => {
         copyable={true}
         labelCopyable={true}
         label="Label Error Copyable"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Error}
         value="Value Error Copyable"
       />
@@ -313,7 +311,7 @@ const ComponentHotTub = () => {
         copyable={true}
         labelCopyable={false}
         label="Label Success Not Copyable"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Success}
         value="Value Success Copyable"
       />
@@ -321,7 +319,7 @@ const ComponentHotTub = () => {
         copyable={false}
         labelCopyable={true}
         label="Label Warning Copyable"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Warning}
         value="Value Warning Not Copyable"
       />
@@ -329,8 +327,8 @@ const ComponentHotTub = () => {
         body="# Markdown Header 1
         ## Markdown Header 2"
         copyable={MarkdownWhisperCopyMode.Body}
-        onCopy={(error, value) => onEvent(error, value)}
-        onLinkClick={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
+        onLinkClick={(error: Error, value: any) => onEvent(error, value)}
         tooltip="Markdown Tooltip"
       />
       <oh-markdown
@@ -339,14 +337,14 @@ const ComponentHotTub = () => {
         ## Template Literal Markdown Header 2
         `}
         copyable={MarkdownWhisperCopyMode.Body}
-        onCopy={(error, value) => onEvent(error, value)}
-        onLinkClick={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
+        onLinkClick={(error: Error, value: any) => onEvent(error, value)}
       />
       <oh-message
         copyable={MessageWhisperCopyMode.Header}
         body="Message Accent"
         header="Message Accent"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Color.Accent}
         tooltip="Message Accent Tooltip"
       />
@@ -354,45 +352,39 @@ const ComponentHotTub = () => {
         copyable={MessageWhisperCopyMode.Header}
         body="Message Black"
         header="Message Black"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Color.Black}
       />
       <oh-message
         copyable={MessageWhisperCopyMode.Body}
         body="Message Grey"
         header="Message Grey"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Color.Grey}
-      />
-      <oh-message
-        body="Message WhisperStrip"
-        header="Message WhisperStrip"
-        onCopy={(error, value) => onEvent(error, value)}
-        style={Color.WhisperStrip}
       />
       <oh-message
         body="Message None"
         header="Message None"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
       />
       <oh-message
         body="Message Error Left"
         header="Message Error Left"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Error}
         textAlign={TextAlign.Left}
       />
       <oh-message
         body="Message Success Center"
         header="Message Success Center"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Success}
         textAlign={TextAlign.Center}
       />
       <oh-message
         body="Message Warning Right"
         header="Message Warning Right"
-        onCopy={(error, value) => onEvent(error, value)}
+        onCopy={(error: Error, value: any) => onEvent(error, value)}
         style={Urgency.Warning}
         textAlign={TextAlign.Right}
       />
@@ -436,9 +428,9 @@ const ComponentHotTub = () => {
         size={StyleSize.None}
       />
       <oh-rich-text-editor
-        onBlur={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Rich Text Editor"
       />
       <oh-section-title
@@ -457,19 +449,16 @@ const ComponentHotTub = () => {
       />
       <oh-select
         label="Select Label"
-        loading={false}
-        onChange={(error, value) => onEvent(error, value)}
-        onSelect={(error, value) => onEvent(error, value)}
+        onSelect={(error: Error, value: any) => onEvent(error, value)}
         options={selectOptions}
         tooltip="Select Tooltip"
         validationError="Validation Error"
-        value=""
       />
       <oh-text-input
         label="Text Input"
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Text Input"
         validationError="Validation Error"
         value=""
@@ -478,9 +467,9 @@ const ComponentHotTub = () => {
         label="Number Input"
         max={200}
         min={-200}
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         step={20}
         tooltip="Number Input"
         validationError=""
@@ -488,36 +477,36 @@ const ComponentHotTub = () => {
       />
       <oh-number
         label="Number Input Free"
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Number Input"
         validationError=""
         value={0}
       />
       <oh-telephone
         label="Telephone Input"
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Telephone Input"
         validationError=""
         value=""
       />
       <oh-password
         label="Password Input"
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Password Input"
         validationError=""
         value=""
       />
       <oh-email
         label="Email Input"
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Email Input"
         validationError=""
         value=""
@@ -527,18 +516,18 @@ const ComponentHotTub = () => {
         label="Date Input"
         max={new Date()}
         min={new Date(0)}
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Date Input"
         validationError=""
       />
       <oh-datetime
         dateTimeType={DateTimeType.Date}
         label="Date Input"
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Date Input"
         validationError=""
       />
@@ -547,9 +536,9 @@ const ComponentHotTub = () => {
         label="DateTime Input"
         max={new Date()}
         min={new Date(0)}
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="DateTime Input"
         validationError=""
       />
@@ -558,9 +547,9 @@ const ComponentHotTub = () => {
         label="Time Input"
         max={new Date()}
         min={new Date(0)}
-        onBlur={(error, value) => onEvent(error, value)}
-        onFocus={(error, value) => onEvent(error, value)}
-        onChange={(error, value) => onEvent(error, value)}
+        onBlur={(error: Error) => onEvent(error)}
+        onChange={(error: Error, value: any) => onEvent(error, value)}
+        onFocus={(error: Error) => onEvent(error)}
         tooltip="Time Input"
         validationError=""
       />
