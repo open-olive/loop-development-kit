@@ -65,6 +65,8 @@ export function mapToInternalChildComponent(
           component.onClick(error, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Button;
+    case WhisperComponentType.Chart:
+      return component;
     case WhisperComponentType.Checkbox:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);

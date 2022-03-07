@@ -16,6 +16,10 @@ export enum WhisperComponentType {
    */
   Breadcrumbs = 'breadcrumbs',
   Button = 'button',
+  /**
+   * A graph charting component
+   */
+  Chart = 'chart',
   Checkbox = 'checkbox',
   /**
    * A container component to allow content to be opened and closed with a button click.
@@ -269,6 +273,26 @@ export enum MatchSorterRankings {
   WordStartsWith = 'WORD_STARTS_WITH',
 }
 
+export enum SeriesColor {
+  Blue = '#29C6F8',
+  DarkPurple = '#410099',
+  Green = '#52E48D',
+  LightPurple = '#B388FF',
+  Orange = '#FD9743',
+  Pink = '#C5457A',
+  Purple = '#651FFF',
+  Red = '#EB473B',
+  Salmon = '#FF7F78',
+  Yellow = '#FDD443',
+}
+
+export enum SeriesType {
+  Area = 'area',
+  Bar = 'bar',
+  Line = 'line',
+  Mark = 'mark',
+}
+
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
@@ -495,6 +519,49 @@ export type Button = WhisperComponent<WhisperComponentType.Button> & {
   tooltip?: string;
 };
 
+export type SeriesData = {
+  x: number | Date;
+  y: number | Date;
+};
+
+export type Series = {
+  color?: SeriesColor;
+  data: SeriesData[];
+  size?: number;
+  strokeWidth?: number;
+  title: string;
+  type: SeriesType;
+};
+
+export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
+  chartTitle?: string;
+  heightToWidthRatio?: number;
+  horizontalGridLines?: boolean;
+  horizontalLineTotal?: number;
+  margin?: {
+    bottom?: number;
+    left?: number;
+    right?: number;
+    top?: number;
+  };
+  series: Series[];
+  showCrosshair?: boolean;
+  verticalGridLines?: boolean;
+  verticalLineTotal?: number;
+  xAxis?: boolean;
+  xAxisLabel?: string;
+  xAxisTicks?: string[];
+  xAxisTickTotal?: number;
+  xAxisTickLabelAngle?: number;
+  xAxisTimeSeries?: boolean;
+  yAxis?: boolean;
+  yAxisLabel?: string;
+  yAxisTicks?: string[];
+  yAxisTickTotal?: number;
+  yAxisTickLabelAngle?: number;
+  yAxisTimeSeries?: number;
+};
+
 export type Link = WhisperComponent<WhisperComponentType.Link> & {
   href?: string;
   text: string;
@@ -616,6 +683,7 @@ export type ChildComponents =
   | Box
   | Breadcrumbs
   | Button
+  | Chart
   | Checkbox
   | DateTimeInput
   | Divider
