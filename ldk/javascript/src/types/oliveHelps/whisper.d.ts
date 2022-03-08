@@ -274,6 +274,7 @@ declare namespace WhisperService {
   };
 
   type Icon = Component<'icon'> & {
+    disabled?: boolean;
     name: string;
     size?: IconSize;
     color?: 'black' | 'whisper-strip' | 'white' | 'grey';

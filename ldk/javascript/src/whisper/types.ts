@@ -576,6 +576,7 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
 };
 
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
+  disabled?: boolean;
   name: string;
   size?: IconSize;
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip | Color.Accent;
