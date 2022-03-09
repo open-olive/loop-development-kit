@@ -20,9 +20,39 @@ See README for more information.`;
 describe('Generate Banner', () => {
   const ldkSettings: LdkSettings = {
     ldk: {
+      configSchema: {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          testString: {
+            type: 'string',
+            default: 'testing',
+          },
+          testObject: {
+            type: 'object',
+            properties: {
+              foo: {
+                type: 'string',
+              },
+              bar: {
+                type: 'object',
+                properties: {
+                  baz: {
+                    type: 'string',
+                  },
+                },
+                required: [],
+              },
+            },
+            required: [],
+          },
+        },
+        required: ['testString'],
+      },
       permissions: {
         browser: { urlDomains: [{ value: '*.google.com' }] },
         clipboard: {},
+        config: {},
         cursor: {},
         document: {},
         filesystem: { pathGlobs: [{ value: '/my/path' }] },
@@ -45,9 +75,39 @@ describe('Generate Banner', () => {
     const actual = getLoopMetadataContent(generateBanner(ldkSettings));
     const expected = {
       oliveHelpsContractVersion: '0.3.0',
+      configSchema: {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          testString: {
+            type: 'string',
+            default: 'testing',
+          },
+          testObject: {
+            type: 'object',
+            properties: {
+              foo: {
+                type: 'string',
+              },
+              bar: {
+                type: 'object',
+                properties: {
+                  baz: {
+                    type: 'string',
+                  },
+                },
+                required: [],
+              },
+            },
+            required: [],
+          },
+        },
+        required: ['testString'],
+      },
       permissions: {
         browser: { urlDomains: [{ value: '*.google.com' }] },
         clipboard: {},
+        config: {},
         cursor: {},
         document: {},
         filesystem: { pathGlobs: [{ value: '/my/path' }] },

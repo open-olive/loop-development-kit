@@ -1,3 +1,4 @@
+import Ajv from 'ajv';
 import { LdkSettings } from './ldk-settings';
 
 const permissionsErrorMessage = `Please add a "ldk" object to your package.json file with a permission property:
@@ -10,11 +11,24 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
   if (!ldkSettings || !ldkSettings.ldk || Object.keys(ldkSettings.ldk).length === 0) {
     throw new Error(permissionsErrorMessage);
   }
+
+  if (ldkSettings.ldk.configSchema) {
+    const ajv = new Ajv();
+
+    try {
+      ajv.compile(ldkSettings.ldk.configSchema);
+    } catch (error) {
+      throw new Error(`There was an error in your LDK configSchema:\n${error}`);
+    }
+  }
+
   const json = JSON.stringify({
     oliveHelpsContractVersion: '0.3.0',
+    configSchema: ldkSettings.ldk.configSchema || undefined,
     permissions: {
       browser: ldkSettings.ldk.permissions.browser || undefined,
       clipboard: ldkSettings.ldk.permissions.clipboard || undefined,
+      config: ldkSettings.ldk.permissions.config || undefined,
       cursor: ldkSettings.ldk.permissions.cursor || undefined,
       document: ldkSettings.ldk.permissions.document || undefined,
       filesystem: ldkSettings.ldk.permissions.filesystem || undefined,
@@ -31,6 +45,7 @@ export function generateMetadata(ldkSettings: LdkSettings): string {
       window: ldkSettings.ldk.permissions.window || undefined,
     },
   });
+
   return Buffer.from(json).toString('base64');
 }
 
