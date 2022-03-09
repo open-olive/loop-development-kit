@@ -6,6 +6,12 @@ import * as whisperTests from '../tests/whisper';
 export const whisperTestGroup = (): TestGroup =>
   new TestGroup('Whisper Aptitude', [
     new LoopTest(
+      'Whisper Aptitude - Chart component',
+      whisperTests.testChart,
+      30000,
+      'Confirm all charts look correct',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Flex property whisper',
       whisperTests.testFlex,
       20000,
