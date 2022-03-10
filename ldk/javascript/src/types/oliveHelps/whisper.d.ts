@@ -201,14 +201,14 @@ declare namespace WhisperService {
 
   type Grid = Component<'grid'> & {
     alignContent?: AlignContent;
-    alignItems: AlignItems;
+    alignItems?: AlignItems;
     children: Array<ChildComponents>;
     container: boolean;
     direction?: GridDirection;
     justifyContent?: JustifyContent;
     item: boolean;
-    spacing: number;
-    wrap: Wrap;
+    spacing?: number;
+    wrap?: Wrap;
     xs?: string;
   };
 

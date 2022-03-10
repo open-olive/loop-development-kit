@@ -638,14 +638,14 @@ export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
 
 export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
   alignContent?: AlignContent;
-  alignItems: AlignItems;
+  alignItems?: AlignItems;
   children: Array<ChildComponents>;
   container: boolean;
   direction?: GridDirection;
   justifyContent?: JustifyContent;
   item: boolean;
-  spacing: number;
-  wrap: Wrap;
+  spacing?: number;
+  wrap?: Wrap;
   xs?: string;
 };
 
