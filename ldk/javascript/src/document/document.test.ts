@@ -1,12 +1,13 @@
 import { mocked } from 'ts-jest/utils';
 import * as document from '.';
-import { Workbook } from './types';
+import { PDFContentType, Workbook } from './types';
 
 describe('Document', () => {
   beforeEach(() => {
     oliveHelps.document = {
       xlsxDecode: jest.fn(),
       xlsxEncode: jest.fn(),
+      readPDF: jest.fn(),
     };
   });
 
@@ -18,7 +19,11 @@ describe('Document', () => {
           hiddenColumns: [],
           hiddenRows: [],
           name: 'name',
-          rows: [{ cells: [{ value: 'value' }] }],
+          rows: [
+            {
+              cells: [{ value: 'value' }],
+            },
+          ],
         },
       ],
     };
@@ -57,7 +62,11 @@ describe('Document', () => {
           hiddenColumns: [],
           hiddenRows: [],
           name: 'name',
-          rows: [{ cells: [{ value: 'value' }] }],
+          rows: [
+            {
+              cells: [{ value: 'value' }],
+            },
+          ],
         },
       ],
     };
@@ -80,6 +89,30 @@ describe('Document', () => {
       const actual = document.xlsxDecode(data);
 
       return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('readPDF', () => {
+    it('parses a PDF', () => {
+      const pdfFile = new Uint8Array();
+      const expected = {
+        '1': {
+          content: [
+            {
+              value: 'test',
+              type: PDFContentType.Text,
+            },
+          ],
+        },
+      };
+
+      mocked(oliveHelps.document.readPDF).mockImplementation((data, callback) => {
+        callback(undefined, expected);
+      });
+
+      const actual = document.readPDF(pdfFile);
+
+      return expect(actual).resolves.toBe(expected);
     });
   });
 });

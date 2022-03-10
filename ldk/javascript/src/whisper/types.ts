@@ -296,6 +296,7 @@ export interface WhisperComponent<T extends WhisperComponentType> {
 
 interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
   extends WhisperComponent<T1> {
+  disabled?: boolean;
   label?: string;
   tooltip?: string;
   validationError?: string;
@@ -306,6 +307,7 @@ interface InputComponent<T1 extends WhisperComponentType, T2, T3 = T2>
 }
 
 interface SelectComponent<T extends WhisperComponentType> extends WhisperComponent<T> {
+  disabled?: boolean;
   validationError?: string;
 }
 
@@ -546,9 +548,19 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
    */
   noun?: string;
   /**
+   * If provided, display the messages stating that the the file not being accepted, the area that user drops a file, browse a file, or has reached the maximum number of files.
+   */
+  messaging?: {
+    accept?: string;
+    click?: string;
+    drop?: string;
+    limit?: string;
+  };
+  /**
    * The callback function to call whenever the user selects or unselects a file.
    */
   onDrop: WhisperHandlerWithParam<File[]>;
+  onRemove?: WhisperHandlerWithParam<File[]>;
   tooltip?: string;
   validationError?: string;
   /**
@@ -579,6 +591,7 @@ export type SectionTitle = WhisperComponent<WhisperComponentType.SectionTitle> &
 };
 
 export type RichTextEditor = WhisperComponent<WhisperComponentType.RichTextEditor> & {
+  disabled?: boolean;
   onBlur?: (error: Error | undefined) => void;
   onChange: WhisperHandlerWithParam<string>;
   onFocus?: (error: Error | undefined) => void;

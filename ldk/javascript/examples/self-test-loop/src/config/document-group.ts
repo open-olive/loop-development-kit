@@ -11,4 +11,10 @@ export const documentTestGroup = (): TestGroup =>
       5000,
       'Encodes a workbook object into Uint8Array data. Should succeed.',
     ),
+    new LoopTest(
+      'PDF Aptitude - Read test',
+      documentTests.testDocumentReadPDF,
+      5000,
+      'Reads the text content from a PDF. Should succeed.',
+    ),
   ]);
