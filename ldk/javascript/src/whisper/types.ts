@@ -640,10 +640,8 @@ export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
   alignContent?: AlignContent;
   alignItems?: AlignItems;
   children: Array<ChildComponents>;
-  container: boolean;
   direction?: GridDirection;
   justifyContent?: JustifyContent;
-  item: boolean;
   spacing?: number;
   wrap?: Wrap;
   xs?: string;
