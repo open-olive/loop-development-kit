@@ -33,3 +33,23 @@ export enum HashType {
   Difference,
   Perception,
 }
+
+export interface OcrEvent {
+  old: TextAndBounds;
+  new: TextAndBounds;
+}
+
+export interface TextAndBounds {
+  bounds: Rectangle;
+  text: string;
+}
+
+export type Rectangle = {
+  Max: Point;
+  Min: Point;
+};
+
+export type Point = {
+  X: number;
+  Y: number;
+};
