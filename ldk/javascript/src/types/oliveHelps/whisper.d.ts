@@ -210,7 +210,14 @@ declare namespace WhisperService {
     spacing?: number;
     wrap?: Wrap;
     xs?: string;
-  };
+  } & (
+      | {
+          container: boolean;
+        }
+      | {
+          item: boolean;
+        }
+    );
 
   type ListPair = Component<'listPair'> & {
     copyable: boolean;

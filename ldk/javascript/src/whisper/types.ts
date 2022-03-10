@@ -647,7 +647,14 @@ export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
   spacing?: number;
   wrap?: Wrap;
   xs?: string;
-};
+} & (
+    | {
+        container: boolean;
+      }
+    | {
+        item: boolean;
+      }
+  );
 
 export type ChildComponents =
   | Autocomplete
