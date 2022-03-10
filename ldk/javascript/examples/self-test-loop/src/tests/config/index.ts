@@ -25,19 +25,17 @@ export const testLoopConfig = (): Promise<boolean> =>
 
           if (JSON.stringify(EXPECTED_VARIABLE_NAMES) === JSON.stringify(actualVariableNames)) {
             console.log('Success: loopConfig keys match expected schema');
-            resolve(true);
+            return resolve(true);
           }
 
-          reject(
+          return reject(
             new Error(
               "Loop config keys don't match the expected output. Did the Self Test Loop's configSchema in the package.json change?",
             ),
           );
         }
 
-        reject(new Error('Loop config returned from getLoopConfig is not an object'));
+        return reject(new Error('Loop config returned from getLoopConfig is not an object'));
       })
-      .catch((error: Error) => {
-        reject(error);
-      });
+      .catch((error: Error) => reject(error));
   });
