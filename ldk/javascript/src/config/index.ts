@@ -1,13 +1,13 @@
 export type LdkConfigObject = {
-  [key: string]: LdkConfigSchema;
+  [key: string]: LdkConfigSchema | LdkConfigSchema[];
 };
 
-export type LdkConfigSchema = LdkConfigObject | string;
+export type LdkConfigSchema = LdkConfigObject | string | number | boolean;
 
 /**
  * The Config aptitude allows Loops to retrieve config variables defined by an
  * organizational admin in the Loop Library, or by the developer in a local loop
- * installation.
+ * installation. Comparable to environment variables.
  */
 export interface Config {
   /**
