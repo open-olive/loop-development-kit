@@ -1,4 +1,5 @@
 import { JSONSchemaType } from 'ajv';
+import { LdkConfigSchema } from '../config';
 
 /* eslint-disable-next-line */ // Keeping type for future expansion.
 export interface LdkAptitude {}
@@ -53,12 +54,6 @@ export interface LdkPermissions {
 
   window: LdkAptitude;
 }
-
-type LdkConfigObject = {
-  [key: string]: LdkConfigSchema;
-};
-
-export type LdkConfigSchema = LdkConfigObject | string;
 
 export interface Ldk {
   configSchema?: JSONSchemaType<LdkConfigSchema>;
