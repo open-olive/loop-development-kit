@@ -38,16 +38,12 @@ const ComponentHotTub: React.FunctionComponent<unknown> = () => {
     {
       label: 'Apples Bottle Green Frame',
       value: 'optionfour',
-    }
+    },
   ];
-  const selectOptions = [
-    "Option One",
-    "Option Two",
-    "Option Three",
-  ];
+  const selectOptions = ['Option One', 'Option Two', 'Option Three'];
 
   const onEvent = (error: Error, value?: any) => {
-    console.log(`React Test Loop: ${value}${error ? `, ${error}` : ''}`)
+    console.log(`React Test Loop: ${value}${error ? `, ${error}` : ''}`);
   };
 
   return (
@@ -79,10 +75,7 @@ const ComponentHotTub: React.FunctionComponent<unknown> = () => {
         options={options}
         value=""
       />
-      <oh-box
-        direction={Direction.Vertical}
-        justifyContent={JustifyContent.Left}
-      >
+      <oh-box direction={Direction.Vertical} justifyContent={JustifyContent.Left}>
         <oh-autocomplete
           filterOptions={{
             ignoreAccents: true,
@@ -121,18 +114,18 @@ const ComponentHotTub: React.FunctionComponent<unknown> = () => {
         justifyContent={JustifyContent.Left}
         customHeight={CustomHeight.Small}
       >
-        When a baby peperomia meets salami, there is often a dispute in who is the spiciest creature.
-        Peperomia, the queen of the forest floor, will strike a pose upon first glance.
-        Even a moment is enough to freeze the toughest taste buds in their tracks.
-        When a baby peperomia meets salami, there is often a dispute in who is the spiciest creature.
-        Peperomia, the queen of the forest floor, will strike a pose upon first glance.
-        Even a moment is enough to freeze the toughest taste buds in their tracks.
-        When a baby peperomia meets salami, there is often a dispute in who is the spiciest creature.
-        Peperomia, the queen of the forest floor, will strike a pose upon first glance.
-        Even a moment is enough to freeze the toughest taste buds in their tracks.
-        When a baby peperomia meets salami, there is often a dispute in who is the spiciest creature.
-        Peperomia, the queen of the forest floor, will strike a pose upon first glance.
-        Even a moment is enough to freeze the toughest taste buds in their tracks.
+        When a baby peperomia meets salami, there is often a dispute in who is the spiciest
+        creature. Peperomia, the queen of the forest floor, will strike a pose upon first glance.
+        Even a moment is enough to freeze the toughest taste buds in their tracks. When a baby
+        peperomia meets salami, there is often a dispute in who is the spiciest creature. Peperomia,
+        the queen of the forest floor, will strike a pose upon first glance. Even a moment is enough
+        to freeze the toughest taste buds in their tracks. When a baby peperomia meets salami, there
+        is often a dispute in who is the spiciest creature. Peperomia, the queen of the forest
+        floor, will strike a pose upon first glance. Even a moment is enough to freeze the toughest
+        taste buds in their tracks. When a baby peperomia meets salami, there is often a dispute in
+        who is the spiciest creature. Peperomia, the queen of the forest floor, will strike a pose
+        upon first glance. Even a moment is enough to freeze the toughest taste buds in their
+        tracks.
       </oh-box>
       <oh-box
         alignItems={AlignItems.Center}
@@ -188,11 +181,7 @@ const ComponentHotTub: React.FunctionComponent<unknown> = () => {
       />
       <oh-radio-group
         onSelect={(error: Error, value: any) => onEvent(error, value)}
-        options={[
-          "Radio One",
-          "Radio Two",
-          "Radio Three",
-        ]}
+        options={['Radio One', 'Radio Two', 'Radio Three']}
         validationError="Validation Error"
         selected={0}
       />
@@ -202,20 +191,16 @@ const ComponentHotTub: React.FunctionComponent<unknown> = () => {
         open={false}
         openDirection={OpenDirection.Top}
       >
-        When a baby peperomia meets salami, there is often a dispute in who is the spiciest creature.
-        Peperomia, the queen of the forest floor, will strike a pose upon first glance.
-        Even a moment is enough to freeze the toughest taste buds in their tracks.
-        Salami, the terminator of all who read blues, constructs pillows of agony with every step.
-        With the slightest reverberation, an iron clad tongue has but no chance to break towards freedom.
+        When a baby peperomia meets salami, there is often a dispute in who is the spiciest
+        creature. Peperomia, the queen of the forest floor, will strike a pose upon first glance.
+        Even a moment is enough to freeze the toughest taste buds in their tracks. Salami, the
+        terminator of all who read blues, constructs pillows of agony with every step. With the
+        slightest reverberation, an iron clad tongue has but no chance to break towards freedom.
         What do you do?
       </oh-collapse-box>
       <oh-divider />
       <oh-drop-zone
-        accept={[
-          'jpg',
-          'jpeg',
-          'png',
-        ]}
+        accept={['jpg', 'jpeg', 'png']}
         label="DropZone"
         limit={3}
         noun="Custom Noun"
@@ -393,50 +378,21 @@ const ComponentHotTub: React.FunctionComponent<unknown> = () => {
         direction={Direction.Horizontal}
         justifyContent={JustifyContent.Center}
       >
-        <oh-progress
-          shape={ProgressShape.Circular}
-          size={StyleSize.None}
-        />
-        <oh-progress
-          determinate={20}
-          shape={ProgressShape.Circular}
-          size={StyleSize.None}
-        />
-        <oh-progress
-          determinate={40}
-          shape={ProgressShape.Circular}
-          size={StyleSize.Small}
-        />
-        <oh-progress
-          determinate={60}
-          shape={ProgressShape.Circular}
-          size={StyleSize.Medium}
-        />
-        <oh-progress
-          determinate={80}
-          shape={ProgressShape.Circular}
-          size={StyleSize.Large}
-        />
+        <oh-progress shape={ProgressShape.Circular} size={StyleSize.None} />
+        <oh-progress determinate={20} shape={ProgressShape.Circular} size={StyleSize.None} />
+        <oh-progress determinate={40} shape={ProgressShape.Circular} size={StyleSize.Small} />
+        <oh-progress determinate={60} shape={ProgressShape.Circular} size={StyleSize.Medium} />
+        <oh-progress determinate={80} shape={ProgressShape.Circular} size={StyleSize.Large} />
       </oh-box>
-      <oh-progress
-        shape={ProgressShape.Linear}
-        size={StyleSize.None}
-      />
-      <oh-progress
-        determinate={20}
-        shape={ProgressShape.Linear}
-        size={StyleSize.None}
-      />
+      <oh-progress shape={ProgressShape.Linear} size={StyleSize.None} />
+      <oh-progress determinate={20} shape={ProgressShape.Linear} size={StyleSize.None} />
       <oh-rich-text-editor
         onBlur={(error: Error) => onEvent(error)}
         onChange={(error: Error, value: any) => onEvent(error, value)}
         onFocus={(error: Error) => onEvent(error)}
         tooltip="Rich Text Editor"
       />
-      <oh-section-title
-        body="Section Title None Left"
-        textAlign={TextAlign.Left}
-      />
+      <oh-section-title body="Section Title None Left" textAlign={TextAlign.Left} />
       <oh-section-title
         backgroundStyle={Color.Grey}
         body="Section Title Grey Center"
@@ -557,4 +513,4 @@ const ComponentHotTub: React.FunctionComponent<unknown> = () => {
   );
 };
 
-ReactWhisper.renderNewWhisper(<ComponentHotTub/>);
+ReactWhisper.renderNewWhisper(<ComponentHotTub />);
