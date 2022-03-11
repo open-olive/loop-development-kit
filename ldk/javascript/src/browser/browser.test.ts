@@ -6,6 +6,7 @@ describe('Browser', () => {
     oliveHelps.browser = {
       listenNavigation: jest.fn(),
       listenTextSelection: jest.fn(),
+      listenUIElement: jest.fn(),
       openTab: jest.fn(),
       openWindow: jest.fn(),
       openTab2: jest.fn(),
@@ -87,6 +88,24 @@ describe('Browser', () => {
 
       browser.listenNetworkActivity(callback);
       expect(callback).toHaveBeenCalledWith(activity);
+    });
+  });
+
+
+  describe('listenUIElement', () => {
+    it('returns UIElement details', () => {
+      const callback = jest.fn();
+      const UIElement = {
+        address: 'https://www.google.com',
+        selector: '0',
+      };
+
+      mocked(oliveHelps.browser.listenUIElement).mockImplementation((listenerCallback) => {
+        listenerCallback(undefined, UIElement);
+      });
+
+      browser.listenUIElement(callback);
+      expect(callback).toHaveBeenCalledWith(UIElement);
     });
   });
 

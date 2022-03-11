@@ -1,6 +1,11 @@
 /* eslint-disable no-async-promise-executor */
 import { browser } from '@oliveai/ldk';
-import { NavigationDetails, NetworkActivityDetails, PageDetails } from '@oliveai/ldk/dist/browser';
+import {
+  NavigationDetails,
+  NetworkActivityDetails,
+  PageDetails,
+  UIElementDetails,
+} from '@oliveai/ldk/dist/browser';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -40,6 +45,16 @@ export const testOpenTabAndListenNetworkActivity = (): Promise<boolean> =>
           }
         },
       );
+      //   const URL = 'https://www.oliveai.dev/';
+      //   // const selectorID = await browser.openTab(URL);
+      //   const listener = await browser.listenUIElement(
+      //     (uiEelementDetails: UIElementDetails): void => {
+      //       if (uiEelementDetails.address === URL) {
+      //         listener.cancel();
+      //         resolve(true);
+      //       }
+      //     },
+      //   );
     } catch (error) {
       console.error(error);
       reject(error);
@@ -193,6 +208,24 @@ export const testListenNavigationType = (): Promise<boolean> =>
           }
         },
       );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testListenUIElement = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      await browser.openTab(URL);
+      // const selectorID = await browser.openTab(URL);
+      const listener = await browser.listenUIElement((uiElementDetails: UIElementDetails): void => {
+        console.log('uiElementDetails.address', JSON.stringify(uiElementDetails.address));
+        console.log('uiElementDetails.selector', JSON.stringify(uiElementDetails.selector));
+        listener.cancel();
+        resolve(true);
+      });
     } catch (error) {
       console.error(error);
       reject(error);

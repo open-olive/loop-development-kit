@@ -35,6 +35,11 @@ export interface PageDetails {
   sourceHTML: string;
 }
 
+export interface UIElementDetails {
+  selector: string;
+  address: string;
+}
+
 export interface Browser {
   /**
    * Calls callback on any navigation event pushed from a browser running the Olive Helps extension.
@@ -56,6 +61,13 @@ export interface Browser {
    * @param callback - The callback function called when a network activity event happens.
    */
   listenNetworkActivity(callback: (details: NetworkActivityDetails) => void): Promise<Cancellable>;
+
+  /**
+   * Calls the callback on any UIElement event pushed from a browser running the Olive Helps extension.
+   *
+   * @param callback - The callback function called when a click event happens in a pre-defined website.
+   */
+  listenUIElement(callback: (details: UIElementDetails) => void): Promise<Cancellable>;
 
   /**
    * Opens a tab in the browser running the Olive Helps extension.
@@ -128,4 +140,10 @@ export function openWindow(
 
 export function sourceHTML(address: string): Promise<PageDetails> {
   return promisifyWithParam(address, oliveHelps.browser.sourceHTML);
+}
+
+export function listenUIElement(
+  callback: (details: UIElementDetails) => void,
+): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.browser.listenUIElement);
 }
