@@ -91,20 +91,18 @@ describe('Browser', () => {
     });
   });
 
-
   describe('listenUIElement', () => {
     it('returns UIElement details', () => {
       const callback = jest.fn();
       const UIElement = {
-        address: 'https://www.google.com',
-        selector: '0',
+        selector: '',
+        type: '',
       };
-
-      mocked(oliveHelps.browser.listenUIElement).mockImplementation((listenerCallback) => {
-        listenerCallback(undefined, UIElement);
-      });
-
-      browser.listenUIElement(callback);
+      const UIArguments = {
+        selector: '',
+        address: '',
+      };
+      browser.listenUIElement(UIArguments, callback);
       expect(callback).toHaveBeenCalledWith(UIElement);
     });
   });

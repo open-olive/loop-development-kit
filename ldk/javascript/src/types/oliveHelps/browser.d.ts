@@ -13,7 +13,7 @@ declare namespace Browser {
     openTab2: Common.ReadableWithParam<string, PageDetails>;
     openWindow2: Common.ReadableWithParam<string, PageDetails>;
     sourceHTML: Common.ReadableWithParam<string, PageDetails>;
-    listenUIElement: Common.Listenable<UIElementDetails>;
+    listenUIElement: Common.ListenableWithParam<UIElementArguments, UIElementDetails>;
   }
 
   interface NavigationDetails {
@@ -39,7 +39,11 @@ declare namespace Browser {
   }
 
   interface UIElementDetails {
+    type: string;
     selector: string;
-    address: string;
   }
+}
+interface UIElementArguments {
+  selector: string;
+  address: string;
 }

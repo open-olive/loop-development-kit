@@ -2,7 +2,11 @@
  * Allows Loops to communicate with a web browser running the Olive Helps extension.
  */
 import { Cancellable } from '../cancellable';
-import { promisifyListenable, promisifyWithParam } from '../promisify';
+import {
+  promisifyListenable,
+  promisifyListenableWithParam,
+  promisifyWithParam,
+} from '../promisify';
 
 export type NavigationTypeReal = 'real';
 export type NavigationTypeHistory = 'history';
@@ -36,10 +40,13 @@ export interface PageDetails {
 }
 
 export interface UIElementDetails {
+  type: string;
+  selector: string;
+}
+export interface UIElementArguments {
   selector: string;
   address: string;
 }
-
 export interface Browser {
   /**
    * Calls callback on any navigation event pushed from a browser running the Olive Helps extension.
@@ -67,7 +74,10 @@ export interface Browser {
    *
    * @param callback - The callback function called when a click event happens in a pre-defined website.
    */
-  listenUIElement(callback: (details: UIElementDetails) => void): Promise<Cancellable>;
+  listenUIElement(
+    uiElementArguments: UIElementArguments,
+    callback: (details: UIElementDetails) => void,
+  ): Promise<Cancellable>;
 
   /**
    * Opens a tab in the browser running the Olive Helps extension.
@@ -143,7 +153,12 @@ export function sourceHTML(address: string): Promise<PageDetails> {
 }
 
 export function listenUIElement(
+  uiElementArguments: UIElementArguments,
   callback: (details: UIElementDetails) => void,
 ): Promise<Cancellable> {
-  return promisifyListenable(callback, oliveHelps.browser.listenUIElement);
+  return promisifyListenableWithParam(
+    uiElementArguments,
+    callback,
+    oliveHelps.browser.listenUIElement,
+  );
 }

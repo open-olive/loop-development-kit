@@ -1,11 +1,12 @@
 /* eslint-disable no-async-promise-executor */
-import { browser } from '@oliveai/ldk';
+import { browser, whisper } from '@oliveai/ldk';
 import {
   NavigationDetails,
   NetworkActivityDetails,
   PageDetails,
   UIElementDetails,
 } from '@oliveai/ldk/dist/browser';
+import { WhisperComponentType } from '../../../../../dist/whisper';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -45,16 +46,6 @@ export const testOpenTabAndListenNetworkActivity = (): Promise<boolean> =>
           }
         },
       );
-      //   const URL = 'https://www.oliveai.dev/';
-      //   // const selectorID = await browser.openTab(URL);
-      //   const listener = await browser.listenUIElement(
-      //     (uiEelementDetails: UIElementDetails): void => {
-      //       if (uiEelementDetails.address === URL) {
-      //         listener.cancel();
-      //         resolve(true);
-      //       }
-      //     },
-      //   );
     } catch (error) {
       console.error(error);
       reject(error);
@@ -217,15 +208,42 @@ export const testListenNavigationType = (): Promise<boolean> =>
 export const testListenUIElement = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      const URL = 'https://www.oliveai.dev/';
-      await browser.openTab(URL);
-      // const selectorID = await browser.openTab(URL);
-      const listener = await browser.listenUIElement((uiElementDetails: UIElementDetails): void => {
-        console.log('uiElementDetails.address', JSON.stringify(uiElementDetails.address));
-        console.log('uiElementDetails.selector', JSON.stringify(uiElementDetails.selector));
-        listener.cancel();
-        resolve(true);
-      });
+      const url = 'https://www.oliveai.dev';
+      await browser.openTab(url);
+      const UIArguments = {
+        selector: '.StylableButton1881452515__container',
+        address: url,
+      };
+
+      const listener = await browser.listenUIElement(
+        UIArguments,
+        (uiElementEvent: UIElementDetails): void => {
+          console.log(JSON.stringify(uiElementEvent.selector));
+          console.log(JSON.stringify(uiElementEvent.type));
+
+          listener.cancel();
+          resolve(true);
+        },
+      );
+
+      // if (tabId) {
+      //   // eslint-disable-next-line no-undef
+      //   const listener = await browser.listenUIElement(url, '#cert_navbtn', (_event) => {
+      //     console.log(_event);
+      //     whisper.create({
+      //       label: 'UI Event Listener',
+      //       onClose: () => console.log('closed UI Event Listener Whisper'),
+      //       components: [
+      //         {
+      //           type: WhisperComponentType.Markdown,
+      //           body: `Clcked ${_event.selector}`,
+      //         },
+      //       ],
+      //     });
+      //   });
+      //   listener.cancel();
+      //   resolve(true);
+      // }
     } catch (error) {
       console.error(error);
       reject(error);
