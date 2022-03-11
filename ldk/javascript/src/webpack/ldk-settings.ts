@@ -1,3 +1,6 @@
+import { JSONSchemaType } from 'ajv';
+import { LdkConfigSchema } from '../config';
+
 /* eslint-disable-next-line */ // Keeping type for future expansion.
 export interface LdkAptitude {}
 
@@ -20,6 +23,8 @@ export interface LdkPermissions {
   browser: LdkNetwork;
 
   clipboard: LdkAptitude;
+
+  config: LdkAptitude;
 
   cursor: LdkAptitude;
 
@@ -51,6 +56,7 @@ export interface LdkPermissions {
 }
 
 export interface Ldk {
+  configSchema?: JSONSchemaType<LdkConfigSchema>;
   permissions: LdkPermissions;
 }
 

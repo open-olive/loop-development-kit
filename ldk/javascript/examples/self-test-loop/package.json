@@ -11,6 +11,69 @@
   "keywords": [],
   "author": "",
   "ldk": {
+    "configSchema": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "type": "object",
+      "properties": {
+        "testString": {
+          "type": "string",
+          "default": "testing a string"
+        },
+        "testNumber": {
+          "type": "number",
+          "default": 123
+        },
+        "testBoolean": {
+          "type": "boolean",
+          "default": true
+        },
+        "testStringEnum": {
+          "enum": [
+            "this",
+            "is",
+            "sparta"
+          ]
+        },
+        "testNumberEnum": {
+          "enum": [
+            1,
+            2,
+            3
+          ]
+        },
+        "testStringArray": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true,
+          "default": []
+        },
+        "testNumberArray": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "uniqueItems": true,
+          "default": []
+        },
+        "testObject": {
+          "type": "object",
+          "properties": {
+            "foo": {
+              "type": "string",
+              "default": "testing an object"
+            },
+            "bar": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "testVariable"
+      ]
+    },
     "permissions": {
       "browser": {
         "urlDomains": [
