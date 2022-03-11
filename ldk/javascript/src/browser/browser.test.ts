@@ -94,16 +94,21 @@ describe('Browser', () => {
   describe('listenUIElement', () => {
     it('returns UIElement details', () => {
       const callback = jest.fn();
-      const UIElement = {
+      const UIElements = {
         selector: '',
         type: '',
       };
       const UIArguments = {
         selector: '',
-        address: '',
+        address: 'https://www.google.com',
       };
+      mocked(oliveHelps.browser.listenUIElement).mockImplementation(
+        (_UIArguments, callbackfunction) => {
+          callbackfunction(undefined, UIElements);
+        },
+      );
       browser.listenUIElement(UIArguments, callback);
-      expect(callback).toHaveBeenCalledWith(UIElement);
+      expect(callback).toHaveBeenCalledWith(UIElements);
     });
   });
 
