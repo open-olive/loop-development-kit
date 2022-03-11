@@ -211,39 +211,21 @@ export const testListenUIElement = (): Promise<boolean> =>
       const url = 'https://www.oliveai.dev';
       await browser.openTab(url);
       const UIArguments = {
-        selector: '.StylableButton1881452515__container',
+        selector: '#comp-ksujuy2f > a > div > span.StylableButton1881452515__label',
         address: url,
       };
 
+      console.log('calling listenUIElement...');
       const listener = await browser.listenUIElement(
         UIArguments,
         (uiElementEvent: UIElementDetails): void => {
+          console.log('listenUIElement called');
           console.log(JSON.stringify(uiElementEvent.selector));
           console.log(JSON.stringify(uiElementEvent.type));
-
           listener.cancel();
           resolve(true);
         },
       );
-
-      // if (tabId) {
-      //   // eslint-disable-next-line no-undef
-      //   const listener = await browser.listenUIElement(url, '#cert_navbtn', (_event) => {
-      //     console.log(_event);
-      //     whisper.create({
-      //       label: 'UI Event Listener',
-      //       onClose: () => console.log('closed UI Event Listener Whisper'),
-      //       components: [
-      //         {
-      //           type: WhisperComponentType.Markdown,
-      //           body: `Clcked ${_event.selector}`,
-      //         },
-      //       ],
-      //     });
-      //   });
-      //   listener.cancel();
-      //   resolve(true);
-      // }
     } catch (error) {
       console.error(error);
       reject(error);

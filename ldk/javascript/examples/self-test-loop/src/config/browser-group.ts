@@ -57,6 +57,6 @@ export const browserTestGroup = (): TestGroup =>
       'Browser Aptitude - listen UI Element',
       browserTests.testListenUIElement,
       10000,
-      'Opening a tab and waiting click some buttons/links',
+      "Inside oliveai.dev browser tab, click 'build loop' button. ",
     ),
   ]);

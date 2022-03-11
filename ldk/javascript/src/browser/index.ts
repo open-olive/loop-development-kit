@@ -72,6 +72,7 @@ export interface Browser {
   /**
    * Calls the callback on any UIElement event pushed from a browser running the Olive Helps extension.
    *
+   * @param uiElementArguments - { selector: string; address: string;} You can get an element's selector by inspecting the element -> right click the HTML tag -> copy -> copy selector. Address is the pre-defined website address to perform listenUIElement
    * @param callback - The callback function called when a click event happens in a pre-defined website.
    */
   listenUIElement(
