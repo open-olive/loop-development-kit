@@ -45,12 +45,7 @@ declare namespace WhisperService {
 
   type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
 
-  type AlignContent =
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around';
+  type AlignContent = 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
 
   type ButtonSize = 'large' | 'small';
 
