@@ -257,7 +257,9 @@ declare namespace WhisperService {
     disabled?: boolean;
     emptyIcon?: string;
     emptyIconColor?: string;
+    emptyIconType?: string;
     icon?: string;
+    iconColor?: string;
     max?: number;
     name?: string;
     onChange?: WhisperHandlerWithParam<number>;

@@ -584,7 +584,9 @@ export type Rating = WhisperComponent<WhisperComponentType.Rating> & {
   disabled?: boolean;
   emptyIcon?: string;
   emptyIconColor?: string;
+  emptyIconType?: string;
   icon?: string;
+  iconColor?: string;
   max?: number;
   name?: string;
   onChange?: WhisperHandlerWithParam<number>;
