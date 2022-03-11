@@ -50,7 +50,6 @@ declare namespace WhisperService {
     | 'flex-end'
     | 'center'
     | 'space-between'
-    | 'space-around'
     | 'space-around';
 
   type ButtonSize = 'large' | 'small';
