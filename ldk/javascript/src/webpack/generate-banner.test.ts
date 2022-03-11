@@ -20,9 +20,39 @@ See README for more information.`;
 describe('Generate Banner', () => {
   const ldkSettings: LdkSettings = {
     ldk: {
+      configSchema: {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          testString: {
+            type: 'string',
+            default: 'testing',
+          },
+          testObject: {
+            type: 'object',
+            properties: {
+              foo: {
+                type: 'string',
+              },
+              bar: {
+                type: 'object',
+                properties: {
+                  baz: {
+                    type: 'string',
+                  },
+                },
+                required: [],
+              },
+            },
+            required: [],
+          },
+        },
+        required: ['testString'],
+      },
       permissions: {
         browser: { urlDomains: [{ value: '*.google.com' }] },
         clipboard: {},
+        config: {},
         cursor: {},
         document: {},
         filesystem: { pathGlobs: [{ value: '/my/path' }] },
@@ -44,10 +74,40 @@ describe('Generate Banner', () => {
   it('generates banner given valid LdkSettings', () => {
     const actual = getLoopMetadataContent(generateBanner(ldkSettings));
     const expected = {
-      oliveHelpsContractVersion: '0.3.0',
+      oliveHelpsContractVersion: '0.5.0',
+      configSchema: {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          testString: {
+            type: 'string',
+            default: 'testing',
+          },
+          testObject: {
+            type: 'object',
+            properties: {
+              foo: {
+                type: 'string',
+              },
+              bar: {
+                type: 'object',
+                properties: {
+                  baz: {
+                    type: 'string',
+                  },
+                },
+                required: [],
+              },
+            },
+            required: [],
+          },
+        },
+        required: ['testString'],
+      },
       permissions: {
         browser: { urlDomains: [{ value: '*.google.com' }] },
         clipboard: {},
+        config: {},
         cursor: {},
         document: {},
         filesystem: { pathGlobs: [{ value: '/my/path' }] },
@@ -83,7 +143,7 @@ describe('Generate Banner', () => {
     const actual = getLoopMetadataContent(generateBanner(ldkSettings));
 
     const expected = {
-      oliveHelpsContractVersion: '0.3.0',
+      oliveHelpsContractVersion: '0.5.0',
       permissions: {
         filesystem: { pathGlobs: [{ value: '/my/path' }] },
         network: { urlDomains: [{ value: '*.google.com' }] },
@@ -97,7 +157,7 @@ describe('Generate Banner', () => {
   it('adds oliveHelpsContractVersion', () => {
     const result = getLoopMetadataContent(generateBanner(ldkSettings));
 
-    expect(result.oliveHelpsContractVersion).toEqual('0.3.0');
+    expect(result.oliveHelpsContractVersion).toEqual('0.5.0');
   });
 
   it('throws exception when LDK permissions are not provided', () => {

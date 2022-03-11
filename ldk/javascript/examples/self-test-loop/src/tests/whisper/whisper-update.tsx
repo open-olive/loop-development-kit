@@ -724,16 +724,6 @@ export const testBreadcrumbUpdates = (): Promise<boolean> =>
 export const testProcessComponent = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      const checkbox: Checkbox = {
-        label: 'Check this box',
-        key: 'Checkbox',
-        onChange: () => {
-          // do nothing.
-        },
-        id: 'myCheckbox',
-        type: WhisperComponentType.Checkbox,
-      };
-
       const initialProgress: Progress = {
         type: WhisperComponentType.Progress,
         id: 'progressId',
@@ -748,31 +738,30 @@ export const testProcessComponent = (): Promise<boolean> =>
         determinate: 100,
       };
 
-      const firstConfirm = createConfirmOrDenyWithPromise('Click Update Button', 'User clicked no');
-      const secondUpdate = createConfirmOrDenyWithPromise(
-        'Did the progress component change its value?',
-        'User selected update failed.',
+      const firstConfirm = createConfirmOrDenyWithPromise(
+        'Can you see progress component?',
+        'User clicked no',
       );
 
       const testWhisper = await whisper.create({
-        label: 'Test Progress Component Update',
+        label: 'Test Progress Component',
         onClose: () => {
           // do nothing.
         },
-        components: [
-          initialProgress,
-          {
-            type: WhisperComponentType.Button,
-            label: 'Update',
-            onClick: (_error: Error, onClickWhisper: Whisper) => {
-              onClickWhisper.update({
-                components: [finalProgress, ...secondUpdate.button],
-              });
-            },
-          },
-          ...firstConfirm.button,
-        ],
+        components: [initialProgress, ...firstConfirm.button],
       });
+      await firstConfirm.promise;
+      const secondUpdate = createConfirmOrDenyWithPromise(
+        'Did the progress component change its value?',
+        'User selected update failed.',
+        testWhisper,
+      );
+
+      await testWhisper.update({
+        label: 'Test Progress Component Update',
+        components: [finalProgress, ...secondUpdate.button],
+      });
+      await secondUpdate.promise;
       resolve(true);
     } catch (e) {
       reject(e);
