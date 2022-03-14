@@ -312,6 +312,7 @@ declare namespace WhisperService {
     | Breadcrumbs
     | Button
     | Checkbox
+    | CollapseBox
     | Divider
     | DropZone
     | Email

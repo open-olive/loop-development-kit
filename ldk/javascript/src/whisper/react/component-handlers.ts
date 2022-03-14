@@ -50,7 +50,7 @@ const autoCompleteHandler: ComponentSpecificHandler = {
 };
 
 const boxHandler: ComponentSpecificHandler = {
-  appendInitialChild: createAppendFunction('children', [WhisperComponentType.CollapseBox]),
+  appendInitialChild: createAppendFunction('children'),
   helpsType: WhisperComponentType.Box,
   whisperTagType: 'oh-box',
 };
