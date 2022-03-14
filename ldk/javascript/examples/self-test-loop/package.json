@@ -68,10 +68,7 @@
             }
           }
         }
-      },
-      "required": [
-        "testVariable"
-      ]
+      }
     },
     "permissions": {
       "browser": {
