@@ -1,3 +1,5 @@
+import { IconVariant } from '../../whisper';
+
 declare namespace WhisperService {
   interface Aptitude {
     create: Common.ReadableWithParam<NewWhisper, Whisper>;
@@ -274,11 +276,13 @@ declare namespace WhisperService {
   };
 
   type Icon = Component<'icon'> & {
-    name: string;
-    size?: IconSize;
     color?: 'black' | 'whisper-strip' | 'white' | 'grey';
+    disabled?: boolean;
+    name: string;
     onClick?: WhisperHandler;
+    size?: IconSize;
     tooltip?: string;
+    variant?: IconVariant;
   };
 
   type Divider = Component<'divider'>;
