@@ -91,6 +91,17 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Email;
+    case WhisperComponentType.Grid:
+      // eslint-disable-next-line no-case-declarations
+      return {
+        ...component,
+        children: throwForDuplicateKeys(
+          component.children?.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
+        ),
+        type: WhisperComponentType.Grid,
+      } as WhisperService.Grid;
     case WhisperComponentType.Link: {
       return {
         ...component,

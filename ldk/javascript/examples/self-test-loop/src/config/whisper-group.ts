@@ -331,6 +331,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Do the links have the expected styling?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Grid Test',
+      whisperTests.testGridComponent,
+      10000,
+      'Can you see Grid component?',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Disabled Inputs',
       whisperTests.testDisabledInputs,
       10000,
