@@ -1,5 +1,3 @@
-import { IconVariant } from '../../whisper';
-
 declare namespace WhisperService {
   interface Aptitude {
     create: Common.ReadableWithParam<NewWhisper, Whisper>;
@@ -59,6 +57,8 @@ declare namespace WhisperService {
   type FontWeight = 300 | 400 | 700 | 800;
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
+
+  type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
 
   type OpenDirection = 'bottom' | 'top';
 
