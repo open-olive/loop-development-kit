@@ -660,6 +660,7 @@ export type ChildComponents =
   | Breadcrumbs
   | Button
   | Checkbox
+  | CollapseBox
   | DateTimeInput
   | Divider
   | DropZone
