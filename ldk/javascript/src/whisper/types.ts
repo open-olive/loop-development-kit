@@ -273,6 +273,14 @@ export enum CustomHeight {
   ExtraLarge = 'extraLarge',
 }
 
+export enum Size {
+  None = 'none',
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
+}
+
 export enum CaseTypes {
   CamelCase = 'camelCase',
   KebabCase = 'kebab-case',
@@ -687,6 +695,7 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   open: boolean;
   openDirection?: OpenDirection;
   onClick?: WhisperHandlerWithParam<boolean>;
+  previewHeight?: Size;
 };
 
 export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {

@@ -348,4 +348,10 @@ export const whisperTestGroup = (): TestGroup =>
       10000,
       'Do you see onRemove in log?',
     ),
+    new LoopTest(
+      'Whisper Aptitude - Collapse Box Preview',
+      whisperTests.testCollapseBoxPreview,
+      10000,
+      'Is the CollapseBox preview working?',
+    ),
   ]);
