@@ -38,7 +38,7 @@ export enum WhisperComponentType {
    */
   Link = 'link',
   /**
-   * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
+   * This component creates grid and adapts to Olive Helps size and orientation, ensuring consistency across layouts.
    */
   Grid = 'grid',
   /**
