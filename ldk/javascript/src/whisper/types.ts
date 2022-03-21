@@ -51,6 +51,10 @@ export enum WhisperComponentType {
    */
   Number = 'number',
   /**
+   * Pagination component to use in conjunction with state changes for paginating content within components
+   */
+  Pagination = 'pagination',
+  /**
    * The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
    */
   Password = 'password',
@@ -210,6 +214,7 @@ export enum MessageWhisperCopyMode {
   Body = 'body',
   Header = 'header',
 }
+
 export interface LayoutOptions {
   flex?: string;
   margin?: StyleSize;
@@ -247,6 +252,11 @@ export type AutocompleteOption = {
   label: string;
   value: any; // eslint-disable-line
 };
+
+export enum PaginationComponentType {
+  Pagination = 'pagination',
+  TablePagination = 'tablePagination',
+}
 
 export enum ProgressShape {
   Circular = 'circular',
@@ -636,6 +646,44 @@ export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   size?: StyleSize;
 };
 
+export type Pagination = WhisperComponent<WhisperComponentType.Pagination> & {
+  /**
+   * tablePagination: total number of rows in your table
+   * pagination: total number of pages
+   */
+  count: number;
+  /**
+   * This component can either be normal pagination or table pagination
+   */
+  component?: PaginationComponentType;
+  disabled?: boolean;
+  /**
+   * The label next to the "rows per page" dropdown (for table pagination)
+   */
+  labelRowsPerPage?: string;
+  /**
+   * @returns string containing the selected page number
+   */
+  onChange?: WhisperHandlerWithParam<string>;
+  /**
+   * @returns string containing the new "rows per page" value selected (for table pagination)
+   */
+  onRowsPerPageChange?: WhisperHandlerWithParam<string>;
+  /**
+   * The current page
+   */
+  page: number;
+  /**
+   * The number of table rows per page (for table pagination)
+   */
+  rowsPerPage?: number;
+  /**
+   * An array of options that the user can select to determine the number of rows per page
+   * (table pagination)
+   */
+  rowsPerPageOptions?: number[];
+};
+
 export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
   alignContent?: AlignContent;
   alignItems?: AlignItems;
@@ -672,6 +720,7 @@ export type ChildComponents =
   | Markdown
   | Message
   | NumberInput
+  | Pagination
   | Password
   | Progress
   | RadioGroup

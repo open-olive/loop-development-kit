@@ -124,6 +124,27 @@ export function mapToInternalChildComponent(
           : undefined,
       } as WhisperService.Link;
     }
+    case WhisperComponentType.Pagination: {
+      return {
+        ...component,
+        rowsPerPage: component.rowsPerPage || 10,
+        rowsPerPageOptions: component.rowsPerPageOptions || [5, 10, 25],
+        onChange: component.onChange
+          ? (error, param, whisper) => {
+              component.onChange?.(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+        onRowsPerPageChange: component.onRowsPerPageChange
+          ? (error, param, whisper) => {
+              component.onRowsPerPageChange?.(
+                error,
+                param,
+                mapToExternalWhisper(whisper, stateMap),
+              );
+            }
+          : undefined,
+      } as WhisperService.Pagination;
+    }
     case WhisperComponentType.Divider:
     case WhisperComponentType.SectionTitle:
       return component;
