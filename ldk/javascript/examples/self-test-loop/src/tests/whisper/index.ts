@@ -33,19 +33,19 @@ import {
 import { stripIndent } from 'common-tags';
 import {
   autocompleteOptions,
-  ignoreCase,
   createAutocompleteComponent,
   createDivider,
   createTextComponent,
   createSelectComponent,
   logMap,
-  matchFrom,
   onActionWrapper,
   resolveRejectButtons,
 } from './utils';
-import { shortText, longText, markdownText, image } from './text';
+import { longText, markdownText, image } from './text';
 
 export * from './autocomplete';
+export * from './chart';
+export * from './pagination';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -3461,15 +3461,15 @@ export const testDisabledInputs = (): Promise<boolean> =>
   });
 
 export const testDropZoneOnRemove = async (): Promise<boolean> => {
-  const resultArray = new Array();
-  const deletedFile = new Array();
+  const resultArray: string[] = [];
+  const deletedFile: string[] = [];
   const mapFile = new Map();
 
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
     onDrop: (error, param) => {
       if (param) {
-        param.map((file) => {
+        param.forEach((file) => {
           mapFile.set(file.path, `Path: ${file.path}, Size: ${file.size}`);
         });
         console.log('onDrop called: ');
@@ -3490,7 +3490,7 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
       });
       const remainingFiles = await onRemoveAction;
       // Get remaining files and delete them from mapFIle to get deleted files.
-      remainingFiles.map((file) => {
+      remainingFiles.forEach((file) => {
         console.log('onRemove called : files are: ', file.path);
         if (mapFile.has(file.path)) {
           mapFile.delete(file.path);
@@ -3498,18 +3498,18 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
         }
       });
 
-      mapFile.forEach((deletedFilePath, file) => {
+      mapFile.forEach((deletedFilePath) => {
         deletedFile.push(`${deletedFilePath} \n\n `);
         // console.log('deleted files have been pushed :', deletedFilePath);
       });
 
       // Add remaining files to mapFile
       mapFile.clear();
-      remainingFiles.map((remainingFile) => {
+      remainingFiles.forEach((remainingFile) => {
         mapFile.set(remainingFile.path, `Path: ${remainingFile.path}, Size: ${remainingFile.size}`);
       });
       resultArray.splice(0, resultArray.length);
-      mapFile.forEach((fileValue, file) => {
+      mapFile.forEach((fileValue) => {
         console.log('fileValue: ', fileValue);
         resultArray.push(`${fileValue} \n\n `);
       });
@@ -3529,8 +3529,7 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
     ],
   });
 
-  await mapFile.forEach((fileValue, file) => {
-    // console.log('fileValue: ', fileValue);
+  await mapFile.forEach((fileValue) => {
     resultArray.push(`${fileValue} \n\n `);
   });
   const acceptFileData = createAcceptButtons();
