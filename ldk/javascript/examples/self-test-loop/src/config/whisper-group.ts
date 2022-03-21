@@ -102,6 +102,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Do the CollapseBoxes open in the correct directions?',
     ),
     new LoopTest(
+      'Whisper Aptitude - CollapseBox Preview',
+      whisperTests.testCollapseBoxPreview,
+      10000,
+      'Is the CollapseBox preview working?',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Components with no labels',
       whisperTests.testNoLabels,
       10000,
@@ -364,11 +370,5 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testWidth,
       10000,
       'Do the items have different widths than default?',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Collapse Box Preview',
-      whisperTests.testCollapseBoxPreview,
-      10000,
-      'Is the CollapseBox preview working?',
     ),
   ]);
