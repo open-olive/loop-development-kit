@@ -15,6 +15,7 @@ declare namespace WhisperService {
     | 'divider'
     | 'dropZone'
     | 'email'
+    | 'grid'
     | 'icon'
     | 'link'
     | 'listPair'
@@ -45,6 +46,8 @@ declare namespace WhisperService {
 
   type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
 
+  type AlignContent = 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
+
   type ButtonSize = 'large' | 'small';
 
   type ButtonStyle = 'primary' | 'secondary' | 'text';
@@ -56,6 +59,8 @@ declare namespace WhisperService {
   type DateTimeType = 'date' | 'time' | 'date_time';
 
   type FontWeight = 300 | 400 | 700 | 800;
+
+  type GridDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
@@ -69,6 +74,7 @@ declare namespace WhisperService {
 
   type WidthSize = 'full' | 'half';
 
+  type Wrap = 'nowrap' | 'wrap-reverse' | 'wrap';
   interface LayoutOptions {
     flex?: string;
     margin?: StyleSize;
@@ -255,6 +261,24 @@ declare namespace WhisperService {
     componentStyle?: StyleOptions;
   };
 
+  type Grid = Component<'grid'> & {
+    alignContent?: AlignContent;
+    alignItems?: AlignItems;
+    children: Array<ChildComponents>;
+    direction?: GridDirection;
+    justifyContent?: JustifyContent;
+    spacing?: number;
+    wrap?: Wrap;
+    xs?: string;
+  } & (
+      | {
+          container: boolean;
+        }
+      | {
+          item: boolean;
+        }
+    );
+
   type ListPair = Component<'listPair'> & {
     copyable: boolean;
     labelCopyable?: boolean;
@@ -381,9 +405,11 @@ declare namespace WhisperService {
     | Button
     | Chart
     | Checkbox
+    | CollapseBox
     | Divider
     | DropZone
     | Email
+    | Grid
     | Link
     | ListPair
     | Markdown

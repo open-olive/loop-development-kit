@@ -31,7 +31,6 @@ export function mapToInternalChildComponent(
   component: BoxChildComponent,
   stateMap: StateMap,
 ): WhisperService.ChildComponents {
-  const onClick = 'onClick' in component ? component.onClick : null;
   switch (component.type) {
     case WhisperComponentType.Box:
       // eslint-disable-next-line no-case-declarations
@@ -45,8 +44,8 @@ export function mapToInternalChildComponent(
           ),
         ),
         type: WhisperComponentType.Box,
-        onClick: onClick
-          ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
+        onClick: component.onClick
+          ? (error, whisper) => component.onClick?.(error, mapToExternalWhisper(whisper, stateMap))
           : undefined,
       } as WhisperService.Box;
     case WhisperComponentType.Breadcrumbs:
@@ -80,6 +79,21 @@ export function mapToInternalChildComponent(
         ...component,
         series,
       };
+    case WhisperComponentType.CollapseBox:
+      // eslint-disable-next-line no-case-declarations
+      return {
+        ...component,
+        children: throwForDuplicateKeys(
+          component.children.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
+        ),
+        type: WhisperComponentType.CollapseBox,
+        onClick: component.onClick
+          ? (error, param, whisper) =>
+              component.onClick?.(error, param, mapToExternalWhisper(whisper, stateMap))
+          : undefined,
+      } as WhisperService.CollapseBox;
     case WhisperComponentType.Checkbox:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -106,11 +120,22 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Email;
+    case WhisperComponentType.Grid:
+      // eslint-disable-next-line no-case-declarations
+      return {
+        ...component,
+        children: throwForDuplicateKeys(
+          component.children?.map((childComponent) =>
+            mapToInternalChildComponent(childComponent, stateMap),
+          ),
+        ),
+        type: WhisperComponentType.Grid,
+      } as WhisperService.Grid;
     case WhisperComponentType.Link: {
       return {
         ...component,
-        onClick: onClick
-          ? (error, whisper) => onClick(error, mapToExternalWhisper(whisper, stateMap))
+        onClick: component.onClick
+          ? (error, whisper) => component.onClick?.(error, mapToExternalWhisper(whisper, stateMap))
           : undefined,
       } as WhisperService.Link;
     }

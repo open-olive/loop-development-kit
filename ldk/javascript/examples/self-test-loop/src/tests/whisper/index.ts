@@ -24,6 +24,10 @@ import {
   WhisperComponentType,
   ProgressShape,
   FontWeight,
+  Wrap,
+  Alignment,
+  AlignContent,
+  GridDirection,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
@@ -3567,3 +3571,144 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
   });
   return acceptFileData.acceptResult;
 };
+
+export const testGridComponent = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did the grid render correctly?',
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: "This Grid's direction is column.",
+          },
+          {
+            alignItems: AlignItems.Center,
+            type: WhisperComponentType.Grid,
+            direction: GridDirection.Column,
+            children: [
+              {
+                type: WhisperComponentType.Icon,
+                name: 'account_balance_wallet',
+                size: IconSize.XLarge,
+                color: Color.Black,
+                tooltip: 'Wallet Icon',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text.',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text2.',
+              },
+              {
+                type: WhisperComponentType.Button,
+                label: 'Button',
+                onClick: () => {
+                  console.log('button clicked');
+                },
+              },
+            ],
+            container: true,
+            spacing: 0,
+            wrap: Wrap.Wrap,
+            xs: 'false',
+          },
+          {
+            type: WhisperComponentType.Divider,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: "This Grid's default direction is row.",
+          },
+          {
+            alignItems: AlignItems.Center,
+            type: WhisperComponentType.Grid,
+            direction: GridDirection.Row,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text1.',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text2.',
+              },
+            ],
+            container: true,
+            spacing: 0,
+            wrap: Wrap.WrapReverse,
+            xs: 'auto',
+          },
+          {
+            type: WhisperComponentType.Divider,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Can you see 2 rows and 3 columns?',
+          },
+          {
+            alignItems: AlignItems.Center,
+            type: WhisperComponentType.Grid,
+            children: [
+              {
+                alignItems: AlignItems.Center,
+                type: WhisperComponentType.Grid,
+                children: [
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 1 Col 1',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 2 Col 1',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 3 Col 1',
+                  },
+                ],
+                container: true,
+                spacing: 0,
+                wrap: Wrap.Wrap,
+                xs: '4',
+              },
+              {
+                alignItems: AlignItems.Center,
+                type: WhisperComponentType.Grid,
+                children: [
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 1 Col 2',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 2 Col 2',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 3 Col 2',
+                  },
+                ],
+                item: true,
+                spacing: 0,
+                wrap: Wrap.NoWrap,
+                xs: '8',
+              },
+            ],
+            container: true,
+            spacing: 0,
+            wrap: Wrap.NoWrap,
+            // xs: 'false',
+          },
+
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
