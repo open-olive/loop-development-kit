@@ -64,6 +64,21 @@ export function mapToInternalChildComponent(
           component.onClick(error, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Button;
+    case WhisperComponentType.Chart:
+      // Map through series data to convert Date objects into Unix timestamps
+      // eslint-disable-next-line no-case-declarations
+      const series = component.series?.map((seriesEle) => ({
+        ...seriesEle,
+        data: seriesEle.data.map((data) => ({
+          x: data.x instanceof Date ? data.x.getTime() : data.x,
+          y: data.y instanceof Date ? data.y.getTime() : data.y,
+        })),
+      }));
+
+      return {
+        ...component,
+        series,
+      };
     case WhisperComponentType.CollapseBox:
       // eslint-disable-next-line no-case-declarations
       return {

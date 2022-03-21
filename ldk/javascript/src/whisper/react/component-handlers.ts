@@ -67,6 +67,10 @@ const buttonHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Button,
   whisperTagType: 'oh-button',
 };
+const chartHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Chart,
+  whisperTagType: 'oh-chart',
+};
 const checkboxHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Checkbox,
   whisperTagType: 'oh-checkbox',
@@ -174,6 +178,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return breadcrumbsHandler;
     case WhisperComponentType.Button:
       return buttonHandler;
+    case WhisperComponentType.Chart:
+      return chartHandler;
     case WhisperComponentType.Checkbox:
       return checkboxHandler;
     case WhisperComponentType.CollapseBox:
@@ -236,6 +242,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return breadcrumbsHandler;
     case 'oh-button':
       return buttonHandler;
+    case 'oh-chart':
+      return chartHandler;
     case 'oh-checkbox':
       return checkboxHandler;
     case 'oh-collapse-box':

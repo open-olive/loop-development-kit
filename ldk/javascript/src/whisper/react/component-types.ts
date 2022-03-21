@@ -23,6 +23,7 @@ type AutocompleteProps = ComponentProps<Whisper.Autocomplete>;
 type BoxProps = ComponentPropsWithChildren<Whisper.Box>;
 type BreadcumbsProps = ComponentProps<Whisper.Breadcrumbs>;
 type ButtonProps = ComponentProps<Whisper.Button>;
+type ChartProps = ComponentProps<Whisper.Chart>;
 type CheckboxProps = ComponentProps<Whisper.Checkbox>;
 type CollapseBoxProps = ComponentPropsWithChildren<Whisper.CollapseBox>;
 type DateTimeInputProps = ComponentProps<Whisper.DateTimeInput>;
@@ -56,6 +57,7 @@ export interface HelpsComponents {
   'oh-box': BoxProps;
   'oh-breadcrumbs': BreadcumbsProps;
   'oh-button': ButtonProps;
+  'oh-chart': ChartProps;
   'oh-checkbox': CheckboxProps;
   'oh-collapse-box': CollapseBoxProps;
   'oh-datetime': DateTimeInputProps;

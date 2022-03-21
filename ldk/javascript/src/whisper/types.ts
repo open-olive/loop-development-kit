@@ -16,6 +16,10 @@ export enum WhisperComponentType {
    */
   Breadcrumbs = 'breadcrumbs',
   Button = 'button',
+  /**
+   * A graph charting component
+   */
+  Chart = 'chart',
   Checkbox = 'checkbox',
   /**
    * A container component to allow content to be opened and closed with a button click.
@@ -304,6 +308,26 @@ export enum MatchSorterRankings {
   WordStartsWith = 'WORD_STARTS_WITH',
 }
 
+export enum SeriesColor {
+  Blue = '#29C6F8',
+  DarkPurple = '#410099',
+  Green = '#52E48D',
+  LightPurple = '#B388FF',
+  Orange = '#FD9743',
+  Pink = '#C5457A',
+  Purple = '#651FFF',
+  Red = '#EB473B',
+  Salmon = '#FF7F78',
+  Yellow = '#FDD443',
+}
+
+export enum SeriesType {
+  Area = 'area',
+  Bar = 'bar',
+  Line = 'line',
+  Mark = 'mark',
+}
+
 export interface Whisper {
   id: string;
   close: (cb: (err: Error | undefined) => void) => void;
@@ -530,6 +554,163 @@ export type Button = WhisperComponent<WhisperComponentType.Button> & {
   tooltip?: string;
 };
 
+export type SeriesData = {
+  /**
+   * The plot point on the X axis
+   */
+  x: number | string | Date;
+  /**
+   * The plot point on the Y axis
+   */
+  y: number | string | Date;
+};
+
+export type Series<T> = {
+  /**
+   * Color of this series
+   */
+  color?: SeriesColor;
+  /**
+   * Array of plot points on the graph
+   */
+  data: SeriesData[];
+  /**
+   * Title given to this series in a legend below the chart
+   */
+  title: string;
+  /**
+   * The type of graphing. Current options are area, line, mark or vertical bar graphs.
+   *
+   * See: {@link SeriesType}
+   */
+  type: T;
+};
+
+export type AreaSeries = Series<SeriesType.Area>;
+
+export type LineSeries = Series<SeriesType.Line> & {
+  /**
+   * Set the stroke width of the line in a line graph
+   */
+  strokeWidth?: number;
+};
+
+export type MarkSeries = Series<SeriesType.Mark> & {
+  /**
+   * Set the size of the points in a mark graph
+   */
+  size?: number;
+};
+
+export type VerticalBarSeries = Series<SeriesType.Bar>;
+
+export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
+  /**
+   * The title of the chart that displays above it
+   */
+  chartTitle?: string;
+  /**
+   * The height to width ratio of the chart
+   *
+   * For example: 0.5 would be a short & wide chart, 2.0 would be a tall & thin chart
+   * @default 1.0
+   */
+  heightToWidthRatio?: number;
+  /**
+   * An option to enable/disable the horizontal grid lines
+   * @default true
+   */
+  horizontalGridLines?: boolean;
+  /**
+   * The total number horizontal grid lines
+   */
+  horizontalLineTotal?: number;
+  /**
+   * Set the inside margins of the chart
+   * @default { bottom: 40, left: 40, right: 10, top: 10 }
+   */
+  margin?: {
+    bottom?: number;
+    left?: number;
+    right?: number;
+    top?: number;
+  };
+  /**
+   * An array of series options and data, limited to 10 total (10 series, not 10 plot points)
+   */
+  series: Series<SeriesType>[];
+  /**
+   * An option to enable/disable the tooltip that appears when hovering over plot points
+   *
+   * The crosshair will only appear for the first series
+   * @default true
+   */
+  showCrosshair?: boolean;
+  /**
+   * An option to enable/disable the vertical grid lines
+   * @default true
+   */
+  verticalGridLines?: boolean;
+  /**
+   * The total number vertical grid lines
+   */
+  verticalLineTotal?: number;
+  /**
+   * An option to enable/disable the X axis
+   * @default true
+   */
+  xAxis?: boolean;
+  /**
+   * Define a custom label for the X axis
+   */
+  xAxisLabel?: string;
+  /**
+   * Define custom tick labels on the X axis
+   */
+  xAxisTicks?: string[];
+  /**
+   * Define the total number of ticks on the X axis
+   */
+  xAxisTickTotal?: number;
+  /**
+   * Define the rotation angle of the ticks on the X axis
+   * @default 0
+   */
+  xAxisTickLabelAngle?: number;
+  /**
+   * An option to enable/disable whether or not the X axis represents time
+   * @default false
+   */
+  xAxisTimeSeries?: boolean;
+  /**
+   * An option to enable/disable the Y axis
+   * @default true
+   */
+  yAxis?: boolean;
+  /**
+   * Define a custom label for the Y axis
+   */
+  yAxisLabel?: string;
+  /**
+   * Define custom tick labels on the Y axis
+   */
+  yAxisTicks?: string[];
+  /**
+   * Define the total number of ticks on the Y axis
+   */
+  yAxisTickTotal?: number;
+  /**
+   * Define the rotation angle of the ticks on the Y axis
+   * @default 0
+   */
+  yAxisTickLabelAngle?: number;
+  /**
+   * An option to enable/disable whether or not the Y axis represents time
+   * @default false
+   */
+  yAxisTimeSeries?: boolean;
+};
+
 export type Link = WhisperComponent<WhisperComponentType.Link> & {
   href?: string;
   text: string;
@@ -707,6 +888,7 @@ export type ChildComponents =
   | Box
   | Breadcrumbs
   | Button
+  | Chart
   | Checkbox
   | CollapseBox
   | DateTimeInput

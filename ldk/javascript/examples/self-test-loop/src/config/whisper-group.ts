@@ -78,6 +78,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Click the 3rd button',
     ),
     new LoopTest(
+      'Whisper Aptitude - Chart component',
+      whisperTests.testChart,
+      30000,
+      'Confirm all charts look correct',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Clickable Boxes',
       whisperTests.testClickableBox,
       10000,

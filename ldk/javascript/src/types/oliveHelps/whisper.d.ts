@@ -8,6 +8,7 @@ declare namespace WhisperService {
     | 'box'
     | 'breadcrumbs'
     | 'button'
+    | 'chart'
     | 'checkbox'
     | 'collapseBox'
     | 'dateTimeInput'
@@ -167,6 +168,73 @@ declare namespace WhisperService {
     onClick: WhisperHandler;
     size?: ButtonSize;
     tooltip?: string;
+  };
+
+  type SeriesColor =
+    | '#29C6F8'
+    | '#410099'
+    | '#FD9743'
+    | '#52E48D'
+    | '#EB473B'
+    | '#FDD443'
+    | '#B388FF'
+    | '#C5457A'
+    | '#FF7F78'
+    | '#651FFF';
+
+  type SeriesData = {
+    x: number | string | Date;
+    y: number | string | Date;
+  };
+
+  type SeriesType = 'area' | 'bar' | 'line' | 'mark';
+
+  type Series<T> = {
+    color?: SeriesColor;
+    data: SeriesData[];
+    title: string;
+    type: T;
+  };
+
+  type AreaSeries = Series<'area'>;
+
+  type LineSeries = Series<'line'> & {
+    strokeWidth?: number;
+  };
+
+  type MarkSeries = Series<'mark'> & {
+    size?: number;
+  };
+
+  type VerticalBarSeries = Series<'bar'>;
+
+  type Chart = Component<'chart'> & {
+    chartTitle?: string;
+    heightToWidthRatio?: number;
+    horizontalGridLines?: boolean;
+    horizontalLineTotal?: number;
+    margin?: {
+      bottom?: number;
+      left?: number;
+      right?: number;
+      top?: number;
+    };
+    series: Series<SeriesType>[];
+    showCrosshair?: boolean;
+    verticalGridLines?: boolean;
+    verticalLineTotal?: number;
+    xAxis?: boolean;
+    xAxisLabel?: string;
+    xAxisTicks?: string[];
+    xAxisTickTotal?: number;
+    xAxisTickLabelAngle?: number;
+    xAxisTimeSeries?: boolean;
+    yAxis?: boolean;
+    yAxisLabel?: string;
+    yAxisTicks?: string[];
+    yAxisTickTotal?: number;
+    yAxisTickLabelAngle?: number;
+    yAxisTimeSeries?: boolean;
   };
 
   type DropZone = Component<'dropZone'> & {
@@ -350,6 +418,7 @@ declare namespace WhisperService {
     | Box
     | Breadcrumbs
     | Button
+    | Chart
     | Checkbox
     | CollapseBox
     | Divider

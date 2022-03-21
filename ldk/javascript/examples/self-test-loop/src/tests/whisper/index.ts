@@ -43,6 +43,7 @@ import {
 import { longText, markdownText, image } from './text';
 
 export * from './autocomplete';
+export * from './chart';
 export * from './pagination';
 
 export const testIconLayout = (): Promise<boolean> =>
@@ -3496,7 +3497,7 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
         }
       });
 
-      mapFile.forEach((deletedFilePath, file) => {
+      mapFile.forEach((deletedFilePath) => {
         deletedFile.push(`${deletedFilePath} \n\n `);
         // console.log('deleted files have been pushed :', deletedFilePath);
       });
@@ -3528,7 +3529,6 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
   });
 
   await mapFile.forEach((fileValue) => {
-    // console.log('fileValue: ', fileValue);
     resultArray.push(`${fileValue} \n\n `);
   });
   const acceptFileData = createAcceptButtons();
