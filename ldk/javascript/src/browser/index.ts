@@ -70,7 +70,7 @@ export interface Browser {
   listenNetworkActivity(callback: (details: NetworkActivityDetails) => void): Promise<Cancellable>;
 
   /**
-   * Calls the callback on any UIElement event pushed from a browser running the Olive Helps extension.
+   * Calls the callback when an event is pushed from the provided UIElement in a browser running the olive Helps extension.
    *
    * @param uiElementArguments - { selector: string; address: string;} You can get an element's selector by inspecting the element -> right click the HTML tag -> copy -> copy selector. Address is the pre-defined website address to perform listenUIElement
    * @param callback - The callback function called when a click event happens in a pre-defined website.
