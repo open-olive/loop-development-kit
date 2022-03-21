@@ -210,14 +210,14 @@ export const testListenUIElement = (): Promise<boolean> =>
     try {
       const url = 'https://www.oliveai.dev';
       await browser.openTab(url);
-      const UIArguments = {
+      const uIArguments = {
         selector: '#comp-ksujuy2f > a > div > span.StylableButton1881452515__label',
         address: url,
       };
 
       console.log('calling listenUIElement...');
       const listener = await browser.listenUIElement(
-        UIArguments,
+        uIArguments,
         (uiElementEvent: UIElementDetails): void => {
           console.log('listenUIElement called');
           console.log(JSON.stringify(uiElementEvent.selector));
