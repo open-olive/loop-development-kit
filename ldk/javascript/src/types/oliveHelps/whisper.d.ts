@@ -8,18 +8,21 @@ declare namespace WhisperService {
     | 'box'
     | 'breadcrumbs'
     | 'button'
+    | 'chart'
     | 'checkbox'
     | 'collapseBox'
     | 'dateTimeInput'
     | 'divider'
     | 'dropZone'
     | 'email'
+    | 'grid'
     | 'icon'
     | 'link'
     | 'listPair'
     | 'markdown'
     | 'message'
     | 'number'
+    | 'pagination'
     | 'password'
     | 'progress'
     | 'radioGroup'
@@ -44,6 +47,8 @@ declare namespace WhisperService {
 
   type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
 
+  type AlignContent = 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
+
   type ButtonSize = 'large' | 'small';
 
   type ButtonStyle = 'primary' | 'secondary' | 'text';
@@ -56,18 +61,27 @@ declare namespace WhisperService {
 
   type FontWeight = 300 | 400 | 700 | 800;
 
+  type GridDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
+  type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
+
   type OpenDirection = 'bottom' | 'top';
+
+  type PaginationComponentType = 'pagination' | 'tablePagination';
 
   type ProgressShape = 'circular' | 'linear';
 
   type StyleSize = 'none' | 'small' | 'medium' | 'large';
 
+  type Size = 'none' | 'small' | 'medium' | 'large' | 'extraLarge';
+
   type TextAlign = 'center' | 'left' | 'right';
 
   type WidthSize = 'full' | 'half';
 
+  type Wrap = 'nowrap' | 'wrap-reverse' | 'wrap';
   interface LayoutOptions {
     flex?: string;
     margin?: StyleSize;
@@ -160,6 +174,73 @@ declare namespace WhisperService {
     tooltip?: string;
   };
 
+  type SeriesColor =
+    | '#29C6F8'
+    | '#410099'
+    | '#FD9743'
+    | '#52E48D'
+    | '#EB473B'
+    | '#FDD443'
+    | '#B388FF'
+    | '#C5457A'
+    | '#FF7F78'
+    | '#651FFF';
+
+  type SeriesData = {
+    x: number | string | Date;
+    y: number | string | Date;
+  };
+
+  type SeriesType = 'area' | 'bar' | 'line' | 'mark';
+
+  type Series<T> = {
+    color?: SeriesColor;
+    data: SeriesData[];
+    title: string;
+    type: T;
+  };
+
+  type AreaSeries = Series<'area'>;
+
+  type LineSeries = Series<'line'> & {
+    strokeWidth?: number;
+  };
+
+  type MarkSeries = Series<'mark'> & {
+    size?: number;
+  };
+
+  type VerticalBarSeries = Series<'bar'>;
+
+  type Chart = Component<'chart'> & {
+    chartTitle?: string;
+    heightToWidthRatio?: number;
+    horizontalGridLines?: boolean;
+    horizontalLineTotal?: number;
+    margin?: {
+      bottom?: number;
+      left?: number;
+      right?: number;
+      top?: number;
+    };
+    series: Series<SeriesType>[];
+    showCrosshair?: boolean;
+    verticalGridLines?: boolean;
+    verticalLineTotal?: number;
+    xAxis?: boolean;
+    xAxisLabel?: string;
+    xAxisTicks?: string[];
+    xAxisTickTotal?: number;
+    xAxisTickLabelAngle?: number;
+    xAxisTimeSeries?: boolean;
+    yAxis?: boolean;
+    yAxisLabel?: string;
+    yAxisTicks?: string[];
+    yAxisTickTotal?: number;
+    yAxisTickLabelAngle?: number;
+    yAxisTimeSeries?: boolean;
+  };
+
   type DropZone = Component<'dropZone'> & {
     accept?: string[];
     label: string;
@@ -186,6 +267,24 @@ declare namespace WhisperService {
     textAlign?: TextAlign;
     componentStyle?: StyleOptions;
   };
+
+  type Grid = Component<'grid'> & {
+    alignContent?: AlignContent;
+    alignItems?: AlignItems;
+    children: Array<ChildComponents>;
+    direction?: GridDirection;
+    justifyContent?: JustifyContent;
+    spacing?: number;
+    wrap?: Wrap;
+    xs?: string;
+  } & (
+      | {
+          container: boolean;
+        }
+      | {
+          item: boolean;
+        }
+    );
 
   type ListPair = Component<'listPair'> & {
     copyable: boolean;
@@ -274,14 +373,28 @@ declare namespace WhisperService {
   };
 
   type Icon = Component<'icon'> & {
-    name: string;
-    size?: IconSize;
     color?: 'black' | 'whisper-strip' | 'white' | 'grey';
+    disabled?: boolean;
+    name: string;
     onClick?: WhisperHandler;
+    size?: IconSize;
     tooltip?: string;
+    variant?: IconVariant;
   };
 
   type Divider = Component<'divider'>;
+
+  type Pagination = Component<'pagination'> & {
+    count: number;
+    component?: PaginationComponentType;
+    disabled?: boolean;
+    labelRowsPerPage?: string;
+    onChange?: WhisperHandlerWithParam<string>;
+    onRowsPerPageChange?: WhisperHandlerWithParam<string>;
+    page: number;
+    rowsPerPage?: number;
+    rowsPerPageOptions?: number[];
+  };
 
   type CollapseBox = Component<'collapseBox'> & {
     children: Array<ChildComponents>;
@@ -289,6 +402,7 @@ declare namespace WhisperService {
     open: boolean;
     openDirection?: OpenDirection;
     onClick?: WhisperHandlerWithParam<boolean>;
+    previewHeight?: Size;
   };
 
   type Box = Component<'box'> & {
@@ -311,15 +425,19 @@ declare namespace WhisperService {
     | Box
     | Breadcrumbs
     | Button
+    | Chart
     | Checkbox
+    | CollapseBox
     | Divider
     | DropZone
     | Email
+    | Grid
     | Link
     | ListPair
     | Markdown
     | Message
     | NumberInput
+    | Pagination
     | Password
     | Progress
     | RadioGroup
