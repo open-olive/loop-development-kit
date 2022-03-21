@@ -800,10 +800,11 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
 };
 
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
-  name: string;
-  size?: IconSize;
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip | Color.Accent;
+  disabled?: boolean;
+  name: string;
   onClick?: WhisperHandler;
+  size?: IconSize;
   tooltip?: string;
   variant?: IconVariant;
 };

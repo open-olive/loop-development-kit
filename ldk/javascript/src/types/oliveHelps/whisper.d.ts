@@ -65,6 +65,8 @@ declare namespace WhisperService {
 
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
+  type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
+
   type OpenDirection = 'bottom' | 'top';
 
   type PaginationComponentType = 'pagination' | 'tablePagination';
@@ -371,11 +373,13 @@ declare namespace WhisperService {
   };
 
   type Icon = Component<'icon'> & {
-    name: string;
-    size?: IconSize;
     color?: 'black' | 'whisper-strip' | 'white' | 'grey';
+    disabled?: boolean;
+    name: string;
     onClick?: WhisperHandler;
+    size?: IconSize;
     tooltip?: string;
+    variant?: IconVariant;
   };
 
   type Divider = Component<'divider'>;

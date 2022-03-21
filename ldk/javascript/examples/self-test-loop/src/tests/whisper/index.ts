@@ -176,6 +176,28 @@ export const testIconLayout = (): Promise<boolean> =>
             },
           ],
         },
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Markdown,
+              body: `This icon is disabled, and should not fire it's configured onClick event.`,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              disabled: true,
+              name: 'account_balance_wallet',
+              onClick: () => {
+                reject(new Error('Should be disabled.'));
+              },
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Disabled',
+            },
+          ],
+        },
         resolveRejectButtons(resolve, reject),
       ],
     });
