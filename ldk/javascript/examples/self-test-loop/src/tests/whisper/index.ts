@@ -32,20 +32,19 @@ import {
 import { stripIndent } from 'common-tags';
 import {
   autocompleteOptions,
-  ignoreCase,
   createAutocompleteComponent,
   createDivider,
   createTextComponent,
   createSelectComponent,
   logMap,
-  matchFrom,
   onActionWrapper,
   resolveRejectButtons,
 } from './utils';
-import { shortText, longText, markdownText, image } from './text';
+import { longText, markdownText, image } from './text';
 
 export * from './autocomplete';
 export * from './chart';
+export * from './pagination';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -3469,7 +3468,7 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
     type: WhisperComponentType.DropZone,
     onDrop: (error, param) => {
       if (param) {
-        param.map((file) => {
+        param.forEach((file) => {
           mapFile.set(file.path, `Path: ${file.path}, Size: ${file.size}`);
         });
         console.log('onDrop called: ');

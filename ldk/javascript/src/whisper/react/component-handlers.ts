@@ -119,6 +119,10 @@ const numberHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Number,
   whisperTagType: 'oh-number',
 };
+const paginationHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Pagination,
+  whisperTagType: 'oh-pagination',
+};
 const passwordHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Password,
   whisperTagType: 'oh-password',
@@ -202,6 +206,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return messageHandler;
     case WhisperComponentType.Number:
       return numberHandler;
+    case WhisperComponentType.Pagination:
+      return paginationHandler;
     case WhisperComponentType.Password:
       return passwordHandler;
     case WhisperComponentType.Progress:
@@ -264,6 +270,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return messageHandler;
     case 'oh-number':
       return numberHandler;
+    case 'oh-pagination':
+      return paginationHandler;
     case 'oh-password':
       return passwordHandler;
     case 'oh-progress':

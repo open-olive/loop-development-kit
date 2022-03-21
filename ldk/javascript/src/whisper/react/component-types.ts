@@ -37,6 +37,7 @@ type ListPairProps = ComponentProps<Whisper.ListPair>;
 type MarkdownProps = ComponentProps<Whisper.Markdown>;
 type MessageProps = ComponentProps<Whisper.Message>;
 type NumberInputProps = ComponentProps<Whisper.NumberInput>;
+type PaginationProps = ComponentProps<Whisper.Pagination>;
 type PasswordProps = ComponentProps<Whisper.Password>;
 type ProgressProps = ComponentProps<Whisper.Progress>;
 type RadioGroupProps = ComponentProps<Whisper.RadioGroup>;
@@ -70,6 +71,7 @@ export interface HelpsComponents {
   'oh-markdown': MarkdownProps;
   'oh-message': MessageProps;
   'oh-number': NumberInputProps;
+  'oh-pagination': PaginationProps;
   'oh-password': PasswordProps;
   'oh-progress': ProgressProps;
   'oh-radio-group': RadioGroupProps;
