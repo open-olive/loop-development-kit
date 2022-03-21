@@ -17,6 +17,7 @@ import {
   NewWhisper,
   OpenDirection,
   RichTextEditor,
+  Size,
   StyleSize,
   TextAlign,
   Urgency,
@@ -3710,4 +3711,260 @@ export const testGridComponent = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
+  });
+
+export const testCollapseBoxPreview = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Collapse Box - Box Preview Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          label: 'No preview',
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Small preview',
+          previewHeight: Size.Small,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Medium preview',
+          previewHeight: Size.Medium,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Large preview',
+          previewHeight: Size.Large,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Extra Large preview',
+          previewHeight: Size.ExtraLarge,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          body: 'Did the CollapseBoxes show the correct amount of box preview?',
+          type: WhisperComponentType.Markdown,
+        },
+        resolveRejectButtons(resolve, reject),
+      ],
+    });
   });

@@ -102,6 +102,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Do the CollapseBoxes open in the correct directions?',
     ),
     new LoopTest(
+      'Whisper Aptitude - CollapseBox Preview',
+      whisperTests.testCollapseBoxPreview,
+      10000,
+      'Is the CollapseBox preview working?',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Components with no labels',
       whisperTests.testNoLabels,
       10000,

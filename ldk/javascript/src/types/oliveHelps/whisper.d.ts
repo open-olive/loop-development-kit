@@ -73,6 +73,8 @@ declare namespace WhisperService {
 
   type StyleSize = 'none' | 'small' | 'medium' | 'large';
 
+  type Size = 'none' | 'small' | 'medium' | 'large' | 'extraLarge';
+
   type TextAlign = 'center' | 'left' | 'right';
 
   type WidthSize = 'full' | 'half';
@@ -396,6 +398,7 @@ declare namespace WhisperService {
     open: boolean;
     openDirection?: OpenDirection;
     onClick?: WhisperHandlerWithParam<boolean>;
+    previewHeight?: Size;
   };
 
   type Box = Component<'box'> & {
