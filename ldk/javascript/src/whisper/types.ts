@@ -16,6 +16,10 @@ export enum WhisperComponentType {
    */
   Breadcrumbs = 'breadcrumbs',
   Button = 'button',
+  /**
+   * A graph charting component
+   */
+  Chart = 'chart',
   Checkbox = 'checkbox',
   /**
    * A container component to allow content to be opened and closed with a button click.
@@ -48,6 +52,10 @@ export enum WhisperComponentType {
    */
   Link = 'link',
   /**
+   * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
+   */
+  Grid = 'grid',
+  /**
    * This component shows a two column view of information typically used for lists of information.
    */
   ListPair = 'listPair',
@@ -60,6 +68,10 @@ export enum WhisperComponentType {
    * The text input field allows the user to provide a number within the parameters provided.
    */
   Number = 'number',
+  /**
+   * Pagination component to use in conjunction with state changes for paginating content within components
+   */
+  Pagination = 'pagination',
   /**
    * The password input field allows the user to provide a password. This field protects the user by obscuring what they type. Showing each character as a solid black dot.
    */
@@ -126,6 +138,15 @@ export enum AlignItems {
  */
 export const Alignment = JustifyContent;
 
+export enum AlignContent {
+  FlexStart = 'flex-start',
+  FlexEnd = 'flex-end',
+  Center = 'center',
+  SpaceBetween = 'space-between',
+  SpaceAround = 'space-around',
+  Stretch = 'stretch',
+}
+
 export enum ButtonSize {
   Large = 'large',
   Small = 'small',
@@ -140,6 +161,13 @@ export enum ButtonStyle {
 export enum Direction {
   Horizontal = 'horizontal',
   Vertical = 'vertical',
+}
+
+export enum GridDirection {
+  Row = 'row',
+  RowReverse = 'row-reverse',
+  Column = 'column',
+  ColumnReverse = 'column-reverse',
 }
 
 export enum FontWeight {
@@ -166,6 +194,11 @@ export enum Urgency {
   Success = 'success',
   Warning = 'warning',
 }
+export enum Wrap {
+  NoWrap = 'nowrap',
+  WrapReverse = 'wrap-reverse',
+  Wrap = 'wrap',
+}
 
 export enum DateTimeType {
   Date = 'date',
@@ -189,6 +222,7 @@ export enum MessageWhisperCopyMode {
   Body = 'body',
   Header = 'header',
 }
+
 export interface LayoutOptions {
   flex?: string;
   margin?: StyleSize;
@@ -227,6 +261,11 @@ export type AutocompleteOption = {
   value: any; // eslint-disable-line
 };
 
+export enum PaginationComponentType {
+  Pagination = 'pagination',
+  TablePagination = 'tablePagination',
+}
+
 export enum ProgressShape {
   Circular = 'circular',
   Linear = 'linear',
@@ -252,6 +291,14 @@ export enum CustomHeight {
   ExtraLarge = 'extraLarge',
 }
 
+export enum Size {
+  None = 'none',
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
+}
+
 export enum CaseTypes {
   CamelCase = 'camelCase',
   KebabCase = 'kebab-case',
@@ -271,6 +318,26 @@ export enum MatchSorterRankings {
   NoMatch = 'NO_MATCH',
   StartsWith = 'STARTS_WITH',
   WordStartsWith = 'WORD_STARTS_WITH',
+}
+
+export enum SeriesColor {
+  Blue = '#29C6F8',
+  DarkPurple = '#410099',
+  Green = '#52E48D',
+  LightPurple = '#B388FF',
+  Orange = '#FD9743',
+  Pink = '#C5457A',
+  Purple = '#651FFF',
+  Red = '#EB473B',
+  Salmon = '#FF7F78',
+  Yellow = '#FDD443',
+}
+
+export enum SeriesType {
+  Area = 'area',
+  Bar = 'bar',
+  Line = 'line',
+  Mark = 'mark',
 }
 
 export interface Whisper {
@@ -499,6 +566,163 @@ export type Button = WhisperComponent<WhisperComponentType.Button> & {
   tooltip?: string;
 };
 
+export type SeriesData = {
+  /**
+   * The plot point on the X axis
+   */
+  x: number | string | Date;
+  /**
+   * The plot point on the Y axis
+   */
+  y: number | string | Date;
+};
+
+export type Series<T> = {
+  /**
+   * Color of this series
+   */
+  color?: SeriesColor;
+  /**
+   * Array of plot points on the graph
+   */
+  data: SeriesData[];
+  /**
+   * Title given to this series in a legend below the chart
+   */
+  title: string;
+  /**
+   * The type of graphing. Current options are area, line, mark or vertical bar graphs.
+   *
+   * See: {@link SeriesType}
+   */
+  type: T;
+};
+
+export type AreaSeries = Series<SeriesType.Area>;
+
+export type LineSeries = Series<SeriesType.Line> & {
+  /**
+   * Set the stroke width of the line in a line graph
+   */
+  strokeWidth?: number;
+};
+
+export type MarkSeries = Series<SeriesType.Mark> & {
+  /**
+   * Set the size of the points in a mark graph
+   */
+  size?: number;
+};
+
+export type VerticalBarSeries = Series<SeriesType.Bar>;
+
+export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
+  /**
+   * The title of the chart that displays above it
+   */
+  chartTitle?: string;
+  /**
+   * The height to width ratio of the chart
+   *
+   * For example: 0.5 would be a short & wide chart, 2.0 would be a tall & thin chart
+   * @default 1.0
+   */
+  heightToWidthRatio?: number;
+  /**
+   * An option to enable/disable the horizontal grid lines
+   * @default true
+   */
+  horizontalGridLines?: boolean;
+  /**
+   * The total number horizontal grid lines
+   */
+  horizontalLineTotal?: number;
+  /**
+   * Set the inside margins of the chart
+   * @default { bottom: 40, left: 40, right: 10, top: 10 }
+   */
+  margin?: {
+    bottom?: number;
+    left?: number;
+    right?: number;
+    top?: number;
+  };
+  /**
+   * An array of series options and data, limited to 10 total (10 series, not 10 plot points)
+   */
+  series: Series<SeriesType>[];
+  /**
+   * An option to enable/disable the tooltip that appears when hovering over plot points
+   *
+   * The crosshair will only appear for the first series
+   * @default true
+   */
+  showCrosshair?: boolean;
+  /**
+   * An option to enable/disable the vertical grid lines
+   * @default true
+   */
+  verticalGridLines?: boolean;
+  /**
+   * The total number vertical grid lines
+   */
+  verticalLineTotal?: number;
+  /**
+   * An option to enable/disable the X axis
+   * @default true
+   */
+  xAxis?: boolean;
+  /**
+   * Define a custom label for the X axis
+   */
+  xAxisLabel?: string;
+  /**
+   * Define custom tick labels on the X axis
+   */
+  xAxisTicks?: string[];
+  /**
+   * Define the total number of ticks on the X axis
+   */
+  xAxisTickTotal?: number;
+  /**
+   * Define the rotation angle of the ticks on the X axis
+   * @default 0
+   */
+  xAxisTickLabelAngle?: number;
+  /**
+   * An option to enable/disable whether or not the X axis represents time
+   * @default false
+   */
+  xAxisTimeSeries?: boolean;
+  /**
+   * An option to enable/disable the Y axis
+   * @default true
+   */
+  yAxis?: boolean;
+  /**
+   * Define a custom label for the Y axis
+   */
+  yAxisLabel?: string;
+  /**
+   * Define custom tick labels on the Y axis
+   */
+  yAxisTicks?: string[];
+  /**
+   * Define the total number of ticks on the Y axis
+   */
+  yAxisTickTotal?: number;
+  /**
+   * Define the rotation angle of the ticks on the Y axis
+   * @default 0
+   */
+  yAxisTickLabelAngle?: number;
+  /**
+   * An option to enable/disable whether or not the Y axis represents time
+   * @default false
+   */
+  yAxisTimeSeries?: boolean;
+};
+
 export type Link = WhisperComponent<WhisperComponentType.Link> & {
   href?: string;
   text: string;
@@ -597,10 +821,11 @@ export type Rating = WhisperComponent<WhisperComponentType.Rating> & {
 };
 
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
-  name: string;
-  size?: IconSize;
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip | Color.Accent;
+  disabled?: boolean;
+  name: string;
   onClick?: WhisperHandler;
+  size?: IconSize;
   tooltip?: string;
   variant?: IconVariant;
 };
@@ -632,22 +857,82 @@ export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   size?: StyleSize;
 };
 
+export type Pagination = WhisperComponent<WhisperComponentType.Pagination> & {
+  /**
+   * tablePagination: total number of rows in your table
+   * pagination: total number of pages
+   */
+  count: number;
+  /**
+   * This component can either be normal pagination or table pagination
+   */
+  component?: PaginationComponentType;
+  disabled?: boolean;
+  /**
+   * The label next to the "rows per page" dropdown (for table pagination)
+   */
+  labelRowsPerPage?: string;
+  /**
+   * @returns string containing the selected page number
+   */
+  onChange?: WhisperHandlerWithParam<string>;
+  /**
+   * @returns string containing the new "rows per page" value selected (for table pagination)
+   */
+  onRowsPerPageChange?: WhisperHandlerWithParam<string>;
+  /**
+   * The current page
+   */
+  page: number;
+  /**
+   * The number of table rows per page (for table pagination)
+   */
+  rowsPerPage?: number;
+  /**
+   * An array of options that the user can select to determine the number of rows per page
+   * (table pagination)
+   */
+  rowsPerPageOptions?: number[];
+};
+
+export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
+  alignContent?: AlignContent;
+  alignItems?: AlignItems;
+  children: Array<ChildComponents>;
+  direction?: GridDirection;
+  justifyContent?: JustifyContent;
+  spacing?: number;
+  wrap?: Wrap;
+  xs?: string;
+} & (
+    | {
+        container: boolean;
+      }
+    | {
+        item: boolean;
+      }
+  );
+
 export type ChildComponents =
   | Autocomplete
   | Box
   | Breadcrumbs
   | Button
+  | Chart
   | Checkbox
+  | CollapseBox
   | DateTimeInput
   | Divider
   | DropZone
   | Email
+  | Grid
   | Icon
   | Link
   | ListPair
   | Markdown
   | Message
   | NumberInput
+  | Pagination
   | Password
   | Progress
   | RadioGroup
@@ -664,6 +949,7 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   open: boolean;
   openDirection?: OpenDirection;
   onClick?: WhisperHandlerWithParam<boolean>;
+  previewHeight?: Size;
 };
 
 export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {

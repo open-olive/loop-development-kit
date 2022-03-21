@@ -50,7 +50,7 @@ const autoCompleteHandler: ComponentSpecificHandler = {
 };
 
 const boxHandler: ComponentSpecificHandler = {
-  appendInitialChild: createAppendFunction('children', [WhisperComponentType.CollapseBox]),
+  appendInitialChild: createAppendFunction('children'),
   helpsType: WhisperComponentType.Box,
   whisperTagType: 'oh-box',
 };
@@ -66,6 +66,10 @@ const breadcrumbsHandler: ComponentSpecificHandler = {
 const buttonHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Button,
   whisperTagType: 'oh-button',
+};
+const chartHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Chart,
+  whisperTagType: 'oh-chart',
 };
 const checkboxHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Checkbox,
@@ -86,6 +90,10 @@ const dropZoneHandler: ComponentSpecificHandler = {
 const emailHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Email,
   whisperTagType: 'oh-email',
+};
+const gridHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Grid,
+  whisperTagType: 'oh-grid',
 };
 const iconHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Icon,
@@ -110,6 +118,10 @@ const messageHandler: ComponentSpecificHandler = {
 const numberHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Number,
   whisperTagType: 'oh-number',
+};
+const paginationHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Pagination,
+  whisperTagType: 'oh-pagination',
 };
 const passwordHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Password,
@@ -170,6 +182,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return breadcrumbsHandler;
     case WhisperComponentType.Button:
       return buttonHandler;
+    case WhisperComponentType.Chart:
+      return chartHandler;
     case WhisperComponentType.Checkbox:
       return checkboxHandler;
     case WhisperComponentType.CollapseBox:
@@ -182,6 +196,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return dropZoneHandler;
     case WhisperComponentType.Email:
       return emailHandler;
+    case WhisperComponentType.Grid:
+      return gridHandler;
     case WhisperComponentType.Icon:
       return iconHandler;
     case WhisperComponentType.Link:
@@ -194,6 +210,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return messageHandler;
     case WhisperComponentType.Number:
       return numberHandler;
+    case WhisperComponentType.Pagination:
+      return paginationHandler;
     case WhisperComponentType.Password:
       return passwordHandler;
     case WhisperComponentType.Progress:
@@ -230,6 +248,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return breadcrumbsHandler;
     case 'oh-button':
       return buttonHandler;
+    case 'oh-chart':
+      return chartHandler;
     case 'oh-checkbox':
       return checkboxHandler;
     case 'oh-collapse-box':
@@ -242,6 +262,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return dropZoneHandler;
     case 'oh-email':
       return emailHandler;
+    case 'oh-grid':
+      return gridHandler;
     case 'oh-icon':
       return iconHandler;
     case 'oh-link':
@@ -254,6 +276,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return messageHandler;
     case 'oh-number':
       return numberHandler;
+    case 'oh-pagination':
+      return paginationHandler;
     case 'oh-password':
       return passwordHandler;
     case 'oh-progress':

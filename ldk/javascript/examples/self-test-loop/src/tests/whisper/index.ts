@@ -17,6 +17,7 @@ import {
   NewWhisper,
   OpenDirection,
   RichTextEditor,
+  Size,
   StyleSize,
   TextAlign,
   Urgency,
@@ -24,23 +25,27 @@ import {
   WhisperComponentType,
   ProgressShape,
   FontWeight,
+  Wrap,
+  Alignment,
+  AlignContent,
+  GridDirection,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';
 import {
   autocompleteOptions,
-  ignoreCase,
   createAutocompleteComponent,
   createDivider,
   createTextComponent,
   createSelectComponent,
   logMap,
-  matchFrom,
   onActionWrapper,
   resolveRejectButtons,
 } from './utils';
-import { shortText, longText, markdownText, image } from './text';
+import { longText, markdownText, image } from './text';
 
 export * from './autocomplete';
+export * from './chart';
+export * from './pagination';
 
 export const testIconLayout = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -168,6 +173,28 @@ export const testIconLayout = (): Promise<boolean> =>
               color: Color.Black,
               tooltip: 'Two-tone',
               variant: IconVariant.TwoTone,
+            },
+          ],
+        },
+        {
+          type: WhisperComponentType.Box,
+          direction: Direction.Horizontal,
+          justifyContent: JustifyContent.SpaceEvenly,
+          children: [
+            {
+              type: WhisperComponentType.Markdown,
+              body: `This icon is disabled, and should not fire it's configured onClick event.`,
+            },
+            {
+              type: WhisperComponentType.Icon,
+              disabled: true,
+              name: 'account_balance_wallet',
+              onClick: () => {
+                reject(new Error('Should be disabled.'));
+              },
+              size: IconSize.XLarge,
+              color: Color.Black,
+              tooltip: 'Disabled',
             },
           ],
         },
@@ -3456,15 +3483,15 @@ export const testDisabledInputs = (): Promise<boolean> =>
   });
 
 export const testDropZoneOnRemove = async (): Promise<boolean> => {
-  const resultArray = new Array();
-  const deletedFile = new Array();
+  const resultArray: string[] = [];
+  const deletedFile: string[] = [];
   const mapFile = new Map();
 
   const dropZone: whisper.DropZone = {
     type: WhisperComponentType.DropZone,
     onDrop: (error, param) => {
       if (param) {
-        param.map((file) => {
+        param.forEach((file) => {
           mapFile.set(file.path, `Path: ${file.path}, Size: ${file.size}`);
         });
         console.log('onDrop called: ');
@@ -3485,7 +3512,7 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
       });
       const remainingFiles = await onRemoveAction;
       // Get remaining files and delete them from mapFIle to get deleted files.
-      remainingFiles.map((file) => {
+      remainingFiles.forEach((file) => {
         console.log('onRemove called : files are: ', file.path);
         if (mapFile.has(file.path)) {
           mapFile.delete(file.path);
@@ -3493,18 +3520,18 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
         }
       });
 
-      mapFile.forEach((deletedFilePath, file) => {
+      mapFile.forEach((deletedFilePath) => {
         deletedFile.push(`${deletedFilePath} \n\n `);
         // console.log('deleted files have been pushed :', deletedFilePath);
       });
 
       // Add remaining files to mapFile
       mapFile.clear();
-      remainingFiles.map((remainingFile) => {
+      remainingFiles.forEach((remainingFile) => {
         mapFile.set(remainingFile.path, `Path: ${remainingFile.path}, Size: ${remainingFile.size}`);
       });
       resultArray.splice(0, resultArray.length);
-      mapFile.forEach((fileValue, file) => {
+      mapFile.forEach((fileValue) => {
         console.log('fileValue: ', fileValue);
         resultArray.push(`${fileValue} \n\n `);
       });
@@ -3524,8 +3551,7 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
     ],
   });
 
-  await mapFile.forEach((fileValue, file) => {
-    // console.log('fileValue: ', fileValue);
+  await mapFile.forEach((fileValue) => {
     resultArray.push(`${fileValue} \n\n `);
   });
   const acceptFileData = createAcceptButtons();
@@ -3693,4 +3719,400 @@ export const testRating = (): Promise<boolean> =>
       console.error(error);
       reject(error);
     }
+  });
+
+export const testGridComponent = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did the grid render correctly?',
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: "This Grid's direction is column.",
+          },
+          {
+            alignItems: AlignItems.Center,
+            type: WhisperComponentType.Grid,
+            direction: GridDirection.Column,
+            children: [
+              {
+                type: WhisperComponentType.Icon,
+                name: 'account_balance_wallet',
+                size: IconSize.XLarge,
+                color: Color.Black,
+                tooltip: 'Wallet Icon',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text.',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text2.',
+              },
+              {
+                type: WhisperComponentType.Button,
+                label: 'Button',
+                onClick: () => {
+                  console.log('button clicked');
+                },
+              },
+            ],
+            container: true,
+            spacing: 0,
+            wrap: Wrap.Wrap,
+            xs: 'false',
+          },
+          {
+            type: WhisperComponentType.Divider,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: "This Grid's default direction is row.",
+          },
+          {
+            alignItems: AlignItems.Center,
+            type: WhisperComponentType.Grid,
+            direction: GridDirection.Row,
+            justifyContent: JustifyContent.SpaceEvenly,
+            children: [
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text1.',
+              },
+              {
+                type: WhisperComponentType.Markdown,
+                body: 'Sample text2.',
+              },
+            ],
+            container: true,
+            spacing: 0,
+            wrap: Wrap.WrapReverse,
+            xs: 'auto',
+          },
+          {
+            type: WhisperComponentType.Divider,
+          },
+          {
+            type: WhisperComponentType.Markdown,
+            body: 'Can you see 2 rows and 3 columns?',
+          },
+          {
+            alignItems: AlignItems.Center,
+            type: WhisperComponentType.Grid,
+            children: [
+              {
+                alignItems: AlignItems.Center,
+                type: WhisperComponentType.Grid,
+                children: [
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 1 Col 1',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 2 Col 1',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 3 Col 1',
+                  },
+                ],
+                container: true,
+                spacing: 0,
+                wrap: Wrap.Wrap,
+                xs: '4',
+              },
+              {
+                alignItems: AlignItems.Center,
+                type: WhisperComponentType.Grid,
+                children: [
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 1 Col 2',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 2 Col 2',
+                  },
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: 'Row 3 Col 2',
+                  },
+                ],
+                item: true,
+                spacing: 0,
+                wrap: Wrap.NoWrap,
+                xs: '8',
+              },
+            ],
+            container: true,
+            spacing: 0,
+            wrap: Wrap.NoWrap,
+            // xs: 'false',
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testCollapseBoxPreview = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    await whisper.create({
+      label: 'Collapse Box - Box Preview Test',
+      onClose: () => {
+        console.debug('closed');
+      },
+      components: [
+        {
+          label: 'No preview',
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Small preview',
+          previewHeight: Size.Small,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Medium preview',
+          previewHeight: Size.Medium,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Large preview',
+          previewHeight: Size.Large,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          label: 'Extra Large preview',
+          previewHeight: Size.ExtraLarge,
+          open: false,
+          children: [
+            {
+              body: 'Item 1',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 2',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 3',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 4',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 5',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 6',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 7',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 8',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 9',
+              type: WhisperComponentType.Markdown,
+            },
+            {
+              body: 'Item 10',
+              type: WhisperComponentType.Markdown,
+            },
+          ],
+          type: WhisperComponentType.CollapseBox,
+        },
+        {
+          body: 'Did the CollapseBoxes show the correct amount of box preview?',
+          type: WhisperComponentType.Markdown,
+        },
+        resolveRejectButtons(resolve, reject),
+      ],
+    });
   });
