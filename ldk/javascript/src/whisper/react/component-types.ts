@@ -29,6 +29,7 @@ type DateTimeInputProps = ComponentProps<Whisper.DateTimeInput>;
 type DividerProps = ComponentProps<Whisper.Divider>;
 type DropZoneProps = ComponentProps<Whisper.DropZone>;
 type EmailProps = ComponentProps<Whisper.Email>;
+type GridProps = ComponentProps<Whisper.Grid>;
 type IconProps = ComponentProps<Whisper.Icon>;
 type LinkProps = ComponentProps<Whisper.Link>;
 type ListPairProps = ComponentProps<Whisper.ListPair>;
@@ -60,6 +61,7 @@ export interface HelpsComponents {
   'oh-divider': DividerProps;
   'oh-drop-zone': DropZoneProps;
   'oh-email': EmailProps;
+  'oh-grid': GridProps;
   'oh-icon': IconProps;
   'oh-link': LinkProps;
   'oh-list-pair': ListPairProps;
