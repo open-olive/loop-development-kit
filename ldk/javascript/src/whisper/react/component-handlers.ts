@@ -50,7 +50,7 @@ const autoCompleteHandler: ComponentSpecificHandler = {
 };
 
 const boxHandler: ComponentSpecificHandler = {
-  appendInitialChild: createAppendFunction('children', [WhisperComponentType.CollapseBox]),
+  appendInitialChild: createAppendFunction('children'),
   helpsType: WhisperComponentType.Box,
   whisperTagType: 'oh-box',
 };
@@ -86,6 +86,10 @@ const dropZoneHandler: ComponentSpecificHandler = {
 const emailHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Email,
   whisperTagType: 'oh-email',
+};
+const gridHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Grid,
+  whisperTagType: 'oh-grid',
 };
 const iconHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Icon,
@@ -182,6 +186,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return dropZoneHandler;
     case WhisperComponentType.Email:
       return emailHandler;
+    case WhisperComponentType.Grid:
+      return gridHandler;
     case WhisperComponentType.Icon:
       return iconHandler;
     case WhisperComponentType.Link:
@@ -242,6 +248,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return dropZoneHandler;
     case 'oh-email':
       return emailHandler;
+    case 'oh-grid':
+      return gridHandler;
     case 'oh-icon':
       return iconHandler;
     case 'oh-link':

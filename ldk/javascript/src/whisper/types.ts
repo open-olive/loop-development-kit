@@ -34,6 +34,10 @@ export enum WhisperComponentType {
    */
   Link = 'link',
   /**
+   * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
+   */
+  Grid = 'grid',
+  /**
    * This component shows a two column view of information typically used for lists of information.
    */
   ListPair = 'listPair',
@@ -126,6 +130,15 @@ export enum AlignItems {
  */
 export const Alignment = JustifyContent;
 
+export enum AlignContent {
+  FlexStart = 'flex-start',
+  FlexEnd = 'flex-end',
+  Center = 'center',
+  SpaceBetween = 'space-between',
+  SpaceAround = 'space-around',
+  Stretch = 'stretch',
+}
+
 export enum ButtonSize {
   Large = 'large',
   Small = 'small',
@@ -140,6 +153,13 @@ export enum ButtonStyle {
 export enum Direction {
   Horizontal = 'horizontal',
   Vertical = 'vertical',
+}
+
+export enum GridDirection {
+  Row = 'row',
+  RowReverse = 'row-reverse',
+  Column = 'column',
+  ColumnReverse = 'column-reverse',
 }
 
 export enum FontWeight {
@@ -165,6 +185,11 @@ export enum Urgency {
   None = 'none',
   Success = 'success',
   Warning = 'warning',
+}
+export enum Wrap {
+  NoWrap = 'nowrap',
+  WrapReverse = 'wrap-reverse',
+  Wrap = 'wrap',
 }
 
 export enum DateTimeType {
@@ -659,16 +684,36 @@ export type Pagination = WhisperComponent<WhisperComponentType.Pagination> & {
   rowsPerPageOptions?: number[];
 };
 
+export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
+  alignContent?: AlignContent;
+  alignItems?: AlignItems;
+  children: Array<ChildComponents>;
+  direction?: GridDirection;
+  justifyContent?: JustifyContent;
+  spacing?: number;
+  wrap?: Wrap;
+  xs?: string;
+} & (
+    | {
+        container: boolean;
+      }
+    | {
+        item: boolean;
+      }
+  );
+
 export type ChildComponents =
   | Autocomplete
   | Box
   | Breadcrumbs
   | Button
   | Checkbox
+  | CollapseBox
   | DateTimeInput
   | Divider
   | DropZone
   | Email
+  | Grid
   | Icon
   | Link
   | ListPair

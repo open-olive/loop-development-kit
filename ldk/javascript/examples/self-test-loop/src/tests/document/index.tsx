@@ -45,10 +45,10 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
-        url: 'https://github.com/open-olive/loop-development-kit/raw/main/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
         method: 'GET',
       });
-      let branch = 'main';
+      let branch = 'develop';
 
       // Above URL is used after this feature is finished and merged in
       // Before PR is merged and branch is deleted, use the feature branch

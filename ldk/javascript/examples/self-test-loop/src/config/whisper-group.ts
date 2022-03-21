@@ -168,6 +168,12 @@ export const whisperTestGroup = (): TestGroup =>
       `Enter 0.6 in the input field`,
     ),
     new LoopTest(
+      'Whisper Aptitude - Grid Test',
+      whisperTests.testGridComponent,
+      10000,
+      'Can you see Grid component?',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Icon Rendering',
       whisperTests.testIconLayout,
       10000,
