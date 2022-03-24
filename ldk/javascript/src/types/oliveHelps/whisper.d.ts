@@ -279,7 +279,7 @@ declare namespace WhisperService {
     spacing?: number;
     wrap?: Wrap;
     xs?: string;
-  }
+  };
 
   type ListPair = Component<'listPair'> & {
     copyable: boolean;
