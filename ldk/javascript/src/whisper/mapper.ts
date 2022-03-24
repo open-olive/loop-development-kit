@@ -64,6 +64,21 @@ export function mapToInternalChildComponent(
           component.onClick(error, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Button;
+    case WhisperComponentType.Chart:
+      // Map through series data to convert Date objects into Unix timestamps
+      // eslint-disable-next-line no-case-declarations
+      const series = component.series?.map((seriesEle) => ({
+        ...seriesEle,
+        data: seriesEle.data.map((data) => ({
+          x: data.x instanceof Date ? data.x.getTime() : data.x,
+          y: data.y instanceof Date ? data.y.getTime() : data.y,
+        })),
+      }));
+
+      return {
+        ...component,
+        series,
+      };
     case WhisperComponentType.CollapseBox:
       // eslint-disable-next-line no-case-declarations
       return {
@@ -123,6 +138,27 @@ export function mapToInternalChildComponent(
           ? (error, whisper) => component.onClick?.(error, mapToExternalWhisper(whisper, stateMap))
           : undefined,
       } as WhisperService.Link;
+    }
+    case WhisperComponentType.Pagination: {
+      return {
+        ...component,
+        rowsPerPage: component.rowsPerPage || 10,
+        rowsPerPageOptions: component.rowsPerPageOptions || [5, 10, 25],
+        onChange: component.onChange
+          ? (error, param, whisper) => {
+              component.onChange?.(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+        onRowsPerPageChange: component.onRowsPerPageChange
+          ? (error, param, whisper) => {
+              component.onRowsPerPageChange?.(
+                error,
+                param,
+                mapToExternalWhisper(whisper, stateMap),
+              );
+            }
+          : undefined,
+      } as WhisperService.Pagination;
     }
     case WhisperComponentType.Divider:
     case WhisperComponentType.SectionTitle:

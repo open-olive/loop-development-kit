@@ -67,6 +67,10 @@ const buttonHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Button,
   whisperTagType: 'oh-button',
 };
+const chartHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Chart,
+  whisperTagType: 'oh-chart',
+};
 const checkboxHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Checkbox,
   whisperTagType: 'oh-checkbox',
@@ -114,6 +118,10 @@ const messageHandler: ComponentSpecificHandler = {
 const numberHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Number,
   whisperTagType: 'oh-number',
+};
+const paginationHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Pagination,
+  whisperTagType: 'oh-pagination',
 };
 const passwordHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.Password,
@@ -170,6 +178,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return breadcrumbsHandler;
     case WhisperComponentType.Button:
       return buttonHandler;
+    case WhisperComponentType.Chart:
+      return chartHandler;
     case WhisperComponentType.Checkbox:
       return checkboxHandler;
     case WhisperComponentType.CollapseBox:
@@ -196,6 +206,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return messageHandler;
     case WhisperComponentType.Number:
       return numberHandler;
+    case WhisperComponentType.Pagination:
+      return paginationHandler;
     case WhisperComponentType.Password:
       return passwordHandler;
     case WhisperComponentType.Progress:
@@ -230,6 +242,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return breadcrumbsHandler;
     case 'oh-button':
       return buttonHandler;
+    case 'oh-chart':
+      return chartHandler;
     case 'oh-checkbox':
       return checkboxHandler;
     case 'oh-collapse-box':
@@ -256,6 +270,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return messageHandler;
     case 'oh-number':
       return numberHandler;
+    case 'oh-pagination':
+      return paginationHandler;
     case 'oh-password':
       return passwordHandler;
     case 'oh-progress':

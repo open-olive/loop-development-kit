@@ -53,4 +53,10 @@ export const browserTestGroup = (): TestGroup =>
       10000,
       'Trigger both a "history" navigation event and a "real" navigation event. To trigger a "history" event, click on a menu item on the webpage that opens. To trigger a "real" navigation event by doing a page refresh.',
     ),
+    new LoopTest(
+      'Browser Aptitude - listen UI Element',
+      browserTests.testListenUIElement,
+      10000,
+      "Inside oliveai.dev browser tab, click 'build loop' button. ",
+    ),
   ]);

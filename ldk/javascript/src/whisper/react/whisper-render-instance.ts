@@ -11,6 +11,7 @@ export interface WhisperRenderingInterface {
 enum RenderInstanceStatus {
   NotCreated,
   Created,
+  Creating,
   Closed,
 }
 
@@ -27,6 +28,23 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
   private externalOnClose: (() => Promise<void>) | undefined;
 
   async createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): Promise<void> {
+    // Sometimes whisper will try to update too quickly, before it's created, resulting
+    // in two created whispers.
+    if (this.status === RenderInstanceStatus.Creating) {
+      setTimeout(async () => {
+        await this.createOrUpdateWhisper(whisperData);
+      }, 10);
+
+      // Ripcord.. if it's stuck, just abort
+      setTimeout(async () => {
+        if (this.status === RenderInstanceStatus.Creating) {
+          this.status = RenderInstanceStatus.NotCreated;
+        }
+      }, 5000);
+
+      return;
+    }
+
     if (this.status === RenderInstanceStatus.Closed) {
       return;
     }
@@ -40,6 +58,7 @@ export class WhisperRenderInstance implements WhisperRenderingInterface {
   }
 
   private async createWhisper(whisperData: NewWhisper) {
+    this.status = RenderInstanceStatus.Creating;
     this.whisper = await create({ ...whisperData, onClose: this.handleOnClose });
     this.status = RenderInstanceStatus.Created;
   }
