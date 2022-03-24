@@ -877,20 +877,15 @@ export type Pagination = WhisperComponent<WhisperComponentType.Pagination> & {
 export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
   alignContent?: AlignContent;
   alignItems?: AlignItems;
+  container?: boolean;
   children: Array<ChildComponents>;
   direction?: GridDirection;
   justifyContent?: JustifyContent;
+  item?: boolean;
   spacing?: number;
   wrap?: Wrap;
   xs?: string;
-} & (
-    | {
-        container: boolean;
-      }
-    | {
-        item: boolean;
-      }
-  );
+};
 
 export type ChildComponents =
   | Autocomplete

@@ -271,20 +271,15 @@ declare namespace WhisperService {
   type Grid = Component<'grid'> & {
     alignContent?: AlignContent;
     alignItems?: AlignItems;
+    container?: boolean;
     children: Array<ChildComponents>;
     direction?: GridDirection;
     justifyContent?: JustifyContent;
+    item?: boolean;
     spacing?: number;
     wrap?: Wrap;
     xs?: string;
-  } & (
-      | {
-          container: boolean;
-        }
-      | {
-          item: boolean;
-        }
-    );
+  }
 
   type ListPair = Component<'listPair'> & {
     copyable: boolean;
