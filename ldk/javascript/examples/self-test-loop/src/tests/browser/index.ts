@@ -1,6 +1,12 @@
 /* eslint-disable no-async-promise-executor */
-import { browser } from '@oliveai/ldk';
-import { NavigationDetails, NetworkActivityDetails, PageDetails } from '@oliveai/ldk/dist/browser';
+import { browser, whisper } from '@oliveai/ldk';
+import {
+  NavigationDetails,
+  NetworkActivityDetails,
+  PageDetails,
+  UIElementDetails,
+} from '@oliveai/ldk/dist/browser';
+import { WhisperComponentType } from '../../../../../dist/whisper';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -191,6 +197,33 @@ export const testListenNavigationType = (): Promise<boolean> =>
             listener.cancel();
             resolve(true);
           }
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testListenUIElement = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const url = 'https://www.oliveai.dev';
+      await browser.openTab(url);
+      const uIArguments = {
+        selector: '#comp-ksujuy2f > a > div > span.StylableButton1881452515__label',
+        address: url,
+      };
+
+      console.log('calling listenUIElement...');
+      const listener = await browser.listenUIElement(
+        uIArguments,
+        (uiElementEvent: UIElementDetails): void => {
+          console.log('listenUIElement called');
+          console.log(JSON.stringify(uiElementEvent.selector));
+          console.log(JSON.stringify(uiElementEvent.type));
+          listener.cancel();
+          resolve(true);
         },
       );
     } catch (error) {
