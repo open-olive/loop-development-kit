@@ -318,6 +318,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Does the Progress Indicator display with percentage?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Rating Test',
+      whisperTests.testRating,
+      10000,
+      'Tests for the Rating component',
+    ),
+    new LoopTest(
       'Whisper Aptitude - RichTextEditor',
       whisperTests.testRichTextEditor,
       30000,
@@ -370,11 +376,5 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testWidth,
       10000,
       'Do the items have different widths than default?',
-    ),
-    new LoopTest(
-      'Whisper Aptitude - Rating Test',
-      whisperTests.testRating,
-      10000,
-      'Tests for the Rating component',
     ),
   ]);

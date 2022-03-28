@@ -3616,9 +3616,8 @@ export const testRating = (): Promise<boolean> =>
             type: WhisperComponentType.Markdown,
           },
           {
-            emptyIcon: 'audiotrack-outline',
-            emptyIconType: 'outline',
-            icon: 'audiotrack',
+            emptyIcon: 'albumOutlined',
+            icon: 'album',
             max: 5,
             name: 'Test Rating',
             precision: 1,
@@ -3667,12 +3666,23 @@ export const testRating = (): Promise<boolean> =>
             type: WhisperComponentType.Markdown,
           },
           {
-            iconColor: '#ff0000',
-            emptyIconColor: '#ff0000',
             max: 10,
             name: 'Test Rating',
             precision: 0.5,
             value: 8,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should have green filled icons and blue unfilled ones',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            iconColor: '#00ff00',
+            emptyIconColor: '#0000ff',
+            max: 5,
+            name: 'Test Rating',
+            precision: 0.5,
+            value: 2,
             type: WhisperComponentType.Rating,
           },
           {
@@ -3699,7 +3709,7 @@ export const testRating = (): Promise<boolean> =>
             type: WhisperComponentType.Rating,
           },
           {
-            body: 'Should console log on change',
+            body: 'Should console log on click',
             type: WhisperComponentType.Markdown,
           },
           {
