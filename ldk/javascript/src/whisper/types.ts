@@ -331,9 +331,25 @@ export enum SeriesColor {
 
 export enum SeriesType {
   Area = 'area',
-  Bar = 'bar',
   Line = 'line',
   Mark = 'mark',
+  VerticalBar = 'verticalBar',
+}
+
+export enum AxisScale {
+  /**
+   * A continuous scale that works with numbers
+   */
+  Linear = 'linear',
+  /**
+   * A discrete, ordered set that works with numbers or strings. For example,
+   * the x values could contain the months of the year in string form.
+   */
+  Ordinal = 'ordinal',
+  /**
+   * Used for time series. X values will be interpreted as Unix epoch time.
+   */
+  Time = 'time',
 }
 
 export interface Whisper {
@@ -610,7 +626,13 @@ export type MarkSeries = Series<SeriesType.Mark> & {
   size?: number;
 };
 
-export type VerticalBarSeries = Series<SeriesType.Bar>;
+export type VerticalBarSeries = Series<SeriesType.VerticalBar> & {
+  /**
+   * Sets the width of the bars
+   * @default 1
+   */
+  barWidth?: number;
+};
 
 /**
  * @beta released to third-party developers experimentally for the purpose of collecting feedback
@@ -677,9 +699,16 @@ export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
    */
   xAxisLabel?: string;
   /**
-   * Define custom tick labels on the X axis
+   * Sets left and right padding for the X axis as a percentage of the chart width.
+   * Half of the value is applied to each side.
+   * @default 0
    */
-  xAxisTicks?: string[];
+  xAxisPadding?: number;
+  /**
+   * Sets the {@link AxisScale} of the X axis
+   * @default AxisScale.Linear
+   */
+  xAxisScale?: AxisScale;
   /**
    * Define the total number of ticks on the X axis
    */
@@ -704,9 +733,16 @@ export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
    */
   yAxisLabel?: string;
   /**
-   * Define custom tick labels on the Y axis
+   * Sets top and bottom padding for the Y axis as a percentage of the chart width.
+   * Half of the value is applied to each side.
+   * @default 0
    */
-  yAxisTicks?: string[];
+  yAxisPadding?: number;
+  /**
+   * Sets the {@link AxisScale} of the Y axis
+   * @default AxisScale.Linear
+   */
+  yAxisScale?: AxisScale;
   /**
    * Define the total number of ticks on the Y axis
    */

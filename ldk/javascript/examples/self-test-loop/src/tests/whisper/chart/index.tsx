@@ -1,9 +1,10 @@
 /* eslint-disable no-async-promise-executor */
 import { whisper, React, ReactWhisper } from '@oliveai/ldk';
-import { SeriesColor, SeriesType } from '@oliveai/ldk/dist/whisper/types';
+import { AxisScale, SeriesColor, SeriesType } from '@oliveai/ldk/dist/whisper/types';
 import { onActionWrapper } from '../utils';
 
 type SeriesInput = {
+  barWidth?: number;
   color?: SeriesColor;
   numberOfPoints?: number;
   title: string;
@@ -53,6 +54,7 @@ export const testChart = (): Promise<boolean> =>
       ['Colors', false],
       ['Ratio', false],
       ['Margins', false],
+      ['Padding', false],
       ['NoGrid', false], // horizontal and vertical
       ['DisableCrosshair', false],
       ['NoAxis', false],
@@ -130,8 +132,6 @@ export const testChart = (): Promise<boolean> =>
               series={series}
               xAxisLabel="Custom X Axis Label"
               yAxisLabel="Custom Y Axis Label"
-              xAxis
-              xAxisTicks={['', 'Custom', 'Axis', 'Ticks']}
             />
             <ConfirmationButtons
               question="Does the chart display an area graph, custom axis labels, and a tooltip when you hover your mouse?"
@@ -145,14 +145,16 @@ export const testChart = (): Promise<boolean> =>
       const BarGraph = () => {
         const seriesData = [
           {
+            barWidth: 2,
             numberOfPoints: 5,
             title: 'Test Bars 1',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
           {
+            barWidth: 1,
             numberOfPoints: 5,
             title: 'Test Bars 2',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
         ];
 
@@ -167,7 +169,7 @@ export const testChart = (): Promise<boolean> =>
               yAxisLabel="Custom Y Axis Label"
             />
             <ConfirmationButtons
-              question="Does the chart display a bar graph, custom axis labels, and a tooltip when you hover your mouse?"
+              question="Does the chart display a bar graph, custom axis labels, and a tooltip when you hover your mouse? Are the bars for Test Bars 1 wider than Test Bars 2?"
               testName="BarGraph"
             />
             <RegenerateButton setter={setSeries} seriesData={seriesData} />
@@ -292,7 +294,7 @@ export const testChart = (): Promise<boolean> =>
             <oh-chart
               chartTitle="Time Series Test"
               series={series}
-              xAxisTimeSeries
+              xAxisScale={AxisScale.Time}
               xAxisLabel="Custom X Axis Label"
               yAxisLabel="Custom Y Axis Label"
             />
@@ -310,7 +312,7 @@ export const testChart = (): Promise<boolean> =>
           {
             numberOfPoints: 5,
             title: 'Bar Graph',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
           {
             numberOfPoints: 5,
@@ -349,7 +351,7 @@ export const testChart = (): Promise<boolean> =>
           {
             numberOfPoints: 5,
             title: 'Bar Graph',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
           {
             numberOfPoints: 5,
@@ -384,26 +386,13 @@ export const testChart = (): Promise<boolean> =>
       };
 
       const Colors = () => {
-        const colorSeries = Object.keys(SeriesColor).map((color, index) => ({
+        const series = Object.keys(SeriesColor).map((color, index) => ({
+          barWidth: 0.5,
           data: [{ x: index, y: 5 }],
           color: (SeriesColor as any)[color],
           title: color,
-          type: SeriesType.Bar,
+          type: SeriesType.VerticalBar,
         }));
-
-        const series = [
-          {
-            data: [{ x: -1, y: 0 }],
-            title: 'Spacing',
-            type: SeriesType.Bar,
-          },
-          ...colorSeries,
-          {
-            data: [{ x: 11, y: 0 }],
-            title: 'Spacing',
-            type: SeriesType.Bar,
-          },
-        ];
 
         return (
           <>
@@ -411,7 +400,9 @@ export const testChart = (): Promise<boolean> =>
               chartTitle="Colors Test"
               series={series}
               xAxisLabel="Custom X Axis Label"
+              xAxisPadding={5}
               yAxisLabel="Custom Y Axis Label"
+              yAxisPadding={5}
             />
             <ConfirmationButtons
               question="Does the chart display all 10 different colors?"
@@ -427,12 +418,12 @@ export const testChart = (): Promise<boolean> =>
           {
             numberOfPoints: 5,
             title: 'Ratio Test 1',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
           {
             numberOfPoints: 5,
             title: 'Ratio Test 2',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
         ];
 
@@ -469,12 +460,12 @@ export const testChart = (): Promise<boolean> =>
           {
             numberOfPoints: 5,
             title: 'Margin Test 1',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
           {
             numberOfPoints: 5,
             title: 'Margin Test 2',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
         ];
 
@@ -512,12 +503,54 @@ export const testChart = (): Promise<boolean> =>
         );
       };
 
+      const Padding = () => {
+        const seriesData = [
+          {
+            numberOfPoints: 5,
+            title: 'Padding Test 1',
+            type: SeriesType.VerticalBar,
+          },
+          {
+            numberOfPoints: 5,
+            title: 'Padding Test 2',
+            type: SeriesType.VerticalBar,
+          },
+        ];
+
+        const [series, setSeries] = React.useState(generateSeries(seriesData));
+
+        return (
+          <>
+            <oh-chart
+              chartTitle="Top/Bottom Padding Test"
+              series={series}
+              xAxisLabel="Custom X Axis Label"
+              yAxisLabel="Custom Y Axis Label"
+              yAxisPadding={20}
+            />
+            <oh-chart
+              chartTitle="Left/Right Padding Test"
+              series={series}
+              xAxisLabel="Custom X Axis Label"
+              xAxisPadding={50}
+              yAxisLabel="Custom Y Axis Label"
+            />
+            <ConfirmationButtons
+              question="Are there two charts, one with padding in the top/bottom, the other with padding in the left/right?"
+              testName="Padding"
+            />
+            <RegenerateButton setter={setSeries} seriesData={seriesData} />
+            <oh-divider />
+          </>
+        );
+      };
+
       const NoGrid = () => {
         const seriesData = [
           {
             numberOfPoints: 5,
             title: 'No Grid Test 1',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
         ];
 
@@ -548,7 +581,7 @@ export const testChart = (): Promise<boolean> =>
           {
             numberOfPoints: 5,
             title: 'No Crosshair Test 1',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
         ];
 
@@ -578,7 +611,7 @@ export const testChart = (): Promise<boolean> =>
           {
             numberOfPoints: 5,
             title: 'No Axis Test 1',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
         ];
 
@@ -613,7 +646,7 @@ export const testChart = (): Promise<boolean> =>
           {
             numberOfPoints: 5,
             title: 'Axis Angle Test 1',
-            type: SeriesType.Bar,
+            type: SeriesType.VerticalBar,
           },
         ];
 
@@ -651,6 +684,7 @@ export const testChart = (): Promise<boolean> =>
           <Colors />
           <Ratio />
           <Margins />
+          <Padding />
           <NoGrid />
           <NoCrosshair />
           <NoAxis />
