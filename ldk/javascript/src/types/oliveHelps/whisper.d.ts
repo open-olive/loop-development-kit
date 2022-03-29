@@ -191,7 +191,9 @@ declare namespace WhisperService {
     y: number | string | Date;
   };
 
-  type SeriesType = 'area' | 'bar' | 'line' | 'mark';
+  type SeriesType = 'area' | 'line' | 'mark' | 'verticalBar';
+
+  type AxisScale = 'linear' | 'ordinal' | 'time';
 
   type Series<T> = {
     color?: SeriesColor;
@@ -210,7 +212,9 @@ declare namespace WhisperService {
     size?: number;
   };
 
-  type VerticalBarSeries = Series<'bar'>;
+  type VerticalBarSeries = Series<'verticalBar'> & {
+    barWidth?: number;
+  };
 
   type Chart = Component<'chart'> & {
     chartTitle?: string;
@@ -229,16 +233,16 @@ declare namespace WhisperService {
     verticalLineTotal?: number;
     xAxis?: boolean;
     xAxisLabel?: string;
-    xAxisTicks?: string[];
+    xAxisPadding?: number;
+    xAxisScale?: AxisScale;
     xAxisTickTotal?: number;
     xAxisTickLabelAngle?: number;
-    xAxisTimeSeries?: boolean;
     yAxis?: boolean;
     yAxisLabel?: string;
-    yAxisTicks?: string[];
+    yAxisPadding?: number;
+    yAxisScale?: AxisScale;
     yAxisTickTotal?: number;
     yAxisTickLabelAngle?: number;
-    yAxisTimeSeries?: boolean;
   };
 
   type DropZone = Component<'dropZone'> & {
