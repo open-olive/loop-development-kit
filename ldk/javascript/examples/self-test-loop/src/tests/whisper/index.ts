@@ -3606,7 +3606,6 @@ export const testRating = (): Promise<boolean> =>
           },
           {
             max: 5,
-            name: 'Test Rating',
             precision: 0.5,
             value: 4.5,
             type: WhisperComponentType.Rating,
@@ -3616,10 +3615,23 @@ export const testRating = (): Promise<boolean> =>
             type: WhisperComponentType.Markdown,
           },
           {
-            emptyIcon: 'albumOutlined',
+            emptyIcon: 'album',
+            emptyIconVariant: 'outlined',
             icon: 'album',
             max: 5,
-            name: 'Test Rating',
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Using a different icon variant for the selected (on the left)',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            emptyIcon: 'star',
+            icon: 'album',
+            iconVariant: 'outlined',
+            max: 5,
             precision: 1,
             value: 2,
             type: WhisperComponentType.Rating,
@@ -3631,7 +3643,6 @@ export const testRating = (): Promise<boolean> =>
           {
             disabled: true,
             max: 5,
-            name: 'Test Rating',
             precision: 1,
             value: 3,
             type: WhisperComponentType.Rating,
@@ -3643,7 +3654,6 @@ export const testRating = (): Promise<boolean> =>
           {
             readOnly: true,
             max: 5,
-            name: 'Test Rating',
             precision: 1,
             value: 2,
             type: WhisperComponentType.Rating,
@@ -3656,7 +3666,6 @@ export const testRating = (): Promise<boolean> =>
             iconColor: '#ff0000',
             emptyIconColor: '#ff0000',
             max: 5,
-            name: 'Test Rating',
             precision: 1,
             value: 2,
             type: WhisperComponentType.Rating,
@@ -3667,7 +3676,6 @@ export const testRating = (): Promise<boolean> =>
           },
           {
             max: 10,
-            name: 'Test Rating',
             precision: 0.5,
             value: 8,
             type: WhisperComponentType.Rating,
@@ -3680,7 +3688,6 @@ export const testRating = (): Promise<boolean> =>
             iconColor: '#00ff00',
             emptyIconColor: '#0000ff',
             max: 5,
-            name: 'Test Rating',
             precision: 0.5,
             value: 2,
             type: WhisperComponentType.Rating,
@@ -3692,7 +3699,6 @@ export const testRating = (): Promise<boolean> =>
           {
             size: 'large',
             max: 5,
-            name: 'Test Rating',
             precision: 0.5,
             value: 4,
             type: WhisperComponentType.Rating,
@@ -3704,7 +3710,6 @@ export const testRating = (): Promise<boolean> =>
           {
             defaultValue: 2.5,
             max: 5,
-            name: 'Test Rating',
             precision: 0.5,
             type: WhisperComponentType.Rating,
           },
@@ -3717,7 +3722,6 @@ export const testRating = (): Promise<boolean> =>
             onChange: () => {
               console.log('Changed!');
             },
-            name: 'Test Rating',
             precision: 0.5,
             value: 4,
             type: WhisperComponentType.Rating,
