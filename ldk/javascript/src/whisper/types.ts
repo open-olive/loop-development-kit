@@ -612,6 +612,10 @@ export type MarkSeries = Series<SeriesType.Mark> & {
 
 export type VerticalBarSeries = Series<SeriesType.Bar>;
 
+/**
+ * @beta released to third-party developers experimentally for the purpose of collecting feedback
+ * Chart component for displaying data sets
+ */
 export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
   /**
    * The title of the chart that displays above it
@@ -877,20 +881,15 @@ export type Pagination = WhisperComponent<WhisperComponentType.Pagination> & {
 export type Grid = WhisperComponent<WhisperComponentType.Grid> & {
   alignContent?: AlignContent;
   alignItems?: AlignItems;
+  container?: boolean;
   children: Array<ChildComponents>;
   direction?: GridDirection;
   justifyContent?: JustifyContent;
+  item?: boolean;
   spacing?: number;
   wrap?: Wrap;
   xs?: string;
-} & (
-    | {
-        container: boolean;
-      }
-    | {
-        item: boolean;
-      }
-  );
+};
 
 export type ChildComponents =
   | Autocomplete
