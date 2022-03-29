@@ -3594,6 +3594,147 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
   return acceptFileData.acceptResult;
 };
 
+export const testRating = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did Rating render correctly?',
+        components: [
+          {
+            body: 'Should be 5 stars with half precision.',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            max: 5,
+            precision: 0.5,
+            value: 4.5,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should have different icons and one precision',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            emptyIcon: 'album',
+            emptyIconVariant: 'outlined',
+            icon: 'album',
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Using a different icon variant for the selected (on the left)',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            emptyIcon: 'star',
+            icon: 'album',
+            iconVariant: 'outlined',
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be disabled.',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            disabled: true,
+            max: 5,
+            precision: 1,
+            value: 3,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be read only.',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            readOnly: true,
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be colored red',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            iconColor: '#ff0000',
+            emptyIconColor: '#ff0000',
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should have 10 icons',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            max: 10,
+            precision: 0.5,
+            value: 8,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should have green filled icons and blue unfilled ones',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            iconColor: '#00ff00',
+            emptyIconColor: '#0000ff',
+            max: 5,
+            precision: 0.5,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be Large size',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            size: 'large',
+            max: 5,
+            precision: 0.5,
+            value: 4,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Has a default value of 2.5',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            defaultValue: 2.5,
+            max: 5,
+            precision: 0.5,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should console log on click',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            max: 5,
+            onChange: () => {
+              console.log('Changed!');
+            },
+            precision: 0.5,
+            value: 4,
+            type: WhisperComponentType.Rating,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
 export const testGridComponent = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -3725,7 +3866,6 @@ export const testGridComponent = (): Promise<boolean> =>
             wrap: Wrap.NoWrap,
             // xs: 'false',
           },
-
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
         ],
       });

@@ -135,6 +135,10 @@ const radioGroupHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.RadioGroup,
   whisperTagType: 'oh-radio-group',
 };
+const ratingHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Rating,
+  whisperTagType: 'oh-rating',
+};
 const richTextEditorHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.RichTextEditor,
   whisperTagType: 'oh-rich-text-editor',
@@ -214,6 +218,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return progressHandler;
     case WhisperComponentType.RadioGroup:
       return radioGroupHandler;
+    case WhisperComponentType.Rating:
+      return ratingHandler;
     case WhisperComponentType.RichTextEditor:
       return richTextEditorHandler;
     case WhisperComponentType.Select:
@@ -278,6 +284,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return progressHandler;
     case 'oh-radio-group':
       return radioGroupHandler;
+    case 'oh-rating':
+      return ratingHandler;
     case 'oh-rich-text-editor':
       return richTextEditorHandler;
     case 'oh-select':

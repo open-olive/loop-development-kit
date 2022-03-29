@@ -26,13 +26,27 @@ export enum WhisperComponentType {
    */
   CollapseBox = 'collapseBox',
   /**
+   * A text input field allows the user to provide date and time information.
+   *
+   * The field can be pre-populated by the loop.
+   */
+  DateTimeInput = 'dateTimeInput',
+  /**
    * This component shows a horizontal divider to separate different kinds on content in a whisper. This component has no options.
    */
   Divider = 'divider',
   /**
+   * The dropzone component allows the Loop to receive a file uploaded by a user
+   */
+  DropZone = 'dropZone',
+  /**
    * The text input field allows the user to provide an email address.
    */
   Email = 'email',
+  /**
+   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
+   */
+  Icon = 'icon',
   /**
    * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
    */
@@ -73,6 +87,18 @@ export enum WhisperComponentType {
    */
   RadioGroup = 'radioGroup',
   /**
+   * Rating gives a multi-icon cluster to show or give ratings
+   */
+  Rating = 'rating',
+  /**
+   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
+   */
+  RichTextEditor = 'richTextEditor',
+  /**
+   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
+   */
+  SectionTitle = 'sectionTitle',
+  /**
    * A selected value of -1 indicates that nothing is selected.
    */
   Select = 'select',
@@ -86,28 +112,6 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
-  /**
-   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
-   */
-  SectionTitle = 'sectionTitle',
-  /**
-   * A text input field allows the user to provide date and time information.
-   *
-   * The field can be pre-populated by the loop.
-   */
-  DateTimeInput = 'dateTimeInput',
-  /**
-   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
-   */
-  RichTextEditor = 'richTextEditor',
-  /**
-   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
-   */
-  Icon = 'icon',
-  /**
-   * The dropzone component allows the Loop to receive a file uploaded by a user
-   */
-  DropZone = 'dropZone',
 }
 
 export enum JustifyContent {
@@ -839,6 +843,82 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
   value?: File[];
 };
 
+export type Rating = WhisperComponent<WhisperComponentType.Rating> & {
+  /**
+   * Value that this input starts at if not provided.
+   */
+  defaultValue?: number;
+  /**
+   * If true, greys out and prevents the value from changing.
+   */
+  disabled?: boolean;
+  /**
+   * The snake case name of the material icon you wish you use for "empty" rating icons
+   *
+   * @default 'star_border'
+   * @example ['star', 'add_circle']
+   */
+  emptyIcon?: string;
+  /**
+   * The hex code for the empty icons.
+   *
+   * @default '#661fff'
+   */
+  emptyIconColor?: string;
+  /**
+   * The variant type for the empty icons.
+   */
+  emptyIconVariant?: IconVariant;
+  /**
+   * The snake case name of the material icon you wish you use for "filled" rating icons
+   *
+   * @default 'star'
+   * @example ['star', 'add_circle']
+   */
+  icon?: string;
+  /**
+   * The hex code for the filled icons.
+   *
+   * @default '#661fff'
+   */
+  iconColor?: string;
+  /**
+   * The variant type for the filled icons.
+   */
+  iconVariant?: IconVariant;
+  /**
+   * The maximum rating that someone can give.
+   */
+  max?: number;
+  /**
+   * The "name" attribute used in HTML, attached to this input.
+   */
+  name?: string;
+  /**
+   * Function which is triggered whenever the value is changed.
+   */
+  onChange?: WhisperHandlerWithParam<number>;
+  /**
+   * The precision with which someone can provide a rating
+   *
+   * @default 1
+   * @example [1, 0.5]
+   */
+  precision?: number;
+  /**
+   * If true, the rating is read only, and is not editable.
+   */
+  readOnly?: boolean;
+  /**
+   * The size of the icons in the component.
+   */
+  size?: IconSize;
+  /**
+   * If provided, sets the value for the rating.
+   */
+  value?: number;
+};
+
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
   color?: Color.Black | Color.Grey | Color.White | Color.WhisperStrip | Color.Accent;
   disabled?: boolean;
@@ -950,6 +1030,7 @@ export type ChildComponents =
   | Password
   | Progress
   | RadioGroup
+  | Rating
   | RichTextEditor
   | Select
   | SectionTitle

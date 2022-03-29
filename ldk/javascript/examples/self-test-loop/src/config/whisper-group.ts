@@ -318,6 +318,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Does the Progress Indicator display with percentage?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Rating Test',
+      whisperTests.testRating,
+      10000,
+      'Tests for the Rating component',
+    ),
+    new LoopTest(
       'Whisper Aptitude - RichTextEditor',
       whisperTests.testRichTextEditor,
       30000,
