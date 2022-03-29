@@ -356,16 +356,16 @@ declare namespace WhisperService {
     disabled?: boolean;
     emptyIcon?: string;
     emptyIconColor?: string;
-    emptyIconVariant?: string;
+    emptyIconVariant?: IconVariant;
     icon?: string;
     iconColor?: string;
-    iconVariant?: string;
+    iconVariant?: IconVariant;
     max?: number;
     name?: string;
     onChange?: WhisperHandlerWithParam<number>;
     precision?: number;
     readOnly?: boolean;
-    size?: string;
+    size?: IconSize;
     value?: number;
   };
 

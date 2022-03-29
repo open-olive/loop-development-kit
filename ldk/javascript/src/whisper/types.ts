@@ -804,20 +804,78 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
 };
 
 export type Rating = WhisperComponent<WhisperComponentType.Rating> & {
+  /**
+   * Value that this input starts at if not provided.
+   */
   defaultValue?: number;
+  /**
+   * If true, greys out and prevents the value from changing.
+   */
   disabled?: boolean;
+  /**
+   * The snake case name of the material icon you wish you use for "empty" rating icons
+   *
+   * @default 'star_border'
+   * @example ['star', 'add_circle']
+   */
   emptyIcon?: string;
+  /**
+   * The hex code for the empty icons.
+   *
+   * @default '#661fff'
+   */
   emptyIconColor?: string;
-  emptyIconVariant?: string;
+  /**
+   * The variant type for the empty icons.
+   */
+  emptyIconVariant?: IconVariant;
+  /**
+   * The snake case name of the material icon you wish you use for "filled" rating icons
+   *
+   * @default 'star'
+   * @example ['star', 'add_circle']
+   */
   icon?: string;
+  /**
+   * The hex code for the filled icons.
+   *
+   * @default '#661fff'
+   */
   iconColor?: string;
-  iconVariant?: string;
+  /**
+   * The variant type for the filled icons.
+   */
+  iconVariant?: IconVariant;
+  /**
+   * The maximum rating that someone can give.
+   */
   max?: number;
+  /**
+   * The "name" attribute used in HTML, attached to this input.
+   */
   name?: string;
+  /**
+   * Function which is triggered whenever the value is changed.
+   */
   onChange?: WhisperHandlerWithParam<number>;
+  /**
+   * The precision with which someone can provide a rating
+   *
+   * @default 1
+   * @example [1, 0.5]
+   */
   precision?: number;
+  /**
+   * If true, the rating is read only, and is not editable.
+   */
   readOnly?: boolean;
-  size?: string;
+  /**
+   * The size of the icons in the component.
+   */
+  size?: IconSize;
+  /**
+   * If provided, sets the value for the rating.
+   */
   value?: number;
 };
 
