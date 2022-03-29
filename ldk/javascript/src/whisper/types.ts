@@ -612,6 +612,10 @@ export type MarkSeries = Series<SeriesType.Mark> & {
 
 export type VerticalBarSeries = Series<SeriesType.Bar>;
 
+/**
+ * @beta released to third-party developers experimentally for the purpose of collecting feedback
+ * Chart component for displaying data sets
+ */
 export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
   /**
    * The title of the chart that displays above it
