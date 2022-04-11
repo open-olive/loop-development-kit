@@ -53,7 +53,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       // Above URL is used after this feature is finished and merged in
       // Before PR is merged and branch is deleted, use the feature branch
       // Can delete this block after merge
-      if (request.statusCode === 404) {   
+      if (request.statusCode === 404) {
         request = await network.httpRequest({
           url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
           method: 'GET',

@@ -44,7 +44,7 @@ const writeWhisperFileEncoded = (label: string, body: string) =>
     },
     components: [
       {
-        body: `[Image](https://github.com/open-olive/loop-development-kit/blob/develop/ldk/javascript/examples/self-test-loop/static/testocr.png)`,
+        body: `[Image](https://github.com/open-olive/loop-development-kit/blob/HELPS-3796-ocrFileEncoded/ldk/javascript/examples/self-test-loop/static/testocr.png)`,
         type: whisper.WhisperComponentType.Markdown,
       },
       {

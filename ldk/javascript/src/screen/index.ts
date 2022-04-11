@@ -95,11 +95,11 @@ export interface Screen {
   listenOcrMonitor(callback: (ocrEvents: OcrEvent[]) => void): Promise<Cancellable>;
 
   /**
-   * It takes a base64 encoded string from reading the image file 
+   * It takes a base64 encoded string from reading the image file
    * @param  ocrCoordinates? - The ocrCoordinates is used to identify an area on the screen to search for text
    * @returns A Promise resolving with the text results as a string.
    */
-     ocrFileEncoded(encodedFileString: string): Promise<OCRResult[]>;
+  ocrFileEncoded(encodedFileString: string): Promise<OCRResult[]>;
 }
 
 export function ocr(ocrCoordinates: OCRCoordinates): Promise<OCRResult[]> {
