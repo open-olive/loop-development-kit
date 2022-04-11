@@ -41,4 +41,10 @@ export const screenTestGroup = (): TestGroup =>
       10000,
       'Please check if New Text and Old Text are different.',
     ),
+    new LoopTest(
+      'Screen Aptitude - OCR FileEncoded Test',
+      screenTests.testOcrFileEncoded,
+      10000,
+      'Please check if the ocr result is correct.',
+    ),
   ]);

@@ -3616,7 +3616,7 @@ export const testRating = (): Promise<boolean> =>
           },
           {
             emptyIcon: 'album',
-            emptyIconVariant: 'outlined',
+            // emptyIconVariant: 'outlined',
             icon: 'album',
             max: 5,
             precision: 1,
@@ -3630,7 +3630,7 @@ export const testRating = (): Promise<boolean> =>
           {
             emptyIcon: 'star',
             icon: 'album',
-            iconVariant: 'outlined',
+            // iconVariant: 'outlined',
             max: 5,
             precision: 1,
             value: 2,
@@ -3697,7 +3697,7 @@ export const testRating = (): Promise<boolean> =>
             type: WhisperComponentType.Markdown,
           },
           {
-            size: 'large',
+            // size: 'large',
             max: 5,
             precision: 0.5,
             value: 4,
