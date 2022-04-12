@@ -1,7 +1,6 @@
 /* eslint-disable no-async-promise-executor */
 import { screen, whisper, window } from '@oliveai/ldk';
 import { OcrEvent } from '@oliveai/ldk/dist/screen/types';
-import { stripIndent } from 'common-tags';
 export * from './hashTests';
 
 const writeWhisper = (label: string, body: string) =>
@@ -37,16 +36,20 @@ export const testOCR = (): Promise<boolean> =>
     }
   });
 
-const writeWhisperFileEncoded = (label: string, body: string) =>
+const writeWhisperFileEncoded = (label: string, body: string) => {
+  const branch = 'develop';
+  // URL above is used after this feature is finished and merged in
+  // Before PR is merged and branch is deleted, use the feature branch HELPS-3796-ocrFileEncoded
+  // Can delete this block of comments after merge
   whisper.create({
     label,
     onClose: () => {
-      console.log(`Closed Whisper`);
+      console.log('Closed Whisper');
     },
     components: [
       { body, type: whisper.WhisperComponentType.Markdown },
       {
-        body: '![image](https://raw.githubusercontent.com/open-olive/loop-development-kit/HELPS-3796-ocrFileEncoded/ldk/javascript/examples/self-test-loop/static/testocr.png)',
+        body: `![image](https://raw.githubusercontent.com/open-olive/loop-development-kit/${branch}/ldk/javascript/examples/self-test-loop/static/testocr.png)`,
         type: whisper.WhisperComponentType.Markdown,
       },
       {
@@ -59,11 +62,12 @@ const writeWhisperFileEncoded = (label: string, body: string) =>
       },
     ],
   });
+};
 
 export const testOcrFileEncoded = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
-      await writeWhisperFileEncoded(`OcrFileEncoded`, `Starting testOcrFileEncoded`);
+      await writeWhisperFileEncoded('OcrFileEncoded', 'Starting testOcrFileEncoded');
       await sleep(10000);
     } catch (e) {
       console.error(e);
@@ -119,7 +123,7 @@ export async function performOcrFileEncoded() {
       console.log(JSON.stringify(result));
       const concatResult = result.map((res) => res.text).join(' ');
       console.log('concatResult', concatResult);
-      writeWhisperFileEncoded(`result`, concatResult);
+      writeWhisperFileEncoded('result', concatResult);
     })
     .catch((error) => {
       console.log('error: ');
@@ -152,8 +156,7 @@ export async function performOcr() {
         console.log(JSON.stringify(result));
         const concatResult = result.map((res) => res.text).join(' ');
         console.log('concatResult', concatResult);
-        // console.log('result: ', rebuildImage(result));
-        writeWhisper(`result`, concatResult);
+        writeWhisper('result', concatResult);
       })
       .catch((error) => {
         console.log('error: ');

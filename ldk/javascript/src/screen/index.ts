@@ -96,7 +96,7 @@ export interface Screen {
 
   /**
    * It takes a base64 encoded string from reading the image file
-   * @param  ocrCoordinates? - The ocrCoordinates is used to identify an area on the screen to search for text
+   * @param  encodedFileString - The string of Base64 encoded image
    * @returns A Promise resolving with the text results as a string.
    */
   ocrFileEncoded(encodedFileString: string): Promise<OCRResult[]>;
