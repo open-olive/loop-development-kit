@@ -1,4 +1,4 @@
-import { OCRResult } from "../screen";
+import { OCRResult } from '../screen';
 
 export interface Workbook {
   worksheets: Worksheet[];
@@ -37,13 +37,13 @@ export interface PDFOutput {
   };
 }
 
-export interface OCRResults{
-  [key: string]:{
-    ocrResult:OCRResult;
-  }
+export interface OCRResults {
+  [key: string]: {
+    ocrResult: OCRResult;
+  };
 }
 
-export interface PDFOutputWithOcrResult{
-    pdfOutput:PDFOutput;
-    ocrResult:OCRResults;
+export interface PDFOutputWithOcrResult {
+  pdfOutput: PDFOutput;
+  ocrResults: OCRResults;
 }

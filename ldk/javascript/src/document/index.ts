@@ -1,7 +1,7 @@
 import { promisifyWithParam, promisifyMappedWithParam, promisify } from '../promisify';
 import { Workbook, PDFOutput, PDFOutputWithOcrResult, OCRResults } from './types';
 import * as mapper from '../utils/mapper';
-import * as screen from '../screen'
+import * as screen from '../screen';
 import { OCRResult } from '../screen';
 
 /**
@@ -28,9 +28,6 @@ export interface Document {
    * @returns - A promise containing PDFOutput
    */
   readPDF(data: Uint8Array): Promise<PDFOutput>;
-
-  readPDFReslut: Common.ReadableWithParam<Array<number>, PDFOutputWithOcrResult>;
-
 }
 
 export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
@@ -45,7 +42,8 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
   return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.readPDF);
 }
 
-export function readPDFWithOption(data:Uint8Array, ocrImages:boolean): Promise<PDFOutputWithOcrResult> {
+//TODO: Add new function for looper author to extract text from image
+/*export function readPDFWithOption(data:Uint8Array, ocrImages:boolean): Promise<PDFOutputWithOcrResult> {
 
   return new Promise((resolve, reject) => {
     try {
@@ -55,9 +53,9 @@ export function readPDFWithOption(data:Uint8Array, ocrImages:boolean): Promise<P
       reject(e);
     }
   });
-}
+}*/
 
-function readPDFReslut(data:Uint8Array): PDFOutputWithOcrResult{
+/*function readPDFReslut(data:Uint8Array): PDFOutputWithOcrResult{
   const pdfResult:PDFOutput = {};
   const ocr: OCRResults = {};
   const result: PDFOutputWithOcrResult = {
@@ -75,4 +73,4 @@ function readPDFReslut(data:Uint8Array): PDFOutputWithOcrResult{
       }
     });
     return result;
-}
+}*/

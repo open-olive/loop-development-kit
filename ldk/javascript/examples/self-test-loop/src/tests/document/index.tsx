@@ -79,8 +79,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
             pdfParse += value;
           } else if (type === PDFContentType.NewLine) {
             pdfParse += '\n\n';
-          }
-          else if (type === PDFContentType.Photo){
+          } else if (type === PDFContentType.Photo) {
             var imageString = `![](data:image/png;base64,${value})`;
             pdfImage += imageString;
           }
@@ -88,10 +87,8 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
 
         pdfParse += '\n\n';
       });
-      //pdfImage.forEach(data=> console.log(data));
-      //console.log(JSON.stringify(pdfImage));
-      var pdfImageLength = pdfImage.length;
-      const DocumentWhisper = ({ parsedText}: { parsedText: string }) => (
+
+      const DocumentWhisper = ({ parsedText }: { parsedText: string }) => (
         <oh-whisper label="PDF Aptitude - Read test" onClose={() => undefined}>
           <oh-markdown
             body={
@@ -103,7 +100,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
             body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
           />
           <oh-markdown body={parsedText} />
-          <oh-markdown body='# Image contents from PDF'/>
+          <oh-markdown body="# Image contents from PDF" />
           <oh-markdown body={`${pdfImage}`} />
           <oh-box
             direction={whisper.Direction.Horizontal}
@@ -121,4 +118,3 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       reject(error);
     }
   });
-  
