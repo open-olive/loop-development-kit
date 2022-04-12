@@ -1,7 +1,7 @@
-import { promisifyWithParam, promisifyMappedWithParam, promisify } from '../promisify';
+import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
 import { Workbook, PDFOutput } from './types';
 import * as mapper from '../utils/mapper';
-import * as screen from '../screen';
+// import * as screen from '../screen';
 
 /**
  *  The Document aptitude allows Loops to enable basic parsing of files including XLSX.
