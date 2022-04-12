@@ -1,8 +1,7 @@
 import { promisifyWithParam, promisifyMappedWithParam, promisify } from '../promisify';
-import { Workbook, PDFOutput, PDFOutputWithOcrResult, OCRResults } from './types';
+import { Workbook, PDFOutput } from './types';
 import * as mapper from '../utils/mapper';
 import * as screen from '../screen';
-import { OCRResult } from '../screen';
 
 /**
  *  The Document aptitude allows Loops to enable basic parsing of files including XLSX.
@@ -42,8 +41,8 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
   return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.readPDF);
 }
 
-//TODO: Add new function for looper author to extract text from image
-/*export function readPDFWithOption(data:Uint8Array, ocrImages:boolean): Promise<PDFOutputWithOcrResult> {
+// TODO: Add new function for looper author to extract text from image
+/* export function readPDFWithOption(data:Uint8Array, ocrImages:boolean): Promise<PDFOutputWithOcrResult> {
 
   return new Promise((resolve, reject) => {
     try {
@@ -53,9 +52,9 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
       reject(e);
     }
   });
-}*/
+}
 
-/*function readPDFReslut(data:Uint8Array): PDFOutputWithOcrResult{
+function readPDFReslut(data:Uint8Array): PDFOutputWithOcrResult{
   const pdfResult:PDFOutput = {};
   const ocr: OCRResults = {};
   const result: PDFOutputWithOcrResult = {
@@ -73,4 +72,4 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
       }
     });
     return result;
-}*/
+} */
