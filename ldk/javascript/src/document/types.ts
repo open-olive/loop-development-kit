@@ -1,3 +1,5 @@
+import { OCRResult } from "../screen";
+
 export interface Workbook {
   worksheets: Worksheet[];
 }
@@ -21,6 +23,7 @@ export interface Cell {
 export enum PDFContentType {
   Text = 'text',
   NewLine = 'newLine',
+  Photo = 'photo',
 }
 
 export interface PDFValue {
@@ -32,4 +35,15 @@ export interface PDFOutput {
   [key: string]: {
     content: PDFValue[];
   };
+}
+
+export interface OCRResults{
+  [key: string]:{
+    ocrResult:OCRResult;
+  }
+}
+
+export interface PDFOutputWithOcrResult{
+    pdfOutput:PDFOutput;
+    ocrResult:OCRResults;
 }

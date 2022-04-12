@@ -1,6 +1,8 @@
-import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
-import { Workbook, PDFOutput } from './types';
+import { promisifyWithParam, promisifyMappedWithParam, promisify } from '../promisify';
+import { Workbook, PDFOutput, PDFOutputWithOcrResult, OCRResults } from './types';
 import * as mapper from '../utils/mapper';
+import * as screen from '../screen'
+import { OCRResult } from '../screen';
 
 /**
  *  The Document aptitude allows Loops to enable basic parsing of files including XLSX.
@@ -26,6 +28,9 @@ export interface Document {
    * @returns - A promise containing PDFOutput
    */
   readPDF(data: Uint8Array): Promise<PDFOutput>;
+
+  readPDFReslut: Common.ReadableWithParam<Array<number>, PDFOutputWithOcrResult>;
+
 }
 
 export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
@@ -38,4 +43,36 @@ export function xlsxDecode(data: Uint8Array): Promise<Workbook> {
 
 export function readPDF(data: Uint8Array): Promise<PDFOutput> {
   return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.readPDF);
+}
+
+export function readPDFWithOption(data:Uint8Array, ocrImages:boolean): Promise<PDFOutputWithOcrResult> {
+
+  return new Promise((resolve, reject) => {
+    try {
+      readPDFReslut(data);
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });
+}
+
+function readPDFReslut(data:Uint8Array): PDFOutputWithOcrResult{
+  const pdfResult:PDFOutput = {};
+  const ocr: OCRResults = {};
+  const result: PDFOutputWithOcrResult = {
+    pdfOutput: pdfResult,
+    ocrResults: ocr,
+  };
+  new Promise(async (resolve, reject) => {
+      try {
+        const pdfData = await readPDF(data);
+        Object.entries(pdfData).forEach(([page, { content }]) => {
+        });
+      }
+      catch{
+  
+      }
+    });
+    return result;
 }

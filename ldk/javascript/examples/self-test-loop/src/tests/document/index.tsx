@@ -70,7 +70,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       }
 
       let pdfParse = '';
-
+      let pdfImage = '';
       Object.entries(decodedSorted).forEach(([page, { content }]) => {
         pdfParse += `# Page ${page}\n`;
 
@@ -80,12 +80,18 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
           } else if (type === PDFContentType.NewLine) {
             pdfParse += '\n\n';
           }
+          else if (type === PDFContentType.Photo){
+            var imageString = `![](data:image/png;base64,${value})`;
+            pdfImage += imageString;
+          }
         });
 
         pdfParse += '\n\n';
       });
-
-      const DocumentWhisper = ({ parsedText }: { parsedText: string }) => (
+      //pdfImage.forEach(data=> console.log(data));
+      //console.log(JSON.stringify(pdfImage));
+      var pdfImageLength = pdfImage.length;
+      const DocumentWhisper = ({ parsedText}: { parsedText: string }) => (
         <oh-whisper label="PDF Aptitude - Read test" onClose={() => undefined}>
           <oh-markdown
             body={
@@ -97,6 +103,8 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
             body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
           />
           <oh-markdown body={parsedText} />
+          <oh-markdown body='# Image contents from PDF'/>
+          <oh-markdown body={`${pdfImage}`} />
           <oh-box
             direction={whisper.Direction.Horizontal}
             justifyContent={whisper.JustifyContent.SpaceEvenly}
@@ -113,3 +121,4 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       reject(error);
     }
   });
+  

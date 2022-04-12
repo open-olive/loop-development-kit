@@ -1,6 +1,7 @@
 enum PDFContentType {
   Text = 'text',
   NewLine = 'newLine',
+  Photo = 'photo',
 }
 
 declare namespace Document {
