@@ -1,6 +1,5 @@
 import TestGroup from '../testingFixtures/testGroup';
 import { LoopTest } from '../testingFixtures/loopTest';
-
 import * as screenTests from '../tests/screen';
 
 export const screenTestGroup = (): TestGroup =>
