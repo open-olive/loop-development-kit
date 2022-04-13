@@ -14,7 +14,7 @@ export class CheckLoopOpenHandlerPlugin {
           if (
             !fileContent?.includes('ui.loopOpenHandler(') ||
             fileContent?.includes('// ui.loopOpenHandler(') ||
-            fileContent?.includes('// ui.loopOpenHandler(') ||
+            fileContent?.includes('//ui.loopOpenHandler(') ||
             fileContent?.includes('* ui.loopOpenHandler(') ||
             fileContent?.includes('*ui.loopOpenHandler(')
           ) {
