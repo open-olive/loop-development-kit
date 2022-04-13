@@ -4132,7 +4132,7 @@ export const testCollapseBoxPreview = (): Promise<boolean> =>
     });
   });
 
-  export const testTypography = (): Promise<boolean> =>
+export const testTypography = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await whisper.create({
