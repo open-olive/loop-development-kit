@@ -315,7 +315,7 @@ declare namespace WhisperService {
     textAlign?: TextAlign;
     tooltip?: string;
   };
-  
+
   type Typography = Component<'typography'> & {
     align?: Align;
     body: string;
