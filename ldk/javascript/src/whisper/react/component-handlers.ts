@@ -159,6 +159,10 @@ const textInputHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.TextInput,
   whisperTagType: 'oh-text-input',
 };
+const typographyHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Typography,
+  whisperTagType: 'oh-typography',
+};
 const whisperHandler: ComponentSpecificHandler = {
   appendInitialChild: createAppendFunction('components'),
   helpsType: 'whisper' as any,
@@ -228,6 +232,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return telephoneHandler;
     case WhisperComponentType.TextInput:
       return textInputHandler;
+    case WhisperComponentType.Typography:
+      return typographyHandler;
     case WhisperComponentType.SectionTitle:
       return sectionTitleHandler;
     default:
@@ -296,6 +302,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return telephoneHandler;
     case 'oh-text-input':
       return textInputHandler;
+    case 'oh-typography':
+      return typographyHandler;
     case 'oh-whisper':
       return whisperHandler;
     default:

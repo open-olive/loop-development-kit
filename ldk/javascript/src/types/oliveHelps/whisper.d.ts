@@ -31,7 +31,8 @@ declare namespace WhisperService {
     | 'select'
     | 'sectionTitle'
     | 'telephone'
-    | 'textInput';
+    | 'textInput'
+    | 'typography';
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
@@ -45,6 +46,8 @@ declare namespace WhisperService {
     | 'space-around'
     | 'space-between'
     | 'space-evenly';
+
+  type Align = 'center' | 'inherit' | 'justify' | 'left' | 'right';
 
   type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
 
@@ -312,6 +315,14 @@ declare namespace WhisperService {
     textAlign?: TextAlign;
     tooltip?: string;
   };
+  
+  type Typography = Component<'typography'> & {
+    align?: Align;
+    body: string;
+    paragraph?: boolean;
+    tooltip?: string;
+    variant?: string;
+  };
 
   type Email = InputComponent<'email', string>;
 
@@ -466,7 +477,8 @@ declare namespace WhisperService {
     | SectionTitle
     | Select
     | Telephone
-    | TextInput;
+    | TextInput
+    | Typography;
 
   type Components = ChildComponents | CollapseBox;
 

@@ -379,6 +379,8 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.TextInput;
+    case WhisperComponentType.Typography:
+      return component as WhisperService.Typography;
     case WhisperComponentType.DateTimeInput:
       if (component.id && component.value) {
         const value =

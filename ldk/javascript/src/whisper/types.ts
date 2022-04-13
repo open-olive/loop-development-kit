@@ -112,6 +112,7 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
+  Typography = 'typography',
 }
 
 export enum JustifyContent {
@@ -131,6 +132,13 @@ export enum AlignItems {
   FlexEnd = 'flex-end',
   FlexStart = 'flex-start',
   Stretch = 'stretch',
+}
+export enum Align {
+  Center	= 'center',
+  Inherit = 'inherit',
+  Justify =  'justify',
+  Left = 'left',
+  Right = 'right',
 }
 
 /**
@@ -550,6 +558,14 @@ export type Password = InputComponent<WhisperComponentType.Password, string>;
 export type Telephone = InputComponent<WhisperComponentType.Telephone, string>;
 
 export type TextInput = InputComponent<WhisperComponentType.TextInput, string>;
+
+export type Typography = WhisperComponent<WhisperComponentType.Typography> & {
+  align?: Align,
+  body: string,
+  paragraph?: boolean,
+  tooltip?: string;
+  variant?: string,
+};
 
 export type DateTimeInput = InputComponent<
   WhisperComponentType.DateTimeInput,
@@ -1035,7 +1051,8 @@ export type ChildComponents =
   | Select
   | SectionTitle
   | Telephone
-  | TextInput;
+  | TextInput
+  | Typography;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;
