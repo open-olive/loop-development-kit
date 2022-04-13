@@ -1,7 +1,8 @@
 import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
-import { Workbook, PDFOutput } from './types';
+import { Workbook, PDFOutput, PDFOutputWithOcrResult } from './types';
 import * as mapper from '../utils/mapper';
 // import * as screen from '../screen';
+import { OCRResult } from '../screen/types';
 
 /**
  *  The Document aptitude allows Loops to enable basic parsing of files including XLSX.
@@ -27,6 +28,13 @@ export interface Document {
    * @returns - A promise containing PDFOutput
    */
   readPDF(data: Uint8Array): Promise<PDFOutput>;
+
+  /**
+   * Take a PDF and return output with ocr result for images
+   * @param  {Uint8Array} data
+   * @returns Promise
+   */
+   readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult>;
 }
 
 export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
@@ -42,34 +50,30 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
 }
 
 // TODO: Add new function for looper author to extract text from image
-/* export function readPDFWithOption(data:Uint8Array, ocrImages:boolean): Promise<PDFOutputWithOcrResult> {
-
+export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult> {
   return new Promise((resolve, reject) => {
     try {
-      readPDFReslut(data);
-    } catch (e) {
-      console.error(e);
-      reject(e);
+      oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, value) => {
+        if (error) {
+          console.error(`Received error on result: ${error.message}`);
+          reject(error);
+          return;
+        }
+        let result = {} as PDFOutputWithOcrResult;
+        result.pdfOutput = value;
+        for (const pageContent of Object.values(value)) {
+          pageContent.content.forEach((item) => {
+            if (item.type === 'photo') {
+              // new screen functionality
+              // oliveHelps.screen.ocrFileEncoded(item.value, (err, data) => {});
+            }
+          });
+        }
+        resolve(result);
+      });
+    } catch (error) {
+      console.error(`Received error calling service ${(error as Error).message}`);
+      reject(error);
     }
   });
 }
-
-function readPDFReslut(data:Uint8Array): PDFOutputWithOcrResult{
-  const pdfResult:PDFOutput = {};
-  const ocr: OCRResults = {};
-  const result: PDFOutputWithOcrResult = {
-    pdfOutput: pdfResult,
-    ocrResults: ocr,
-  };
-  new Promise(async (resolve, reject) => {
-      try {
-        const pdfData = await readPDF(data);
-        Object.entries(pdfData).forEach(([page, { content }]) => {
-        });
-      }
-      catch{
-  
-      }
-    });
-    return result;
-} */

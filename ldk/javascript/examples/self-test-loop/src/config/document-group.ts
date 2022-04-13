@@ -17,4 +17,11 @@ export const documentTestGroup = (): TestGroup =>
       5000,
       'Reads the text content from a PDF. Should succeed.',
     ),
+
+    new LoopTest(
+      'PDF Aptitude - Read with Image test',
+      documentTests.testDocumentReadPDFWithImage,
+      5000,
+      'Reads the text content from a PDF. Should succeed.',
+    ),
   ]);

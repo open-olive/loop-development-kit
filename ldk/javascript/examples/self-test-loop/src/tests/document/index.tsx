@@ -118,3 +118,84 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       reject(error);
     }
   });
+
+  export const testDocumentReadPDFWithImage = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      let request = await network.httpRequest({
+        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        method: 'GET',
+      });
+      let branch = 'develop';
+
+      // Above URL is used after this feature is finished and merged in
+      // Before PR is merged and branch is deleted, use the feature branch
+      // Can delete this block after merge
+      if (request.statusCode === 404) {
+        request = await network.httpRequest({
+          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+          method: 'GET',
+        });
+        branch = 'HELPS-3035-readpdf';
+      }
+
+      const decoded = await document.readPDFWithOcr(request.body);
+
+      // console.log(JSON.stringify(decoded))
+      // Sometimes the Core returns the pages out of order, so this is to sort it
+      const pdfSort: PDFOutput = {};
+      for (let i = 1; i < Object.keys(decoded.pdfOutput).length + 1; i += 1) {
+        pdfSort[i] = { ...decoded.pdfOutput[i] };
+      }
+
+      let pdfParse = '';
+      let pdfImage = '';
+      console.log('process data');
+      Object.entries(pdfSort).forEach(([page, { content }]) => {
+        pdfParse += `# Page ${page}\n`;
+        console.log(pdfParse);
+        console.log(page);
+        content.forEach(({ value, type }) => {
+          if (type === PDFContentType.Text) {
+            pdfParse += value;
+          } else if (type === PDFContentType.NewLine) {
+            pdfParse += '\n\n';
+          } else if (type === PDFContentType.Photo) {
+            var imageString = `![](data:image/png;base64,${value})`;
+            pdfImage += imageString;
+          }
+        });
+
+        pdfParse += '\n\n';
+      });
+
+      const DocumentWhisper = ({ parsedText }: { parsedText: string }) => (
+        <oh-whisper label="PDF Aptitude - Read test" onClose={() => undefined}>
+          <oh-markdown
+            body={
+              'This test should be automatically downloading this PDF and parsing only \
+            the **text** from it to display it below'
+            }
+          />
+          <oh-markdown
+            body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
+          />
+          <oh-markdown body={parsedText} />
+          <oh-markdown body="# Image contents from PDF" />
+          <oh-markdown body={`${pdfImage}`} />
+          <oh-box
+            direction={whisper.Direction.Horizontal}
+            justifyContent={whisper.JustifyContent.SpaceEvenly}
+          >
+            <oh-button label="Pass" onClick={() => resolve(true)} />
+            <oh-button label="Fail" onClick={() => reject()} />
+          </oh-box>
+        </oh-whisper>
+      );
+
+      ReactWhisper.renderNewWhisper(<DocumentWhisper parsedText={pdfParse} />); 
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });

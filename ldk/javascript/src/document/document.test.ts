@@ -116,3 +116,27 @@ describe('Document', () => {
     });
   });
 });
+
+describe('readPDFWithOcr', () => {
+  it('parses a PDF', () => {
+    const pdfFile = new Uint8Array();
+    const expected = {
+      '1': {
+        content: [
+          {
+            value: 'test',
+            type: PDFContentType.Text,
+          },
+        ],
+      },
+    };
+
+    mocked(oliveHelps.document.readPDF).mockImplementation((data, callback) => {
+      callback(undefined, expected);
+    });
+
+    const actual = document.readPDFWithOcr(pdfFile);
+
+    return expect(actual).resolves.toBe(expected);
+  });
+});
