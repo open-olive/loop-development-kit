@@ -7,17 +7,11 @@ const plugin = 'CheckLoopOpenHandlerPlugin';
 export class CheckLoopOpenHandlerPlugin {
   apply(compiler: Compiler): void {
     compiler.hooks.thisCompilation.tap(plugin, (compilation) => {
-      compilation.hooks.processAssets.tap({ name: plugin }, (assets) => {
+      compilation.hooks.afterOptimizeAssets.tap({ name: plugin }, (assets) => {
         const loopjs = assets[assetName];
         if (loopjs) {
           const fileContent = loopjs.source();
-          if (
-            !fileContent?.includes('ui.loopOpenHandler(') ||
-            fileContent?.includes('// ui.loopOpenHandler(') ||
-            fileContent?.includes('//ui.loopOpenHandler(') ||
-            fileContent?.includes('* ui.loopOpenHandler(') ||
-            fileContent?.includes('*ui.loopOpenHandler(')
-          ) {
+          if (!fileContent?.includes('ui.loopOpenHandler(')) {
             const openHandlerMissingWarning = new WebpackError(warningMsg);
             openHandlerMissingWarning.file = assetName;
             compilation.warnings.push(openHandlerMissingWarning);
