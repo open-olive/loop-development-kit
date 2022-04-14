@@ -142,8 +142,6 @@ export enum JustifyContent {
   SpaceEvenly = 'space-evenly',
 }
 
-
-
 /**
  * @deprecated - Use JustifyContent instead.
  */
@@ -383,7 +381,7 @@ export enum Variant {
   Overline = 'overline',
   Subtitle1 = 'subtitle1',
   Subtitle2 = 'subtitle2',
-};
+}
 
 export interface Whisper {
   id: string;

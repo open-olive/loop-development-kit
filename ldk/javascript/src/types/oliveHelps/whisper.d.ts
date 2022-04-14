@@ -175,7 +175,7 @@ declare namespace WhisperService {
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
   type Varient =
-    |	'body1'
+    | 'body1'
     | 'body2'
     | 'button'
     | 'caption'
