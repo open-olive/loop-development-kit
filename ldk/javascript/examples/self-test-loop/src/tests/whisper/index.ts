@@ -4207,6 +4207,11 @@ export const testTypography = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Typography,
+            variant: Variant.H3,
+            body: 'h3',
+          },
+          {
+            type: WhisperComponentType.Typography,
             variant: Variant.H4,
             body: 'h4',
           },
