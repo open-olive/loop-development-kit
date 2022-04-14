@@ -1,18 +1,10 @@
 {
   "out": "docs",
-  "includeDeclarations": true,
   "excludeExternals": true,
   "excludePrivate": true,
-  "mode": "file",
-  "toc": [],
   "exclude": ["coverage/**/*", "jest.config.js", "**/*.test.ts"],
   "listInvalidSymbolLinks": true,
-  "inputFiles": ["src/index.ts"],
+  "entryPoints": ["src/index.ts"],
   "stripInternal": true,
-  "theme": "pages-plugin",
-  "name": "Javascript Loop Development Kit",
-  "pages": {
-    "groups": [],
-    "theme": "pages-plugin"
-  }
+  "name": "Javascript Loop Development Kit"
 }
