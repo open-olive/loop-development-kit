@@ -1,7 +1,7 @@
 /* eslint-disable no-async-promise-executor */
 import { network, screen, whisper, window } from '@oliveai/ldk';
 import { OcrEvent } from '@oliveai/ldk/dist/screen/types';
-import * as base64 from 'byte-base64';
+import { Buffer } from 'buffer';
 
 export * from './hashTests';
 
@@ -148,7 +148,8 @@ export async function performOcrFileEncoded() {
     branch = 'HELPS-3796-ocrFileEncoded';
   }
 
-  const encodedImage = base64.bytesToBase64(request.body);
+  const encodedImage = Buffer.from(request.body).toString('base64');
+  // const encodedImage = base64.bytesToBase64(request.body);
   console.log('enCodedImage: ', encodedImage);
   screen
     .ocrFileEncoded(encodedImage)
