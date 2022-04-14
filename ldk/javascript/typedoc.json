@@ -8,5 +8,5 @@
   },
   "entryPoints": ["src/index.ts"],
   "entryPointStrategy": "expand",
-  "name": "Javascript Loop Development Kit"
+  "name": "JavaScript Loop Development Kit"
 }
