@@ -3,8 +3,10 @@
   "excludeExternals": true,
   "excludePrivate": true,
   "exclude": ["coverage/**/*", "jest.config.js", "**/*.test.ts"],
-  "listInvalidSymbolLinks": true,
+  "validation": {
+    "invalidLink": true
+  },
   "entryPoints": ["src/index.ts"],
-  "stripInternal": true,
+  "entryPointStrategy": "expand",
   "name": "Javascript Loop Development Kit"
 }
