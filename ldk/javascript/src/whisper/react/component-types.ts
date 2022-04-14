@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 import * as Whisper from '../types';
 import { WhisperHandler } from '../types';
 
+export * from '../types';
+
 /**
  * @internal
  */
