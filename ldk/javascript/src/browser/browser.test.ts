@@ -75,11 +75,13 @@ describe('Browser', () => {
     it('returns network activity events', () => {
       const callback = jest.fn();
       const activity = {
-        tabId: 0,
-        requestUrl: 'https://www.google.com',
-        method: 'GET',
-        requestBody: null,
         domain: 'google.com',
+        frameId: 1,
+        method: 'GET',
+        requestUrl: 'https://www.google.com',
+        requestBody: null,
+        tabId: 0,
+        type: 'xhtml',
       };
 
       mocked(oliveHelps.browser.listenNetworkActivity).mockImplementation((listenerCallback) => {
