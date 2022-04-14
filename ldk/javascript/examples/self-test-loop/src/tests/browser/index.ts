@@ -1,12 +1,12 @@
 /* eslint-disable no-async-promise-executor */
-import { browser, whisper } from '@oliveai/ldk';
+import { browser } from '@oliveai/ldk';
 import {
   NavigationDetails,
   NetworkActivityDetails,
   PageDetails,
+  TabChangeDetails,
   UIElementDetails,
 } from '@oliveai/ldk/dist/browser';
-import { WhisperComponentType } from '../../../../../dist/whisper';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -137,6 +137,34 @@ export const testOpenWindowAndListenNavigation = (): Promise<boolean> =>
       );
 
       await browser.openWindow(URL);
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testTabChangeEvent = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      const URL2 = 'https://www.oliveai.com/';
+      const TITLE = 'Olive Helps Developer Hub';
+
+      await browser.openTab(URL);
+      await browser.openTab(URL2);
+
+      const listener = await browser.listenTabChange((tabChangeDetails: TabChangeDetails): void => {
+        const { tabId, title, url, windowId } = tabChangeDetails;
+        if (tabId && windowId && title === TITLE && url === URL) {
+          listener.cancel();
+          resolve(true);
+        }
+
+        setTimeout(() => {
+          // After 3 seconds, if tabs havent been switched throw error
+          reject(new Error('The text selection in your browser does not match the test text'));
+        }, 3000);
+      });
     } catch (error) {
       console.error(error);
       reject(error);

@@ -42,6 +42,12 @@ export const browserTestGroup = (): TestGroup =>
       'Reading the source from oliveai.dev',
     ),
     new LoopTest(
+      'Browser Aptitude - Tab Change Event',
+      browserTests.testTabChangeEvent,
+      10000,
+      "Inside the new oliveai.com browser tab, navigate to the oliveai.dev tab'",
+    ),
+    new LoopTest(
       'Browser Aptitude - Text Selection Stream',
       browserTests.testListenTextSelection,
       10000,
