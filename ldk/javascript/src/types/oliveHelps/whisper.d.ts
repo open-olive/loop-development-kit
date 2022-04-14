@@ -174,6 +174,23 @@ declare namespace WhisperService {
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
+  type Varient =
+    |	'body1'
+    | 'body2'
+    | 'button'
+    | 'caption'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'inherit'
+    | 'overline'
+    | 'subtitle1'
+    | 'subtitle2'
+    | string;
+
   type WidthSize = 'full' | 'half';
 
   type Wrap = 'nowrap' | 'wrap-reverse' | 'wrap';
@@ -402,7 +419,7 @@ declare namespace WhisperService {
     body: string;
     paragraph?: boolean;
     tooltip?: string;
-    variant?: string;
+    variant?: Variant;
   };
 
   // Input Component Section

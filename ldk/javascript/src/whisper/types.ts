@@ -115,6 +115,21 @@ export enum WhisperComponentType {
   Typography = 'typography',
 }
 
+export enum Align {
+  Center = 'center',
+  Inherit = 'inherit',
+  Justify = 'justify',
+  Left = 'left',
+  Right = 'right',
+}
+
+export enum AlignItems {
+  Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
+  Stretch = 'stretch',
+}
+
 export enum JustifyContent {
   Center = 'center',
   FlexEnd = 'flex-end',
@@ -127,19 +142,7 @@ export enum JustifyContent {
   SpaceEvenly = 'space-evenly',
 }
 
-export enum AlignItems {
-  Center = 'center',
-  FlexEnd = 'flex-end',
-  FlexStart = 'flex-start',
-  Stretch = 'stretch',
-}
-export enum Align {
-  Center = 'center',
-  Inherit = 'inherit',
-  Justify = 'justify',
-  Left = 'left',
-  Right = 'right',
-}
+
 
 /**
  * @deprecated - Use JustifyContent instead.
@@ -202,6 +205,7 @@ export enum Urgency {
   Success = 'success',
   Warning = 'warning',
 }
+
 export enum Wrap {
   NoWrap = 'nowrap',
   WrapReverse = 'wrap-reverse',
@@ -363,6 +367,23 @@ export enum AxisScale {
    */
   Time = 'time',
 }
+
+export enum Variant {
+  Boby1 = 'body1',
+  Body2 = 'body2',
+  Button = 'button',
+  Caption = 'caption',
+  H1 = 'h1',
+  H2 = 'h2',
+  H3 = 'h3',
+  H4 = 'h4',
+  H5 = 'h5',
+  H6 = 'h6',
+  Inherit = 'inherit',
+  Overline = 'overline',
+  Subtitle1 = 'subtitle1',
+  Subtitle2 = 'subtitle2',
+};
 
 export interface Whisper {
   id: string;
@@ -564,7 +585,7 @@ export type Typography = WhisperComponent<WhisperComponentType.Typography> & {
   body: string;
   paragraph?: boolean;
   tooltip?: string;
-  variant?: string;
+  variant?: Variant;
 };
 
 export type DateTimeInput = InputComponent<

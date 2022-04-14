@@ -42,7 +42,7 @@ import {
   resolveRejectButtons,
 } from './utils';
 import { longText, markdownText, image } from './text';
-import { Align } from '../../../../../dist/whisper';
+import { Align, Variant } from '../../../../../dist/whisper';
 
 export * from './autocomplete';
 export * from './chart';
@@ -4147,6 +4147,11 @@ export const testTypography = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Typography,
+            paragraph: true,
+            body: 'Paragraph: true',
+          },
+          {
+            type: WhisperComponentType.Typography,
             align: Align.Center,
             body: 'Align: Center',
           },
@@ -4172,82 +4177,67 @@ export const testTypography = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'body1',
+            variant: Variant.Boby1,
             body: 'body1',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'body2',
+            variant: Variant.Body2,
             body: 'body2',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'button',
+            variant: Variant.Button,
             body: 'button',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'caption',
+            variant: Variant.Caption,
             body: 'caption',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'h1',
+            variant: Variant.H1,
             body: 'h1',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'h2',
+            variant: Variant.H2,
             body: 'h2',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'h3',
-            body: 'h3',
-          },
-          {
-            type: WhisperComponentType.Typography,
-            variant: 'h3',
-            body: 'h3',
-          },
-          {
-            type: WhisperComponentType.Typography,
-            variant: 'h3',
-            body: 'h3',
-          },
-          {
-            type: WhisperComponentType.Typography,
-            variant: 'h4',
+            variant: Variant.H4,
             body: 'h4',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'h5',
+            variant: Variant.H5,
             body: 'h5',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'h6',
+            variant: Variant.H6,
             body: 'h6',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'inherit',
+            variant: Variant.Inherit,
             body: 'inherit',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'overline',
+            variant: Variant.Overline,
             body: 'overline',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'subtitle1',
+            variant: Variant.Subtitle1,
             body: 'subtitle1',
           },
           {
             type: WhisperComponentType.Typography,
-            variant: 'subtitle2',
+            variant: Variant.Subtitle2,
             body: 'subtitle2',
           },
           resolveRejectButtons(resolve, reject),
