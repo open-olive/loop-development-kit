@@ -1,6 +1,8 @@
 import { NewWhisper, UpdateWhisper, Whisper } from '../types';
 import { create } from '../index';
 
+export * from '../types';
+
 export interface WhisperRenderingInterface {
   createOrUpdateWhisper(whisperData: NewWhisper | UpdateWhisper): void;
   closeWhisper(): void;
