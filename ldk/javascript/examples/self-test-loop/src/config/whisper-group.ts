@@ -372,6 +372,12 @@ export const whisperTestGroup = (): TestGroup =>
       `Hover on each component to see a tooltip`,
     ),
     new LoopTest(
+      'Whisper Aptitude - Typography Test',
+      whisperTests.testTypography,
+      30000,
+      `check to see if element rendered correctly`,
+    ),
+    new LoopTest(
       'Whisper Aptitude - Width',
       whisperTests.testWidth,
       10000,

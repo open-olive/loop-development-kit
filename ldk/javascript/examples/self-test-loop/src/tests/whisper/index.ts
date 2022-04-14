@@ -42,6 +42,7 @@ import {
   resolveRejectButtons,
 } from './utils';
 import { longText, markdownText, image } from './text';
+import { Align, Variant } from '../../../../../dist/whisper';
 
 export * from './autocomplete';
 export * from './chart';
@@ -4129,4 +4130,126 @@ export const testCollapseBoxPreview = (): Promise<boolean> =>
         resolveRejectButtons(resolve, reject),
       ],
     });
+  });
+
+export const testTypography = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Are default values displayed correctly?',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            type: WhisperComponentType.Typography,
+            body: 'default = aligin: "inherit", paragraph: false, variant: "body1"',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            paragraph: true,
+            body: 'Paragraph: true',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Center,
+            body: 'Align: Center',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Justify,
+            body: 'Align: Justify',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Left,
+            body: 'Aligin: Left',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Right,
+            body: 'Aligin: Right',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            tooltip: 'tooltip test',
+            body: 'Tooltip',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Boby1,
+            body: 'body1',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Body2,
+            body: 'body2',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Button,
+            body: 'button',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Caption,
+            body: 'caption',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H1,
+            body: 'h1',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H2,
+            body: 'h2',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H3,
+            body: 'h3',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H4,
+            body: 'h4',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H5,
+            body: 'h5',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H6,
+            body: 'h6',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Inherit,
+            body: 'inherit',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Overline,
+            body: 'overline',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Subtitle1,
+            body: 'subtitle1',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Subtitle2,
+            body: 'subtitle2',
+          },
+          resolveRejectButtons(resolve, reject),
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
