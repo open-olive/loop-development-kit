@@ -157,26 +157,29 @@ export const testTabChangeEvent = (): Promise<boolean> =>
       await browser.openTab(URL);
       await browser.openTab(URL2);
 
-      await Promise.race([
-        new Promise(async () => {
+      const raceResolve = await Promise.race([
+        new Promise(async (res) => {
           listener = await browser
             .listenTabChange((tabChangeDetails: TabChangeDetails): void => {
               const { tabId, title, url, windowId } = tabChangeDetails;
               if (tabId && windowId && title === TITLE && url === URL) {
-                resolve(true);
+                res(true);
               }
             })
             .catch(reject);
         }),
-        new Promise(() => {
+        new Promise((_res, rej) => {
           // After 3 seconds, if tabs haven't been switched throw error
           timeout = setTimeout(
-            () =>
-              reject(new Error('The text selection in your browser does not match the test text')),
+            () => rej(new Error('The text selection in your browser does not match the test text')),
             3000,
           );
         }),
       ]);
+
+      if (raceResolve) {
+        resolve(<boolean>raceResolve);
+      }
     } catch (error) {
       console.error(error);
       reject(error);
