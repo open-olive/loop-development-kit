@@ -1,4 +1,4 @@
-import { whisper } from '@oliveai/ldk';
+import { ui, whisper } from '@oliveai/ldk';
 import './fetch-polyfill';
 
 function fetchResultWhisper(text, success) {
@@ -61,4 +61,4 @@ function main() {
   });
 }
 
-main();
+ui.loopOpenHandler(() => main());
