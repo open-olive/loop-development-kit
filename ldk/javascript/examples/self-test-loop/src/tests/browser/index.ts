@@ -7,6 +7,7 @@ import {
   TabChangeDetails,
   UIElementDetails,
 } from '@oliveai/ldk/dist/browser';
+import { Cancellable } from '../../../../../dist/cancellable';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -145,6 +146,9 @@ export const testOpenWindowAndListenNavigation = (): Promise<boolean> =>
 
 export const testTabChangeEvent = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
+    let listener: void | Cancellable;
+    let timeout;
+
     try {
       const URL = 'https://www.oliveai.dev/';
       const URL2 = 'https://www.oliveai.com/';
@@ -153,22 +157,36 @@ export const testTabChangeEvent = (): Promise<boolean> =>
       await browser.openTab(URL);
       await browser.openTab(URL2);
 
-      const listener = await browser.listenTabChange((tabChangeDetails: TabChangeDetails): void => {
-        const { tabId, title, url, windowId } = tabChangeDetails;
-        if (tabId && windowId && title === TITLE && url === URL) {
-          listener.cancel();
-          resolve(true);
-        }
-      });
-
-      setTimeout(() => {
-        listener.cancel();
-        // After 3 seconds, if tabs havent been switched throw error
-        reject(new Error('Tab change event took longer than allotted time'));
-      }, 3000);
+      await Promise.race([
+        new Promise(async () => {
+          listener = await browser
+            .listenTabChange((tabChangeDetails: TabChangeDetails): void => {
+              const { tabId, title, url, windowId } = tabChangeDetails;
+              if (tabId && windowId && title === TITLE && url === URL) {
+                resolve(true);
+              }
+            })
+            .catch(reject);
+        }),
+        new Promise(() => {
+          // After 3 seconds, if tabs haven't been switched throw error
+          timeout = setTimeout(
+            () =>
+              reject(new Error('The text selection in your browser does not match the test text')),
+            3000,
+          );
+        }),
+      ]);
     } catch (error) {
       console.error(error);
       reject(error);
+    } finally {
+      if (listener) {
+        listener.cancel();
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
     }
   });
 
