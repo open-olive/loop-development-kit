@@ -3,85 +3,38 @@ declare namespace WhisperService {
     create: Common.ReadableWithParam<NewWhisper, Whisper>;
   }
 
-  type WhisperComponentType =
-    | 'autocomplete'
-    | 'box'
-    | 'breadcrumbs'
-    | 'button'
-    | 'chart'
-    | 'checkbox'
-    | 'collapseBox'
-    | 'dateTimeInput'
-    | 'divider'
-    | 'dropZone'
-    | 'email'
-    | 'grid'
-    | 'icon'
-    | 'link'
-    | 'listPair'
-    | 'markdown'
-    | 'message'
-    | 'number'
-    | 'pagination'
-    | 'password'
-    | 'progress'
-    | 'radioGroup'
-    | 'richTextEditor'
-    | 'select'
-    | 'sectionTitle'
-    | 'telephone'
-    | 'textInput';
+  interface AutocompleteFilterOptions {
+    ignoreAccents?: boolean;
+    ignoreCase?: boolean;
+    limit?: number;
+    matchFrom?: 'any' | 'start';
+    stringify?: string[];
+    trim?: boolean;
+  }
 
-  type Urgency = 'error' | 'none' | 'success' | 'warning';
+  interface Component<T extends WhisperComponentType> {
+    id?: string;
+    type: T;
+    key?: string;
+    layout?: LayoutOptions;
+  }
 
-  type Alignment =
-    | 'center'
-    | 'flex-end'
-    | 'flex-start'
-    | 'left'
-    | 'normal'
-    | 'right'
-    | 'space-around'
-    | 'space-between'
-    | 'space-evenly';
+  interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {
+    disabled?: boolean;
+    label: string;
+    tooltip?: string;
+    validationError?: string;
+    value?: T2;
+    onBlur?: (error: Error | undefined) => void;
+    onFocus?: (error: Error | undefined) => void;
+    onChange: WhisperHandlerWithParam<T2>;
+  }
 
-  type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
+  interface SelectComponent<T extends WhisperComponentType> extends Component<T> {
+    disabled?: boolean;
+    validationError?: string;
+  }
 
-  type AlignContent = 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
-
-  type ButtonSize = 'large' | 'small';
-
-  type ButtonStyle = 'primary' | 'secondary' | 'text';
-
-  type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
-
-  type Direction = 'horizontal' | 'vertical';
-
-  type DateTimeType = 'date' | 'time' | 'date_time';
-
-  type FontWeight = 300 | 400 | 700 | 800;
-
-  type GridDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
-
-  type IconSize = 'small' | 'medium' | 'large' | 'x-large';
-
-  type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
-
-  type OpenDirection = 'bottom' | 'top';
-
-  type PaginationComponentType = 'pagination' | 'tablePagination';
-
-  type ProgressShape = 'circular' | 'linear';
-
-  type StyleSize = 'none' | 'small' | 'medium' | 'large';
-
-  type Size = 'none' | 'small' | 'medium' | 'large' | 'extraLarge';
-
-  type TextAlign = 'center' | 'left' | 'right';
-
-  type WidthSize = 'full' | 'half';
-
-  type Wrap = 'nowrap' | 'wrap-reverse' | 'wrap';
   interface LayoutOptions {
     flex?: string;
     margin?: StyleSize;
@@ -108,28 +61,139 @@ declare namespace WhisperService {
     update(whisper: UpdateWhisper, cb?: (err: Error) => void): void;
   }
 
-  interface Component<T extends WhisperComponentType> {
-    id?: string;
-    type: T;
-    key?: string;
-    layout?: LayoutOptions;
-  }
-
-  interface InputComponent<T1 extends WhisperComponentType, T2> extends Component<T1> {
-    disabled?: boolean;
+  interface NewWhisper {
     label: string;
-    tooltip?: string;
-    validationError?: string;
-    value?: T2;
-    onBlur?: (error: Error | undefined) => void;
-    onFocus?: (error: Error | undefined) => void;
-    onChange: WhisperHandlerWithParam<T2>;
+    components: Array<Components>;
+    onClose?: () => void;
   }
 
-  interface SelectComponent<T extends WhisperComponentType> extends Component<T> {
-    disabled?: boolean;
-    validationError?: string;
+  interface UpdateWhisper {
+    label?: string;
+    components: Array<Components>;
   }
+
+  interface File {
+    path: string;
+    size: number;
+    readFile: Common.Readable<ArrayBuffer>;
+  }
+
+  type WhisperComponentType =
+    | 'autocomplete'
+    | 'box'
+    | 'breadcrumbs'
+    | 'button'
+    | 'chart'
+    | 'checkbox'
+    | 'collapseBox'
+    | 'dateTimeInput'
+    | 'divider'
+    | 'dropZone'
+    | 'email'
+    | 'grid'
+    | 'icon'
+    | 'link'
+    | 'listPair'
+    | 'markdown'
+    | 'message'
+    | 'number'
+    | 'pagination'
+    | 'password'
+    | 'progress'
+    | 'radioGroup'
+    | 'rating'
+    | 'richTextEditor'
+    | 'select'
+    | 'sectionTitle'
+    | 'telephone'
+    | 'textInput'
+    | 'typography';
+
+  type Alignment =
+    | 'center'
+    | 'flex-end'
+    | 'flex-start'
+    | 'left'
+    | 'normal'
+    | 'right'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly';
+
+  type Align = 'center' | 'inherit' | 'justify' | 'left' | 'right';
+
+  type AlignItems = 'center' | 'flex-end' | 'flex-start' | 'stretch';
+
+  type AlignContent = 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around';
+
+  type AxisScale = 'linear' | 'ordinal' | 'time';
+
+  type ButtonSize = 'large' | 'small';
+
+  type ButtonStyle = 'primary' | 'secondary' | 'text';
+
+  type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
+
+  type Direction = 'horizontal' | 'vertical';
+
+  type DateTimeType = 'date' | 'time' | 'date_time';
+
+  type FontWeight = 300 | 400 | 700 | 800;
+
+  type GridDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
+
+  type IconSize = 'small' | 'medium' | 'large' | 'x-large';
+
+  type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
+
+  type OpenDirection = 'bottom' | 'top';
+
+  type PaginationComponentType = 'pagination' | 'tablePagination';
+
+  type ProgressShape = 'circular' | 'linear';
+
+  type SeriesColor =
+    | '#29C6F8'
+    | '#410099'
+    | '#FD9743'
+    | '#52E48D'
+    | '#EB473B'
+    | '#FDD443'
+    | '#B388FF'
+    | '#C5457A'
+    | '#FF7F78'
+    | '#651FFF';
+
+  type SeriesType = 'area' | 'line' | 'mark' | 'verticalBar';
+
+  type StyleSize = 'none' | 'small' | 'medium' | 'large';
+
+  type Size = 'none' | 'small' | 'medium' | 'large' | 'extraLarge';
+
+  type TextAlign = 'center' | 'left' | 'right';
+
+  type Urgency = 'error' | 'none' | 'success' | 'warning';
+
+  type Varient =
+    | 'body1'
+    | 'body2'
+    | 'button'
+    | 'caption'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'inherit'
+    | 'overline'
+    | 'subtitle1'
+    | 'subtitle2'
+    | string;
+
+  type WidthSize = 'full' | 'half';
+
+  type Wrap = 'nowrap' | 'wrap-reverse' | 'wrap';
 
   type WhisperHandler = (error: Error | undefined, whisper: Whisper) => void;
   type WhisperHandlerWithParam<T> = (error: Error | undefined, param: T, whisper: Whisper) => void;
@@ -139,26 +203,26 @@ declare namespace WhisperService {
     value: any; // eslint-disable-line
   };
 
-  interface AutocompleteFilterOptions {
-    ignoreAccents?: boolean;
-    ignoreCase?: boolean;
-    limit?: number;
-    matchFrom?: 'any' | 'start';
-    stringify?: string[];
-    trim?: boolean;
-  }
+  type SeriesData = {
+    x: number | string | Date;
+    y: number | string | Date;
+  };
 
-  type Autocomplete = SelectComponent<'autocomplete'> & {
-    filterOptions?: AutocompleteFilterOptions;
-    label?: string;
-    loading?: boolean;
-    multiple?: boolean;
-    onChange?: WhisperHandlerWithParam<string>;
-    onSelect: WhisperHandlerWithParam<string[]>;
-    options?: AutocompleteOption[];
-    tooltip?: string;
-    value?: string;
-    freeSolo?: boolean;
+  type Series<T> = {
+    color?: SeriesColor;
+    data: SeriesData[];
+    title: string;
+    type: T;
+  };
+
+  // Component Section
+  type Box = Component<'box'> & {
+    alignItems?: AlignItems;
+    alignment: Alignment;
+    children: Array<ChildComponents>;
+    customHeight?: CustomHeight;
+    direction: Direction;
+    onClick?: WhisperHandler;
   };
 
   type Breadcrumbs = Component<'breadcrumbs'> & {
@@ -173,44 +237,6 @@ declare namespace WhisperService {
     size?: ButtonSize;
     tooltip?: string;
   };
-
-  type SeriesColor =
-    | '#29C6F8'
-    | '#410099'
-    | '#FD9743'
-    | '#52E48D'
-    | '#EB473B'
-    | '#FDD443'
-    | '#B388FF'
-    | '#C5457A'
-    | '#FF7F78'
-    | '#651FFF';
-
-  type SeriesData = {
-    x: number | string | Date;
-    y: number | string | Date;
-  };
-
-  type SeriesType = 'area' | 'bar' | 'line' | 'mark';
-
-  type Series<T> = {
-    color?: SeriesColor;
-    data: SeriesData[];
-    title: string;
-    type: T;
-  };
-
-  type AreaSeries = Series<'area'>;
-
-  type LineSeries = Series<'line'> & {
-    strokeWidth?: number;
-  };
-
-  type MarkSeries = Series<'mark'> & {
-    size?: number;
-  };
-
-  type VerticalBarSeries = Series<'bar'>;
 
   type Chart = Component<'chart'> & {
     chartTitle?: string;
@@ -229,17 +255,35 @@ declare namespace WhisperService {
     verticalLineTotal?: number;
     xAxis?: boolean;
     xAxisLabel?: string;
-    xAxisTicks?: string[];
+    xAxisPadding?: number;
+    xAxisScale?: AxisScale;
     xAxisTickTotal?: number;
     xAxisTickLabelAngle?: number;
-    xAxisTimeSeries?: boolean;
     yAxis?: boolean;
     yAxisLabel?: string;
-    yAxisTicks?: string[];
+    yAxisPadding?: number;
+    yAxisScale?: AxisScale;
     yAxisTickTotal?: number;
     yAxisTickLabelAngle?: number;
-    yAxisTimeSeries?: boolean;
   };
+
+  type Checkbox = SelectComponent<'checkbox'> & {
+    label: string;
+    tooltip?: string;
+    value?: boolean;
+    onChange: WhisperHandlerWithParam<boolean>;
+  };
+
+  type CollapseBox = Component<'collapseBox'> & {
+    children: Array<ChildComponents>;
+    label?: string;
+    open: boolean;
+    openDirection?: OpenDirection;
+    onClick?: WhisperHandlerWithParam<boolean>;
+    previewHeight?: Size;
+  };
+
+  type Divider = Component<'divider'>;
 
   type DropZone = Component<'dropZone'> & {
     accept?: string[];
@@ -259,15 +303,6 @@ declare namespace WhisperService {
     validationError?: string;
   };
 
-  type Link = Component<'link'> & {
-    href?: string;
-    text: string;
-    onClick?: WhisperHandler;
-    style?: Urgency;
-    textAlign?: TextAlign;
-    componentStyle?: StyleOptions;
-  };
-
   type Grid = Component<'grid'> & {
     alignContent?: AlignContent;
     alignItems?: AlignItems;
@@ -279,6 +314,25 @@ declare namespace WhisperService {
     spacing?: number;
     wrap?: Wrap;
     xs?: string;
+  };
+
+  type Icon = Component<'icon'> & {
+    color?: 'black' | 'whisper-strip' | 'white' | 'grey';
+    disabled?: boolean;
+    name: string;
+    onClick?: WhisperHandler;
+    size?: IconSize;
+    tooltip?: string;
+    variant?: IconVariant;
+  };
+
+  type Link = Component<'link'> & {
+    href?: string;
+    text: string;
+    onClick?: WhisperHandler;
+    style?: Urgency;
+    textAlign?: TextAlign;
+    componentStyle?: StyleOptions;
   };
 
   type ListPair = Component<'listPair'> & {
@@ -308,6 +362,74 @@ declare namespace WhisperService {
     tooltip?: string;
   };
 
+  type Pagination = Component<'pagination'> & {
+    count: number;
+    component?: PaginationComponentType;
+    disabled?: boolean;
+    labelRowsPerPage?: string;
+    onChange?: WhisperHandlerWithParam<string>;
+    onRowsPerPageChange?: WhisperHandlerWithParam<string>;
+    page: number;
+    rowsPerPage?: number;
+    rowsPerPageOptions?: number[];
+  };
+
+  type Progress = Component<'progress'> & {
+    determinate?: number;
+    shape?: ProgressShape;
+    size?: StyleSize;
+  };
+
+  type Rating = Component<'rating'> & {
+    defaultValue?: number;
+    disabled?: boolean;
+    emptyIcon?: string;
+    emptyIconColor?: string;
+    emptyIconVariant?: IconVariant;
+    icon?: string;
+    iconColor?: string;
+    iconVariant?: IconVariant;
+    max?: number;
+    name?: string;
+    onChange?: WhisperHandlerWithParam<number>;
+    precision?: number;
+    readOnly?: boolean;
+    size?: IconSize;
+    value?: number;
+  };
+
+  type RichTextEditor = Component<'richTextEditor'> & {
+    disabled?: boolean;
+    onBlur?: (error: Error | undefined) => void;
+    onChange: WhisperHandlerWithParam<string>;
+    onFocus?: (error: Error | undefined) => void;
+    tooltip?: string;
+    validationError?: string;
+    value?: string;
+  };
+
+  type SectionTitle = Component<'sectionTitle'> & {
+    body: string;
+    textAlign?: TextAlign;
+    backgroundStyle?: 'white' | 'grey';
+  };
+
+  type Typography = Component<'typography'> & {
+    align?: Align;
+    body: string;
+    paragraph?: boolean;
+    tooltip?: string;
+    variant?: Variant;
+  };
+
+  // Input Component Section
+  type DateTimeInput = InputComponent<'dateTimeInput', string> & {
+    dateTimeType: DateTimeType;
+    value?: string;
+    min?: string;
+    max?: string;
+  };
+
   type Email = InputComponent<'email', string>;
 
   type Password = InputComponent<'password', string>;
@@ -322,27 +444,24 @@ declare namespace WhisperService {
     step?: number;
   };
 
+  //  Select Component Section
+  type Autocomplete = SelectComponent<'autocomplete'> & {
+    filterOptions?: AutocompleteFilterOptions;
+    label?: string;
+    loading?: boolean;
+    multiple?: boolean;
+    onChange?: WhisperHandlerWithParam<string>;
+    onSelect: WhisperHandlerWithParam<string[]>;
+    options?: AutocompleteOption[];
+    tooltip?: string;
+    value?: string;
+    freeSolo?: boolean;
+  };
+
   type RadioGroup = SelectComponent<'radioGroup'> & {
     onSelect: WhisperHandlerWithParam<number>;
     options: string[];
     selected?: number;
-  };
-
-  type RichTextEditor = Component<'richTextEditor'> & {
-    disabled?: boolean;
-    onBlur?: (error: Error | undefined) => void;
-    onChange: WhisperHandlerWithParam<string>;
-    onFocus?: (error: Error | undefined) => void;
-    tooltip?: string;
-    validationError?: string;
-    value?: string;
-  };
-
-  type Checkbox = SelectComponent<'checkbox'> & {
-    label: string;
-    tooltip?: string;
-    value?: boolean;
-    onChange: WhisperHandlerWithParam<boolean>;
   };
 
   type Select = SelectComponent<'select'> & {
@@ -354,65 +473,19 @@ declare namespace WhisperService {
     tooltip?: string;
   };
 
-  type SectionTitle = Component<'sectionTitle'> & {
-    body: string;
-    textAlign?: TextAlign;
-    backgroundStyle?: 'white' | 'grey';
+  // Series
+  type AreaSeries = Series<'area'>;
+
+  type LineSeries = Series<'line'> & {
+    strokeWidth?: number;
   };
 
-  type DateTimeInput = InputComponent<'dateTimeInput', string> & {
-    dateTimeType: DateTimeType;
-    value?: string;
-    min?: string;
-    max?: string;
+  type MarkSeries = Series<'mark'> & {
+    size?: number;
   };
 
-  type Icon = Component<'icon'> & {
-    color?: 'black' | 'whisper-strip' | 'white' | 'grey';
-    disabled?: boolean;
-    name: string;
-    onClick?: WhisperHandler;
-    size?: IconSize;
-    tooltip?: string;
-    variant?: IconVariant;
-  };
-
-  type Divider = Component<'divider'>;
-
-  type Pagination = Component<'pagination'> & {
-    count: number;
-    component?: PaginationComponentType;
-    disabled?: boolean;
-    labelRowsPerPage?: string;
-    onChange?: WhisperHandlerWithParam<string>;
-    onRowsPerPageChange?: WhisperHandlerWithParam<string>;
-    page: number;
-    rowsPerPage?: number;
-    rowsPerPageOptions?: number[];
-  };
-
-  type CollapseBox = Component<'collapseBox'> & {
-    children: Array<ChildComponents>;
-    label?: string;
-    open: boolean;
-    openDirection?: OpenDirection;
-    onClick?: WhisperHandlerWithParam<boolean>;
-    previewHeight?: Size;
-  };
-
-  type Box = Component<'box'> & {
-    alignItems?: AlignItems;
-    alignment: Alignment;
-    children: Array<ChildComponents>;
-    customHeight?: CustomHeight;
-    direction: Direction;
-    onClick?: WhisperHandler;
-  };
-
-  type Progress = Component<'progress'> & {
-    determinate?: number;
-    shape?: ProgressShape;
-    size?: StyleSize;
+  type VerticalBarSeries = Series<'verticalBar'> & {
+    barWidth?: number;
   };
 
   type ChildComponents =
@@ -423,10 +496,12 @@ declare namespace WhisperService {
     | Chart
     | Checkbox
     | CollapseBox
+    | DateTimeInput
     | Divider
     | DropZone
     | Email
     | Grid
+    | Icon
     | Link
     | ListPair
     | Markdown
@@ -436,30 +511,13 @@ declare namespace WhisperService {
     | Password
     | Progress
     | RadioGroup
+    | Rating
     | RichTextEditor
+    | SectionTitle
     | Select
     | Telephone
     | TextInput
-    | DateTimeInput
-    | Icon
-    | SectionTitle;
+    | Typography;
 
   type Components = ChildComponents | CollapseBox;
-
-  interface NewWhisper {
-    label: string;
-    components: Array<Components>;
-    onClose?: () => void;
-  }
-
-  interface UpdateWhisper {
-    label?: string;
-    components: Array<Components>;
-  }
-
-  interface File {
-    path: string;
-    size: number;
-    readFile: Common.Readable<ArrayBuffer>;
-  }
 }

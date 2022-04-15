@@ -93,6 +93,13 @@ export interface Screen {
    * @param ocrEvents - The event that records bounds and text changes.
    */
   listenOcrMonitor(callback: (ocrEvents: OcrEvent[]) => void): Promise<Cancellable>;
+
+  /**
+   * It takes a base64 encoded string from reading the image file
+   * @param  encodedFileString - The string of Base64 encoded image
+   * @returns A Promise resolving with the text results as a string.
+   */
+  ocrFileEncoded(encodedFileString: string): Promise<OCRResult[]>;
 }
 
 export function ocr(ocrCoordinates: OCRCoordinates): Promise<OCRResult[]> {
@@ -178,4 +185,8 @@ export function listenPixelDiffActiveWindow(
 }
 export function listenOcrMonitor(callback: (ocrEvents: OcrEvent[]) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.screen.listenOcrMonitor);
+}
+
+export function ocrFileEncoded(encodedFileString: string): Promise<OCRResult[]> {
+  return promisifyWithParam(encodedFileString, oliveHelps.screen.ocrFileEncoded);
 }

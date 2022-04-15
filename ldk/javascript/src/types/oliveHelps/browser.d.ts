@@ -26,11 +26,13 @@ declare namespace Browser {
   }
 
   interface NetworkActivityDetails {
-    tabId: number;
-    requestUrl: string;
-    method: string;
-    requestBody: null | string;
     domain: string;
+    frameId: number;
+    method: string;
+    requestUrl: string;
+    requestBody: null | string;
+    tabId: number;
+    type: string;
   }
 
   interface PageDetails {

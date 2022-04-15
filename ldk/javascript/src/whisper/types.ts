@@ -26,13 +26,27 @@ export enum WhisperComponentType {
    */
   CollapseBox = 'collapseBox',
   /**
+   * A text input field allows the user to provide date and time information.
+   *
+   * The field can be pre-populated by the loop.
+   */
+  DateTimeInput = 'dateTimeInput',
+  /**
    * This component shows a horizontal divider to separate different kinds on content in a whisper. This component has no options.
    */
   Divider = 'divider',
   /**
+   * The dropzone component allows the Loop to receive a file uploaded by a user
+   */
+  DropZone = 'dropZone',
+  /**
    * The text input field allows the user to provide an email address.
    */
   Email = 'email',
+  /**
+   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
+   */
+  Icon = 'icon',
   /**
    * This component shows a link that can either open a link in the user's default browser or function as an `onClick` to allow for loops to do things like send a new whisper.
    */
@@ -73,6 +87,18 @@ export enum WhisperComponentType {
    */
   RadioGroup = 'radioGroup',
   /**
+   * Rating gives a multi-icon cluster to show or give ratings
+   */
+  Rating = 'rating',
+  /**
+   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
+   */
+  RichTextEditor = 'richTextEditor',
+  /**
+   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
+   */
+  SectionTitle = 'sectionTitle',
+  /**
    * A selected value of -1 indicates that nothing is selected.
    */
   Select = 'select',
@@ -86,28 +112,22 @@ export enum WhisperComponentType {
    * The text can be pre-populated by the loop.
    */
   TextInput = 'textInput',
-  /**
-   * The SectionTitle component adds a background that stretches across the entire whisper to the provided text
-   */
-  SectionTitle = 'sectionTitle',
-  /**
-   * A text input field allows the user to provide date and time information.
-   *
-   * The field can be pre-populated by the loop.
-   */
-  DateTimeInput = 'dateTimeInput',
-  /**
-   *  The RichTextEditor gives users a text area that allows users to add text with styling (bold, italics, links, etc)
-   */
-  RichTextEditor = 'richTextEditor',
-  /**
-   * The Icon Component renders requested icon inside of a whisper. Icons can be placed inside of Box components.
-   */
-  Icon = 'icon',
-  /**
-   * The dropzone component allows the Loop to receive a file uploaded by a user
-   */
-  DropZone = 'dropZone',
+  Typography = 'typography',
+}
+
+export enum Align {
+  Center = 'center',
+  Inherit = 'inherit',
+  Justify = 'justify',
+  Left = 'left',
+  Right = 'right',
+}
+
+export enum AlignItems {
+  Center = 'center',
+  FlexEnd = 'flex-end',
+  FlexStart = 'flex-start',
+  Stretch = 'stretch',
 }
 
 export enum JustifyContent {
@@ -120,13 +140,6 @@ export enum JustifyContent {
   SpaceAround = 'space-around',
   SpaceBetween = 'space-between',
   SpaceEvenly = 'space-evenly',
-}
-
-export enum AlignItems {
-  Center = 'center',
-  FlexEnd = 'flex-end',
-  FlexStart = 'flex-start',
-  Stretch = 'stretch',
 }
 
 /**
@@ -190,6 +203,7 @@ export enum Urgency {
   Success = 'success',
   Warning = 'warning',
 }
+
 export enum Wrap {
   NoWrap = 'nowrap',
   WrapReverse = 'wrap-reverse',
@@ -331,9 +345,42 @@ export enum SeriesColor {
 
 export enum SeriesType {
   Area = 'area',
-  Bar = 'bar',
   Line = 'line',
   Mark = 'mark',
+  VerticalBar = 'verticalBar',
+}
+
+export enum AxisScale {
+  /**
+   * A continuous scale that works with numbers
+   */
+  Linear = 'linear',
+  /**
+   * A discrete, ordered set that works with numbers or strings. For example,
+   * the x values could contain the months of the year in string form.
+   */
+  Ordinal = 'ordinal',
+  /**
+   * Used for time series. X values will be interpreted as Unix epoch time.
+   */
+  Time = 'time',
+}
+
+export enum Variant {
+  Boby1 = 'body1',
+  Body2 = 'body2',
+  Button = 'button',
+  Caption = 'caption',
+  H1 = 'h1',
+  H2 = 'h2',
+  H3 = 'h3',
+  H4 = 'h4',
+  H5 = 'h5',
+  H6 = 'h6',
+  Inherit = 'inherit',
+  Overline = 'overline',
+  Subtitle1 = 'subtitle1',
+  Subtitle2 = 'subtitle2',
 }
 
 export interface Whisper {
@@ -531,6 +578,14 @@ export type Telephone = InputComponent<WhisperComponentType.Telephone, string>;
 
 export type TextInput = InputComponent<WhisperComponentType.TextInput, string>;
 
+export type Typography = WhisperComponent<WhisperComponentType.Typography> & {
+  align?: Align;
+  body: string;
+  paragraph?: boolean;
+  tooltip?: string;
+  variant?: Variant;
+};
+
 export type DateTimeInput = InputComponent<
   WhisperComponentType.DateTimeInput,
   Date | string,
@@ -610,7 +665,13 @@ export type MarkSeries = Series<SeriesType.Mark> & {
   size?: number;
 };
 
-export type VerticalBarSeries = Series<SeriesType.Bar>;
+export type VerticalBarSeries = Series<SeriesType.VerticalBar> & {
+  /**
+   * Sets the width of the bars
+   * @default 1
+   */
+  barWidth?: number;
+};
 
 /**
  * @beta released to third-party developers experimentally for the purpose of collecting feedback
@@ -677,9 +738,16 @@ export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
    */
   xAxisLabel?: string;
   /**
-   * Define custom tick labels on the X axis
+   * Sets left and right padding for the X axis as a percentage of the chart width.
+   * Half of the value is applied to each side.
+   * @default 0
    */
-  xAxisTicks?: string[];
+  xAxisPadding?: number;
+  /**
+   * Sets the {@link AxisScale} of the X axis
+   * @default AxisScale.Linear
+   */
+  xAxisScale?: AxisScale;
   /**
    * Define the total number of ticks on the X axis
    */
@@ -704,9 +772,16 @@ export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
    */
   yAxisLabel?: string;
   /**
-   * Define custom tick labels on the Y axis
+   * Sets top and bottom padding for the Y axis as a percentage of the chart width.
+   * Half of the value is applied to each side.
+   * @default 0
    */
-  yAxisTicks?: string[];
+  yAxisPadding?: number;
+  /**
+   * Sets the {@link AxisScale} of the Y axis
+   * @default AxisScale.Linear
+   */
+  yAxisScale?: AxisScale;
   /**
    * Define the total number of ticks on the Y axis
    */
@@ -801,6 +876,82 @@ export type DropZone = WhisperComponent<WhisperComponentType.DropZone> & {
    * currently does not have selected.
    */
   value?: File[];
+};
+
+export type Rating = WhisperComponent<WhisperComponentType.Rating> & {
+  /**
+   * Value that this input starts at if not provided.
+   */
+  defaultValue?: number;
+  /**
+   * If true, greys out and prevents the value from changing.
+   */
+  disabled?: boolean;
+  /**
+   * The snake case name of the material icon you wish you use for "empty" rating icons
+   *
+   * @default 'star_border'
+   * @example ['star', 'add_circle']
+   */
+  emptyIcon?: string;
+  /**
+   * The hex code for the empty icons.
+   *
+   * @default '#661fff'
+   */
+  emptyIconColor?: string;
+  /**
+   * The variant type for the empty icons.
+   */
+  emptyIconVariant?: IconVariant;
+  /**
+   * The snake case name of the material icon you wish you use for "filled" rating icons
+   *
+   * @default 'star'
+   * @example ['star', 'add_circle']
+   */
+  icon?: string;
+  /**
+   * The hex code for the filled icons.
+   *
+   * @default '#661fff'
+   */
+  iconColor?: string;
+  /**
+   * The variant type for the filled icons.
+   */
+  iconVariant?: IconVariant;
+  /**
+   * The maximum rating that someone can give.
+   */
+  max?: number;
+  /**
+   * The "name" attribute used in HTML, attached to this input.
+   */
+  name?: string;
+  /**
+   * Function which is triggered whenever the value is changed.
+   */
+  onChange?: WhisperHandlerWithParam<number>;
+  /**
+   * The precision with which someone can provide a rating
+   *
+   * @default 1
+   * @example [1, 0.5]
+   */
+  precision?: number;
+  /**
+   * If true, the rating is read only, and is not editable.
+   */
+  readOnly?: boolean;
+  /**
+   * The size of the icons in the component.
+   */
+  size?: IconSize;
+  /**
+   * If provided, sets the value for the rating.
+   */
+  value?: number;
 };
 
 export type Icon = WhisperComponent<WhisperComponentType.Icon> & {
@@ -914,11 +1065,13 @@ export type ChildComponents =
   | Password
   | Progress
   | RadioGroup
+  | Rating
   | RichTextEditor
   | Select
   | SectionTitle
   | Telephone
-  | TextInput;
+  | TextInput
+  | Typography;
 
 export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   children: Array<ChildComponents>;

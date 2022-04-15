@@ -1,6 +1,5 @@
 import TestGroup from '../testingFixtures/testGroup';
 import { LoopTest } from '../testingFixtures/loopTest';
-
 import * as screenTests from '../tests/screen';
 
 export const screenTestGroup = (): TestGroup =>
@@ -40,5 +39,11 @@ export const screenTestGroup = (): TestGroup =>
       screenTests.testScreenMonitor,
       10000,
       'Please check if New Text and Old Text are different.',
+    ),
+    new LoopTest(
+      'Screen Aptitude - OCR FileEncoded Test',
+      screenTests.testOcrFileEncoded,
+      10000,
+      'Please check if the ocr result is correct.',
     ),
   ]);

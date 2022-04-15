@@ -2,6 +2,8 @@ import { ReactNode } from 'react';
 import * as Whisper from '../types';
 import { WhisperHandler } from '../types';
 
+export * from '../types';
+
 /**
  * @internal
  */
@@ -41,11 +43,13 @@ type PaginationProps = ComponentProps<Whisper.Pagination>;
 type PasswordProps = ComponentProps<Whisper.Password>;
 type ProgressProps = ComponentProps<Whisper.Progress>;
 type RadioGroupProps = ComponentProps<Whisper.RadioGroup>;
+type RatingProps = ComponentProps<Whisper.Rating>;
 type RichTextEditorProps = ComponentProps<Whisper.RichTextEditor>;
 type SelectProps = ComponentProps<Whisper.Select>;
 type SectionTitleProps = ComponentProps<Whisper.SectionTitle>;
 type TelephoneProps = ComponentProps<Whisper.Telephone>;
 type TextInputProps = ComponentProps<Whisper.TextInput>;
+type TypographyProps = ComponentProps<Whisper.Typography>;
 type WhisperProps = {
   children: ReactNode;
   label: string;
@@ -75,11 +79,13 @@ export interface HelpsComponents {
   'oh-password': PasswordProps;
   'oh-progress': ProgressProps;
   'oh-radio-group': RadioGroupProps;
+  'oh-rating': RatingProps;
   'oh-rich-text-editor': RichTextEditorProps;
   'oh-select': SelectProps;
   'oh-section-title': SectionTitleProps;
   'oh-telephone': TelephoneProps;
   'oh-text-input': TextInputProps;
+  'oh-typography': TypographyProps;
   'oh-whisper': WhisperProps;
 }
 

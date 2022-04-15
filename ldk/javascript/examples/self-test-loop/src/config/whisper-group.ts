@@ -318,6 +318,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Does the Progress Indicator display with percentage?',
     ),
     new LoopTest(
+      'Whisper Aptitude - Rating Test',
+      whisperTests.testRating,
+      10000,
+      'Tests for the Rating component',
+    ),
+    new LoopTest(
       'Whisper Aptitude - RichTextEditor',
       whisperTests.testRichTextEditor,
       30000,
@@ -364,6 +370,12 @@ export const whisperTestGroup = (): TestGroup =>
       whisperTests.testTooltips,
       30000,
       `Hover on each component to see a tooltip`,
+    ),
+    new LoopTest(
+      'Whisper Aptitude - Typography Test',
+      whisperTests.testTypography,
+      30000,
+      `check to see if element rendered correctly`,
     ),
     new LoopTest(
       'Whisper Aptitude - Width',

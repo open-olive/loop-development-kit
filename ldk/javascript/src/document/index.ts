@@ -4,6 +4,8 @@ import * as mapper from '../utils/mapper';
 // import * as screen from '../screen';
 import { OCRResult } from '../screen/types';
 
+export * from './types';
+
 /**
  *  The Document aptitude allows Loops to enable basic parsing of files including XLSX.
  */

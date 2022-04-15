@@ -1,6 +1,8 @@
 /* eslint-disable no-async-promise-executor */
-import { screen, whisper, window } from '@oliveai/ldk';
+import { network, screen, whisper, window } from '@oliveai/ldk';
 import { OcrEvent } from '@oliveai/ldk/dist/screen/types';
+import { Buffer } from 'buffer';
+
 export * from './hashTests';
 
 const writeWhisper = (label: string, body: string) =>
@@ -29,6 +31,62 @@ export const testOCR = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       await writeWhisper(`OCR`, `Starting OCR app`);
+      await sleep(10000);
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });
+let branch = 'develop';
+
+const writeWhisperFileEncoded = (label: string, body: string) => {
+  whisper.create({
+    label,
+    onClose: () => {
+      console.log('Closed Whisper');
+    },
+    components: [
+      { body, type: whisper.WhisperComponentType.Markdown },
+      {
+        type: whisper.WhisperComponentType.Button,
+        label: 'Perform testOcrFileEncoded',
+        onClick: (error, incomingWhisper) => {
+          incomingWhisper.close((e) => console.error(e));
+          performOcrFileEncoded();
+        },
+      },
+    ],
+  });
+};
+
+const writeWhisperFileEncodedResult = (label: string, body: string) => {
+  whisper.create({
+    label,
+    onClose: () => {
+      console.log('Closed Whisper');
+    },
+    components: [
+      { body, type: whisper.WhisperComponentType.Markdown },
+      {
+        body: `![image](https://raw.githubusercontent.com/open-olive/loop-development-kit/${branch}/ldk/javascript/examples/self-test-loop/static/testocr.png)`,
+        type: whisper.WhisperComponentType.Markdown,
+      },
+      {
+        type: whisper.WhisperComponentType.Button,
+        label: 'Perform testOcrFileEncoded',
+        onClick: (error, incomingWhisper) => {
+          incomingWhisper.close((e) => console.error(e));
+          performOcrFileEncoded();
+        },
+      },
+    ],
+  });
+};
+
+export const testOcrFileEncoded = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await writeWhisperFileEncoded('OcrFileEncoded', 'Starting testOcrFileEncoded');
       await sleep(10000);
     } catch (e) {
       console.error(e);
@@ -74,6 +132,39 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export async function performOcrFileEncoded() {
+  let request = await network.httpRequest({
+    url: `https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/testocr.png`,
+    method: 'GET',
+  });
+  // Above URL is used after this feature is finished and merged in
+  // Before PR is merged and branch is deleted, use the feature branch
+  // Can delete this block after merge
+  if (request.statusCode === 404) {
+    request = await network.httpRequest({
+      url: `https://github.com/open-olive/loop-development-kit/raw/HELPS-3796-ocrFileEncoded/ldk/javascript/examples/self-test-loop/static/testocr.png`,
+      method: 'GET',
+    });
+    branch = 'HELPS-3796-ocrFileEncoded';
+  }
+
+  const encodedImage = Buffer.from(request.body).toString('base64');
+  // const encodedImage = base64.bytesToBase64(request.body);
+  console.log('enCodedImage: ', encodedImage);
+  screen
+    .ocrFileEncoded(encodedImage)
+    .then((result) => {
+      console.log('OCR Results: ');
+      console.log(JSON.stringify(result));
+      const concatResult = result.map((res) => res.text).join(' ');
+      console.log('concatResult', concatResult);
+      writeWhisperFileEncodedResult('result', concatResult);
+    })
+    .catch((error) => {
+      console.log('error: ');
+      console.log(error);
+    });
+}
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function performOcr() {
   await sleep(3000); // sleeping for 3s to switch tabs
@@ -100,8 +191,7 @@ export async function performOcr() {
         console.log(JSON.stringify(result));
         const concatResult = result.map((res) => res.text).join(' ');
         console.log('concatResult', concatResult);
-        console.log('result: ', rebuildImage(result));
-        writeWhisper(`result`, rebuildImage(result));
+        writeWhisper('result', concatResult);
       })
       .catch((error) => {
         console.log('error: ');

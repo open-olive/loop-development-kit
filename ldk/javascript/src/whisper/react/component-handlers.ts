@@ -135,6 +135,10 @@ const radioGroupHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.RadioGroup,
   whisperTagType: 'oh-radio-group',
 };
+const ratingHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Rating,
+  whisperTagType: 'oh-rating',
+};
 const richTextEditorHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.RichTextEditor,
   whisperTagType: 'oh-rich-text-editor',
@@ -154,6 +158,10 @@ const telephoneHandler: ComponentSpecificHandler = {
 const textInputHandler: ComponentSpecificHandler = {
   helpsType: WhisperComponentType.TextInput,
   whisperTagType: 'oh-text-input',
+};
+const typographyHandler: ComponentSpecificHandler = {
+  helpsType: WhisperComponentType.Typography,
+  whisperTagType: 'oh-typography',
 };
 const whisperHandler: ComponentSpecificHandler = {
   appendInitialChild: createAppendFunction('components'),
@@ -214,6 +222,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return progressHandler;
     case WhisperComponentType.RadioGroup:
       return radioGroupHandler;
+    case WhisperComponentType.Rating:
+      return ratingHandler;
     case WhisperComponentType.RichTextEditor:
       return richTextEditorHandler;
     case WhisperComponentType.Select:
@@ -222,6 +232,8 @@ export function getHandlerByHelpsType(type: ComponentTypeWithWhisper): Component
       return telephoneHandler;
     case WhisperComponentType.TextInput:
       return textInputHandler;
+    case WhisperComponentType.Typography:
+      return typographyHandler;
     case WhisperComponentType.SectionTitle:
       return sectionTitleHandler;
     default:
@@ -278,6 +290,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return progressHandler;
     case 'oh-radio-group':
       return radioGroupHandler;
+    case 'oh-rating':
+      return ratingHandler;
     case 'oh-rich-text-editor':
       return richTextEditorHandler;
     case 'oh-select':
@@ -288,6 +302,8 @@ export function getHandlerByTagType(tagType: keyof HelpsComponents): ComponentSp
       return telephoneHandler;
     case 'oh-text-input':
       return textInputHandler;
+    case 'oh-typography':
+      return typographyHandler;
     case 'oh-whisper':
       return whisperHandler;
     default:
