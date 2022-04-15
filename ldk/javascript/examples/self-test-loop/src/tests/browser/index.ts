@@ -159,12 +159,13 @@ export const testTabChangeEvent = (): Promise<boolean> =>
           listener.cancel();
           resolve(true);
         }
-
-        setTimeout(() => {
-          // After 3 seconds, if tabs havent been switched throw error
-          reject(new Error('The text selection in your browser does not match the test text'));
-        }, 3000);
       });
+
+      setTimeout(() => {
+        listener.cancel();
+        // After 3 seconds, if tabs havent been switched throw error
+        reject(new Error('Tab change event took longer than allotted time'));
+      }, 3000);
     } catch (error) {
       console.error(error);
       reject(error);
