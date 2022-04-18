@@ -1,6 +1,6 @@
-import { clipboard, whisper } from '@oliveai/ldk';
+import { clipboard, ui, whisper } from '@oliveai/ldk';
 
-function clipboardListenAndWhisper() {
+async function clipboardListenAndWhisper() {
   clipboard.listen(true, (incomingText) => {
     whisper.create({
       label: 'Clipboard Text Whisper',
@@ -17,4 +17,4 @@ function clipboardListenAndWhisper() {
   });
 }
 
-clipboardListenAndWhisper();
+ui.loopOpenHandler(() => clipboardListenAndWhisper());
