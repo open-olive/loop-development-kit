@@ -1,5 +1,7 @@
 import { mocked } from 'ts-jest/utils';
 import * as document from '.';
+import { PDFOutputWithOcrResult } from '.';
+import { OCRResult } from '../screen';
 import { PDFContentType, Workbook } from './types';
 
 describe('Document', () => {
@@ -8,6 +10,20 @@ describe('Document', () => {
       xlsxDecode: jest.fn(),
       xlsxEncode: jest.fn(),
       readPDF: jest.fn(),
+    };
+    oliveHelps.screen = {
+      ocr: jest.fn(),
+      averageHash: jest.fn(),
+      differenceHash: jest.fn(),
+      perceptionHash: jest.fn(),
+      compareHashes: jest.fn(),
+      listenAverageHash: jest.fn(),
+      listenDifferenceHash: jest.fn(),
+      listenPerceptionHash: jest.fn(),
+      listenPixelDiff: jest.fn(),
+      listenPixelDiffActiveWindow: jest.fn(),
+      listenOcrMonitor: jest.fn(),
+      ocrFileEncoded: jest.fn(),
     };
   });
 
@@ -115,28 +131,62 @@ describe('Document', () => {
       return expect(actual).resolves.toBe(expected);
     });
   });
-});
 
-describe('readPDFWithOcr', () => {
-  it('parses a PDF', () => {
-    const pdfFile = new Uint8Array();
-    const expected = {
-      '1': {
-        content: [
-          {
-            value: 'test',
-            type: PDFContentType.Text,
-          },
-        ],
-      },
-    };
+  describe('readPDFWithOcr', () => {
+    it('returns a pdfoutputwithocr promise result ', () => {
+      const ocrResult: OCRResult[] = [
+        {
+          level: 1,
+          page_num: 1,
+          block_num: 1,
+          par_num: 1,
+          line_num: 1,
+          word_num: 1,
+          left: 1,
+          top: 1,
+          width: 1,
+          height: 1,
+          conf: 1,
+          text: '',
+        },
+      ];
 
-    mocked(oliveHelps.document.readPDF).mockImplementation((data, callback) => {
-      callback(undefined, expected);
+      const pdfFile = new Uint8Array();
+      const pdfoutput = {
+        '1': {
+          content: [
+            {
+              value: 'test',
+              type: PDFContentType.Text,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
+          ],
+        },
+      };
+      const OCRResults = {
+        '1': {
+          ocrResult,
+        },
+      };
+
+      const expected: PDFOutputWithOcrResult = {
+        ocrResults: OCRResults,
+        pdfOutput: pdfoutput,
+      };
+
+      mocked(oliveHelps.document.readPDF).mockImplementation((data, callback) => {
+        callback(undefined, pdfoutput);
+      });
+      mocked(oliveHelps.screen.ocrFileEncoded).mockImplementation((data, callback) => {
+        callback(undefined, ocrResult);
+      });
+
+      const actual = document.readPDFWithOcr(pdfFile);
+      console.log(actual);
+      return expect(actual).resolves.toStrictEqual(expected);
     });
-
-    const actual = document.readPDFWithOcr(pdfFile);
-
-    return expect(actual).resolves.toBe(expected);
   });
 });

@@ -138,13 +138,9 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
         });
         branch = 'HELPS-3035-readpdf';
       }
-      //let reader = new FileReader();
-      //let file = reader.readAsArrayBuffer()
 
       const decoded = await document.readPDFWithOcr(request.body);
 
-      console.log(`readPDFWithOCR result`);
-      console.log(JSON.stringify(decoded));
       // Sometimes the Core returns the pages out of order, so this is to sort it
       const pdfSort: PDFOutput = {};
       for (let i = 1; i < Object.keys(decoded.pdfOutput).length + 1; i += 1) {
@@ -152,19 +148,16 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
       }
       const OCRResults = decoded.ocrResults;
       let ocrImageText = '';
-      console.log('ocr results =======');
-      console.log(OCRResults);
-      /* Object.entries(OCRResults).forEach(([page, { ocrResult }]) =>{
-        ocrImageText+= `# Page ${page}\n`;
+      Object.entries(OCRResults).forEach(([page, { ocrResult }]) => {
+        ocrImageText += `# Page ${page}\n`;
 
         const concatResult = ocrResult.map((res) => res.text).join(' ');
         ocrImageText += concatResult;
         ocrImageText += '\n\n';
-      }); */
+      });
 
       let pdfParse = '';
       let pdfImage = '';
-      console.log('process data');
       Object.entries(pdfSort).forEach(([page, { content }]) => {
         pdfParse += `# Page ${page}\n`;
         console.log(pdfParse);
@@ -184,7 +177,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
       });
 
       const DocumentWhisper = ({ parsedText }: { parsedText: string }) => (
-        <oh-whisper label="PDF Aptitude - Read test" onClose={() => undefined}>
+        <oh-whisper label="PDF Aptitude - Read test with OCR Image" onClose={() => undefined}>
           <oh-markdown
             body={
               'This test should be automatically downloading this PDF and parsing only \
@@ -198,6 +191,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
           <oh-markdown body="# Image contents from PDF" />
           <oh-markdown body={`${pdfImage}`} />
           <oh-markdown body="# OCR result for Image contents from PDF" />
+          <oh-markdown body={'Below is the text result for Image contents from PDF'} />
           <oh-markdown body={`${ocrImageText}`} />
           <oh-box
             direction={whisper.Direction.Horizontal}

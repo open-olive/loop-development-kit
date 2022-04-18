@@ -84,12 +84,6 @@ describe('screen', () => {
   });
   describe('ocrFileEncoded', () => {
     it('return a promise of OCRResult[]', () => {
-      const ocrCoordinates: OCRCoordinates = {
-        top: 1,
-        left: 1,
-        width: 1,
-        height: 1,
-      };
       const ocrResult: OCRResult[] = [
         {
           level: 1,
@@ -106,8 +100,8 @@ describe('screen', () => {
           text: '',
         },
       ];
-      mocked(oliveHelps.screen.ocrFileEncoded).mockImplementation((ocrCoordinatesParam) => {
-        expect(ocrCoordinatesParam).toEqual(ocrCoordinates);
+      mocked(oliveHelps.screen.ocrFileEncoded).mockImplementation((data, callback) => {
+        callback(undefined, ocrResult);
       });
       const actual = screen.ocrFileEncoded('string');
       expect(actual).resolves.toBe(ocrResult);

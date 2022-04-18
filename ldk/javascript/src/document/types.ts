@@ -19,6 +19,11 @@ export interface Row {
 export interface Cell {
   value: string;
 }
+export interface OCRResults {
+  [key: string]: {
+    ocrResult: OCRResult[];
+  };
+}
 
 export enum PDFContentType {
   Text = 'text',
@@ -37,13 +42,7 @@ export interface PDFOutput {
   };
 }
 
-export interface OCRResults {
-  [key: string]: {
-    ocrResult: OCRResult[];
-  };
-}
-
 export interface PDFOutputWithOcrResult {
-  pdfOutput: PDFOutput;
   ocrResults: OCRResults;
+  pdfOutput: PDFOutput;
 }

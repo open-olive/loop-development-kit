@@ -7,6 +7,4 @@ async function main() {
   console.log('end');
 }
 
-ui.loopOpenHandler(() => {
-  main().catch((e) => console.log('something bad happened :(', e));
-});
+main().catch((e) => console.log('something bad happened :(', e));

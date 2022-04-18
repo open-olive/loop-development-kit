@@ -1,5 +1,5 @@
 import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
-import { Workbook, PDFOutput, PDFOutputWithOcrResult } from './types';
+import { Workbook, PDFOutput, PDFOutputWithOcrResult, OCRResults } from './types';
 import * as mapper from '../utils/mapper';
 
 export * from './types';
@@ -32,7 +32,7 @@ export interface Document {
   /**
    * Take a PDF and return output with ocr result for images
    * @param  {Uint8Array} data
-   * @returns Promise
+   * @returns - A Promise containing PDFOutputWithOcrResult
    */
   readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult>;
 }
@@ -49,21 +49,21 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
   return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.readPDF);
 }
 
-// TODO: Add new function for looper author to extract text from image
 export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult> {
   return new Promise((resolve, reject) => {
     try {
-      oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, pdfOUtput) => {
+      let pdfOutputResult = {};
+      const ocrResults: OCRResults = {};
+      oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, pdfOutput) => {
         if (error) {
           console.error(`Received error on result: ${error.message}`);
           reject(error);
           return;
         }
-        console.log(pdfOUtput);
-        const result = {} as PDFOutputWithOcrResult;
-        result.pdfOutput = pdfOUtput;
-        if (pdfOUtput != null) {
-          Object.entries(pdfOUtput).forEach(([page, { content }]) => {
+        console.log(pdfOutput);
+        pdfOutputResult = pdfOutput;
+        if (pdfOutput != null) {
+          Object.entries(pdfOutput).forEach(([page, { content }]) => {
             content.forEach((item) => {
               if (item.type === 'photo') {
                 console.log(item.value);
@@ -75,17 +75,19 @@ export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult
                   }
                   console.log('oliveHelps.screen.ocrFileEncoded result');
                   console.log(data);
-                  result.ocrResults[page.toString()] = {
+                  ocrResults[page.toString()] = {
                     ocrResult: ocr,
                   };
+                  const result: PDFOutputWithOcrResult = {
+                    ocrResults,
+                    pdfOutput: pdfOutputResult,
+                  };
+                  resolve(result);
                 });
-                // new screen functionality
-                // oliveHelps.screen.ocrFileEncoded(item.value, (err, data) => {});
               }
             });
           });
         }
-        resolve(result);
       });
     } catch (error) {
       console.error(`Received error calling service ${(error as Error).message}`);
