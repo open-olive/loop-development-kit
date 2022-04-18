@@ -13,7 +13,8 @@
   "license": "ISC",
   "ldk": {
     "permissions": {
-      "whisper": {}
+      "whisper": {},
+      "ui": {}
     }
   },
   "devDependencies": {

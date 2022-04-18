@@ -1,4 +1,5 @@
 import { clipboard, whisper } from '@oliveai/ldk';
+import { ui } from '../../dist/index';
 
 const clipboardListenAndWhisper = () => {
   clipboard.listen(true, (incomingText: string) => {
@@ -17,4 +18,4 @@ const clipboardListenAndWhisper = () => {
   });
 };
 
-clipboardListenAndWhisper();
+ui.loopOpenHandler(() => clipboardListenAndWhisper());
