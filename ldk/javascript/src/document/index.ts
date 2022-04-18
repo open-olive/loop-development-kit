@@ -36,7 +36,7 @@ export interface Document {
    * @param  {Uint8Array} data
    * @returns Promise
    */
-   readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult>;
+  readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult>;
 }
 
 export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
@@ -53,26 +53,42 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
 
 // TODO: Add new function for looper author to extract text from image
 export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, value) => {
+       oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, pdfOUtput) => {
         if (error) {
           console.error(`Received error on result: ${error.message}`);
           reject(error);
           return;
-        }
+        } 
+        console.log(pdfOUtput);
         let result = {} as PDFOutputWithOcrResult;
-        result.pdfOutput = value;
-        for (const pageContent of Object.values(value)) {
-          pageContent.content.forEach((item) => {
-            if (item.type === 'photo') {
-              // new screen functionality
-              // oliveHelps.screen.ocrFileEncoded(item.value, (err, data) => {});
-            }
+        result.pdfOutput = pdfOUtput;
+        if (pdfOUtput != null){
+          Object.entries(pdfOUtput).forEach(([page, { content }]) => {
+            content.forEach((item) => {
+              if (item.type === 'photo') {
+                console.log(item.value);
+                oliveHelps.screen.ocrFileEncoded(item.value, (err, data) => {
+                  if (err) {
+                    console.error(`Received error on result: ${err.message}`);
+                    reject(err);
+                    return;
+                  }
+                  console.log('oliveHelps.screen.ocrFileEncoded result');
+                  console.log(data);
+                  result.ocrResults[page.toString()] = {
+                    ocrResult: data,
+                  };
+                });
+                // new screen functionality
+                // oliveHelps.screen.ocrFileEncoded(item.value, (err, data) => {});
+              }
+            });
           });
         }
         resolve(result);
-      });
+       });
     } catch (error) {
       console.error(`Received error calling service ${(error as Error).message}`);
       reject(error);

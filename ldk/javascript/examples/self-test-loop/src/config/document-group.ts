@@ -20,7 +20,7 @@ export const documentTestGroup = (): TestGroup =>
 
     new LoopTest(
       'PDF Aptitude - Read with Image test',
-      documentTests.testDocumentReadPDFWithImage,
+      documentTests.testDocumentReadPDFWithOcrImage,
       5000,
       'Reads the text content from a PDF. Should succeed.',
     ),

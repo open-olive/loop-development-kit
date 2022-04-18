@@ -1,3 +1,4 @@
+import { ui } from '../../../dist';
 import SelfTestLoop from './selfTest';
 
 async function main() {
@@ -6,4 +7,6 @@ async function main() {
   console.log('end');
 }
 
-main().catch((e) => console.log('something bad happened :(', e));
+ui.loopOpenHandler(() => {
+  main().catch((e) => console.log('something bad happened :(', e));
+});

@@ -119,7 +119,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
     }
   });
 
-  export const testDocumentReadPDFWithImage = (): Promise<boolean> =>
+export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
@@ -138,15 +138,29 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
         });
         branch = 'HELPS-3035-readpdf';
       }
+      //let reader = new FileReader();
+      //let file = reader.readAsArrayBuffer()
 
       const decoded = await document.readPDFWithOcr(request.body);
 
-      // console.log(JSON.stringify(decoded))
+      console.log(`readPDFWithOCR result`);
+      console.log(JSON.stringify(decoded));
       // Sometimes the Core returns the pages out of order, so this is to sort it
       const pdfSort: PDFOutput = {};
       for (let i = 1; i < Object.keys(decoded.pdfOutput).length + 1; i += 1) {
         pdfSort[i] = { ...decoded.pdfOutput[i] };
       }
+      const OCRResults = decoded.ocrResults;
+      let ocrImageText = '';
+      console.log('ocr results =======');
+      console.log(OCRResults);
+      /* Object.entries(OCRResults).forEach(([page, { ocrResult }]) =>{
+        ocrImageText+= `# Page ${page}\n`;
+
+        const concatResult = ocrResult.map((res) => res.text).join(' ');
+        ocrImageText += concatResult;
+        ocrImageText += '\n\n';
+      }); */
 
       let pdfParse = '';
       let pdfImage = '';
@@ -183,6 +197,8 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
           <oh-markdown body={parsedText} />
           <oh-markdown body="# Image contents from PDF" />
           <oh-markdown body={`${pdfImage}`} />
+          <oh-markdown body="# OCR result for Image contents from PDF" />
+          <oh-markdown body={`${ocrImageText}`} />
           <oh-box
             direction={whisper.Direction.Horizontal}
             justifyContent={whisper.JustifyContent.SpaceEvenly}
@@ -193,7 +209,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
         </oh-whisper>
       );
 
-      ReactWhisper.renderNewWhisper(<DocumentWhisper parsedText={pdfParse} />); 
+      ReactWhisper.renderNewWhisper(<DocumentWhisper parsedText={pdfParse} />);
     } catch (error) {
       console.error(error);
       reject(error);
