@@ -1,8 +1,6 @@
 import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
 import { Workbook, PDFOutput, PDFOutputWithOcrResult } from './types';
 import * as mapper from '../utils/mapper';
-// import * as screen from '../screen';
-import { OCRResult } from '../screen/types';
 
 export * from './types';
 
@@ -53,23 +51,23 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
 
 // TODO: Add new function for looper author to extract text from image
 export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult> {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
-       oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, pdfOUtput) => {
+      oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, pdfOUtput) => {
         if (error) {
           console.error(`Received error on result: ${error.message}`);
           reject(error);
           return;
-        } 
+        }
         console.log(pdfOUtput);
-        let result = {} as PDFOutputWithOcrResult;
+        const result = {} as PDFOutputWithOcrResult;
         result.pdfOutput = pdfOUtput;
-        if (pdfOUtput != null){
+        if (pdfOUtput != null) {
           Object.entries(pdfOUtput).forEach(([page, { content }]) => {
             content.forEach((item) => {
               if (item.type === 'photo') {
                 console.log(item.value);
-                oliveHelps.screen.ocrFileEncoded(item.value, (err, data) => {
+                oliveHelps.screen.ocrFileEncoded(item.value, (err, ocr) => {
                   if (err) {
                     console.error(`Received error on result: ${err.message}`);
                     reject(err);
@@ -78,7 +76,7 @@ export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult
                   console.log('oliveHelps.screen.ocrFileEncoded result');
                   console.log(data);
                   result.ocrResults[page.toString()] = {
-                    ocrResult: data,
+                    ocrResult: ocr,
                   };
                 });
                 // new screen functionality
@@ -88,7 +86,7 @@ export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult
           });
         }
         resolve(result);
-       });
+      });
     } catch (error) {
       console.error(`Received error calling service ${(error as Error).message}`);
       reject(error);

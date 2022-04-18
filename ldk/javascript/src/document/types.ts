@@ -1,3 +1,5 @@
+import { OCRResult } from '../screen';
+
 export interface Workbook {
   worksheets: Worksheet[];
 }
@@ -33,21 +35,6 @@ export interface PDFOutput {
   [key: string]: {
     content: PDFValue[];
   };
-}
-
-export interface OCRResult {
-  level: number;
-  page_num: number;
-  block_num: number;
-  par_num: number;
-  line_num: number;
-  word_num: number;
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-  conf: number;
-  text: string;
 }
 
 export interface OCRResults {
