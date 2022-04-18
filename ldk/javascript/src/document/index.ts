@@ -66,15 +66,12 @@ export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult
           Object.entries(pdfOutput).forEach(([page, { content }]) => {
             content.forEach((item) => {
               if (item.type === 'photo') {
-                console.log(item.value);
                 oliveHelps.screen.ocrFileEncoded(item.value, (err, ocr) => {
                   if (err) {
                     console.error(`Received error on result: ${err.message}`);
                     reject(err);
                     return;
                   }
-                  console.log('oliveHelps.screen.ocrFileEncoded result');
-                  console.log(data);
                   ocrResults[page.toString()] = {
                     ocrResult: ocr,
                   };

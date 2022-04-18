@@ -80,8 +80,10 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
           } else if (type === PDFContentType.NewLine) {
             pdfParse += '\n\n';
           } else if (type === PDFContentType.Photo) {
+            pdfImage += `# Page ${page}\n`;
             var imageString = `![](data:image/png;base64,${value})`;
             pdfImage += imageString;
+            pdfImage += '\n';
           }
         });
 
@@ -168,8 +170,10 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
           } else if (type === PDFContentType.NewLine) {
             pdfParse += '\n\n';
           } else if (type === PDFContentType.Photo) {
+            pdfImage += `# Page ${page}\n`;
             var imageString = `![](data:image/png;base64,${value})`;
             pdfImage += imageString;
+            pdfImage += '\n';
           }
         });
 
@@ -192,7 +196,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
           <oh-markdown body={`${pdfImage}`} />
           <oh-markdown body="# OCR result for Image contents from PDF" />
           <oh-markdown body={'Below is the text result for Image contents from PDF'} />
-          <oh-markdown body={`${ocrImageText}`} />
+          <oh-markdown body={ocrImageText} />
           <oh-box
             direction={whisper.Direction.Horizontal}
             justifyContent={whisper.JustifyContent.SpaceEvenly}
