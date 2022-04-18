@@ -5,14 +5,15 @@ declare namespace Browser {
   type NavigationType = NavigationTypeReal | NavigationTypeHistory;
 
   interface Aptitude {
-    listenNavigation: Common.Listenable<NavigationDetails>;
-    listenTextSelection: Common.Listenable<string>;
-    listenNetworkActivity: Common.Listenable<NetworkActivityDetails>;
     openTab: Common.ReadableWithParam<string, number>;
     openWindow: Common.ReadableWithParam<string, number>;
     openTab2: Common.ReadableWithParam<string, PageDetails>;
     openWindow2: Common.ReadableWithParam<string, PageDetails>;
     sourceHTML: Common.ReadableWithParam<string, PageDetails>;
+    listenNavigation: Common.Listenable<NavigationDetails>;
+    listenNetworkActivity: Common.Listenable<NetworkActivityDetails>;
+    listenTabChange: Common.Listenable<TabChangeDetails>;
+    listenTextSelection: Common.Listenable<string>;
     listenUIElement: Common.ListenableWithParam<UIElementArguments, UIElementDetails>;
   }
 
@@ -40,12 +41,19 @@ declare namespace Browser {
     sourceHTML: string;
   }
 
+  interface TabChangeDetails {
+    tabId: number;
+    title: string;
+    url: string;
+    windowId: number;
+  }
+
+  interface UIElementArguments {
+    selector: string;
+    address: string;
+  }
   interface UIElementDetails {
     type: string;
     selector: string;
   }
-}
-interface UIElementArguments {
-  selector: string;
-  address: string;
 }
