@@ -292,15 +292,21 @@ export function mapToInternalChildComponent(
     }
     case WhisperComponentType.ListPair: {
       // eslint-disable-next-line
-      const { onCopy } = component;
-      if (onCopy) {
-        return {
-          ...component,
-          onCopy: (error, param, whisper) => {
-            onCopy(error, param, mapToExternalWhisper(whisper, stateMap));
-          },
-        } as WhisperService.ListPair;
-      }
+      const { onLabelCopy, onValueCopy } = component;
+      return {
+        ...component,
+        onLabelCopy: onLabelCopy
+          ? (error, param, whisper) => {
+              onLabelCopy(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+        onValueCopy: onValueCopy
+          ? (error, param, whisper) => {
+              onValueCopy(error, param, mapToExternalWhisper(whisper, stateMap));
+            }
+          : undefined,
+      } as WhisperService.ListPair;
+
       return component as WhisperService.ListPair;
     }
     case WhisperComponentType.Message: {

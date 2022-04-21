@@ -811,7 +811,8 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
   labelCopyable?: boolean;
   label: string;
-  onCopy?: WhisperHandlerWithParam<string>;
+  onLabelCopy?: WhisperHandlerWithParam<string>;
+  onValueCopy?: WhisperHandlerWithParam<string>;
   value: string;
   style: Urgency;
 };

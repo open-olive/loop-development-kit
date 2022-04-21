@@ -710,7 +710,13 @@ export const testListPairWithCopyableValue = (): Promise<boolean> =>
         {
           type: WhisperComponentType.ListPair,
           label: 'I am Mr. Label',
+          onLabelCopy: () => {
+            console.log('onLabelCopy called');
+          },
           value: copyableText,
+          onValueCopy: () => {
+            console.log('onValueCopy called');
+          },
           copyable: true,
           style: Urgency.None,
         },
@@ -745,9 +751,9 @@ export const testListPairWithCopyableLabel = (): Promise<boolean> =>
       components: [
         {
           type: WhisperComponentType.ListPair,
-          label: copyableText,
+          label: 'ListPair test.',
           value: 'I am Mr. Value',
-          labelCopyable: true,
+          labelCopyable: false,
           copyable: false,
           style: Urgency.None,
         },
@@ -2140,7 +2146,7 @@ export const testOnCopy = (): Promise<boolean> =>
           value: 'Click here to test ListPair',
           copyable: true,
           style: Urgency.None,
-          onCopy: (error, type) => {
+          onValueCopy: (error, type) => {
             passed[1] = true;
 
             if (passed.every(checkTrue)) {
