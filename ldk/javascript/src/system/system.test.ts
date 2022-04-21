@@ -5,6 +5,7 @@ describe('System', () => {
   beforeEach(() => {
     oliveHelps.system = {
       operatingSystem: jest.fn(),
+      getEnvironment: jest.fn(),
     };
   });
 
@@ -28,6 +29,36 @@ describe('System', () => {
       });
 
       const actual = system.operatingSystem();
+
+      return expect(actual).rejects.toBe(exception);
+    });
+  });
+
+  describe('getEnvironment', () => {
+    it('returns a promise with the host environment', () => {
+      const environment = {
+        osVersion: 'os',
+        oliveHelpsVersion: 'olive-helps-version',
+        loopVersion: 'loop-version',
+      };
+      mocked(oliveHelps.system.getEnvironment).mockImplementation((callback) =>
+        callback(undefined, environment),
+      );
+
+      const actual = system.getEnvironment();
+
+      expect(oliveHelps.system.getEnvironment).toHaveBeenCalledWith(expect.any(Function));
+
+      return expect(actual).resolves.toBe(environment);
+    });
+
+    it('returns a rejected promise', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.system.getEnvironment).mockImplementation(() => {
+        throw exception;
+      });
+
+      const actual = system.getEnvironment();
 
       return expect(actual).rejects.toBe(exception);
     });
