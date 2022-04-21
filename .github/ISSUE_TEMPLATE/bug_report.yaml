@@ -47,5 +47,5 @@ body:
       label: Code of Conduct
       description: By submitting this issue, you agree that you are not submitting any PHI or PII and that Olive is not liable for any personal or protected information that you submit.
       options:
-        - label: I agree
+        - label: I agree to these terms
           required: true
