@@ -40,7 +40,8 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: Additional context/screenshots
+      value: |
+      Additional context/screenshots
   - type: checkboxes
     id: terms
     attributes:
