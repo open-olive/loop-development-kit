@@ -1,0 +1,51 @@
+name: Bug Report
+description: Create a report to help us improve
+title: "[BUG]: "
+labels: ["Status: Needs Investigation", "Type: Bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+    validations:
+      required: true
+  - type: input
+    id: oh-version
+    attributes:
+      label: Olive Helps Version
+      description: What version of Olive Helps are you running?
+    validations:
+      required: true
+  - type: input
+    id: ldk-version
+    attributes:
+      label: LDK Version
+      description: What version of the LDK are you using?
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: Operating System
+      description: What operating system and version are you running?
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: Additional context/screenshots
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree that you are not submitting any PHI or PII and that Olive is not liable for any personal or protected information that you submit.
+      options:
+        - label: I agree
+          required: true
