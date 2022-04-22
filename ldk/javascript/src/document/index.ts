@@ -60,8 +60,9 @@ export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutput> {
           reject(error);
           return;
         }
-        var pdfOutputResult: PDFOutput = {};
+        const pdfOutputResult: PDFOutput = {};
         if (pdfOutput != null) {
+          // eslint-disable-next-line no-restricted-syntax
           for (const [page, { content }] of Object.entries(pdfOutput)) {
             const promises: Promise<OCRResult[]>[] = [];
             const photoContents = content.filter((item) => item.type === PDFContentType.Photo);
@@ -70,10 +71,11 @@ export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutput> {
               promises.push(ocr);
             });
             const testcontent: PDFValue[] = [];
-            var results = await Promise.all(promises);
+            // eslint-disable-next-line no-await-in-loop
+            const results = await Promise.all(promises);
             results.forEach((value) => {
               const concatResult = value.map((res) => res.text).join(' ');
-              var imageText: PDFValue = {
+              const imageText: PDFValue = {
                 type: PDFContentType.PhotoText,
                 value: concatResult,
               };
@@ -84,7 +86,7 @@ export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutput> {
           }
           resolve(pdfOutputResult);
         } else {
-          reject('ReadPDF returns empty output');
+          reject(new Error('ReadPDF returns empty output'));
         }
       });
     } catch (error) {

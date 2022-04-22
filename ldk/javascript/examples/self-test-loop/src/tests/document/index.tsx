@@ -45,7 +45,8 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
-        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        url:
+          'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
         method: 'GET',
       });
       let branch = 'develop';
@@ -55,7 +56,8 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       // Can delete this block after merge
       if (request.statusCode === 404) {
         request = await network.httpRequest({
-          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+          url:
+            'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
           method: 'GET',
         });
         branch = 'HELPS-3035-readpdf';
@@ -81,7 +83,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
             pdfParse += '\n\n';
           } else if (type === PDFContentType.Photo) {
             pdfImage += `# Page ${page}\n`;
-            var imageString = `![](data:image/png;base64,${value})`;
+            const imageString = `![](data:image/png;base64,${value})`;
             pdfImage += imageString;
             pdfImage += '\n';
           }
@@ -125,7 +127,8 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
-        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        url:
+          'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
         method: 'GET',
       });
       let branch = 'develop';
@@ -135,13 +138,16 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
       // Can delete this block after merge
       if (request.statusCode === 404) {
         request = await network.httpRequest({
-          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+          url:
+            'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
           method: 'GET',
         });
         branch = 'HELPS-3035-readpdf';
       }
 
       const decoded = await document.readPDFWithOcr(request.body);
+
+      console.log('pdf output ==> ', decoded);
 
       // Sometimes the Core returns the pages out of order, so this is to sort it
       const pdfSort: PDFOutput = {};
@@ -162,10 +168,10 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
             pdfParse += '\n\n';
           } else if (type === PDFContentType.Photo) {
             pdfImage += `# Page ${page}\n`;
-            var imageString = `![](data:image/png;base64,${value})`;
+            const imageString = `![](data:image/png;base64,${value})`;
             pdfImage += imageString;
             pdfImage += '\n';
-          } else if (type == PDFContentType.PhotoText) {
+          } else if (type === PDFContentType.PhotoText) {
             ocrImageText += `# Page ${page}\n`;
             console.log('image text');
             console.log(value);
