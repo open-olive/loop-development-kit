@@ -1,7 +1,9 @@
 import { TextEncoder, TextDecoder } from 'text-encoding-shim';
 import { mocked } from 'ts-jest/utils';
-import * as network from '.';
+import { isVoidExpression } from 'typescript';
 import { stripBom } from './utils';
+import * as network from '.';
+import * as mapper from '../utils/mapper';
 
 jest.mock('text-encoding-shim');
 jest.mock('./utils');
@@ -137,6 +139,245 @@ describe('Network', () => {
 
         return expect(actual).rejects.toBe(exception);
       });
+    });
+  });
+
+  describe('webSocketConnect', () => {
+    it('returns Network.Socket', async () => {
+      const socket: Network.Socket = {
+        writeMessage: () => isVoidExpression,
+        close: () => isVoidExpression,
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: () => isVoidExpression,
+        ping: () => isVoidExpression,
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      expect(s.writeMessage).toBeDefined();
+      expect(s.close).toBeDefined();
+      expect(s.setCloseHandler).toBeDefined();
+      expect(s.ping).toBeDefined();
+      expect(s.setPongHandler).toBeDefined();
+      expect(s.setMessageHandler).toBeDefined();
+    });
+
+    it('writeMessage calls callback with no error', async () => {
+      const socket: Network.Socket = {
+        writeMessage: (_messageType, _data, callback) => {
+          callback(undefined);
+        },
+        close: () => isVoidExpression,
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: () => isVoidExpression,
+        ping: () => isVoidExpression,
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const mock = jest.spyOn(mapper, 'mapToBinaryData');
+      mock.mockReturnValue([]);
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      try {
+        await s.writeMessage('test');
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+    });
+
+    it('writeMessage calls callback with error', async () => {
+      const e = new Error('failed');
+      const socket: Network.Socket = {
+        writeMessage: (_messageType, _data, callback) => {
+          callback(e);
+        },
+        close: () => isVoidExpression,
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: () => isVoidExpression,
+        ping: () => isVoidExpression,
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const mock = jest.spyOn(mapper, 'mapToBinaryData');
+      mock.mockReturnValue([]);
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      try {
+        await s.writeMessage('test');
+      } catch (err: Error | unknown) {
+        expect(err).toStrictEqual(e);
+      }
+    });
+
+    it('close calls callback with error', async () => {
+      const e = new Error('failed');
+      const socket: Network.Socket = {
+        writeMessage: () => isVoidExpression,
+        close: (callback) => {
+          callback(e);
+        },
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: () => isVoidExpression,
+        ping: () => isVoidExpression,
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      try {
+        await s.close();
+      } catch (err: Error | unknown) {
+        expect(err).toStrictEqual(e);
+      }
+    });
+
+    it('setMessageHandler calls handler functions', async () => {
+      const socket: Network.Socket = {
+        writeMessage: () => isVoidExpression,
+        close: () => isVoidExpression,
+        listenMessage: (callback) => {
+          callback(undefined, 1, Buffer.from('test'));
+        },
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: () => isVoidExpression,
+        ping: () => isVoidExpression,
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      const handler = jest.fn();
+      s.setMessageHandler(handler);
+
+      expect(handler).toBeCalled();
+    });
+
+    it('setCloseHandler calls handler functions', async () => {
+      const socket: Network.Socket = {
+        writeMessage: () => isVoidExpression,
+        close: () => isVoidExpression,
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: (callback) => {
+          callback(undefined, 1, 'closed');
+        },
+        onPongHandler: () => isVoidExpression,
+        ping: () => isVoidExpression,
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      const handler = jest.fn();
+      s.setCloseHandler(handler);
+
+      expect(handler).toBeCalled();
+    });
+
+    it('setPongHandler calls handler functions', async () => {
+      const socket: Network.Socket = {
+        writeMessage: () => isVoidExpression,
+        close: () => isVoidExpression,
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: (callback) => {
+          callback(undefined, 'pong');
+        },
+        ping: () => isVoidExpression,
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      const handler = jest.fn();
+      s.setPongHandler(handler);
+
+      expect(handler).toBeCalled();
+    });
+
+    it('ping calls callback with no error', async () => {
+      const socket: Network.Socket = {
+        writeMessage: () => isVoidExpression,
+        close: () => isVoidExpression,
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: () => isVoidExpression,
+        ping: (callback) => {
+          callback(undefined);
+        },
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const mock = jest.spyOn(mapper, 'mapToBinaryData');
+      mock.mockReturnValue([]);
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      try {
+        await s.ping();
+      } catch (err) {
+        expect(err).toBeUndefined();
+      }
+    });
+
+    it('ping calls callback with error', async () => {
+      const e = new Error('failed');
+      const socket: Network.Socket = {
+        writeMessage: () => isVoidExpression,
+        close: () => isVoidExpression,
+        listenMessage: () => isVoidExpression,
+        onCloseHandler: () => isVoidExpression,
+        onPongHandler: () => isVoidExpression,
+        ping: (callback) => {
+          callback(e);
+        },
+      };
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation((_socketConfig, callback) => {
+        callback(undefined, socket);
+      });
+
+      const s = await network.webSocketConnect({} as Network.SocketConfiguration);
+
+      try {
+        await s.ping();
+      } catch (err: Error | unknown) {
+        expect(err).toStrictEqual(e);
+      }
+    });
+
+    it('returns error on webSocketConnect error', async () => {
+      const e = new Error('Failed');
+      mocked(oliveHelps.network.webSocketConnect).mockImplementation(() => {
+        throw e;
+      });
+
+      try {
+        await network.webSocketConnect({} as Network.SocketConfiguration);
+      } catch (err: Error | unknown) {
+        expect(err).toStrictEqual(e);
+      }
     });
   });
 });
