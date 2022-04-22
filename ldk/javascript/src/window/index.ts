@@ -66,6 +66,13 @@ export interface Window {
    * @param callback A function called when any window changes.
    */
   listenAll(callback: (windowEvent: WindowEvent) => void): Promise<Cancellable>;
+
+  /**
+   * Get current active window ID.
+   *
+   * @returns A promise contain active window ID.
+   */
+  getActiveWindowID(): Promise<number>;
 }
 
 export function activeWindow(): Promise<WindowInfo> {
@@ -84,4 +91,8 @@ export function all(): Promise<WindowInfo[]> {
 
 export function listenAll(callback: (windowEvent: WindowEvent) => void): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.window.listenAll);
+}
+
+export function getActiveWindowID(): Promise<number> {
+  return promisify(oliveHelps.window.getActiveWindowID);
 }

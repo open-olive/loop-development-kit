@@ -7,6 +7,8 @@ declare namespace Window {
     all: Common.Readable<WindowInfo[]>;
 
     listenAll: Common.Listenable<WindowEvent>;
+
+    getActiveWindowID: Common.Readable<number>;
   }
 
   interface WindowEvent {
