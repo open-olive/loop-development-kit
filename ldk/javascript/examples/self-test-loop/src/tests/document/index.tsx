@@ -145,25 +145,16 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
 
       // Sometimes the Core returns the pages out of order, so this is to sort it
       const pdfSort: PDFOutput = {};
-      for (let i = 1; i < Object.keys(decoded.pdfOutput).length + 1; i += 1) {
-        pdfSort[i] = { ...decoded.pdfOutput[i] };
+      for (let i = 1; i < Object.keys(decoded).length + 1; i += 1) {
+        pdfSort[i] = { ...decoded[i] };
       }
-      const OCRResults = decoded.ocrResults;
-      let ocrImageText = '';
-      Object.entries(OCRResults).forEach(([page, { ocrResult }]) => {
-        ocrImageText += `# Page ${page}\n`;
-
-        const concatResult = ocrResult.map((res) => res.text).join(' ');
-        ocrImageText += concatResult;
-        ocrImageText += '\n\n';
-      });
 
       let pdfParse = '';
       let pdfImage = '';
+      let ocrImageText = '';
       Object.entries(pdfSort).forEach(([page, { content }]) => {
         pdfParse += `# Page ${page}\n`;
-        console.log(pdfParse);
-        console.log(page);
+
         content.forEach(({ value, type }) => {
           if (type === PDFContentType.Text) {
             pdfParse += value;
@@ -174,6 +165,12 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
             var imageString = `![](data:image/png;base64,${value})`;
             pdfImage += imageString;
             pdfImage += '\n';
+          } else if (type == PDFContentType.PhotoText) {
+            ocrImageText += `# Page ${page}\n`;
+            console.log('image text');
+            console.log(value);
+            ocrImageText += value;
+            ocrImageText += '\n\n';
           }
         });
 

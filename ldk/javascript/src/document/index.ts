@@ -1,6 +1,8 @@
 import { promisifyWithParam, promisifyMappedWithParam } from '../promisify';
-import { Workbook, PDFOutput, PDFOutputWithOcrResult, OCRResults } from './types';
+import { Workbook, PDFOutput, PDFValue, PDFContentType } from './types';
 import * as mapper from '../utils/mapper';
+import * as screen from '../screen';
+import { OCRResult } from '../screen';
 
 export * from './types';
 
@@ -34,7 +36,7 @@ export interface Document {
    * @param  {Uint8Array} data
    * @returns - A Promise containing PDFOutputWithOcrResult
    */
-  readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult>;
+  readPDFWithOcr(data: Uint8Array): Promise<PDFOutput>;
 }
 
 export function xlsxEncode(workbook: Workbook): Promise<Uint8Array> {
@@ -49,41 +51,40 @@ export function readPDF(data: Uint8Array): Promise<PDFOutput> {
   return promisifyWithParam(mapper.mapToBinaryData(data), oliveHelps.document.readPDF);
 }
 
-export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutputWithOcrResult> {
+export function readPDFWithOcr(data: Uint8Array): Promise<PDFOutput> {
   return new Promise((resolve, reject) => {
     try {
-      let pdfOutputResult = {};
-      const ocrResults: OCRResults = {};
-      oliveHelps.document.readPDF(mapper.mapToBinaryData(data), (error, pdfOutput) => {
+      oliveHelps.document.readPDF(mapper.mapToBinaryData(data), async (error, pdfOutput) => {
         if (error) {
           console.error(`Received error on result: ${error.message}`);
           reject(error);
           return;
         }
-        console.log(pdfOutput);
-        pdfOutputResult = pdfOutput;
+        var pdfOutputResult: PDFOutput = {};
         if (pdfOutput != null) {
-          Object.entries(pdfOutput).forEach(([page, { content }]) => {
-            content.forEach((item) => {
-              if (item.type === 'photo') {
-                oliveHelps.screen.ocrFileEncoded(item.value, (err, ocr) => {
-                  if (err) {
-                    console.error(`Received error on result: ${err.message}`);
-                    reject(err);
-                    return;
-                  }
-                  ocrResults[page.toString()] = {
-                    ocrResult: ocr,
-                  };
-                  const result: PDFOutputWithOcrResult = {
-                    ocrResults,
-                    pdfOutput: pdfOutputResult,
-                  };
-                  resolve(result);
-                });
-              }
+          for (const [page, { content }] of Object.entries(pdfOutput)) {
+            const promises: Promise<OCRResult[]>[] = [];
+            const photoContents = content.filter((item) => item.type === PDFContentType.Photo);
+            photoContents.forEach((item) => {
+              const ocr = screen.ocrFileEncoded(item.value);
+              promises.push(ocr);
             });
-          });
+            const testcontent: PDFValue[] = [];
+            var results = await Promise.all(promises);
+            results.forEach((value) => {
+              const concatResult = value.map((res) => res.text).join(' ');
+              var imageText: PDFValue = {
+                type: PDFContentType.PhotoText,
+                value: concatResult,
+              };
+              testcontent.push(imageText);
+            });
+            pdfOutputResult[page] = { content };
+            pdfOutputResult[page].content.push(...testcontent);
+          }
+          resolve(pdfOutputResult);
+        } else {
+          reject('ReadPDF returns empty output');
         }
       });
     } catch (error) {

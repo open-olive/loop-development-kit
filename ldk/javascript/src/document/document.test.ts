@@ -1,7 +1,7 @@
 import { mocked } from 'ts-jest/utils';
 import * as document from '.';
-import { PDFOutputWithOcrResult } from '.';
-import { OCRResult } from '../screen';
+import { PDFOutput } from '.';
+import * as screen from '../screen';
 import { PDFContentType, Workbook } from './types';
 
 describe('Document', () => {
@@ -10,20 +10,6 @@ describe('Document', () => {
       xlsxDecode: jest.fn(),
       xlsxEncode: jest.fn(),
       readPDF: jest.fn(),
-    };
-    oliveHelps.screen = {
-      ocr: jest.fn(),
-      averageHash: jest.fn(),
-      differenceHash: jest.fn(),
-      perceptionHash: jest.fn(),
-      compareHashes: jest.fn(),
-      listenAverageHash: jest.fn(),
-      listenDifferenceHash: jest.fn(),
-      listenPerceptionHash: jest.fn(),
-      listenPixelDiff: jest.fn(),
-      listenPixelDiffActiveWindow: jest.fn(),
-      listenOcrMonitor: jest.fn(),
-      ocrFileEncoded: jest.fn(),
     };
   });
 
@@ -104,7 +90,7 @@ describe('Document', () => {
       });
       const actual = document.xlsxDecode(data);
 
-      return expect(actual).rejects.toBe(exception);
+      expect(actual).rejects.toBe(exception);
     });
   });
 
@@ -128,13 +114,13 @@ describe('Document', () => {
 
       const actual = document.readPDF(pdfFile);
 
-      return expect(actual).resolves.toBe(expected);
+      expect(actual).resolves.toBe(expected);
     });
   });
 
   describe('readPDFWithOcr', () => {
     it('returns a pdfoutputwithocr promise result ', () => {
-      const ocrResult: OCRResult[] = [
+      const ocrResult: screen.OCRResult[] = [
         {
           level: 1,
           page_num: 1,
@@ -147,12 +133,12 @@ describe('Document', () => {
           width: 1,
           height: 1,
           conf: 1,
-          text: '',
+          text: 'test',
         },
       ];
 
       const pdfFile = new Uint8Array();
-      const pdfoutput = {
+      const pdfoutput: PDFOutput = {
         '1': {
           content: [
             {
@@ -163,30 +149,49 @@ describe('Document', () => {
               value: 'test',
               type: PDFContentType.Photo,
             },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
           ],
         },
       };
-      const OCRResults = {
+      const expected = {
         '1': {
-          ocrResult,
+          content: [
+            {
+              value: 'test',
+              type: PDFContentType.Text,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.PhotoText,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.PhotoText,
+            },
+          ],
         },
-      };
-
-      const expected: PDFOutputWithOcrResult = {
-        ocrResults: OCRResults,
-        pdfOutput: pdfoutput,
       };
 
       mocked(oliveHelps.document.readPDF).mockImplementation((data, callback) => {
         callback(undefined, pdfoutput);
       });
-      mocked(oliveHelps.screen.ocrFileEncoded).mockImplementation((data, callback) => {
-        callback(undefined, ocrResult);
-      });
+      const mock = jest.spyOn(screen, 'ocrFileEncoded');
+      mock.mockReturnValue(Promise.resolve(ocrResult));
 
       const actual = document.readPDFWithOcr(pdfFile);
       console.log(actual);
-      return expect(actual).resolves.toStrictEqual(expected);
+      expect(actual).resolves.toBe(expected);
     });
   });
 });
