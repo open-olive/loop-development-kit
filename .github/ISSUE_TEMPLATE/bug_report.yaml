@@ -44,7 +44,7 @@ body:
       label: Additional Context
       description: Any additional information you want to share about this bug.
     validations:
-      required: true
+      required: false
   - type: checkboxes
     id: terms
     attributes:
