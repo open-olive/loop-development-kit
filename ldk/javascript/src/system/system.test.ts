@@ -19,7 +19,7 @@ describe('System', () => {
       const actual = system.operatingSystem();
 
       expect(oliveHelps.system.operatingSystem).toHaveBeenCalledWith(expect.any(Function));
-      return expect(actual).resolves.toBe(os);
+      expect(actual).resolves.toBe(os);
     });
 
     it('returns a rejected promise', () => {
@@ -30,7 +30,7 @@ describe('System', () => {
 
       const actual = system.operatingSystem();
 
-      return expect(actual).rejects.toBe(exception);
+      expect(actual).rejects.toBe(exception);
     });
   });
 
@@ -49,7 +49,7 @@ describe('System', () => {
 
       expect(oliveHelps.system.getEnvironment).toHaveBeenCalledWith(expect.any(Function));
 
-      return expect(actual).resolves.toBe(environment);
+      expect(actual).resolves.toBe(environment);
     });
 
     it('returns a rejected promise', () => {
@@ -60,7 +60,7 @@ describe('System', () => {
 
       const actual = system.getEnvironment();
 
-      return expect(actual).rejects.toBe(exception);
+      expect(actual).rejects.toBe(exception);
     });
   });
 });
