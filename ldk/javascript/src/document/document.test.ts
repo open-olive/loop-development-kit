@@ -191,7 +191,7 @@ describe('Document', () => {
 
       const actual = document.readPDFWithOcr(pdfFile);
       console.log(actual);
-      expect(actual).resolves.toBe(expected);
+      expect(actual).resolves.toStrictEqual(expected);
     });
   });
 });

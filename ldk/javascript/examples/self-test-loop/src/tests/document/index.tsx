@@ -45,8 +45,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
-        url:
-          'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
         method: 'GET',
       });
       let branch = 'develop';
@@ -56,8 +55,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       // Can delete this block after merge
       if (request.statusCode === 404) {
         request = await network.httpRequest({
-          url:
-            'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
           method: 'GET',
         });
         branch = 'HELPS-3035-readpdf';
@@ -127,8 +125,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
-        url:
-          'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
         method: 'GET',
       });
       let branch = 'develop';
@@ -138,8 +135,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
       // Can delete this block after merge
       if (request.statusCode === 404) {
         request = await network.httpRequest({
-          url:
-            'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
           method: 'GET',
         });
         branch = 'HELPS-3035-readpdf';
