@@ -26,6 +26,7 @@ export function create(whisper: NewWhisper): Promise<Whisper> {
         (error: Error | undefined, internalWhisper: WhisperService.Whisper) => {
           if (error) {
             reject(error);
+            return;
           }
           resolve(mapToExternalWhisper(internalWhisper, stateMap));
         },

@@ -1,5 +1,7 @@
 import { mocked } from 'ts-jest/utils';
 import * as document from '.';
+import { PDFOutput } from '.';
+import * as screen from '../screen';
 import { PDFContentType, Workbook } from './types';
 
 describe('Document', () => {
@@ -88,7 +90,7 @@ describe('Document', () => {
       });
       const actual = document.xlsxDecode(data);
 
-      return expect(actual).rejects.toBe(exception);
+      expect(actual).rejects.toBe(exception);
     });
   });
 
@@ -112,7 +114,84 @@ describe('Document', () => {
 
       const actual = document.readPDF(pdfFile);
 
-      return expect(actual).resolves.toBe(expected);
+      expect(actual).resolves.toBe(expected);
+    });
+  });
+
+  describe('readPDFWithOcr', () => {
+    it('returns a pdfoutputwithocr promise result ', () => {
+      const ocrResult: screen.OCRResult[] = [
+        {
+          level: 1,
+          page_num: 1,
+          block_num: 1,
+          par_num: 1,
+          line_num: 1,
+          word_num: 1,
+          left: 1,
+          top: 1,
+          width: 1,
+          height: 1,
+          conf: 1,
+          text: 'test',
+        },
+      ];
+
+      const pdfFile = new Uint8Array();
+      const pdfoutput: PDFOutput = {
+        '1': {
+          content: [
+            {
+              value: 'test',
+              type: PDFContentType.Text,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
+          ],
+        },
+      };
+      const expected = {
+        '1': {
+          content: [
+            {
+              value: 'test',
+              type: PDFContentType.Text,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.Photo,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.PhotoText,
+            },
+            {
+              value: 'test',
+              type: PDFContentType.PhotoText,
+            },
+          ],
+        },
+      };
+
+      mocked(oliveHelps.document.readPDF).mockImplementation((data, callback) => {
+        callback(undefined, pdfoutput);
+      });
+      const mock = jest.spyOn(screen, 'ocrFileEncoded');
+      mock.mockReturnValue(Promise.resolve(ocrResult));
+
+      const actual = document.readPDFWithOcr(pdfFile);
+      console.log(actual);
+      expect(actual).resolves.toStrictEqual(expected);
     });
   });
 });
