@@ -38,10 +38,13 @@ body:
       description: What operating system and version are you running?
     validations:
       required: true
-  - type: markdown
+  - type: textarea
+    id: additional
     attributes:
-      value: |
-        Additional context/screenshots
+      label: Additional Context
+      description: Any additional information you want to share about this bug.
+    validations:
+      required: true
   - type: checkboxes
     id: terms
     attributes:
