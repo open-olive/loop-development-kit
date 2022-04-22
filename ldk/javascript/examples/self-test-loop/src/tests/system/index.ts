@@ -7,7 +7,7 @@ export const testOperatingSystem = (): Promise<boolean> =>
     const os = await system.operatingSystem();
 
     try {
-      const testing = await whisper.create({
+      const operatingSystemWhisper = await whisper.create({
         label: 'Are default values displayed correctly?',
         onClose: () => {
           console.debug('closed');
@@ -21,7 +21,7 @@ export const testOperatingSystem = (): Promise<boolean> =>
         ],
       });
       setTimeout(() => {
-        testing.close(() => {
+        operatingSystemWhisper.close(() => {
           // Do nothing
         });
         reject(new Error('Did not resolve the test in 15 seconds'));
@@ -37,7 +37,7 @@ export const testGetEnvironment = (): Promise<boolean> =>
     const environment = await system.getEnvironment();
 
     try {
-      const testing = await whisper.create({
+      const environmentWhisper = await whisper.create({
         label: 'Are default values displayed correctly?',
         onClose: () => {
           console.debug('closed');
@@ -59,7 +59,7 @@ export const testGetEnvironment = (): Promise<boolean> =>
         ],
       });
       setTimeout(() => {
-        testing.close(() => {
+        environmentWhisper.close(() => {
           // Do nothing
         });
         reject(new Error('Did not resolve the test in 15 seconds'));
