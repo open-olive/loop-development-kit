@@ -1,5 +1,6 @@
-import { window } from '@oliveai/ldk';
+import { whisper, window } from '@oliveai/ldk';
 import { Cancellable } from '@oliveai/ldk/dist/cancellable';
+import { resolveRejectButtons } from '../whisper/utils';
 
 export const testListenActiveWindow = (): Promise<boolean> =>
   new Promise((resolve) => {
@@ -88,6 +89,30 @@ export const testWindowInfoPath = (): Promise<boolean> =>
 
         const windowInfo = windowInfoArr[0];
         windowInfo.path ? resolve(true) : reject('No path on window info');
+      })
+      .catch((e) => {
+        reject(e);
+      });
+  });
+
+export const testGetActiveWindowID = (): Promise<boolean> =>
+  new Promise((resolve, reject) => {
+    window
+      .getActiveWindowID()
+      .then((id) => {
+        whisper.create({
+          label: 'test get Active Window ID',
+          onClose: () => {
+            console.log(`Closed Whisper`);
+          },
+          components: [
+            {
+              body: `Active Window ID: ${id}`,
+              type: whisper.WhisperComponentType.Markdown,
+            },
+            resolveRejectButtons(resolve, reject),
+          ],
+        });
       })
       .catch((e) => {
         reject(e);

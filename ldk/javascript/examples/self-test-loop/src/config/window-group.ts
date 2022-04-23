@@ -35,4 +35,11 @@ export const windowTestGroup = (): TestGroup =>
       10000,
       'Gathering windows...',
     ),
+
+    new LoopTest(
+      'Window Aptitude - Get Active Window ID',
+      windowTests.testGetActiveWindowID,
+      10000,
+      'Gathering active window ID...',
+    ),
   ]);
