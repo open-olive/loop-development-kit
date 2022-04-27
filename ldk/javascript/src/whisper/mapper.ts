@@ -37,7 +37,7 @@ export function mapToInternalChildComponent(
       const { justifyContent, ...otherProps } = component as Box;
       return {
         ...otherProps,
-        alignment: 'justifyContent' in component ? justifyContent : component.alignment,
+        alignment: justifyContent,
         children: throwForDuplicateKeys(
           component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),

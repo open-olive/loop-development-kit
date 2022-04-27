@@ -397,13 +397,13 @@ export const testBoxInBox = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Box,
-            alignment: JustifyContent.Center,
+            justifyContent: JustifyContent.Center,
             direction: Direction.Horizontal,
             customHeight: CustomHeight.Small,
             children: [
               {
                 type: WhisperComponentType.Box,
-                alignment: JustifyContent.Left,
+                justifyContent: JustifyContent.Left,
                 direction: Direction.Vertical,
                 children: [
                   {
@@ -424,7 +424,7 @@ export const testBoxInBox = (): Promise<boolean> =>
               },
               {
                 type: WhisperComponentType.Box,
-                alignment: JustifyContent.Right,
+                justifyContent: JustifyContent.Right,
                 direction: Direction.Vertical,
                 children: [
                   {
@@ -561,7 +561,7 @@ export const testClickableButton = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           children: [
             {
@@ -589,7 +589,7 @@ export const testClickableButton = (): Promise<boolean> =>
           type: WhisperComponentType.Box,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           children: [
             {
@@ -1541,7 +1541,7 @@ export const testClickableBox = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Box,
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: () => {
             console.debug('The toggles...they do nothing');
@@ -1555,7 +1555,7 @@ export const testClickableBox = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Box,
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             resolve(true);
@@ -1585,7 +1585,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -1593,7 +1593,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
           },
           children: [
             {
-              alignment: JustifyContent.SpaceBetween,
+              justifyContent: JustifyContent.SpaceBetween,
               direction: Direction.Horizontal,
               onClick: (error: Error, onClickWhisper: Whisper) => {
                 onClickWhisper.close((e) => console.error(e));
@@ -1608,7 +1608,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
               type: WhisperComponentType.Box,
             },
             {
-              alignment: JustifyContent.SpaceBetween,
+              justifyContent: JustifyContent.SpaceBetween,
               direction: Direction.Horizontal,
               children: [
                 {
@@ -1638,7 +1638,7 @@ export const testClickableBoxNestingButtons = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -1673,7 +1673,7 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -2049,7 +2049,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2060,7 +2060,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2083,7 +2083,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2094,7 +2094,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2813,7 +2813,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2824,7 +2824,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2847,7 +2847,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2858,7 +2858,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2881,7 +2881,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               layout: {
                 flex: 'auto',
@@ -2895,7 +2895,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               layout: {
                 flex: 'auto',
