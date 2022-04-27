@@ -142,6 +142,26 @@ describe('Browser', () => {
       browser.listenUIElement(UIArguments, callback);
       expect(callback).toHaveBeenCalledWith(UIElements);
     });
+
+    it('returns UIElement details when using listenerType in UIArguments', () => {
+      const callback = jest.fn();
+      const UIElements = {
+        selector: '',
+        type: '',
+      };
+      const UIArguments = {
+        selector: '',
+        listenerType: 'input',
+        address: 'https://www.google.com',
+      };
+      mocked(oliveHelps.browser.listenUIElement).mockImplementation(
+        (_UIArguments, callbackfunction) => {
+          callbackfunction(undefined, UIElements);
+        },
+      );
+      browser.listenUIElement(UIArguments, callback);
+      expect(callback).toHaveBeenCalledWith(UIElements);
+    });
   });
 
   describe('sourceHTML', () => {
