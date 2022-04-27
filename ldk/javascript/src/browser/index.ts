@@ -52,9 +52,11 @@ export interface UIElementDetails {
   type: string;
   selector: string;
 }
+
+export type ListenType = 'click' | 'input';
 export interface UIElementArguments {
   address: string;
-  listenerType?: string;
+  listenerType?: ListenType;
   selector: string;
 }
 export interface Browser {

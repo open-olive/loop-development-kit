@@ -153,7 +153,7 @@ describe('Browser', () => {
         selector: '',
         listenerType: 'input',
         address: 'https://www.google.com',
-      };
+      } as browser.UIElementArguments;
       mocked(oliveHelps.browser.listenUIElement).mockImplementation(
         (_UIArguments, callbackfunction) => {
           callbackfunction(undefined, UIElements);
