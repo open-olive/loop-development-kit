@@ -57,5 +57,6 @@ declare namespace Browser {
   interface UIElementDetails {
     type: string;
     selector: string;
+    value?: unknown;
   }
 }
