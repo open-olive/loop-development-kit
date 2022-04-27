@@ -53,8 +53,9 @@ export interface UIElementDetails {
   selector: string;
 }
 export interface UIElementArguments {
-  selector: string;
   address: string;
+  listenerType?: string;
+  selector: string;
 }
 export interface Browser {
   /**

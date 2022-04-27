@@ -49,8 +49,9 @@ declare namespace Browser {
   }
 
   interface UIElementArguments {
-    selector: string;
     address: string;
+    listenerType?: string;
+    selector: string;
   }
   interface UIElementDetails {
     type: string;
