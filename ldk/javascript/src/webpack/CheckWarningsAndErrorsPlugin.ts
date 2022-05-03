@@ -4,7 +4,7 @@ const assetName = 'loop.js';
 const warningMsg =
   'Please provide a way for users to open your Loop. You can do this using the ui.loopOpenHandler. This is required to submit your Loop.';
 const plugin = 'CheckLoopOpenHandlerPlugin';
-export class CheckLoopOpenHandlerPlugin {
+export class CheckWarningsAndErrorsPlugin {
   apply(compiler: Compiler): void {
     compiler.hooks.thisCompilation.tap(plugin, (compilation) => {
       compilation.hooks.afterOptimizeAssets.tap({ name: plugin }, (assets) => {
