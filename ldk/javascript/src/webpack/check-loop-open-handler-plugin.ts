@@ -16,6 +16,12 @@ export class CheckLoopOpenHandlerPlugin {
             openHandlerMissingWarning.file = assetName;
             compilation.warnings.push(openHandlerMissingWarning);
           }
+          if (fileContent?.includes('screen.ocr(')) {
+            const ocrDeprecationWarningMsg =
+              '[screen.ocr] ocr will be deprecated soon. Please use listenOcrMonitor instead.';
+            const openHandlerMissingWarning = new WebpackError(ocrDeprecationWarningMsg);
+            compilation.warnings.push(openHandlerMissingWarning);
+          }
         }
       });
     });
