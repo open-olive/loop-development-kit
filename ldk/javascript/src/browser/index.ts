@@ -51,10 +51,14 @@ export interface TabChangeDetails {
 export interface UIElementDetails {
   type: string;
   selector: string;
+  value?: unknown;
 }
+
+export type ListenType = 'click' | 'input';
 export interface UIElementArguments {
-  selector: string;
   address: string;
+  listenerType?: ListenType;
+  selector: string;
 }
 export interface Browser {
   /**
