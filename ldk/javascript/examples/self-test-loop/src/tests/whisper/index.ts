@@ -4177,7 +4177,7 @@ export const testTypography = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Typography,
-            variant: Variant.Boby1,
+            variant: Variant.Body1,
             body: 'body1',
           },
           {

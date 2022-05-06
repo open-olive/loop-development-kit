@@ -367,7 +367,7 @@ export enum AxisScale {
 }
 
 export enum Variant {
-  Boby1 = 'body1',
+  Body1 = 'body1',
   Body2 = 'body2',
   Button = 'button',
   Caption = 'caption',
