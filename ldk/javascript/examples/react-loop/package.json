@@ -1,0 +1,59 @@
+{
+  "name": "react-loop",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.tsx",
+  "scripts": {
+    "build": "webpack --entry ./src/index.tsx --config ./node_modules/@oliveai/ldk/dist/webpack/config.js",
+    "lint": "eslint ./ --ignore-path .gitignore",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint": "^7.30.0",
+    "prettier": "^2.3.2"
+  },
+  "dependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/plugin-transform-async-to-generator": "^7.13.0",
+    "@babel/plugin-transform-destructuring": "^7.13.0",
+    "@babel/plugin-transform-react-jsx": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-react": "^7.16.0",
+    "@babel/runtime": "^7.13.10",
+    "@babel/runtime-corejs2": "^7.13.10",
+    "@oliveai/ldk": "*",
+    "babel-loader": "^8.2.2",
+    "core-js": "^3.12.1",
+    "terser-webpack-plugin": "^5.1.1",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.4",
+    "webpack": "^5.32.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-merge": "^5.7.3"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ],
+      "@babel/preset-react"
+    ]
+  },
+  "ldk": {
+    "permissions": {
+      "whisper": {}
+    }
+  }
+}
