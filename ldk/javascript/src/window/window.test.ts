@@ -8,6 +8,7 @@ describe('Window', () => {
       listenActiveWindow: jest.fn(),
       all: jest.fn(),
       listenAll: jest.fn(),
+      getActiveWindowID: jest.fn(),
     };
   });
 
@@ -157,5 +158,31 @@ describe('Window', () => {
 
       expect(() => window.listenAll(jest.fn())).rejects.toBe(exception);
     });
+  });
+});
+
+describe('getActiveWindowID', () => {
+  it('returns a promise containing active window ID', () => {
+    const expectedWindowID = 10000;
+
+    mocked(oliveHelps.window.getActiveWindowID).mockImplementation((callback) =>
+      callback(undefined, expectedWindowID),
+    );
+
+    const actual = window.getActiveWindowID();
+
+    expect(oliveHelps.window.getActiveWindowID).toHaveBeenCalled();
+    expect(actual).resolves.toBe(expectedWindowID);
+  });
+
+  it('returns a rejected promise', () => {
+    const exception = 'Exception';
+    mocked(oliveHelps.window.getActiveWindowID).mockImplementation(() => {
+      throw exception;
+    });
+
+    const actual = window.getActiveWindowID();
+
+    expect(actual).rejects.toBe(exception);
   });
 });

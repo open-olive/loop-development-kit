@@ -367,7 +367,7 @@ export enum AxisScale {
 }
 
 export enum Variant {
-  Boby1 = 'body1',
+  Body1 = 'body1',
   Body2 = 'body2',
   Button = 'button',
   Caption = 'caption',
@@ -1083,18 +1083,6 @@ export type CollapseBox = WhisperComponent<WhisperComponentType.CollapseBox> & {
   previewHeight?: Size;
 };
 
-export type DeprecatedBox = WhisperComponent<WhisperComponentType.Box> & {
-  /**
-   * @deprecated - use {@link Box.justifyContent} instead.
-   */
-  alignItems?: AlignItems;
-  alignment: JustifyContent;
-  children: Array<BoxChildComponent>;
-  customHeight?: CustomHeight;
-  direction: Direction;
-  onClick?: WhisperHandler;
-};
-
 export type Box = WhisperComponent<WhisperComponentType.Box> & {
   alignItems?: AlignItems;
   children: Array<BoxChildComponent>;
@@ -1104,13 +1092,13 @@ export type Box = WhisperComponent<WhisperComponentType.Box> & {
   onClick?: WhisperHandler;
 };
 
-export type Component = ChildComponents | CollapseBox | DeprecatedBox;
+export type Component = ChildComponents | CollapseBox;
 /**
  * @deprecated - Use {@link Component} instead.
  */
 export type Components = Component;
 
-export type BoxChildComponent = ChildComponents | DeprecatedBox;
+export type BoxChildComponent = ChildComponents;
 
 export interface NewWhisper {
   components: Array<Component>;

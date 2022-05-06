@@ -262,8 +262,9 @@ export const testListenUIElement = (): Promise<boolean> =>
       await browser.openTab(url);
       const uIArguments = {
         selector: '#comp-ksujuy2f > a > div > span.StylableButton1881452515__label',
+        listenerType: 'click',
         address: url,
-      };
+      } as browser.UIElementArguments;
 
       console.log('calling listenUIElement...');
       const listener = await browser.listenUIElement(

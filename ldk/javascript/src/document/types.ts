@@ -21,6 +21,8 @@ export interface Cell {
 export enum PDFContentType {
   Text = 'text',
   NewLine = 'newLine',
+  Photo = 'photo',
+  PhotoText = 'photoText',
 }
 
 export interface PDFValue {

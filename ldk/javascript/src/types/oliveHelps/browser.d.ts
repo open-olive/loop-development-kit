@@ -48,12 +48,15 @@ declare namespace Browser {
     windowId: number;
   }
 
+  export type ListenType = 'click' | 'input';
   interface UIElementArguments {
-    selector: string;
     address: string;
+    listenerType?: ListenType;
+    selector: string;
   }
   interface UIElementDetails {
     type: string;
     selector: string;
+    value?: unknown;
   }
 }
