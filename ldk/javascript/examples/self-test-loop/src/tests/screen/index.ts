@@ -149,8 +149,7 @@ export async function performOcrFileEncoded() {
   }
 
   const encodedImage = Buffer.from(request.body).toString('base64');
-  // const encodedImage = base64.bytesToBase64(request.body);
-  console.log('enCodedImage: ', encodedImage);
+
   screen
     .ocrFileEncoded(encodedImage)
     .then((result) => {
