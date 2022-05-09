@@ -174,7 +174,7 @@ declare namespace WhisperService {
 
   type Urgency = 'error' | 'none' | 'success' | 'warning';
 
-  type Varient =
+  type Variant =
     | 'body1'
     | 'body2'
     | 'button'
@@ -188,8 +188,7 @@ declare namespace WhisperService {
     | 'inherit'
     | 'overline'
     | 'subtitle1'
-    | 'subtitle2'
-    | string;
+    | 'subtitle2';
 
   type WidthSize = 'full' | 'half';
 
