@@ -758,11 +758,6 @@ export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
    */
   xAxisTickLabelAngle?: number;
   /**
-   * An option to enable/disable whether or not the X axis represents time
-   * @default false
-   */
-  xAxisTimeSeries?: boolean;
-  /**
    * An option to enable/disable the Y axis
    * @default true
    */
@@ -791,11 +786,6 @@ export type Chart = WhisperComponent<WhisperComponentType.Chart> & {
    * @default 0
    */
   yAxisTickLabelAngle?: number;
-  /**
-   * An option to enable/disable whether or not the Y axis represents time
-   * @default false
-   */
-  yAxisTimeSeries?: boolean;
 };
 
 export type Link = WhisperComponent<WhisperComponentType.Link> & {
