@@ -338,8 +338,7 @@ declare namespace WhisperService {
     copyable: boolean;
     labelCopyable?: boolean;
     label: string;
-    onLabelCopy?: WhisperHandlerWithParam<string>;
-    onValueCopy?: WhisperHandlerWithParam<string>;
+    onCopy?: WhisperHandlerWithParam<string>;
     value: string;
     style: Urgency;
   };
