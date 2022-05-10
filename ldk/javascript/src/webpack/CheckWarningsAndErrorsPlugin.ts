@@ -11,7 +11,7 @@ export class CheckWarningsAndErrorsPlugin {
           const fileContent = loopjs.source();
           if (!fileContent?.includes('ui.loopOpenHandler(')) {
             const warningMsg =
-              'Please provide a way for users to open your Loop. You can do this by using the ui.loopOpenHandler. This is required to submit your Loop.';
+              'Please provide a way for users to open your Loop. You can do this using the ui.loopOpenHandler. This is required to submit your Loop.';
 
             const openHandlerMissingWarning = new WebpackError(warningMsg);
             openHandlerMissingWarning.file = assetName;
