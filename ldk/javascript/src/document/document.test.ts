@@ -132,7 +132,7 @@ describe('Document', () => {
           top: 1,
           width: 1,
           height: 1,
-          conf: 1,
+          confidence: 1,
           text: 'test',
         },
       ];

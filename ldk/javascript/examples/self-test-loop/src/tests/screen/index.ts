@@ -155,7 +155,8 @@ export async function performOcrFileEncoded() {
     .then((result) => {
       console.log('OCR Results: ');
       console.log(JSON.stringify(result));
-      const concatResult = result.map((res) => res.text).join(' ');
+      const filteredResult = result.filter((e) => e.confidence > 75);
+      const concatResult = filteredResult.map((res) => res.text).join(' ');
       console.log('concatResult', concatResult);
       writeWhisperFileEncodedResult('result', concatResult);
     })
