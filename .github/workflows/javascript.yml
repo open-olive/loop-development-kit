@@ -7,24 +7,21 @@ name: Javascript CI
 
 defaults:
   run:
-    working-directory: ldk/javascript
+    working-directory: ./
 
 on:
   push:
   pull_request:
 
 jobs:
-
   build:
-    
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [ 10.x, 12.x, 14.x ]
+        node-version: [10.x, 12.x, 14.x]
 
     steps:
-      
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -39,21 +36,19 @@ jobs:
       - run: npm run doc
 
   build-examples:
-    
     runs-on: ubuntu-latest
-    
-    steps:
 
+    steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      
+
       # Build selfTestLoop example
-      - run: | 
+      - run: |
           cd examples/self-test-loop | npm i && npm run build
-      
+
       # Build javascript-loop example
       - run: |
           cd examples/javascript-loop | npm i && npm run build

@@ -1,8 +1,12 @@
 # npm & yarn
 **/node_modules/
 
-# Go LDK build files for examples
-ldk/go/examples/**/build
+# Build
+dist
+
+# Docs
+docs
+
 
 # Testing
 coverage/
