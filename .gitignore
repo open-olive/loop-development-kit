@@ -45,8 +45,3 @@ Thumbs.db:*
 .#*
 *.orig
 *.swp
-
-# Docs
-docs/public
-docs/.cache
-docs/node_modules
