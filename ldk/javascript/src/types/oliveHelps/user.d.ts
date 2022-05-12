@@ -16,6 +16,7 @@ declare namespace User {
   }
 
   interface JWTWithUserDetails {
+    email?: string;
     fullName?: string;
     jwt: string;
     organizationId?: string;
