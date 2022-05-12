@@ -10,7 +10,7 @@ export interface OCRResult {
   top: number;
   width: number;
   height: number;
-  conf: number;
+  confidence: number;
   text: string;
 }
 

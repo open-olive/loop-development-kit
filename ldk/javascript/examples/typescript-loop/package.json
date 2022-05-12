@@ -13,7 +13,7 @@
     "permissions": {
       "clipboard": {},
       "whisper": {},
-      "ui" : {}
+      "ui": {}
     }
   },
   "dependencies": {

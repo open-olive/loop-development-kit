@@ -26,7 +26,7 @@ declare namespace Screen {
     top: number;
     width: number;
     height: number;
-    conf: number;
+    confidence: number;
     text: string;
   }
 
