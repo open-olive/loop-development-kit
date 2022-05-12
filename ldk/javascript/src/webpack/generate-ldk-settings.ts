@@ -19,13 +19,7 @@ export function mergeLdkSettings(
 export function generateLdkSettings(): LdkSettings {
   // Need to dynamically refer to Loop's package.json (from cwd).
   let ldkSettings: LdkSettings = JSON.parse(
-    readFileSync(
-      joinPath(
-        process.cwd(),
-        'package.json'
-      ),
-      { encoding: 'utf8', flag: 'r' }
-    )
+    readFileSync(joinPath(process.cwd(), 'package.json'), { encoding: 'utf8', flag: 'r' }),
   );
 
   // Check for environment config.
@@ -33,13 +27,10 @@ export function generateLdkSettings(): LdkSettings {
     try {
       // Need to dynamically refer to Loop's file (from cwd).
       const ldkOverrides: LdkSettings = JSON.parse(
-        readFileSync(
-          joinPath(
-            process.cwd(),
-            `ldk-config.${process.env.LDK_CONFIG}.json`,
-          ),
-          { encoding: 'utf8', flag: 'r' }
-        )
+        readFileSync(joinPath(process.cwd(), `ldk-config.${process.env.LDK_CONFIG}.json`), {
+          encoding: 'utf8',
+          flag: 'r',
+        }),
       );
       ldkSettings = mergeLdkSettings(ldkSettings, ldkOverrides);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

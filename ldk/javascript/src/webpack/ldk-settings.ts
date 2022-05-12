@@ -64,4 +64,4 @@ export interface LdkSettings {
   ldk: Ldk;
 }
 
-export type LdkSettingsGenerator = () => LdkSettings
+export type LdkSettingsGenerator = () => LdkSettings;
