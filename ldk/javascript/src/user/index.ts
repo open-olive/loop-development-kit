@@ -20,6 +20,7 @@ export interface JWTWithUserDetailsConfig {
 }
 
 export interface JWTWithUserDetails {
+  email?: string;
   fullName?: string;
   jwt: string;
   organizationId?: string;
