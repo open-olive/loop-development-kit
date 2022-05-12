@@ -3,7 +3,7 @@
   "version": "3.17.0",
   "description": "The Loop Development Kit for Olive Helps.",
   "author": "Olive",
-  "copyright": "Copyright 2021 Olive",
+  "copyright": "Copyright 2022 Olive",
   "homepage": "https://github.com/open-olive/loop-development-kit#readme",
   "license": "MIT",
   "main": "dist/index.js",
@@ -17,9 +17,9 @@
     "sdk"
   ],
   "scripts": {
-    "clear-dist": "rm -rf dist || del /s /q dist",
+    "build": "npm run clear-dist && npm run compile",
     "compile": "tsc",
-    "build": "npm run clear-dist && tsc",
+    "clear-dist": "rm -rf dist || del /s /q dist",
     "prepush": "npm run build && npm run test && npm run lint",
     "test": "jest",
     "test-coverage": "jest --collectCoverage",
