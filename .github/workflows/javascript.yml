@@ -5,10 +5,6 @@
 
 name: Javascript CI
 
-defaults:
-  run:
-    working-directory: ./
-
 on:
   push:
   pull_request:

@@ -5,10 +5,6 @@
 
 name: NPM Publish
 
-defaults:
-  run:
-    working-directory: ./
-
 on:
   release:
     types: [published]

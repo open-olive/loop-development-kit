@@ -1,6 +1,6 @@
 # Loop Development Kit
 
-This is the central repository. Please see the Javascript LDK readme in the `ldk\javascript` folder for the Javascript LDK documentation.
+This is the central repository.
 
 ## New Loop: Getting Started
 
@@ -240,7 +240,7 @@ An Aptitude Name.
 
 ## Loop Examples
 
-Examples are provided in the `ldk/javascript/examples/` directory. These examples include more information about creating and building Loops.
+Examples are provided in the `examples/` directory. These examples include more information about creating and building Loops.
 
 ### Guidelines and Warnings
 

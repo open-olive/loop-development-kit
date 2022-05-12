@@ -1,7 +1,7 @@
 /**
  * REMINDER: Whenever you add (or remove) components from this file, you MUST
- * also make the corresponding change in the `ldk/javascript/src/whisper/react/component-types.ts`
- * and `ldk/javascript/src/whisper/react/component-handlers.ts` files.
+ * also make the corresponding change in the `src/whisper/react/component-types.ts`
+ * and `src/whisper/react/component-handlers.ts` files.
  *
  * You'll get a compile error if you don't...
  */

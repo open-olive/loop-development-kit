@@ -68,7 +68,7 @@ const writeWhisperFileEncodedResult = (label: string, body: string) => {
     components: [
       { body, type: whisper.WhisperComponentType.Markdown },
       {
-        body: `![image](https://raw.githubusercontent.com/open-olive/loop-development-kit/${branch}/ldk/javascript/examples/self-test-loop/static/testocr.png)`,
+        body: `![image](https://raw.githubusercontent.com/open-olive/loop-development-kit/${branch}/examples/self-test-loop/static/testocr.png)`,
         type: whisper.WhisperComponentType.Markdown,
       },
       {
@@ -134,7 +134,7 @@ function sleep(ms: number) {
 
 export async function performOcrFileEncoded() {
   let request = await network.httpRequest({
-    url: `https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/testocr.png`,
+    url: `https://github.com/open-olive/loop-development-kit/raw/develop/examples/self-test-loop/static/testocr.png`,
     method: 'GET',
   });
   // Above URL is used after this feature is finished and merged in
@@ -142,7 +142,7 @@ export async function performOcrFileEncoded() {
   // Can delete this block after merge
   if (request.statusCode === 404) {
     request = await network.httpRequest({
-      url: `https://github.com/open-olive/loop-development-kit/raw/HELPS-3796-ocrFileEncoded/ldk/javascript/examples/self-test-loop/static/testocr.png`,
+      url: `https://github.com/open-olive/loop-development-kit/raw/HELPS-3796-ocrFileEncoded/examples/self-test-loop/static/testocr.png`,
       method: 'GET',
     });
     branch = 'HELPS-3796-ocrFileEncoded';

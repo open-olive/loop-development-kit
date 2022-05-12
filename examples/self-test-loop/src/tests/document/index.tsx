@@ -45,7 +45,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
-        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/examples/self-test-loop/static/ldk-pdf-test.pdf',
         method: 'GET',
       });
       let branch = 'develop';
@@ -55,7 +55,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
       // Can delete this block after merge
       if (request.statusCode === 404) {
         request = await network.httpRequest({
-          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/examples/self-test-loop/static/ldk-pdf-test.pdf',
           method: 'GET',
         });
         branch = 'HELPS-3035-readpdf';
@@ -99,7 +99,7 @@ export const testDocumentReadPDF = (): Promise<boolean> =>
             }
           />
           <oh-markdown
-            body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
+            body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
           />
           <oh-markdown body={parsedText} />
           <oh-markdown body="# Image contents from PDF" />
@@ -125,7 +125,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
       let request = await network.httpRequest({
-        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+        url: 'https://github.com/open-olive/loop-development-kit/raw/develop/examples/self-test-loop/static/ldk-pdf-test.pdf',
         method: 'GET',
       });
       let branch = 'develop';
@@ -135,7 +135,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
       // Can delete this block after merge
       if (request.statusCode === 404) {
         request = await network.httpRequest({
-          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf',
+          url: 'https://github.com/open-olive/loop-development-kit/raw/HELPS-3035-readpdf/examples/self-test-loop/static/ldk-pdf-test.pdf',
           method: 'GET',
         });
         branch = 'HELPS-3035-readpdf';
@@ -188,7 +188,7 @@ export const testDocumentReadPDFWithOcrImage = (): Promise<boolean> =>
             }
           />
           <oh-markdown
-            body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/ldk/javascript/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
+            body={`[Click here to open the PDF](https://github.com/open-olive/loop-development-kit/blob/${branch}/examples/self-test-loop/static/ldk-pdf-test.pdf)`}
           />
           <oh-markdown body={parsedText} />
           <oh-markdown body="# Image contents from PDF" />
