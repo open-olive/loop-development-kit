@@ -18,6 +18,7 @@
   ],
   "scripts": {
     "clear-dist": "rm -rf dist || del /s /q dist",
+    "compile": "tsc",
     "build": "npm run clear-dist && tsc",
     "prepush": "npm run build && npm run test && npm run lint",
     "test": "jest",
