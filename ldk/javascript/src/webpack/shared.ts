@@ -4,6 +4,7 @@ import path from 'path';
 import { LdkSettings } from './ldk-settings';
 import { generateBanner } from './generate-banner';
 import { buildBabelPlugins, buildBabelPreset } from './babel-config';
+import { CheckWarningsAndErrorsPlugin } from './CheckWarningsAndErrorsPlugin';
 
 export function buildBabelConfig(cache: boolean): webpack.RuleSetRule {
   return {
@@ -54,6 +55,7 @@ export function buildWebpackConfig(
       new webpack.ProvidePlugin({
         console: path.resolve(path.join(__dirname, 'console-polyfill')),
       }),
+      new CheckWarningsAndErrorsPlugin(),
     ],
     optimization,
     resolve: {

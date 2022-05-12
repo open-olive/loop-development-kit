@@ -12,6 +12,7 @@ declare namespace Screen {
     listenPixelDiff: Common.ListenableWithThreeParams<Bounds, number, number, number>;
     listenPixelDiffActiveWindow: Common.ListenableWithTwoParams<number, number, number>;
     listenOcrMonitor: Common.Listenable<OcrEvent[]>;
+    ocrFileEncoded: Common.ReadableWithParam<string, OCRResult[]>;
   }
 
   interface OCRResult {
@@ -25,7 +26,7 @@ declare namespace Screen {
     top: number;
     width: number;
     height: number;
-    conf: number;
+    confidence: number;
     text: string;
   }
 

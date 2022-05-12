@@ -23,11 +23,13 @@ export interface NavigationDetails {
 }
 
 export interface NetworkActivityDetails {
-  tabId: number;
-  requestUrl: string;
-  method: string;
-  requestBody: null | string;
   domain: string;
+  frameId: number;
+  method: string;
+  requestUrl: string;
+  requestBody: null | string;
+  tabId: number;
+  type: string;
 }
 
 export interface OpenConfiguration {
@@ -39,13 +41,24 @@ export interface PageDetails {
   sourceHTML: string;
 }
 
+export interface TabChangeDetails {
+  tabId: number;
+  title: string;
+  url: string;
+  windowId: number;
+}
+
 export interface UIElementDetails {
   type: string;
   selector: string;
+  value?: unknown;
 }
+
+export type ListenType = 'click' | 'input';
 export interface UIElementArguments {
-  selector: string;
   address: string;
+  listenerType?: ListenType;
+  selector: string;
 }
 export interface Browser {
   /**
@@ -54,6 +67,13 @@ export interface Browser {
    * @param callback - The callback function called when a navigation event happens.
    */
   listenNavigation(callback: (details: NavigationDetails) => void): Promise<Cancellable>;
+
+  /**
+   * Calls callback on any tab change event pushed from a browser running the Olive Helps extension
+   *
+   * @param callback - the callback function called when a tab change event happens
+   */
+  listenTabChange(callback: (detail: TabChangeDetails) => void): Promise<Cancellable>;
 
   /**
    * Calls callback on any text selection event pushed from a browser running the Olive Helps extension.
@@ -117,6 +137,12 @@ export function listenNavigation(
   callback: (details: NavigationDetails) => void,
 ): Promise<Cancellable> {
   return promisifyListenable(callback, oliveHelps.browser.listenNavigation);
+}
+
+export function listenTabChange(
+  callback: (details: TabChangeDetails) => void,
+): Promise<Cancellable> {
+  return promisifyListenable(callback, oliveHelps.browser.listenTabChange);
 }
 
 export function listenTextSelection(callback: (value: string) => void): Promise<Cancellable> {

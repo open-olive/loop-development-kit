@@ -37,7 +37,7 @@ export function mapToInternalChildComponent(
       const { justifyContent, ...otherProps } = component as Box;
       return {
         ...otherProps,
-        alignment: 'justifyContent' in component ? justifyContent : component.alignment,
+        alignment: justifyContent,
         children: throwForDuplicateKeys(
           component.children.map((childComponent) =>
             mapToInternalChildComponent(childComponent, stateMap),
@@ -107,6 +107,24 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.Checkbox;
+    case WhisperComponentType.DateTimeInput:
+      if (component.id && component.value) {
+        const value =
+          component.value instanceof Date ? component.value.toISOString() : component.value;
+        stateMap.set(component.id, value);
+      }
+      return {
+        ...component,
+        value: component.value instanceof Date ? component.value?.toISOString() : component.value,
+        max: component.max?.toISOString(),
+        min: component.min?.toISOString(),
+        onChange: (error, param, whisper) => {
+          if (component.id) {
+            stateMap.set(component.id, param);
+          }
+          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+        },
+      } as WhisperService.DateTimeInput;
     case WhisperComponentType.Email:
       if (component.id && component.value) {
         stateMap.set(component.id, component.value);
@@ -131,6 +149,18 @@ export function mapToInternalChildComponent(
         ),
         type: WhisperComponentType.Grid,
       } as WhisperService.Grid;
+    case WhisperComponentType.Icon:
+      // eslint-disable-next-line
+      const onIconClick = component.onClick;
+      if (onIconClick) {
+        return {
+          ...component,
+          onClick: (error, whisper) => {
+            onIconClick(error, mapToExternalWhisper(whisper, stateMap));
+          },
+        } as WhisperService.Icon;
+      }
+      return component as WhisperService.Icon;
     case WhisperComponentType.Link: {
       return {
         ...component,
@@ -176,6 +206,17 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.RichTextEditor;
+    case WhisperComponentType.Rating:
+      return {
+        ...component,
+        onChange: component.onChange
+          ? (error, param, whisper) => {
+              if (component.onChange) {
+                component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
+              }
+            }
+          : undefined,
+      } as WhisperService.Rating;
     case WhisperComponentType.Autocomplete: {
       // eslint-disable-next-line
       const { onChange, onSelect, options } = component;
@@ -368,36 +409,8 @@ export function mapToInternalChildComponent(
           component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
         },
       } as WhisperService.TextInput;
-    case WhisperComponentType.DateTimeInput:
-      if (component.id && component.value) {
-        const value =
-          component.value instanceof Date ? component.value.toISOString() : component.value;
-        stateMap.set(component.id, value);
-      }
-      return {
-        ...component,
-        value: component.value instanceof Date ? component.value?.toISOString() : component.value,
-        max: component.max?.toISOString(),
-        min: component.min?.toISOString(),
-        onChange: (error, param, whisper) => {
-          if (component.id) {
-            stateMap.set(component.id, param);
-          }
-          component.onChange(error, param, mapToExternalWhisper(whisper, stateMap));
-        },
-      } as WhisperService.DateTimeInput;
-    case WhisperComponentType.Icon:
-      // eslint-disable-next-line
-      const onIconClick = component.onClick;
-      if (onIconClick) {
-        return {
-          ...component,
-          onClick: (error, whisper) => {
-            onIconClick(error, mapToExternalWhisper(whisper, stateMap));
-          },
-        } as WhisperService.Icon;
-      }
-      return component as WhisperService.Icon;
+    case WhisperComponentType.Typography:
+      return component as WhisperService.Typography;
     default:
       // Suppressing warning to deal with unexpected types.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

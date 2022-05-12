@@ -16,6 +16,7 @@ describe('screen', () => {
       listenPixelDiff: jest.fn(),
       listenPixelDiffActiveWindow: jest.fn(),
       listenOcrMonitor: jest.fn(),
+      ocrFileEncoded: jest.fn(),
     };
   });
   describe('ocr', () => {
@@ -38,7 +39,7 @@ describe('screen', () => {
           top: 1,
           width: 1,
           height: 1,
-          conf: 1,
+          confidence: 1,
           text: '',
         },
       ];
@@ -79,6 +80,40 @@ describe('screen', () => {
       });
 
       expect(screen.listenOcrMonitor).rejects.toBe(exception);
+    });
+  });
+  describe('ocrFileEncoded', () => {
+    it('return a promise of OCRResult[]', () => {
+      const ocrResult: OCRResult[] = [
+        {
+          level: 1,
+          page_num: 1,
+          block_num: 1,
+          par_num: 1,
+          line_num: 1,
+          word_num: 1,
+          left: 1,
+          top: 1,
+          width: 1,
+          height: 1,
+          confidence: 1,
+          text: '',
+        },
+      ];
+      mocked(oliveHelps.screen.ocrFileEncoded).mockImplementation((data, callback) => {
+        callback(undefined, ocrResult);
+      });
+      const actual = screen.ocrFileEncoded('string');
+      expect(actual).resolves.toBe(ocrResult);
+    });
+
+    it('rejects with the error when the underlying call throws an error', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.screen.ocrFileEncoded).mockImplementation(() => {
+        throw exception;
+      });
+
+      expect(screen.ocrFileEncoded).rejects.toBe(exception);
     });
   });
 });

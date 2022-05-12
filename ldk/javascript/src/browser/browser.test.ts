@@ -4,15 +4,16 @@ import * as browser from '.';
 describe('Browser', () => {
   beforeEach(() => {
     oliveHelps.browser = {
-      listenNavigation: jest.fn(),
-      listenTextSelection: jest.fn(),
-      listenUIElement: jest.fn(),
       openTab: jest.fn(),
       openWindow: jest.fn(),
       openTab2: jest.fn(),
       openWindow2: jest.fn(),
-      listenNetworkActivity: jest.fn(),
       sourceHTML: jest.fn(),
+      listenNavigation: jest.fn(),
+      listenNetworkActivity: jest.fn(),
+      listenTabChange: jest.fn(),
+      listenTextSelection: jest.fn(),
+      listenUIElement: jest.fn(),
     };
   });
 
@@ -47,6 +48,35 @@ describe('Browser', () => {
     });
   });
 
+  describe('listenTabChange', () => {
+    it('returns tab change details', () => {
+      const callback = jest.fn();
+      const details = {
+        tabId: 123,
+        title: 'Olive AI',
+        url: 'https://www.oliveai.dev',
+        windowId: 1,
+      };
+      mocked(oliveHelps.browser.listenTabChange).mockImplementation((listenerCallback) => {
+        listenerCallback(undefined, details);
+      });
+
+      browser.listenTabChange(callback);
+
+      expect(callback).toHaveBeenCalledWith(details);
+    });
+
+    it('rejects with the error when the underlying call throws an error', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.browser.listenTabChange).mockImplementation(() => {
+        throw exception;
+      });
+
+      const callback = jest.fn();
+      expect(() => browser.listenTabChange(callback)).rejects.toBe(exception);
+    });
+  });
+
   describe('listenTextSelection', () => {
     it('gives text', () => {
       const callback = jest.fn();
@@ -75,11 +105,13 @@ describe('Browser', () => {
     it('returns network activity events', () => {
       const callback = jest.fn();
       const activity = {
-        tabId: 0,
-        requestUrl: 'https://www.google.com',
-        method: 'GET',
-        requestBody: null,
         domain: 'google.com',
+        frameId: 1,
+        method: 'GET',
+        requestUrl: 'https://www.google.com',
+        requestBody: null,
+        tabId: 0,
+        type: 'xhtml',
       };
 
       mocked(oliveHelps.browser.listenNetworkActivity).mockImplementation((listenerCallback) => {
@@ -102,6 +134,26 @@ describe('Browser', () => {
         selector: '',
         address: 'https://www.google.com',
       };
+      mocked(oliveHelps.browser.listenUIElement).mockImplementation(
+        (_UIArguments, callbackfunction) => {
+          callbackfunction(undefined, UIElements);
+        },
+      );
+      browser.listenUIElement(UIArguments, callback);
+      expect(callback).toHaveBeenCalledWith(UIElements);
+    });
+
+    it('returns UIElement details when using listenerType in UIArguments', () => {
+      const callback = jest.fn();
+      const UIElements = {
+        selector: '',
+        type: '',
+      };
+      const UIArguments = {
+        selector: '',
+        listenerType: 'input',
+        address: 'https://www.google.com',
+      } as browser.UIElementArguments;
       mocked(oliveHelps.browser.listenUIElement).mockImplementation(
         (_UIArguments, callbackfunction) => {
           callbackfunction(undefined, UIElements);

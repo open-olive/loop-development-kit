@@ -11,4 +11,10 @@ export const systemTestGroup = (): TestGroup =>
       5000,
       `Checking the host's OS...`,
     ),
+    new LoopTest(
+      'System Aptitude - Get Environment',
+      systemTests.testGetEnvironment,
+      5000,
+      `Checking Environment details...`,
+    ),
   ]);

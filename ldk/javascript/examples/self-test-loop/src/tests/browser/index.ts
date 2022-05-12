@@ -1,12 +1,13 @@
 /* eslint-disable no-async-promise-executor */
-import { browser, whisper } from '@oliveai/ldk';
+import { browser } from '@oliveai/ldk';
 import {
   NavigationDetails,
   NetworkActivityDetails,
   PageDetails,
+  TabChangeDetails,
   UIElementDetails,
 } from '@oliveai/ldk/dist/browser';
-import { WhisperComponentType } from '../../../../../dist/whisper';
+import { Cancellable } from '../../../../../dist/cancellable';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
@@ -143,6 +144,55 @@ export const testOpenWindowAndListenNavigation = (): Promise<boolean> =>
     }
   });
 
+export const testTabChangeEvent = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    let listener: void | Cancellable;
+    let timeout;
+
+    try {
+      const URL = 'https://www.oliveai.dev/';
+      const URL2 = 'https://www.oliveai.com/';
+      const TITLE = 'Olive Helps Developer Hub';
+
+      await browser.openTab(URL);
+      await browser.openTab(URL2);
+
+      const raceResolve = await Promise.race([
+        new Promise(async (res) => {
+          listener = await browser
+            .listenTabChange((tabChangeDetails: TabChangeDetails): void => {
+              const { tabId, title, url, windowId } = tabChangeDetails;
+              if (tabId && windowId && title === TITLE && url === URL) {
+                res(true);
+              }
+            })
+            .catch(reject);
+        }),
+        new Promise((_res, rej) => {
+          // After 3 seconds, if tabs haven't been switched throw error
+          timeout = setTimeout(
+            () => rej(new Error('The text selection in your browser does not match the test text')),
+            3000,
+          );
+        }),
+      ]);
+
+      if (raceResolve) {
+        resolve(<boolean>raceResolve);
+      }
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    } finally {
+      if (listener) {
+        listener.cancel();
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    }
+  });
+
 export const testListenTextSelection = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -212,8 +262,9 @@ export const testListenUIElement = (): Promise<boolean> =>
       await browser.openTab(url);
       const uIArguments = {
         selector: '#comp-ksujuy2f > a > div > span.StylableButton1881452515__label',
+        listenerType: 'click',
         address: url,
-      };
+      } as browser.UIElementArguments;
 
       console.log('calling listenUIElement...');
       const listener = await browser.listenUIElement(

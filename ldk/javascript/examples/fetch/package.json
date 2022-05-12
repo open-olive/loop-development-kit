@@ -18,7 +18,8 @@
           }
         ]
       },
-      "whisper": {}
+      "whisper": {},
+      "ui": {}
     }
   },
   "dependencies": {

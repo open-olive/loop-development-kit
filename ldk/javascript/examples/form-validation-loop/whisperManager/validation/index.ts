@@ -21,7 +21,7 @@ const ssnRegex = /^[0-9]{4}$/;
 export const validateFormComponent = (
   component: Component,
   componentIds: ComponentIds,
-  value: string | boolean | number,
+  value: string | boolean | number | string[],
 ): ComponentValidationResponse => {
   const map: Map<string, () => ComponentValidationResponse> = new Map([
     [

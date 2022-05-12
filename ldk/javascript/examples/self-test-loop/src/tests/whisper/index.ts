@@ -42,6 +42,7 @@ import {
   resolveRejectButtons,
 } from './utils';
 import { longText, markdownText, image } from './text';
+import { Align, Variant } from '../../../../../dist/whisper';
 
 export * from './autocomplete';
 export * from './chart';
@@ -396,13 +397,13 @@ export const testBoxInBox = (): Promise<boolean> =>
           },
           {
             type: WhisperComponentType.Box,
-            alignment: JustifyContent.Center,
+            justifyContent: JustifyContent.Center,
             direction: Direction.Horizontal,
             customHeight: CustomHeight.Small,
             children: [
               {
                 type: WhisperComponentType.Box,
-                alignment: JustifyContent.Left,
+                justifyContent: JustifyContent.Left,
                 direction: Direction.Vertical,
                 children: [
                   {
@@ -423,7 +424,7 @@ export const testBoxInBox = (): Promise<boolean> =>
               },
               {
                 type: WhisperComponentType.Box,
-                alignment: JustifyContent.Right,
+                justifyContent: JustifyContent.Right,
                 direction: Direction.Vertical,
                 children: [
                   {
@@ -560,7 +561,7 @@ export const testClickableButton = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           children: [
             {
@@ -588,7 +589,7 @@ export const testClickableButton = (): Promise<boolean> =>
           type: WhisperComponentType.Box,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           children: [
             {
@@ -1540,7 +1541,7 @@ export const testClickableBox = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Box,
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: () => {
             console.debug('The toggles...they do nothing');
@@ -1554,7 +1555,7 @@ export const testClickableBox = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Box,
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             resolve(true);
@@ -1584,7 +1585,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -1592,7 +1593,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
           },
           children: [
             {
-              alignment: JustifyContent.SpaceBetween,
+              justifyContent: JustifyContent.SpaceBetween,
               direction: Direction.Horizontal,
               onClick: (error: Error, onClickWhisper: Whisper) => {
                 onClickWhisper.close((e) => console.error(e));
@@ -1607,7 +1608,7 @@ export const testClickableBoxNestingBoxes = (): Promise<boolean> =>
               type: WhisperComponentType.Box,
             },
             {
-              alignment: JustifyContent.SpaceBetween,
+              justifyContent: JustifyContent.SpaceBetween,
               direction: Direction.Horizontal,
               children: [
                 {
@@ -1637,7 +1638,7 @@ export const testClickableBoxNestingButtons = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -1672,7 +1673,7 @@ export const testClickableBoxNestingLinks = (): Promise<boolean> =>
           type: WhisperComponentType.Markdown,
         },
         {
-          alignment: JustifyContent.SpaceBetween,
+          justifyContent: JustifyContent.SpaceBetween,
           direction: Direction.Horizontal,
           onClick: (error: Error, onClickWhisper: Whisper) => {
             onClickWhisper.close((e) => console.error(e));
@@ -2048,7 +2049,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2059,7 +2060,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2082,7 +2083,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2093,7 +2094,7 @@ export const testAlignItems = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2812,7 +2813,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2823,7 +2824,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2846,7 +2847,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2857,7 +2858,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               children: [
                 {
@@ -2880,7 +2881,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Left,
+              justifyContent: JustifyContent.Left,
               direction: Direction.Vertical,
               layout: {
                 flex: 'auto',
@@ -2894,7 +2895,7 @@ export const testJustifyContent = (): Promise<boolean> =>
             },
             {
               type: WhisperComponentType.Box,
-              alignment: JustifyContent.Right,
+              justifyContent: JustifyContent.Right,
               direction: Direction.Vertical,
               layout: {
                 flex: 'auto',
@@ -3594,6 +3595,147 @@ export const testDropZoneOnRemove = async (): Promise<boolean> => {
   return acceptFileData.acceptResult;
 };
 
+export const testRating = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Did Rating render correctly?',
+        components: [
+          {
+            body: 'Should be 5 stars with half precision.',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            max: 5,
+            precision: 0.5,
+            value: 4.5,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should have different icons and one precision',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            emptyIcon: 'album',
+            emptyIconVariant: IconVariant.Outlined,
+            icon: 'album',
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Using a different icon variant for the selected (on the left)',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            emptyIcon: 'star',
+            icon: 'album',
+            iconVariant: IconVariant.Outlined,
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be disabled.',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            disabled: true,
+            max: 5,
+            precision: 1,
+            value: 3,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be read only.',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            readOnly: true,
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be colored red',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            iconColor: '#ff0000',
+            emptyIconColor: '#ff0000',
+            max: 5,
+            precision: 1,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should have 10 icons',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            max: 10,
+            precision: 0.5,
+            value: 8,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should have green filled icons and blue unfilled ones',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            iconColor: '#00ff00',
+            emptyIconColor: '#0000ff',
+            max: 5,
+            precision: 0.5,
+            value: 2,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should be Large size',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            size: IconSize.Large,
+            max: 5,
+            precision: 0.5,
+            value: 4,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Has a default value of 2.5',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            defaultValue: 2.5,
+            max: 5,
+            precision: 0.5,
+            type: WhisperComponentType.Rating,
+          },
+          {
+            body: 'Should console log on click',
+            type: WhisperComponentType.Markdown,
+          },
+          {
+            max: 5,
+            onChange: () => {
+              console.log('Changed!');
+            },
+            precision: 0.5,
+            value: 4,
+            type: WhisperComponentType.Rating,
+          },
+          resolveRejectButtons(resolve, reject, 'YES', 'NO'),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
 export const testGridComponent = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -3725,7 +3867,6 @@ export const testGridComponent = (): Promise<boolean> =>
             wrap: Wrap.NoWrap,
             // xs: 'false',
           },
-
           resolveRejectButtons(resolve, reject, 'YES', 'NO'),
         ],
       });
@@ -3989,4 +4130,126 @@ export const testCollapseBoxPreview = (): Promise<boolean> =>
         resolveRejectButtons(resolve, reject),
       ],
     });
+  });
+
+export const testTypography = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Are default values displayed correctly?',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            type: WhisperComponentType.Typography,
+            body: 'default = aligin: "inherit", paragraph: false, variant: "body1"',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            paragraph: true,
+            body: 'Paragraph: true',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Center,
+            body: 'Align: Center',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Justify,
+            body: 'Align: Justify',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Left,
+            body: 'Aligin: Left',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            align: Align.Right,
+            body: 'Aligin: Right',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            tooltip: 'tooltip test',
+            body: 'Tooltip',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Body1,
+            body: 'body1',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Body2,
+            body: 'body2',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Button,
+            body: 'button',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Caption,
+            body: 'caption',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H1,
+            body: 'h1',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H2,
+            body: 'h2',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H3,
+            body: 'h3',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H4,
+            body: 'h4',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H5,
+            body: 'h5',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.H6,
+            body: 'h6',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Inherit,
+            body: 'inherit',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Overline,
+            body: 'overline',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Subtitle1,
+            body: 'subtitle1',
+          },
+          {
+            type: WhisperComponentType.Typography,
+            variant: Variant.Subtitle2,
+            body: 'subtitle2',
+          },
+          resolveRejectButtons(resolve, reject),
+        ],
+      });
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
   });
