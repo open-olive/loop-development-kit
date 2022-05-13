@@ -281,7 +281,7 @@ export const testListenUIElement = (): Promise<boolean> =>
             .catch(reject);
         }),
         new Promise((_res, rej) => {
-          // After 3 seconds, if tabs haven't been switched throw error
+          // After 5 seconds, if tabs haven't been switched throw error
           timeout = setTimeout(
             () => rej(new Error('The text selection in your browser does not match the test text')),
             5000,
