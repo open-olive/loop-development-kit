@@ -56,6 +56,7 @@ describe('User', () => {
       const jwt = {
         jwt: 'jwt',
         organizationId: 'stuff',
+        email: 'a@g.com',
       };
       mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknow: unknown, callback) =>
         callback(undefined, jwt),
@@ -76,6 +77,7 @@ describe('User', () => {
       const jwt = {
         jwt: 'jwt',
         organizationName: 'stuff',
+        email: 'a@g.com',
       };
       mocked(oliveHelps.user.jwtWithUserDetails).mockImplementation((unknow: unknown, callback) =>
         callback(undefined, jwt),
