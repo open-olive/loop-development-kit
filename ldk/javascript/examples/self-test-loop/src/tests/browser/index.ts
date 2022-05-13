@@ -257,28 +257,50 @@ export const testListenNavigationType = (): Promise<boolean> =>
 
 export const testListenUIElement = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
+    let listener: void | Cancellable;
+    let timeout;
     try {
       const url = 'https://www.oliveai.dev';
       await browser.openTab(url);
       const uIArguments = {
-        selector: '#comp-ksujuy2f > a > div > span.StylableButton1881452515__label',
+        selector: '#comp-ksujuy2f > a > div > span.StylableButton2545352419__label',
         listenerType: 'click',
         address: url,
       } as browser.UIElementArguments;
 
       console.log('calling listenUIElement...');
-      const listener = await browser.listenUIElement(
-        uIArguments,
-        (uiElementEvent: UIElementDetails): void => {
-          console.log('listenUIElement called');
-          console.log(JSON.stringify(uiElementEvent.selector));
-          console.log(JSON.stringify(uiElementEvent.type));
-          listener.cancel();
-          resolve(true);
-        },
-      );
+      const raceResolve = await Promise.race([
+        new Promise(async (res) => {
+          listener = await browser
+            .listenUIElement(uIArguments, (uiElementEvent: UIElementDetails): void => {
+              console.log('listenUIElement called');
+              console.log(JSON.stringify(uiElementEvent.selector));
+              console.log(JSON.stringify(uiElementEvent.type));
+              res(true);
+            })
+            .catch(reject);
+        }),
+        new Promise((_res, rej) => {
+          // After 3 seconds, if tabs haven't been switched throw error
+          timeout = setTimeout(
+            () => rej(new Error('The text selection in your browser does not match the test text')),
+            5000,
+          );
+        }),
+      ]);
+
+      if (raceResolve) {
+        resolve(<boolean>raceResolve);
+      }
     } catch (error) {
       console.error(error);
       reject(error);
+    } finally {
+      if (listener) {
+        listener.cancel();
+      }
+      if (timeout) {
+        clearTimeout(timeout);
+      }
     }
   });
