@@ -3202,7 +3202,7 @@ export const testProgressIndicator = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Progress,
-          label: "Progress",
+          label: 'Progress',
           determinate: 67,
         },
         {
