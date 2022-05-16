@@ -1,5 +1,7 @@
-import * as path from 'path';
+import { readFileSync } from 'fs';
+import { join as joinPath } from 'path';
 import { customizeArray, CustomizeRule, mergeWithCustomize } from 'webpack-merge';
+
 import { LdkSettings } from './ldk-settings';
 
 export function mergeLdkSettings(
@@ -15,18 +17,21 @@ export function mergeLdkSettings(
 }
 
 export function generateLdkSettings(): LdkSettings {
-  // Need to dynamically refer to Loop's package.json
-  // Suppressing rule as we intentionally want a dynamic require.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-dynamic-require,global-require
-  let ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
+  // Need to dynamically refer to Loop's package.json (from cwd).
+  let ldkSettings: LdkSettings = JSON.parse(
+    readFileSync(joinPath(process.cwd(), 'package.json'), { encoding: 'utf8', flag: 'r' }),
+  );
 
+  // Check for environment config.
   if (process.env.LDK_CONFIG !== undefined) {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-dynamic-require,global-require
-      const ldkOverrides: LdkSettings = require(path.join(
-        process.cwd(),
-        `/ldk-config.${process.env.LDK_CONFIG}.json`,
-      ));
+      // Need to dynamically refer to Loop's file (from cwd).
+      const ldkOverrides: LdkSettings = JSON.parse(
+        readFileSync(joinPath(process.cwd(), `ldk-config.${process.env.LDK_CONFIG}.json`), {
+          encoding: 'utf8',
+          flag: 'r',
+        }),
+      );
       ldkSettings = mergeLdkSettings(ldkSettings, ldkOverrides);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

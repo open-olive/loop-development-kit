@@ -1,21 +1,18 @@
-import * as webpack from 'webpack';
-import * as path from 'path';
-import { LdkSettings } from './ldk-settings';
+import { join as joinPath } from 'path';
+import { Configuration as WebpackConfiguration, RuleSetRule } from 'webpack';
+
+import { generateLdkSettings } from './generate-ldk-settings';
 import { buildBabelConfig, buildOptimization, buildWebpackConfig } from './shared';
 
-// Need to dynamically refer to Loop's package.json
-// Suppressing rule as we intentionally want a dynamic require.
-// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-dynamic-require
-const ldkSettings: LdkSettings = require(path.join(process.cwd(), '/package.json'));
-const baseBabelConfig: webpack.RuleSetRule = buildBabelConfig(true);
+const baseBabelConfig: RuleSetRule = buildBabelConfig(true);
 const optimization = buildOptimization(false);
-const buildPath = path.join(process.cwd(), 'dist');
+const buildPath = joinPath(process.cwd(), 'dist');
 
-const config: webpack.Configuration = buildWebpackConfig(
+const config: WebpackConfiguration = buildWebpackConfig(
   buildPath,
   baseBabelConfig,
   optimization,
-  ldkSettings,
+  generateLdkSettings,
 );
 
 export default config;
