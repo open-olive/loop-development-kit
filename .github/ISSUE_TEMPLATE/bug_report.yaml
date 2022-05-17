@@ -39,6 +39,13 @@ body:
     validations:
       required: true
   - type: textarea
+    id: code
+    attributes:
+      label: Code Sample
+      description: If possible, please share a code sample that exhibits the issue.
+    validations:
+      required: false
+  - type: textarea
     id: additional
     attributes:
       label: Additional Context

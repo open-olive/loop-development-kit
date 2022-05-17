@@ -1,5 +1,5 @@
-name: Bug Report
-description: Create a report to help us improve
+name: Feature Request
+description: Submit a feature for our consideration
 title: "[FEATURE]: "
 labels: ["Status: Needs Investigation", "Type: Feature Request"]
 body:
