@@ -3198,6 +3198,15 @@ export const testProgressIndicator = (): Promise<boolean> =>
         },
         {
           type: WhisperComponentType.Markdown,
+          body: 'Progress with aria-label="Progress"',
+        },
+        {
+          type: WhisperComponentType.Progress,
+          label: 'Progress',
+          determinate: 67,
+        },
+        {
+          type: WhisperComponentType.Markdown,
           body: 'This is a small sized progress indicator.',
         },
         {

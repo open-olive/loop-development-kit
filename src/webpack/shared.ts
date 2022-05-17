@@ -1,7 +1,7 @@
 import * as webpack from 'webpack';
 import Terser from 'terser-webpack-plugin';
 import path from 'path';
-import { LdkSettings } from './ldk-settings';
+import { LdkSettings, LdkSettingsGenerator } from './ldk-settings';
 import { generateBanner } from './generate-banner';
 import { buildBabelPlugins, buildBabelPreset } from './babel-config';
 import { CheckWarningsAndErrorsPlugin } from './CheckWarningsAndErrorsPlugin';
@@ -38,7 +38,7 @@ export function buildWebpackConfig(
   buildPath: string,
   baseBabelConfig: webpack.RuleSetRule,
   optimization: webpack.Configuration['optimization'],
-  ldkSettings: LdkSettings,
+  generateLdkSettings: LdkSettingsGenerator,
 ): webpack.Configuration {
   return {
     target: ['web', 'es5'],
@@ -49,7 +49,10 @@ export function buildWebpackConfig(
     mode: 'production',
     plugins: [
       new webpack.BannerPlugin({
-        banner: generateBanner(ldkSettings),
+        banner: (): string => {
+          const ldkSettings: LdkSettings = generateLdkSettings();
+          return generateBanner(ldkSettings);
+        },
         raw: true,
       }),
       new webpack.ProvidePlugin({
