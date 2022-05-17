@@ -376,6 +376,7 @@ declare namespace WhisperService {
 
   type Progress = Component<'progress'> & {
     determinate?: number;
+    label?: string;
     shape?: ProgressShape;
     size?: StyleSize;
   };
