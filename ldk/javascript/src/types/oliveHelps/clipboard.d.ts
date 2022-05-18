@@ -4,8 +4,10 @@ declare namespace Clipboard {
 
     write: Common.ReadableWithParam<string, void>;
 
-    listen: Common.Listenable<string>;
+    // listen: Common.Listenable<string>;
 
-    includeOliveHelpsEvents(enabled: boolean): void;
+    listen2: Common.ListenableWithParam<boolean, string>;
+
+    // includeOliveHelpsEvents(enabled: boolean): void;
   }
 }

@@ -4,10 +4,9 @@ import * as clipboard from '.';
 describe('Clipboard', () => {
   beforeEach(() => {
     oliveHelps.clipboard = {
-      includeOliveHelpsEvents: jest.fn(),
       read: jest.fn(),
       write: jest.fn(),
-      listen: jest.fn(),
+      listen2: jest.fn(),
     };
   });
 
@@ -41,8 +40,10 @@ describe('Clipboard', () => {
       const callback = jest.fn();
       clipboard.listen(includeOliveHelpsEvents, callback);
 
-      expect(oliveHelps.clipboard.includeOliveHelpsEvents).toHaveBeenCalledWith(
+      expect(oliveHelps.clipboard.listen2).toHaveBeenCalledWith(
         includeOliveHelpsEvents,
+        expect.any(Function),
+        expect.any(Function),
       );
     });
 
@@ -50,10 +51,8 @@ describe('Clipboard', () => {
       const callback = jest.fn();
       const text = 'abc';
       const include = true;
-      mocked(oliveHelps.clipboard.includeOliveHelpsEvents).mockImplementation((param) => {
+      mocked(oliveHelps.clipboard.listen2).mockImplementation((param, listenerCb, returnCb) => {
         expect(param).toEqual(include);
-      });
-      mocked(oliveHelps.clipboard.listen).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         returnCb({} as any);
         listenerCb(undefined, text);
@@ -66,7 +65,7 @@ describe('Clipboard', () => {
 
     it('rejects with the error when the underlying call throws an error', () => {
       const exception = 'Exception';
-      mocked(oliveHelps.clipboard.listen).mockImplementation(() => {
+      mocked(oliveHelps.clipboard.listen2).mockImplementation(() => {
         throw exception;
       });
 
