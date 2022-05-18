@@ -1,5 +1,5 @@
 import { Cancellable } from '../cancellable';
-import { promisify, promisifyWithParam, promisifyListenableWithParam} from '../promisify';
+import { promisify, promisifyWithParam, promisifyListenableWithParam } from '../promisify';
 
 /**
  *  The Clipboard aptitude provides access to the OS's clipboard.
@@ -33,7 +33,11 @@ export function listen(
   includeOliveHelpsEvents: boolean,
   callback: (clipboardText: string) => void,
 ): Promise<Cancellable> {
-  return promisifyListenableWithParam(includeOliveHelpsEvents, callback, oliveHelps.clipboard.listen2);
+  return promisifyListenableWithParam(
+    includeOliveHelpsEvents,
+    callback,
+    oliveHelps.clipboard.listen2,
+  );
 }
 
 export function read(): Promise<string> {
