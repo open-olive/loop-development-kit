@@ -5,6 +5,5 @@ declare namespace Clipboard {
     write: Common.ReadableWithParam<string, void>;
 
     listen2: Common.ListenableWithParam<boolean, string>;
-
   }
 }
