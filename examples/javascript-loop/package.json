@@ -17,7 +17,7 @@
     }
   },
   "dependencies": {
-    "@oliveai/ldk": "file:./"
+    "@oliveai/ldk": "file:../.."
   },
   "devDependencies": {
     "webpack": "^5.32.0",

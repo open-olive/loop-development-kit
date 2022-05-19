@@ -17,7 +17,7 @@
     }
   },
   "dependencies": {
-    "@oliveai/ldk": "file:./"
+    "@oliveai/ldk": "file:../.."
   },
   "devDependencies": {
     "ts-loader": "^8.1.0",

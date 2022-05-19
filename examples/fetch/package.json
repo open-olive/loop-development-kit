@@ -23,7 +23,7 @@
     }
   },
   "dependencies": {
-    "@oliveai/ldk": "file:./",
+    "@oliveai/ldk": "file:../..",
     "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
