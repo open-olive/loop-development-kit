@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { mocked } from 'ts-jest/utils';
-import { render, renderNewWhisper } from './renderer';
+import { render } from './renderer';
 import { Button, Direction, JustifyContent, NewWhisper, WhisperComponentType } from '../types';
 import { WhisperRenderingInterface } from './whisper-render-instance';
 
