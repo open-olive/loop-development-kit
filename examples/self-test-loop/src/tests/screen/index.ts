@@ -1,6 +1,5 @@
 /* eslint-disable no-async-promise-executor */
 import { network, screen, whisper, window } from '@oliveai/ldk';
-import { OcrEvent } from '@oliveai/ldk/dist/screen/types';
 import { Buffer } from 'buffer';
 
 export * from './hashTests';

@@ -1,6 +1,6 @@
 import { screen } from '@oliveai/ldk';
 import { Bounds, HashType } from '@oliveai/ldk/dist/screen';
-import { Cancellable } from '../../../../../dist/cancellable';
+import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 export const testFullScreenHash = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {

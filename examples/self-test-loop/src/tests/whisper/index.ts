@@ -26,8 +26,6 @@ import {
   ProgressShape,
   FontWeight,
   Wrap,
-  Alignment,
-  AlignContent,
   GridDirection,
 } from '@oliveai/ldk/dist/whisper/types';
 import { stripIndent } from 'common-tags';

@@ -7,7 +7,7 @@ import {
   TabChangeDetails,
   UIElementDetails,
 } from '@oliveai/ldk/dist/browser';
-import { Cancellable } from '../../../../../dist/cancellable';
+import { Cancellable } from '@oliveai/ldk/dist/cancellable';
 
 export const testOpenTabAndListenNavigation = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
