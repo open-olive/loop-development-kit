@@ -142,9 +142,15 @@ declare namespace WhisperService {
 
   type GridDirection = 'row' | 'row-reverse' | 'column' | 'column-reverse';
 
+  type Height = 'small' | 'medium' | 'large' | 'extraLarge';
+
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
   type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
+
+  type MaxHeight = 'small' | 'medium' | 'large' | 'extraLarge';
+
+  type MinHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
   type OpenDirection = 'bottom' | 'top';
 
@@ -221,6 +227,9 @@ declare namespace WhisperService {
     children: Array<ChildComponents>;
     customHeight?: CustomHeight;
     direction: Direction;
+    height?: Height;
+    maxHeight?: MaxHeight;
+    minHeight?: MinHeight;
     onClick?: WhisperHandler;
   };
 
