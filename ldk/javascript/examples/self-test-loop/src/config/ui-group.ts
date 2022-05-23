@@ -15,6 +15,6 @@ export const uiTestGroup = (): TestGroup =>
       'UI Aptitude - Listen Global Search',
       uiTests.testListenGlobalSearch,
       10000,
-      'Press CMD + O and search "for meaning"',
+      'Press \bCommand+Shift+O\b on Mac or \bCtrl+Shift+O\b on Windows and search "for meaning"',
     ),
   ]);
