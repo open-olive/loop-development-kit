@@ -15,6 +15,7 @@ import {
   IconVariant,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
+  MaxHeight,
   MinHeight,
   NewWhisper,
   OpenDirection,
@@ -44,7 +45,7 @@ import {
   resolveRejectButtons,
 } from './utils';
 import { longText, markdownText, image } from './text';
-import { Align, MaxHeight, Variant } from '../../../../../dist/whisper';
+import { Align, Variant } from '../../../../../dist/whisper';
 
 export * from './autocomplete';
 export * from './chart';
