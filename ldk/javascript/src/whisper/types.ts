@@ -301,6 +301,27 @@ export enum CustomHeight {
   ExtraLarge = 'extraLarge',
 }
 
+export enum Height {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
+}
+
+export enum MaxHeight {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
+}
+
+export enum MinHeight {
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  ExtraLarge = 'extraLarge',
+}
+
 export enum Size {
   None = 'none',
   Small = 'small',
@@ -1079,7 +1100,10 @@ export type Box = WhisperComponent<WhisperComponentType.Box> & {
   children: Array<BoxChildComponent>;
   customHeight?: CustomHeight;
   direction: Direction;
+  height?: Height;
   justifyContent: JustifyContent;
+  maxHeight?: MaxHeight;
+  minHeight?: MinHeight;
   onClick?: WhisperHandler;
 };
 
