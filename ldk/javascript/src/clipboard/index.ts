@@ -47,15 +47,17 @@ export function listen(
           return error;
         }
         focusedWindow = event.path;
+        return event
       });
 
       // updates focusedWindow when focused window is changed
-      oliveHelps.window.listenActiveWindow(
+       oliveHelps.window.listenActiveWindow(
         (error, event) => {
           if (error) {
             return error;
           }
           focusedWindow = event.path;
+          return event
         },
         (obj) => resolve(obj),
       );
@@ -69,8 +71,9 @@ export function listen(
             filterOptions.includeOliveHelpsEvents !== false ||
             (focusedWindow !== 'olive-helps.exe' && focusedWindow !== 'olive-helps')
           ) {
-            callback(event);
+            return callback(event);
           }
+          return undefined
         },
         (obj) => resolve(obj),
       );
