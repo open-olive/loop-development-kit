@@ -1,12 +1,20 @@
 import { mocked } from 'ts-jest/utils';
 import * as clipboard from '.';
+import * as window from '../window';
 
 describe('Clipboard', () => {
   beforeEach(() => {
     oliveHelps.clipboard = {
       read: jest.fn(),
-      write: jest.fn(),
       listenAll: jest.fn(),
+      write: jest.fn(),
+    };
+    oliveHelps.window = {
+      activeWindow: jest.fn(),
+      listenActiveWindow: jest.fn(),
+      all: jest.fn(),
+      listenAll: jest.fn(),
+      getActiveWindowID: jest.fn(),
     };
   });
 
