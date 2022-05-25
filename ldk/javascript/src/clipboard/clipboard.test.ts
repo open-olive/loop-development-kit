@@ -52,9 +52,21 @@ describe('Clipboard', () => {
       );
     });
 
-    it('passed in listen function to olive helps', async () => {
+    it('passed in listen Including olive helps events function to Olive Helps', async () => {
       const callback = jest.fn();
       const text = 'abc';
+      const expectedWindowInfo = {
+        title: 'Olive Helps Application',
+        path: 'path/to/my/window',
+        pid: 8675309,
+        x: 0,
+        y: 1,
+        width: 9001,
+        height: 50,
+      };
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
+        callback(undefined, expectedWindowInfo),
+      );
       mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         returnCb({} as any);
@@ -62,7 +74,83 @@ describe('Clipboard', () => {
       });
 
       await clipboard.listen({ includeOliveHelpsEvents: true }, callback);
+      expect(callback).toHaveBeenCalledWith(text);
+    });
 
+    it('passed in listen Including olive helps events function to Chrome', async () => {
+      const callback = jest.fn();
+      const expectedWindowInfo = {
+        title: 'Chrome',
+        path: 'path/to/my/window',
+        pid: 8675309,
+        x: 0,
+        y: 1,
+        width: 9001,
+        height: 50,
+      };
+      const text = 'abc';
+
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
+        callback(undefined, expectedWindowInfo),
+      );
+      mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
+
+      await clipboard.listen({ includeOliveHelpsEvents: true }, callback);
+      expect(callback).toHaveBeenCalledWith(text);
+    });
+    it('passed in listen excluding olive helps events function to Olive Helps', async () => {
+      const callback = jest.fn();
+      const expectedWindowInfo = {
+        title: 'Olive Helps Application',
+        path: 'path/to/my/window',
+        pid: 8675309,
+        x: 0,
+        y: 1,
+        width: 9001,
+        height: 50,
+      };
+      const text = 'abc';
+
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
+        callback(undefined, expectedWindowInfo),
+      );
+      mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
+
+      await clipboard.listen({ includeOliveHelpsEvents: false }, callback);
+      expect(callback).not.toHaveBeenCalled();
+    });
+
+    it('passed in listen excluding olive helps events function to Chrome', async () => {
+      const callback = jest.fn();
+      const expectedWindowInfo = {
+        title: 'Chrome',
+        path: 'path/to/my/window',
+        pid: 8675309,
+        x: 0,
+        y: 1,
+        width: 9001,
+        height: 50,
+      };
+      const text = 'abc';
+
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
+        callback(undefined, expectedWindowInfo),
+      );
+      mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
+
+      await clipboard.listen({ includeOliveHelpsEvents: false }, callback);
       expect(callback).toHaveBeenCalledWith(text);
     });
 
