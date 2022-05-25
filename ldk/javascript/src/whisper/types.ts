@@ -801,7 +801,8 @@ export type ListPair = WhisperComponent<WhisperComponentType.ListPair> & {
   copyable: boolean;
   labelCopyable?: boolean;
   label: string;
-  onCopy?: WhisperHandlerWithParam<string>;
+  onLabelCopy?: WhisperHandlerWithParam<string>;
+  onValueCopy?: WhisperHandlerWithParam<string>;
   value: string;
   style: Urgency;
 };
@@ -974,6 +975,7 @@ export type Divider = WhisperComponent<WhisperComponentType.Divider>;
 
 export type Progress = WhisperComponent<WhisperComponentType.Progress> & {
   determinate?: number;
+  label?: string;
   shape?: ProgressShape;
   /**
    * If StyleSize is set to 'None', it will return its default StyleSize 'Medium'

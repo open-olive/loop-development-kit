@@ -1,9 +1,11 @@
 {
   "name": "@oliveai/ldk",
-  "version": "3.17.0",
+  "version": "3.18.0",
   "description": "The Loop Development Kit for Olive Helps.",
-  "author": "Olive",
-  "copyright": "Copyright 2021 Olive",
+  "author": {
+    "name": "Olive AI, Inc."
+  },
+  "copyright": "Copyright (C) 2022 Olive AI, Inc. All rights reserved.",
   "homepage": "https://github.com/open-olive/loop-development-kit#readme",
   "license": "MIT",
   "main": "dist/index.js",
@@ -17,8 +19,9 @@
     "sdk"
   ],
   "scripts": {
+    "build": "npm run clear-dist && npm run compile",
+    "compile": "tsc",
     "clear-dist": "rm -rf dist || del /s /q dist",
-    "build": "npm run clear-dist && tsc",
     "prepush": "npm run build && npm run test && npm run lint",
     "test": "jest",
     "test-coverage": "jest --collectCoverage",

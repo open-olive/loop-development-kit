@@ -1,19 +1,18 @@
-import * as webpack from 'webpack';
-import * as path from 'path';
-import { LdkSettings } from './ldk-settings';
-import { buildBabelConfig, buildOptimization, buildWebpackConfig } from './shared';
+import { join as joinPath } from 'path';
+import { Configuration as WebpackConfiguration, RuleSetRule } from 'webpack';
+
 import { generateLdkSettings } from './generate-ldk-settings';
+import { buildBabelConfig, buildOptimization, buildWebpackConfig } from './shared';
 
-const ldkSettings: LdkSettings = generateLdkSettings();
-const baseBabelConfig: webpack.RuleSetRule = buildBabelConfig(false);
+const baseBabelConfig: RuleSetRule = buildBabelConfig(false);
 const optimization = buildOptimization(true);
-const buildPath = path.join(process.cwd(), 'dist');
+const buildPath = joinPath(process.cwd(), 'dist');
 
-const config: webpack.Configuration = buildWebpackConfig(
+const config: WebpackConfiguration = buildWebpackConfig(
   buildPath,
   baseBabelConfig,
   optimization,
-  ldkSettings,
+  generateLdkSettings,
 );
 
 export default config;

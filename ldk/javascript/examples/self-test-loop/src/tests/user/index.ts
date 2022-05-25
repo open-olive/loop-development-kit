@@ -108,6 +108,10 @@ export const testJwtUserDetailsIncludeEmail = (): Promise<boolean> =>
               body: 'The email claim is still in the encoded text. You can paste the token into jwt.io to check the claims. This token **should** have an email claim.',
             },
             {
+              type: whisper.WhisperComponentType.Markdown,
+              body: `The email is ${token.email}`,
+            },
+            {
               type: whisper.WhisperComponentType.Link,
               text: 'Click here to copy the JWT to your clipboard.',
               onClick: async () => {

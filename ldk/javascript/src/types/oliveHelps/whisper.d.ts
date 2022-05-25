@@ -338,7 +338,8 @@ declare namespace WhisperService {
     copyable: boolean;
     labelCopyable?: boolean;
     label: string;
-    onCopy?: WhisperHandlerWithParam<string>;
+    onLabelCopy?: WhisperHandlerWithParam<string>;
+    onValueCopy?: WhisperHandlerWithParam<string>;
     value: string;
     style: Urgency;
   };
@@ -375,6 +376,7 @@ declare namespace WhisperService {
 
   type Progress = Component<'progress'> & {
     determinate?: number;
+    label?: string;
     shape?: ProgressShape;
     size?: StyleSize;
   };
