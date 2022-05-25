@@ -112,7 +112,7 @@ export const testWebsocketConnection = (): Promise<boolean> =>
     });
 
     // After copying the websocket URL from the above step run websocket test
-    const clipboardListener = await clipboard.listen(false, async (url) => {
+    const clipboardListener = await clipboard.listen({includeOliveHelpsEvents: false}, async (url) => {
       let testPassed = false;
 
       const socketConfiguration: network.SocketConfiguration = { url };

@@ -48,6 +48,7 @@ export const testListenExcludingOliveHelps = (): Promise<boolean> =>
       const listener = await clipboard.listen(
         { includeOliveHelpsEvents: false },
         (clipboardText: string) => {
+          listener.cancel();
           whisper.create({
             label: 'Clipboard - listen without olive helps events',
             components: [
@@ -62,7 +63,6 @@ export const testListenExcludingOliveHelps = (): Promise<boolean> =>
               resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
             ],
           });
-          listener.cancel();
         },
       );
     } catch (error) {

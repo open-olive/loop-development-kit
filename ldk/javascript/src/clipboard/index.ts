@@ -41,13 +41,16 @@ export function listen(
     try {
       let focusedWindow: string;
 
-      // initializes focusedWindow as current focused window
       oliveHelps.window.activeWindow((error, event) => {
         if (error) {
           return error;
         }
         focusedWindow = event.path;
-        return event;
+        console.log("___________________")
+        console.log("focusedWindow init")
+        console.log(focusedWindow)
+        console.log("___________________")
+        return focusedWindow;
       });
 
       // updates focusedWindow when focused window is changed
@@ -57,10 +60,14 @@ export function listen(
             return error;
           }
           focusedWindow = event.path;
-          return event;
+          console.log("___________________")
+          console.log("focusedWindow updated")
+          console.log(focusedWindow)
+          console.log("___________________")
+          return focusedWindow;
         },
         (obj) => resolve(obj),
-      );
+        );
 
       oliveHelps.clipboard.listenAll(
         (error, event) => {
@@ -71,6 +78,10 @@ export function listen(
             filterOptions.includeOliveHelpsEvents !== false ||
             (focusedWindow !== 'olive-helps.exe' && focusedWindow !== 'olive-helps')
           ) {
+            console.log("___________________")
+            console.log(focusedWindow)
+            console.log(event)
+            console.log("___________________")
             return callback(event);
           }
           return undefined;
