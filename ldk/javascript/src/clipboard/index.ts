@@ -1,5 +1,5 @@
 import { Cancellable } from '../cancellable';
-import { promisify, promisifyWithParam, promisifyListenableWithParam } from '../promisify';
+import { promisify, promisifyWithParam } from '../promisify';
 
 /**
  *  The Clipboard aptitude provides access to the OS's clipboard.
@@ -20,24 +20,65 @@ export interface Clipboard {
   /**
    * Starts listening to changes to the clipboard.
    *
-   * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus
+   * @param filterOptions - object, includesOliveHelps will callback will be called while olive helps window is in focus if true
    * @param callback - A function that's called whenever the clipboard's contents change.
    */
   listen(
-    includeOliveHelpsEvents: boolean,
+    filterOptions: FilterOptions,
     callback: (clipboardText: string) => void,
   ): Promise<Cancellable>;
 }
 
+type FilterOptions = {
+  includeOliveHelpsEvents: boolean;
+};
+
 export function listen(
-  includeOliveHelpsEvents: boolean,
+  filterOptions: FilterOptions,
   callback: (clipboardText: string) => void,
 ): Promise<Cancellable> {
-  return promisifyListenableWithParam(
-    includeOliveHelpsEvents,
-    callback,
-    oliveHelps.clipboard.listen2,
-  );
+  return new Promise((resolve, reject) => {
+    try {
+      let focusedWindow: string;
+
+      // initializes focusedWindow as current focused window
+      oliveHelps.window.activeWindow((error, event) => {
+        if (error) {
+          return error;
+        }
+        focusedWindow = event.path;
+      });
+
+      // updates focusedWindow when focused window is changed
+      oliveHelps.window.listenActiveWindow(
+        (error, event) => {
+          if (error) {
+            return error;
+          }
+          focusedWindow = event.path;
+        },
+        (obj) => resolve(obj),
+      );
+
+      oliveHelps.clipboard.listenAll(
+        (error, event) => {
+          if (error) {
+            return error;
+          }
+          if (
+            filterOptions.includeOliveHelpsEvents !== false ||
+            (focusedWindow !== 'olive-helps.exe' && focusedWindow !== 'olive-helps')
+          ) {
+            callback(event);
+          }
+        },
+        (obj) => resolve(obj),
+      );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
 }
 
 export function read(): Promise<string> {

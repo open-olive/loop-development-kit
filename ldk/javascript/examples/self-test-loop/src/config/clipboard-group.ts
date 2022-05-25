@@ -17,4 +17,10 @@ export const clipboardTestGroup = (): TestGroup =>
       10000,
       'Copy the value "LDKThxBai" to the clipboard',
     ),
+    new LoopTest(
+      'Clipboard Aptitude - Clipboard Stream excluding olive helps',
+      clipboardTests.testListenExcludingOliveHelps,
+      10000,
+      'Copying anything outside of olive helps should create a whisper',
+    ),
   ]);

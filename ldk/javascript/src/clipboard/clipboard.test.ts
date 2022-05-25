@@ -6,7 +6,7 @@ describe('Clipboard', () => {
     oliveHelps.clipboard = {
       read: jest.fn(),
       write: jest.fn(),
-      listen2: jest.fn(),
+      listenAll: jest.fn(),
     };
   });
 
@@ -36,12 +36,10 @@ describe('Clipboard', () => {
 
   describe('listen', () => {
     it('sets clipboard olive helps configuration', () => {
-      const includeOliveHelpsEvents = true;
       const callback = jest.fn();
-      clipboard.listen(includeOliveHelpsEvents, callback);
+      clipboard.listen({ includeOliveHelpsEvents: true }, callback);
 
-      expect(oliveHelps.clipboard.listen2).toHaveBeenCalledWith(
-        includeOliveHelpsEvents,
+      expect(oliveHelps.clipboard.listenAll).toHaveBeenCalledWith(
         expect.any(Function),
         expect.any(Function),
       );
@@ -50,27 +48,27 @@ describe('Clipboard', () => {
     it('passed in listen function to olive helps', async () => {
       const callback = jest.fn();
       const text = 'abc';
-      const include = true;
-      mocked(oliveHelps.clipboard.listen2).mockImplementation((param, listenerCb, returnCb) => {
-        expect(param).toEqual(include);
+      mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         returnCb({} as any);
         listenerCb(undefined, text);
       });
 
-      await clipboard.listen(include, callback);
+      await clipboard.listen({ includeOliveHelpsEvents: true }, callback);
 
       expect(callback).toHaveBeenCalledWith(text);
     });
 
     it('rejects with the error when the underlying call throws an error', () => {
       const exception = 'Exception';
-      mocked(oliveHelps.clipboard.listen2).mockImplementation(() => {
+      mocked(oliveHelps.clipboard.listenAll).mockImplementation(() => {
         throw exception;
       });
 
       const callback = jest.fn();
-      expect(() => clipboard.listen(false, callback)).rejects.toBe(exception);
+      expect(() => clipboard.listen({ includeOliveHelpsEvents: false }, callback)).rejects.toBe(
+        exception,
+      );
     });
   });
 
