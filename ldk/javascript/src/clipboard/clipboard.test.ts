@@ -64,8 +64,8 @@ describe('Clipboard', () => {
         width: 9001,
         height: 50,
       };
-      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
-        callback(undefined, expectedWindowInfo),
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callbackAW) =>
+        callbackAW(undefined, expectedWindowInfo),
       );
       mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,8 +90,8 @@ describe('Clipboard', () => {
       };
       const text = 'abc';
 
-      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
-        callback(undefined, expectedWindowInfo),
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callbackAW) =>
+      callbackAW(undefined, expectedWindowInfo),
       );
       mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -115,8 +115,8 @@ describe('Clipboard', () => {
       };
       const text = 'abc';
 
-      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
-        callback(undefined, expectedWindowInfo),
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callbackAW) =>
+        callbackAW(undefined, expectedWindowInfo),
       );
       mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -141,8 +141,8 @@ describe('Clipboard', () => {
       };
       const text = 'abc';
 
-      mocked(oliveHelps.window.activeWindow).mockImplementation((callback) =>
-        callback(undefined, expectedWindowInfo),
+      mocked(oliveHelps.window.activeWindow).mockImplementation((callbackAW) =>
+        callbackAW(undefined, expectedWindowInfo),
       );
       mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

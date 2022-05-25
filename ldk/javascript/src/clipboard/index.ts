@@ -37,7 +37,7 @@ export function listen(
   filterOptions: FilterOptions,
   callback: (clipboardText: string) => void,
 ): Promise<Cancellable> {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       let focusedWindow: string;
 
