@@ -91,7 +91,7 @@ describe('Clipboard', () => {
       const text = 'abc';
 
       mocked(oliveHelps.window.activeWindow).mockImplementation((callbackAW) =>
-      callbackAW(undefined, expectedWindowInfo),
+        callbackAW(undefined, expectedWindowInfo),
       );
       mocked(oliveHelps.clipboard.listenAll).mockImplementation((listenerCb, returnCb) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
