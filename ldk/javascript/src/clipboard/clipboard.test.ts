@@ -203,9 +203,9 @@ describe('Clipboard', () => {
       });
 
       const callback = jest.fn();
-      expect(() => clipboard.listenWithOptions({ includeOliveHelpsEvents: false }, callback)).rejects.toBe(
-        exception,
-      );
+      expect(() =>
+        clipboard.listenWithOptions({ includeOliveHelpsEvents: false }, callback),
+      ).rejects.toBe(exception);
     });
   });
 

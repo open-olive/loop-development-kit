@@ -24,7 +24,7 @@ export interface Clipboard {
    * @param filterOptions - object, includesOliveHelps will callback will be called while olive helps window is in focus if true
    * @param callback - A function that's called whenever the clipboard's contents change.
    */
-   listen(
+  listen(
     includeOliveHelpsEvents: boolean,
     callback: (clipboardText: string) => void,
   ): Promise<Cancellable>;
@@ -38,7 +38,6 @@ export interface Clipboard {
 type FilterOptions = {
   includeOliveHelpsEvents: boolean;
 };
-
 
 export function listen(
   includeOliveHelpsEvents: boolean,

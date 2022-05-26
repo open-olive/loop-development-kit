@@ -9,6 +9,5 @@ declare namespace Clipboard {
     read: Common.Readable<string>;
 
     write: Common.ReadableWithParam<string, void>;
-    
   }
 }
