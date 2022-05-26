@@ -32,6 +32,12 @@ export class CheckWarningsAndErrorsPlugin {
             );
             clipboardListenDeprecationWarning.file = assetName;
             compilation.warnings.push(clipboardListenDeprecationWarning);
+          if (fileContent?.includes('customHeight:') || fileContent?.includes('customHeight=')) {
+            const boxCustomeHeightWarningMsg =
+              '[customHeight] in Box component will be deprecated soon. Please use height, maxHeight and minHeight instead.';
+            const boxCustomeHeightWarning = new WebpackError(boxCustomeHeightWarningMsg);
+            boxCustomeHeightWarning.file = assetName;
+            compilation.warnings.push(boxCustomeHeightWarning);
           }
         }
       });

@@ -36,6 +36,12 @@ export const whisperTestGroup = (): TestGroup =>
       'Verify that box in the box rendered correctly',
     ),
     new LoopTest(
+      'Whisper Aptitude - Box in the box Dynamic Height',
+      whisperTests.testBoxInBoxWithDynamicHeight,
+      10000,
+      'Verify that box in the box rendered correctly',
+    ),
+    new LoopTest(
       'Whisper Aptitude - Breadcrumbs Empty',
       whisperTests.testEmptyBreadcrumbs,
       10000,
