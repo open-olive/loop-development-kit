@@ -39,26 +39,25 @@ export function listen(
 ): Promise<Cancellable> {
   return new Promise((resolve, reject) => {
     try {
-      let focusedWindow: string;
-
       const setFocusedWindow = () =>
         new Promise((res, rej) => {
           oliveHelps.window.activeWindow((error, event) => {
             if (error) {
               return rej(error);
             }
-            focusedWindow = event.title;
 
-            return res(focusedWindow);
+            return res(event.title);
           });
         });
 
       oliveHelps.clipboard.listenAll(
         async (error, event) => {
           if (error) {
-            return error;
+            return reject(error);
           }
-          await setFocusedWindow();
+
+          const focusedWindow = await setFocusedWindow();
+
           if (
             filterOptions.includeOliveHelpsEvents ||
             focusedWindow !== 'Olive Helps Application'
