@@ -1,5 +1,5 @@
 import { Cancellable } from '../cancellable';
-import { promisify, promisifyWithParam } from '../promisify';
+import { promisify, promisifyWithParam, promisifyListenable } from '../promisify';
 
 /**
  *  The Clipboard aptitude provides access to the OS's clipboard.
@@ -20,10 +20,16 @@ export interface Clipboard {
   /**
    * Starts listening to changes to the clipboard.
    *
+   * @param includeOliveHelpsEvents - if passed in true, callback will be called while olive helps window is in focus
    * @param filterOptions - object, includesOliveHelps will callback will be called while olive helps window is in focus if true
    * @param callback - A function that's called whenever the clipboard's contents change.
    */
-  listen(
+   listen(
+    includeOliveHelpsEvents: boolean,
+    callback: (clipboardText: string) => void,
+  ): Promise<Cancellable>;
+
+  listenWithOptions(
     filterOptions: FilterOptions,
     callback: (clipboardText: string) => void,
   ): Promise<Cancellable>;
@@ -33,7 +39,16 @@ type FilterOptions = {
   includeOliveHelpsEvents: boolean;
 };
 
+
 export function listen(
+  includeOliveHelpsEvents: boolean,
+  callback: (clipboardText: string) => void,
+): Promise<Cancellable> {
+  oliveHelps.clipboard.includeOliveHelpsEvents(includeOliveHelpsEvents);
+  return promisifyListenable(callback, oliveHelps.clipboard.listen);
+}
+
+export function listenWithOptions(
   filterOptions: FilterOptions,
   callback: (clipboardText: string) => void,
 ): Promise<Cancellable> {

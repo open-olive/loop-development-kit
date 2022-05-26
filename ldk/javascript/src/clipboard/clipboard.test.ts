@@ -4,8 +4,10 @@ import * as clipboard from '.';
 describe('Clipboard', () => {
   beforeEach(() => {
     oliveHelps.clipboard = {
-      read: jest.fn(),
+      includeOliveHelpsEvents: jest.fn(),
+      listen: jest.fn(),
       listenAll: jest.fn(),
+      read: jest.fn(),
       write: jest.fn(),
     };
     oliveHelps.window = {
@@ -15,6 +17,46 @@ describe('Clipboard', () => {
       listenAll: jest.fn(),
       getActiveWindowID: jest.fn(),
     };
+  });
+
+  describe('listen', () => {
+    it('sets clipboard olive helps configuration', () => {
+      const includeOliveHelpsEvents = true;
+      const callback = jest.fn();
+      clipboard.listen(includeOliveHelpsEvents, callback);
+
+      expect(oliveHelps.clipboard.includeOliveHelpsEvents).toHaveBeenCalledWith(
+        includeOliveHelpsEvents,
+      );
+    });
+
+    it('passed in listen function to olive helps', async () => {
+      const callback = jest.fn();
+      const text = 'abc';
+      const include = true;
+      mocked(oliveHelps.clipboard.includeOliveHelpsEvents).mockImplementation((param) => {
+        expect(param).toEqual(include);
+      });
+      mocked(oliveHelps.clipboard.listen).mockImplementation((listenerCb, returnCb) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        returnCb({} as any);
+        listenerCb(undefined, text);
+      });
+
+      await clipboard.listen(include, callback);
+
+      expect(callback).toHaveBeenCalledWith(text);
+    });
+
+    it('rejects with the error when the underlying call throws an error', () => {
+      const exception = 'Exception';
+      mocked(oliveHelps.clipboard.listen).mockImplementation(() => {
+        throw exception;
+      });
+
+      const callback = jest.fn();
+      expect(() => clipboard.listen(false, callback)).rejects.toBe(exception);
+    });
   });
 
   describe('read', () => {
@@ -41,10 +83,10 @@ describe('Clipboard', () => {
     });
   });
 
-  describe('listen', () => {
+  describe('listenWithOptions', () => {
     it('sets clipboard olive helps configuration', () => {
       const callback = jest.fn();
-      clipboard.listen({ includeOliveHelpsEvents: true }, callback);
+      clipboard.listenWithOptions({ includeOliveHelpsEvents: true }, callback);
 
       expect(oliveHelps.clipboard.listenAll).toHaveBeenCalledWith(
         expect.any(Function),
@@ -73,7 +115,7 @@ describe('Clipboard', () => {
         listenerCb(undefined, text);
       });
 
-      await clipboard.listen({ includeOliveHelpsEvents: true }, callback);
+      await clipboard.listenWithOptions({ includeOliveHelpsEvents: true }, callback);
       expect(callback).toHaveBeenCalledWith(text);
     });
 
@@ -99,7 +141,7 @@ describe('Clipboard', () => {
         listenerCb(undefined, text);
       });
 
-      await clipboard.listen({ includeOliveHelpsEvents: true }, callback);
+      await clipboard.listenWithOptions({ includeOliveHelpsEvents: true }, callback);
       expect(callback).toHaveBeenCalledWith(text);
     });
     it('passed in listen excluding olive helps events function to Olive Helps', async () => {
@@ -124,7 +166,7 @@ describe('Clipboard', () => {
         listenerCb(undefined, text);
       });
 
-      await clipboard.listen({ includeOliveHelpsEvents: false }, callback);
+      await clipboard.listenWithOptions({ includeOliveHelpsEvents: false }, callback);
       expect(callback).not.toHaveBeenCalled();
     });
 
@@ -150,7 +192,7 @@ describe('Clipboard', () => {
         listenerCb(undefined, text);
       });
 
-      await clipboard.listen({ includeOliveHelpsEvents: false }, callback);
+      await clipboard.listenWithOptions({ includeOliveHelpsEvents: false }, callback);
       expect(callback).toHaveBeenCalledWith(text);
     });
 
@@ -161,7 +203,7 @@ describe('Clipboard', () => {
       });
 
       const callback = jest.fn();
-      expect(() => clipboard.listen({ includeOliveHelpsEvents: false }, callback)).rejects.toBe(
+      expect(() => clipboard.listenWithOptions({ includeOliveHelpsEvents: false }, callback)).rejects.toBe(
         exception,
       );
     });

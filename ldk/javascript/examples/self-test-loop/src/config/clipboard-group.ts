@@ -12,14 +12,26 @@ export const clipboardTestGroup = (): TestGroup =>
       'Copying value to clipboard and reading it back',
     ),
     new LoopTest(
-      'Clipboard Aptitude - Clipboard Stream',
+      'Clipboard Aptitude - Clipboard Stream - function listen',
       clipboardTests.testListen,
       10000,
       'Copy the value "LDKThxBai" to the clipboard',
     ),
     new LoopTest(
-      'Clipboard Aptitude - Clipboard Stream excluding olive helps',
+      'Clipboard Aptitude - Clipboard Stream excluding olive helps - function listen',
       clipboardTests.testListenExcludingOliveHelps,
+      10000,
+      'Copying anything outside of olive helps should create a whisper',
+    ),
+    new LoopTest(
+      'Clipboard Aptitude - Clipboard Stream - function listenWithOptions',
+      clipboardTests.testListenWithOptions,
+      10000,
+      'Copy the value "LDKThxBai" to the clipboard',
+    ),
+    new LoopTest(
+      'Clipboard Aptitude - Clipboard Stream excluding olive helps - function listenWithOptions',
+      clipboardTests.testListenWithOptionsExcludingOliveHelps,
       10000,
       'Copying anything outside of olive helps should create a whisper',
     ),

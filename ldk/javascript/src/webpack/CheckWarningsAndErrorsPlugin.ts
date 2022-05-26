@@ -24,6 +24,13 @@ export class CheckWarningsAndErrorsPlugin {
             ocrDeprecationWarning.file = assetName;
             compilation.warnings.push(ocrDeprecationWarning);
           }
+          if (fileContent?.includes('clipboard.listen(')) {
+            const clipboardListenDeprecationWarningMsg =
+              '[clipboard.listen()] clipboard.listen will be deprecated soon. Please use clipboard.listenWithOptions() instead.';
+            const clipboardListenDeprecationWarning = new WebpackError(clipboardListenDeprecationWarningMsg);
+            clipboardListenDeprecationWarning.file = assetName;
+            compilation.warnings.push(clipboardListenDeprecationWarning);
+          }
         }
       });
     });

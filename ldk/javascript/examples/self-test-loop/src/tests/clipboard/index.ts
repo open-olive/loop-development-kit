@@ -25,7 +25,7 @@ export const testListen = (): Promise<boolean> =>
     try {
       console.log('Registering clipboard listener.');
       const listener = await clipboard.listen(
-        { includeOliveHelpsEvents: true },
+        true,
         (clipboardText: string) => {
           console.log(`Received clipboard text: ${clipboardText}`);
           listener.cancel();
@@ -46,6 +46,57 @@ export const testListenExcludingOliveHelps = (): Promise<boolean> =>
     try {
       console.log('Registering clipboard listener.');
       const listener = await clipboard.listen(
+        false,
+        (clipboardText: string) => {
+          whisper.create({
+            label: 'Clipboard - listen without olive helps events',
+            components: [
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: clipboardText,
+              },
+              {
+                type: whisper.WhisperComponentType.Markdown,
+                body: 'Was the text above copied outside of olive helps?',
+              },
+              resolveRejectButtons(resolve, reject, 'Yes', 'No', true),
+            ],
+          });
+          listener.cancel();
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testListenWithOptions = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      console.log('Registering clipboard listener.');
+      const listener = await clipboard.listenWithOptions(
+        { includeOliveHelpsEvents: true },
+        (clipboardText: string) => {
+          console.log(`Received clipboard text: ${clipboardText}`);
+          listener.cancel();
+          if (clipboardText === 'LDKThxBai') {
+            resolve(true);
+          }
+          reject(new Error('Incorrect value detected'));
+        },
+      );
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+
+export const testListenWithOptionsExcludingOliveHelps = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      console.log('Registering clipboard listener.');
+      const listener = await clipboard.listenWithOptions(
         { includeOliveHelpsEvents: false },
         (clipboardText: string) => {
           whisper.create({
