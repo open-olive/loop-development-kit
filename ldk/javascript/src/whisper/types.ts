@@ -547,14 +547,14 @@ export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & 
 
 export type AutocompleteFilter = {
   /**
-  * Options to configure how the filter search behaves
-  *
-  * (Note: filterOptions and matchSorter can't be used together; if you include both,
-  * matchSorter will take precedence)
-  */
- filterOptions?: AutocompleteFilterOptions;
- matchSorter?: never;
-} 
+   * Options to configure how the filter search behaves
+   *
+   * (Note: filterOptions and matchSorter can't be used together; if you include both,
+   * matchSorter will take precedence)
+   */
+  filterOptions?: AutocompleteFilterOptions;
+  matchSorter?: never;
+};
 export type AutocompleteMatchSorter = {
   /**
    * Options to use with our implementation of match-sorter
@@ -563,8 +563,8 @@ export type AutocompleteMatchSorter = {
    * (Note: filterOptions and matchSorter can't be used together; if you include both,
    * matchSorter will take precedence)
    */
-   matchSorter?: AutocompleteMatchSorterOptions;
-   filterOptions?: never;
+  matchSorter?: AutocompleteMatchSorterOptions;
+  filterOptions?: never;
 };
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {

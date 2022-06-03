@@ -157,7 +157,7 @@ declare namespace WhisperService {
 
   type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
 
-  type MatchSorterRankings = 'ACRONYM' | 'CASE_SENSITIVE_EQUAL' | 'CONTAINS' | 'EQUAL' | 'MATCHES'
+  type MatchSorterRankings = 'ACRONYM' | 'CASE_SENSITIVE_EQUAL' | 'CONTAINS' | 'EQUAL' | 'MATCHES';
 
   type MaxHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
@@ -476,17 +476,17 @@ declare namespace WhisperService {
     tooltip?: string;
     value?: string;
     freeSolo?: boolean;
-  } & (AutocompleteMatchSorter | AutocompleteFilter)
+  } & (AutocompleteMatchSorter | AutocompleteFilter);
 
   type AutocompleteFilter = {
     filterOptions?: AutocompleteFilterOptions;
     matchSorter?: never;
-  }
+  };
 
   type AutocompleteMatchSorter = {
     filterOptions?: never;
     matchSorter?: AutocompleteMatchSorterOptions;
-  }
+  };
 
   type RadioGroup = SelectComponent<'radioGroup'> & {
     onSelect: WhisperHandlerWithParam<number>;
