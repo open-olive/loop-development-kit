@@ -2,6 +2,7 @@ import 'core-js';
 import * as React from 'react';
 import * as ReactWhisper from './whisper/react/renderer';
 import * as browser from './browser';
+import * as Cancelleable from './cancellable';
 import * as clipboard from './clipboard';
 import * as config from './config';
 import * as cursor from './cursor';
@@ -42,6 +43,7 @@ const _window: window.Window = window;
 
 export {
   browser,
+  Cancelleable,
   clipboard,
   config,
   cursor,

@@ -23,8 +23,8 @@ jobs:
       # Consolidate docs
       - run: |
           mkdir typedoc-tmp
-          cp -r ./javascript/docs typedoc-tmp/javascript
-          cp -r ./javascript/readme_assets typedoc-tmp/javascript
+          cp -r ./generated-docs typedoc-tmp
+          cp -r ./readme_assets typedoc-tmp
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

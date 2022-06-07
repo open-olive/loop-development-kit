@@ -26,10 +26,10 @@ jobs:
       - run: npm set audit false
       - run: npm ci
       - run: npm audit --production --audit-level=low
-      - run: npm run build --if-present
       - run: npm run lint
+      - run: npm run prettier:all:check
       - run: npm run test
-      - run: npm run doc
+      - run: npm run build --if-present
 
   build-examples:
     runs-on: ubuntu-latest

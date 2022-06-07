@@ -4,9 +4,8 @@
 # Build
 dist
 
-# Docs
-docs
-
+# Generated Docs
+generated-docs 
 
 # Testing
 coverage/
