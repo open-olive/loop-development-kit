@@ -45,11 +45,11 @@ const ComponentValidationTest: React.FunctionComponent<TestComponentProps> = (pr
       state.get(ids.dropdownInputId) === undefined ? 'Please choose an option' : undefined;
     errors.dateInputId =
       state.get(ids.dateInputId) !== '2020-08-20' ? 'Please select 2020-08-20' : undefined;
+      errors.autocompleteInputId =
+        ((state.get(ids.autocompleteInputId) as string[]) || []).length === 0
+          ? 'Please choose an option'
+          : undefined;
     updateValidationErrors(errors);
-    errors.autocompleteInputId =
-      ((state.get(ids.autocompleteInputId) as string[]) || []).length === 0
-        ? 'Please choose an option'
-        : undefined;
   };
   return (
     <>
