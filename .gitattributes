@@ -1,5 +1,3 @@
-*.go text eol=lf
 *.ts text eol=lf
 *.js text eol=lf
 *.jsx text eol=lf
-*.cs text eol=lf
