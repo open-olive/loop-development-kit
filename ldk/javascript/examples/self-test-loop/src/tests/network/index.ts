@@ -120,8 +120,6 @@ export const testWebsocketConnection = (): Promise<boolean> =>
       try {
         const socket = await network.webSocketConnect(socketConfiguration);
         console.info('Websocket successfully connected');
-
-        socket.writeMessage('You are using a test api key');
         const cancellable = await socket.setMessageHandler(async (error, message) => {
           if (error) {
             console.error('setMessageHandler error', error);
@@ -145,6 +143,8 @@ export const testWebsocketConnection = (): Promise<boolean> =>
           console.info('Clipboard listener cancelled');
           cancellable.cancel();
         });
+
+        await socket.writeMessage('You are using a test api key');
 
         await socket.setCloseHandler((error, code, text) => {
           if (error) {
