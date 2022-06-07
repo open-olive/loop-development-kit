@@ -1,8 +1,11 @@
 # npm & yarn
 **/node_modules/
 
-# Go LDK build files for examples
-ldk/go/examples/**/build
+# Build
+dist
+
+# Generated Docs
+generated-docs 
 
 # Testing
 coverage/
@@ -41,8 +44,3 @@ Thumbs.db:*
 .#*
 *.orig
 *.swp
-
-# Docs
-docs/public
-docs/.cache
-docs/node_modules
