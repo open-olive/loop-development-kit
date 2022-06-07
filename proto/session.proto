@@ -1,8 +1,0 @@
-syntax = "proto3";
-package proto;
-option go_package = "./;proto";
-
-message Session {
-    string loopID = 1;
-    string token  = 2;
-}

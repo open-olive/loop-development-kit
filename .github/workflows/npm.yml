@@ -5,18 +5,13 @@
 
 name: NPM Publish
 
-defaults:
-  run:
-    working-directory: ldk/javascript
-
 on:
   release:
-    types: [ published ]
+    types: [published]
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
