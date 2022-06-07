@@ -10,10 +10,13 @@ import {
   DateTimeType,
   Direction,
   JustifyContent,
+  Height,
   IconSize,
   IconVariant,
   MessageWhisperCopyMode,
   MarkdownWhisperCopyMode,
+  MaxHeight,
+  MinHeight,
   NewWhisper,
   OpenDirection,
   RichTextEditor,
@@ -438,6 +441,81 @@ export const testBoxInBox = (): Promise<boolean> =>
                     onChange: (value) => {
                       console.debug(`Input value changed: ${value}`);
                     },
+                  },
+                ],
+              },
+            ],
+          },
+          resolveRejectButtons(resolve, reject),
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+
+      reject(error);
+    }
+  });
+
+export const testBoxInBoxWithDynamicHeight = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    try {
+      await whisper.create({
+        label: 'Box in the box',
+        onClose: () => {
+          console.debug('closed');
+        },
+        components: [
+          {
+            type: WhisperComponentType.Markdown,
+            body: stripIndent`
+              # Box in the Box Example
+              `,
+          },
+          {
+            type: WhisperComponentType.Box,
+            justifyContent: JustifyContent.Center,
+            direction: Direction.Horizontal,
+            height: Height.Large,
+            children: [
+              {
+                type: WhisperComponentType.Box,
+                justifyContent: JustifyContent.Left,
+                direction: Direction.Vertical,
+                minHeight: MinHeight.Large,
+                children: [
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: stripIndent`
+                    **Header Left with Min Height - Large**
+                    Some text on the Left
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                    when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                    It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+                    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+                    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                      `,
+                  },
+                ],
+              },
+              {
+                type: WhisperComponentType.Box,
+                justifyContent: JustifyContent.Right,
+                direction: Direction.Vertical,
+                maxHeight: MaxHeight.Small,
+                children: [
+                  {
+                    type: WhisperComponentType.Markdown,
+                    body: stripIndent`
+                      **Header Right with Max Height - Small**
+                      Some text on the right
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                      Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                      when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                      It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+                      It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+                      and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                      `,
                   },
                 ],
               },
