@@ -122,6 +122,31 @@ export const testWebsocketConnection = (): Promise<boolean> =>
         try {
           const socket = await network.webSocketConnect(socketConfiguration);
           console.info('Websocket successfully connected');
+          const cancellable = await socket.setMessageHandler(async (error, message) => {
+            if (error) {
+              console.error('setMessageHandler error', error);
+              reject(error);
+            }
+
+            console.log(`Received message: ${message}`);
+
+            // This is the first message that is always returned from piesocket on connect
+            if (message === 'You are using a test api key') {
+              testPassed = true;
+            }
+
+            socket.close();
+            console.info('Socket closed');
+
+            getUrlWhisper.close(console.error);
+            console.info('Whisper closed');
+
+            clipboardListener.cancel();
+            console.info('Clipboard listener cancelled');
+            cancellable.cancel();
+          });
+
+          await socket.writeMessage('You are using a test api key');
 
           await socket.setCloseHandler((error, code, text) => {
             if (error) {
@@ -136,47 +161,10 @@ export const testWebsocketConnection = (): Promise<boolean> =>
               resolve(true);
             }
           });
-
-          const cancellable = await socket.setMessageHandler(async (error, message) => {
-            if (error) {
-              console.error('setMessageHandler error', error);
-              reject(error);
-            }
-
-            console.log(`Received message: ${message}`);
-            const messageObject = JSON.parse(message as string);
-
-            // This is the first message that is always returned from piesocket on connect
-            testPassed = messageObject?.info === 'You are using a test api key';
-
-            socket.close();
-            console.info('Socket closed');
-
-            getUrlWhisper.close(console.error);
-            console.info('Whisper closed');
-
-            clipboardListener.cancel();
-            console.info('Clipboard listener cancelled');
-
-            cancellable.cancel();
-          });
         } catch (error) {
           console.error(error);
           reject(error);
-        } finally {
-          clipboardListener.cancel();
-          console.info('Clipboard listener finally cancelled');
         }
       },
     );
-
-    setTimeout(() => {
-      getUrlWhisper.close(console.error);
-      console.info('Whisper closed in timeout error');
-
-      clipboardListener.cancel();
-      console.info('Clipboard listener cancelled in timeout error');
-
-      reject(new Error('Network websocket test did not finish in the appropriate time span.'));
-    }, 20000);
   });
