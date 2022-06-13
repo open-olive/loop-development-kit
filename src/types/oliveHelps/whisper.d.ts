@@ -12,6 +12,13 @@ declare namespace WhisperService {
     trim?: boolean;
   }
 
+  interface AutocompleteMatchSorterOptions {
+    keepDiacritics?: boolean;
+    keys?: string[];
+    recipe?: CaseTypes;
+    threshold?: MatchSorterRankings;
+  }
+
   interface Component<T extends WhisperComponentType> {
     id?: string;
     type: T;
@@ -132,6 +139,8 @@ declare namespace WhisperService {
 
   type ButtonStyle = 'primary' | 'secondary' | 'text';
 
+  type CaseTypes = 'camelCase' | 'kebab-case' | 'PascalCase' | 'snake_case';
+
   type CustomHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
   type Direction = 'horizontal' | 'vertical';
@@ -147,6 +156,8 @@ declare namespace WhisperService {
   type IconSize = 'small' | 'medium' | 'large' | 'x-large';
 
   type IconVariant = 'outlined' | 'round' | 'sharp' | 'two-tone';
+
+  type MatchSorterRankings = 'ACRONYM' | 'CASE_SENSITIVE_EQUAL' | 'CONTAINS' | 'EQUAL' | 'MATCHES';
 
   type MaxHeight = 'small' | 'medium' | 'large' | 'extraLarge';
 
@@ -456,7 +467,6 @@ declare namespace WhisperService {
 
   //  Select Component Section
   type Autocomplete = SelectComponent<'autocomplete'> & {
-    filterOptions?: AutocompleteFilterOptions;
     label?: string;
     loading?: boolean;
     multiple?: boolean;
@@ -466,6 +476,16 @@ declare namespace WhisperService {
     tooltip?: string;
     value?: string;
     freeSolo?: boolean;
+  } & (AutocompleteMatchSorter | AutocompleteFilter);
+
+  type AutocompleteFilter = {
+    filterOptions?: AutocompleteFilterOptions;
+    matchSorter?: never;
+  };
+
+  type AutocompleteMatchSorter = {
+    filterOptions?: never;
+    matchSorter?: AutocompleteMatchSorterOptions;
   };
 
   type RadioGroup = SelectComponent<'radioGroup'> & {
