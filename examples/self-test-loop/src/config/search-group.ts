@@ -10,7 +10,7 @@ export const searchTestsGroup = (): TestGroup =>
       10000,
       'test should pass automatically.',
     ),
-    new LoopTest(
+    /*new LoopTest(
       'Search Aptitude - Create Index Search',
       searchTests.testSearchCreateIndexSearch,
       10000,
@@ -21,5 +21,5 @@ export const searchTestsGroup = (): TestGroup =>
       searchTests.testSearchCreateIndexQueryStringSearch,
       10000,
       'Can you see search result?',
-    ),
+    ),*/
   ]);
