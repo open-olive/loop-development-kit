@@ -3,6 +3,7 @@ import { whisper, React, ReactWhisper } from '@oliveai/ldk';
 import {
   CaseTypes,
   MatchSorterRankings,
+  Whisper,
   WhisperComponentType,
 } from '@oliveai/ldk/dist/whisper/types';
 import { autocompleteOptions, ignoreCase, matchFrom, onActionWrapper } from '../utils';
@@ -34,7 +35,7 @@ export const testAutocomplete = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('4')) {
                 onActionWrapper(error, 'Select', resolverMap, onSelectWhisper, resolve, reject);
@@ -50,13 +51,13 @@ export const testAutocomplete = (): Promise<boolean> =>
             type: WhisperComponentType.Autocomplete,
             label: 'Autocomplete Test',
             loading: true,
-            onChange: (error, value: string, onChangeWhisper) => {
+            onChange: (error: Error, value: string, onChangeWhisper: Whisper) => {
               console.info(`Received onChange value: ${value}`);
               if (value.toLowerCase() === 'typed') {
                 onActionWrapper(error, 'Change', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
-            onSelect: (_error, value: string[]) => {
+            onSelect: (_error: Error, value: string[]) => {
               console.info(`Received onSelect value: ${JSON.stringify(value)}`);
             },
             options: [...autocompleteOptions, { label: 'Typed', value: '10' }],
@@ -71,7 +72,7 @@ export const testAutocomplete = (): Promise<boolean> =>
             label: 'Autocomplete Test',
             loading: true,
             multiple: true,
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('4') && value.includes('5')) {
                 onActionWrapper(error, 'Multiple', resolverMap, onSelectWhisper, resolve, reject);
@@ -91,13 +92,13 @@ export const testAutocomplete = (): Promise<boolean> =>
             loading: true,
             multiple: false,
             freeSolo: true,
-            onChange: (error, value, onChangeWhisper) => {
+            onChange: (error: Error, value: string, onChangeWhisper: Whisper) => {
               console.log(`Received onChange value: ${JSON.stringify(value)}`);
               if (value?.includes('custom')) {
                 onActionWrapper(error, 'Custom', resolverMap, onChangeWhisper, resolve, reject);
               }
             },
-            onSelect: (_error, value: string[]) => {
+            onSelect: (_error: Error, value: string[]) => {
               console.info(`Received onSelect value: ${JSON.stringify(value)}`);
             },
             options: autocompleteOptions,
@@ -109,7 +110,7 @@ export const testAutocomplete = (): Promise<boolean> =>
             loading: true,
             multiple: true,
             freeSolo: true,
-            onChange: (error, value, onChangeWhisper) => {
+            onChange: (error: Error, value: string, onChangeWhisper: Whisper) => {
               console.log(`Received onChange value: ${JSON.stringify(value)}`);
               if (value?.includes('custom')) {
                 onActionWrapper(
@@ -122,7 +123,7 @@ export const testAutocomplete = (): Promise<boolean> =>
                 );
               }
             },
-            onSelect: (_error, value: string[]) => {
+            onSelect: (_error: Error, value: string[]) => {
               console.info(`Received onSelect value: ${JSON.stringify(value)}`);
             },
             options: autocompleteOptions,
@@ -167,7 +168,7 @@ export const testAutocompleteFilterOptions = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('1')) {
                 onActionWrapper(error, 'IgnoreCase', resolverMap, onSelectWhisper, resolve, reject);
@@ -189,7 +190,7 @@ export const testAutocompleteFilterOptions = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('5')) {
                 onActionWrapper(
@@ -218,7 +219,7 @@ export const testAutocompleteFilterOptions = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('4')) {
                 onActionWrapper(error, 'Limit', resolverMap, onSelectWhisper, resolve, reject);
@@ -240,7 +241,7 @@ export const testAutocompleteFilterOptions = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('2')) {
                 onActionWrapper(
@@ -269,7 +270,7 @@ export const testAutocompleteFilterOptions = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('2')) {
                 onActionWrapper(
@@ -298,7 +299,7 @@ export const testAutocompleteFilterOptions = (): Promise<boolean> =>
             onChange: () => {
               // do nothing
             },
-            onSelect: (error, value, onSelectWhisper) => {
+            onSelect: (error: Error, value: string[], onSelectWhisper: Whisper) => {
               console.log(`Received selected value: ${JSON.stringify(value)}`);
               if (value.includes('1')) {
                 onActionWrapper(error, 'Stringify', resolverMap, onSelectWhisper, resolve, reject);

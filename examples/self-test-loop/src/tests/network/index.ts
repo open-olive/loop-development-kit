@@ -112,68 +112,59 @@ export const testWebsocketConnection = (): Promise<boolean> =>
     });
 
     // After copying the websocket URL from the above step run websocket test
-    const clipboardListener = await clipboard.listen(false, async (url) => {
-      let testPassed = false;
+    const clipboardListener = await clipboard.listenWithOptions(
+      { includeOliveHelpsEvents: false },
+      async (url) => {
+        let testPassed = false;
 
-      const socketConfiguration: network.SocketConfiguration = { url };
+        const socketConfiguration: network.SocketConfiguration = { url };
 
-      try {
-        const socket = await network.webSocketConnect(socketConfiguration);
-        console.info('Websocket successfully connected');
+        try {
+          const socket = await network.webSocketConnect(socketConfiguration);
+          console.info('Websocket successfully connected');
+          const cancellable = await socket.setMessageHandler(async (error, message) => {
+            if (error) {
+              console.error('setMessageHandler error', error);
+              reject(error);
+            }
 
-        await socket.setCloseHandler((error, code, text) => {
-          if (error) {
-            console.error('setCloseHandler error', error);
-            reject(error);
-          }
+            console.log(`Received message: ${message}`);
 
-          console.info(`Received on close code: ${code}. ${text}`);
+            // This is the first message that is always returned from piesocket on connect
+            if (message === 'You are using a test api key') {
+              testPassed = true;
+            }
 
-          // This is from us closing the socket connection in the message handler below
-          if (testPassed) {
-            resolve(true);
-          }
-        });
+            socket.close();
+            console.info('Socket closed');
 
-        const cancellable = await socket.setMessageHandler(async (error, message) => {
-          if (error) {
-            console.error('setMessageHandler error', error);
-            reject(error);
-          }
+            getUrlWhisper.close(console.error);
+            console.info('Whisper closed');
 
-          console.log(`Received message: ${message}`);
-          const messageObject = JSON.parse(message as string);
+            clipboardListener.cancel();
+            console.info('Clipboard listener cancelled');
+            cancellable.cancel();
+          });
 
-          // This is the first message that is always returned from piesocket on connect
-          testPassed = messageObject?.info === 'You are using a test api key';
+          await socket.writeMessage('You are using a test api key');
 
-          socket.close();
-          console.info('Socket closed');
+          await socket.setCloseHandler((error, code, text) => {
+            if (error) {
+              console.error('setCloseHandler error', error);
+              reject(error);
+            }
 
-          getUrlWhisper.close(console.error);
-          console.info('Whisper closed');
+            console.info(`Received on close code: ${code}. ${text}`);
 
-          clipboardListener.cancel();
-          console.info('Clipboard listener cancelled');
-
-          cancellable.cancel();
-        });
-      } catch (error) {
-        console.error(error);
-        reject(error);
-      } finally {
-        clipboardListener.cancel();
-        console.info('Clipboard listener finally cancelled');
-      }
-    });
-
-    setTimeout(() => {
-      getUrlWhisper.close(console.error);
-      console.info('Whisper closed in timeout error');
-
-      clipboardListener.cancel();
-      console.info('Clipboard listener cancelled in timeout error');
-
-      reject(new Error('Network websocket test did not finish in the appropriate time span.'));
-    }, 20000);
+            // This is from us closing the socket connection in the message handler below
+            if (testPassed) {
+              resolve(true);
+            }
+          });
+        } catch (error) {
+          console.error(error);
+          reject(error);
+        }
+      },
+    );
   });

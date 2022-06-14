@@ -507,13 +507,6 @@ export interface AutocompleteMatchSorterOptions {
 
 export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & {
   /**
-   * Options to configure how the filter search behaves
-   *
-   * (Note: filterOptions and matchSorter can't be used together; if you include both,
-   * matchSorter will take precedence)
-   */
-  filterOptions?: AutocompleteFilterOptions;
-  /**
    * Option to allow custom user input that doesn't match any of the
    * supplied selectable options
    */
@@ -526,14 +519,6 @@ export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & 
    * If true, displays component in 'loading' state
    */
   loading?: boolean;
-  /**
-   * Options to use with our implementation of match-sorter
-   * https://github.com/kentcdodds/match-sorter
-   *
-   * (Note: filterOptions and matchSorter can't be used together; if you include both,
-   * matchSorter will take precedence)
-   */
-  matchSorter?: AutocompleteMatchSorterOptions;
   /**
    * Indicates if multiple drop down selections are allowed
    */
@@ -558,6 +543,28 @@ export type Autocomplete = SelectComponent<WhisperComponentType.Autocomplete> & 
    * Default selected value
    */
   value?: string;
+} & (AutocompleteMatchSorter | AutocompleteFilter);
+
+export type AutocompleteFilter = {
+  /**
+   * Options to configure how the filter search behaves
+   *
+   * (Note: filterOptions and matchSorter can't be used together; if you include both,
+   * matchSorter will take precedence)
+   */
+  filterOptions?: AutocompleteFilterOptions;
+  matchSorter?: never;
+};
+export type AutocompleteMatchSorter = {
+  /**
+   * Options to use with our implementation of match-sorter
+   * https://github.com/kentcdodds/match-sorter
+   *
+   * (Note: filterOptions and matchSorter can't be used together; if you include both,
+   * matchSorter will take precedence)
+   */
+  matchSorter?: AutocompleteMatchSorterOptions;
+  filterOptions?: never;
 };
 
 export type Checkbox = SelectComponent<WhisperComponentType.Checkbox> & {

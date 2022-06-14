@@ -1,11 +1,13 @@
 declare namespace Clipboard {
   interface Aptitude {
-    read: Common.Readable<string>;
-
-    write: Common.ReadableWithParam<string, void>;
+    includeOliveHelpsEvents(enabled: boolean): void;
 
     listen: Common.Listenable<string>;
 
-    includeOliveHelpsEvents(enabled: boolean): void;
+    listenAll: Common.Listenable<string>;
+
+    read: Common.Readable<string>;
+
+    write: Common.ReadableWithParam<string, void>;
   }
 }
