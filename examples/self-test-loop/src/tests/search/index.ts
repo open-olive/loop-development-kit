@@ -1,6 +1,7 @@
 /* eslint-disable no-async-promise-executor */
 import { search, whisper, network, document } from '@oliveai/ldk';
 import { Worksheet, Row } from '@oliveai/ldk/dist/document/types';
+import { resolveRejectButtons } from '../whisper/utils';
 
 function workSheet2Document(worksheet: Worksheet) {
   const { name, rows } = worksheet;
@@ -90,28 +91,31 @@ export const testSearchCreateIndexSearch = (): Promise<boolean> =>
     });
 
     console.log(JSON.stringify(documents));
+    const index = await search.createIndex('Test Index', documents, {});
     try {
-      search.createIndex('testIndex', documents, {}).then(async (index) => {
-        //console.log(JSON.stringify(index));
-        if (index != null) {
-          const searchResult = await index.search('');
-          //console.log(JSON.stringify(searchResult));
-          const body = 'search result: data:' + searchResult.data + ', total:' + searchResult.total;
-          await whisper.create({
-            label: 'Search Result',
-            onClose: () => undefined,
-            components: [
-              {
-                type: whisper.WhisperComponentType.Markdown,
-                body: body,
-              },
-            ],
-          });
-          resolve(true);
-        } else {
-          reject('failed to create index');
-        }
-      });
+      //console.log(JSON.stringify(index));
+      if (index != null) {
+        const searchResult = await index.search('Dev');
+        //console.log(JSON.stringify(searchResult));
+        const body =
+          'search result for "Dev": data:' +
+          JSON.stringify(searchResult.data) +
+          ', total:' +
+          searchResult.total;
+        await whisper.create({
+          label: 'Search Result for "Dev" ',
+          onClose: () => undefined,
+          components: [
+            {
+              type: whisper.WhisperComponentType.Markdown,
+              body: body,
+            },
+            resolveRejectButtons(resolve, reject),
+          ],
+        });
+      } else {
+        reject('failed to create index');
+      }
     } catch (err) {
       reject(err);
     }
@@ -137,40 +141,44 @@ export const testSearchCreateIndexQueryStringSearch = (): Promise<boolean> =>
     }
     const workbook = await document.xlsxDecode(request.body);
     const documents = workbook.worksheets.map(workSheet2Document);
+
     await whisper.create({
-      label: 'Create index search test',
+      label: 'Index query search test',
       onClose: () => undefined,
       components: [
         {
           type: whisper.WhisperComponentType.Markdown,
-          body: 'testing create index search',
+          body: 'testing index query string search',
         },
       ],
     });
 
-    console.log(JSON.stringify(document));
+    console.log(JSON.stringify(documents));
+    const index = await search.createIndex('Test Index', documents, {});
     try {
-      search.createIndex('testIndex', documents, {}).then(async (index) => {
-        //console.log(JSON.stringify(index));
-        if (index != null) {
-          const searchResult = await index.queryStringSearch('test');
-
-          const body = 'search result: data:' + searchResult.data + ', total:' + searchResult.total;
-          await whisper.create({
-            label: 'Search Result',
-            onClose: () => undefined,
-            components: [
-              {
-                type: whisper.WhisperComponentType.Markdown,
-                body: body,
-              },
-            ],
-          });
-          resolve(true);
-        } else {
-          reject('failed to create index');
-        }
-      });
+      //console.log(JSON.stringify(index));
+      if (index != null) {
+        const searchResult = await index.search('Olive');
+        //console.log(JSON.stringify(searchResult));
+        const body =
+          'search result for "Olive": data:' +
+          JSON.stringify(searchResult.data) +
+          ', total:' +
+          searchResult.total;
+        await whisper.create({
+          label: 'Query String Search Result for "Olive" ',
+          onClose: () => undefined,
+          components: [
+            {
+              type: whisper.WhisperComponentType.Markdown,
+              body: body,
+            },
+            resolveRejectButtons(resolve, reject),
+          ],
+        });
+      } else {
+        reject('failed to create index');
+      }
     } catch (err) {
       reject(err);
     }
