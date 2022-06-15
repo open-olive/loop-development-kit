@@ -22,4 +22,10 @@ export const searchTestsGroup = (): TestGroup =>
       10000,
       'Can you see search result?',
     ),
+    new LoopTest(
+      'Search Aptitude - Search Index Exists',
+      searchTests.testSearchIndexExsit,
+      10000,
+      'Test should pass if index exist',
+    ),
   ]);
