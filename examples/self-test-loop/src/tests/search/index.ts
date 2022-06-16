@@ -38,7 +38,7 @@ export const testSearchCreateIndex = (): Promise<boolean> =>
         },
       ],
     });
-    const index = await search.createIndex('testIndex', documents, {});
+    const index = await search.createIndex('Create Index', documents, {});
     if (index != null) {
       resolve(true);
     } else {
@@ -188,9 +188,9 @@ export const testSearchIndexExsit = (): Promise<boolean> =>
       ],
     });
 
-    const index = await search.createIndex('testIndex', documents, {});
+    const index = await search.createIndex('Exist Index', documents, {});
 
-    const indexExists = await search.exists('testIndex');
+    const indexExists = await search.exists('Exist Index');
     await whisper.create({
       label: 'Search Index Exists ',
       onClose: () => undefined,
@@ -203,3 +203,39 @@ export const testSearchIndexExsit = (): Promise<boolean> =>
       ],
     });
   });
+
+/* export const testSearchIndexDelete = (): Promise<boolean> =>
+  new Promise(async (resolve, reject) => {
+    const documents: search.Document[] = [
+      {
+        name: 'test',
+        data: JSON.stringify([]),
+        fields: [],
+      },
+    ];
+    await whisper.create({
+      label: 'Search Delete index test',
+      onClose: () => undefined,
+      components: [
+        {
+          type: whisper.WhisperComponentType.Markdown,
+          body: 'testing delete index',
+        },
+      ],
+    });
+
+    const index = await search.createIndex('Delete Index', documents, {});
+    await index.delete();
+    const indexExists = await search.exists('Delete Index');
+    await whisper.create({
+      label: 'Search Index Delete ',
+      onClose: () => undefined,
+      components: [
+        {
+          type: whisper.WhisperComponentType.Markdown,
+          body: 'Search Index Exists(should be false): ' + indexExists.toString(),
+        },
+        resolveRejectButtons(resolve, reject),
+      ],
+    });
+  }); */

@@ -28,4 +28,10 @@ export const searchTestsGroup = (): TestGroup =>
       10000,
       'Test should pass if index exist',
     ),
+    /* new LoopTest(
+      'Search Aptitude - Search Index Delete',
+      searchTests.testSearchIndexDelete,
+      10000,
+      'Test should pass if index has been deleted',
+    ), */
   ]);
