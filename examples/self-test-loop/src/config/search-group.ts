@@ -2,7 +2,7 @@ import TestGroup from '../testingFixtures/testGroup';
 import { LoopTest } from '../testingFixtures/loopTest';
 import * as searchTests from '../tests/search';
 
-export const searchTestsGroup = (): TestGroup =>
+export const searchTestGroup = (): TestGroup =>
   new TestGroup('Search Aptitude', [
     new LoopTest(
       'Search Aptitude - Create Index',

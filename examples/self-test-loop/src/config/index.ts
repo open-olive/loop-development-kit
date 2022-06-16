@@ -9,7 +9,7 @@ import { filesystemTestGroup } from './filesystem-group';
 import { keyboardTestGroup } from './keyboard-group';
 import { networkTestGroup } from './network-group';
 import { processTestGroup } from './process-group';
-import { searchTestsGroup } from './search-group';
+import { searchTestGroup } from './search-group';
 import { screenTestGroup } from './screen-group';
 import { systemTestGroup } from './system-group';
 import { uiTestGroup } from './ui-group';
@@ -30,7 +30,7 @@ export const testConfig: { [key: string]: TestGroup } = {
   keyboard: keyboardTestGroup(),
   network: networkTestGroup(),
   process: processTestGroup(),
-  search: searchTestsGroup(),
+  search: searchTestGroup(),
   screen: screenTestGroup(),
   system: systemTestGroup(),
   ui: uiTestGroup(),
