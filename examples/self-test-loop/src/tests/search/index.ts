@@ -72,7 +72,11 @@ export const testSearchCreateIndexSearch = (): Promise<boolean> =>
       components: [
         {
           type: whisper.WhisperComponentType.Markdown,
-          body: 'testing create index search',
+          body: 'Document Contents: ',
+        },
+        {
+          type: whisper.WhisperComponentType.Markdown,
+          body: JSON.stringify(documents),
         },
       ],
     });
@@ -128,22 +132,25 @@ export const testSearchCreateIndexQueryStringSearch = (): Promise<boolean> =>
     const documents = workbook.worksheets.map(workSheet2Document);
 
     await whisper.create({
-      label: 'Index query search test',
+      label: 'Index query string search test',
       onClose: () => undefined,
       components: [
         {
           type: whisper.WhisperComponentType.Markdown,
-          body: 'testing index query string search',
+          body: 'Document Contents: ',
+        },
+        {
+          type: whisper.WhisperComponentType.Markdown,
+          body: JSON.stringify(documents),
         },
       ],
     });
 
     const index = await search.createIndex('Test Index', documents, {});
     try {
-      //console.log(JSON.stringify(index));
       if (index != null) {
         const searchResult = await index.search('Olive');
-        //console.log(JSON.stringify(searchResult));
+
         const body =
           'search result for "Olive": data:' +
           JSON.stringify(searchResult.data) +
