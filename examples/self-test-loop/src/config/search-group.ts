@@ -11,13 +11,13 @@ export const searchTestGroup = (): TestGroup =>
       'test should pass automatically.',
     ),
     new LoopTest(
-      'Search Aptitude - Create Index Search',
+      'Search Aptitude - Index Search',
       searchTests.testSearchCreateIndexSearch,
       10000,
       'Can you see search result?',
     ),
     new LoopTest(
-      'Search Aptitude - Create Index Query String Search',
+      'Search Aptitude - Index Query String Search',
       searchTests.testSearchCreateIndexQueryStringSearch,
       10000,
       'Can you see search result?',

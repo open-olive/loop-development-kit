@@ -67,7 +67,7 @@ export const testSearchCreateIndexSearch = (): Promise<boolean> =>
     const workbook = await document.xlsxDecode(request.body);
     const documents = workbook.worksheets.map(workSheet2Document);
     await whisper.create({
-      label: 'Create index search test',
+      label: 'Index search test',
       onClose: () => undefined,
       components: [
         {
@@ -204,6 +204,7 @@ export const testSearchIndexExsit = (): Promise<boolean> =>
     });
   });
 
+//TODO: track what causes delete functon doesn't work as expected.
 /* export const testSearchIndexDelete = (): Promise<boolean> =>
   new Promise(async (resolve, reject) => {
     const documents: search.Document[] = [
