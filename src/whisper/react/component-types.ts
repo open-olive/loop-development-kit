@@ -21,7 +21,8 @@ type ComponentPropsWithChildren<T, TExcludeName extends string = 'children'> = O
   children: ReactNode;
 };
 
-type AutocompleteProps = ComponentProps<Whisper.Autocomplete>;
+type AutocompleteProps = ComponentProps<Whisper.Autocomplete> &
+  (Whisper.AutocompleteMatchSorter | Whisper.AutocompleteFilter);
 type BoxProps = ComponentPropsWithChildren<Whisper.Box>;
 type BreadcumbsProps = ComponentProps<Whisper.Breadcrumbs>;
 type ButtonProps = ComponentProps<Whisper.Button>;
