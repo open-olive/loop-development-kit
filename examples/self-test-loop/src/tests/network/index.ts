@@ -122,6 +122,9 @@ export const testWebsocketConnection = (): Promise<boolean> =>
         try {
           const socket = await network.webSocketConnect(socketConfiguration);
           console.info('Websocket successfully connected');
+
+          await socket.writeMessage('You are using a test api key');
+
           const cancellable = await socket.setMessageHandler(async (error, message) => {
             if (error) {
               console.error('setMessageHandler error', error);
@@ -141,25 +144,22 @@ export const testWebsocketConnection = (): Promise<boolean> =>
             getUrlWhisper.close(console.error);
             console.info('Whisper closed');
 
+            await socket.setCloseHandler((error, code, text) => {
+              if (error) {
+                console.error('setCloseHandler error', error);
+                reject(error);
+              }
+
+              console.info(`Received on close code: ${code}. ${text}`);
+
+              // This is from us closing the socket connection in the message handler below
+              if (testPassed) {
+                resolve(true);
+              }
+            });
             clipboardListener.cancel();
             console.info('Clipboard listener cancelled');
             cancellable.cancel();
-          });
-
-          await socket.writeMessage('You are using a test api key');
-
-          await socket.setCloseHandler((error, code, text) => {
-            if (error) {
-              console.error('setCloseHandler error', error);
-              reject(error);
-            }
-
-            console.info(`Received on close code: ${code}. ${text}`);
-
-            // This is from us closing the socket connection in the message handler below
-            if (testPassed) {
-              resolve(true);
-            }
           });
         } catch (error) {
           console.error(error);
