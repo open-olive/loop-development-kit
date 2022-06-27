@@ -115,8 +115,6 @@ export const testWebsocketConnection = (): Promise<boolean> =>
     const clipboardListener = await clipboard.listenWithOptions(
       { includeOliveHelpsEvents: false },
       async (url) => {
-        let testPassed = false;
-
         const socketConfiguration: network.SocketConfiguration = { url };
 
         try {
@@ -131,13 +129,6 @@ export const testWebsocketConnection = (): Promise<boolean> =>
               reject(error);
             }
 
-            console.log(`Received message: ${message}`);
-
-            // This is the first message that is always returned from piesocket on connect
-            if (message === 'You are using a test api key') {
-              testPassed = true;
-            }
-
             socket.close();
             console.info('Socket closed');
 
@@ -149,12 +140,14 @@ export const testWebsocketConnection = (): Promise<boolean> =>
                 console.error('setCloseHandler error', error);
                 reject(error);
               }
-
+              console.info(`Received message: ${message}`);
               console.info(`Received on close code: ${code}. ${text}`);
 
               // This is from us closing the socket connection in the message handler below
-              if (testPassed) {
+              if (message === 'You are using a test api key') {
                 resolve(true);
+              } else {
+                reject("socket didn't get expected message");
               }
             });
             clipboardListener.cancel();
