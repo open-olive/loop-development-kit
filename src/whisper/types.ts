@@ -549,8 +549,7 @@ export type AutocompleteFilter = {
   /**
    * Options to configure how the filter search behaves
    *
-   * (Note: filterOptions and matchSorter can't be used together; if you include both,
-   * matchSorter will take precedence)
+   * (Note: filterOptions and matchSorter can't be used together)
    */
   filterOptions?: AutocompleteFilterOptions;
   matchSorter?: never;
@@ -560,8 +559,7 @@ export type AutocompleteMatchSorter = {
    * Options to use with our implementation of match-sorter
    * https://github.com/kentcdodds/match-sorter
    *
-   * (Note: filterOptions and matchSorter can't be used together; if you include both,
-   * matchSorter will take precedence)
+   * (Note: filterOptions and matchSorter can't be used together)
    */
   matchSorter?: AutocompleteMatchSorterOptions;
   filterOptions?: never;
