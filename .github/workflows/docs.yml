@@ -6,18 +6,6 @@ on:
       - main
 
 jobs:
-  deploy-developer-hub:
-    defaults:
-      run:
-        working-directory: docs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - run: npm ci
-
   deploy-gh-pages-docs:
     runs-on: ubuntu-latest
     steps:
@@ -28,23 +16,21 @@ jobs:
 
       # Build javascript docs
       - run: |
-          cd ./ldk/javascript
           npm ci
           npm run build
           npm run doc
 
       # Consolidate docs
       - run: |
-          cd ./ldk
           mkdir typedoc-tmp
-          cp -r ./javascript/docs typedoc-tmp/javascript
-          cp -r ./javascript/readme_assets typedoc-tmp/javascript
+          cp -r ./generated-docs typedoc-tmp
+          cp -r ./readme_assets typedoc-tmp
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./ldk/typedoc-tmp
-          destination_dir: ldk
+          publish_dir: ./typedoc-tmp
+          destination_dir: ./
           force_orphan: true
